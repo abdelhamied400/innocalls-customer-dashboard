@@ -2,15 +2,14 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import ExtensionsFilters from "./filters";
 import ExtensionsTable from "./table";
 import { getQueryClient } from "@/lib/getQueryClient";
-import { PropsWithChildren } from "react";
 import { fetchExtensionsQuery } from "@/queries/extensions";
 
 export type Filters = {
   userId: string;
 };
-type ExtensionsProps = PropsWithChildren<{
+type ExtensionsProps = {
   searchParams: Promise<Filters>;
-}>;
+};
 const Extensions = async ({ searchParams }: ExtensionsProps) => {
   const queryClient = getQueryClient();
   const query = await searchParams;
