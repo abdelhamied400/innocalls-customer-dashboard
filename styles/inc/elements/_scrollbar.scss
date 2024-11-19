@@ -1,0 +1,17 @@
+// scrollbar
+/* width */
+::-webkit-scrollbar {
+  @apply w-2 rounded-full;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  @apply rounded-full;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-300 rounded-full;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400;
+}

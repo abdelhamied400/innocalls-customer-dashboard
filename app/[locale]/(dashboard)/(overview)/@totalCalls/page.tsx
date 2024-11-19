@@ -1,6 +1,5 @@
 const TotalCalls = async () => {
   await fetch("https://jsonplaceholder.typicode.com/todos");
-  throw new Error("This is an error");
 
   return (
     <div className="page" id="totalCalls">
