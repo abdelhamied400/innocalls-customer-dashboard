@@ -1,7 +1,6 @@
 import { Filters } from "@/app/[locale]/(dashboard)/extensions/page";
 
 export const fetchExtensions = async (query: Filters) => {
-  console.log("fetching extensions");
   const newSearchParams = new URLSearchParams(query);
   const userId = newSearchParams.get("userId");
 
