@@ -23,7 +23,7 @@ export default auth((request) => {
 export const config = {
   // Match only internationalized pathnames
   matcher: [
-    "/((?!api|_next/static|assets|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    "/((?!api|_next/static|assets|fonts|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
     `/(en|ar)/:path*`,
   ],
 };

@@ -1,19 +1,27 @@
 import type { Metadata } from "next";
 import { PropsWithChildren } from "react";
 import { locales, LocaleSlug } from "@/i18n/config";
-import localFont from "next/font/local";
 import MainProvider from "@/providers/MainProvider";
+import { routing } from "@/i18n/routing";
+import { notFound } from "next/navigation";
+import { NextFontWithVariable } from "next/dist/compiled/@next/font";
+import localFont from "next/font/local";
 
-const geistSans = localFont({
-  src: "../fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
+const poppins = localFont({
+  src: "../fonts/Poppins.otf",
+  variable: "--font-poppins",
   weight: "100 900",
 });
-const geistMono = localFont({
-  src: "../fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
+const cairo = localFont({
+  src: "../fonts/Cairo.ttf",
+  variable: "--font-cairo",
   weight: "100 900",
 });
+
+export const fonts: Record<LocaleSlug, NextFontWithVariable> = {
+  en: poppins,
+  ar: cairo,
+};
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,11 +36,14 @@ const RootLayout = async ({ children, params }: RootLayoutProps) => {
   const { locale } = await params;
   const localeObj = locales[locale];
 
+  // Ensure that the incoming `locale` is valid
+  if (!routing.locales.includes(locale as any)) {
+    notFound();
+  }
+
   return (
     <html lang={locale} dir={localeObj.dir}>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${fonts[locale].variable} antialiased`}>
         <MainProvider>{children}</MainProvider>
       </body>
     </html>
