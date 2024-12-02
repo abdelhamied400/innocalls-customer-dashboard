@@ -1,14 +1,17 @@
 import { PropsWithChildren } from "react";
 import ReactQueryProvider from "./ReactQueryProvider";
 import { Toaster } from "@/components/ui/toaster";
+import NextIntlProvider from "./NextIntlProvider";
 
 type MainProviderProps = PropsWithChildren<object>;
-const MainProvider = ({ children }: MainProviderProps) => {
+const MainProvider = async ({ children }: MainProviderProps) => {
   return (
-    <>
-      <ReactQueryProvider>{children}</ReactQueryProvider>
-      <Toaster />
-    </>
+    <NextIntlProvider>
+      <ReactQueryProvider>
+        {children}
+        <Toaster />
+      </ReactQueryProvider>
+    </NextIntlProvider>
   );
 };
 
