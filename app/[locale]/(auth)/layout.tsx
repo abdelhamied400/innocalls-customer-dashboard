@@ -3,8 +3,8 @@ import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
 
 type AuthLayoutProps = PropsWithChildren<object>;
-const AuthLayout = ({ children }: AuthLayoutProps) => {
-  const session = auth();
+const AuthLayout = async ({ children }: AuthLayoutProps) => {
+  const session = await auth();
 
   if (!!session) {
     return redirect("/");

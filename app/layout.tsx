@@ -1,4 +1,5 @@
 import "@/styles/main.scss";
+import "@xyflow/react/dist/style.css";
 
 const RootLayout = ({
   children,

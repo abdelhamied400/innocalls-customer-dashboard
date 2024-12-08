@@ -2,12 +2,7 @@ import { PropsWithChildren } from "react";
 
 type SidebarProps = PropsWithChildren<object>;
 const Sidebar = ({ children }: SidebarProps) => {
-  return (
-    <aside className="flex flex-col gap-2 bg-red-300">
-      <p>Sidebar</p>
-      {children}
-    </aside>
-  );
+  return <aside className="flex flex-col border-e-2">{children}</aside>;
 };
 
 export default Sidebar;
