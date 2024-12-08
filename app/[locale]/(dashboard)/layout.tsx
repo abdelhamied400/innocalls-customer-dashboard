@@ -1,4 +1,3 @@
-import Breadcrumbs from "@/components/Breadcrumbs";
 import Navbar from "@/components/Navbar";
 import Sidebar from "@/components/Sidebar";
 import SidebarHeader from "@/components/SidebarHeader";
@@ -24,11 +23,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         </Sidebar>
         <div className="flex-1 main">
           <Navbar />
-
-          <main className="p-4">
-            <Breadcrumbs />
-            {children}
-          </main>
+          <main className="p-4">{children}</main>
         </div>
       </div>
     </div>
