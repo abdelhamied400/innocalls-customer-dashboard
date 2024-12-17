@@ -27,6 +27,7 @@ import { useState } from "react";
 
 const ExtensionsTableHead = () => {
   const [showFilters, setShowFilters] = useState(false);
+  const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
   const toggleFilters = () => {
     setShowFilters(!showFilters);
   };
@@ -79,7 +80,8 @@ const ExtensionsTableHead = () => {
                     >
                       <DatePicker
                         placeholder="Enter from date"
-                        value={new Date()}
+                        value={fromDate}
+                        onChange={(date) => setFromDate(date)}
                       />
                     </Field>
                     <Field

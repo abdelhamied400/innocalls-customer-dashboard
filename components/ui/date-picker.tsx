@@ -43,12 +43,7 @@ const DatePicker = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 w-auto">
-        <Calendar
-          mode="single"
-          selected={value}
-          onSelect={onChange}
-          initialFocus
-        />
+        <Calendar mode="single" selected={value} onSelect={onChange} />
       </PopoverContent>
     </Popover>
   );
