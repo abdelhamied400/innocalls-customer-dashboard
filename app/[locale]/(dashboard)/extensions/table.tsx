@@ -10,7 +10,7 @@ const ExtensionsTable = ({ query }: { query: Filters }) => {
   const { data: extensions, isLoading } = useQuery(fetchExtensionsQuery(query));
 
   return (
-    <div className="table" id="extensions">
+    <div className="w-full extensions-table" id="extensions">
       <DataTable columns={columns} data={extensions} isLoading={isLoading} />
     </div>
   );

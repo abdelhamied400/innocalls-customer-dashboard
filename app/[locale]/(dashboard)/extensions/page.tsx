@@ -1,5 +1,5 @@
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
-import ExtensionsFilters from "./filters";
+import ExtensionsTableHead from "./head";
 import ExtensionsTable from "./table";
 import { getQueryClient } from "@/lib/getQueryClient";
 import { fetchExtensionsQuery } from "@/queries/extensions";
@@ -16,16 +16,18 @@ const Extensions = async ({ searchParams }: ExtensionsProps) => {
   queryClient.prefetchQuery(fetchExtensionsQuery(query));
 
   return (
-    <div className="page" id="extensions">
-      <div className="border-gray-200 bg-white shadow-md p-4 border rounded">
-        <p>Extensions</p>
+    <div className="h-full page" id="extensions">
+      <div className="bg-white p-4 rounded-xl h-full overflow-auto">
+        <div className="bg-white border rounded-xl">
+          <ExtensionsTableHead />
+
+          <div className="w-full">
+            <HydrationBoundary state={dehydrate(queryClient)}>
+              <ExtensionsTable query={query} />
+            </HydrationBoundary>
+          </div>
+        </div>
       </div>
-
-      <ExtensionsFilters />
-
-      <HydrationBoundary state={dehydrate(queryClient)}>
-        <ExtensionsTable query={query} />
-      </HydrationBoundary>
     </div>
   );
 };

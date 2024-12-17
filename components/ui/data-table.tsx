@@ -37,6 +37,14 @@ import {
   shouldAddPostEllipses,
   shouldAddPreEllipses,
 } from "@/lib/pagination";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
+import { Skeleton } from "./skeleton";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -113,9 +121,9 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="data-table">
-      <div className="border rounded-md">
+      <div className="">
         <Table>
-          <TableHeader>
+          <TableHeader className="bg-gray-200">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -135,13 +143,19 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {isLoading && (
-              <TableRow>
-                <TableCell className="p-8" colSpan={columns.length}>
-                  <div className="place-items-center grid">
-                    <Spinner />
-                  </div>
-                </TableCell>
-              </TableRow>
+              <>
+                {Array(10)
+                  .fill(0)
+                  .map((_, idx) => (
+                    <TableRow key={idx}>
+                      <TableCell className="p-0" colSpan={columns.length}>
+                        <div className="place-items-center grid h-9">
+                          <Skeleton className="rounded-none w-full h-full" />
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </>
             )}
             {!isLoading && (
               <>
@@ -176,38 +190,58 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="h-2" />
-      <div className="flex items-center gap-2">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              />
-            </PaginationItem>
-
-            {pages.map((page, idx) => (
-              <PaginationItem key={`page-${page}, ${idx}`}>
-                {page === -1 && <PaginationEllipsis />}
-                {page !== -1 && (
-                  <PaginationButton
-                    isActive={pageIndex === page - 1}
-                    onClick={() => table.setPageIndex(page - 1)}
-                  >
-                    {page}
-                  </PaginationButton>
-                )}
+      <div className="border-b h-2" />
+      <div className="flex justify-between items-center gap-2 p-4">
+        <div className="pagination">
+          <Pagination className="justify-normal">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() => table.previousPage()}
+                  disabled={!table.getCanPreviousPage()}
+                />
               </PaginationItem>
-            ))}
-            <PaginationItem>
-              <PaginationNext
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+
+              {pages.map((page, idx) => (
+                <PaginationItem key={`page-${page}, ${idx}`}>
+                  {page === -1 && <PaginationEllipsis />}
+                  {page !== -1 && (
+                    <PaginationButton
+                      isActive={pageIndex === page - 1}
+                      onClick={() => table.setPageIndex(page - 1)}
+                    >
+                      {page}
+                    </PaginationButton>
+                  )}
+                </PaginationItem>
+              ))}
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() => table.nextPage()}
+                  disabled={!table.getCanNextPage()}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+
+        <div className="flex items-center gap-2 per-page">
+          <label className="text-sm">Rows per page:</label>
+          <Select>
+            <SelectTrigger className="w-max">
+              <SelectValue placeholder="10" defaultValue="10" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="10">10</SelectItem>
+              <SelectItem value="20">20</SelectItem>
+              <SelectItem value="30">30</SelectItem>
+            </SelectContent>
+          </Select>
+          <p className="text-sm">
+            {pageIndex * pageSize + 1}-
+            {Math.min((pageIndex + 1) * pageSize, data.length)} of {data.length}
+          </p>
+        </div>
       </div>
     </div>
   );

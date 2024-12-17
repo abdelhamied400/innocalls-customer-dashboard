@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button, ButtonProps, buttonVariants } from "@/components/ui/button";
-import { ChevronLeftIcon, ChevronRightIcon, DotSquareIcon } from "lucide-react";
+import { DotSquareIcon, SkipBackIcon, SkipForwardIcon } from "lucide-react";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
@@ -48,7 +48,7 @@ const PaginationLink = ({
     aria-current={isActive ? "page" : undefined}
     className={cn(
       buttonVariants({
-        variant: isActive ? "outline" : "ghost",
+        variant: isActive ? "pagination-active" : "pagination-ghost",
         size,
       }),
       className
@@ -71,7 +71,7 @@ const PaginationButton = ({
   <Button
     aria-current={isActive ? "page" : undefined}
     className={className}
-    variant={isActive ? "outline" : "ghost"}
+    variant={isActive ? "pagination-active" : "pagination-ghost"}
     size={size}
     {...props}
   />
@@ -88,8 +88,7 @@ const PaginationPrevious = ({
     className={cn("gap-1 pl-2.5", className)}
     {...props}
   >
-    <ChevronLeftIcon className="w-4 h-4" />
-    <span>Previous</span>
+    <SkipBackIcon className="w-4 h-4" />
   </PaginationButton>
 );
 PaginationPrevious.displayName = "PaginationPrevious";
@@ -104,8 +103,7 @@ const PaginationNext = ({
     className={cn("gap-1 pr-2.5", className)}
     {...props}
   >
-    <span>Next</span>
-    <ChevronRightIcon className="w-4 h-4" />
+    <SkipForwardIcon className="w-4 h-4" />
   </PaginationButton>
 );
 PaginationNext.displayName = "PaginationNext";

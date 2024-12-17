@@ -8,7 +8,7 @@ import { PropsWithChildren } from "react";
 type DashboardLayoutProps = PropsWithChildren<object>;
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   return (
-    <div className="bg-gray-50 h-screen dashboard-layout layout">
+    <div className="bg-background h-screen dashboard-layout layout">
       <div className="flex h-full">
         <Sidebar>
           <SidebarHeader />
@@ -21,9 +21,11 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             />
           </div>
         </Sidebar>
-        <div className="flex-1 main">
+        <div className="flex flex-col flex-1 main">
           <Navbar />
-          <main className="p-4">{children}</main>
+          <main className="flex-1 p-4 max-h-[calc(100%-96px)] overflow-auto">
+            {children}
+          </main>
         </div>
       </div>
     </div>
