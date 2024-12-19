@@ -26,11 +26,7 @@ import {
 import { useState } from "react";
 
 const ExtensionsTableHead = () => {
-  const [showFilters, setShowFilters] = useState(false);
   const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
-  const toggleFilters = () => {
-    setShowFilters(!showFilters);
-  };
 
   return (
     <div className="extensions-table-head">
