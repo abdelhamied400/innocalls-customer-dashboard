@@ -34,7 +34,7 @@ const LocaleSwitcher = () => {
             key={locale.slug}
             className={cn(
               "cursor-pointer",
-              locale.slug === localeSlug && "font-bold bg-neutral-100"
+              locale.slug === localeSlug && "font-semibold bg-neutral-100"
             )}
             onClick={() => router.replace("/", { locale: locale.slug })}
           >

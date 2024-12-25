@@ -19,6 +19,11 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
               title="Extensions"
               href="/extensions"
             />
+            <SidebarItem
+              icon={<AxeIcon />}
+              title="Auto Dialer"
+              href="/auto-dialer"
+            />
           </div>
         </Sidebar>
         <div className="flex flex-col flex-1 main">

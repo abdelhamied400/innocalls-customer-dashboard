@@ -11,7 +11,10 @@ type SidebarItemProps = PropsWithChildren<{
 }>;
 const SidebarItem = ({ icon, title, href }: SidebarItemProps) => {
   const pathname = usePathname();
-  const isActive = useMemo(() => pathname === href, [pathname, href]);
+  const isActive = useMemo(() => {
+    if (href === "/") return pathname === "/";
+    else return pathname.includes(href);
+  }, [pathname, href]);
 
   return (
     <div className="sidebar-item">

@@ -21,7 +21,7 @@ const ProfileMenu = () => {
             />
           </span>
           <div className="flex flex-col">
-            <p className="font-bold text-lg">John Doe</p>
+            <p className="font-semibold text-lg">John Doe</p>
             <p className="text-neutral-400 text-sm">Admin</p>
           </div>
 
