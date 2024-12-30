@@ -14,11 +14,11 @@ const FilterDialog = ({
 }: FilterDialogProps) => {
   return (
     <div className="flex flex-col gap-2 pt-2 min-w-72 filter-dialog">
-      <div className="px-2 filter-dialog-header">
+      <div className="px-2 text-neutral-400 filter-dialog-header">
         <h4>{title}</h4>
       </div>
       <div className="flex flex-col gap-2 filter-dialog-body">
-        <div className="flex flex-col gap-2 px-2 filter-dialog-content">
+        <div className="flex flex-col gap-4 p-2 filter-dialog-content">
           {children}
         </div>
         <hr className="mx-2" />

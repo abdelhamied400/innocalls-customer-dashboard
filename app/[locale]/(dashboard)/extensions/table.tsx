@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchExtensionsQuery } from "@/queries/extensions";
+import { fetchExtensionsQuery } from "@/queries/useAutoDialerCampaigns";
 import { useQuery } from "@tanstack/react-query";
 import { Filters } from "./page";
 import { columns } from "./columns";

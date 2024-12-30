@@ -1,11 +1,25 @@
+"use client";
+import useAppStore from "@/store/app.slice";
 import LocaleSwitcher from "./LocaleSwitcher";
 import ProfileMenu from "./ProfileMenu";
+import { Button } from "./ui/button";
+import { SidebarClose } from "lucide-react";
 
 const Navbar = () => {
+  const { isSidebarOpen, toggleSidebar } = useAppStore();
+
   return (
     <nav className="navbar">
       <div className="flex justify-between items-center gap-8 px-4 border-b-2 h-24">
-        <h1>Dashboard</h1>
+        <div className="flex items-center gap-2">
+          {!isSidebarOpen && (
+            <Button variant="ghost" size="icon" onClick={toggleSidebar}>
+              <SidebarClose />
+            </Button>
+          )}
+
+          <h1>Dashboard</h1>
+        </div>
         <div className="flex items-center gap-4 actions">
           <LocaleSwitcher />
           <ProfileMenu />

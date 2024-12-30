@@ -2,9 +2,9 @@ import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import ExtensionsTableHead from "./head";
 import ExtensionsTable from "./table";
 import { getQueryClient } from "@/lib/getQueryClient";
-import { fetchExtensionsQuery } from "@/queries/extensions";
+import { fetchExtensionsQuery } from "@/queries/useAutoDialerCampaigns";
 
-export type Filters = {
+type Filters = {
   userId: string;
 };
 type ExtensionsProps = {

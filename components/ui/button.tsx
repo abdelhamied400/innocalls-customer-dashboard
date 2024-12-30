@@ -25,6 +25,11 @@ const buttonVariants = cva(
           "rounded-full bg-neutral-800 text-primary-foreground",
         filter:
           "bg-neutral-200 text-neutral-foreground hover:bg-neutral-300 text-xs rounded-full font-semibold",
+        "ghost-primary": "bg-primary-100 hover:bg-primary-200 text-primary-600",
+        "ghost-warning": "bg-warning-100 hover:bg-warning-200 text-warning-600",
+        "ghost-destructive":
+          "bg-destructive-100 hover:bg-destructive-200 text-destructive-600",
+        unstyled: "hover:bg-secondary",
       },
       size: {
         default: "h-9 px-4 py-2",
