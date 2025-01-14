@@ -1,6 +1,5 @@
 import { getQueryClient } from "@/lib/getQueryClient";
 import AutoDialerActiveCampaignsTable from "./table";
-import AutoDialerFilterProvider from "@/providers/AutoDialerFilterProvider";
 import queryActiveAutoDialerCampaigns from "@/queries/useAutoDialerCampaigns";
 
 export type Filters = {
@@ -20,9 +19,7 @@ const AutoDialerActiveCampaigns = async ({
     <div className="page" id="auto-dialer">
       <div className="rounded-xl h-full overflow-auto">
         <div className="border rounded-xl">
-          <AutoDialerFilterProvider>
-            <AutoDialerActiveCampaignsTable />
-          </AutoDialerFilterProvider>
+          <AutoDialerActiveCampaignsTable />
         </div>
       </div>
     </div>

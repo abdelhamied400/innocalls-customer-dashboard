@@ -20,15 +20,33 @@ import {
   Calendar,
   ChevronDownIcon,
   FilterIcon,
+  Loader2Icon,
   SearchIcon,
 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useState } from "react";
-import { useFilters } from "@/providers/AutoDialerFilterProvider";
+import { useCallback, useTransition } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { format } from "date-fns";
+import { debounce } from "@/lib/debounce";
 
 const AutoDialerActiveHead = () => {
-  const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
-  const { updateFilter } = useFilters();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  const updateFilter = useCallback(
+    debounce((key: string, value: string) => {
+      startTransition(() => {
+        let params: URLSearchParams = new URLSearchParams(searchParams);
+
+        if (value) params.set(key, value);
+        else params.delete(key);
+
+        router.push(`?${params.toString()}`);
+      });
+    }, 200),
+    [searchParams, router]
+  );
 
   return (
     <Collapsible>
@@ -45,7 +63,8 @@ const AutoDialerActiveHead = () => {
                 placeholder="Search"
                 type="search"
                 variant="field"
-                onChange={() => updateFilter("search", "something")}
+                defaultValue={searchParams.get("search")?.toString()}
+                onChange={(e) => updateFilter("search", e.target.value)}
               />
             </Field>
             <CollapsibleTrigger asChild>
@@ -80,8 +99,9 @@ const AutoDialerActiveHead = () => {
                   >
                     <DatePicker
                       placeholder="Enter from date"
-                      value={fromDate}
-                      onChange={(date) => setFromDate(date)}
+                      onChange={(date = new Date()) =>
+                        updateFilter("from", format(date, "yyyy-MM-dd"))
+                      }
                     />
                   </Field>
                   <Field
