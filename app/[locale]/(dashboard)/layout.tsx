@@ -22,7 +22,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             <SidebarItem
               icon={<AxeIcon />}
               title="Auto Dialer"
-              href="/auto-dialer"
+              href="/auto-dialer/active"
             />
           </div>
         </Sidebar>

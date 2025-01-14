@@ -1,16 +1,15 @@
-import { useFilters } from "@/providers/AutoDialerFilterProvider";
-import { fetchAllAutoDialerCampaigns } from "@/services/auto-dialer.service";
-import { useQuery } from "@tanstack/react-query";
+import AutoDialerService from "@/services/auto-dialer.service";
 
-const useAutoDialerCampaigns = () => {
-  const { filters } = useFilters();
-
-  const { data, isLoading } = useQuery({
-    queryKey: ["autoDialerActiveCampaigns", filters],
-    queryFn: () => fetchAllAutoDialerCampaigns(filters),
-  });
-
-  return { data, isLoading };
+type ActiveAutoDialerCampaignsFilters = {
+  userId?: string;
+};
+const queryActiveAutoDialerCampaigns = (
+  filters: ActiveAutoDialerCampaignsFilters
+) => {
+  return {
+    queryKey: ["auto-dialer-active-campaigns", filters],
+    queryFn: async () => await AutoDialerService.fetchActiveCampaigns(filters),
+  };
 };
 
-export default useAutoDialerCampaigns;
+export default queryActiveAutoDialerCampaigns;

@@ -1,30 +1,27 @@
 import { getQueryClient } from "@/lib/getQueryClient";
-import AutoDialerActiveTable from "./table";
-import { fetchAllAutoDialerCampaigns } from "@/services/auto-dialer.service";
+import AutoDialerActiveCampaignsTable from "./table";
 import AutoDialerFilterProvider from "@/providers/AutoDialerFilterProvider";
+import queryActiveAutoDialerCampaigns from "@/queries/useAutoDialerCampaigns";
 
 export type Filters = {
   userId: string;
 };
-type ActiveAutoDialerCampaignsProps = {
+type AutoDialerActiveCampaignsProps = {
   searchParams: Promise<Filters>;
 };
-const ActiveAutoDialerCampaigns = async ({
+const AutoDialerActiveCampaigns = async ({
   searchParams,
-}: ActiveAutoDialerCampaignsProps) => {
+}: AutoDialerActiveCampaignsProps) => {
   const queryClient = getQueryClient();
   const query = await searchParams;
-  queryClient.prefetchQuery({
-    queryKey: ["autoDialerActiveCampaigns", query],
-    queryFn: () => fetchAllAutoDialerCampaigns(),
-  });
+  await queryClient.prefetchQuery(queryActiveAutoDialerCampaigns(query));
 
   return (
     <div className="page" id="auto-dialer">
-      <div className="bg-white rounded-xl h-full overflow-auto">
-        <div className="bg-white border rounded-xl">
+      <div className="rounded-xl h-full overflow-auto">
+        <div className="border rounded-xl">
           <AutoDialerFilterProvider>
-            <AutoDialerActiveTable />
+            <AutoDialerActiveCampaignsTable />
           </AutoDialerFilterProvider>
         </div>
       </div>
@@ -32,4 +29,4 @@ const ActiveAutoDialerCampaigns = async ({
   );
 };
 
-export default ActiveAutoDialerCampaigns;
+export default AutoDialerActiveCampaigns;

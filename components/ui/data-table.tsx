@@ -7,7 +7,6 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  PaginationState,
   TableMeta,
   useReactTable,
 } from "@tanstack/react-table";
@@ -20,8 +19,6 @@ import {
   TableHeader,
   TableRow,
 } from "./table";
-import Spinner from "./spinner";
-import { useMemo, useState } from "react";
 import {
   Pagination,
   PaginationButton,
@@ -32,12 +29,6 @@ import {
   PaginationPrevious,
 } from "./pagination";
 import {
-  defaultPagesToShow,
-  generatePagesArray,
-  shouldAddPostEllipses,
-  shouldAddPreEllipses,
-} from "@/lib/pagination";
-import {
   Select,
   SelectContent,
   SelectItem,
@@ -45,6 +36,7 @@ import {
   SelectValue,
 } from "./select";
 import { Skeleton } from "./skeleton";
+import usePagination from "@/hooks/use-pagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -63,43 +55,10 @@ export function DataTable<TData, TValue>({
   pagination,
   meta,
 }: DataTableProps<TData, TValue>) {
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: pagination?.perPage || 10,
+  const { pageIndex, pageSize, setPagination, pages } = usePagination<TData>({
+    data,
+    pagination,
   });
-
-  const pages = useMemo(() => {
-    const pagesCount = Math.ceil(data.length / pageSize);
-
-    let pages = [];
-
-    // If there are fewer pages than or equal to the total pages to show
-    if (pagesCount <= defaultPagesToShow + 2) {
-      return [...Array(pagesCount)].map((_, idx) => idx + 1);
-    }
-
-    // Add first two pages
-    pages = [1, 2];
-
-    // add pre ellipses
-    if (shouldAddPreEllipses(pageIndex)) {
-      pages = [...pages, -1];
-    }
-
-    // Generate pages in the middle
-    const middlePages = generatePagesArray(pageIndex, pagesCount);
-    pages = [...pages, ...middlePages];
-
-    // add post ellipses
-    if (shouldAddPostEllipses(pageIndex, pagesCount)) {
-      pages = [...pages, -1];
-    }
-
-    // add last two pages
-    pages = [...pages, pagesCount - 1, pagesCount];
-
-    return pages;
-  }, [data.length, pageIndex, pageSize]);
 
   const table = useReactTable({
     data,
@@ -144,17 +103,16 @@ export function DataTable<TData, TValue>({
           <TableBody>
             {isLoading && (
               <>
-                {Array(10)
-                  .fill(0)
-                  .map((_, idx) => (
-                    <TableRow key={idx}>
-                      <TableCell className="p-0" colSpan={columns.length}>
-                        <div className="place-items-center grid h-9">
-                          <Skeleton className="rounded-none w-full h-full" />
-                        </div>
+                {[...Array(10)].map((_, rIdx) => (
+                  <TableRow key={`loading-${rIdx}`} className="h-14">
+                    {columns.map((column, cIdx) => (
+                      <TableCell key={`${column.id}-${cIdx}`} className="h-10">
+                        {column.id}
+                        <Skeleton className="w-full h-10" />
                       </TableCell>
-                    </TableRow>
-                  ))}
+                    ))}
+                  </TableRow>
+                ))}
               </>
             )}
             {!isLoading && (
@@ -164,6 +122,7 @@ export function DataTable<TData, TValue>({
                     <TableRow
                       key={row.id}
                       data-state={row.getIsSelected() && "selected"}
+                      className="h-14"
                     >
                       {row.getVisibleCells().map((cell) => (
                         <TableCell key={cell.id}>

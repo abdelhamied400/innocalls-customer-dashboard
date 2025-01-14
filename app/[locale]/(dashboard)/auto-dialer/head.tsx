@@ -7,7 +7,7 @@ const AutoDialerHead = () => {
   const pathname = usePathname();
 
   return (
-    <div className="flex items-center gap-2 auto-dialer-head">
+    <div className="flex items-center flex-wrap gap-2 auto-dialer-head">
       <Link
         href="/auto-dialer/active"
         className={cn(
@@ -29,6 +29,17 @@ const AutoDialerHead = () => {
         )}
       >
         Finished Campaigns
+      </Link>
+      <Link
+        href="/auto-dialer/Archived"
+        className={cn(
+          "bg-gray-200 px-4 py-2 rounded-full font-semibold",
+          pathname === "/auto-dialer/Archived"
+            ? "bg-primary-100 border border-primary text-primary"
+            : ""
+        )}
+      >
+        Archived Campaigns
       </Link>
     </div>
   );

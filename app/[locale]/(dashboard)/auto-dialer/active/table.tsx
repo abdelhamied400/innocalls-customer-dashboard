@@ -1,11 +1,12 @@
 "use client";
 import { DataTable } from "@/components/ui/data-table";
-import { columns } from "./columns";
 import AutoDialerActiveHead from "./head";
-import useAutoDialerCampaigns from "@/queries/useAutoDialerCampaigns";
+import { useQuery } from "@tanstack/react-query";
+import { columns } from "./columns";
+import queryActiveAutoDialerCampaigns from "@/queries/useAutoDialerCampaigns";
 
-const AutoDialerActiveTable = () => {
-  const { data: autoDialerCampaigns, isLoading } = useAutoDialerCampaigns();
+const ActiveCampaignsTable = () => {
+  const { data, isLoading } = useQuery(queryActiveAutoDialerCampaigns({}));
 
   return (
     <div className="auto-dialer-active-table">
@@ -13,11 +14,11 @@ const AutoDialerActiveTable = () => {
 
       <DataTable
         columns={columns}
-        data={autoDialerCampaigns}
+        data={data?.campaigns || []}
         isLoading={isLoading}
       />
     </div>
   );
 };
 
-export default AutoDialerActiveTable;
+export default ActiveCampaignsTable;

@@ -7,7 +7,6 @@ export type AutoDialerCampaignCols = {
   name: string;
   durationType: string;
   status: string;
-  actions: string;
 };
 
 export const columns: ColumnDef<AutoDialerCampaignCols, any>[] = [
@@ -29,7 +28,6 @@ export const columns: ColumnDef<AutoDialerCampaignCols, any>[] = [
     cell: StatusCell,
   },
   {
-    accessorKey: "actions",
     header: "Actions",
     cell: ActionsCell,
   },

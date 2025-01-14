@@ -1,8 +1,6 @@
-import { Badge } from "@/components/ui/badge";
 import { AutoDialerCampaignCols } from "../columns";
 import {
   EllipsisVerticalIcon,
-  EyeIcon,
   PauseIcon,
   PlayIcon,
   SquareIcon,
@@ -14,9 +12,6 @@ type ActionsCellProps = Cell<AutoDialerCampaignCols>;
 const ActionsCell = ({ cell, row }: ActionsCellProps) => {
   return (
     <div className="flex items-center gap-2">
-      <Button variant="secondary" size="icon">
-        <EyeIcon size={16} />
-      </Button>
       {row.original.status === "paused" ? (
         <Button variant="ghost-primary" size="icon">
           <PlayIcon size={16} />
