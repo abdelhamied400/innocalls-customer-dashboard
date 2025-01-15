@@ -12,9 +12,8 @@ const AutoDialerHead = () => {
         href="/auto-dialer/active"
         className={cn(
           "bg-gray-200 px-4 py-2 rounded-full font-semibold",
-          pathname === "/auto-dialer/active"
-            ? "bg-primary-100 border border-primary text-primary"
-            : ""
+          pathname === "/auto-dialer/active" &&
+            "bg-primary-100 border border-primary text-primary"
         )}
       >
         Active Campaign
@@ -23,9 +22,8 @@ const AutoDialerHead = () => {
         href="/auto-dialer/finished"
         className={cn(
           "bg-gray-200 px-4 py-2 rounded-full font-semibold",
-          pathname === "/auto-dialer/finished"
-            ? "bg-primary-100 border border-primary text-primary"
-            : ""
+          pathname === "/auto-dialer/finished" &&
+            "bg-primary-100 border border-primary text-primary"
         )}
       >
         Finished Campaigns
@@ -34,9 +32,8 @@ const AutoDialerHead = () => {
         href="/auto-dialer/Archived"
         className={cn(
           "bg-gray-200 px-4 py-2 rounded-full font-semibold",
-          pathname === "/auto-dialer/Archived"
-            ? "bg-primary-100 border border-primary text-primary"
-            : ""
+          pathname === "/auto-dialer/Archived" &&
+            "bg-primary-100 border border-primary text-primary"
         )}
       >
         Archived Campaigns

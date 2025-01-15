@@ -1,7 +1,7 @@
 "use client";
 import FilterDialog from "@/components/FilterDialog";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
@@ -28,6 +28,8 @@ import { useCallback, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { format } from "date-fns";
 import { debounce } from "@/lib/debounce";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 const AutoDialerActiveHead = () => {
   const searchParams = useSearchParams();
@@ -72,7 +74,9 @@ const AutoDialerActiveHead = () => {
                 <FilterIcon size={24} />
               </Toggle>
             </CollapsibleTrigger>
-            <Button>Create new campaign</Button>
+            <Link className={cn(buttonVariants())} href="/auto-dialer/create">
+              Create new campaign
+            </Link>
           </div>
         </div>
         <CollapsibleContent>
