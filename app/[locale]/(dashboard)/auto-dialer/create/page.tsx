@@ -1,7 +1,8 @@
 const CreateAutoDialerCampaign = () => {
   return (
     <div className="page" id="create-auto-dialer-campaign">
-      <p>test</p>
+      <h1>Create Auto Dialer Campaign</h1>
+      <p>Auto Dialer Campaign content</p>
     </div>
   );
 };
