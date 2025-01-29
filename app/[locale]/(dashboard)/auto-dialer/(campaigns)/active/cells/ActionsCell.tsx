@@ -9,7 +9,7 @@ import { Cell } from "@/types/cell";
 import { Button } from "@/components/ui/button";
 
 type ActionsCellProps = Cell<AutoDialerCampaignCols>;
-const ActionsCell = ({ cell, row }: ActionsCellProps) => {
+const ActionsCell = ({ row }: ActionsCellProps) => {
   return (
     <div className="flex items-center gap-2">
       {row.original.status === "paused" ? (
