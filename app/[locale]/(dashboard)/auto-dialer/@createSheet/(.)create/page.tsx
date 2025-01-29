@@ -8,11 +8,53 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { ChevronLeft, X } from "lucide-react";
+import Stepper, {
+  StepperHeader,
+  StepperHeaderTitle,
+  StepperPrevious,
+  StepperStep,
+  StepperSteps,
+} from "@/components/ui/stepper";
+import { ChevronLeftIcon, X } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import CampaignDetailsForm from "../../create/campaign-details-form";
+import CallDetailsForm from "../../create/call-details-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import AutoDialerCreateCampaignSchema, {
+  AutoDialerCreateCampaign,
+} from "@/validation/AutoDialerCreateCampaign";
 
-const Create = () => {
+const steps = [
+  "Campaign Details",
+  "Calls Details",
+  "Scheduling",
+  "Customers List",
+];
+
+const CreateAutoDialerCampaignSheet = () => {
   const router = useRouter();
+  const [currentStep, setCurrentStep] = useState(0);
+  const form = useForm<AutoDialerCreateCampaign>({
+    resolver: zodResolver(AutoDialerCreateCampaignSchema),
+    defaultValues: {
+      campaignName: "",
+      waitingCustomerCount: 0,
+      trialsCount: 0,
+      wrapUpTime: 0,
+      delayMinutesBetweenTrials: 0,
+      hideCallerInfo: false,
+      agentCanLogoutAndRejoin: false,
+      sound: [],
+    },
+  });
+
+  const onSubmit = form.handleSubmit((data) => {
+    console.log(data);
+    // setCurrentStep((step) => step + 1);
+  });
+
   return (
     <Sheet defaultOpen={true} onOpenChange={() => router.back()}>
       <SheetContent side="bottom" className="h-screen p-0">
@@ -22,19 +64,53 @@ const Create = () => {
             Create a new auto dialer campaign to start calling your leads.
           </SheetDescription>
         </SheetHeader>
-        <div className="head bg-white px-12 py-4 flex justify-between gap-2 items-center">
-          <Button variant="unstyled" size="icon">
-            <ChevronLeft />
-          </Button>
-          <h2 className="text-xl font-semibold">Create</h2>
-          <SheetClose>
-            <X className="h-4 w-4" />
-            <span className="sr-only">Close</span>
-          </SheetClose>
-        </div>
+
+        <Stepper
+          steps={steps}
+          currentStep={currentStep}
+          onStepChange={setCurrentStep}
+          className="h-full flex flex-col"
+        >
+          <StepperHeader>
+            <StepperPrevious>
+              <ChevronLeftIcon />
+            </StepperPrevious>
+
+            <div className="flex flex-1 justify-center gap-2">
+              {steps.map((step, idx) => (
+                <StepperHeaderTitle key={idx} idx={idx}>
+                  <p>{step}</p>
+                </StepperHeaderTitle>
+              ))}
+            </div>
+            <Button size="icon" asChild variant="unstyled">
+              <SheetClose>
+                <X className="h-4 w-4" />
+                <span className="sr-only">Close</span>
+              </SheetClose>
+            </Button>
+          </StepperHeader>
+
+          <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[500px]">
+            <FormProvider {...form}>
+              <form onSubmit={onSubmit}>
+                <StepperStep idx={0} className="p-4 rounded-xl bg-white h-full">
+                  <CampaignDetailsForm />
+                </StepperStep>
+                <StepperStep idx={1} className="p-4 rounded-xl bg-white h-full">
+                  <CallDetailsForm />
+                </StepperStep>
+                <StepperStep idx={2} className="p-4 rounded-xl bg-white h-full">
+                  <h2 className="font-semibold text-lg">Step 3 Content</h2>
+                  <p>Welcome to Step 3!</p>
+                </StepperStep>
+              </form>
+            </FormProvider>
+          </StepperSteps>
+        </Stepper>
       </SheetContent>
     </Sheet>
   );
 };
 
-export default Create;
+export default CreateAutoDialerCampaignSheet;

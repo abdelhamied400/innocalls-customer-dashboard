@@ -19,30 +19,30 @@ const Field = ({
   ...props
 }: FieldProps) => {
   return (
-    <div className="field">
+    <div className="field flex-1">
       <label
         className="relative flex flex-col gap-1 cursor-pointer"
         htmlFor={htmlFor}
       >
         <div
-          className="bg-gray-50 hover:bg-gray-100 px-4 py-2 border rounded-xl"
+          className="bg-gray-50 hover:bg-gray-100 px-4 pt-2 pb-1.5 border rounded-xl"
           {...props}
         >
           {label && (
-            <span className="block -mb-2 text-muted-foreground text-xs">
+            <span className="block mb-1 text-muted-foreground text-xs">
               {label}
             </span>
           )}
           <div className="flex items-center gap-1">
             {preIcon}
-            <div className="flex flex-col flex-1 gap-2">{children}</div>
+            {children}
             {postIcon}
           </div>
         </div>
       </label>
 
-      {hint && <div className="text-muted-foreground text-xs">{hint}</div>}
-      {error && <div className="text-red-500 text-xs">{error}</div>}
+      {hint && <p className="text-muted-foreground text-xs">{hint}</p>}
+      {error && <p className="text-red-500 text-xs">{error}</p>}
     </div>
   );
 };

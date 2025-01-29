@@ -50,10 +50,10 @@ export type StepperHeaderProps = PropsWithChildren<{
   className?: string;
 }>;
 export const StepperHeader = ({ children, className }: StepperHeaderProps) => {
-  const context = useStepper();
-
   return (
-    <div className={cn("stepper-header bg-white", className)}>{children}</div>
+    <div className={cn("stepper-header bg-white gap-2 p-4 flex", className)}>
+      {children}
+    </div>
   );
 };
 
@@ -69,41 +69,46 @@ export const StepperHeaderTitle = ({
 }: StepperHeaderTitleProps) => {
   const { currentStep, goToStep, totalSteps } = useStepper();
   const isActive = idx === currentStep;
+  const isCompleted = idx < currentStep;
 
   const handleClick = () => goToStep(idx);
 
   return (
     <div
-      className={cn(
-        "stepper-header-title flex gap-2 items-center",
-        idx !== totalSteps - 1 && "flex-1",
-        className
-      )}
+      className={cn("stepper-header-title flex gap-2 items-center ", className)}
       role="button"
       onClick={handleClick}
     >
-      <div
-        className={cn(
-          "bg-gray-200 p-2 rounded-full",
-          isActive && "bg-primary text-white"
-        )}
-      >
+      <div className="flex flex-row items-center gap-2">
         <div
           className={cn(
-            "stepper-header-title-number w-6 h-6 flex justify-center items-center "
+            "rounded-full border-2 border-gray-200",
+            isActive && "text-white border-primary-500",
+            isCompleted && "border-green-500"
           )}
         >
-          {currentStep > idx ? <CheckIcon className="w-full" /> : idx + 1}
+          <div
+            className={cn(
+              "stepper-header-title-number m-0.5 w-4 h-4 bg-gray-200 rounded-full",
+              isActive && "bg-primary-500",
+              isCompleted && "bg-transparent"
+            )}
+          >
+            {isCompleted && (
+              <CheckIcon className="h-full w-3 m-0.5 text-green-500" />
+            )}
+          </div>
         </div>
+        {children}
       </div>
-      {children}
+
       {
         // Add a line separator if not the last element
         idx !== totalSteps - 1 && (
           <div
             className={cn(
-              "flex-1 h-0.5",
-              currentStep > idx ? "bg-primary" : "bg-gray-200"
+              "min-h-0 ms-0 min-w-10 flex-1 h-0.5",
+              isCompleted ? "bg-green-500" : "bg-gray-200"
             )}
           ></div>
         )
@@ -142,6 +147,7 @@ export type StepperPreviousProps = PropsWithChildren<{
 export const StepperPrevious = ({
   children,
   className,
+  ...props
 }: StepperPreviousProps) => {
   const { currentStep, goToStep } = useStepper();
 
@@ -152,6 +158,9 @@ export const StepperPrevious = ({
       className={cn("stepper-previous", className)}
       onClick={handleClick}
       disabled={currentStep === 0}
+      variant="unstyled"
+      size="icon"
+      {...props}
     >
       {children || "Previous"}
     </Button>
