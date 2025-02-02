@@ -23,7 +23,7 @@ const SidebarItem = ({ icon, title, href }: SidebarItemProps) => {
         className={cn(
           "p-4 rounded-md block",
           isActive && "bg-primary-200 text-primary-800",
-          !isActive && "hover:bg-primary-100"
+          !isActive && "hover:bg-primary-100 text-gray-600"
         )}
       >
         <div className="flex gap-2">

@@ -3,7 +3,7 @@ import useAppStore from "@/store/app.slice";
 import LocaleSwitcher from "./LocaleSwitcher";
 import ProfileMenu from "./ProfileMenu";
 import { Button } from "./ui/button";
-import { SidebarClose } from "lucide-react";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 
 const Navbar = () => {
   const { isSidebarOpen, toggleSidebar } = useAppStore();
@@ -14,7 +14,7 @@ const Navbar = () => {
         <div className="flex items-center gap-2">
           {!isSidebarOpen && (
             <Button variant="ghost" size="icon" onClick={toggleSidebar}>
-              <SidebarClose />
+              <MenuOpenIcon />
             </Button>
           )}
 

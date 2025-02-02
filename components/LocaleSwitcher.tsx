@@ -6,11 +6,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { localesArray } from "@/i18n/config";
-import { GlobeIcon } from "lucide-react";
 import { useRouter } from "@/i18n/routing";
 import { useLocale } from "next-intl";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
+import LanguageIcon from "@mui/icons-material/Language";
 
 const LocaleSwitcher = () => {
   const router = useRouter();
@@ -25,7 +25,7 @@ const LocaleSwitcher = () => {
       <DropdownMenuTrigger>
         <div className="flex items-center gap-2">
           <span className="">{currentLocale?.name}</span>
-          <GlobeIcon className="" size={20} />
+          <LanguageIcon className="" />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

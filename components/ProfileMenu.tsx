@@ -6,7 +6,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { ChevronDownCircleIcon } from "lucide-react";
+import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 
 const ProfileMenu = () => {
   return (
@@ -25,7 +25,7 @@ const ProfileMenu = () => {
             <p className="text-neutral-400 text-sm">Admin</p>
           </div>
 
-          <ChevronDownCircleIcon className="text-neutral-300" size={20} />
+          <ExpandCircleDownOutlinedIcon className="text-neutral-300" />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
