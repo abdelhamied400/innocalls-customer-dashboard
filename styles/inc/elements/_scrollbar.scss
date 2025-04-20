@@ -9,9 +9,9 @@
 }
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 rounded-full;
+  @apply bg-primary-200 rounded-full;
 }
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400;
+  @apply bg-primary-300;
 }

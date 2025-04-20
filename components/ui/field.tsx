@@ -1,8 +1,10 @@
+import { cn } from "@/lib/utils";
 import { PropsWithChildren, ReactNode } from "react";
 
 type FieldProps = PropsWithChildren<{
   htmlFor?: string;
   label?: string;
+  labelAlign?: "start" | "center" | "end";
   error?: string;
   preIcon?: ReactNode;
   postIcon?: ReactNode;
@@ -11,6 +13,7 @@ type FieldProps = PropsWithChildren<{
 const Field = ({
   htmlFor,
   label,
+  labelAlign,
   children,
   error,
   preIcon,
@@ -25,11 +28,21 @@ const Field = ({
         htmlFor={htmlFor}
       >
         <div
-          className="bg-gray-50 hover:bg-gray-100 px-4 pt-2 pb-1.5 border rounded-xl"
+          className={cn(
+            "bg-gray-50 hover:bg-gray-100 px-4 pt-2 pb-1.5 border rounded-xl",
+            error && "border-red-500 bg-red-50 hover:bg-red-100 text-red-500"
+          )}
           {...props}
         >
           {label && (
-            <span className="block mb-1 text-muted-foreground text-xs">
+            <span
+              className={cn(
+                "block mb-1 text-xs text-muted-foreground",
+                error && "text-red-500",
+                labelAlign === "center" && "text-center",
+                labelAlign === "end" && "text-end"
+              )}
+            >
               {label}
             </span>
           )}
