@@ -1,6 +1,6 @@
 "use client";
 
-import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   ChartConfig,
   ChartContainer,
@@ -10,47 +10,71 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "#2563eb",
+const chartConfig: ChartConfig = {
+  totalCalls: {
+    label: "Total Calls",
+    color: "#5BC9F7",
   },
-  mobile: {
-    label: "Mobile",
-    color: "#60a5fa",
-  },
-} satisfies ChartConfig;
+};
 
 const CallDistribution = () => {
   const chartData = [
-    { month: "January", desktop: 186, mobile: 80 },
-    { month: "February", desktop: 305, mobile: 200 },
-    { month: "March", desktop: 237, mobile: 120 },
-    { month: "April", desktop: 73, mobile: 190 },
-    { month: "May", desktop: 209, mobile: 130 },
-    { month: "June", desktop: 214, mobile: 140 },
+    { day: "13 OCT", totalCalls: 186 },
+    { day: "14 OCT", totalCalls: 305 },
+    { day: "15 OCT", totalCalls: 237 },
+    { day: "16 OCT", totalCalls: 73 },
+    { day: "17 OCT", totalCalls: 209 },
+    { day: "18 OCT", totalCalls: 214 },
+    { day: "19 OCT", totalCalls: 186 },
+    { day: "20 OCT", totalCalls: 305 },
+    { day: "21 OCT", totalCalls: 237 },
+    { day: "22 OCT", totalCalls: 73 },
+    { day: "23 OCT", totalCalls: 209 },
+    { day: "24 OCT", totalCalls: 214 },
+    { day: "25 OCT", totalCalls: 186 },
+    { day: "26 OCT", totalCalls: 305 },
+    { day: "27 OCT", totalCalls: 237 },
+    { day: "28 OCT", totalCalls: 73 },
+    { day: "29 OCT", totalCalls: 209 },
+    { day: "30 OCT", totalCalls: 214 },
+    { day: "31 OCT", totalCalls: 186 },
   ];
 
   return (
-    <div className="page" id="callDistribution">
-      <div className="border-gray-200 bg-white shadow-md p-4 border rounded">
-        <p>Call Distribution</p>
-
-        <ChartContainer config={chartConfig} className="w-full min-h-[200px]">
+    <div className="page h-full" id="callDistribution">
+      <div className="bg-white p-4 ps-0 pe-8 pt-8 rounded-lg h-full">
+        <ChartContainer
+          config={chartConfig}
+          className="w-full min-h-[200px] h-full"
+        >
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="day"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+            />
+            <YAxis
+              dataKey="totalCalls"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) => {
+                if (value >= 1000) {
+                  return `${(value / 1000).toFixed(1)}k`;
+                }
+                return value;
+              }}
             />
             <ChartTooltip content={<ChartTooltipContent />} />
             <ChartLegend content={<ChartLegendContent />} />
 
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-            <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+            <Bar
+              dataKey="totalCalls"
+              fill="var(--color-totalCalls)"
+              radius={4}
+            />
           </BarChart>
         </ChartContainer>
       </div>

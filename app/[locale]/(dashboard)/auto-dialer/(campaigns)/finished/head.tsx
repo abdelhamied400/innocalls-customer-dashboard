@@ -28,7 +28,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import ChevronDownIcon from "@mui/icons-material/ExpandMore";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
-const AutoDialerActiveHead = () => {
+const AutoDialerFinishedHead = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -51,7 +51,7 @@ const AutoDialerActiveHead = () => {
     <Collapsible>
       <div className="table-head">
         <div className="flex justify-between items-center gap-4 p-3">
-          <h3>Active Campaigns</h3>
+          <h3>Finished Campaigns</h3>
           <div className="flex items-center gap-4 actions">
             <Field preIcon={<SearchIcon className="text-muted-foreground" />}>
               <Input
@@ -178,4 +178,4 @@ const AutoDialerActiveHead = () => {
   );
 };
 
-export default AutoDialerActiveHead;
+export default AutoDialerFinishedHead;
