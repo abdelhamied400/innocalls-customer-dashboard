@@ -1,3 +1,4 @@
+import authService from "@/services/auth.service";
 import Credentials from "next-auth/providers/credentials";
 
 const CredentialsProvider = Credentials({
@@ -8,25 +9,18 @@ const CredentialsProvider = Credentials({
     password: {},
   },
   authorize: async (credentials) => {
-    const user = {
-      id: "1",
-      name: "John Doe",
-      email: credentials.email as string,
-    };
+    const email = credentials.email as string;
+    const password = credentials.password as string;
 
-    if (!user) {
-      // No user found, so this is their first attempt to login
-      // Optionally, this is also the place you could do a user registration
-      throw new Error("Invalid credentials.");
+    try {
+      const res = await authService.login({ email, password });
+      return {
+        ...res,
+        role: "user",
+      };
+    } catch (err: any) {
+      return null;
     }
-
-    console.log("User found", user);
-
-    // return user object with their profile data
-    return {
-      ...user,
-      role: "user",
-    };
   },
 });
 

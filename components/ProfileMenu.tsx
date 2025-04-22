@@ -1,3 +1,4 @@
+"use client";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,8 +8,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
+import { Button } from "./ui/button";
+import { signOut } from "next-auth/react";
 
 const ProfileMenu = () => {
+  const handleLogout = () => {
+    signOut();
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -35,6 +42,16 @@ const ProfileMenu = () => {
         <DropdownMenuItem>Billing</DropdownMenuItem>
         <DropdownMenuItem>Team</DropdownMenuItem>
         <DropdownMenuItem>Subscription</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem asChild>
+          <Button
+            className="w-full"
+            variant="ghost-destructive"
+            onClick={handleLogout}
+          >
+            Logout
+          </Button>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

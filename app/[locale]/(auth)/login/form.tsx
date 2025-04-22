@@ -42,20 +42,33 @@ const LoginForm = () => {
     },
   });
 
-  // 2. Define a submit handler.
+  const {
+    formState: { isSubmitting },
+  } = form;
+
   const onSubmit = form.handleSubmit(async (values) => {
-    await signIn("credentials", {
+    const result = await signIn("credentials", {
       email: values.email,
       password: values.password,
       redirect: false,
     });
-    toast({
-      title: "Success",
-      description: "Logged in successfully",
-    });
-    router.push("/");
+
+    if (result?.error) {
+      toast({
+        title: "Login failed",
+        description: "Invalid email or password",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "Logged in successfully",
+      });
+      router.push("/");
+    }
   });
 
+  // 2. Define your login methods.
   const loginWithGoogle = () => {
     // Implement Google login here.
   };
@@ -93,7 +106,9 @@ const LoginForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button type="submit" loading={isSubmitting} disabled={isSubmitting}>
+            Submit
+          </Button>
         </form>
       </Form>
 
