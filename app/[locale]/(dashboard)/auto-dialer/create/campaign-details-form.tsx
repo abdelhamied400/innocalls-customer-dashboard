@@ -19,7 +19,10 @@ import Field from "@/components/ui/field";
 import SpinButton from "@/components/ui/spin-button";
 import { Checkbox } from "@/components/ui/checkbox";
 
-const CampaignDetailsForm = () => {
+type CampaignDetailsFormProps = {
+  onNext: () => void;
+};
+const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
   const form = useForm({
     defaultValues: {
       name: "",
@@ -161,7 +164,7 @@ const CampaignDetailsForm = () => {
           )}
         />
 
-        <Button>Next</Button>
+        <Button onClick={onNext}>Next</Button>
       </div>
     </Form>
   );

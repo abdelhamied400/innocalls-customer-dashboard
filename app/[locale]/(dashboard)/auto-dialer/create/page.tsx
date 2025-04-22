@@ -95,7 +95,7 @@ const CreateAutoDialerCampaignSheet = () => {
             <FormProvider {...form}>
               <form onSubmit={onSubmit}>
                 <StepperStep idx={0} className="p-4 rounded-xl bg-white h-full">
-                  <CampaignDetailsForm />
+                  <CampaignDetailsForm onNext={() => setCurrentStep(1)} />
                 </StepperStep>
                 <StepperStep idx={1} className="p-4 rounded-xl bg-white h-full">
                   <CallDetailsForm />

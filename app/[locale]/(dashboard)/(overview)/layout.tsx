@@ -21,13 +21,13 @@ const OverviewLayout = ({
   return (
     <div className="layout" id="overview-layout">
       <h3>Service Level Details</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
         {liveCallsCount}
         {lastHourCallsDuration}
         {todayCallsDuration}
       </div>
 
-      <div className="gap-4 grid grid-cols-1 lg:grid-cols-3 py-4">
+      <div className="gap-y-4 grid grid-cols-1 xl:gap-4 xl:grid-cols-3 py-4">
         <div className="col-span-2 max-h-[320px]">{callDistribution}</div>
         <div className="col-span-1 max-h-[320px]">{totalCalls}</div>
       </div>

@@ -16,6 +16,7 @@ import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import Code from "@mui/icons-material/Code";
 
 import { PropsWithChildren } from "react";
+import Innortc from "./Innortc";
 
 type DashboardLayoutProps = PropsWithChildren<object>;
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
@@ -24,7 +25,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <div className="flex h-full">
         <Sidebar>
           <SidebarHeader />
-          <div className="flex flex-col gap-2 p-4">
+          <div className="flex flex-col gap-2 p-4 overflow-y-auto">
             <SidebarItem
               icon={<DashboardCustomize />}
               title="Dashboard"
@@ -67,8 +68,9 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         </Sidebar>
         <div className="flex flex-col flex-1 main">
           <Navbar />
-          <main className="flex-1 p-4 max-h-[calc(100%-96px)] overflow-auto">
-            {children}
+          <main className="flex-1 max-h-[calc(100%-96px)] flex gap-2">
+            <div className="overflow-y-auto p-4">{children}</div>
+            <Innortc />
           </main>
         </div>
       </div>

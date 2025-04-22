@@ -37,7 +37,7 @@ const Field = ({
           {label && (
             <span
               className={cn(
-                "block mb-1 text-xs text-muted-foreground",
+                "block text-xs text-muted-foreground",
                 error && "text-red-500",
                 labelAlign === "center" && "text-center",
                 labelAlign === "end" && "text-end"

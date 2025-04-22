@@ -10,8 +10,11 @@ import {
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import { Button } from "./ui/button";
 import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 const ProfileMenu = () => {
+  const { data: session } = useSession();
+
   const handleLogout = () => {
     signOut();
   };
@@ -27,21 +30,28 @@ const ProfileMenu = () => {
               className="rounded-full"
             />
           </span>
-          <div className="flex flex-col">
-            <p className="font-semibold text-lg">John Doe</p>
-            <p className="text-neutral-400 text-sm">Admin</p>
+          <div className="flex flex-col items-start">
+            <p className="font-semibold text-lg">{session?.user.name}</p>
+            <p className="text-neutral-400 text-sm">{session?.user.role}</p>
           </div>
 
           <ExpandCircleDownOutlinedIcon className="text-neutral-300" />
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuLabel>Organizations</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Billing</DropdownMenuItem>
-        <DropdownMenuItem>Team</DropdownMenuItem>
-        <DropdownMenuItem>Subscription</DropdownMenuItem>
+        {session?.user.organizations.map((org) => (
+          <DropdownMenuItem
+            key={org.name}
+            className="flex flex-col items-start gap-0"
+          >
+            <span>{org.name}</span>
+            <span className="text-xs text-gray-600">
+              {org.hasTenant ? "Tenant" : "No Tenant"}
+            </span>
+          </DropdownMenuItem>
+        ))}
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Button

@@ -14,9 +14,11 @@ const CredentialsProvider = Credentials({
 
     try {
       const res = await authService.login({ email, password });
+
+      console.log(res);
       return {
-        ...res,
-        role: "user",
+        ...res.user,
+        organizations: res.organizations,
       };
     } catch (err: any) {
       return null;

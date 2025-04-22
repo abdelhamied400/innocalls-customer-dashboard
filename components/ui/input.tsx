@@ -9,7 +9,7 @@ const inputVariants = cva(
     variants: {
       variant: {
         default: "shadow-sm border-input",
-        field: "shadow-none border-0 px-0 text-xl font-bold",
+        field: "shadow-none border-0 p-0 h-8 text-xl font-bold",
       },
     },
     defaultVariants: {
