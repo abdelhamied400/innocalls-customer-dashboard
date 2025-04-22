@@ -41,7 +41,7 @@ const ProfileMenu = () => {
       <DropdownMenuContent>
         <DropdownMenuLabel>Organizations</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {session?.user.organizations.map((org) => (
+        {session?.user.organizations?.map((org) => (
           <DropdownMenuItem
             key={org.name}
             className="flex flex-col items-start gap-0"

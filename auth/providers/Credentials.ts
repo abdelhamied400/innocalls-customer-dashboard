@@ -7,18 +7,28 @@ const CredentialsProvider = Credentials({
   credentials: {
     email: {},
     password: {},
+    userType: {
+      label: "User Type",
+      type: "select",
+      options: ["user", "agent"],
+    },
   },
   authorize: async (credentials) => {
     const email = credentials.email as string;
     const password = credentials.password as string;
+    const userType = (credentials.userType || "user") as "user" | "agent";
 
     try {
-      const res = await authService.login({ email, password });
+      const res = await authService.login({
+        email,
+        password,
+        userType: userType,
+      });
 
-      console.log(res);
       return {
         ...res.user,
-        organizations: res.organizations,
+        ...res.agent,
+        organizations: res.organizations || [res.agent.organization],
       };
     } catch (err: any) {
       return null;

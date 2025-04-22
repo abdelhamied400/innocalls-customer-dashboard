@@ -16,6 +16,8 @@ import { z } from "zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { Toggle } from "@/components/ui/toggle";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const formSchema = z.object({
   email: z
@@ -26,6 +28,9 @@ const formSchema = z.object({
     .email(),
   password: z.string().min(2, {
     message: "Password must be at least 2 characters.",
+  }),
+  userType: z.enum(["user", "agent"], {
+    errorMap: () => ({ message: "Please select a user type." }),
   }),
 });
 
@@ -39,17 +44,22 @@ const LoginForm = () => {
     defaultValues: {
       email: "",
       password: "",
+      userType: "user",
     },
   });
 
   const {
     formState: { isSubmitting },
+    watch,
+    setValue,
   } = form;
 
   const onSubmit = form.handleSubmit(async (values) => {
+    console.log(values);
     const result = await signIn("credentials", {
       email: values.email,
       password: values.password,
+      userType: values.userType,
       redirect: false,
     });
 
@@ -80,6 +90,19 @@ const LoginForm = () => {
     <div className="login-form">
       <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-8">
+          <ToggleGroup
+            type="single"
+            value={watch("userType")}
+            onValueChange={(value) => {
+              if (value) {
+                setValue("userType", value);
+              }
+            }}
+          >
+            <ToggleGroupItem value="user">User</ToggleGroupItem>
+            <ToggleGroupItem value="agent">Agent</ToggleGroupItem>
+          </ToggleGroup>
+
           <FormField
             control={form.control}
             name="email"
