@@ -64,10 +64,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       >
-        <span>
+        <span className="flex items-center gap-1">
           {loading && (
             <svg
-              className="animate-spin h-4 w-4 mr-3 text-white"
+              className="animate-spin h-4 w-4 text-white"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="none"
