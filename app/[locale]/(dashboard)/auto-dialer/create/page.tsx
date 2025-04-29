@@ -22,9 +22,12 @@ import { FormProvider, useForm } from "react-hook-form";
 import CampaignDetailsForm from "./campaign-details-form";
 import CallDetailsForm from "./call-details-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import AutoDialerCreateCampaignSchema, {
-  AutoDialerCreateCampaign,
+import {
+  type AutoDialerCreateCampaign,
+  AutoDialerCreateCampaignSchema,
 } from "@/validation/AutoDialerCreateCampaign";
+import SchedulingForm from "./scheduling-form";
+import CustomersListForm from "./customers-list-form";
 
 const steps = [
   "Campaign Details",
@@ -36,17 +39,19 @@ const steps = [
 const CreateAutoDialerCampaignSheet = () => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
+
   const form = useForm<AutoDialerCreateCampaign>({
     resolver: zodResolver(AutoDialerCreateCampaignSchema),
     defaultValues: {
       campaignName: "",
       waitingCustomerCount: 0,
-      trialsCount: 0,
-      wrapUpTime: 0,
-      delayMinutesBetweenTrials: 0,
+      trialsCount: 1,
+      wrapUpTime: 10,
+      delayMinutesBetweenTrials: 5,
       hideCallerInfo: false,
       agentCanLogoutAndRejoin: false,
-      sound: [],
+      playAnnouncement: false,
+      agents: [],
     },
   });
 
@@ -98,11 +103,13 @@ const CreateAutoDialerCampaignSheet = () => {
                   <CampaignDetailsForm onNext={() => setCurrentStep(1)} />
                 </StepperStep>
                 <StepperStep idx={1} className="p-4 rounded-xl bg-white h-full">
-                  <CallDetailsForm />
+                  <CallDetailsForm onNext={() => setCurrentStep(2)} />
                 </StepperStep>
                 <StepperStep idx={2} className="p-4 rounded-xl bg-white h-full">
-                  <h2 className="font-semibold text-lg">Step 3 Content</h2>
-                  <p>Welcome to Step 3!</p>
+                  <SchedulingForm onNext={() => setCurrentStep(3)} />
+                </StepperStep>
+                <StepperStep idx={3} className="p-4 rounded-xl bg-white h-full">
+                  <CustomersListForm onNext={() => setCurrentStep(4)} />
                 </StepperStep>
               </form>
             </FormProvider>

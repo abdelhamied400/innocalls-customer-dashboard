@@ -11,12 +11,22 @@ import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOu
 import { Button } from "./ui/button";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
+import { setCookie } from "cookies-next/client";
+import { Organization } from "next-auth";
+import useAuthStore from "@/store/auth.slice";
 
 const ProfileMenu = () => {
   const { data: session } = useSession();
+  const { setOrganization } = useAuthStore();
 
   const handleLogout = () => {
     signOut();
+  };
+
+  const handleOrganizationChange = (org: Organization) => {
+    console.log("Selected organization:", org);
+    setCookie("OrganizationId", org.id);
+    setOrganization(org);
   };
 
   return (
@@ -45,6 +55,7 @@ const ProfileMenu = () => {
           <DropdownMenuItem
             key={org.name}
             className="flex flex-col items-start gap-0"
+            onClick={() => handleOrganizationChange(org)}
           >
             <span>{org.name}</span>
             <span className="text-xs text-gray-600">

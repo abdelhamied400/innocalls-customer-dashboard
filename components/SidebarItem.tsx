@@ -8,8 +8,9 @@ type SidebarItemProps = PropsWithChildren<{
   icon?: ReactNode;
   title?: string;
   href: string;
+  disabled?: boolean;
 }>;
-const SidebarItem = ({ icon, title, href }: SidebarItemProps) => {
+const SidebarItem = ({ icon, title, href, disabled }: SidebarItemProps) => {
   const pathname = usePathname();
   const isActive = useMemo(() => {
     if (href === "/") return pathname === "/";
@@ -19,11 +20,12 @@ const SidebarItem = ({ icon, title, href }: SidebarItemProps) => {
   return (
     <div className="sidebar-item">
       <Link
-        href={href}
+        href={disabled ? "#" : href}
         className={cn(
           "p-4 rounded-md block",
           isActive && "bg-primary-200 text-primary-800",
-          !isActive && "hover:bg-primary-100 text-gray-600"
+          !isActive && "hover:bg-primary-100 text-gray-600",
+          disabled && "cursor-not-allowed text-gray-400 hover:bg-transparent"
         )}
       >
         <div className="flex gap-2">

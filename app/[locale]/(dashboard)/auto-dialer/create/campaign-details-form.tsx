@@ -1,51 +1,66 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
+import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Field from "@/components/ui/field";
 import SpinButton from "@/components/ui/spin-button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { AutoDialerCreateStep1 } from "@/validation/AutoDialerCreateCampaign";
 
 type CampaignDetailsFormProps = {
   onNext: () => void;
 };
 const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
-  const form = useForm({
-    defaultValues: {
-      name: "",
-      waitingCustomerCount: "0",
-      trialsCount: "0",
-      wrapUpTime: "0",
-      delayMinutesBetweenTrials: "0",
-      hideCallerInfo: false,
-      agentCanLogoutAndRejoin: false,
-    },
-  });
+  const form = useFormContext<AutoDialerCreateStep1>();
+
+  const {
+    trigger,
+    clearErrors,
+    control,
+    formState: { errors },
+  } = form;
+
+  const handleNext = async () => {
+    const isValid = await trigger([
+      "campaignName",
+      "waitingCustomerCount",
+      "trialsCount",
+      "wrapUpTime",
+      "delayMinutesBetweenTrials",
+      "hideCallerInfo",
+      "agentCanLogoutAndRejoin",
+    ]);
+
+    if (isValid) {
+      clearErrors();
+      onNext();
+    }
+  };
 
   return (
     <Form {...form}>
       <div className="flex flex-col gap-4 overflow-auto">
         <FormField
-          control={form.control}
-          name="name"
+          control={control}
+          name="campaignName"
           render={({ field }) => (
-            <Field label="Campaign name" error={""}>
+            <Field
+              label="Campaign name"
+              error={errors.campaignName?.message}
+              htmlFor="campaignName"
+            >
               <FormItem>
                 <FormControl>
                   <Input
+                    id="campaignName"
                     variant="field"
                     placeholder="Enter campaign name..."
                     {...field}
@@ -56,32 +71,33 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
           )}
         />
         <FormField
-          control={form.control}
+          control={control}
           name="waitingCustomerCount"
           render={({ field }) => (
             <Field
               label="Waiting Customer Count*"
               labelAlign="center"
               hint="The number of customers that can wait in the queue"
-              error={""}
+              error={errors.waitingCustomerCount?.message}
+              htmlFor="waitingCustomerCount"
             >
               <FormItem className="w-full">
                 <FormControl>
-                  <SpinButton {...field} />
+                  <SpinButton id="waitingCustomerCount" {...field} />
                 </FormControl>
               </FormItem>
             </Field>
           )}
         />
         <FormField
-          control={form.control}
+          control={control}
           name="trialsCount"
           render={({ field }) => (
             <Field
               label="Trials Count*"
               labelAlign="center"
               hint="The number of trials to call each customer"
-              error={""}
+              error={errors.trialsCount?.message}
             >
               <FormItem className="w-full">
                 <FormControl>
@@ -92,14 +108,14 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
           )}
         />
         <FormField
-          control={form.control}
+          control={control}
           name="wrapUpTime"
           render={({ field }) => (
             <Field
               label="Wrap Up Time"
               labelAlign="center"
               hint="The time (seconds) between the end of a call and the start of the next call"
-              error={""}
+              error={errors.wrapUpTime?.message}
             >
               <FormItem className="w-full">
                 <FormControl>
@@ -110,13 +126,13 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
           )}
         />
         <FormField
-          control={form.control}
+          control={control}
           name="delayMinutesBetweenTrials"
           render={({ field }) => (
             <Field
               label="Delay Minutes Between Trials"
               labelAlign="center"
-              error={""}
+              error={errors.delayMinutesBetweenTrials?.message}
             >
               <FormItem className="w-full">
                 <FormControl>
@@ -128,7 +144,7 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
         />
 
         <FormField
-          control={form.control}
+          control={control}
           name="hideCallerInfo"
           render={({ field }) => (
             <FormItem className="flex flex-row items-start gap-2">
@@ -147,7 +163,7 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
 
         {/* Agent Can Logout And Rejoin */}
         <FormField
-          control={form.control}
+          control={control}
           name="agentCanLogoutAndRejoin"
           render={({ field }) => (
             <FormItem className="flex flex-row items-start gap-2">
@@ -164,7 +180,7 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
           )}
         />
 
-        <Button onClick={onNext}>Next</Button>
+        <Button onClick={handleNext}>Next</Button>
       </div>
     </Form>
   );

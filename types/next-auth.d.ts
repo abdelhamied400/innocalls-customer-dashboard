@@ -3,6 +3,7 @@ import { DefaultJWT } from "next-auth/jwt";
 
 declare module "next-auth" {
   type Organization = {
+    id: string;
     name: string;
     hasTenant: boolean;
     listenToCallEvents: boolean;
@@ -34,6 +35,7 @@ declare module "next-auth" {
     fullAccessSurvey: boolean;
     fullAccessConferenceBridge: boolean;
     organizations: Organization[];
+    accessToken?: string;
   }
 
   interface Session {

@@ -1,4 +1,10 @@
-import React, { createContext, use, useCallback, useState } from "react";
+import React, {
+  createContext,
+  use,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import {
   useDropzone,
   DropzoneOptions,
@@ -11,9 +17,10 @@ import { formatFileSize } from "@/lib/file";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "./button";
 
-// Utility type for adding an id to any object
+// Utility type
 type WithId<T> = T & { id: string };
 
+// Errors
 const errors: Record<ErrorCode, string> = {
   "file-invalid-type": "Invalid file type",
   "file-too-large": "File is too large",
@@ -37,7 +44,7 @@ const DropzoneContext = createContext<DropzoneContextType | undefined>(
   undefined
 );
 
-// Context hook
+// Hook
 const useDropzoneContext = () => {
   const context = use(DropzoneContext);
   if (!context) {
@@ -46,14 +53,21 @@ const useDropzoneContext = () => {
   return context;
 };
 
-// Type definitions for compound components
+// Root props
 type DropzoneRootProps = {
   children: React.ReactNode;
   options?: DropzoneOptions;
+  value?: File | null;
+  onChange?: (file: File | null) => void;
 };
 
-// Root component
-const Dropzone = ({ children, options = {} }: DropzoneRootProps) => {
+// Dropzone Root
+const Dropzone = ({
+  children,
+  options = {},
+  value,
+  onChange,
+}: DropzoneRootProps) => {
   const [acceptedFiles, setAcceptedFiles] = useState<WithId<File>[]>([]);
   const [fileRejections, setFileRejections] = useState<WithId<FileRejection>[]>(
     []
@@ -68,27 +82,37 @@ const Dropzone = ({ children, options = {} }: DropzoneRootProps) => {
   );
 
   const addAcceptedFile = (file: File) => {
-    // Create a copy of the File object while adding an id
     const fileWithId = new File([file], file.name, {
       type: file.type,
       lastModified: file.lastModified,
     });
 
-    // Add a unique id property to the File object
     Object.defineProperty(fileWithId, "id", {
       value: uuidv4(),
-      writable: false, // Prevent modification
-      enumerable: true, // Ensure it shows up in `console.log`
+      writable: false,
+      enumerable: true,
     });
 
-    setAcceptedFiles((prev) => [...prev, fileWithId as WithId<File>]);
+    setAcceptedFiles([fileWithId as WithId<File>]);
+    setFileRejections([]);
+
+    if (onChange) {
+      onChange(fileWithId as WithId<File>);
+    }
   };
+
   const addRejectedFile = (rejection: FileRejection) => {
     setFileRejections((prev) => [...prev, { ...rejection, id: uuidv4() }]);
+    if (onChange) {
+      onChange(null);
+    }
   };
 
   const removeFile = (id: string) => {
     setAcceptedFiles((prev) => prev.filter((file) => file.id !== id));
+    if (onChange) {
+      onChange(null);
+    }
   };
 
   const removeRejectedFile = (id: string) => {
@@ -101,6 +125,14 @@ const Dropzone = ({ children, options = {} }: DropzoneRootProps) => {
     ...options,
     onDrop,
   });
+
+  // If form value changes from outside (optional, useful for reset)
+  useEffect(() => {
+    if (value == null) {
+      setAcceptedFiles([]);
+      setFileRejections([]);
+    }
+  }, [value]);
 
   return (
     <DropzoneContext.Provider
@@ -119,13 +151,16 @@ const Dropzone = ({ children, options = {} }: DropzoneRootProps) => {
   );
 };
 
-// Upload Zone component
+// Components
 export const DropzoneTrigger = () => {
   const { getRootProps, getInputProps, options } = useDropzoneContext();
+  const acceptedTypes = Object.values(options?.accept || {})
+    .map((types) => types.map((type) => type.replace(/^\./, "")).join(", "))
+    .join(", ");
 
   return (
     <section
-      className="bg-gray-50 rounded-lg border border-dashed border-gray-300"
+      className="bg-gray-50 rounded-lg border border-dashed border-gray-300 mb-2"
       role="button"
     >
       <div {...getRootProps({ className: "dropzone p-4" })}>
@@ -136,7 +171,10 @@ export const DropzoneTrigger = () => {
           <p>Or</p>
           <p className="text-primary font-bold">Browse Files</p>
           <br />
-          <p>(Only MP3), Max Size: {formatFileSize(options?.maxSize)}</p>
+          <p>
+            (Only <span className="uppercase">{acceptedTypes}</span> ), Max
+            Size: {formatFileSize(options?.maxSize)}
+          </p>
         </div>
       </div>
     </section>
@@ -204,7 +242,6 @@ export const DropzoneRejectedFile = ({
   );
 };
 
-// File List component
 export const DropzoneFileList = () => {
   const { acceptedFiles, fileRejections } = useDropzoneContext();
 
@@ -220,5 +257,4 @@ export const DropzoneFileList = () => {
   );
 };
 
-// Default export
 export default Dropzone;

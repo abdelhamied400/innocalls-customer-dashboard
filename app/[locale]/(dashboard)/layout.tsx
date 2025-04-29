@@ -31,20 +31,38 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
               title="Dashboard"
               href="/"
             />
-            <SidebarItem icon={<Phone />} title="Numbers" href="/numbers" />
-            <SidebarItem icon={<Users />} title="Users" href="/users" />
             <SidebarItem
+              disabled
+              icon={<Phone />}
+              title="Numbers"
+              href="/numbers"
+            />
+            <SidebarItem
+              disabled
+              icon={<Users />}
+              title="Users"
+              href="/users"
+            />
+            <SidebarItem
+              disabled
               icon={<Timeline />}
               title="Call Reporting"
               href="/call-reporting"
             />
             <SidebarItem
+              disabled
               icon={<MonetizationOn />}
               title="Billing"
               href="/billing"
             />
-            <SidebarItem icon={<DataUsage />} title="Usage" href="/usage" />
             <SidebarItem
+              disabled
+              icon={<DataUsage />}
+              title="Usage"
+              href="/usage"
+            />
+            <SidebarItem
+              disabled
               icon={<ShoppingCart />}
               title="Order Confirmation"
               href="/order-confirmation"
@@ -55,11 +73,13 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
               href="/auto-dialer/active"
             />
             <SidebarItem
+              disabled
               icon={<Code />}
               title="Developers Tab"
               href="/developers-tab"
             />
             <SidebarItem
+              disabled
               icon={<Settings />}
               title="Settings"
               href="/settings"
@@ -69,8 +89,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         <div className="flex flex-col flex-1 main">
           <Navbar />
           <main className="flex-1 max-h-[calc(100%-96px)] flex gap-2">
-            <div className="overflow-y-auto p-4">{children}</div>
-            <Innortc />
+            <div className="flex-1 overflow-y-auto p-4">{children}</div>
+            <div className="w-[320px] border-s-2 px-4 py-2">
+              <Innortc />
+            </div>
           </main>
         </div>
       </div>

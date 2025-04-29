@@ -29,6 +29,7 @@ const CredentialsProvider = Credentials({
         ...res.user,
         ...res.agent,
         organizations: res.organizations || [res.agent.organization],
+        accessToken: res.accessToken,
       };
     } catch (err: any) {
       return null;
