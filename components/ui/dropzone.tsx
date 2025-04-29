@@ -12,7 +12,9 @@ import {
   FileRejection,
   ErrorCode,
 } from "react-dropzone";
-import { UploadCloudIcon, XIcon } from "lucide-react";
+import XIcon from "@mui/icons-material/X";
+import UploadIcon from "@mui/icons-material/Upload";
+
 import { formatFileSize } from "@/lib/file";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "./button";
@@ -165,9 +167,9 @@ export const DropzoneTrigger = () => {
     >
       <div {...getRootProps({ className: "dropzone p-4" })}>
         <input {...getInputProps()} />
-        <div className="flex flex-wrap justify-center gap-2">
-          <UploadCloudIcon />
-          <p>Drag File Here</p>
+        <div className="flex flex-wrap justify-center gap-2 text-gray-500">
+          <UploadIcon />
+          <p className="font-bold">Drag File Here</p>
           <p>Or</p>
           <p className="text-primary font-bold">Browse Files</p>
           <br />

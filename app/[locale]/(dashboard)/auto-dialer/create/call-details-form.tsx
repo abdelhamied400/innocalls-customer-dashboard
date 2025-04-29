@@ -5,7 +5,6 @@ import Dropzone, {
   DropzoneFileList,
   DropzoneTrigger,
 } from "@/components/ui/dropzone";
-import Field from "@/components/ui/field";
 import {
   FormControl,
   FormField,
