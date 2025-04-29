@@ -3,6 +3,7 @@ import ReactQueryProvider from "./ReactQueryProvider";
 import { Toaster } from "@/components/ui/toaster";
 import NextIntlProvider from "./NextIntlProvider";
 import { SessionProvider } from "next-auth/react";
+import VocabProvider from "./VocabProvider";
 
 type MainProviderProps = PropsWithChildren<object>;
 const MainProvider = async ({ children }: MainProviderProps) => {
@@ -10,7 +11,7 @@ const MainProvider = async ({ children }: MainProviderProps) => {
     <SessionProvider>
       <NextIntlProvider>
         <ReactQueryProvider>
-          {children}
+          <VocabProvider>{children}</VocabProvider>
           <Toaster />
         </ReactQueryProvider>
       </NextIntlProvider>

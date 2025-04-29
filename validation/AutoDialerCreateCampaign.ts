@@ -43,6 +43,7 @@ export const AutoDialerCreateStep2Schema = z.object({
     .min(1, "At least one agent is required"),
   callerIds: z.array(
     z.object({
+      id: z.string(),
       destination: z.string(),
       callerId: z.string(),
     })

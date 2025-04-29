@@ -1,4 +1,5 @@
 "use client";
+import CallerIdSelector from "@/components/CallerIdSelector";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import Dropzone, {
@@ -11,23 +12,11 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import MultiSelect, {
-  MultiSelectField,
-  MultiSelectTrigger,
-  MultiSelectValue,
-} from "@/components/ui/multiple-selector";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import MultiSelect from "@/components/ui/multi-select";
 import { SOUND_SIZE_LIMIT } from "@/constants/file";
 import queryExtensions from "@/queries/queryExtensions";
 import { AutoDialerCreateStep2 } from "@/validation/AutoDialerCreateCampaign";
 import { useQuery } from "@tanstack/react-query";
-import { PlusIcon, TrashIcon } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 
 type CallDetailsFormProps = {
@@ -41,12 +30,16 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
     trigger,
     control,
     formState: { errors },
+    clearErrors,
   } = form;
 
   const handleNext = async () => {
     const isValid = await trigger(["sound", "agents", "callerIds"]);
 
-    if (isValid) onNext();
+    if (isValid) {
+      clearErrors();
+      onNext();
+    }
   };
 
   return (
@@ -107,25 +100,14 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
               <div className="flex-1">
                 <h3>Attach Agents</h3>
                 <div className="w-full">
-                  <MultiSelect>
-                    <MultiSelectField
-                      label="Select Agents"
-                      error={errors.agents?.message}
-                    >
-                      <MultiSelectTrigger
-                        options={extensions}
-                        isMulti
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                    </MultiSelectField>
-
-                    <MultiSelectValue
-                      value={field.value}
-                      onChange={field.onChange} // <-- important
-                      isMulti
-                    />
-                  </MultiSelect>
+                  <MultiSelect
+                    options={extensions}
+                    label="Agents"
+                    placeholder="Select from the list...."
+                    error={errors.agents?.message}
+                    value={field.value}
+                    onChange={field.onChange}
+                  ></MultiSelect>
                 </div>
               </div>
             </FormControl>
@@ -143,41 +125,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
             <FormControl>
               <div className="flex-1">
                 <h3>Caller IDs</h3>
-                <div className="w-full caller-ids">
-                  <div className="call-id bg-gray-50 border border-gray-100 p-4 rounded-lg flex gap-2 items-center">
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Theme" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="light">Light</SelectItem>
-                        <SelectItem value="dark">Dark</SelectItem>
-                        <SelectItem value="system">System</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <Select>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Theme" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="light">Light</SelectItem>
-                        <SelectItem value="dark">Dark</SelectItem>
-                        <SelectItem value="system">System</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <Button
-                      variant="ghost-destructive"
-                      size="icon"
-                      className="px-3"
-                    >
-                      <TrashIcon />
-                    </Button>
-                  </div>
-                  <Button variant="link">
-                    <PlusIcon />
-                    Add Caller
-                  </Button>
-                </div>
+                <CallerIdSelector {...field} />
               </div>
             </FormControl>
           </FormItem>

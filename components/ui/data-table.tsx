@@ -28,13 +28,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "./pagination";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./select";
 import { Skeleton } from "./skeleton";
 import usePagination from "@/hooks/use-pagination";
 
@@ -186,7 +179,7 @@ export function DataTable<TData, TValue>({
 
         <div className="flex items-center gap-2 per-page">
           <label className="text-sm">Rows per page:</label>
-          <Select>
+          {/* <Select>
             <SelectTrigger className="w-max">
               <SelectValue placeholder="10" defaultValue="10" />
             </SelectTrigger>
@@ -195,7 +188,7 @@ export function DataTable<TData, TValue>({
               <SelectItem value="20">20</SelectItem>
               <SelectItem value="30">30</SelectItem>
             </SelectContent>
-          </Select>
+          </Select> */}
           <p className="text-sm">
             {pageIndex * pageSize + 1}-
             {Math.min((pageIndex + 1) * pageSize, data.length)} of {data.length}

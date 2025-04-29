@@ -28,6 +28,7 @@ import {
 } from "@/validation/AutoDialerCreateCampaign";
 import SchedulingForm from "./scheduling-form";
 import CustomersListForm from "./customers-list-form";
+import { generateUUID } from "@/lib/utils";
 
 const steps = [
   "Campaign Details",
@@ -52,6 +53,13 @@ const CreateAutoDialerCampaignSheet = () => {
       agentCanLogoutAndRejoin: false,
       playAnnouncement: false,
       agents: [],
+      callerIds: [
+        {
+          id: generateUUID(),
+          destination: "",
+          callerId: "",
+        },
+      ],
     },
   });
 
@@ -96,7 +104,7 @@ const CreateAutoDialerCampaignSheet = () => {
             </Button>
           </StepperHeader>
 
-          <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[500px] max-h-[calc(100vh - 200px)] overflow-auto">
+          <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[600px] max-h-[calc(100vh - 200px)] overflow-auto">
             <FormProvider {...form}>
               <form onSubmit={onSubmit}>
                 <StepperStep idx={0} className="p-4 rounded-xl bg-white h-full">

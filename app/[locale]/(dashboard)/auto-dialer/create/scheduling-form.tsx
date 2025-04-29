@@ -2,13 +2,6 @@ import { Button } from "@/components/ui/button";
 import Field from "@/components/ui/field";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import SpinButton from "@/components/ui/spin-button";
 import { AutoDialerCreateStep3 } from "@/validation/AutoDialerCreateCampaign";
 import React from "react";
@@ -47,18 +40,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
       <Field
         label="Duration Type"
         hint="Choose the campaign duration option: Time-Limited (set a specific time period, e.g., 10 AM to 6 PM) or Agent Availability (run as long as an agent is online)."
-      >
-        <Select>
-          <SelectTrigger className="border-0 shadow-none">
-            <SelectValue placeholder="Theme" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="light">Light</SelectItem>
-            <SelectItem value="dark">Dark</SelectItem>
-            <SelectItem value="system">System</SelectItem>
-          </SelectContent>
-        </Select>
-      </Field>
+      ></Field>
 
       <FormField
         control={control}
@@ -132,18 +114,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
             htmlFor="timezone"
           >
             <FormItem className="w-full">
-              <FormControl>
-                <Select>
-                  <SelectTrigger className="border-0 shadow-none">
-                    <SelectValue placeholder="Theme" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="light">Light</SelectItem>
-                    <SelectItem value="dark">Dark</SelectItem>
-                    <SelectItem value="system">System</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormControl>
+              <FormControl></FormControl>
             </FormItem>
           </Field>
         )}
