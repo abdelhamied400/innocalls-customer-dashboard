@@ -8,7 +8,7 @@ export default {
     return res.data;
   },
   getAllDids: async () => {
-    const res = await api.get<Did[]>("/jera/dids");
+    const res = await api.get<string[]>("/jera/dids");
     return res.data.map((did) => ({ id: did, name: did }));
   },
 };

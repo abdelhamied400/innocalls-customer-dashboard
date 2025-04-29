@@ -59,13 +59,14 @@ export const AutoDialerCreateStep3Schema = z.object({
 });
 
 export const AutoDialerCreateStep4Schema = z.object({
-  customers: z.array(
-    z.object({
-      id: z.string(),
-      name: z.string(),
-      phone: z.string(),
+  customers: z
+    .instanceof(File, { message: "Please upload a valid file" })
+    .refine((file) => file.type === "audio/mpeg", {
+      message: "Only MP3 files are allowed",
     })
-  ),
+    .refine((file) => file.size <= 70000000, {
+      message: "File size must be under 70 KB",
+    }),
 });
 
 // join all schemas into one destructured schema
