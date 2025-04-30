@@ -136,6 +136,23 @@ const Dropzone = ({
     }
   }, [value]);
 
+  useEffect(() => {
+    if (!!value) {
+      const fileWithId = new File([value], value.name, {
+        type: value.type,
+        lastModified: value.lastModified,
+      });
+
+      Object.defineProperty(fileWithId, "id", {
+        value: uuidv4(),
+        writable: false,
+        enumerable: true,
+      });
+
+      setAcceptedFiles([fileWithId as WithId<File>]);
+    }
+  }, []);
+
   return (
     <DropzoneContext.Provider
       value={{

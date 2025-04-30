@@ -17,6 +17,8 @@ import Code from "@mui/icons-material/Code";
 
 import { PropsWithChildren } from "react";
 import Innortc from "./Innortc";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 type DashboardLayoutProps = PropsWithChildren<object>;
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
@@ -84,6 +86,17 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
               title="Settings"
               href="/settings"
             />
+            <hr />
+            <div className="py-2 flex flex-col gap-2">
+              <Image
+                src="/assets/images/robot.svg"
+                alt="robot"
+                width={100}
+                height={200}
+                className="mx-auto"
+              />
+              <Button size="lg">Inno Support</Button>
+            </div>
           </div>
         </Sidebar>
         <div className="flex flex-col flex-1 main">

@@ -42,6 +42,7 @@ const CreateAutoDialerCampaignSheet = () => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const form = useForm<AutoDialerCreateCampaign>({
+    mode: "onChange",
     resolver: zodResolver(AutoDialerCreateCampaignSchema),
     defaultValues: {
       campaignName: "",

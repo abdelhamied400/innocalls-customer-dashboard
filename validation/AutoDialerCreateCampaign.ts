@@ -32,22 +32,24 @@ export const AutoDialerCreateStep2Schema = z.object({
       message: "File size must be under 70 KB",
     }),
   playAnnouncement: z.boolean().default(false),
-  agents: z
+  agents: z.array(z.object({})).min(1, "At least one agent is required"),
+  callerIds: z
     .array(
       z.object({
         id: z.string(),
-        name: z.string(),
-        phone: z.string(),
+        destination: z
+          .string({
+            required_error: "Destination is required",
+          })
+          .nonempty("Destination is required"),
+        callerId: z
+          .string({
+            required_error: "Caller ID is required",
+          })
+          .nonempty("Caller ID is required"),
       })
     )
-    .min(1, "At least one agent is required"),
-  callerIds: z.array(
-    z.object({
-      id: z.string(),
-      destination: z.string(),
-      callerId: z.string(),
-    })
-  ),
+    .min(1, "At least one caller ID is required"),
 });
 
 export const AutoDialerCreateStep3Schema = z.object({
