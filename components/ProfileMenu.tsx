@@ -23,9 +23,14 @@ const ProfileMenu = () => {
     signOut();
   };
 
-  const handleOrganizationChange = (org: Organization) => {
+  const handleOrganizationChange = async (org: Organization) => {
     console.log("Selected organization:", org);
     setCookie("OrganizationId", org.id);
+    await fetch("/api/set-org", {
+      method: "POST",
+      body: JSON.stringify({ orgId: org.id }),
+      headers: { "Content-Type": "application/json" },
+    });
     setOrganization(org);
   };
 

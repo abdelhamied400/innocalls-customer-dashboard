@@ -7,7 +7,6 @@ const intlMiddleware = createMiddleware(routing);
 const publicPages = ["/login", "/register"];
 
 export default auth((request) => {
-  console.log(request.auth, request.nextUrl.pathname);
   if (!request.auth && !publicPages.includes(request.nextUrl.pathname)) {
     const newUrl = new URL(
       `/login?next=${request.nextUrl.pathname}`,
