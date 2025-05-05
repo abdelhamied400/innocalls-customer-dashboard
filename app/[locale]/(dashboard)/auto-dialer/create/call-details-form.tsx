@@ -28,7 +28,6 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
   const { data: extensions, isLoading } = useQuery(queryExtensions({}));
 
   const {
-    watch,
     trigger,
     control,
     formState: { errors },
@@ -43,8 +42,6 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
       onNext();
     }
   };
-
-  console.log(errors);
 
   return (
     <Form {...form}>
@@ -99,27 +96,31 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
         <FormField
           control={control}
           name="agents"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start gap-2">
-              <FormControl>
-                <div className="flex-1">
-                  <h3>Attach Agents</h3>
-                  <div className="w-full">
-                    <Select
-                      options={extensions}
-                      label="Agents"
-                      placeholder="Select from the list...."
-                      error={errors.agents?.message}
-                      value={field.value}
-                      onChange={field.onChange}
-                      isMulti
-                      isVirtualized
-                    ></Select>
+          render={({ field }) => {
+            return (
+              <FormItem className="flex flex-row items-start gap-2">
+                <FormControl>
+                  <div className="flex-1">
+                    <h3>Attach Agents</h3>
+                    <div className="w-full">
+                      <Select
+                        options={extensions}
+                        label="Agents"
+                        placeholder="Select from the list...."
+                        error={errors.agents?.message}
+                        value={field.value}
+                        getLabel={(option) => `${option.name} (${option.ext})`}
+                        getValue={(option) => option.id}
+                        onChange={field.onChange}
+                        isMulti
+                        isVirtualized
+                      ></Select>
+                    </div>
                   </div>
-                </div>
-              </FormControl>
-            </FormItem>
-          )}
+                </FormControl>
+              </FormItem>
+            );
+          }}
         />
 
         <hr />
@@ -132,7 +133,6 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
               <FormControl>
                 <div className="flex-1">
                   <h3>Caller IDs</h3>
-                  {JSON.stringify(watch("callerIds"))}
                   <CallerIdSelector />
                 </div>
               </FormControl>

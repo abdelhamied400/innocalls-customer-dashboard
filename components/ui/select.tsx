@@ -93,7 +93,7 @@ const Select = ({
   };
 
   return (
-    <div className="smart-select space-y-2 w-full">
+    <div className="select space-y-2 w-full">
       <div className="relative w-full">
         <label
           className={cn(

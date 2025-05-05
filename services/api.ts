@@ -16,9 +16,7 @@ const api = axios.create({
 api.interceptors.request.use(async (config) => {
   const isServer = typeof window === "undefined";
   const session = isServer ? await auth() : await getSession();
-  console.log("isServer", isServer, session?.user.accessToken);
   const organizationId = getCookie("OrganizationId");
-  console.log("retrieved organization id ", organizationId);
 
   if (session?.user.accessToken) {
     config.headers.Authorization = `Bearer ${session.user.accessToken}`;

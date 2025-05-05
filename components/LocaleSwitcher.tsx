@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { localesArray } from "@/i18n/config";
-import { useRouter } from "@/i18n/routing";
+import { usePathname, useRouter } from "@/i18n/routing";
 import { useLocale } from "next-intl";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
@@ -15,10 +15,17 @@ import LanguageIcon from "@mui/icons-material/Language";
 const LocaleSwitcher = () => {
   const router = useRouter();
   const localeSlug = useLocale();
+  const pathname = usePathname();
   const currentLocale = useMemo(
     () => localesArray.find((locale) => locale.slug === localeSlug),
     [localeSlug]
   );
+
+  const changeLocale = (locale: string) => {
+    router.push(pathname, {
+      locale,
+    });
+  };
 
   return (
     <DropdownMenu>
@@ -36,7 +43,7 @@ const LocaleSwitcher = () => {
               "cursor-pointer",
               locale.slug === localeSlug && "font-semibold bg-neutral-100"
             )}
-            onClick={() => router.replace("/", { locale: locale.slug })}
+            onClick={() => changeLocale(locale.slug)}
           >
             {locale.name}
           </DropdownMenuItem>

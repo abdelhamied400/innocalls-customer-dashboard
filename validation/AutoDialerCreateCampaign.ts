@@ -1,3 +1,4 @@
+import { CSV_SIZE_LIMIT, fileSizeToString } from "@/constants/file";
 import { z } from "zod";
 
 export const AutoDialerCreateStep1Schema = z.object({
@@ -32,7 +33,7 @@ export const AutoDialerCreateStep2Schema = z.object({
       message: "File size must be under 70 KB",
     }),
   playAnnouncement: z.boolean().default(false),
-  agents: z.array(z.object({})).min(1, "At least one agent is required"),
+  agents: z.array(z.any()).min(1, "At least one agent is required"),
   callerIds: z
     .array(
       z.object({
@@ -72,11 +73,15 @@ export const AutoDialerCreateStep3Schema = z.object({
 export const AutoDialerCreateStep4Schema = z.object({
   customers: z
     .instanceof(File, { message: "Please upload a valid file" })
-    .refine((file) => file.type === "audio/mpeg", {
-      message: "Only MP3 files are allowed",
-    })
-    .refine((file) => file.size <= 70000000, {
-      message: "File size must be under 70 KB",
+    .refine(
+      (file) =>
+        ["image/jpeg", "image/png", "application/pdf"].includes(file.type),
+      {
+        message: "Only MP3 files are allowed",
+      }
+    )
+    .refine((file) => file.size <= CSV_SIZE_LIMIT, {
+      message: `File size must be under ${fileSizeToString(CSV_SIZE_LIMIT)}`,
     }),
 });
 

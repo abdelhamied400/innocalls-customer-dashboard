@@ -79,20 +79,17 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
               (type) => type.id === field.value
             );
             return (
-              <>
-                <p>{JSON.stringify(field.value)}</p>
-                <Select
-                  {...field}
-                  label="Duration Type"
-                  options={durationTypes}
-                  value={selectedType}
-                  onChange={(type) => type && field.onChange(type.id)}
-                  getLabel={(option) => option?.name || ""}
-                  getValue={(option) => option?.id || ""}
-                  placeholder="Select from the list...."
-                  error={errors.durationType?.message}
-                ></Select>
-              </>
+              <Select
+                {...field}
+                label="Duration Type"
+                options={durationTypes}
+                value={selectedType}
+                onChange={(type) => type && field.onChange(type.id)}
+                getLabel={(option) => option?.name || ""}
+                getValue={(option) => option?.id || ""}
+                placeholder="Select from the list...."
+                error={errors.durationType?.message}
+              ></Select>
             );
           }}
         />
@@ -158,7 +155,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
                   <FormControl>
                     <DatePicker
                       placeholder="Select to time..."
-                      id="fromTime"
+                      id="toTime"
                       {...field}
                     />
                   </FormControl>
@@ -185,6 +182,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
                 isVirtualized
                 getLabel={(opt) => opt.name}
                 getValue={(opt) => opt.id}
+                error={errors.timezone?.message}
               />
             );
           }}

@@ -4,7 +4,7 @@ import Dropzone, {
   DropzoneTrigger,
 } from "@/components/ui/dropzone";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
-import { SOUND_SIZE_LIMIT } from "@/constants/file";
+import { CSV_SIZE_LIMIT } from "@/constants/file";
 import { AutoDialerCreateStep4 } from "@/validation/AutoDialerCreateCampaign";
 import { DownloadIcon } from "lucide-react";
 import { useFormContext } from "react-hook-form";
@@ -26,6 +26,7 @@ const CustomersListForm = ({ onNext }: CustomersListFormProps) => {
 
     if (isValid) {
       // Proceed to the next step
+      console.log("Valid customers list");
     }
   };
 
@@ -45,7 +46,7 @@ const CustomersListForm = ({ onNext }: CustomersListFormProps) => {
                       "image/png": [".png"],
                       "application/pdf": [".pdf"],
                     },
-                    maxSize: SOUND_SIZE_LIMIT,
+                    maxSize: CSV_SIZE_LIMIT,
                     multiple: false,
                     maxFiles: 1,
                   }}
