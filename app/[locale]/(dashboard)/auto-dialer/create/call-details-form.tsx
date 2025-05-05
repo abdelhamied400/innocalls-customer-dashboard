@@ -13,7 +13,7 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import MultiSelect from "@/components/ui/multi-select";
+import Select from "@/components/ui/select";
 import { SOUND_SIZE_LIMIT } from "@/constants/file";
 import queryExtensions from "@/queries/queryExtensions";
 import { AutoDialerCreateStep2 } from "@/validation/AutoDialerCreateCampaign";
@@ -28,6 +28,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
   const { data: extensions, isLoading } = useQuery(queryExtensions({}));
 
   const {
+    watch,
     trigger,
     control,
     formState: { errors },
@@ -104,14 +105,16 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                 <div className="flex-1">
                   <h3>Attach Agents</h3>
                   <div className="w-full">
-                    <MultiSelect
+                    <Select
                       options={extensions}
                       label="Agents"
                       placeholder="Select from the list...."
                       error={errors.agents?.message}
                       value={field.value}
                       onChange={field.onChange}
-                    ></MultiSelect>
+                      isMulti
+                      isVirtualized
+                    ></Select>
                   </div>
                 </div>
               </FormControl>
@@ -129,6 +132,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
               <FormControl>
                 <div className="flex-1">
                   <h3>Caller IDs</h3>
+                  {JSON.stringify(watch("callerIds"))}
                   <CallerIdSelector />
                 </div>
               </FormControl>

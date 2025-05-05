@@ -35,11 +35,10 @@ const CallerIdRow = memo(({ index, countries, dids, remove }: Props) => {
             <FormItem className="flex-1">
               <FormControl>
                 <Select
-                  {...field}
                   label="Country"
                   options={countries}
                   value={selectedCountry}
-                  onChange={(country) =>
+                  onChange={(country: Country) =>
                     country && field.onChange(country.code)
                   }
                   placeholder="Select a country..."
@@ -67,6 +66,8 @@ const CallerIdRow = memo(({ index, countries, dids, remove }: Props) => {
                   value={selectedDid}
                   onChange={(did) => did && field.onChange(did.id)}
                   placeholder="Select a DID..."
+                  getLabel={(option) => option.name}
+                  getValue={(option) => option.id}
                 />
               </FormControl>
               <FormMessage />

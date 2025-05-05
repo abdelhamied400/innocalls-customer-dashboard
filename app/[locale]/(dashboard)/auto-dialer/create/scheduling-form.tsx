@@ -3,10 +3,8 @@ import DatePicker from "@/components/ui/date-picker";
 import Field from "@/components/ui/field";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import Select from "@/components/ui/select";
-import { VirtualizedSelect } from "@/components/ui/select-virtualized";
-import SmartSelect from "@/components/ui/smart-select";
 import SpinButton from "@/components/ui/spin-button";
-import { timezones } from "@/constants/timezones";
+import { Timezone, timezones } from "@/constants/timezones";
 import {
   AutoDialerCreateStep3,
   AutoDialerCreateStep3Schema,
@@ -31,7 +29,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
 
   const {
     getValues,
-    trigger,
+    watch,
     clearErrors,
     setError,
     control,
@@ -50,6 +48,8 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
         message: "To time must be greater than From time",
       }
     ).safeParseAsync(getValues());
+
+    console.log(res);
 
     if (!res.success) {
       setTimeout(() => {
@@ -74,19 +74,27 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
         <FormField
           control={control}
           name="durationType"
-          render={({ field }) => (
-            <Select
-              {...field}
-              label="Duration Type"
-              options={durationTypes}
-              value={durationTypes.find((option) => option.id === field.value)}
-              onChange={(type) => type && field.onChange(type.id)}
-              getLabel={(option) => option?.name || ""}
-              getValue={(option) => option?.id || ""}
-              placeholder="Select from the list...."
-              error={errors.durationType?.message}
-            ></Select>
-          )}
+          render={({ field }) => {
+            const selectedType = durationTypes.find(
+              (type) => type.id === field.value
+            );
+            return (
+              <>
+                <p>{JSON.stringify(field.value)}</p>
+                <Select
+                  {...field}
+                  label="Duration Type"
+                  options={durationTypes}
+                  value={selectedType}
+                  onChange={(type) => type && field.onChange(type.id)}
+                  getLabel={(option) => option?.name || ""}
+                  getValue={(option) => option?.id || ""}
+                  placeholder="Select from the list...."
+                  error={errors.durationType?.message}
+                ></Select>
+              </>
+            );
+          }}
         />
 
         <FormField
@@ -125,7 +133,11 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
               >
                 <FormItem className="w-full">
                   <FormControl>
-                    <DatePicker placeholder="test" id="fromTime" {...field} />
+                    <DatePicker
+                      placeholder="Select from time..."
+                      id="fromTime"
+                      {...field}
+                    />
                   </FormControl>
                 </FormItem>
               </Field>
@@ -144,7 +156,11 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
               >
                 <FormItem className="w-full">
                   <FormControl>
-                    <DatePicker placeholder="test" id="fromTime" {...field} />
+                    <DatePicker
+                      placeholder="Select to time..."
+                      id="fromTime"
+                      {...field}
+                    />
                   </FormControl>
                 </FormItem>
               </Field>
@@ -155,33 +171,23 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
         <FormField
           control={control}
           name="timezone"
-          render={({ field }) => (
-            <VirtualizedSelect
-              label="Timezone"
-              value={field.value}
-              options={timezones}
-              getLabel={(opt) => opt?.name}
-              getValue={(opt) => opt?.id}
-              onChange={field.onChange}
-              placeholder="Select from the list...."
-            />
-          )}
-        />
-        <FormField
-          control={control}
-          name="timezone"
-          render={({ field }) => (
-            <SmartSelect
-              options={timezones}
-              value={field.value}
-              onChange={field.onChange}
-              label="Category"
-              placeholder="Choose a category"
-              isVirtualized
-              isMulti
-              showSelectedTags={false}
-            />
-          )}
+          render={({ field }) => {
+            const selectedTimezone = timezones.find(
+              (tz) => tz.id === field.value
+            );
+            return (
+              <Select
+                options={timezones}
+                value={selectedTimezone}
+                onChange={(timezone) => field.onChange(timezone.id)}
+                label="Timezone"
+                placeholder="Choose a timezone"
+                isVirtualized
+                getLabel={(opt) => opt.name}
+                getValue={(opt) => opt.id}
+              />
+            );
+          }}
         />
 
         <Button onClick={handleNext}>Next</Button>
