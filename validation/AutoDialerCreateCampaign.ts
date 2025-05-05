@@ -53,10 +53,19 @@ export const AutoDialerCreateStep2Schema = z.object({
 });
 
 export const AutoDialerCreateStep3Schema = z.object({
-  durationType: z.string(),
-  maxWaitTime: z.number().int(),
-  fromTime: z.string(),
-  toTime: z.string(),
+  durationType: z.string({
+    required_error: "Duration type is required",
+  }),
+  maxWaitTime: z
+    .number()
+    .int()
+    .min(0, "Max wait time must be greater than or equal to 0"),
+  fromTime: z.date().refine((date) => date > new Date(), {
+    message: "From time must be in the future",
+  }),
+  toTime: z.date().refine((date) => date > new Date(), {
+    message: "To time must be in the future",
+  }),
   timezone: z.string(),
 });
 

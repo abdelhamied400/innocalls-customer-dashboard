@@ -1,19 +1,17 @@
-"use client";
-
-import ReactSelect, {
-  Props as SelectPropsLib,
-  GroupBase,
-  SingleValue,
-} from "react-select";
 import { cn } from "@/lib/utils";
+import React from "react";
+import Select, { Props as SelectProps, SingleValue } from "react-select";
+import { FixedSizeList as List } from "react-window";
 
-// Fallback option type if user doesn't specify custom shape
 type DefaultOption = {
   label: string;
   value: string;
 };
 
-type SelectProps<OptionType> = {
+const heightPerItem = 40;
+const maxVisibleItems = 6;
+
+type VirtualizedSelectProps<OptionType> = {
   options: OptionType[];
   placeholder?: string;
   value: SingleValue<OptionType> | null;
@@ -24,11 +22,12 @@ type SelectProps<OptionType> = {
   hint?: string;
   getLabel?: (option: OptionType) => string;
   getValue?: (option: OptionType) => string;
-} & Partial<
-  Pick<SelectPropsLib<OptionType, boolean, GroupBase<OptionType>>, "isDisabled">
+} & Omit<
+  SelectProps<OptionType, false>,
+  "options" | "getOptionLabel" | "getOptionValue"
 >;
 
-const Select = <OptionType extends unknown>({
+export const VirtualizedSelect = <OptionType = DefaultOption,>({
   options,
   placeholder = "Select...",
   value,
@@ -40,9 +39,41 @@ const Select = <OptionType extends unknown>({
   hint,
   getLabel,
   getValue,
-}: SelectProps<OptionType>) => {
+  ...rest
+}: VirtualizedSelectProps<OptionType>) => {
   const getOptionLabel = getLabel ?? ((opt: any) => opt.label);
   const getOptionValue = getValue ?? ((opt: any) => opt.value);
+
+  const MenuList = (props: any) => {
+    const { options, children, getValue, selectProps } = props;
+
+    const height = Math.min(
+      heightPerItem * options.length,
+      heightPerItem * maxVisibleItems
+    );
+
+    const selectedValue = getValue()[0];
+    const selectedIndex = options.findIndex(
+      (opt: any) =>
+        selectProps.getOptionValue(opt) ===
+        selectProps.getOptionValue(selectedValue)
+    );
+
+    const initialOffset =
+      selectedIndex > -1 ? selectedIndex * heightPerItem : 0;
+
+    return (
+      <List
+        height={height}
+        itemCount={children.length}
+        itemSize={heightPerItem}
+        initialScrollOffset={initialOffset}
+        width="100%"
+      >
+        {({ index, style }) => <div style={style}>{children[index]}</div>}
+      </List>
+    );
+  };
 
   return (
     <div className="select space-y-2 w-full">
@@ -64,21 +95,22 @@ const Select = <OptionType extends unknown>({
           >
             {label}
           </span>
-          <ReactSelect
-            options={options}
-            isMulti={false}
+          <Select<OptionType, false>
+            {...rest}
             value={value}
             onChange={onChange}
             isDisabled={isDisabled}
-            placeholder={placeholder}
+            options={options}
             openMenuOnFocus
+            placeholder={placeholder}
             getOptionLabel={getOptionLabel}
             getOptionValue={getOptionValue}
+            components={{ MenuList, IndicatorSeparator: () => null }}
             classNames={{
               control: () => "control",
-              valueContainer: () => "value-container", // Hide inside value completely
+              valueContainer: () => "value-container",
               indicatorsContainer: () =>
-                "absolute right-2 top-1/2 -translate-y-1/2 pointer-events-auto", // Chevron clickable
+                "absolute right-2 top-1/2 -translate-y-1/2 pointer-events-auto",
               menu: () =>
                 "bg-popover border rounded-md mt-1 text-sm shadow-md text-gray-700",
               option: ({ isFocused, isSelected }) =>
@@ -89,9 +121,6 @@ const Select = <OptionType extends unknown>({
                 ),
               placeholder: () => "font-bold text-black",
             }}
-            components={{
-              IndicatorSeparator: () => null,
-            }}
           />
         </label>
         {hint && <p className="text-muted-foreground text-xs">{hint}</p>}
@@ -100,5 +129,3 @@ const Select = <OptionType extends unknown>({
     </div>
   );
 };
-
-export default Select;

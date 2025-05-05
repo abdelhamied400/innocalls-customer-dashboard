@@ -43,8 +43,8 @@ const CallerIdRow = memo(({ index, countries, dids, remove }: Props) => {
                     country && field.onChange(country.code)
                   }
                   placeholder="Select a country..."
-                  getOptionLabel={(option) => `${option.emoji} ${option.name}`}
-                  getOptionValue={(option) => option.code}
+                  getLabel={(option) => `${option.emoji} ${option.name}`}
+                  getValue={(option) => option.code}
                 />
               </FormControl>
               <FormMessage />
