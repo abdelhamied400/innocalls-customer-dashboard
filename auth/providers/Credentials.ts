@@ -32,6 +32,7 @@ const CredentialsProvider = Credentials({
         accessToken: res.accessToken,
       };
     } catch (err: any) {
+      console.log("Error in authorize:", err);
       return null;
     }
   },

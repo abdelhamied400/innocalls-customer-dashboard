@@ -21,7 +21,7 @@ api.interceptors.request.use(async (config) => {
   if (isServer) {
     const nextHeaders = require("next/headers");
     const cookies = await nextHeaders.cookies();
-    organizationId = cookies.get("OrganizationId").value;
+    organizationId = cookies.get("OrganizationId")?.value;
   } else {
     organizationId = getCookie("OrganizationId");
   }
