@@ -1,4 +1,3 @@
-import { useTranslations } from "next-intl";
 import { PropsWithChildren, ReactNode } from "react";
 
 type OverviewLayoutProps = PropsWithChildren<{
@@ -16,8 +15,6 @@ const OverviewLayout = ({
   lastHourCallsDuration,
   todayCallsDuration,
 }: OverviewLayoutProps) => {
-  const t = useTranslations("HomePage");
-
   return (
     <div className="layout" id="overview-layout">
       <h3>Service Level Details</h3>

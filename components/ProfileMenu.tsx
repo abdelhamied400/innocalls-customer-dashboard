@@ -11,28 +11,53 @@ import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOu
 import { Button } from "./ui/button";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import { setCookie } from "cookies-next/client";
+import { getCookie, setCookie } from "cookies-next/client";
 import { Organization } from "next-auth";
 import useAuthStore from "@/store/auth.slice";
+import { useRouter } from "next/navigation";
+import { Skeleton } from "./ui/skeleton";
+import { useEffect } from "react";
 
 const ProfileMenu = () => {
-  const { data: session } = useSession();
-  const { setOrganization } = useAuthStore();
+  const { data: session, status } = useSession();
+  const { Organization, setOrganization } = useAuthStore();
+  const router = useRouter();
 
   const handleLogout = () => {
     signOut();
   };
 
   const handleOrganizationChange = async (org: Organization) => {
-    console.log("Selected organization:", org);
     setCookie("OrganizationId", org.id);
-    await fetch("/api/set-org", {
-      method: "POST",
-      body: JSON.stringify({ orgId: org.id }),
-      headers: { "Content-Type": "application/json" },
-    });
     setOrganization(org);
+    router.refresh();
   };
+
+  useEffect(() => {
+    const orgId = getCookie("OrganizationId");
+    const org = session?.user.organizations?.find((org) => org.id === orgId);
+    if (org) {
+      setOrganization(org);
+      return;
+    }
+    const defaultOrg = session?.user.organizations?.[0];
+    if (defaultOrg) {
+      setCookie("OrganizationId", defaultOrg.id);
+      setOrganization(defaultOrg);
+    }
+  }, [session, setOrganization, setCookie, getCookie, router]);
+
+  if (status === "loading") {
+    return (
+      <div className="flex items-center gap-2">
+        <Skeleton className="w-14 h-14 rounded-full" />
+        <div className="flex flex-col items-start gap-1">
+          <Skeleton className="w-24 h-4 rounded" />
+          <Skeleton className="w-16 h-4 rounded" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <DropdownMenu>
@@ -40,13 +65,14 @@ const ProfileMenu = () => {
         <div className="flex items-center gap-2">
           <span className="border-[3px] border-primary p-0.5 rounded-full w-14 h-14">
             <img
-              src="https://randomuser.me/api/portraits/women/54.jpg"
+              src="/assets/images/avatar.png"
               alt="avatar"
               className="rounded-full"
             />
           </span>
           <div className="flex flex-col items-start">
             <p className="font-semibold text-lg">{session?.user.name}</p>
+            <p className="text-neutral-400 text-sm">{Organization?.name}</p>
             <p className="text-neutral-400 text-sm">{session?.user.role}</p>
           </div>
 
