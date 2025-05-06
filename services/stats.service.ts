@@ -5,15 +5,7 @@ export default {
   // ------->
   // erg-statistics
   getErgInProgressCallsCount: async () => {
-    const res = await api
-      .get("/erg-statistics/inprogress-calls-count")
-      .catch((err) => {
-        console.error(
-          "Error fetching in-progress calls count:",
-          err.response.data
-        );
-        return err.response.data;
-      });
+    const res = await api.get("/erg-statistics/inprogress-calls-count");
     return res.data;
   },
   getErgWaitingCallsCount: async () => {
