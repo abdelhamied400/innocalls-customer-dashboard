@@ -1,6 +1,5 @@
 import { getQueryClient } from "@/lib/getQueryClient";
 import AutoDialerActiveCampaignsTable from "./table";
-import queryActiveAutoDialerCampaigns from "@/queries/useAutoDialerCampaigns";
 import AutoDialerActiveHead from "./head";
 import AutoDialerService from "@/services/auto-dialer.service";
 
