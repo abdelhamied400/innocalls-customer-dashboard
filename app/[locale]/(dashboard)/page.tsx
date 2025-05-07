@@ -8,7 +8,7 @@ import CallDistributionStats from "@/containers/CallDistributionStats";
 const Dashboard = () => {
   const { Organization } = useAuthStore();
   return (
-    <div className="page" id="dashboard" key={Organization?.id}>
+    <div className="page" id="dashboard">
       <div className="flex flex-col gap-4">
         <ServiceLevelStats />
         <CallDistributionStats />

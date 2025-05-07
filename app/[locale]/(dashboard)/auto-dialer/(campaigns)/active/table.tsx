@@ -2,17 +2,31 @@
 import { DataTable } from "@/components/ui/data-table";
 import { useQuery } from "@tanstack/react-query";
 import { columns } from "./columns";
-import queryActiveAutoDialerCampaigns from "@/queries/useAutoDialerCampaigns";
+import AutoDialerService from "@/services/auto-dialer.service";
+import { useSearchParams } from "next/navigation";
 
 const ActiveCampaignsTable = () => {
-  const { data, isLoading } = useQuery(queryActiveAutoDialerCampaigns({}));
+  const filters = useSearchParams();
+  const { data, isLoading, isRefetching } = useQuery({
+    queryKey: [
+      "auto-dialer-active-campaigns",
+      {
+        search: filters.get("search") || "",
+      },
+    ],
+    queryFn: async () =>
+      await AutoDialerService.fetchActiveCampaigns({
+        search: filters.get("search") || "",
+      }),
+    refetchOnMount: "always",
+  });
 
   return (
     <div className="auto-dialer-active-table">
       <DataTable
         columns={columns}
         data={data?.campaigns || []}
-        isLoading={isLoading}
+        isLoading={isLoading || isRefetching}
       />
     </div>
   );

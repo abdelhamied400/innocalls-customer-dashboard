@@ -19,11 +19,17 @@ import { PropsWithChildren } from "react";
 import Innortc from "./Innortc";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import useAuthStore from "@/store/auth.slice";
 
 type DashboardLayoutProps = PropsWithChildren<object>;
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+  const { Organization } = useAuthStore();
+
   return (
-    <div className="bg-background h-screen dashboard-layout layout">
+    <div
+      className="bg-background h-screen dashboard-layout layout"
+      key={Organization?.id}
+    >
       <div className="flex h-full">
         <Sidebar>
           <SidebarHeader />

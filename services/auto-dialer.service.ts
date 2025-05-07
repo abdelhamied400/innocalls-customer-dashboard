@@ -1,3 +1,4 @@
+import { objToQueryString } from "@/lib/utils";
 import api from "./api";
 
 type FetchActiveCampaignsResponse = {
@@ -9,28 +10,17 @@ type FetchActiveCampaignsResponse = {
     status: string;
   }[];
 };
-const fetchActiveCampaigns = (filters?: any): FetchActiveCampaignsResponse => {
-  console.log("Fetching all auto dialer campaigns", filters);
-  // await new Promise((resolve) => setTimeout(resolve, 2000));
-  return {
-    totalPages: 10,
-    campaigns: [
-      {
-        createdAt: "1 Sep 2025",
-        name: "Single line",
-        durationType: "Time Limited",
-        status: "paused",
-      },
-      ...Array.from({ length: 10 }).map((_, i) => ({
-        createdAt: "1 Sep 2025",
-        name: "Single line",
-        durationType: "Time Limited",
-        status: "played",
-      })),
-    ],
+const fetchActiveCampaigns = async (
+  filters?: any
+): Promise<FetchActiveCampaignsResponse> => {
+  const filtersObj = {
+    ...filters,
+    isActive: true,
   };
-  // const res = await api.get("/api/auto-dialer/campaigns");
-  // return res.data;
+
+  const queryString = objToQueryString(filtersObj);
+  const res = await api.get(`/auto-dialer/campaigns?${queryString}`);
+  return res.data.data;
 };
 
 const AutoDialerService = {
