@@ -1,7 +1,7 @@
 import { getQueryClient } from "@/lib/getQueryClient";
 import AutoDialerFinishedCampaignsTable from "./table";
-import queryFinishedAutoDialerCampaigns from "@/queries/useAutoDialerCampaigns";
 import AutoDialerFinishedHead from "./head";
+import AutoDialerService from "@/services/auto-dialer.service";
 
 export type Filters = {
   userId: string;
@@ -14,7 +14,10 @@ const AutoDialerFinishedCampaigns = async ({
 }: AutoDialerFinishedCampaignsProps) => {
   const queryClient = getQueryClient();
   const query = await searchParams;
-  await queryClient.prefetchQuery(queryFinishedAutoDialerCampaigns(query));
+  await queryClient.prefetchQuery({
+    queryKey: ["auto-dialer-finished-campaigns"],
+    queryFn: async () => await AutoDialerService.fetchActiveCampaigns({}),
+  });
 
   return (
     <div className="page" id="auto-dialer">
