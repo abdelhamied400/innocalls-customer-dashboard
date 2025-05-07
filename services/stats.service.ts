@@ -1,7 +1,7 @@
 import api from "./api";
 const waitFor = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms));
-const randomDelay = () => waitFor(Math.floor(Math.random() * 10000) + 500);
+const randomDelay = () => waitFor(Math.floor(Math.random() * 5000) + 500);
 
 export default {
   // statistics

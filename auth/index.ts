@@ -3,6 +3,7 @@ import CredentialsProvider from "./providers/Credentials";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [CredentialsProvider],
+  trustHost: true,
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
