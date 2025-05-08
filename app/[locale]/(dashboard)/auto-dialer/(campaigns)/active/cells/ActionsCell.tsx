@@ -1,10 +1,10 @@
 import { AutoDialerCampaignCols } from "../columns";
 import {
-  EllipsisVerticalIcon,
-  PauseIcon,
-  PlayIcon,
-  SquareIcon,
-} from "lucide-react";
+  MoreVert as EllipsisVerticalIcon,
+  Pause as PauseIcon,
+  PlayArrow as PlayIcon,
+  Stop as SquareIcon,
+} from "@mui/icons-material";
 import { Cell } from "@/types/cell";
 import { Button } from "@/components/ui/button";
 
@@ -14,18 +14,18 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
     <div className="flex items-center gap-2">
       {row.original.status === "paused" ? (
         <Button variant="ghost-primary" size="icon">
-          <PlayIcon size={16} />
+          <PlayIcon />
         </Button>
       ) : (
         <Button variant="ghost-warning" size="icon">
-          <PauseIcon size={16} />
+          <PauseIcon />
         </Button>
       )}
       <Button variant="ghost-destructive" size="icon">
-        <SquareIcon size={16} />
+        <SquareIcon />
       </Button>
       <Button variant="unstyled" size="icon">
-        <EllipsisVerticalIcon size={16} />
+        <EllipsisVerticalIcon />
       </Button>
     </div>
   );
