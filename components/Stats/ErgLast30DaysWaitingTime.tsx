@@ -18,8 +18,6 @@ const ErgLast30DaysWaitingTime = () => {
     queryKey: ["ErgLast30DaysWaitingTime"],
     queryFn: statsService.getErgLast30DaysWaitingTime,
     refetchOnWindowFocus: false,
-    refetchInterval: 60000,
-    refetchIntervalInBackground: true,
     refetchOnMount: "always",
     retry: false,
   });

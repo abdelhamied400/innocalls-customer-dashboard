@@ -18,8 +18,6 @@ const ErgLast30DaysTalkTime = () => {
     queryKey: ["ErgLast30DaysTalkTime"],
     queryFn: statsService.getErgLast30DaysTalkTime,
     refetchOnWindowFocus: false,
-    refetchInterval: 60000,
-    refetchIntervalInBackground: true,
     refetchOnMount: "always",
     retry: false,
   });

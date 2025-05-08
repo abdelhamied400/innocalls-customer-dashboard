@@ -18,8 +18,6 @@ const ErgLast30DaysCallsSummary = () => {
     queryKey: ["ErgLast30DaysCallsSummary"],
     queryFn: statsService.getErgLast30DaysCallsSummary,
     refetchOnWindowFocus: false,
-    refetchInterval: 60000,
-    refetchIntervalInBackground: true,
     refetchOnMount: "always",
     retry: false,
   });
