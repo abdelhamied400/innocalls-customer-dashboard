@@ -18,7 +18,7 @@ const FilterDialog = ({
         <h4>{title}</h4>
       </div>
       <div className="flex flex-col gap-2 filter-dialog-body">
-        <div className="flex flex-col gap-4 p-2 filter-dialog-content">
+        <div className="flex flex-col gap-4 p-2 filter-dialog-content max-h-64 overflow-y-auto">
           {children}
         </div>
         <hr className="mx-2" />
