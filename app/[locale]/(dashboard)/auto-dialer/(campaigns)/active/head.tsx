@@ -26,12 +26,33 @@ import { cn } from "@/lib/utils";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import ChevronDownIcon from "@mui/icons-material/ExpandMore";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import CalendarMonthIcon from "@mui/icons-material/CalendarToday";
 
 const AutoDialerActiveHead = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+
+  const getCreationDateFilterCount = useCallback(() => {
+    const from = searchParams.get("from");
+    const to = searchParams.get("to");
+    if (from && to) {
+      return 2;
+    } else if (from || to) {
+      return 1;
+    }
+    return 0;
+  }, [searchParams]);
+
+  const getFilter = useCallback(
+    (key: string) => {
+      const value = searchParams.get(key);
+      if (value) return value.toString();
+      return "";
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [searchParams]
+  );
 
   const updateFilter = useCallback(
     debounce((key: string, value: string) => {
@@ -43,7 +64,7 @@ const AutoDialerActiveHead = () => {
 
         router.push(`?${params.toString()}`);
       });
-    }, 200),
+    }, 0),
     [searchParams, router]
   );
 
@@ -80,9 +101,10 @@ const AutoDialerActiveHead = () => {
                   Creation Date
                   <Badge
                     variant="outline"
-                    className="bg-neutral-500 px-1 text-white"
+                    className="bg-neutral-500 px-1.5 rounded-md text-white"
                   >
-                    1
+                    {/* filters count */}
+                    {getCreationDateFilterCount()}
                   </Badge>
                   <ChevronDownIcon />
                 </Button>
@@ -95,7 +117,13 @@ const AutoDialerActiveHead = () => {
                     postIcon={<CalendarMonthIcon className="text-gray-400" />}
                   >
                     <DatePicker
+                      className="flex-1"
                       placeholder="Enter from date"
+                      value={
+                        getFilter("from")
+                          ? new Date(getFilter("from"))
+                          : undefined
+                      }
                       onChange={(date = new Date()) =>
                         updateFilter("from", format(date, "yyyy-MM-dd"))
                       }
@@ -106,7 +134,16 @@ const AutoDialerActiveHead = () => {
                     hint="DD/MM/YYYY"
                     postIcon={<CalendarMonthIcon className="text-gray-400" />}
                   >
-                    <DatePicker placeholder="Enter to date" />
+                    <DatePicker
+                      className="flex-1"
+                      placeholder="Enter to date"
+                      value={
+                        getFilter("to") ? new Date(getFilter("to")) : undefined
+                      }
+                      onChange={(date = new Date()) =>
+                        updateFilter("to", format(date, "yyyy-MM-dd"))
+                      }
+                    />
                   </Field>
                 </FilterDialog>
               </DropdownMenuContent>
