@@ -28,9 +28,9 @@ const OverdueInvoices = () => {
   return (
     <StatsCard
       icon={<img src="/assets/icons/stats/calendar.svg" alt="" />}
-      title="Balance"
+      title="Overdue Invoices"
       value={`${overdueInvoices?.totalAmount.toFixed(2)} ${
-        overdueInvoices?.symbol
+        overdueInvoices?.currency
       }`}
       isRefetching={isRefetching}
       className="bg-red-100"
