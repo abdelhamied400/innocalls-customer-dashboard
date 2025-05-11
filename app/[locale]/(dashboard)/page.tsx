@@ -4,6 +4,7 @@ import useAuthStore from "@/store/auth.slice";
 import ServiceLevelStats from "@/containers/ServiceLevelStats";
 import ErgStats from "@/containers/ErgStats";
 import CallDistributionStats from "@/containers/CallDistributionStats";
+import BillingStats from "@/containers/BillingStats";
 
 const Dashboard = () => {
   const { Organization } = useAuthStore();
@@ -13,6 +14,7 @@ const Dashboard = () => {
         <ServiceLevelStats />
         <CallDistributionStats />
         {Organization?.hasTenant && <ErgStats />}
+        <BillingStats />
       </div>
     </div>
   );
