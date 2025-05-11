@@ -1,5 +1,5 @@
 import CallDistribution from "@/components/Stats/CallDistribution";
-import TotalCalls from "@/components/Stats/TotalCalls";
+import TotalAnsweredCalls from "@/components/Stats/TotalAnsweredCalls";
 
 const CallDistributionStats = () => {
   return (
@@ -10,7 +10,7 @@ const CallDistributionStats = () => {
           <CallDistribution />
         </div>
         <div className="col-span-1 max-h-[320px]">
-          <TotalCalls />
+          <TotalAnsweredCalls />
         </div>
       </div>
     </div>

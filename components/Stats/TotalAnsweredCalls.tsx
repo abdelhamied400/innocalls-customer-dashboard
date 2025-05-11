@@ -9,6 +9,9 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import statsService from "@/services/stats.service";
+import { useQuery } from "@tanstack/react-query";
+import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 
 const chartConfig: ChartConfig = {
   totalCalls: {
@@ -16,16 +19,30 @@ const chartConfig: ChartConfig = {
     color: "#5BC9F7",
   },
 };
-const TotalCalls = () => {
-  const chartData = [
-    { day: "M", totalCalls: 186 },
-    { day: "T", totalCalls: 305 },
-    { day: "W", totalCalls: 237 },
-    { day: "T", totalCalls: 73 },
-    { day: "F", totalCalls: 209 },
-    { day: "S", totalCalls: 214 },
-    { day: "Today", totalCalls: 186 },
-  ];
+const TotalAnsweredCalls = () => {
+  const {
+    data: totalAnsweredCalls,
+    isRefetching,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["total-answered-calls"],
+    queryFn: statsService.getTotalAnsweredCalls,
+    refetchOnWindowFocus: false,
+    refetchInterval: 60000,
+    refetchIntervalInBackground: true,
+    refetchOnMount: "always",
+    retry: false,
+  });
+
+  if (isLoading || isRefetching) {
+    return <StatsCardSkeleton />;
+  }
+
+  if (isError) {
+    return <StatsCardError error={error} />;
+  }
 
   return (
     <div className="page h-full" id="callDistribution">
@@ -37,7 +54,7 @@ const TotalCalls = () => {
           config={chartConfig}
           className="w-full min-h-[200px] h-full"
         >
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart accessibilityLayer data={totalAnsweredCalls}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="day"
@@ -72,4 +89,4 @@ const TotalCalls = () => {
   );
 };
 
-export default TotalCalls;
+export default TotalAnsweredCalls;

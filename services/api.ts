@@ -23,9 +23,17 @@ api.interceptors.request.use(async (config) => {
     const cookies = await nextHeaders.cookies();
     organizationId = cookies.get("OrganizationId")?.value;
   } else {
-    organizationId = getCookie("OrganizationId");
+    organizationId = await getCookie("OrganizationId");
   }
-  console.log("OrganizationId", isServer, organizationId);
+
+  let lang = "en";
+  if (isServer) {
+    const nextHeaders = require("next/headers");
+    const headers = nextHeaders.headers();
+    lang = headers.get("NEXT_LOCALE") || "en";
+  } else {
+    lang = (await getCookie("NEXT_LOCALE")) || "en";
+  }
 
   if (session?.user.accessToken) {
     config.headers.Authorization = `Bearer ${session.user.accessToken}`;
@@ -33,6 +41,10 @@ api.interceptors.request.use(async (config) => {
 
   if (organizationId) {
     config.headers["Organization"] = organizationId;
+  }
+
+  if (lang) {
+    config.headers["Accept-Language"] = lang;
   }
 
   return config;

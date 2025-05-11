@@ -1,6 +1,47 @@
-import StatsCard from "@/components/StatsCard";
+"use client";
+import StatsCard, {
+  StatsCardError,
+  StatsCardSkeleton,
+} from "@/components/StatsCard";
+import statsService from "@/services/stats.service";
+import { useQuery } from "@tanstack/react-query";
 
 const LastHourCallsDuration = () => {
+  const {
+    data: lastHourCallsDuration,
+    isRefetching,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["last-hour-calls-duration"],
+    queryFn: statsService.getLastHourCallsDuration,
+    refetchOnWindowFocus: false,
+    refetchInterval: 60000,
+    refetchIntervalInBackground: true,
+    refetchOnMount: "always",
+    retry: false,
+  });
+
+  const formatDuration = (duration: string[]) => {
+    return duration
+      .map((time, index) => {
+        if (index === 0) return `${time}H`;
+        if (index === 1) return `${time}M`;
+        if (index === 2) return `${time}S`;
+        return "";
+      })
+      .join(" ");
+  };
+
+  if (isLoading || isRefetching) {
+    return <StatsCardSkeleton />;
+  }
+
+  if (isError) {
+    return <StatsCardError error={error} />;
+  }
+
   return (
     <StatsCard
       icon={
@@ -10,12 +51,21 @@ const LastHourCallsDuration = () => {
         />
       }
       title="Total call duration last hour"
-      value="00H 00M 00S" // Replace with actual data
+      value={formatDuration(
+        lastHourCallsDuration.lastHourOfDay.totalAnsweredDuration
+      )}
       className="shadow-none"
       info={
         <p className="text-sm text-gray-500">
-          Based on <span className="font-bold">1000</span> calls of total{" "}
-          <span className="font-bold">20,000</span> calls
+          Based on{" "}
+          <span className="font-bold">
+            {lastHourCallsDuration.lastHourOfDay.totalAnsweredCount}
+          </span>{" "}
+          calls of total{" "}
+          <span className="font-bold">
+            {lastHourCallsDuration.lastHourOfDay.total}
+          </span>{" "}
+          calls
         </p>
       }
     ></StatsCard>

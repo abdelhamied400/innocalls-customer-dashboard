@@ -4,6 +4,41 @@ import api from "./api";
 export default {
   // statistics
   // ------->
+  // PBX
+  getUsersCount: async () => {
+    const res = await api.get("/extension/count");
+    return res.data;
+  },
+  getOnlineUsersCount: async () => {
+    const res = await api.get("/extension/online-count");
+    return res.data;
+  },
+  getTotalAnsweredCalls: async () => {
+    const res = await api.get("/statistics/tenant-answered-calls");
+    const totalCalls = res.data.data.totalCalls;
+
+    const chartData = totalCalls.labels.map((label: string, idx: number) => ({
+      day: label.slice(0, 1).toUpperCase(),
+      totalCalls: totalCalls.values[idx],
+    }));
+
+    return chartData;
+  },
+  // ------->
+  // Service level
+  getLiveCallsCount: async () => {
+    const res = await api.get("/extension/live-calls-count");
+    return res.data;
+  },
+  getLastHourCallsDuration: async () => {
+    const res = await api.get("/cdr/user/today");
+    return res.data;
+  },
+  getTodayCallsDuration: async () => {
+    const res = await api.get("/cdr/user/today");
+    return res.data;
+  },
+  // ------->
   // billing
   getBalance: async () => {
     const res = await api.get("/jera/client-balance");
