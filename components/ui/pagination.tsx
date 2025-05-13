@@ -1,13 +1,13 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button, ButtonProps, buttonVariants } from "@/components/ui/button";
-import { DotSquareIcon, SkipBackIcon, SkipForwardIcon } from "lucide-react";
+import { EllipsisIcon, SkipBackIcon, SkipForwardIcon } from "lucide-react";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
     role="navigation"
     aria-label="pagination"
-    className={cn("mx-auto flex w-full justify-center", className)}
+    className={cn("", className)}
     {...props}
   />
 );
@@ -117,7 +117,7 @@ const PaginationEllipsis = ({
     className={cn("flex h-9 w-9 items-center justify-center", className)}
     {...props}
   >
-    <DotSquareIcon className="w-4 h-4" />
+    <EllipsisIcon className="w-4 h-4" />
     <span className="sr-only">More pages</span>
   </span>
 );

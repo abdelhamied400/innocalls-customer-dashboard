@@ -13,7 +13,7 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import Select from "@/components/ui/select";
+import Select from "@/components/select";
 import { SOUND_SIZE_LIMIT } from "@/constants/file";
 import queryExtensions from "@/queries/queryExtensions";
 import { AutoDialerCreateStep2 } from "@/validation/AutoDialerCreateCampaign";

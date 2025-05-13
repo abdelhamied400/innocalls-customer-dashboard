@@ -26,6 +26,23 @@ export const useFilters = () => {
     [searchParams, router]
   );
 
+  const updateFilters = useCallback(
+    debounce((updates: Record<string, string | undefined>) => {
+      const params = new URLSearchParams(searchParams);
+
+      Object.entries(updates).forEach(([key, value]) => {
+        if (value) {
+          params.set(key, value);
+        } else {
+          params.delete(key);
+        }
+      });
+
+      router.push(`?${params.toString()}`);
+    }, 100),
+    [searchParams, router]
+  );
+
   const getFilterGroupKeys = useCallback((): Record<string, string[]> => {
     const groups: Record<string, string[]> = {};
 
@@ -84,6 +101,7 @@ export const useFilters = () => {
   return {
     getFilter,
     updateFilter,
+    updateFilters,
     getFilterGroupKeys,
     getFilterCountForGroup,
     clearGroup,

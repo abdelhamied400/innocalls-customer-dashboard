@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import DatePicker from "@/components/ui/date-picker";
 import Field from "@/components/ui/field";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import Select from "@/components/ui/select";
+import Select from "@/components/select";
 import SpinButton from "@/components/ui/spin-button";
 import { Timezone, timezones } from "@/constants/timezones";
 import {

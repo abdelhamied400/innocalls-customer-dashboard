@@ -8,22 +8,20 @@ import { PaginationState } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 
 type UsePaginationProps<TData> = {
-  data: TData[];
-  pagination?: {
-    perPage?: number;
-  };
+  totalItems?: number;
+  perPage?: number;
 };
 const usePagination = <TData>({
-  data,
-  pagination,
+  totalItems = 0,
+  perPage = 10,
 }: UsePaginationProps<TData>) => {
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: pagination?.perPage || 10,
+    pageSize: perPage,
   });
 
   const pages = useMemo(() => {
-    const pagesCount = Math.ceil(data.length / pageSize);
+    const pagesCount = Math.ceil(totalItems / pageSize);
 
     let pages = [];
 
@@ -53,7 +51,7 @@ const usePagination = <TData>({
     pages = [...pages, pagesCount - 1, pagesCount];
 
     return pages;
-  }, [data.length, pageIndex, pageSize]);
+  }, [totalItems, pageIndex, pageSize]);
 
   return {
     pageIndex,

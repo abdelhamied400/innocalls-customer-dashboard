@@ -2,7 +2,7 @@
 import { memo } from "react";
 import { useFormContext } from "react-hook-form";
 import { Button } from "../ui/button";
-import Select from "../ui/select";
+import Select from "../select";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
 import {
   FormField,

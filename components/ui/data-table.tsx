@@ -40,6 +40,9 @@ interface DataTableProps<TData, TValue> {
   isLoading?: boolean;
   onPageChange?: OnChangeFn<PaginationState>;
   pagination?: {
+    pageIndex?: number;
+    totalPages?: number;
+    totalItems?: number;
     perPage?: number;
   };
   meta?: TableMeta<TData> | undefined;
@@ -54,10 +57,6 @@ export function DataTable<TData, TValue>({
   meta,
 }: DataTableProps<TData, TValue>) {
   const manualPagination = !!onPageChange;
-  const { pageIndex, pageSize, setPagination, pages } = usePagination<TData>({
-    data,
-    pagination,
-  });
 
   const table = useReactTable({
     data,
@@ -68,14 +67,11 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: (props) => {
-      setPagination(props);
-      if (!!onPageChange) onPageChange(props);
-    },
+    onPaginationChange: onPageChange,
     state: {
       pagination: {
-        pageIndex,
-        pageSize,
+        pageIndex: pagination?.pageIndex || 0,
+        pageSize: pagination?.perPage || 10,
       },
     },
     meta,
@@ -164,17 +160,14 @@ export function DataTable<TData, TValue>({
                 />
               </PaginationItem>
 
-              {pages.map((page, idx) => (
-                <PaginationItem key={`page-${page}, ${idx}`}>
-                  {page === -1 && <PaginationEllipsis />}
-                  {page !== -1 && (
-                    <PaginationButton
-                      isActive={pageIndex === page - 1}
-                      onClick={() => table.setPageIndex(page - 1)}
-                    >
-                      {page}
-                    </PaginationButton>
-                  )}
+              {[...Array(pagination?.totalPages)].map((_, idx) => (
+                <PaginationItem key={`page-${idx}`}>
+                  <PaginationButton
+                    isActive={pagination?.pageIndex === idx}
+                    onClick={() => table.setPageIndex(idx)}
+                  >
+                    {idx + 1}
+                  </PaginationButton>
                 </PaginationItem>
               ))}
               <PaginationItem>
@@ -199,10 +192,10 @@ export function DataTable<TData, TValue>({
               <SelectItem value="30">30</SelectItem>
             </SelectContent>
           </Select> */}
-          <p className="text-sm">
-            {pageIndex * pageSize + 1}-
-            {Math.min((pageIndex + 1) * pageSize, data.length)} of {data.length}
-          </p>
+          {/* <p className="text-sm">
+            {pagination?.pageIndex * pageSize + 1}-
+            {Math.min((pagination?.pageIndex + 1) * pageSize, data.length)} of {data.length}
+          </p> */}
         </div>
       </div>
     </div>

@@ -27,17 +27,37 @@ import CalendarIcon from "@mui/icons-material/CalendarToday";
 import { useFilters } from "@/hooks/use-filters";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { autoDialerCampaignStatuses } from "@/constants/auto-dialer";
+import { autoDialerCampaignActiveStatuses } from "@/constants/auto-dialer";
 import { Clear } from "@mui/icons-material";
+import { useState } from "react";
 
 const AutoDialerActiveHead = () => {
   const {
     getFilter,
-    updateFilter,
+    updateFilters,
     getFilterCountForGroup,
     clearGroup,
     clearAllFilters,
   } = useFilters();
+
+  const [search, setSearch] = useState(getFilter("search"));
+  const [creationDate, setCreationDate] = useState({
+    from: getFilter("creation-date.from")
+      ? new Date(getFilter("creation-date.from"))
+      : undefined,
+    to: getFilter("creation-date.to")
+      ? new Date(getFilter("creation-date.from"))
+      : undefined,
+  });
+
+  const [durationType, setDurationType] = useState(getFilter("duration-type"));
+
+  const [status, setStatus] = useState<Record<string, boolean>>(
+    autoDialerCampaignActiveStatuses.reduce((acc, status) => {
+      acc[status.value] = getFilter(`status.${status.value}`) === "true";
+      return acc;
+    }, {} as Record<string, boolean>)
+  );
 
   return (
     <Collapsible>
@@ -50,8 +70,13 @@ const AutoDialerActiveHead = () => {
                 placeholder="Search"
                 type="search"
                 variant="field"
-                value={getFilter("search")}
-                onChange={(e) => updateFilter("search", e.target.value)}
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  updateFilters({
+                    search: e.target.value,
+                  });
+                }}
               />
             </Field>
             <CollapsibleTrigger asChild>
@@ -85,7 +110,23 @@ const AutoDialerActiveHead = () => {
                 <DropdownMenuContent>
                   <FilterDialog
                     title="Select a date range"
-                    onReset={() => clearGroup("creation-date")}
+                    onReset={() => {
+                      setCreationDate({
+                        from: undefined,
+                        to: undefined,
+                      });
+                      clearGroup("creation-date");
+                    }}
+                    onApply={() => {
+                      updateFilters({
+                        "creation-date.from": creationDate.from
+                          ? format(creationDate.from, "yyyy-MM-dd")
+                          : undefined,
+                        "creation-date.to": creationDate.to
+                          ? format(creationDate.to, "yyyy-MM-dd")
+                          : undefined,
+                      });
+                    }}
                   >
                     <Field
                       label="From"
@@ -95,16 +136,12 @@ const AutoDialerActiveHead = () => {
                       <DatePicker
                         className="flex-1"
                         placeholder="Enter from date"
-                        value={
-                          getFilter("creation-date.from")
-                            ? new Date(getFilter("creation-date.from"))
-                            : undefined
-                        }
-                        onChange={(date = new Date()) =>
-                          updateFilter(
-                            "creation-date.from",
-                            format(date, "yyyy-MM-dd")
-                          )
+                        value={creationDate.from}
+                        onChange={(date) =>
+                          setCreationDate((prev) => ({
+                            ...prev,
+                            from: date || undefined,
+                          }))
                         }
                       />
                     </Field>
@@ -116,16 +153,12 @@ const AutoDialerActiveHead = () => {
                       <DatePicker
                         className="flex-1"
                         placeholder="Enter to date"
-                        value={
-                          getFilter("creation-date.to")
-                            ? new Date(getFilter("creation-date.to"))
-                            : undefined
-                        }
-                        onChange={(date = new Date()) =>
-                          updateFilter(
-                            "creation-date.to",
-                            format(date, "yyyy-MM-dd")
-                          )
+                        value={creationDate.to}
+                        onChange={(date) =>
+                          setCreationDate((prev) => ({
+                            ...prev,
+                            to: date || undefined,
+                          }))
                         }
                       />
                     </Field>
@@ -150,14 +183,20 @@ const AutoDialerActiveHead = () => {
                 <DropdownMenuContent>
                   <FilterDialog
                     title="Select from the list"
-                    onReset={() => clearGroup("duration-type")}
+                    onReset={() => {
+                      setDurationType("");
+                      clearGroup("duration-type");
+                    }}
+                    onApply={() => {
+                      updateFilters({
+                        "duration-type": durationType,
+                      });
+                    }}
                   >
                     <RadioGroup
                       defaultValue=""
-                      onValueChange={(value) =>
-                        updateFilter("duration-type", value)
-                      }
-                      value={getFilter("duration-type")}
+                      onValueChange={setDurationType}
+                      value={durationType}
                     >
                       <div className="flex items-center space-x-2">
                         <RadioGroupItem
@@ -197,27 +236,39 @@ const AutoDialerActiveHead = () => {
                 <DropdownMenuContent>
                   <FilterDialog
                     title="Select from the list"
-                    onReset={() => clearGroup("status")}
+                    onReset={() => {
+                      setStatus({});
+                      clearGroup("status");
+                    }}
+                    onApply={() =>
+                      updateFilters(
+                        autoDialerCampaignActiveStatuses.reduce((acc, s) => {
+                          acc[`status.${s.value}`] = !!status[s.value];
+                          return acc;
+                        }, {} as Record<string, boolean>)
+                      )
+                    }
                   >
-                    {autoDialerCampaignStatuses.map((status) => (
+                    {autoDialerCampaignActiveStatuses.map((s) => (
                       <div
                         className="flex items-center space-x-2"
-                        key={status.value}
+                        key={s.value}
                       >
                         <Checkbox
-                          id={status.value}
-                          checked={
-                            getFilter(`status.${status.value}`) === "true"
-                          }
+                          id={s.value}
+                          checked={!!status[s.value]}
                           onCheckedChange={(checked) =>
-                            updateFilter(`status.${status.value}`, checked)
+                            setStatus((prev) => ({
+                              ...prev,
+                              [s.value]: checked as boolean,
+                            }))
                           }
                         />
                         <label
-                          htmlFor={status.value}
+                          htmlFor={s.value}
                           className="peer-disabled:opacity-70 font-medium text-sm leading-none peer-disabled:cursor-not-allowed"
                         >
-                          {status.label}
+                          {s.label}
                         </label>
                       </div>
                     ))}
@@ -226,7 +277,19 @@ const AutoDialerActiveHead = () => {
               </DropdownMenu>
             </div>
 
-            <Button onClick={() => clearAllFilters()} variant="ghost">
+            <Button
+              onClick={() => {
+                clearAllFilters();
+                setSearch("");
+                setCreationDate({
+                  from: undefined,
+                  to: undefined,
+                });
+                setDurationType("");
+                setStatus({});
+              }}
+              variant="ghost"
+            >
               <Clear /> Clear
             </Button>
           </div>

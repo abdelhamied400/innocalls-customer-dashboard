@@ -30,7 +30,6 @@ const TotalAnsweredCalls = () => {
     queryKey: ["total-answered-calls"],
     queryFn: statsService.getTotalAnsweredCalls,
     refetchOnWindowFocus: false,
-    refetchInterval: 60000,
     refetchIntervalInBackground: true,
     refetchOnMount: "always",
     retry: false,

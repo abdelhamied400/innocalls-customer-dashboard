@@ -13,6 +13,7 @@ const Balance = () => {
     queryKey: ["balance"],
     queryFn: statsService.getBalance,
     refetchOnWindowFocus: false,
+    refetchInterval: 60000,
     refetchOnMount: "always",
     retry: false,
   });
