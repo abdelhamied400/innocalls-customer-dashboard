@@ -27,92 +27,95 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
   return (
     <div
-      className="bg-background h-screen dashboard-layout layout"
+      className="bg-background dashboard-layout layout"
       key={Organization?.id}
     >
-      <div className="flex h-full">
-        <Sidebar>
-          <SidebarHeader />
-          <div className="flex flex-col gap-2 p-4 overflow-y-auto">
-            <SidebarItem
-              icon={<DashboardCustomize />}
-              title="Dashboard"
-              href="/"
-            />
-            <SidebarItem
-              disabled
-              icon={<Phone />}
-              title="Numbers"
-              href="/numbers"
-            />
-            <SidebarItem
-              disabled
-              icon={<Users />}
-              title="Users"
-              href="/users"
-            />
-            <SidebarItem
-              disabled
-              icon={<Timeline />}
-              title="Call Reporting"
-              href="/call-reporting"
-            />
-            <SidebarItem
-              disabled
-              icon={<MonetizationOn />}
-              title="Billing"
-              href="/billing"
-            />
-            <SidebarItem
-              disabled
-              icon={<DataUsage />}
-              title="Usage"
-              href="/usage"
-            />
-            <SidebarItem
-              disabled
-              icon={<ShoppingCart />}
-              title="Order Confirmation"
-              href="/order-confirmation"
-            />
-            <SidebarItem
-              icon={<RingVolume />}
-              title="Auto Dialer"
-              href="/auto-dialer/active"
-            />
-            <SidebarItem
-              disabled
-              icon={<Code />}
-              title="Developers Tab"
-              href="/developers-tab"
-            />
-            <SidebarItem
-              disabled
-              icon={<Settings />}
-              title="Settings"
-              href="/settings"
-            />
-            <hr />
-            <div className="py-2 flex flex-col gap-2">
-              <Image
-                src="/assets/images/robot.svg"
-                alt="robot"
-                width={100}
-                height={200}
-                className="mx-auto"
+      <div className="grid grid-cols-[300px_1fr_300px] grid-rows-[96px_1fr] h-screen">
+        <div className="row-span-2 border-e-2 overflow-auto">
+          <Sidebar>
+            <SidebarHeader />
+            <div className="flex flex-col gap-2 p-4 overflow-y-auto">
+              <SidebarItem
+                icon={<DashboardCustomize />}
+                title="Dashboard"
+                href="/"
               />
-              <Button size="lg">Inno Support</Button>
+              <SidebarItem
+                disabled
+                icon={<Phone />}
+                title="Numbers"
+                href="/numbers"
+              />
+              <SidebarItem
+                disabled
+                icon={<Users />}
+                title="Users"
+                href="/users"
+              />
+              <SidebarItem
+                disabled
+                icon={<Timeline />}
+                title="Call Reporting"
+                href="/call-reporting"
+              />
+              <SidebarItem
+                disabled
+                icon={<MonetizationOn />}
+                title="Billing"
+                href="/billing"
+              />
+              <SidebarItem
+                disabled
+                icon={<DataUsage />}
+                title="Usage"
+                href="/usage"
+              />
+              <SidebarItem
+                disabled
+                icon={<ShoppingCart />}
+                title="Order Confirmation"
+                href="/order-confirmation"
+              />
+              <SidebarItem
+                icon={<RingVolume />}
+                title="Auto Dialer"
+                href="/auto-dialer/active"
+              />
+              <SidebarItem
+                disabled
+                icon={<Code />}
+                title="Developers Tab"
+                href="/developers-tab"
+              />
+              <SidebarItem
+                disabled
+                icon={<Settings />}
+                title="Settings"
+                href="/settings"
+              />
+              <hr />
+              <div className="py-2 flex flex-col gap-2">
+                <Image
+                  src="/assets/images/robot.svg"
+                  alt="robot"
+                  width={100}
+                  height={200}
+                  className="mx-auto"
+                />
+                <Button size="lg">Inno Support</Button>
+              </div>
             </div>
-          </div>
-        </Sidebar>
-        <div className="flex flex-col flex-1 main">
+          </Sidebar>
+        </div>
+
+        <div className="col-span-2">
           <Navbar />
-          <main className="flex-1 max-h-[calc(100%-96px)] flex gap-2">
-            <div className="flex-1 overflow-y-auto p-4">{children}</div>
-            <div className="w-[320px] border-s-2 px-4 py-2">
-              <Innortc />
-            </div>
-          </main>
+        </div>
+
+        <div className="overflow-y-auto p-4">{children}</div>
+
+        <div className="overflow-y-auto">
+          <Innortc />
         </div>
       </div>
     </div>

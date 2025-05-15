@@ -1,34 +1,63 @@
 "use client";
-import { DataTable } from "@/components/ui/data-table";
 import { useQuery } from "@tanstack/react-query";
 import { columns } from "./columns";
-import { useSearchParams } from "next/navigation";
 import AutoDialerService from "@/services/auto-dialer.service";
+import { useSearchParams } from "next/navigation";
+import { useFilters } from "@/hooks/use-filters";
+import DataTableProvider, {
+  DataTable,
+  DataTableBody,
+  DataTableHeader,
+  DataTableSkeleton,
+} from "@/components/ui/data-table";
+import DataTablePagination from "@/components/ui/data-table-pagination";
 
-const FinishedCampaignsTable = () => {
+const FinshedCampaignsTable = () => {
   const filters = useSearchParams();
-  const { data, isLoading, isRefetching } = useQuery({
-    queryKey: [
-      "auto-dialer-active-campaigns",
-      {
-        search: filters.get("search") || "",
-      },
-    ],
+  const { updateFilters, getAllFilters } = useFilters();
+  const perPage = parseInt(filters.get("perPage") || "10");
+  const pageIndex = parseInt(filters.get("page") || "1") - 1;
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["auto-dialer-finshed-campaigns", getAllFilters()],
     queryFn: async () =>
-      await AutoDialerService.fetchActiveCampaigns({
-        search: filters.get("search") || "",
+      await AutoDialerService.fetchFinshedCampaigns({
+        ...getAllFilters(),
+        limit: perPage,
       }),
     refetchOnMount: "always",
   });
+
+  const { campaigns = [], ...pagination } = data || {};
+
   return (
-    <div className="auto-dialer-finished-table">
-      <DataTable
+    <div className="rounded-2xl border border-gray-300 overflow-y-auto p-4">
+      <DataTableProvider
+        data={campaigns}
         columns={columns}
-        data={data?.campaigns || []}
-        isLoading={isLoading || isRefetching}
-      />
+        pagination={{
+          ...pagination,
+          perPage,
+        }}
+        manualPagination
+        onPaginationChange={({ pageSize, pageIndex }) => {
+          updateFilters({
+            page: pageIndex + 1,
+            perPage: pageSize,
+          });
+        }}
+        defaultPageIndex={pageIndex}
+      >
+        <DataTable>
+          <DataTableHeader />
+          {isLoading && <DataTableSkeleton rows={3} />}
+          {!isLoading && <DataTableBody />}
+        </DataTable>
+
+        {!isLoading && <DataTablePagination />}
+      </DataTableProvider>
     </div>
   );
 };
 
-export default FinishedCampaignsTable;
+export default FinshedCampaignsTable;

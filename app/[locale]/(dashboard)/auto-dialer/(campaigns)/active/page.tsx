@@ -10,7 +10,7 @@ const AutoDialerActiveCampaigns = async ({
 }: AutoDialerActiveCampaignsProps) => {
   return (
     <div className="page" id="auto-dialer">
-      <div className="rounded-xl h-full overflow-auto">
+      <div className="rounded-xl">
         <div className="border rounded-xl">
           <AutoDialerActiveHead />
           <AutoDialerActiveCampaignsTable />

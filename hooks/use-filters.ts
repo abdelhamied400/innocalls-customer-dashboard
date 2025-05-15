@@ -31,7 +31,7 @@ export const useFilters = () => {
       const params = new URLSearchParams(searchParams);
 
       Object.entries(updates).forEach(([key, value]) => {
-        if (value) {
+        if (value !== null && value !== undefined) {
           params.set(key, value);
         } else {
           params.delete(key);

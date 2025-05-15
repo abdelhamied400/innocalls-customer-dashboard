@@ -25,6 +25,18 @@ export default {
     const res = await api.get(`/auto-dialer/campaigns?${queryString}`);
     return res.data.data;
   },
+  fetchFinshedCampaigns: async (
+    filters?: any
+  ): Promise<FetchActiveCampaignsResponse> => {
+    const filtersObj = {
+      ...filters,
+      isActive: false,
+    };
+
+    const queryString = objToQueryString(filtersObj);
+    const res = await api.get(`/auto-dialer/campaigns?${queryString}`);
+    return res.data.data;
+  },
   startCampaign: async (campaignId: string) => {
     const res = await api.patch(`/auto-dialer/campaigns/${campaignId}/start`);
     return res.data;

@@ -17,49 +17,66 @@ import Field from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Toggle } from "@/components/ui/toggle";
 import { Checkbox } from "@/components/ui/checkbox";
-import { useCallback, useTransition } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { format } from "date-fns";
-import { debounce } from "@/lib/debounce";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import ChevronDownIcon from "@mui/icons-material/ExpandMore";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import CalendarIcon from "@mui/icons-material/CalendarToday";
+import { useFilters } from "@/hooks/use-filters";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { autoDialerCampaignInactiveStatuses } from "@/constants/auto-dialer";
+import { Clear } from "@mui/icons-material";
+import { useState } from "react";
 
-const AutoDialerFinishedHead = () => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+const AutoDialerFinshedHead = () => {
+  const {
+    getFilter,
+    updateFilters,
+    getFilterCountForGroup,
+    clearGroup,
+    clearAllFilters,
+  } = useFilters();
 
-  const updateFilter = useCallback(
-    debounce((key: string, value: string) => {
-      startTransition(() => {
-        let params: URLSearchParams = new URLSearchParams(searchParams);
+  const [search, setSearch] = useState(getFilter("search"));
+  const [creationDate, setCreationDate] = useState({
+    from: getFilter("creation-date.from")
+      ? new Date(getFilter("creation-date.from"))
+      : undefined,
+    to: getFilter("creation-date.to")
+      ? new Date(getFilter("creation-date.from"))
+      : undefined,
+  });
 
-        if (value) params.set(key, value);
-        else params.delete(key);
+  const [durationType, setDurationType] = useState(getFilter("duration-type"));
 
-        router.push(`?${params.toString()}`);
-      });
-    }, 200),
-    [searchParams, router]
+  const [status, setStatus] = useState<Record<string, boolean>>(
+    autoDialerCampaignInactiveStatuses.reduce((acc, status) => {
+      acc[status.value] = getFilter(`status.${status.value}`) === "true";
+      return acc;
+    }, {} as Record<string, boolean>)
   );
 
   return (
     <Collapsible>
       <div className="table-head">
         <div className="flex justify-between items-center gap-4 p-3">
-          <h3>Finished Campaigns</h3>
+          <h3>Finshed Campaigns</h3>
           <div className="flex items-center gap-4 actions">
             <Field preIcon={<SearchIcon className="text-muted-foreground" />}>
               <Input
                 placeholder="Search"
                 type="search"
                 variant="field"
-                defaultValue={searchParams.get("search")?.toString()}
-                onChange={(e) => updateFilter("search", e.target.value)}
+                value={search}
+                onChange={(e) => {
+                  setSearch(e.target.value);
+                  updateFilters({
+                    search: e.target.value,
+                  });
+                }}
               />
             </Field>
             <CollapsibleTrigger asChild>
@@ -73,104 +90,208 @@ const AutoDialerFinishedHead = () => {
           </div>
         </div>
         <CollapsibleContent>
-          <div className="flex items-center gap-4 p-3 border-t table-filters">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="filter" size="filter">
-                  Creation Date
-                  <Badge
-                    variant="outline"
-                    className="bg-neutral-500 px-1 text-white"
+          <div className="flex justify-between items-center p-3 border-t table-filters">
+            <div className="flex items-center gap-4">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="filter" size="filter">
+                    Creation Date
+                    {getFilterCountForGroup("creation-date") > 0 && (
+                      <Badge
+                        variant="outline"
+                        className="bg-neutral-500 px-1.5 rounded-md text-white"
+                      >
+                        {getFilterCountForGroup("creation-date")}
+                      </Badge>
+                    )}
+                    <ChevronDownIcon />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <FilterDialog
+                    title="Select a date range"
+                    onReset={() => {
+                      setCreationDate({
+                        from: undefined,
+                        to: undefined,
+                      });
+                      clearGroup("creation-date");
+                    }}
+                    onApply={() => {
+                      updateFilters({
+                        "creation-date.from": creationDate.from
+                          ? format(creationDate.from, "yyyy-MM-dd")
+                          : undefined,
+                        "creation-date.to": creationDate.to
+                          ? format(creationDate.to, "yyyy-MM-dd")
+                          : undefined,
+                      });
+                    }}
                   >
-                    1
-                  </Badge>
-                  <ChevronDownIcon />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <FilterDialog title="Select a date range">
-                  <Field
-                    label="From"
-                    hint="DD/MM/YYYY"
-                    postIcon={<CalendarMonthIcon className="text-gray-400" />}
+                    <Field
+                      label="From"
+                      hint="DD/MM/YYYY"
+                      postIcon={<CalendarIcon className="text-gray-400" />}
+                    >
+                      <DatePicker
+                        className="flex-1"
+                        placeholder="Enter from date"
+                        value={creationDate.from}
+                        onChange={(date) =>
+                          setCreationDate((prev) => ({
+                            ...prev,
+                            from: date || undefined,
+                          }))
+                        }
+                      />
+                    </Field>
+                    <Field
+                      label="To"
+                      hint="DD/MM/YYYY"
+                      postIcon={<CalendarIcon className="text-gray-400" />}
+                    >
+                      <DatePicker
+                        className="flex-1"
+                        placeholder="Enter to date"
+                        value={creationDate.to}
+                        onChange={(date) =>
+                          setCreationDate((prev) => ({
+                            ...prev,
+                            to: date || undefined,
+                          }))
+                        }
+                      />
+                    </Field>
+                  </FilterDialog>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="filter" size="filter">
+                    Duration Type
+                    {getFilterCountForGroup("duration-type") > 0 && (
+                      <Badge
+                        variant="outline"
+                        className="bg-neutral-500 px-1.5 rounded-md text-white"
+                      >
+                        {getFilterCountForGroup("duration-type")}
+                      </Badge>
+                    )}
+                    <ChevronDownIcon />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <FilterDialog
+                    title="Select from the list"
+                    onReset={() => {
+                      setDurationType("");
+                      clearGroup("duration-type");
+                    }}
+                    onApply={() => {
+                      updateFilters({
+                        "duration-type": durationType,
+                      });
+                    }}
                   >
-                    <DatePicker
-                      placeholder="Enter from date"
-                      onChange={(date = new Date()) =>
-                        updateFilter("from", format(date, "yyyy-MM-dd"))
-                      }
-                    />
-                  </Field>
-                  <Field
-                    label="To"
-                    hint="DD/MM/YYYY"
-                    postIcon={<CalendarMonthIcon className="text-gray-400" />}
+                    <RadioGroup
+                      defaultValue=""
+                      onValueChange={setDurationType}
+                      value={durationType}
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="time-limited"
+                          id="time-limited"
+                        />
+                        <Label htmlFor="time-limited">Time Limited</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem
+                          value="agent-availability"
+                          id="agent-availability"
+                        />
+                        <Label htmlFor="agent-availability">
+                          Agent Availability
+                        </Label>
+                      </div>
+                    </RadioGroup>
+                  </FilterDialog>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="filter" size="filter">
+                    Status
+                    {getFilterCountForGroup("status") > 0 && (
+                      <Badge
+                        variant="outline"
+                        className="bg-neutral-500 px-1.5 rounded-md text-white"
+                      >
+                        {getFilterCountForGroup("status")}
+                      </Badge>
+                    )}
+                    <ChevronDownIcon />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <FilterDialog
+                    title="Select from the list"
+                    onReset={() => {
+                      setStatus({});
+                      clearGroup("status");
+                    }}
+                    onApply={() =>
+                      updateFilters(
+                        autoDialerCampaignInactiveStatuses.reduce((acc, s) => {
+                          acc[`status.${s.value}`] = !!status[s.value];
+                          return acc;
+                        }, {} as Record<string, boolean>)
+                      )
+                    }
                   >
-                    <DatePicker placeholder="Enter to date" />
-                  </Field>
-                </FilterDialog>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="filter" size="filter">
-                  Duration Type
-                  <ChevronDownIcon />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <FilterDialog title="Select a date range">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="time-limited" />
-                    <label
-                      htmlFor="time-limited"
-                      className="peer-disabled:opacity-70 font-medium leading-none peer-disabled:cursor-not-allowed"
-                    >
-                      Time Limited
-                    </label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="agent-availability" />
-                    <label
-                      htmlFor="agent-availability"
-                      className="peer-disabled:opacity-70 font-medium leading-none peer-disabled:cursor-not-allowed"
-                    >
-                      Agent Availability
-                    </label>
-                  </div>
-                </FilterDialog>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="filter" size="filter">
-                  Status
-                  <ChevronDownIcon />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <FilterDialog title="Select a date range">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="time-limited" />
-                    <label
-                      htmlFor="time-limited"
-                      className="peer-disabled:opacity-70 font-medium text-sm leading-none peer-disabled:cursor-not-allowed"
-                    >
-                      Time Limited
-                    </label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="agent-availability" />
-                    <label
-                      htmlFor="agent-availability"
-                      className="peer-disabled:opacity-70 font-medium text-sm leading-none peer-disabled:cursor-not-allowed"
-                    >
-                      Agent Availability
-                    </label>
-                  </div>
-                </FilterDialog>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                    {autoDialerCampaignInactiveStatuses.map((s) => (
+                      <div
+                        className="flex items-center space-x-2"
+                        key={s.value}
+                      >
+                        <Checkbox
+                          id={s.value}
+                          checked={!!status[s.value]}
+                          onCheckedChange={(checked) =>
+                            setStatus((prev) => ({
+                              ...prev,
+                              [s.value]: checked as boolean,
+                            }))
+                          }
+                        />
+                        <label
+                          htmlFor={s.value}
+                          className="peer-disabled:opacity-70 font-medium text-sm leading-none peer-disabled:cursor-not-allowed"
+                        >
+                          {s.label}
+                        </label>
+                      </div>
+                    ))}
+                  </FilterDialog>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            <Button
+              onClick={() => {
+                clearAllFilters();
+                setSearch("");
+                setCreationDate({
+                  from: undefined,
+                  to: undefined,
+                });
+                setDurationType("");
+                setStatus({});
+              }}
+              variant="ghost"
+            >
+              <Clear /> Clear
+            </Button>
           </div>
         </CollapsibleContent>
       </div>
@@ -178,4 +299,4 @@ const AutoDialerFinishedHead = () => {
   );
 };
 
-export default AutoDialerFinishedHead;
+export default AutoDialerFinshedHead;

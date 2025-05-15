@@ -7,7 +7,7 @@ const Sidebar = ({ children }: SidebarProps) => {
   const { isSidebarOpen } = useAppStore();
 
   if (!isSidebarOpen) return null;
-  return <aside className="flex flex-col border-e-2">{children}</aside>;
+  return <aside className="flex flex-col sidebar">{children}</aside>;
 };
 
 export default Sidebar;

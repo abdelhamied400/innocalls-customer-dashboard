@@ -6,7 +6,7 @@ type AutoDialerLayoutProps = PropsWithChildren<{
 const AutoDialerLayout = ({ children, createSheet }: AutoDialerLayoutProps) => {
   return (
     <div className="auto-dialer-layout">
-      <div className="flex flex-col gap-4 bg-white p-4 rounded-xl h-full overflow-auto">
+      <div className="flex flex-col gap-4 bg-white p-4 rounded-xl">
         {createSheet}
         {children}
       </div>

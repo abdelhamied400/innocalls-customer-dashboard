@@ -8,14 +8,15 @@ import DataTableProvider, {
   DataTable,
   DataTableBody,
   DataTableHeader,
-  DataTablePagination,
   DataTableSkeleton,
-} from "@/components/ui/new-data-table";
+} from "@/components/ui/data-table";
+import DataTablePagination from "@/components/ui/data-table-pagination";
 
 const ActiveCampaignsTable = () => {
   const filters = useSearchParams();
   const { updateFilters, getAllFilters } = useFilters();
   const perPage = parseInt(filters.get("perPage") || "10");
+  const pageIndex = parseInt(filters.get("page") || "1") - 1;
 
   const { data, isLoading } = useQuery({
     queryKey: ["auto-dialer-active-campaigns", getAllFilters()],
@@ -44,6 +45,7 @@ const ActiveCampaignsTable = () => {
           perPage: pageSize,
         });
       }}
+      defaultPageIndex={pageIndex}
     >
       <DataTable>
         <DataTableHeader />

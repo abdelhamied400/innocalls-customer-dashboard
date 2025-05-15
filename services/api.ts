@@ -29,7 +29,7 @@ api.interceptors.request.use(async (config) => {
   let lang = "en";
   if (isServer) {
     const nextHeaders = require("next/headers");
-    const headers = nextHeaders.headers();
+    const headers = await nextHeaders.headers();
     lang = headers.get("NEXT_LOCALE") || "en";
   } else {
     lang = (await getCookie("NEXT_LOCALE")) || "en";

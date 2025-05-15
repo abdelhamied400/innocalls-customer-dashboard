@@ -10,13 +10,15 @@ import { useMemo, useState } from "react";
 type UsePaginationProps<TData> = {
   totalItems?: number;
   perPage?: number;
+  defaultPageIndex?: number;
 };
 const usePagination = <TData>({
   totalItems = 0,
   perPage = 10,
+  defaultPageIndex = 0,
 }: UsePaginationProps<TData>) => {
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
+    pageIndex: defaultPageIndex,
     pageSize: perPage,
   });
 

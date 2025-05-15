@@ -1,23 +1,23 @@
-import AutoDialerFinishedCampaignsTable from "./table";
-import AutoDialerFinishedHead from "./head";
+import AutoDialerFinshedCampaignsTable from "./table";
+import AutoDialerFinshedHead from "./head";
 
 export type Filters = {};
-type AutoDialerFinishedCampaignsProps = {
+type AutoDialerFinshedCampaignsProps = {
   searchParams: Promise<Filters>;
 };
-const AutoDialerFinishedCampaigns = async ({
+const AutoDialerFinshedCampaigns = async ({
   searchParams,
-}: AutoDialerFinishedCampaignsProps) => {
+}: AutoDialerFinshedCampaignsProps) => {
   return (
     <div className="page" id="auto-dialer">
-      <div className="rounded-xl h-full overflow-auto">
+      <div className="rounded-xl">
         <div className="border rounded-xl">
-          <AutoDialerFinishedHead />
-          <AutoDialerFinishedCampaignsTable />
+          <AutoDialerFinshedHead />
+          <AutoDialerFinshedCampaignsTable />
         </div>
       </div>
     </div>
   );
 };
 
-export default AutoDialerFinishedCampaigns;
+export default AutoDialerFinshedCampaigns;
