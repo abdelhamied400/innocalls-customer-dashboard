@@ -11,18 +11,21 @@ import DataTableProvider, {
   DataTableSkeleton,
 } from "@/components/ui/data-table";
 import DataTablePagination from "@/components/ui/data-table-pagination";
+import { useMemo } from "react";
 
 const FinshedCampaignsTable = () => {
   const filters = useSearchParams();
   const { updateFilters, getAllFilters } = useFilters();
+  const filtersObject = useMemo(() => getAllFilters(), [filters]);
+
   const perPage = parseInt(filters.get("perPage") || "10");
   const pageIndex = parseInt(filters.get("page") || "1") - 1;
 
   const { data, isLoading } = useQuery({
-    queryKey: ["auto-dialer-finshed-campaigns", getAllFilters()],
+    queryKey: ["auto-dialer-finshed-campaigns", filtersObject],
     queryFn: async () =>
       await AutoDialerService.fetchFinshedCampaigns({
-        ...getAllFilters(),
+        ...filtersObject,
         limit: perPage,
       }),
     refetchOnMount: "always",
