@@ -146,7 +146,7 @@ export const DataTable = ({ children }: DataTableProps) => {
 export const DataTableHeader = () => {
   const { table } = useDataTable();
   return (
-    <TableHeader className="bg-gray-200 sticky top-0">
+    <TableHeader className="bg-gray-200 sticky -top-2 z-10">
       {table.getHeaderGroups().map((headerGroup) => (
         <TableRow key={headerGroup.id}>
           {headerGroup.headers.map((header) => {

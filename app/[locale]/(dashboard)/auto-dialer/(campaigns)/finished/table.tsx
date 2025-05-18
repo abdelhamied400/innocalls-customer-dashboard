@@ -31,7 +31,7 @@ const FinshedCampaignsTable = () => {
   const { campaigns = [], ...pagination } = data || {};
 
   return (
-    <div className="rounded-2xl border border-gray-300 overflow-y-auto p-4">
+    <div className="">
       <DataTableProvider
         data={campaigns}
         columns={columns}

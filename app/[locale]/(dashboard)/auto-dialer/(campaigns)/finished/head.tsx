@@ -75,6 +75,7 @@ const AutoDialerFinshedHead = () => {
                   setSearch(e.target.value);
                   updateFilters({
                     search: e.target.value,
+                    page: 1,
                   });
                 }}
               />
