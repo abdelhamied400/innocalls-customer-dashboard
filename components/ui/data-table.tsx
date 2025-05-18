@@ -8,15 +8,6 @@ import {
   TableHeader,
   TableRow,
 } from "./table";
-import {
-  Pagination,
-  PaginationButton,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "./pagination";
 import { Skeleton } from "./skeleton";
 import {
   Table as TanstackTable,
@@ -32,13 +23,6 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import usePagination from "@/hooks/use-pagination";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 type DataTableContextType<TData, TValue> = {
   table: TanstackTable<TData>;
@@ -48,6 +32,13 @@ type DataTableContextType<TData, TValue> = {
   onPaginationChange?: (pagination: PaginationState) => void;
   meta?: TableMeta<TData> | undefined;
   pages: number[];
+  pagination: {
+    pageIndex: number;
+    pageSize: number;
+    totalItems?: number;
+    totalPages?: number;
+  };
+  manualPagination?: boolean;
 };
 const DataTableContext = createContext<
   DataTableContextType<any, any> | undefined
@@ -133,6 +124,13 @@ const DataTableProvider = <TData, TValue>({
         meta,
         onPaginationChange,
         pages,
+        pagination: {
+          pageIndex,
+          pageSize,
+          totalItems: pagination?.totalItems,
+          totalPages: pagination?.totalPages,
+        },
+        manualPagination,
       }}
     >
       {children}

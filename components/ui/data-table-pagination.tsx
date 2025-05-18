@@ -1,13 +1,4 @@
 "use client";
-import { Table } from "@tanstack/react-table";
-import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
-} from "lucide-react";
-
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -27,7 +18,25 @@ import {
 } from "./pagination";
 
 const DataTablePagination = () => {
-  const { table, pages } = useDataTable();
+  const { table, pages, pagination, manualPagination } = useDataTable();
+
+  const startRowIndex =
+    table.getState().pagination.pageIndex *
+      table.getState().pagination.pageSize +
+    1;
+
+  const endRowIndex = manualPagination
+    ? (table.getState().pagination.pageIndex + 1) *
+      table.getState().pagination.pageSize
+    : table.getFilteredRowModel().rows.length;
+  const totalItems = pagination?.totalItems || 0;
+
+  const handleperPageChange = (value: string) => {
+    table.setPageSize(Number(value));
+  };
+  const handlePageChange = (page: number) => {
+    table.setPageIndex(page - 1);
+  };
 
   return (
     <div className="flex justify-between items-center gap-2 p-4">
@@ -42,25 +51,19 @@ const DataTablePagination = () => {
             </PaginationItem>
 
             {pages.map((page, idx) => (
-              <div key={`page-${idx}`}>
-                {page === -1 && (
-                  <PaginationItem>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                )}
+              <PaginationItem key={`page-${page}, ${idx}`}>
+                {page === -1 && <PaginationEllipsis />}
                 {page !== -1 && (
-                  <PaginationItem>
-                    <PaginationButton
-                      isActive={
-                        table.getState().pagination.pageIndex === page - 1
-                      }
-                      onClick={() => table.setPageIndex(page - 1)}
-                    >
-                      {page}
-                    </PaginationButton>
-                  </PaginationItem>
+                  <PaginationButton
+                    isActive={
+                      table.getState().pagination.pageIndex + 1 === page
+                    }
+                    onClick={() => handlePageChange(page)}
+                  >
+                    {page}
+                  </PaginationButton>
                 )}
-              </div>
+              </PaginationItem>
             ))}
             <PaginationItem>
               <PaginationNext
@@ -75,13 +78,11 @@ const DataTablePagination = () => {
       <div className="flex items-center gap-2 per-page">
         <label className="text-sm">Rows per page:</label>
         <Select
-          onValueChange={(value) => {
-            table.setPageSize(Number(value));
-          }}
-          defaultValue="10"
+          onValueChange={handleperPageChange}
+          defaultValue={pagination?.pageSize?.toString()}
         >
           <SelectTrigger className="w-max">
-            <SelectValue placeholder="10" defaultValue="10" />
+            <SelectValue placeholder="" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="10">10</SelectItem>
@@ -89,6 +90,10 @@ const DataTablePagination = () => {
             <SelectItem value="30">30</SelectItem>
           </SelectContent>
         </Select>
+        <p className="text-sm">
+          {startRowIndex}-{endRowIndex}
+          {totalItems ? ` of ${totalItems}` : ""}
+        </p>
       </div>
     </div>
   );
