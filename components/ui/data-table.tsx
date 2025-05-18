@@ -142,9 +142,7 @@ const DataTableProvider = <TData, TValue>({
 
 type DataTableProps = PropsWithChildren<{}>;
 export const DataTable = ({ children }: DataTableProps) => {
-  return (
-    <Table className="min-w-full divide-y divide-gray-600">{children}</Table>
-  );
+  return <Table className="">{children}</Table>;
 };
 
 export const DataTableHeader = () => {
@@ -174,7 +172,7 @@ export const DataTableHeader = () => {
 export const DataTableBody = () => {
   const { table, columns } = useDataTable();
   return (
-    <TableBody className="divide-y divide-gray-700">
+    <TableBody className="">
       {table.getRowModel().rows?.length ? (
         table.getRowModel().rows.map((row) => (
           <TableRow

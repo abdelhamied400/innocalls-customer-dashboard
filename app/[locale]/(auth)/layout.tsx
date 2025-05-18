@@ -11,7 +11,7 @@ const AuthLayout = async ({ children }: AuthLayoutProps) => {
   }
 
   return (
-    <div className="layout" id="auth-layout">
+    <div className="layout overflow-auto h-screen w-screen" id="auth-layout">
       {children}
     </div>
   );

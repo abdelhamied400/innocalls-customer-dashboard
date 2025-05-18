@@ -45,7 +45,7 @@ const RootLayout = async ({ children, params }: RootLayoutProps) => {
 
   return (
     <html lang={locale} dir={localeObj.dir}>
-      <body className={`${fonts[locale].variable} antialiased`}>
+      <body className={`${fonts[locale].variable} antialiased overflow-hidden`}>
         <MainProvider>{children}</MainProvider>
       </body>
     </html>
