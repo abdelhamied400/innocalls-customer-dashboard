@@ -5,7 +5,7 @@ import ProfileMenu from "./ProfileMenu";
 import { Button } from "./ui/button";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 
-const Navbar = () => {
+const AppNavbar = () => {
   const { isSidebarOpen, toggleSidebar } = useAppStore();
 
   return (
@@ -29,4 +29,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default AppNavbar;
