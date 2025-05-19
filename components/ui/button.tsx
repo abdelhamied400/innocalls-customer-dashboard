@@ -28,7 +28,7 @@ const buttonVariants = cva(
         "ghost-warning": "bg-warning-100 hover:bg-warning-200 text-warning-600",
         "ghost-destructive":
           "bg-destructive-100 hover:bg-destructive-200 text-destructive-600",
-        unstyled: "hover:bg-secondary",
+        unstyled: "",
       },
       size: {
         default: "h-9 px-4 py-2",

@@ -22,4 +22,11 @@ export default {
 
     return res.data;
   },
+  resetPassword: async (token: string, password: string) => {
+    const res = await api.post(`/auth/user/reset-password/${token}`, {
+      password,
+    });
+
+    return res.data;
+  },
 };

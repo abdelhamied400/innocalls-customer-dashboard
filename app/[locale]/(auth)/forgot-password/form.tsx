@@ -5,29 +5,18 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import Field from "@/components/ui/field";
 import authService from "@/services/auth.service";
 import { AxiosError } from "axios";
-
-const formSchema = z.object({
-  email: z
-    .string()
-    .min(2, {
-      message: "Email must be at least 2 characters.",
-    })
-    .email(),
-});
+import { ForgotPasswordSchema } from "@/validation/ForgotPassword";
 
 const ForgotPasswordForm = () => {
   const { toast } = useToast();
-  const router = useRouter();
 
   // 1. Define your form.
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(ForgotPasswordSchema),
     defaultValues: {
       email: "",
     },

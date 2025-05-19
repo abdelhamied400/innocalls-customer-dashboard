@@ -5,55 +5,47 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import Field from "@/components/ui/field";
-import Link from "next/link";
-import { LoginSchema } from "@/validation/Login";
+import authService from "@/services/auth.service";
+import { ResetPasswordSchema } from "@/validation/ResetPassword";
 
-const LoginForm = () => {
+type ResetPasswordFormProps = {
+  token: string;
+};
+const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
   const { toast } = useToast();
   const router = useRouter();
 
   // 1. Define your form.
   const form = useForm({
-    resolver: zodResolver(LoginSchema),
+    resolver: zodResolver(ResetPasswordSchema),
     defaultValues: {
-      email: "",
       password: "",
-      userType: "user",
+      passwordConfirm: "",
     },
   });
 
   const {
     formState: { errors, isSubmitting },
-    watch,
-    setValue,
   } = form;
 
   const onSubmit = form.handleSubmit(async (values) => {
-    const result = await signIn("credentials", {
-      email: values.email,
-      password: values.password,
-      userType: values.userType,
-      redirect: false,
-    });
-
-    if (result?.error) {
+    try {
+      // Call your API to reset the password
+      await authService.resetPassword(token, values.password);
       toast({
-        title: "Login failed",
-        description: "Invalid email or password",
+        title: "Password Reset",
+        description: "Your password has been reset successfully.",
+      });
+      router.push("/login");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "An error occurred while resetting your password.",
         variant: "destructive",
       });
-    } else {
-      toast({
-        title: "Success",
-        description: "Logged in successfully",
-      });
-      router.push("/");
     }
   });
 
@@ -61,43 +53,6 @@ const LoginForm = () => {
     <div className="login-form md:min-w-[400px] lg:min-w-[500px]">
       <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-8">
-          <ToggleGroup
-            className="w-full grid grid-cols-2"
-            type="single"
-            value={watch("userType")}
-            onValueChange={(value) => {
-              if (value) {
-                setValue("userType", value);
-              }
-            }}
-          >
-            <ToggleGroupItem value="user">Admin</ToggleGroupItem>
-            <ToggleGroupItem value="agent">Agent</ToggleGroupItem>
-          </ToggleGroup>
-
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <Field
-                label="Email"
-                error={errors.email?.message}
-                htmlFor="email"
-              >
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      id="email"
-                      variant="field"
-                      placeholder="Enter email..."
-                      type="email"
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              </Field>
-            )}
-          />
           <FormField
             control={form.control}
             name="password"
@@ -121,6 +76,31 @@ const LoginForm = () => {
               </Field>
             )}
           />
+
+          <FormField
+            control={form.control}
+            name="passwordConfirm"
+            render={({ field }) => (
+              <Field
+                label="Confirm Password"
+                error={errors.passwordConfirm?.message}
+                htmlFor="passwordConfirm"
+              >
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      id="passwordConfirm"
+                      variant="field"
+                      placeholder="Re-enter password..."
+                      type="password"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              </Field>
+            )}
+          />
+
           <Button
             className="w-full py-6"
             size="lg"
@@ -129,19 +109,12 @@ const LoginForm = () => {
             loading={isSubmitting}
             disabled={isSubmitting}
           >
-            Login
+            Reset Password
           </Button>
-
-          <p className="text-center">
-            Forget Password?{" "}
-            <Link href="/forgot-password" className="text-secondary">
-              Reset Password
-            </Link>
-          </p>
         </form>
       </Form>
     </div>
   );
 };
 
-export default LoginForm;
+export default ResetPasswordForm;
