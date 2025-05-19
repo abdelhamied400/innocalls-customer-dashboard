@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
+import AuthBanner from "./banner";
 
 type AuthLayoutProps = PropsWithChildren<object>;
 const AuthLayout = async ({ children }: AuthLayoutProps) => {
@@ -11,8 +12,13 @@ const AuthLayout = async ({ children }: AuthLayoutProps) => {
   }
 
   return (
-    <div className="layout overflow-auto h-screen w-screen" id="auth-layout">
-      {children}
+    <div className="layout h-screen" id="auth-layout">
+      <div className="grid grid-cols-5 h-full">
+        <div className="col-span-2 h-full">
+          <AuthBanner />
+        </div>
+        <div className="p-12 col-span-3">{children}</div>
+      </div>
     </div>
   );
 };
