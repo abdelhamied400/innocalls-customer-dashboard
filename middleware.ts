@@ -4,7 +4,12 @@ import { auth } from "./auth";
 
 const intlMiddleware = createMiddleware(routing);
 
-const publicPages = ["/login", "/register"];
+const publicPages = [
+  "/login",
+  "/register",
+  "/forgot-password",
+  "/reset-password",
+];
 
 export default auth((request) => {
   if (!request.auth && !publicPages.includes(request.nextUrl.pathname)) {

@@ -1,14 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,8 +9,9 @@ import { z } from "zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
-import { Toggle } from "@/components/ui/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import Field from "@/components/ui/field";
+import Link from "next/link";
 
 const formSchema = z.object({
   email: z
@@ -49,13 +43,12 @@ const LoginForm = () => {
   });
 
   const {
-    formState: { isSubmitting },
+    formState: { errors, isSubmitting },
     watch,
     setValue,
   } = form;
 
   const onSubmit = form.handleSubmit(async (values) => {
-    console.log(values);
     const result = await signIn("credentials", {
       email: values.email,
       password: values.password,
@@ -78,19 +71,12 @@ const LoginForm = () => {
     }
   });
 
-  // 2. Define your login methods.
-  const loginWithGoogle = () => {
-    // Implement Google login here.
-  };
-  const loginWithGithub = () => {
-    // Implement Github login here.
-  };
-
   return (
-    <div className="login-form">
+    <div className="login-form md:min-w-[400px] lg:min-w-[500px]">
       <Form {...form}>
         <form onSubmit={onSubmit} className="space-y-8">
           <ToggleGroup
+            className="w-full grid grid-cols-2"
             type="single"
             value={watch("userType")}
             onValueChange={(value) => {
@@ -99,7 +85,7 @@ const LoginForm = () => {
               }
             }}
           >
-            <ToggleGroupItem value="user">User</ToggleGroupItem>
+            <ToggleGroupItem value="user">Admin</ToggleGroupItem>
             <ToggleGroupItem value="agent">Agent</ToggleGroupItem>
           </ToggleGroup>
 
@@ -107,42 +93,67 @@ const LoginForm = () => {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="email" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+              <Field
+                label="Email"
+                error={errors.email?.message}
+                htmlFor="email"
+              >
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      id="email"
+                      variant="field"
+                      placeholder="Enter email..."
+                      type="email"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              </Field>
             )}
           />
           <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder="password" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+              <Field
+                label="Password"
+                error={errors.password?.message}
+                htmlFor="password"
+              >
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      id="password"
+                      variant="field"
+                      placeholder="Enter password..."
+                      type="password"
+                      {...field}
+                    />
+                  </FormControl>
+                </FormItem>
+              </Field>
             )}
           />
-          <Button type="submit" loading={isSubmitting} disabled={isSubmitting}>
-            Submit
+          <Button
+            className="w-full py-6"
+            size="lg"
+            variant="secondary"
+            type="submit"
+            loading={isSubmitting}
+            disabled={isSubmitting}
+          >
+            Login
           </Button>
+
+          <p className="text-center">
+            Forget Password?{" "}
+            <Link href="/forgot-password" className="text-secondary">
+              Reset Password
+            </Link>
+          </p>
         </form>
       </Form>
-
-      <div className="flex flex-wrap gap-2">
-        <Button onClick={loginWithGoogle} variant="outline">
-          Register with Google
-        </Button>
-        <Button onClick={loginWithGithub} variant="outline">
-          Register with Github
-        </Button>
-      </div>
     </div>
   );
 };
