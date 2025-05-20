@@ -46,7 +46,6 @@ const AuthBanner = () => {
 
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap() + 1);
-      console.log("Selected item:", api.selectedScrollSnap());
     });
   }, [api]);
 

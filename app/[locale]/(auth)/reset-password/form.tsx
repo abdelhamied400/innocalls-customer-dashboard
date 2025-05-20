@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import Field from "@/components/ui/field";
 import authService from "@/services/auth.service";
 import { ResetPasswordSchema } from "@/validation/ResetPassword";
+import { AxiosError } from "axios";
 
 type ResetPasswordFormProps = {
   token: string;
@@ -41,6 +42,15 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
       });
       router.push("/login");
     } catch (error) {
+      if (error instanceof AxiosError) {
+        toast({
+          title: "Error",
+          description: error.response?.data.message,
+          variant: "destructive",
+        });
+        return;
+      }
+      // Handle other types of errors
       toast({
         title: "Error",
         description: "An error occurred while resetting your password.",

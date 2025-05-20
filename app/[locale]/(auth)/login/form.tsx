@@ -45,7 +45,7 @@ const LoginForm = () => {
     if (result?.error) {
       toast({
         title: "Login failed",
-        description: "Invalid email or password",
+        description: result.code,
         variant: "destructive",
       });
     } else {
@@ -53,7 +53,7 @@ const LoginForm = () => {
         title: "Success",
         description: "Logged in successfully",
       });
-      router.push("/");
+      // router.push("/");
     }
   });
 
@@ -80,7 +80,7 @@ const LoginForm = () => {
             name="email"
             render={({ field }) => (
               <Field
-                label="Email"
+                label="Work Email"
                 error={errors.email?.message}
                 htmlFor="email"
               >

@@ -1,5 +1,14 @@
 import authService from "@/services/auth.service";
+import { AxiosError } from "axios";
+import { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+
+class AuthError extends CredentialsSignin {
+  constructor(code: string) {
+    super(code);
+    this.code = code;
+  }
+}
 
 const CredentialsProvider = Credentials({
   // You can specify which fields should be submitted, by adding keys to the `credentials` object.
@@ -22,7 +31,7 @@ const CredentialsProvider = Credentials({
       const res = await authService.login({
         email,
         password,
-        userType: userType,
+        userType,
       });
 
       return {
@@ -31,9 +40,14 @@ const CredentialsProvider = Credentials({
         organizations: res.organizations || [res.agent.organization],
         accessToken: res.accessToken,
       };
-    } catch (err: any) {
-      console.log("Error in authorize:", err);
-      return null;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        throw new AuthError(error.response?.data.message);
+      }
+      // Handle other types of errors
+      throw new AuthError(
+        "An unexpected error occurred. Please try again later."
+      );
     }
   },
 });
