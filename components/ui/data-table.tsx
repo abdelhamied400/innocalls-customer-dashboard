@@ -1,5 +1,11 @@
 "use client";
-import { createContext, PropsWithChildren, use } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  use,
+  useEffect,
+  useLayoutEffect,
+} from "react";
 import {
   Table,
   TableBody,
@@ -75,22 +81,6 @@ const DataTableProvider = <TData, TValue>({
     defaultPageIndex: defaultPageIndex,
   });
 
-  const handlePaginationChange = (updater: Updater<PaginationState>) => {
-    setPagination((prev) => {
-      const newState = typeof updater === "function" ? updater(prev) : updater;
-
-      if (onPaginationChange) {
-        onPaginationChange(newState);
-      }
-
-      return {
-        ...prev,
-        pageIndex: newState.pageIndex,
-        pageSize: newState.pageSize,
-      };
-    });
-  };
-
   const table = useReactTable({
     data,
     columns,
@@ -101,7 +91,7 @@ const DataTableProvider = <TData, TValue>({
     // pagination
     manualPagination,
     getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: handlePaginationChange,
+    onPaginationChange: setPagination,
     rowCount: pagination?.totalItems,
     // state
     state: {
@@ -113,6 +103,12 @@ const DataTableProvider = <TData, TValue>({
     // meta
     meta,
   });
+
+  useLayoutEffect(() => {
+    if (onPaginationChange) {
+      onPaginationChange({ pageIndex, pageSize });
+    }
+  }, [pageIndex, pageSize]);
 
   return (
     <DataTableContext

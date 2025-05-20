@@ -1,11 +1,11 @@
-import { useCallback, useTransition } from "react";
+import { useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { debounce } from "@/lib/debounce";
+import { silentRedirect } from "@/lib/router";
 
 export const useFilters = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
 
   const getFilter = useCallback(
     (key: string): string => {
@@ -17,34 +17,39 @@ export const useFilters = () => {
   const updateFilter = useCallback(
     debounce((key: string, value: string) => {
       const params = new URLSearchParams(searchParams);
-      if (value) {
+      if (value !== null && value !== undefined && value !== "") {
         params.set(key, value);
       } else {
         params.delete(key);
       }
-      startTransition(() => {
-        router.push(`?${params.toString()}`);
-      });
-    }, 0),
+      router.push(`?${params.toString()}`);
+    }, 300),
     [searchParams, router]
   );
 
   const updateFilters = useCallback(
-    debounce((updates: Record<string, string | undefined>) => {
+    (
+      updates: Record<string, string | undefined>,
+      options: any = {
+        silent: false,
+      }
+    ) => {
       const params = new URLSearchParams(searchParams);
 
       Object.entries(updates).forEach(([key, value]) => {
-        if (value !== null && value !== undefined) {
+        if (value !== null && value !== undefined && value !== "") {
           params.set(key, value);
         } else {
           params.delete(key);
         }
       });
 
-      startTransition(() => {
+      if (options.silent) {
+        silentRedirect(`?${params.toString()}`);
+      } else {
         router.push(`?${params.toString()}`);
-      });
-    }, 100),
+      }
+    },
     [searchParams, router]
   );
 
@@ -78,9 +83,7 @@ export const useFilters = () => {
         params.delete(key);
       });
 
-      startTransition(() => {
-        router.push(`?${params.toString()}`);
-      });
+      router.push(`?${params.toString()}`);
     },
     [searchParams, router, getFilterGroupKeys]
   );
@@ -90,9 +93,7 @@ export const useFilters = () => {
     Array.from(params.keys()).forEach((key) => {
       params.delete(key);
     });
-    startTransition(() => {
-      router.push(`?${params.toString()}`);
-    });
+    router.push(`?${params.toString()}`);
   }, [searchParams, router]);
 
   const getAllFilters = useCallback((): Record<string, string> => {
@@ -117,6 +118,5 @@ export const useFilters = () => {
     getAllFilters,
     clearAllFilters,
     getActiveGroups,
-    isPending,
   };
 };

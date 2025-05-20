@@ -19,7 +19,7 @@ const Numbers = async ({ searchParams }: NumbersProps) => {
           <NumbersTableHead />
           <NumbersTable
             data={numbers}
-            initialPagination={{
+            pagination={{
               pageIndex: parseInt(page) - 1,
               pageSize: parseInt(pageSize),
             }}
