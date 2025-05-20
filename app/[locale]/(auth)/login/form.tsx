@@ -53,7 +53,7 @@ const LoginForm = () => {
         title: "Success",
         description: "Logged in successfully",
       });
-      // router.push("/");
+      router.push("/");
     }
   });
 
