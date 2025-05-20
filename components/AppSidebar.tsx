@@ -21,12 +21,7 @@ const AppSidebar = () => {
       <SidebarHeader />
       <div className="flex flex-col gap-2 p-4 overflow-y-auto">
         <SidebarItem icon={<DashboardCustomize />} title="Dashboard" href="/" />
-        <SidebarItem
-          disabled
-          icon={<Phone />}
-          title="Numbers"
-          href="/numbers"
-        />
+        <SidebarItem icon={<Phone />} title="Numbers" href="/numbers" />
         <SidebarItem disabled icon={<Users />} title="Users" href="/users" />
         <SidebarItem
           disabled

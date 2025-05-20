@@ -1,10 +1,11 @@
-import { useCallback } from "react";
+import { useCallback, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { debounce } from "@/lib/debounce";
 
 export const useFilters = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const getFilter = useCallback(
     (key: string): string => {
@@ -21,7 +22,9 @@ export const useFilters = () => {
       } else {
         params.delete(key);
       }
-      router.push(`?${params.toString()}`);
+      startTransition(() => {
+        router.push(`?${params.toString()}`);
+      });
     }, 0),
     [searchParams, router]
   );
@@ -38,7 +41,9 @@ export const useFilters = () => {
         }
       });
 
-      router.push(`?${params.toString()}`);
+      startTransition(() => {
+        router.push(`?${params.toString()}`);
+      });
     }, 100),
     [searchParams, router]
   );
@@ -73,7 +78,9 @@ export const useFilters = () => {
         params.delete(key);
       });
 
-      router.push(`?${params.toString()}`);
+      startTransition(() => {
+        router.push(`?${params.toString()}`);
+      });
     },
     [searchParams, router, getFilterGroupKeys]
   );
@@ -83,7 +90,9 @@ export const useFilters = () => {
     Array.from(params.keys()).forEach((key) => {
       params.delete(key);
     });
-    router.push(`?${params.toString()}`);
+    startTransition(() => {
+      router.push(`?${params.toString()}`);
+    });
   }, [searchParams, router]);
 
   const getAllFilters = useCallback((): Record<string, string> => {
@@ -108,5 +117,6 @@ export const useFilters = () => {
     getAllFilters,
     clearAllFilters,
     getActiveGroups,
+    isPending,
   };
 };
