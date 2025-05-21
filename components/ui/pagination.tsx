@@ -2,6 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button, ButtonProps, buttonVariants } from "@/components/ui/button";
 import { EllipsisIcon, SkipBackIcon, SkipForwardIcon } from "lucide-react";
+import { FirstPage, LastPage } from "@mui/icons-material";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
@@ -88,7 +89,7 @@ const PaginationPrevious = ({
     className={cn("gap-1 pl-2.5", className)}
     {...props}
   >
-    <SkipBackIcon className="w-4 h-4" />
+    <FirstPage className="w-4 h-4" />
   </PaginationButton>
 );
 PaginationPrevious.displayName = "PaginationPrevious";
@@ -103,7 +104,7 @@ const PaginationNext = ({
     className={cn("gap-1 pr-2.5", className)}
     {...props}
   >
-    <SkipForwardIcon className="w-4 h-4" />
+    <LastPage className="w-4 h-4" />
   </PaginationButton>
 );
 PaginationNext.displayName = "PaginationNext";

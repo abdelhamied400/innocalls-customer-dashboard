@@ -1,6 +1,6 @@
 import numbersService from "@/services/numbers.service";
 import NumbersTable from "./table";
-import NumbersTableHead from "./head";
+import { columns } from "./columns";
 
 type NumbersProps = {
   searchParams: Promise<{
@@ -15,16 +15,18 @@ const Numbers = async ({ searchParams }: NumbersProps) => {
   return (
     <div className="page" id="numbers">
       <div className="bg-white rounded-xl p-4">
-        <div className="border rounded-xl">
-          <NumbersTableHead />
-          <NumbersTable
-            data={numbers}
-            pagination={{
-              pageIndex: parseInt(page) - 1,
-              pageSize: parseInt(pageSize),
-            }}
-          />
-        </div>
+        <NumbersTable
+          columns={columns}
+          data={numbers}
+          initialPagination={{
+            pageIndex: Number(page) - 1,
+            pageSize: Number(pageSize),
+          }}
+          initialFilters={Object.entries(filters).map(([key, value]) => ({
+            id: key,
+            value: value,
+          }))}
+        />
       </div>
     </div>
   );

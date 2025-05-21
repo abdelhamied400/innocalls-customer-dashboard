@@ -52,11 +52,11 @@ const AutoDialerActiveHead = () => {
 
   const [durationType, setDurationType] = useState(getFilter("duration-type"));
 
-  const [status, setStatus] = useState<Record<string, boolean>>(
+  const [status, setStatus] = useState<Record<string, string>>(
     autoDialerCampaignActiveStatuses.reduce((acc, status) => {
-      acc[status.value] = getFilter(`status.${status.value}`) === "true";
+      acc[status.value] = getFilter(`status.${status.value}`);
       return acc;
-    }, {} as Record<string, boolean>)
+    }, {} as Record<string, string>)
   );
 
   return (
@@ -243,9 +243,9 @@ const AutoDialerActiveHead = () => {
                     onApply={() =>
                       updateFilters(
                         autoDialerCampaignActiveStatuses.reduce((acc, s) => {
-                          acc[`status.${s.value}`] = !!status[s.value];
+                          acc[`status.${s.value}`] = status[s.value];
                           return acc;
-                        }, {} as Record<string, boolean>)
+                        }, {} as Record<string, string>)
                       )
                     }
                   >
@@ -260,7 +260,7 @@ const AutoDialerActiveHead = () => {
                           onCheckedChange={(checked) =>
                             setStatus((prev) => ({
                               ...prev,
-                              [s.value]: checked as boolean,
+                              [s.value]: checked as string,
                             }))
                           }
                         />
