@@ -104,6 +104,12 @@ const DataTable = <TData, TValue>({
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const number = event.target.value;
     table.getColumn("number")?.setFilterValue(number);
+    updateFilters(
+      {
+        number,
+      },
+      { silent: true }
+    );
   };
 
   useEffect(() => {

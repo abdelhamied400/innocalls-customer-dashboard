@@ -52,18 +52,18 @@ const AutoDialerFinshedHead = () => {
 
   const [durationType, setDurationType] = useState(getFilter("duration-type"));
 
-  const [status, setStatus] = useState<Record<string, boolean>>(
+  const [status, setStatus] = useState<Record<string, string>>(
     autoDialerCampaignInactiveStatuses.reduce((acc, status) => {
-      acc[status.value] = getFilter(`status.${status.value}`) === "true";
+      acc[status.value] = getFilter(`status.${status.value}`);
       return acc;
-    }, {} as Record<string, boolean>)
+    }, {} as Record<string, string>)
   );
 
   return (
     <Collapsible>
       <div className="table-head">
         <div className="flex justify-between items-center gap-4 p-3">
-          <h3>Finshed Campaigns</h3>
+          <h3>Finished Campaigns</h3>
           <div className="flex items-center gap-4 actions">
             <Field preIcon={<SearchIcon className="text-muted-foreground" />}>
               <Input
@@ -75,7 +75,7 @@ const AutoDialerFinshedHead = () => {
                   setSearch(e.target.value);
                   updateFilters({
                     search: e.target.value,
-                    page: 1,
+                    page: "1",
                   });
                 }}
               />
@@ -244,9 +244,9 @@ const AutoDialerFinshedHead = () => {
                     onApply={() =>
                       updateFilters(
                         autoDialerCampaignInactiveStatuses.reduce((acc, s) => {
-                          acc[`status.${s.value}`] = !!status[s.value];
+                          acc[`status.${s.value}`] = status[s.value];
                           return acc;
-                        }, {} as Record<string, boolean>)
+                        }, {} as Record<string, string>)
                       )
                     }
                   >
@@ -261,7 +261,7 @@ const AutoDialerFinshedHead = () => {
                           onCheckedChange={(checked) =>
                             setStatus((prev) => ({
                               ...prev,
-                              [s.value]: checked as boolean,
+                              [s.value]: checked as string,
                             }))
                           }
                         />
