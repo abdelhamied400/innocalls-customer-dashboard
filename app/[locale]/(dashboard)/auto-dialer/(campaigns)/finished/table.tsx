@@ -45,8 +45,8 @@ const FinshedCampaignsTable = () => {
         manualPagination
         onPaginationChange={({ pageSize, pageIndex }) => {
           updateFilters({
-            page: pageIndex + 1,
-            perPage: pageSize,
+            page: String(pageIndex + 1),
+            perPage: String(pageSize),
           });
         }}
         defaultPageIndex={pageIndex}

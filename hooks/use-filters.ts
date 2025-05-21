@@ -34,7 +34,7 @@ export const useFilters = () => {
         silent: false,
       }
     ) => {
-      const params = new URLSearchParams(searchParams);
+      const params = new URLSearchParams(window.location.search);
 
       Object.entries(updates).forEach(([key, value]) => {
         if (value !== null && value !== undefined && value !== "") {
@@ -88,13 +88,25 @@ export const useFilters = () => {
     [searchParams, router, getFilterGroupKeys]
   );
 
-  const clearAllFilters = useCallback(() => {
-    const params = new URLSearchParams(searchParams);
-    Array.from(params.keys()).forEach((key) => {
-      params.delete(key);
-    });
-    router.push(`?${params.toString()}`);
-  }, [searchParams, router]);
+  const clearAllFilters = useCallback(
+    (
+      options: any = {
+        silent: false,
+      }
+    ) => {
+      const params = new URLSearchParams(searchParams);
+      Array.from(params.keys()).forEach((key) => {
+        params.delete(key);
+      });
+
+      if (options.silent) {
+        silentRedirect(`?${params.toString()}`);
+      } else {
+        router.push(`?${params.toString()}`);
+      }
+    },
+    [searchParams, router]
+  );
 
   const getAllFilters = useCallback((): Record<string, string> => {
     const result: Record<string, string> = {};
