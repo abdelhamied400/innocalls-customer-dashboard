@@ -23,7 +23,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         )}
       >
         {/* Sidebar */}
-        <div className="row-span-3 overflow-y-auto rounded-lg px-2">
+        <div className="row-span-3 overflow-y-auto rounded-lg border-e px-2">
           <AppSidebar />
         </div>
 
@@ -36,7 +36,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         <div className="overflow-auto rounded-lg p-2">{children}</div>
 
         {/* Sidebar2 */}
-        <div className="row-span-2 col-start-3 overflow-y-auto rounded-lg p-2">
+        <div className="row-span-2 col-start-3 overflow-y-auto rounded-lg border-s p-2">
           <p className="sticky top-0 p-2 mb-2">Sidebar2</p>
           <Innortc />
         </div>

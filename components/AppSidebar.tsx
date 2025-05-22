@@ -24,13 +24,11 @@ const AppSidebar = () => {
         <SidebarItem icon={<Phone />} title="Numbers" href="/numbers" />
         <SidebarItem icon={<Users />} title="Users" href="/users" />
         <SidebarItem
-          disabled
           icon={<Timeline />}
           title="Call Reporting"
           href="/call-reporting"
         />
         <SidebarItem
-          disabled
           icon={<MonetizationOn />}
           title="Billing"
           href="/billing"
