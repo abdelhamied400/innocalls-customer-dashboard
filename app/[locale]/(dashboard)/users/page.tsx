@@ -1,7 +1,7 @@
 import usersService from "@/services/users.service";
 import UsersTable from "./table";
-import { columns } from "./columns";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 type UsersProps = {
   searchParams: Promise<{
@@ -16,25 +16,16 @@ const Users = async ({ searchParams }: UsersProps) => {
   return (
     <div className="page" id="users">
       <div className="bg-white rounded-xl p-4">
-        <div className="tabs mb-4">
+        <div className="tabs mb-4 flex gap-2 items-center">
           <Button variant="tab" data-active>
             Users List
           </Button>
-          <Button variant="tab">Monitor Users</Button>
+          <Link href="/users/monitor">
+            <Button variant="tab">Monitor Users</Button>
+          </Link>
         </div>
 
-        <UsersTable
-          data={users}
-          columns={columns}
-          initialPagination={{
-            pageIndex: Number(page) - 1,
-            pageSize: Number(pageSize),
-          }}
-          initialFilters={Object.entries(filters).map(([key, value]) => ({
-            id: key,
-            value: value,
-          }))}
-        />
+        <UsersTable data={users} />
       </div>
     </div>
   );

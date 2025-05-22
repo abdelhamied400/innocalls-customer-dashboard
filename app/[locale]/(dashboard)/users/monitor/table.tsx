@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  ColumnDef,
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
@@ -39,50 +38,40 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Field from "@/components/ui/field";
-import { ChevronDownIcon, SearchIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import { Toggle } from "@/components/ui/toggle";
-import { Clear } from "@mui/icons-material";
-import FilterDialog from "@/components/FilterDialog";
-import { Badge } from "@/components/ui/badge";
-import { userStatuses } from "@/constants/user";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { columns, User } from "./columns";
+import { SearchIcon } from "lucide-react";
+import { columns } from "./columns";
+import { useQuery } from "@tanstack/react-query";
+import usersService from "@/services/users.service";
 
-interface UsersTableProps {
-  data: User[];
-}
-
-const UsersTable = ({ data }: UsersTableProps) => {
+const UsersMonitorTable = () => {
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  const [status, setStatus] = useState<string[]>([]);
+  const { data = [], isLoading } = useQuery({
+    queryKey: ["monitor-users"],
+    queryFn: async () => usersService.getUsersMonitor(),
+    refetchInterval: 30000,
+  });
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onSortingChange: setSorting,
+    onPaginationChange: setPagination,
+    onColumnFiltersChange: setColumnFilters,
+    autoResetAll: false,
     state: {
       sorting,
       columnFilters,
+      pagination,
     },
   });
 
@@ -110,97 +99,32 @@ const UsersTable = ({ data }: UsersTableProps) => {
     ? Array.from({ length: table.getPageCount() }, (_, i) => i + 1)
     : [];
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="rounded-xl border">
-      <Collapsible>
-        <div className="users-table-head flex items-center justify-between p-4">
-          <h2>Users List</h2>
-          <div className="actions flex items-center gap-2">
-            <Field preIcon={<SearchIcon />}>
-              <Input
-                variant="field"
-                placeholder="Search..."
-                value={
-                  (table.getColumn("name")?.getFilterValue() as string) ?? ""
-                }
-                onChange={handleSearchChange}
-                type="search"
-              />
-            </Field>
-            <CollapsibleTrigger asChild>
-              <Toggle pressed={true} className="rounded-full">
-                <FilterAltIcon />
-              </Toggle>
-            </CollapsibleTrigger>
-            <Button>Create new user</Button>
-          </div>
+      <div className="users-table-head flex items-center justify-between p-4">
+        <h2>Monitor Users</h2>
+        <div className="actions flex items-center gap-2">
+          <Field preIcon={<SearchIcon />}>
+            <Input
+              variant="field"
+              placeholder="Search..."
+              value={
+                (table.getColumn("name")?.getFilterValue() as string) ?? ""
+              }
+              onChange={handleSearchChange}
+              type="search"
+            />
+          </Field>
         </div>
-
-        <CollapsibleContent>
-          <div className="flex justify-between items-center p-3 border-t table-filters">
-            <div className="flex items-center gap-4">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="filter" size="filter">
-                    Status
-                    {status.length > 0 && (
-                      <Badge
-                        variant="outline"
-                        className="bg-neutral-500 px-1.5 rounded-md text-white"
-                      >
-                        {status.length}
-                      </Badge>
-                    )}
-                    <ChevronDownIcon />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <FilterDialog
-                    title="Select from the list"
-                    onReset={() => {
-                      table.getColumn("status")?.setFilterValue("");
-                      setStatus([]);
-                    }}
-                    onApply={() => {
-                      table
-                        .getColumn("status")
-                        ?.setFilterValue(status.join(","));
-                    }}
-                  >
-                    <RadioGroup
-                      defaultValue=""
-                      onValueChange={(value: string) => {
-                        setStatus([value]);
-                      }}
-                      value={status.length === 1 ? status[0] : ""}
-                    >
-                      {userStatuses.map((s) => (
-                        <div
-                          className="flex items-center space-x-2"
-                          key={s.value}
-                        >
-                          <RadioGroupItem value={s.value} id={s.value} />
-                          <Label htmlFor={s.value}>{s.label}</Label>
-                        </div>
-                      ))}
-                    </RadioGroup>
-                  </FilterDialog>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-
-            <Button
-              onClick={() => {
-                table.resetColumnFilters();
-                setStatus([]);
-              }}
-              variant="ghost"
-            >
-              <Clear /> Clear
-            </Button>
-          </div>
-        </CollapsibleContent>
-      </Collapsible>
+      </div>
 
       <Table>
         <TableHeader className="bg-gray-100 sticky -top-2 z-10">
@@ -302,4 +226,4 @@ const UsersTable = ({ data }: UsersTableProps) => {
   );
 };
 
-export default UsersTable;
+export default UsersMonitorTable;

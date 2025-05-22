@@ -16,7 +16,7 @@ export type User = {
   status: string;
 };
 
-export const columns: ColumnDef<Number>[] = [
+export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "ext",
     header: ({ column }) => {
