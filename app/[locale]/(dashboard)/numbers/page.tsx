@@ -15,18 +15,7 @@ const Numbers = async ({ searchParams }: NumbersProps) => {
   return (
     <div className="page" id="numbers">
       <div className="bg-white rounded-xl p-4">
-        <NumbersTable
-          columns={columns}
-          data={numbers}
-          initialPagination={{
-            pageIndex: Number(page) - 1,
-            pageSize: Number(pageSize),
-          }}
-          initialFilters={Object.entries(filters).map(([key, value]) => ({
-            id: key,
-            value: value,
-          }))}
-        />
+        <NumbersTable data={numbers} />
       </div>
     </div>
   );

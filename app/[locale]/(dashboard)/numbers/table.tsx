@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  ColumnDef,
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
@@ -10,6 +9,7 @@ import {
   getSortedRowModel,
   PaginationState,
   SortingState,
+  Updater,
   useReactTable,
 } from "@tanstack/react-table";
 
@@ -21,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Pagination,
@@ -40,37 +40,30 @@ import {
 } from "@/components/ui/select";
 import Field from "@/components/ui/field";
 import { SearchIcon } from "lucide-react";
-import { useFilters } from "@/hooks/use-filters";
+import { useSearchParams } from "next/navigation";
+import { columns, PhoneNumber } from "./columns";
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  initialPagination?: PaginationState;
-  initialFilters?: ColumnFiltersState;
+interface DataTableProps {
+  data: PhoneNumber[];
 }
 
-const DataTable = <TData, TValue>({
-  columns,
-  data,
-  initialPagination,
-  initialFilters = [],
-}: DataTableProps<TData, TValue>) => {
-  const { pageIndex = 1, pageSize = 10 } = initialPagination || {};
-  const { updateFilters } = useFilters();
+const DataTable = ({ data }: DataTableProps) => {
+  const queryParams = useSearchParams();
+  const search = queryParams.get("search") || "";
+
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] =
-    useState<ColumnFiltersState>(initialFilters);
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex,
-    pageSize,
-  });
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+    {
+      id: "number",
+      value: search,
+    },
+  ]);
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: setPagination,
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
@@ -78,7 +71,6 @@ const DataTable = <TData, TValue>({
     state: {
       sorting,
       columnFilters,
-      pagination,
     },
   });
 
@@ -97,30 +89,15 @@ const DataTable = <TData, TValue>({
     table.setPageSize(Number(value));
   };
 
-  const handlePageChange = (page: number) => {
-    table.setPageIndex(page - 1);
-  };
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const number = event.target.value;
-    table.getColumn("number")?.setFilterValue(number);
-    updateFilters(
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setColumnFilters((prev) => [
       {
-        number,
+        id: "number",
+        value,
       },
-      { silent: true }
-    );
+    ]);
   };
-
-  useEffect(() => {
-    updateFilters(
-      {
-        page: String(pagination.pageIndex + 1),
-        pageSize: String(pagination.pageSize),
-      },
-      { silent: true }
-    );
-  }, [pagination.pageIndex, pagination.pageSize, updateFilters]);
 
   const pages = table.getPageCount()
     ? Array.from({ length: table.getPageCount() }, (_, i) => i + 1)
@@ -195,7 +172,6 @@ const DataTable = <TData, TValue>({
                 <PaginationPrevious
                   onClick={() => {
                     table.previousPage();
-                    handlePageChange(table.getState().pagination.pageIndex - 1);
                   }}
                   disabled={!table.getCanPreviousPage()}
                 />
@@ -207,7 +183,7 @@ const DataTable = <TData, TValue>({
                     isActive={
                       table.getState().pagination.pageIndex + 1 === page
                     }
-                    onClick={() => handlePageChange(page)}
+                    onClick={() => table.setPageIndex(page - 1)}
                   >
                     {page}
                   </PaginationButton>
@@ -217,7 +193,6 @@ const DataTable = <TData, TValue>({
                 <PaginationNext
                   onClick={() => {
                     table.nextPage();
-                    handlePageChange(table.getState().pagination.pageIndex + 1);
                   }}
                   disabled={!table.getCanNextPage()}
                 />
