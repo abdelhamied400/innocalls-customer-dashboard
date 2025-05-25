@@ -13,16 +13,37 @@ export default {
     );
     return res.data;
   },
-  getPaymentsList: async () => {
-    const res = await api.get("/jera/payment-list");
+  getPaymentsList: async (
+    pageIndex: number,
+    pageSize: number,
+    filters: Object
+  ) => {
+    const queryString = objToQueryString(filters);
+    const res = await api.get(
+      `/jera/payment-list?itemsPerPage=${pageSize}&page=${pageIndex}&${queryString}`
+    );
     return res.data;
   },
-  getRatesList: async () => {
-    const res = await api.get("/jera/rates");
+  getRatesList: async (
+    pageIndex: number,
+    pageSize: number,
+    filters: Object
+  ) => {
+    const queryString = objToQueryString(filters);
+    const res = await api.get(
+      `/jera/rates?itemsPerPage=${pageSize}&page=${pageIndex}&${queryString}`
+    );
     return res.data;
   },
-  getInvoicesList: async () => {
-    const res = await api.get("/zoho/customer-invoices");
+  getInvoicesList: async (
+    pageIndex: number,
+    pageSize: number,
+    filters: Object
+  ) => {
+    const queryString = objToQueryString(filters);
+    const res = await api.get(
+      `/zoho/customer-invoices?itemsPerPage=${pageSize}&page=${pageIndex}&${queryString}`
+    );
     return res.data;
   },
 };
