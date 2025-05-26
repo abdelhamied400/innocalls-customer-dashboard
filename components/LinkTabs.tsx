@@ -28,7 +28,7 @@ export const LinkTab = ({ href, active, children }: LinkTabProps) => {
 type LinkTabsProps = PropsWithChildren<{}>;
 
 const LinkTabs = ({ children }: LinkTabsProps) => {
-  return <div className="tabs mb-4 flex gap-2 items-center">{children}</div>;
+  return <div className="tabs flex gap-2 items-center">{children}</div>;
 };
 
 export default LinkTabs;

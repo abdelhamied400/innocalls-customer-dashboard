@@ -12,7 +12,7 @@ const Users = async ({ searchParams }: UsersProps) => {
   const users = await usersService.getUsers();
 
   return (
-    <div className="page" id="users">
+    <div className="page h-full" id="users">
       <UsersTable data={users} />
     </div>
   );

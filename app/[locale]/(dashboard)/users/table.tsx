@@ -60,6 +60,7 @@ import { userStatuses } from "@/constants/user";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { columns, User } from "./columns";
+import { getPinningLeftStyles } from "@/lib/table";
 
 interface UsersTableProps {
   data: User[];
@@ -111,7 +112,7 @@ const UsersTable = ({ data }: UsersTableProps) => {
     : [];
 
   return (
-    <div className="rounded-xl border">
+    <div className="flex flex-col gap-0 h-full border rounded-xl">
       <Collapsible>
         <div className="users-table-head flex items-center justify-between p-4">
           <h2>Users List</h2>
@@ -202,48 +203,73 @@ const UsersTable = ({ data }: UsersTableProps) => {
         </CollapsibleContent>
       </Collapsible>
 
-      <Table>
-        <TableHeader className="bg-gray-100 sticky -top-2 z-10">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+      <div className="flex-1 overflow-y-auto">
+        <Table className="min-h-full w-full">
+          <TableHeader className="bg-gray-100 sticky top-0 z-10">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead
+                      key={header.id}
+                      style={
+                        header.id === "ext"
+                          ? getPinningLeftStyles(header.column)
+                          : {}
+                      }
+                      className="bg-gray-100"
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      style={
+                        cell.column.id === "ext"
+                          ? getPinningLeftStyles(cell.column)
+                          : {}
+                      }
+                      className="bg-white"
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
       <div className="flex justify-between items-center gap-2 p-4">
         <div className="pagination">
           <Pagination className="justify-normal">

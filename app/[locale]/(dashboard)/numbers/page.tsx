@@ -13,10 +13,8 @@ const Numbers = async ({ searchParams }: NumbersProps) => {
   const numbers = await numbersService.fetchNumbers(page, pageSize, filters);
 
   return (
-    <div className="page" id="numbers">
-      <div className="bg-white rounded-xl p-4">
-        <NumbersTable data={numbers} />
-      </div>
+    <div className="page h-full" id="numbers">
+      <NumbersTable data={numbers} />
     </div>
   );
 };
