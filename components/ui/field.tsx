@@ -22,7 +22,7 @@ const Field = ({
   ...props
 }: FieldProps) => {
   return (
-    <div className="field flex-1">
+    <div className="field">
       <label
         className="relative flex flex-col gap-1 cursor-pointer"
         htmlFor={htmlFor}

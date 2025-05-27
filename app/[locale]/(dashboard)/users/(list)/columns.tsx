@@ -6,6 +6,7 @@ import { Block, Cached, MoreVert, Refresh } from "@mui/icons-material";
 import { Column, ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { CSSProperties } from "react";
+import ActionsCell from "./cells/ActionsCell";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -17,9 +18,10 @@ export type User = {
   status: string;
 };
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<User, any>[] = [
   {
     accessorKey: "ext",
+    enablePinning: true,
     header: ({ column }) => {
       return (
         <Button
@@ -64,21 +66,6 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "actions",
     header: "Actions",
-    cell: ({ row }) => (
-      <div className="flex gap-2">
-        {row.getValue("status") === "enabled" ? (
-          <Button variant="ghost-destructive" size="icon">
-            <Block />
-          </Button>
-        ) : (
-          <Button variant="ghost-success" size="icon">
-            <Cached />
-          </Button>
-        )}
-        <Button variant="ghost" size="icon">
-          <MoreVert />
-        </Button>
-      </div>
-    ),
+    cell: ActionsCell,
   },
 ];

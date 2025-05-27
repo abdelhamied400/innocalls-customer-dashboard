@@ -1,14 +1,12 @@
 "use client";
 
 import {
-  ColumnDef,
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  PaginationState,
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
@@ -61,16 +59,31 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { columns, User } from "./columns";
 import { getPinningLeftStyles } from "@/lib/table";
+import Link from "next/link";
+import { useQuery } from "@tanstack/react-query";
+import usersService from "@/services/users.service";
+import { cn } from "@/lib/utils";
 
-interface UsersTableProps {
-  data: User[];
-}
+interface UsersTableProps {}
 
-const UsersTable = ({ data }: UsersTableProps) => {
+const UsersTable = ({}: UsersTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const [status, setStatus] = useState<string[]>([]);
+
+  const { data = [], isLoading } = useQuery<User[]>({
+    queryKey: ["users"],
+    queryFn: usersService.getUsers,
+    refetchInterval(query) {
+      const hasPending =
+        !!query.state.data &&
+        query.state.data.length > 0 &&
+        query.state.data.some((user) => user.status === "pending");
+
+      return hasPending ? 3000 : false;
+    },
+  });
 
   const table = useReactTable({
     data,
@@ -111,6 +124,14 @@ const UsersTable = ({ data }: UsersTableProps) => {
     ? Array.from({ length: table.getPageCount() }, (_, i) => i + 1)
     : [];
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-0 h-full border rounded-xl">
       <Collapsible>
@@ -133,7 +154,9 @@ const UsersTable = ({ data }: UsersTableProps) => {
                 <FilterAltIcon />
               </Toggle>
             </CollapsibleTrigger>
-            <Button>Create new user</Button>
+            <Link href="/users/create">
+              <Button>Create new user</Button>
+            </Link>
           </div>
         </div>
 
@@ -203,7 +226,7 @@ const UsersTable = ({ data }: UsersTableProps) => {
         </CollapsibleContent>
       </Collapsible>
 
-      <div className="flex-1 overflow-y-auto">
+      <div className="flex-1 h-full overflow-y-auto">
         <Table className="min-h-full w-full">
           <TableHeader className="bg-gray-100 sticky top-0 z-10">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -246,7 +269,7 @@ const UsersTable = ({ data }: UsersTableProps) => {
                           ? getPinningLeftStyles(cell.column)
                           : {}
                       }
-                      className="bg-white"
+                      className={"bg-white"}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

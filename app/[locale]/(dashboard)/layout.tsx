@@ -1,19 +1,35 @@
 "use client";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect, useState } from "react";
 import Innortc from "./Innortc";
 import useAuthStore from "@/store/auth.slice";
 import AppSidebar from "@/components/AppSidebar";
 import AppNavbar from "@/components/AppNavbar";
 import useAppStore from "@/store/app.slice";
 import { cn } from "@/lib/utils";
+import { getCookie } from "cookies-next/client";
 
 type DashboardLayoutProps = PropsWithChildren<object>;
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const { Organization } = useAuthStore();
   const { isSidebarOpen } = useAppStore();
+  const [defaultOrganizationId, setDefaultOrganizationId] = useState<
+    string | null
+  >(null);
+
+  useEffect(() => {
+    const orgId = getCookie("OrganizationId");
+    if (orgId) {
+      setDefaultOrganizationId(orgId as string);
+    } else {
+      setDefaultOrganizationId(null);
+    }
+  }, []);
 
   return (
-    <div className="dashboard-layout" key={Organization?.id}>
+    <div
+      className="dashboard-layout"
+      key={Organization?.id || defaultOrganizationId}
+    >
       <div
         className={cn(
           "h-screen w-screen grid grid-rows-[96px_1fr] gap-2 box-border transition-all duration-800 ease-in-out",

@@ -34,7 +34,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     };
 
     return (
-      <div className="relative">
+      <div className={cn("relative", "flex-1")}>
         <input
           type={showPassword ? "text" : type} // Toggle between "text" and original type
           className={cn(

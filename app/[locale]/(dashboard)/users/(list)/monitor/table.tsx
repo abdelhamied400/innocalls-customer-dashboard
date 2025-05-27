@@ -42,6 +42,7 @@ import { SearchIcon } from "lucide-react";
 import { columns } from "./columns";
 import { useQuery } from "@tanstack/react-query";
 import usersService from "@/services/users.service";
+import UsersLoading from "./loading";
 
 const UsersMonitorTable = () => {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -100,11 +101,7 @@ const UsersMonitorTable = () => {
     : [];
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <p>Loading...</p>
-      </div>
-    );
+    return <UsersLoading />;
   }
 
   return (

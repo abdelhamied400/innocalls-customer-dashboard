@@ -35,6 +35,17 @@ const ProfileMenu = () => {
 
   useEffect(() => {
     const orgId = getCookie("OrganizationId");
+    if (orgId) {
+      setOrganization({
+        id: orgId,
+        name: "",
+        hasTenant: false,
+        enableAfterCallTags: false,
+        isDemo: false,
+        listenToCallEvents: false,
+        provider: "",
+      });
+    }
     const org = session?.user.organizations?.find((org) => org.id === orgId);
     if (org) {
       setOrganization(org);

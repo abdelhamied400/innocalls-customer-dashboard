@@ -69,7 +69,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         <span className="flex items-center gap-1">
           {loading && (
             <svg
-              className="animate-spin h-4 w-4 text-white"
+              className="animate-spin h-4 w-4"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="none"
@@ -81,7 +81,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
               <path d="M12 2a10 10 0 1 1-7.07 17.07" />
             </svg>
           )}
-          {children}
+          {size === "icon" && loading ? "" : children}
         </span>
       </Comp>
     );
