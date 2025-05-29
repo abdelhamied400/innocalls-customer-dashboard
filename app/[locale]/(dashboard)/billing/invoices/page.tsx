@@ -2,7 +2,7 @@ import InvoicesTable from "./table";
 
 const Invoices = async () => {
   return (
-    <div className="page" id="invoices">
+    <div className="page h-full" id="invoices">
       <InvoicesTable />
     </div>
   );

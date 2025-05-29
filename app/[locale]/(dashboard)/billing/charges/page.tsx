@@ -2,7 +2,7 @@ import ChargesTable from "./table";
 
 const Charges = async () => {
   return (
-    <div className="page" id="charges">
+    <div className="page h-full" id="charges">
       <ChargesTable />
     </div>
   );

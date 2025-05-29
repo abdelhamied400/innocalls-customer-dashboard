@@ -46,4 +46,10 @@ export default {
     );
     return res.data;
   },
+  createStripeIntent: async (amount: number) => {
+    const res = await api.post(`jera/payment/stripe/create-intent`, {
+      amount,
+    });
+    return res.data;
+  },
 };

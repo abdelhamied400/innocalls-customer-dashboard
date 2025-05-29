@@ -2,7 +2,7 @@ import RatesTable from "./table";
 
 const Rates = async () => {
   return (
-    <div className="page" id="rates">
+    <div className="page h-full" id="rates">
       <RatesTable />
     </div>
   );

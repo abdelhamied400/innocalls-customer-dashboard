@@ -5,12 +5,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren } from "react";
 
-type BillingLayoutProps = PropsWithChildren<{}>;
-const BillingLayout = ({ children }: BillingLayoutProps) => {
+type BillingLayoutProps = PropsWithChildren<{
+  refillSheet: React.ReactNode;
+}>;
+const BillingLayout = ({ children, refillSheet }: BillingLayoutProps) => {
   const pathname = usePathname();
 
   return (
-    <div className="bg-white rounded-xl p-4">
+    <div className="bg-white rounded-xl p-4 h-full flex flex-col gap-2">
       <div className="flex justify-between items-center">
         <LinkTabs>
           <LinkTab href="/billing" active={pathname === "/billing/charges"}>
@@ -36,7 +38,8 @@ const BillingLayout = ({ children }: BillingLayoutProps) => {
           <Button>Refill Balance</Button>
         </Link>
       </div>
-      {children}
+      <div className="h-[calc(100%-3rem)]">{children}</div>
+      {refillSheet}
     </div>
   );
 };

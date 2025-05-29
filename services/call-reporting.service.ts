@@ -1,6 +1,10 @@
 import api from "./api";
 import { Paginated } from "@/types/shared/paginated";
-import { Call, CallReportingFilters } from "@/types/api/call-reporting";
+import {
+  Call,
+  CallReportingFilters,
+  ExportCallReportingFilters,
+} from "@/types/api/call-reporting";
 import { objectToQueryString } from "@/lib/queryParams";
 
 export default {
@@ -15,6 +19,13 @@ export default {
       ...filters,
     });
     const res = await api.get(`/cdr/user/report?${queryString}`);
+    return res.data;
+  },
+  exportCallReporting: async (
+    filters: ExportCallReportingFilters
+  ): Promise<void> => {
+    const queryString = objectToQueryString(filters);
+    const res = await api.get(`/cdr/user/export?${queryString}`);
     return res.data;
   },
 };

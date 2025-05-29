@@ -2,7 +2,7 @@ import PaymentHistoryTable from "./table";
 
 const PaymentHistory = async () => {
   return (
-    <div className="page" id="payment-history">
+    <div className="page h-full" id="payment-history">
       <PaymentHistoryTable />
     </div>
   );

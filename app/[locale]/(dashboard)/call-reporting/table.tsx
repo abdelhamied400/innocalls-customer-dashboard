@@ -43,8 +43,13 @@ import { useQuery } from "@tanstack/react-query";
 import callReportingService from "@/services/call-reporting.service";
 import { Button } from "@/components/ui/button";
 import { CallReportingFilters } from "@/types/api/call-reporting";
+import { useToast } from "@/hooks/use-toast";
+import { isAxiosError } from "axios";
+import { useSession } from "next-auth/react";
 
 const CallReportingTable = () => {
+  const { toast } = useToast();
+  const session = useSession();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filters, setFilters] = useState<CallReportingFilters>({
     search: "",
@@ -113,8 +118,39 @@ const CallReportingTable = () => {
     }));
   };
 
+  const handleExport = async () => {
+    if (!session.data) return;
+    try {
+      await callReportingService.exportCallReporting({
+        ...filters,
+        userEmail: session.data.user.email,
+      });
+      toast({
+        title: "Export Successful",
+        description:
+          "Your call reporting data will be sent to your email shortly.",
+        variant: "success",
+      });
+    } catch (error) {
+      if (isAxiosError(error)) {
+        toast({
+          title: "Export Failed",
+          description:
+            error.response?.data?.message ||
+            "An error occurred while exporting.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Unknown Error",
+          description: "unknown error occurred please try again later",
+        });
+      }
+    }
+  };
+
   return (
-    <div className="rounded-xl border">
+    <div className="h-full flex flex-col">
       <div className="users-table-head flex items-center justify-between p-4">
         <h2>Call Reporting</h2>
         <div className="actions flex items-center gap-2">
@@ -127,67 +163,73 @@ const CallReportingTable = () => {
               type="search"
             />
           </Field>
-          <Button>Export</Button>
+          <Button onClick={handleExport}>Export</Button>
         </div>
       </div>
 
-      <Table>
-        <TableHeader className="bg-gray-100 sticky -top-2 z-10">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
+      <div className="flex-1 overflow-auto">
+        <Table className="min-h-full w-full">
+          <TableHeader className="bg-gray-100 sticky -top-2 z-10">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
 
-        <TableBody>
-          {isLoading && (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                Loading...
-              </TableCell>
-            </TableRow>
-          )}
-          {!isLoading &&
-            (table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
+          <TableBody>
+            {isLoading && (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  Loading...
                 </TableCell>
               </TableRow>
-            ))}
-        </TableBody>
-      </Table>
+            )}
+            {!isLoading &&
+              (table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </div>
+
       {!isLoading && table.getRowModel().rows?.length && (
         <div className="flex flex-wrap justify-between items-center gap-2 p-4">
           <div className="pagination">

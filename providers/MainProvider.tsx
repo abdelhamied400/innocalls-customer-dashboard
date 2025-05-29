@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import NextIntlProvider from "./NextIntlProvider";
 import { SessionProvider } from "next-auth/react";
 import VocabProvider from "./VocabProvider";
+import StripeProvider from "./StripeProvider";
 
 type MainProviderProps = PropsWithChildren<object>;
 const MainProvider = async ({ children }: MainProviderProps) => {

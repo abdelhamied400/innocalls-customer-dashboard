@@ -79,13 +79,13 @@ const LoginForm = () => {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <Field
-                label="Work Email"
-                error={errors.email?.message}
-                htmlFor="email"
-              >
-                <FormItem>
-                  <FormControl>
+              <FormItem>
+                <FormControl>
+                  <Field
+                    label="Work Email"
+                    error={errors.email?.message}
+                    htmlFor="email"
+                  >
                     <Input
                       id="email"
                       variant="field"
@@ -93,22 +93,22 @@ const LoginForm = () => {
                       type="email"
                       {...field}
                     />
-                  </FormControl>
-                </FormItem>
-              </Field>
+                  </Field>
+                </FormControl>
+              </FormItem>
             )}
           />
           <FormField
             control={form.control}
             name="password"
             render={({ field }) => (
-              <Field
-                label="Password"
-                error={errors.password?.message}
-                htmlFor="password"
-              >
-                <FormItem>
-                  <FormControl>
+              <FormItem>
+                <FormControl>
+                  <Field
+                    label="Password"
+                    error={errors.password?.message}
+                    htmlFor="password"
+                  >
                     <Input
                       id="password"
                       variant="field"
@@ -116,9 +116,9 @@ const LoginForm = () => {
                       type="password"
                       {...field}
                     />
-                  </FormControl>
-                </FormItem>
-              </Field>
+                  </Field>
+                </FormControl>
+              </FormItem>
             )}
           />
           <Button

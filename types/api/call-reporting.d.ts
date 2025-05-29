@@ -21,3 +21,7 @@ export type CallReportingFilters = {
   tags?: string;
   search?: string;
 };
+
+export type ExportCallReportingFilters = CallReportingFilters & {
+  userEmail: string;
+};
