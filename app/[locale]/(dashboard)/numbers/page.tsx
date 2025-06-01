@@ -1,6 +1,6 @@
 import numbersService from "@/services/numbers.service";
 import NumbersTable from "./table";
-import { ColumnFiltersState, SortingState } from "@tanstack/react-table";
+import { parseTableInitialParams } from "@/lib/queryParams";
 
 type NumbersProps = {
   searchParams: Promise<{
@@ -10,26 +10,9 @@ type NumbersProps = {
   }>;
 };
 const Numbers = async ({ searchParams }: NumbersProps) => {
-  const params = await searchParams;
-  const { page = "1", pageSize = "10", ...otherParams } = params;
-  // other params will be filters and sorts
-  // sorts will start with sort_ and filters will be the rest
-  const filters: ColumnFiltersState = [];
-  const sorting: SortingState = [];
-  Object.entries(otherParams).forEach(([key, value]) => {
-    if (key.startsWith("sort_")) {
-      const sortKey = key.replace("sort_", "");
-      sorting.push({
-        id: sortKey,
-        desc: value === "desc",
-      });
-    } else {
-      filters.push({
-        id: key,
-        value: value || "",
-      });
-    }
-  });
+  const { page, pageSize, filters, sorting } = await parseTableInitialParams(
+    searchParams
+  );
   const numbers = await numbersService.fetchNumbers();
 
   return (

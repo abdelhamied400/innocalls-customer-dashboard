@@ -1,12 +1,14 @@
 "use client";
 
 import {
+  Column,
   ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  PaginationState,
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
@@ -19,7 +21,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Pagination,
@@ -62,20 +64,44 @@ import { getPinningLeftStyles } from "@/lib/table";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import usersService from "@/services/users.service";
-import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
+import { debounce } from "@/lib/debounce";
 
-interface UsersTableProps {}
+interface UsersTableProps {
+  initialData: User[];
+  initialPagination?: {
+    pageIndex: number;
+    pageSize: number;
+  };
+  initialFilters?: ColumnFiltersState;
+  initialSorting?: SortingState;
+}
 
-const UsersTable = ({}: UsersTableProps) => {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+const UsersTable = ({
+  initialData,
+  initialFilters = [],
+  initialSorting = [],
+  initialPagination,
+}: UsersTableProps) => {
+  const router = useRouter();
 
+  // sorting, filters, and pagination state
+  const [sorting, setSorting] = useState<SortingState>(initialSorting);
+  const [columnFilters, setColumnFilters] =
+    useState<ColumnFiltersState>(initialFilters);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: initialPagination?.pageIndex || 0,
+    pageSize: initialPagination?.pageSize || 10,
+  });
   const [status, setStatus] = useState<string[]>([]);
 
-  const { data = [], isLoading } = useQuery<User[]>({
+  // client-side data fetching
+  const { data } = useQuery<User[]>({
     queryKey: ["users"],
     queryFn: usersService.getUsers,
+    initialData,
     refetchInterval(query) {
+      // refetch every 3 seconds if there are pending users
       const hasPending =
         !!query.state.data &&
         query.state.data.length > 0 &&
@@ -85,6 +111,7 @@ const UsersTable = ({}: UsersTableProps) => {
     },
   });
 
+  // use data and initials to set up the table
   const table = useReactTable({
     data,
     columns,
@@ -94,43 +121,62 @@ const UsersTable = ({}: UsersTableProps) => {
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onPaginationChange: setPagination,
     state: {
+      pagination,
       sorting,
       columnFilters,
     },
   });
 
+  // sorting calculations
+  const tableSorting = table.getState().sorting;
+
+  // pagination calculations
+  const { pageIndex, pageSize } = table.getState().pagination;
   const totalItems = table.getFilteredRowModel().rows.length;
-  const startRowIndex =
-    table.getState().pagination.pageIndex *
-      table.getState().pagination.pageSize +
-    1;
-  const endRowIndex = Math.min(
-    (table.getState().pagination.pageIndex + 1) *
-      table.getState().pagination.pageSize,
-    totalItems
-  );
+  const startRowIndex = pageIndex * pageSize + 1;
+  const endRowIndex = Math.min((pageIndex + 1) * pageSize, totalItems);
+  const pages = table.getPageCount()
+    ? Array.from({ length: table.getPageCount() }, (_, i) => i + 1)
+    : [];
 
-  const handlePerPageChange = (value: string) => {
-    table.setPageSize(Number(value));
-  };
+  // filters calculations
+  const nameColumn = table.getColumn("name");
+  const statusColumn = table.getColumn("status");
+  const searchValue = (nameColumn?.getFilterValue() as string) || "";
+  const statusValue = (statusColumn?.getFilterValue() as string) || "";
 
+  // Callbacks
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const name = event.target.value;
     table.getColumn("name")?.setFilterValue(name);
   };
 
-  const pages = table.getPageCount()
-    ? Array.from({ length: table.getPageCount() }, (_, i) => i + 1)
-    : [];
+  //? on any change in pagination, sorting, or filters, update the URL
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set("page", (pageIndex + 1).toString());
+    params.set("pageSize", pageSize.toString());
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-full">
-        <p>Loading...</p>
-      </div>
-    );
-  }
+    if (columnFilters.length > 0) {
+      columnFilters.forEach((filter) => {
+        if (filter.value) {
+          params.set(filter.id, filter.value as string);
+        }
+      });
+    }
+
+    if (tableSorting.length > 0) {
+      tableSorting.forEach((sort) => {
+        params.set(`sort_${sort.id}`, sort.desc ? "desc" : "asc");
+      });
+    }
+
+    debounce(() => {
+      router.push(`?${params.toString()}`);
+    }, 5000);
+  }, [pageIndex, pageSize, columnFilters, tableSorting, router]);
 
   return (
     <div className="flex flex-col gap-0 h-full border rounded-xl">
@@ -142,9 +188,7 @@ const UsersTable = ({}: UsersTableProps) => {
               <Input
                 variant="field"
                 placeholder="Search..."
-                value={
-                  (table.getColumn("name")?.getFilterValue() as string) ?? ""
-                }
+                value={searchValue}
                 onChange={handleSearchChange}
                 type="search"
               />
@@ -167,12 +211,12 @@ const UsersTable = ({}: UsersTableProps) => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="filter" size="filter">
                     Status
-                    {status.length > 0 && (
+                    {statusValue.split(",").length > 0 && (
                       <Badge
                         variant="outline"
                         className="bg-neutral-500 px-1.5 rounded-md text-white"
                       >
-                        {status.length}
+                        {statusValue.split(",").length}
                       </Badge>
                     )}
                     <ChevronDownIcon />
@@ -182,19 +226,21 @@ const UsersTable = ({}: UsersTableProps) => {
                   <FilterDialog
                     title="Select from the list"
                     onReset={() => {
-                      table.getColumn("status")?.setFilterValue("");
+                      statusColumn?.setFilterValue("");
                       setStatus([]);
                     }}
                     onApply={() => {
-                      table
-                        .getColumn("status")
-                        ?.setFilterValue(status.join(","));
+                      statusColumn?.setFilterValue(status.join(","));
                     }}
                   >
                     <RadioGroup
                       defaultValue=""
                       onValueChange={(value: string) => {
-                        setStatus([value]);
+                        if (value === "") {
+                          setStatus([]);
+                        } else {
+                          setStatus(value.split(","));
+                        }
                       }}
                       value={status.length === 1 ? status[0] : ""}
                     >
@@ -216,6 +262,7 @@ const UsersTable = ({}: UsersTableProps) => {
             <Button
               onClick={() => {
                 table.resetColumnFilters();
+                table.setSorting([]);
                 setStatus([]);
               }}
               variant="ghost"
@@ -329,7 +376,7 @@ const UsersTable = ({}: UsersTableProps) => {
         <div className="flex items-center gap-2 per-page">
           <label className="text-sm">Rows per page:</label>
           <Select
-            onValueChange={handlePerPageChange}
+            onValueChange={(value) => table.setPageSize(Number(value))}
             defaultValue={table.getState().pagination.pageSize.toString()}
           >
             <SelectTrigger className="w-max">

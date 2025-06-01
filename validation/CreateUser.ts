@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const createUserSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string().trim().min(2, "Name is required"),
   email: z.string().email("Invalid email address"),
   ext: z
     .number()
@@ -13,7 +13,8 @@ const createUserSchema = z.object({
   pin: z
     .string()
     .min(4, "PIN must be 4 characters")
-    .max(4, "PIN must be 4 characters"),
+    .max(4, "PIN must be 4 characters")
+    .regex(/^\d{4}$/, "PIN must be numeric"),
   inbound: z.number().int().min(0).max(1).default(1),
   outbound: z.number().int().min(0).max(1).default(1),
   voicemail: z.number().int().min(0).max(1).default(0),

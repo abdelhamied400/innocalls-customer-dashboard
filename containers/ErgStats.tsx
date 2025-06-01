@@ -10,7 +10,7 @@ import ErgWaitingCallsCount from "@/components/Stats/ErgWaitingCallsCount";
 const ErgStats = () => {
   return (
     <div className="erg-stats">
-      <h3>Enhanced Ring Group Stats</h3>
+      <h3>Queue Statistics</h3>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
         <ErgInProgressCallsCount />
         <ErgWaitingCallsCount />
