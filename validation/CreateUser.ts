@@ -6,8 +6,10 @@ const createUserSchema = z.object({
   ext: z
     .number()
     .int()
-    .min(1000, "Extension must be 4 digits")
-    .max(9999, "Extension must be 4 digits"),
+    .refine(
+      (val) => val >= 100 && val <= 9999,
+      "Extension must be 3 or 4 digits"
+    ),
   pin: z
     .string()
     .min(4, "PIN must be 4 characters")

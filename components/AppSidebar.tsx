@@ -33,12 +33,7 @@ const AppSidebar = () => {
           title="Billing"
           href="/billing"
         />
-        <SidebarItem
-          disabled
-          icon={<DataUsage />}
-          title="Usage"
-          href="/usage"
-        />
+        <SidebarItem icon={<DataUsage />} title="Usage" href="/usage" />
         <SidebarItem
           disabled
           icon={<ShoppingCart />}

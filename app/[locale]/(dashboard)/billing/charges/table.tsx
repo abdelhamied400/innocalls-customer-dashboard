@@ -54,7 +54,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
 import FilterDialog from "@/components/FilterDialog";
 import DatePicker from "@/components/ui/date-picker";
 import { format } from "date-fns";
