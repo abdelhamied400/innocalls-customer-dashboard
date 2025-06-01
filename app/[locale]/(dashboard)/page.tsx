@@ -11,8 +11,8 @@ const Dashboard = () => {
   return (
     <div className="page" id="dashboard">
       <div className="flex flex-col gap-4">
-        <ServiceLevelStats />
-        <CallDistributionStats />
+        {Organization?.hasTenant && <ServiceLevelStats />}
+        {Organization?.hasTenant && <CallDistributionStats />}
         {Organization?.hasTenant && <ErgStats />}
         <BillingStats />
       </div>

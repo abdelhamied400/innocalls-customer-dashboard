@@ -25,6 +25,9 @@ export const columns: ColumnDef<PhoneNumber>[] = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      return <span className="font-semibold">{row.original.id}</span>;
+    },
   },
   {
     accessorKey: "number",
