@@ -1,10 +1,10 @@
 import api from "./api";
 
 export default {
-  fetchNumbers: async (page: string, pageSize: string, filters: any) => {
-    const res = await api.get(`/jera/dids?page=${page}&pageSize=${pageSize}`);
-    return res.data.map((number: string) => ({
-      id: number,
+  fetchNumbers: async () => {
+    const res = await api.get(`/jera/dids`);
+    return res.data.map((number: string, idx: number) => ({
+      id: (idx + 1).toString().padStart(6, "0"),
       number,
     }));
   },

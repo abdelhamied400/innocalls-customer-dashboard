@@ -6,6 +6,7 @@ import StatsCard, {
 import { Badge } from "@/components/ui/badge";
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
+import MiniStatsCard from "../MiniStatsCard";
 
 const ErgTodayWaitingTime = () => {
   const {
@@ -36,26 +37,38 @@ const ErgTodayWaitingTime = () => {
     <StatsCard
       icon={
         <img
-          src="/assets/icons/stats/phone.svg"
+          src="/assets/icons/stats/erg/today.png"
           alt="Today Waiting Time Icon"
         />
       }
       title="Today's Waiting Time"
-      value={ergStats.totalWaitTimeCompletedCalls}
+      value={ergStats.totalWaitTime}
       info={
-        <div className="flex flex-wrap gap-1">
-          <Badge variant="warning" className="text-sm">
-            Abandon: {ergStats.totalWaitTimeAbandonCalls}
-          </Badge>
-          <Badge variant="secondary" className="text-sm">
-            Completed: {ergStats.totalWaitTimeCompletedCalls}
-          </Badge>
-          <Badge variant="default" className="text-sm">
-            Avg Abandon: {ergStats.avgWaitTimeAbandonCalls}
-          </Badge>
-          <Badge variant="default" className="text-sm">
-            Avg Completed: {ergStats.avgWaitTimeCompletedCalls}
-          </Badge>
+        <div className="flex flex-col gap-1">
+          <MiniStatsCard
+            icon="/assets/icons/stats/erg/mini/alarm_on.png"
+            label="Completed"
+            variant="success"
+            value={ergStats.totalWaitTimeCompletedCalls}
+          />
+          <MiniStatsCard
+            icon="/assets/icons/stats/erg/mini/timer_2.png"
+            label="Avg-Completed"
+            variant="default"
+            value={ergStats.avgWaitTimeCompletedCalls}
+          />
+          <MiniStatsCard
+            icon="/assets/icons/stats/erg/mini/ring_volume.png"
+            label="Abandoned"
+            variant="warning"
+            value={ergStats.totalWaitTimeAbandonCalls}
+          />
+          <MiniStatsCard
+            icon="/assets/icons/stats/erg/mini/timer.png"
+            label="Avg-Abandoned"
+            variant="info"
+            value={ergStats.avgWaitTimeAbandonCalls}
+          />
         </div>
       }
       isRefetching={isRefetching}

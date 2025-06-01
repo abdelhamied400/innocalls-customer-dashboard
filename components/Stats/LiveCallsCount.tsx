@@ -37,12 +37,7 @@ const LiveCallsCount = () => {
       icon={<img src="/assets/icons/stats/phone.svg" alt="Live Calls Icon" />}
       title="Live Calls Count"
       value={liveCallsCount}
-      className="bg-blue-100 shadow-none"
-      info={
-        <p className="text-sm text-gray-500">
-          <span className="text-green-500">+120,34%</span> Up from yesterday
-        </p>
-      }
+      className="bg-info-100 shadow-none"
     ></StatsCard>
   );
 };

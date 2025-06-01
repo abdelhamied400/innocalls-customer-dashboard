@@ -74,7 +74,6 @@ const TotalAnsweredCalls = () => {
               }}
             />
             <ChartTooltip content={<ChartTooltipContent />} />
-            <ChartLegend content={<ChartLegendContent />} />
 
             <Bar
               dataKey="totalCalls"

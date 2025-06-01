@@ -13,6 +13,18 @@ export default {
     const res = await api.get("/extension/online-count");
     return res.data;
   },
+  getCallDistribution: async () => {
+    const res = await api.get("/statistics/call-distribution");
+    const callDistribution = res.data.data.callDistribution;
+    const chartData = callDistribution.incoming.labels.map(
+      (label: string, idx: number) => ({
+        day: label.toUpperCase(),
+        incomingCalls: callDistribution.incoming.values[idx],
+        outgoingCalls: callDistribution.outgoing.values[idx],
+      })
+    );
+    return chartData;
+  },
   getTotalAnsweredCalls: async () => {
     const res = await api.get("/statistics/tenant-answered-calls");
     const totalCalls = res.data.data.totalCalls;

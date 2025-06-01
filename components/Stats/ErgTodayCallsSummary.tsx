@@ -6,6 +6,7 @@ import StatsCard, {
 import { Badge } from "@/components/ui/badge";
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
+import MiniStatsCard from "../MiniStatsCard";
 
 const ErgTodayCallsSummary = () => {
   const {
@@ -43,13 +44,19 @@ const ErgTodayCallsSummary = () => {
       title="Today's Calls Summary"
       value={ergStats.total}
       info={
-        <div className="flex flex-wrap gap-1">
-          <Badge variant="warning" className="text-sm">
-            Abandon: {ergStats.abandon}
-          </Badge>
-          <Badge variant="secondary" className="text-sm">
-            Completed: {ergStats.completed}
-          </Badge>
+        <div className="flex flex-col gap-1">
+          <MiniStatsCard
+            icon="/assets/icons/stats/erg/mini/ring_volume.png"
+            label="Abandon"
+            variant="warning"
+            value={ergStats.abandon}
+          />
+          <MiniStatsCard
+            icon="/assets/icons/stats/erg/mini/timer_2.png"
+            label="Completed"
+            variant="default"
+            value={ergStats.completed}
+          />
         </div>
       }
       isRefetching={isRefetching}

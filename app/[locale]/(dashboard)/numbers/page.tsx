@@ -1,16 +1,11 @@
 import numbersService from "@/services/numbers.service";
 import NumbersTable from "./table";
-import { columns } from "./columns";
 
 type NumbersProps = {
-  searchParams: Promise<{
-    page: string;
-    pageSize: string;
-  }>;
+  searchParams: Promise<{}>;
 };
-const Numbers = async ({ searchParams }: NumbersProps) => {
-  const { page = "1", pageSize = "10", ...filters } = await searchParams;
-  const numbers = await numbersService.fetchNumbers(page, pageSize, filters);
+const Numbers = async ({}: NumbersProps) => {
+  const numbers = await numbersService.fetchNumbers();
 
   return (
     <div className="page h-full" id="numbers">

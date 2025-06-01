@@ -25,10 +25,10 @@ const buttonVariants = cva(
         filter:
           "bg-neutral-200 text-neutral-foreground hover:bg-neutral-300 text-xs rounded-full font-semibold",
         "ghost-primary": "bg-primary-100 hover:bg-primary-200 text-primary-600",
-        "ghost-success": "bg-success-100 hover:bg-success-200 text-success-600",
-        "ghost-warning": "bg-warning-100 hover:bg-warning-200 text-warning-600",
+        "ghost-success": "bg-success-100 hover:bg-success-200 text-success-500",
+        "ghost-warning": "bg-warning-100 hover:bg-warning-200 text-warning-500",
         "ghost-destructive":
-          "bg-destructive-100 hover:bg-destructive-200 text-destructive-600",
+          "bg-destructive-100 hover:bg-destructive-200 text-destructive-500",
         tab: "rounded-full bg-gray-100 border border-gray-100 text-gray-600 hover:bg-gray-200 active:bg-gray-200 data-[active=true]:border-primary data-[active=true]:bg-primary-100 data-[active=true]:text-primary",
         unstyled: "",
       },

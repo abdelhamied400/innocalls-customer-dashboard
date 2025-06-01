@@ -20,7 +20,7 @@ export const columns: ColumnDef<PhoneNumber>[] = [
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Id
+          #Ref-No
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );

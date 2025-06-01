@@ -4,51 +4,71 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 import {
   ChartConfig,
   ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { useQuery } from "@tanstack/react-query";
+import statsService from "@/services/stats.service";
+import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 
 const chartConfig: ChartConfig = {
-  totalCalls: {
-    label: "Total Calls",
+  incomingCalls: {
+    label: "Incoming Calls",
+    color: "#23C998",
+  },
+  outgoingCalls: {
+    label: "Outgoing Calls",
     color: "#5BC9F7",
   },
 };
 
 const CallDistribution = () => {
-  const chartData = [
-    { day: "13 OCT", totalCalls: 186 },
-    { day: "14 OCT", totalCalls: 305 },
-    { day: "15 OCT", totalCalls: 237 },
-    { day: "16 OCT", totalCalls: 73 },
-    { day: "17 OCT", totalCalls: 209 },
-    { day: "18 OCT", totalCalls: 214 },
-    { day: "19 OCT", totalCalls: 186 },
-    { day: "20 OCT", totalCalls: 305 },
-    { day: "21 OCT", totalCalls: 237 },
-    { day: "22 OCT", totalCalls: 73 },
-    { day: "23 OCT", totalCalls: 209 },
-    { day: "24 OCT", totalCalls: 214 },
-    { day: "25 OCT", totalCalls: 186 },
-    { day: "26 OCT", totalCalls: 305 },
-    { day: "27 OCT", totalCalls: 237 },
-    { day: "28 OCT", totalCalls: 73 },
-    { day: "29 OCT", totalCalls: 209 },
-    { day: "30 OCT", totalCalls: 214 },
-    { day: "31 OCT", totalCalls: 186 },
-  ];
+  const {
+    data: callDistributionData,
+    isRefetching,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["call-distribution"],
+    queryFn: statsService.getCallDistribution,
+    refetchOnWindowFocus: false,
+    refetchIntervalInBackground: true,
+    refetchOnMount: "always",
+    retry: false,
+  });
+
+  if (isLoading || isRefetching) {
+    return <StatsCardSkeleton />;
+  }
+
+  if (isError) {
+    return <StatsCardError error={error} />;
+  }
 
   return (
     <div className="page h-full" id="callDistribution">
-      <div className="bg-white p-4 ps-0 pe-8 pt-8 rounded-lg h-full">
-        <ChartContainer
-          config={chartConfig}
-          className="w-full min-h-[200px] h-full"
-        >
-          <BarChart accessibilityLayer data={chartData}>
+      <div className="bg-white p-4 ps-0 pe-8 pt-2 rounded-lg h-full flex flex-col gap-4">
+        <div className="head flex justify-between items-center ps-4 py-2">
+          <h2 className="text-lg font-semibold">Call Distribution</h2>
+          <div className="flex items-center gap-2">
+            {Object.entries(chartConfig).map(([key, value]) => (
+              <div className="legend flex items-center gap-2" key={key}>
+                <div
+                  className="color w-3 h-3 rounded-full"
+                  style={{ backgroundColor: value.color }}
+                />
+                <span className="label text-sm font-medium text-gray-600">
+                  {value.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <ChartContainer config={chartConfig} className="w-full min-h-[120px]">
+          <BarChart accessibilityLayer data={callDistributionData} barGap={0}>
             <CartesianGrid vertical={false} />
+
             <XAxis
               dataKey="day"
               tickLine={false}
@@ -56,7 +76,6 @@ const CallDistribution = () => {
               axisLine={false}
             />
             <YAxis
-              dataKey="totalCalls"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
@@ -68,11 +87,15 @@ const CallDistribution = () => {
               }}
             />
             <ChartTooltip content={<ChartTooltipContent />} />
-            <ChartLegend content={<ChartLegendContent />} />
 
             <Bar
-              dataKey="totalCalls"
-              fill="var(--color-totalCalls)"
+              dataKey="incomingCalls"
+              fill="var(--color-incomingCalls)"
+              radius={4}
+            />
+            <Bar
+              dataKey="outgoingCalls"
+              fill="var(--color-outgoingCalls)"
               radius={4}
             />
           </BarChart>
