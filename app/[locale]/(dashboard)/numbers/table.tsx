@@ -7,6 +7,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  PaginationState,
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
@@ -19,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Pagination,
@@ -38,25 +39,45 @@ import {
 } from "@/components/ui/select";
 import Field from "@/components/ui/field";
 import { SearchIcon } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { columns, PhoneNumber } from "./columns";
+import { useQuery } from "@tanstack/react-query";
+import numbersService from "@/services/numbers.service";
 
 interface DataTableProps {
-  data: PhoneNumber[];
+  initialData: PhoneNumber[];
+  initialPagination?: {
+    pageIndex: number;
+    pageSize: number;
+  };
+  initialFilters?: ColumnFiltersState;
+  initialSorting?: SortingState;
 }
 
-const DataTable = ({ data }: DataTableProps) => {
-  const queryParams = useSearchParams();
-  const search = queryParams.get("search") || "";
+const DataTable = ({
+  initialData,
+  initialFilters = [],
+  initialSorting = [],
+  initialPagination,
+}: DataTableProps) => {
+  const router = useRouter();
+  // sorting, filters, and pagination state
+  const [sorting, setSorting] = useState<SortingState>(initialSorting);
+  const [columnFilters, setColumnFilters] =
+    useState<ColumnFiltersState>(initialFilters);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: initialPagination?.pageIndex || 0,
+    pageSize: initialPagination?.pageSize || 10,
+  });
 
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
-    {
-      id: "number",
-      value: search,
-    },
-  ]);
+  // client-side data fetching
+  const { data } = useQuery({
+    queryKey: ["numbers"],
+    queryFn: numbersService.fetchNumbers,
+    initialData,
+  });
 
+  // use data and initials to set up the table
   const table = useReactTable({
     data,
     columns,
@@ -66,40 +87,52 @@ const DataTable = ({ data }: DataTableProps) => {
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    onPaginationChange: setPagination,
     state: {
+      pagination,
       sorting,
       columnFilters,
     },
   });
 
+  const tableSorting = table.getState().sorting;
+  // pagination calculations
+  const { pageIndex, pageSize } = table.getState().pagination;
   const totalItems = table.getFilteredRowModel().rows.length;
-  const startRowIndex =
-    table.getState().pagination.pageIndex *
-      table.getState().pagination.pageSize +
-    1;
-  const endRowIndex = Math.min(
-    (table.getState().pagination.pageIndex + 1) *
-      table.getState().pagination.pageSize,
-    totalItems
-  );
-
-  const handlePerPageChange = (value: string) => {
-    table.setPageSize(Number(value));
-  };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setColumnFilters((prev) => [
-      {
-        id: "number",
-        value,
-      },
-    ]);
-  };
-
+  const startRowIndex = pageIndex * pageSize + 1;
+  const endRowIndex = Math.min((pageIndex + 1) * pageSize, totalItems);
   const pages = table.getPageCount()
     ? Array.from({ length: table.getPageCount() }, (_, i) => i + 1)
     : [];
+
+  // callbacks
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    table.getColumn("number")?.setFilterValue(value);
+  };
+
+  //? on any change in pagination, sorting, or filters, update the URL
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set("page", (pageIndex + 1).toString());
+    params.set("pageSize", pageSize.toString());
+
+    if (columnFilters.length > 0) {
+      columnFilters.forEach((filter) => {
+        if (filter.value) {
+          params.set(filter.id, filter.value as string);
+        }
+      });
+    }
+
+    if (tableSorting.length > 0) {
+      tableSorting.forEach((sort) => {
+        params.set(`sort_${sort.id}`, sort.desc ? "desc" : "asc");
+      });
+    }
+
+    router.push(`?${params.toString()}`);
+  }, [pageIndex, pageSize, columnFilters, tableSorting, router]);
 
   return (
     <div className="h-full flex flex-col">
@@ -210,7 +243,7 @@ const DataTable = ({ data }: DataTableProps) => {
         <div className="flex items-center gap-2 per-page">
           <label className="text-sm">Rows per page:</label>
           <Select
-            onValueChange={handlePerPageChange}
+            onValueChange={(value) => table.setPageSize(Number(value))}
             defaultValue={table.getState().pagination.pageSize.toString()}
           >
             <SelectTrigger className="w-max">
