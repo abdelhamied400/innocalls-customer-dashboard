@@ -1,9 +1,7 @@
 "use client";
 
 import {
-  Column,
   ColumnFiltersState,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -13,59 +11,16 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
-import {
-  Pagination,
-  PaginationButton,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import Field from "@/components/ui/field";
-import { ChevronDownIcon, SearchIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import { Toggle } from "@/components/ui/toggle";
-import { Clear } from "@mui/icons-material";
-import FilterDialog from "@/components/FilterDialog";
-import { Badge } from "@/components/ui/badge";
-import { userStatuses } from "@/constants/user";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import { columns, User } from "./columns";
-import { getPinningLeftStyles } from "@/lib/table";
-import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import usersService from "@/services/users.service";
 import { useRouter } from "next/navigation";
-import { debounce } from "@/lib/debounce";
+import UsersTableHeader from "./UsersTableHeader";
+import UsersTableFilters from "./UsersTableFilters";
+import UsersTableBody from "./UsersTableBody";
+import UsersTablePagination from "./UsersTablePagination";
 
 interface UsersTableProps {
   initialData: User[];
@@ -93,7 +48,15 @@ const UsersTable = ({
     pageIndex: initialPagination?.pageIndex || 0,
     pageSize: initialPagination?.pageSize || 10,
   });
-  const [status, setStatus] = useState<string[]>([]);
+  // Initialize status filter state from initialFilters
+  const initialStatusFilter = initialFilters.find(
+    (f) => f.id === "status"
+  )?.value;
+  const [status, setStatus] = useState<string[]>(
+    typeof initialStatusFilter === "string" && initialStatusFilter.length > 0
+      ? initialStatusFilter.split(",")
+      : []
+  );
 
   // client-side data fetching
   const { data } = useQuery<User[]>({
@@ -173,227 +136,33 @@ const UsersTable = ({
       });
     }
 
-    debounce(() => {
-      router.push(`?${params.toString()}`);
-    }, 5000);
+    router.push(`?${params.toString()}`);
   }, [pageIndex, pageSize, columnFilters, tableSorting, router]);
 
   return (
     <div className="flex flex-col gap-0 h-full border rounded-xl">
       <Collapsible>
-        <div className="users-table-head flex items-center justify-between p-4">
-          <h2>Users List</h2>
-          <div className="actions flex items-center gap-2">
-            <Field preIcon={<SearchIcon />}>
-              <Input
-                variant="field"
-                placeholder="Search..."
-                value={searchValue}
-                onChange={handleSearchChange}
-                type="search"
-              />
-            </Field>
-            <CollapsibleTrigger asChild>
-              <Toggle pressed={true} className="rounded-full">
-                <FilterAltIcon />
-              </Toggle>
-            </CollapsibleTrigger>
-            <Link href="/users/create">
-              <Button>Create new user</Button>
-            </Link>
-          </div>
-        </div>
-
+        <UsersTableHeader
+          searchValue={searchValue}
+          onSearchChange={handleSearchChange}
+        />
         <CollapsibleContent>
-          <div className="flex justify-between items-center p-3 border-t table-filters">
-            <div className="flex items-center gap-4">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="filter" size="filter">
-                    Status
-                    {statusValue.split(",").length > 0 && (
-                      <Badge
-                        variant="outline"
-                        className="bg-neutral-500 px-1.5 rounded-md text-white"
-                      >
-                        {statusValue.split(",").length}
-                      </Badge>
-                    )}
-                    <ChevronDownIcon />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <FilterDialog
-                    title="Select from the list"
-                    onReset={() => {
-                      statusColumn?.setFilterValue("");
-                      setStatus([]);
-                    }}
-                    onApply={() => {
-                      statusColumn?.setFilterValue(status.join(","));
-                    }}
-                  >
-                    <RadioGroup
-                      defaultValue=""
-                      onValueChange={(value: string) => {
-                        if (value === "") {
-                          setStatus([]);
-                        } else {
-                          setStatus(value.split(","));
-                        }
-                      }}
-                      value={status.length === 1 ? status[0] : ""}
-                    >
-                      {userStatuses.map((s) => (
-                        <div
-                          className="flex items-center space-x-2"
-                          key={s.value}
-                        >
-                          <RadioGroupItem value={s.value} id={s.value} />
-                          <Label htmlFor={s.value}>{s.label}</Label>
-                        </div>
-                      ))}
-                    </RadioGroup>
-                  </FilterDialog>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-
-            <Button
-              onClick={() => {
-                table.resetColumnFilters();
-                table.setSorting([]);
-                setStatus([]);
-              }}
-              variant="ghost"
-            >
-              <Clear /> Clear
-            </Button>
-          </div>
+          <UsersTableFilters
+            status={status}
+            setStatus={setStatus}
+            statusColumn={statusColumn}
+            table={table}
+          />
         </CollapsibleContent>
       </Collapsible>
-
-      <div className="flex-1 h-full overflow-y-auto">
-        <Table className="min-h-full w-full">
-          <TableHeader className="bg-gray-100 sticky top-0 z-10">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      key={header.id}
-                      style={
-                        header.id === "ext"
-                          ? getPinningLeftStyles(header.column)
-                          : {}
-                      }
-                      className="bg-gray-100"
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      style={
-                        cell.column.id === "ext"
-                          ? getPinningLeftStyles(cell.column)
-                          : {}
-                      }
-                      className={"bg-white"}
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-
-      <div className="flex justify-between items-center gap-2 p-4">
-        <div className="pagination">
-          <Pagination className="justify-normal">
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={table.previousPage}
-                  disabled={!table.getCanPreviousPage()}
-                />
-              </PaginationItem>
-
-              {pages.map((page, idx) => (
-                <PaginationItem key={`page-${page}, ${idx}`}>
-                  <PaginationButton
-                    isActive={
-                      table.getState().pagination.pageIndex + 1 === page
-                    }
-                    onClick={() => table.setPageIndex(page - 1)}
-                  >
-                    {page}
-                  </PaginationButton>
-                </PaginationItem>
-              ))}
-              <PaginationItem>
-                <PaginationNext
-                  onClick={table.nextPage}
-                  disabled={!table.getCanNextPage()}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
-
-        <div className="flex items-center gap-2 per-page">
-          <label className="text-sm">Rows per page:</label>
-          <Select
-            onValueChange={(value) => table.setPageSize(Number(value))}
-            defaultValue={table.getState().pagination.pageSize.toString()}
-          >
-            <SelectTrigger className="w-max">
-              <SelectValue placeholder="" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="20">20</SelectItem>
-              <SelectItem value="30">30</SelectItem>
-            </SelectContent>
-          </Select>
-          <p className="text-sm">
-            {startRowIndex}-{endRowIndex}
-            {totalItems ? ` of ${totalItems}` : ""}
-          </p>
-        </div>
-      </div>
+      <UsersTableBody table={table} />
+      <UsersTablePagination
+        table={table}
+        pages={pages}
+        startRowIndex={startRowIndex}
+        endRowIndex={endRowIndex}
+        totalItems={totalItems}
+      />
     </div>
   );
 };

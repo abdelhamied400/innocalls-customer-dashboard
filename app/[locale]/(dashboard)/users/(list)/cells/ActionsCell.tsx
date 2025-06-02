@@ -9,10 +9,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
+  AlertDialogX,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Cell } from "@/types/cell";
-import { Block, Cached, Delete, MoreVert } from "@mui/icons-material";
+import { Block, Cached, Delete, Edit, MoreVert } from "@mui/icons-material";
 import { User } from "../columns";
 import usersService from "@/services/users.service";
 import { useToast } from "@/hooks/use-toast";
@@ -26,6 +27,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Spinner from "@/components/ui/spinner";
+import { X } from "lucide-react";
+import Link from "next/link";
 
 type ActionsCellProps = Cell<User>;
 const ActionsCell = ({ row }: ActionsCellProps) => {
@@ -140,6 +143,10 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
     }
   };
 
+  if (row.original.status === "pending") {
+    return <div className="flex gap-2"></div>;
+  }
+
   return (
     <div className="flex gap-2">
       {row.getValue("status") === "enabled" ? (
@@ -157,14 +164,16 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+              <AlertDialogX />
+
               <AlertDialogDescription>
                 you want to disable this user?
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>No, Don't Proceed</AlertDialogCancel>
               <AlertDialogAction onClick={handleDeactivate}>
-                Continue
+                Yes Disable it
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -184,14 +193,15 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+              <AlertDialogX />
               <AlertDialogDescription>
                 you want to enable this user?
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>No, Don't Proceed</AlertDialogCancel>
               <AlertDialogAction onClick={handleActivate}>
-                Continue
+                Yes Enable it
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -205,6 +215,11 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
+          <Link href={`/users/${row.original.id}/edit`}>
+            <DropdownMenuItem>
+              <Edit /> Edit User
+            </DropdownMenuItem>
+          </Link>
           <DropdownMenuItem
             disabled={isDeleting}
             onClick={() => {
@@ -228,20 +243,21 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogX />
             <AlertDialogDescription>
               You want to delete this user?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setShowAlert(false)}>
-              Cancel
+              No, Don't Proceed
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 handleDelete();
               }}
             >
-              Continue
+              Yes, Delete it
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

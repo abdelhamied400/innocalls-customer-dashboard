@@ -1,4 +1,5 @@
 import { CreateUserSchema } from "@/validation/CreateUser";
+import { EditUserSchema } from "@/validation/EditUser";
 import api from "./api";
 
 export default {
@@ -10,8 +11,16 @@ export default {
     const res = await api.get("/extension/monitor");
     return res.data;
   },
+  getUserById: async (id: string) => {
+    const res = await api.get(`/extension/show/${id}`);
+    return res.data;
+  },
   createUser: async (data: CreateUserSchema) => {
     const res = await api.post("/extension", data);
+    return res.data;
+  },
+  editUser: async (data: EditUserSchema) => {
+    const res = await api.put(`/extension`, data);
     return res.data;
   },
   getRecommendedNumber: async () => {

@@ -2,14 +2,10 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Block, Cached, MoreVert, Refresh } from "@mui/icons-material";
-import { Column, ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
-import { CSSProperties } from "react";
 import ActionsCell from "./cells/ActionsCell";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+// User type definition
 export type User = {
   id: string;
   email: string;
@@ -18,35 +14,32 @@ export type User = {
   status: string;
 };
 
-export const columns: ColumnDef<User, any>[] = [
+// Table columns definition
+export const columns: import("@tanstack/react-table").ColumnDef<User, any>[] = [
   {
     accessorKey: "ext",
     enablePinning: true,
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Extension No.
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }: { column: any }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Extension No.
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
   },
   {
     accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }: { column: any }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Name
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
   },
   {
     accessorKey: "email",
@@ -55,7 +48,7 @@ export const columns: ColumnDef<User, any>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => (
+    cell: ({ row }: { row: any }) => (
       <Badge
         variant={row.getValue("status") === "enabled" ? "success" : "muted"}
       >

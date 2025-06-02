@@ -5,6 +5,7 @@ import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
+import { X } from "lucide-react";
 
 const AlertDialog = AlertDialogPrimitive.Root;
 
@@ -61,10 +62,7 @@ const AlertDialogFooter = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn(
-      "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
-      className
-    )}
+    className={cn("grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4", className)}
     {...props}
   />
 );
@@ -88,7 +86,7 @@ const AlertDialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Description
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={cn("text-sm", className)}
     {...props}
   />
 ));
@@ -101,7 +99,7 @@ const AlertDialogAction = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AlertDialogPrimitive.Action
     ref={ref}
-    className={cn(buttonVariants(), className)}
+    className={cn(buttonVariants({ size: "lg" }), className)}
     {...props}
   />
 ));
@@ -114,7 +112,7 @@ const AlertDialogCancel = React.forwardRef<
   <AlertDialogPrimitive.Cancel
     ref={ref}
     className={cn(
-      buttonVariants({ variant: "outline" }),
+      buttonVariants({ variant: "outline", size: "lg" }),
       "mt-2 sm:mt-0",
       className
     )}
@@ -122,6 +120,20 @@ const AlertDialogCancel = React.forwardRef<
   />
 ));
 AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName;
+
+const AlertDialogX = React.forwardRef<
+  React.ElementRef<typeof AlertDialogPrimitive.Cancel>,
+  React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel>
+>(({ className, ...props }, ref) => (
+  <AlertDialogPrimitive.Cancel
+    ref={ref}
+    className={cn("absolute top-1 end-4 z-10", className)}
+    {...props}
+  >
+    <X />
+  </AlertDialogPrimitive.Cancel>
+));
+AlertDialogX.displayName = AlertDialogPrimitive.Cancel.displayName;
 
 export {
   AlertDialog,
@@ -135,4 +147,5 @@ export {
   AlertDialogDescription,
   AlertDialogAction,
   AlertDialogCancel,
+  AlertDialogX,
 };
