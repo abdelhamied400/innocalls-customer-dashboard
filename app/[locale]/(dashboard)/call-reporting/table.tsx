@@ -169,7 +169,7 @@ const CallReportingTable = () => {
 
       <div className="flex-1 overflow-auto">
         <Table className="min-h-full w-full">
-          <TableHeader className="bg-gray-100 sticky -top-2 z-10">
+          <TableHeader className="bg-gray-100 sticky top-0 z-10">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
