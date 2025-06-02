@@ -46,13 +46,38 @@ import { CallReportingFilters } from "@/types/api/call-reporting";
 import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const CallReportingTable = () => {
   const { toast } = useToast();
   const session = useSession();
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Initialize from URL
+  const initialPage = parseInt(searchParams.get("page") || "1", 10) - 1;
+  const initialPageSize = parseInt(searchParams.get("pageSize") || "10", 10);
+  const initialSearch = searchParams.get("search") || "";
+  const initialSort = searchParams.get("sort") || ""; // e.g., "name:asc"
+
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: initialPage >= 0 ? initialPage : 0,
+    pageSize: initialPageSize,
+  });
+
+  const [sorting, setSorting] = useState<SortingState>(
+    initialSort
+      ? [
+          {
+            id: initialSort.split(":")[0],
+            desc: initialSort.split(":")[1] === "desc",
+          },
+        ]
+      : []
+  );
+
   const [filters, setFilters] = useState<CallReportingFilters>({
-    search: "",
+    search: initialSearch,
     sourceExtensions: "",
     destinationExtensions: "",
     fromDate: undefined,
@@ -60,10 +85,27 @@ const CallReportingTable = () => {
     callStatuses: "",
     tags: "",
   });
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+
+  // Update URL when pagination, sorting, or filters change
+  useEffect(() => {
+    const params = new URLSearchParams();
+
+    params.set("page", (pagination.pageIndex + 1).toString());
+    params.set("pageSize", pagination.pageSize.toString());
+
+    if (filters.search) {
+      params.set("search", filters.search);
+    }
+
+    if (sorting.length) {
+      params.set(
+        "sort",
+        `${sorting[0].id}:${sorting[0].desc ? "desc" : "asc"}`
+      );
+    }
+
+    router.replace(`?${params.toString()}`);
+  }, [pagination, sorting, filters, router]);
 
   const {
     data: callReporting = {
@@ -104,6 +146,7 @@ const CallReportingTable = () => {
     pageCount: callReporting.last_page,
     manualPagination: true,
     manualFiltering: true,
+    manualSorting: true,
     state: {
       sorting,
       pagination,
@@ -116,6 +159,7 @@ const CallReportingTable = () => {
       ...prev,
       search,
     }));
+    setPagination((prev) => ({ ...prev, pageIndex: 0 })); // reset to page 1 on search
   };
 
   const handleExport = async () => {
@@ -172,18 +216,16 @@ const CallReportingTable = () => {
           <TableHeader className="bg-gray-100 sticky top-0 z-10">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -246,7 +288,7 @@ const CallReportingTable = () => {
                   { length: callReporting.last_page },
                   (_, i) => i + 1
                 ).map((page, idx) => (
-                  <PaginationItem key={`page-${page}, ${idx}`}>
+                  <PaginationItem key={`page-${page}-${idx}`}>
                     <PaginationButton
                       isActive={
                         table.getState().pagination.pageIndex + 1 === page
