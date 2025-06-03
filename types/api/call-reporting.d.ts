@@ -1,15 +1,22 @@
+type CallMember = {
+  name: string;
+  number: string;
+};
 export type Call = {
   callSummary?: string;
-  call_date_time: string;
   call_status: "Answered" | "Busy" | "Failed" | "Not Answered";
   canListenToRecords: boolean;
-  destination: string;
   direction: "incoming" | "outgoing";
   duration: string;
   hasRecording: boolean;
   id: string;
   isRecordableCall: boolean;
-  source: string;
+  from: CallMember;
+  to: CallMember;
+  datetime: {
+    date: string;
+    time: string;
+  };
 };
 
 export type CallReportingFilters = {

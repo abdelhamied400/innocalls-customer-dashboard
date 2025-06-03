@@ -8,14 +8,32 @@ export const columns: ColumnDef<Call>[] = [
   {
     accessorKey: "destination",
     header: "Destination",
+    cell: ({ row }) => (
+      <div className="datetime-cell font-normal">
+        <p>{row.original.to.name}</p>
+        <p className="text-gray-500">{row.original.to.number}</p>
+      </div>
+    ),
   },
   {
     accessorKey: "source",
     header: "Source",
+    cell: ({ row }) => (
+      <div className="datetime-cell font-normal">
+        <p>{row.original.from.name}</p>
+        <p className="text-gray-500">{row.original.from.number}</p>
+      </div>
+    ),
   },
   {
-    accessorKey: "call_date_time",
+    accessorKey: "datetime",
     header: "Call Date",
+    cell: ({ row }) => (
+      <div className="datetime-cell font-normal">
+        <p>{row.original.datetime.date}</p>
+        <p className="text-gray-500">{row.original.datetime.time}</p>
+      </div>
+    ),
   },
   {
     accessorKey: "duration",
