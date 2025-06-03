@@ -6,7 +6,10 @@ import { ColumnDef } from "@tanstack/react-table";
 export type Charge = {
   amount: number;
   currency: string;
-  date: string;
+  datetime: {
+    date: string;
+    time: string;
+  };
   description: string;
   gateway: string | null;
   invoice: string;
@@ -15,12 +18,18 @@ export type Charge = {
 
 export const columns: ColumnDef<Charge>[] = [
   {
-    accessorKey: "refNumber",
+    accessorKey: "id",
     header: "#Ref-No",
   },
   {
-    accessorKey: "date",
+    accessorKey: "datetime",
     header: "Date",
+    cell: ({ row }) => (
+      <div className="datetime-cell font-normal">
+        <p>{row.original.datetime.date}</p>
+        <p className="text-gray-500">{row.original.datetime.time}</p>
+      </div>
+    ),
   },
   {
     accessorKey: "amount",
@@ -29,9 +38,9 @@ export const columns: ColumnDef<Charge>[] = [
       const amount = row.getValue("amount") as number;
       const currency = row.original.currency as string;
       return (
-        <div className="flex flex-col items-center w-min">
-          <span>{amount}</span>
-          <span>{currency}</span>
+        <div className="flex flex-col items-center w-min font-normal">
+          <p>{amount}</p>
+          <p className="text-gray-500">{currency}</p>
         </div>
       );
     },

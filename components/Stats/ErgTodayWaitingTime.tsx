@@ -69,6 +69,18 @@ const ErgTodayWaitingTime = () => {
             variant="info"
             value={ergStats.avgWaitTimeAbandonCalls}
           />
+          <MiniStatsCard
+            icon="/assets/icons/stats/erg/mini/ring_volume.png"
+            label="Exit Timeout"
+            variant="destructive"
+            value={ergStats.totalWaitTimeExitTimeout}
+          />
+          <MiniStatsCard
+            icon="/assets/icons/stats/erg/mini/timer.png"
+            label="Avg-Exit Timeout"
+            variant="indigo"
+            value={ergStats.avgWaitTimeExitTimeout}
+          />
         </div>
       }
       isRefetching={isRefetching}

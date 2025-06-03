@@ -31,9 +31,9 @@ export const columns: ColumnDef<Rate>[] = [
       const rate = row.getValue("rate") as string;
       const currency = row.original.currency as string;
       return (
-        <div className="flex flex-col items-center w-min">
-          <span>{rate}</span>
-          <span>{currency}</span>
+        <div className="flex flex-col items-center w-min font-normal">
+          <p>{rate}</p>
+          <p className="text-gray-500">{currency}</p>
         </div>
       );
     },

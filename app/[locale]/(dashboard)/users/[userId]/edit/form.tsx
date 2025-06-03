@@ -314,7 +314,9 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                 )}
               />
 
-              <Button type="submit">Edit new user</Button>
+              <Button type="submit" disabled={form.formState.isSubmitting}>
+                Edit new user
+              </Button>
             </StepperStep>
           </form>
         </Form>

@@ -11,6 +11,8 @@ const miniStatsCardVariants = cva(
         success: "bg-success-100",
         warning: "bg-warning-100",
         info: "bg-info-100",
+        destructive: "bg-destructive-100",
+        indigo: "bg-indigo-100",
         unstyled: "",
       },
     },

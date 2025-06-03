@@ -56,6 +56,12 @@ const ErgLast30DaysCallsSummary = () => {
             variant="default"
             value={ergStats.completed}
           />
+          <MiniStatsCard
+            icon="/assets/icons/stats/erg/mini/timer_2.png"
+            label="Timeout"
+            variant="destructive"
+            value={ergStats.timeout}
+          />
         </div>
       }
     ></StatsCard>

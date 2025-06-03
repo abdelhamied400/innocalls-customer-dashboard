@@ -15,7 +15,7 @@ export type Invoice = {
 
 export const columns: ColumnDef<Invoice>[] = [
   {
-    accessorKey: "refNumber",
+    accessorKey: "id",
     header: "#Ref-No",
   },
   {
@@ -33,9 +33,9 @@ export const columns: ColumnDef<Invoice>[] = [
       const total = row.getValue("total") as number;
       const currencyCode = row.original.currencyCode as string;
       return (
-        <div className="flex flex-col items-center w-min">
-          <span>{total}</span>
-          <span>{currencyCode}</span>
+        <div className="flex flex-col items-center w-min font-normal">
+          <p>{total}</p>
+          <p className="text-gray-500">{currencyCode}</p>
         </div>
       );
     },
