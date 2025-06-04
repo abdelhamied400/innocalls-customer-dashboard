@@ -54,7 +54,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
 import FilterDialog from "@/components/FilterDialog";
 import DatePicker from "@/components/ui/date-picker";
 import { format } from "date-fns";
@@ -63,6 +62,8 @@ type InvoicesFilters = {
   search: string;
   fromDate?: Date;
   toDate?: Date;
+  total?: string;
+  status?: "draft" | "overdue" | "paid" | "partially_paid";
 };
 
 // 30 days ago
@@ -97,7 +98,7 @@ const BillingTable = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["invoices", pagination.pageIndex, pagination.pageSize],
+    queryKey: ["invoices", pagination, sorting],
     queryFn: async () =>
       await billingService.getInvoicesList(
         pagination.pageIndex + 1,
@@ -106,7 +107,10 @@ const BillingTable = () => {
           search: filters.search,
           fromDate: format(filters.fromDate || fromDate, "yyyy-MM-dd"),
           toDate: format(filters.toDate || toDate, "yyyy-MM-dd"),
-        }
+          total: filters.total,
+          status: filters.status,
+        },
+        sorting
       ),
   });
 
@@ -122,6 +126,7 @@ const BillingTable = () => {
     pageCount: invoices.last_page,
     manualPagination: true,
     manualFiltering: true,
+    manualSorting: true,
     state: {
       sorting,
       pagination,
@@ -159,7 +164,7 @@ const BillingTable = () => {
             </CollapsibleTrigger>
           </div>
         </div>
-        <CollapsibleContent className="border-t p-4">
+        <CollapsibleContent className="border-t p-4 flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="filter" size="filter">
@@ -214,6 +219,87 @@ const BillingTable = () => {
                     }
                   />
                 </Field>
+              </FilterDialog>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="filter" size="filter">
+                Amount
+                <ChevronDownIcon />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <FilterDialog
+                title="Search by amount"
+                onReset={() => {
+                  setFilters((prev) => ({ ...prev, total: undefined }));
+                  setTimeout(() => {
+                    refetch();
+                  }, 0);
+                }}
+                onApply={() => {
+                  refetch();
+                }}
+              >
+                <Field label="Amount">
+                  <Input
+                    variant="field"
+                    type="number"
+                    placeholder="Enter amount..."
+                    value={filters.total}
+                    onChange={(e) =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        total: e.target.value,
+                      }))
+                    }
+                  />
+                </Field>
+              </FilterDialog>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="filter" size="filter">
+                Status
+                <ChevronDownIcon />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <FilterDialog
+                title="Select status"
+                onReset={() => {
+                  setFilters((prev) => ({ ...prev, status: undefined }));
+                  setTimeout(() => {
+                    refetch();
+                  }, 0);
+                }}
+                onApply={() => {
+                  refetch();
+                }}
+              >
+                <Select
+                  onValueChange={(status) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      status: status as InvoicesFilters["status"],
+                    }))
+                  }
+                  defaultValue={filters.status}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="draft">Draft</SelectItem>
+                    <SelectItem value="overdue">Overdue</SelectItem>
+                    <SelectItem value="paid">Paid</SelectItem>
+                    <SelectItem value="partially_paid">
+                      Partially Paid
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
               </FilterDialog>
             </DropdownMenuContent>
           </DropdownMenu>

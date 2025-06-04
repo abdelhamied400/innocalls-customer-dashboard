@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Pagination,
@@ -42,7 +42,7 @@ import { columns } from "./columns";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import billingService from "@/services/billing.service";
-import { FilterAltOutlined, Search } from "@mui/icons-material";
+import { FilterAltOutlined } from "@mui/icons-material";
 import {
   Collapsible,
   CollapsibleContent,
@@ -57,9 +57,10 @@ import {
 import FilterDialog from "@/components/FilterDialog";
 import DatePicker from "@/components/ui/date-picker";
 import { format } from "date-fns";
+import { useToast } from "@/hooks/use-toast";
+import { AxiosError } from "axios";
 
 type ChargesFilters = {
-  search: string;
   fromDate?: Date;
   toDate?: Date;
 };
@@ -71,9 +72,9 @@ fromDate.setDate(fromDate.getDate() - 30);
 const toDate = new Date();
 
 const BillingTable = () => {
+  const { toast } = useToast();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filters, setFilters] = useState<ChargesFilters>({
-    search: "",
     fromDate,
     toDate,
   });
@@ -93,6 +94,8 @@ const BillingTable = () => {
       to: 1,
       total: 0,
     },
+    isError,
+    error,
     isLoading,
     refetch,
   } = useQuery({
@@ -102,11 +105,11 @@ const BillingTable = () => {
         pagination.pageIndex + 1,
         pagination.pageSize,
         {
-          search: filters.search,
           fromDate: format(filters.fromDate || fromDate, "yyyy-MM-dd"),
           toDate: format(filters.toDate || toDate, "yyyy-MM-dd"),
         }
       ),
+    retry: 0,
   });
 
   const table = useReactTable({
@@ -127,13 +130,17 @@ const BillingTable = () => {
     },
   });
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const search = event.target.value;
-    setFilters((prev) => ({
-      ...prev,
-      search,
-    }));
-  };
+  useEffect(() => {
+    if (isError && error instanceof AxiosError) {
+      toast({
+        title: "Error fetching payment history",
+        description:
+          error.response?.data?.message ||
+          "An error occurred while fetching payment history.",
+        variant: "destructive",
+      });
+    }
+  }, [isError, error]);
 
   return (
     <div className="h-full flex flex-col border rounded-xl">
@@ -141,16 +148,6 @@ const BillingTable = () => {
         <div className="users-table-head flex items-center justify-between p-4">
           <h2>Charges</h2>
           <div className="actions flex items-center gap-2">
-            <Field preIcon={<Search />}>
-              <Input
-                variant="field"
-                placeholder="Search..."
-                value={filters.search}
-                onChange={handleSearchChange}
-                type="search"
-              />
-            </Field>
-
             <CollapsibleTrigger asChild>
               <Toggle pressed={true} className="rounded-full">
                 <FilterAltOutlined />
@@ -176,6 +173,19 @@ const BillingTable = () => {
                   }, 0);
                 }}
                 onApply={() => {
+                  // check if fromDate is after toDate
+                  if (
+                    filters.fromDate &&
+                    filters.toDate &&
+                    filters.fromDate > filters.toDate
+                  ) {
+                    toast({
+                      title: "Invalid date range",
+                      description: "From date cannot be after to date.",
+                      variant: "destructive",
+                    });
+                    return;
+                  }
                   refetch();
                 }}
               >

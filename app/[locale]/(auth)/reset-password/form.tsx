@@ -67,13 +67,13 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <Field
-                label="Password"
-                error={errors.password?.message}
-                htmlFor="password"
-              >
-                <FormItem>
-                  <FormControl>
+              <FormItem>
+                <FormControl>
+                  <Field
+                    label="Password"
+                    error={errors.password?.message}
+                    htmlFor="password"
+                  >
                     <Input
                       id="password"
                       variant="field"
@@ -81,9 +81,9 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
                       type="password"
                       {...field}
                     />
-                  </FormControl>
-                </FormItem>
-              </Field>
+                  </Field>
+                </FormControl>
+              </FormItem>
             )}
           />
 
@@ -91,13 +91,13 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
             control={form.control}
             name="passwordConfirm"
             render={({ field }) => (
-              <Field
-                label="Confirm Password"
-                error={errors.passwordConfirm?.message}
-                htmlFor="passwordConfirm"
-              >
-                <FormItem>
-                  <FormControl>
+              <FormItem>
+                <FormControl>
+                  <Field
+                    label="Confirm Password"
+                    error={errors.passwordConfirm?.message}
+                    htmlFor="passwordConfirm"
+                  >
                     <Input
                       id="passwordConfirm"
                       variant="field"
@@ -105,9 +105,9 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
                       type="password"
                       {...field}
                     />
-                  </FormControl>
-                </FormItem>
-              </Field>
+                  </Field>
+                </FormControl>
+              </FormItem>
             )}
           />
 

@@ -1,7 +1,9 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDownIcon } from "lucide-react";
 
 export type Invoice = {
   currencyCode: string;
@@ -15,12 +17,20 @@ export type Invoice = {
 
 export const columns: ColumnDef<Invoice>[] = [
   {
-    accessorKey: "id",
+    accessorKey: "number",
     header: "#Ref-No",
   },
   {
     accessorKey: "date",
-    header: "Date",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Date
+        <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+      </Button>
+    ),
   },
   {
     accessorKey: "email",
@@ -28,7 +38,15 @@ export const columns: ColumnDef<Invoice>[] = [
   },
   {
     accessorKey: "total",
-    header: "Total",
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Total
+        <ArrowUpDownIcon className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: ({ row }) => {
       const total = row.getValue("total") as number;
       const currencyCode = row.original.currencyCode as string;

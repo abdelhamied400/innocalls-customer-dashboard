@@ -10,7 +10,6 @@ import {
   CardCvcElement,
   useStripe,
   useElements,
-  AddressElement,
 } from "@stripe/react-stripe-js";
 import { useState } from "react";
 

@@ -36,14 +36,14 @@ const RefillBalanceForm = () => {
 
   const form = useForm<RefillBalanceSchema>({
     resolver: zodResolver(refillBalanceSchema),
-    defaultValues: { amount: 0 },
+    defaultValues: { amount: "" },
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
     try {
       form.reset(form.getValues());
 
-      const res = await billingService.createStripeIntent(data.amount);
+      const res = await billingService.createStripeIntent(Number(data.amount));
       const clientSecret = res.paymentIntent.clientSecret;
       setClientSecret(clientSecret);
     } catch (error) {
@@ -97,7 +97,7 @@ const RefillBalanceForm = () => {
           <form onSubmit={onSubmit} className="h-full">
             <StepperStep
               idx={0}
-              className="p-4 rounded-xl bg-white h-full flex flex-col gap-2"
+              className="p-4 rounded-xl bg-white flex flex-col gap-2"
             >
               <FormField
                 control={form.control}
@@ -117,10 +117,9 @@ const RefillBalanceForm = () => {
                           id="amount"
                           variant="field"
                           placeholder="Enter amount..."
-                          type="number"
                           {...field}
                           onChange={(e) => {
-                            field.onChange(+e.target.value);
+                            field.onChange(e.target.value);
                             setClientSecret(undefined); // Reset client secret when amount changes
                           }}
                         />
