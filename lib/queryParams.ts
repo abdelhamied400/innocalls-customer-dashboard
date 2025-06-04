@@ -36,6 +36,7 @@ type TableInitialParams = {
   page?: string;
   pageSize?: string;
   filters: ColumnFiltersState;
+  filtersObj: Record<string, string>;
   sorting: SortingState;
 };
 export const parseTableInitialParams = async (
@@ -46,6 +47,7 @@ export const parseTableInitialParams = async (
   // other params will be filters and sorts
   // sorts will start with sort_ and filters will be the rest
   const filters: ColumnFiltersState = [];
+  const filtersObj: Record<string, string> = {};
   const sorting: SortingState = [];
   Object.entries(otherParams).forEach(([key, value]) => {
     if (key.startsWith("sort_")) {
@@ -59,6 +61,7 @@ export const parseTableInitialParams = async (
         id: key,
         value: value || "",
       });
+      filtersObj[key] = value || "";
     }
   });
 
@@ -66,6 +69,7 @@ export const parseTableInitialParams = async (
     page: String(page),
     pageSize: String(pageSize),
     filters,
+    filtersObj,
     sorting,
   };
 };

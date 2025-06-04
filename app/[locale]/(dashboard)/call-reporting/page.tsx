@@ -4,7 +4,7 @@ import { parseTableInitialParams } from "@/lib/queryParams";
 
 const CallReporting = async ({ searchParams }: { searchParams: any }) => {
   // Parse filters, sorting, and pagination from URL
-  const { page, pageSize, filters, sorting } = await parseTableInitialParams(
+  const { page, pageSize, filtersObj, sorting } = await parseTableInitialParams(
     searchParams
   );
 
@@ -12,7 +12,7 @@ const CallReporting = async ({ searchParams }: { searchParams: any }) => {
   const data = await callReportingService.getCallReporting(
     Number(page),
     Number(pageSize),
-    filters
+    filtersObj
   );
 
   return (
@@ -23,7 +23,7 @@ const CallReporting = async ({ searchParams }: { searchParams: any }) => {
           pageIndex: Number(page) - 1,
           pageSize: Number(pageSize),
         }}
-        initialFilters={filters}
+        initialFilters={filtersObj}
         initialSorting={sorting}
       />
     </div>

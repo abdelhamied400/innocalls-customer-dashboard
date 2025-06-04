@@ -1,26 +1,29 @@
 import api from "./api";
 import { Paginated } from "@/types/shared/paginated";
-import { Call, ExportCallReportingFilters } from "@/types/api/call-reporting";
+import {
+  Call,
+  CallReportingFilters,
+  ExportCallReportingFilters,
+} from "@/types/api/call-reporting";
 import { objectToQueryString } from "@/lib/queryParams";
-import { ColumnFiltersState } from "@tanstack/react-table";
+import { format } from "date-fns";
 
 export default {
   getCallReporting: async (
     page = 1,
     limit = 10,
-    filters?: ColumnFiltersState
+    filters?: CallReportingFilters
   ): Promise<Paginated<Call>> => {
-    const filtersObj = filters?.reduce((acc, filter) => {
-      if (filter.value) {
-        acc[filter.id] = String(filter.value);
-      }
-      return acc;
-    }, {} as Record<string, string>);
-
     const queryString = objectToQueryString({
       page,
       limit,
-      ...filtersObj,
+      ...filters,
+      fromDate: filters?.fromDate
+        ? format(filters.fromDate, "yyyy-MM-dd")
+        : undefined,
+      toDate: filters?.toDate
+        ? format(filters.toDate, "yyyy-MM-dd")
+        : undefined,
     });
     const res = await api.get(`/cdr/user/report?${queryString}`);
     return res.data;

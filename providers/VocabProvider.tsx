@@ -6,7 +6,7 @@ import { PropsWithChildren, useEffect } from "react";
 
 type VocabProviderProps = PropsWithChildren<{}>;
 const VocabProvider = ({ children }: VocabProviderProps) => {
-  const { setCountries, setDids } = useVocabStore();
+  const { setCountries, setDids, setExtensions, setTags } = useVocabStore();
   const { status } = useSession();
 
   // Fetch countries on mount
@@ -20,9 +20,19 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
       const dids = await vocabService.getAllDids();
       setDids(dids);
     };
+    const fetchExtensions = async () => {
+      const extensions = await vocabService.getAllExtensions();
+      setExtensions(extensions);
+    };
+    const fetchTags = async () => {
+      const tags = await vocabService.getAllTags();
+      setTags(tags);
+    };
 
     fetchCountries();
     fetchDids();
+    fetchExtensions();
+    fetchTags();
   }, [status]);
 
   return children;
