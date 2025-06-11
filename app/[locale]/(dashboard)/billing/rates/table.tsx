@@ -56,6 +56,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import FilterDialog from "@/components/FilterDialog";
 import { format } from "date-fns";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 type RatesFilters = {
   search: string;
@@ -163,7 +165,7 @@ const BillingTable = () => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <FilterDialog
-                title="Select from list"
+                title="Select from the list"
                 onReset={() => {
                   setFilters((prev) => ({ ...prev, serviceId: "1" }));
                   setTimeout(() => {
@@ -174,20 +176,22 @@ const BillingTable = () => {
                   refetch();
                 }}
               >
-                <Select
+                <RadioGroup
+                  defaultValue=""
                   onValueChange={(value) => {
                     setFilters((prev) => ({ ...prev, serviceId: value }));
                   }}
                   value={filters.serviceId || "1"}
                 >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select Service" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1">Calls</SelectItem>
-                    <SelectItem value="2">Sms</SelectItem>
-                  </SelectContent>
-                </Select>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="1" id="calls" />
+                    <Label htmlFor="calls">Calls</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="2" id="sms" />
+                    <Label htmlFor="sms">Sms</Label>
+                  </div>
+                </RadioGroup>
               </FilterDialog>
             </DropdownMenuContent>
           </DropdownMenu>

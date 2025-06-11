@@ -55,29 +55,25 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import FilterDialog from "@/components/FilterDialog";
-import DatePicker from "@/components/ui/date-picker";
-import { format } from "date-fns";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 
 type InvoicesFilters = {
   search: string;
-  fromDate?: Date;
-  toDate?: Date;
-  total?: string;
-  status?: "draft" | "overdue" | "paid" | "partially_paid";
+  fromTotal?: string;
+  toTotal?: string;
+  status?: "draft" | "overdue" | "paid" | "partially_paid" | null;
 };
 
-// 30 days ago
-const fromDate = new Date();
-fromDate.setDate(fromDate.getDate() - 30);
-// today
-const toDate = new Date();
-
 const BillingTable = () => {
+  const { toast } = useToast();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filters, setFilters] = useState<InvoicesFilters>({
     search: "",
-    fromDate,
-    toDate,
+    fromTotal: "",
+    toTotal: "",
+    status: null,
   });
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -95,7 +91,7 @@ const BillingTable = () => {
       to: 1,
       total: 0,
     },
-    isLoading,
+    isFetching,
     refetch,
   } = useQuery({
     queryKey: ["invoices", pagination, sorting],
@@ -105,9 +101,8 @@ const BillingTable = () => {
         pagination.pageSize,
         {
           search: filters.search,
-          fromDate: format(filters.fromDate || fromDate, "yyyy-MM-dd"),
-          toDate: format(filters.toDate || toDate, "yyyy-MM-dd"),
-          total: filters.total,
+          ...(filters.fromTotal && { fromTotal: filters.fromTotal }),
+          ...(filters.toTotal && { toTotal: filters.toTotal }),
           status: filters.status,
         },
         sorting
@@ -164,64 +159,7 @@ const BillingTable = () => {
             </CollapsibleTrigger>
           </div>
         </div>
-        <CollapsibleContent className="border-t p-4 flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="filter" size="filter">
-                Creation Date
-                <ChevronDownIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <FilterDialog
-                title="Select a date range"
-                onReset={() => {
-                  setFilters((prev) => ({ ...prev, fromDate, toDate }));
-                  setTimeout(() => {
-                    refetch();
-                  }, 0);
-                }}
-                onApply={() => {
-                  refetch();
-                }}
-              >
-                <Field
-                  label="From"
-                  hint="DD/MM/YYYY"
-                  postIcon={<CalendarIcon className="text-gray-400" />}
-                >
-                  <DatePicker
-                    className="flex-1"
-                    placeholder="Enter from date"
-                    value={filters.fromDate}
-                    onChange={(date) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        fromDate: date || undefined,
-                      }))
-                    }
-                  />
-                </Field>
-                <Field
-                  label="To"
-                  hint="DD/MM/YYYY"
-                  postIcon={<CalendarIcon className="text-gray-400" />}
-                >
-                  <DatePicker
-                    className="flex-1"
-                    placeholder="Enter to date"
-                    value={filters.toDate}
-                    onChange={(date) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        toDate: date || undefined,
-                      }))
-                    }
-                  />
-                </Field>
-              </FilterDialog>
-            </DropdownMenuContent>
-          </DropdownMenu>
+        <CollapsibleContent className="border-t flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="filter" size="filter">
@@ -233,25 +171,56 @@ const BillingTable = () => {
               <FilterDialog
                 title="Search by amount"
                 onReset={() => {
-                  setFilters((prev) => ({ ...prev, total: undefined }));
+                  setFilters((prev) => ({
+                    ...prev,
+                    fromTotal: "",
+                    toTotal: "",
+                  }));
                   setTimeout(() => {
                     refetch();
                   }, 0);
                 }}
                 onApply={() => {
+                  // validate the filters
+                  if (
+                    !!filters.fromTotal &&
+                    !!filters.toTotal &&
+                    Number(filters.fromTotal) > Number(filters.toTotal)
+                  ) {
+                    toast({
+                      title: "Invalid Amount Range",
+                      description: "From amount must be less than to amount.",
+                      variant: "destructive",
+                    });
+                    return;
+                  }
                   refetch();
                 }}
               >
-                <Field label="Amount">
+                <Field label="From Amount">
                   <Input
                     variant="field"
                     type="number"
-                    placeholder="Enter amount..."
-                    value={filters.total}
+                    placeholder="Enter from amount..."
+                    value={filters.fromTotal}
                     onChange={(e) =>
                       setFilters((prev) => ({
                         ...prev,
-                        total: e.target.value,
+                        fromTotal: e.target.value,
+                      }))
+                    }
+                  />
+                </Field>
+                <Field label="To Amount">
+                  <Input
+                    variant="field"
+                    type="number"
+                    placeholder="Enter to amount..."
+                    value={filters.toTotal}
+                    onChange={(e) =>
+                      setFilters((prev) => ({
+                        ...prev,
+                        toTotal: e.target.value,
                       }))
                     }
                   />
@@ -270,7 +239,7 @@ const BillingTable = () => {
               <FilterDialog
                 title="Select status"
                 onReset={() => {
-                  setFilters((prev) => ({ ...prev, status: undefined }));
+                  setFilters((prev) => ({ ...prev, status: null }));
                   setTimeout(() => {
                     refetch();
                   }, 0);
@@ -279,27 +248,35 @@ const BillingTable = () => {
                   refetch();
                 }}
               >
-                <Select
+                <RadioGroup
                   onValueChange={(status) =>
                     setFilters((prev) => ({
                       ...prev,
                       status: status as InvoicesFilters["status"],
                     }))
                   }
-                  defaultValue={filters.status}
+                  value={filters.status}
                 >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="draft">Draft</SelectItem>
-                    <SelectItem value="overdue">Overdue</SelectItem>
-                    <SelectItem value="paid">Paid</SelectItem>
-                    <SelectItem value="partially_paid">
-                      Partially Paid
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="draft" id="draft" />
+                    <Label htmlFor="draft">Draft</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="overdue" id="overdue" />
+                    <Label htmlFor="overdue">Overdue</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="paid" id="paid" />
+                    <Label htmlFor="paid">Paid</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem
+                      value="partially_paid"
+                      id="partially_paid"
+                    />
+                    <Label htmlFor="partially_paid">Partially Paid</Label>
+                  </div>
+                </RadioGroup>
               </FilterDialog>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -328,7 +305,7 @@ const BillingTable = () => {
           </TableHeader>
 
           <TableBody>
-            {isLoading && (
+            {isFetching && (
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
@@ -338,7 +315,7 @@ const BillingTable = () => {
                 </TableCell>
               </TableRow>
             )}
-            {!isLoading &&
+            {!isFetching &&
               (table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
@@ -368,7 +345,7 @@ const BillingTable = () => {
           </TableBody>
         </Table>
       </div>
-      {!isLoading && table.getRowModel().rows?.length && (
+      {!isFetching && table.getRowModel().rows?.length > 0 && (
         <div className="flex flex-wrap justify-between items-center gap-2 p-4">
           <div className="pagination">
             <Pagination className="justify-normal">

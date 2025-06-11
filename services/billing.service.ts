@@ -51,6 +51,19 @@ export default {
     );
     return res.data;
   },
+  getInvoiceUrl: async (invoiceId: string) => {
+    const res = await api.get(`zoho/invoice-url/${invoiceId}`);
+    return res.data;
+  },
+  getInvoiceFileUrl: async (invoiceId: string) => {
+    const res = await api.get(`zoho/invoice-url/${invoiceId}`);
+    const invoiceUrl = new URL(res.data);
+    const invoiceID = invoiceUrl.searchParams.get("CInvoiceID");
+    const url = new URL(
+      `https://zohosecurepay.com/billing/innocallsksa/api/v1/clientinvoices/secure?CInvoiceID=${invoiceID}&accept=pdf`
+    );
+    return url;
+  },
   createStripeIntent: async (amount: number) => {
     const res = await api.post(`jera/payment/stripe/create-intent`, {
       amount,

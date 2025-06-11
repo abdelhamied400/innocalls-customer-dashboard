@@ -36,7 +36,7 @@ const RefillBalanceForm = () => {
 
   const form = useForm<RefillBalanceSchema>({
     resolver: zodResolver(refillBalanceSchema),
-    defaultValues: { amount: "" },
+    defaultValues: { amount: 5 },
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
@@ -119,7 +119,12 @@ const RefillBalanceForm = () => {
                           placeholder="Enter amount..."
                           {...field}
                           onChange={(e) => {
-                            field.onChange(e.target.value);
+                            const value = e.target.value;
+                            // Ensure the value is a valid number
+                            if (isNaN(Number(value))) {
+                              return;
+                            }
+                            field.onChange(Number(value));
                             setClientSecret(undefined); // Reset client secret when amount changes
                           }}
                         />

@@ -2,8 +2,9 @@ import { z } from "zod";
 
 export const refillBalanceSchema = z.object({
   amount: z
-    .string()
-    .regex(/^\d+$/, { message: "Amount must be an integer number" }),
+    .number()
+    .min(5, { message: "Amount must be at least 5" })
+    .default(5),
 });
 
 export type RefillBalanceSchema = z.infer<typeof refillBalanceSchema>;

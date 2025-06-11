@@ -59,6 +59,7 @@ import DatePicker from "@/components/ui/date-picker";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { AxiosError } from "axios";
+import { isValidDateRange } from "@/lib/date";
 
 type ChargesFilters = {
   fromDate?: Date;
@@ -173,19 +174,19 @@ const BillingTable = () => {
                   }, 0);
                 }}
                 onApply={() => {
-                  // check if fromDate is after toDate
-                  if (
-                    filters.fromDate &&
-                    filters.toDate &&
-                    filters.fromDate > filters.toDate
-                  ) {
-                    toast({
-                      title: "Invalid date range",
-                      description: "From date cannot be after to date.",
-                      variant: "destructive",
-                    });
-                    return;
-                  }
+                  const isValid = isValidDateRange(
+                    filters.fromDate,
+                    filters.toDate,
+                    (message) => {
+                      toast({
+                        title: "Invalid date range",
+                        description: message,
+                        variant: "destructive",
+                      });
+                    }
+                  );
+                  if (!isValid) return;
+                  // If valid, refetch the data
                   refetch();
                 }}
               >
