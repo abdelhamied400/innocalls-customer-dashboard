@@ -31,9 +31,9 @@ const DatePicker = ({
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          variant={"outline"}
+          variant={"unstyled"}
           className={cn(
-            "justify-start shadow-none px-0 border-none bg-transparent hover:bg-transparent",
+            "justify-start px-0",
             !value && "text-muted-foreground",
             className
           )}
@@ -43,7 +43,12 @@ const DatePicker = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 w-auto">
-        <Calendar mode="single" selected={value} onSelect={onChange} />
+        <Calendar
+          captionLayout="dropdown"
+          mode="single"
+          selected={value}
+          onSelect={onChange}
+        />
       </PopoverContent>
     </Popover>
   );

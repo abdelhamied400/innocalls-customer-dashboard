@@ -60,6 +60,8 @@ import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { AxiosError } from "axios";
 import { isValidDateRange } from "@/lib/date";
+import { FilterBar } from "@/components/FilterBar";
+import { FilterBox } from "@/components/FilterBox";
 
 type ChargesFilters = {
   fromDate?: Date;
@@ -156,77 +158,77 @@ const BillingTable = () => {
             </CollapsibleTrigger>
           </div>
         </div>
-        <CollapsibleContent className="border-t p-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="filter" size="filter">
-                Creation Date
-                <ChevronDownIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <FilterDialog
-                title="Select a date range"
-                onReset={() => {
-                  setFilters((prev) => ({ ...prev, fromDate, toDate }));
-                  setTimeout(() => {
-                    refetch();
-                  }, 0);
-                }}
-                onApply={() => {
-                  const isValid = isValidDateRange(
-                    filters.fromDate,
-                    filters.toDate,
-                    (message) => {
-                      toast({
-                        title: "Invalid date range",
-                        description: message,
-                        variant: "destructive",
-                      });
-                    }
-                  );
-                  if (!isValid) return;
-                  // If valid, refetch the data
+        <CollapsibleContent>
+          <FilterBar
+            onClear={() => {
+              setFilters({ fromDate, toDate });
+              setTimeout(() => {
+                refetch();
+              }, 0);
+            }}
+          >
+            <FilterBox
+              triggerLabel="Creation Date"
+              label="Select a date range"
+              onReset={() => {
+                setFilters((prev) => ({ ...prev, fromDate, toDate }));
+                setTimeout(() => {
                   refetch();
-                }}
+                }, 0);
+              }}
+              onApply={() => {
+                const isValid = isValidDateRange(
+                  filters.fromDate,
+                  filters.toDate,
+                  (message) => {
+                    toast({
+                      title: "Invalid date range",
+                      description: message,
+                      variant: "destructive",
+                    });
+                  }
+                );
+                if (!isValid) return;
+                // If valid, refetch the data
+                refetch();
+              }}
+            >
+              <Field
+                label="From"
+                hint="DD/MM/YYYY"
+                postIcon={<CalendarIcon className="text-gray-400" />}
               >
-                <Field
-                  label="From"
-                  hint="DD/MM/YYYY"
-                  postIcon={<CalendarIcon className="text-gray-400" />}
-                >
-                  <DatePicker
-                    className="flex-1"
-                    placeholder="Enter from date"
-                    value={filters.fromDate}
-                    onChange={(date) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        fromDate: date || undefined,
-                      }))
-                    }
-                  />
-                </Field>
-                <Field
-                  label="To"
-                  hint="DD/MM/YYYY"
-                  postIcon={<CalendarIcon className="text-gray-400" />}
-                >
-                  <DatePicker
-                    className="flex-1"
-                    placeholder="Enter to date"
-                    value={filters.toDate}
-                    onChange={(date) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        toDate: date || undefined,
-                      }))
-                    }
-                  />
-                </Field>
-              </FilterDialog>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <DatePicker
+                  className="flex-1"
+                  placeholder="Enter from date"
+                  value={filters.fromDate}
+                  onChange={(date) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      fromDate: date || undefined,
+                    }))
+                  }
+                />
+              </Field>
+              <Field
+                label="To"
+                hint="DD/MM/YYYY"
+                postIcon={<CalendarIcon className="text-gray-400" />}
+              >
+                <DatePicker
+                  className="flex-1"
+                  placeholder="Enter to date"
+                  value={filters.toDate}
+                  onChange={(date) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      toDate: date || undefined,
+                    }))
+                  }
+                />
+              </Field>
+            </FilterBox>
+          </FilterBar>
         </CollapsibleContent>
       </Collapsible>
 
