@@ -62,6 +62,8 @@ import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { isValidDateRange } from "@/lib/date";
 import { useToast } from "@/hooks/use-toast";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 interface UsageSummaryTableProps {}
 
@@ -79,6 +81,7 @@ const UsageSummaryTable = ({}: UsageSummaryTableProps) => {
     search: "",
     fromDate,
     toDate,
+    showBy: [],
   });
 
   const {
@@ -182,6 +185,7 @@ const UsageSummaryTable = ({}: UsageSummaryTableProps) => {
                 search: "",
                 fromDate: fromDate,
                 toDate: toDate,
+                showBy: [],
               });
               setTimeout(() => {
                 refetch();
@@ -233,6 +237,74 @@ const UsageSummaryTable = ({}: UsageSummaryTableProps) => {
                   }
                 />
               </Field>
+            </FilterBox>
+            <FilterBox
+              triggerLabel="Show By"
+              label="Show by"
+              onReset={() => {
+                setFilters((prev) => ({
+                  ...prev,
+                  fromDate,
+                  toDate,
+                  showBy: [],
+                }));
+                setTimeout(() => {
+                  refetch();
+                }, 0);
+              }}
+              onApply={applyFilters}
+            >
+              <div className="code-name flex items-center gap-2">
+                <Checkbox
+                  id="codeName"
+                  checked={filters.showBy?.includes("codeName")}
+                  onCheckedChange={(checked) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      showBy: checked
+                        ? [...(prev.showBy || []), "codeName"]
+                        : prev.showBy?.filter((item) => item !== "codeName") ||
+                          [],
+                    }))
+                  }
+                />
+                <Label>Code name</Label>
+              </div>
+              {/* accountsName,packagesName */}
+              <div className="accounts-name flex items-center gap-2">
+                <Checkbox
+                  id="accountsName"
+                  checked={filters.showBy?.includes("accountsName")}
+                  onCheckedChange={(checked) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      showBy: checked
+                        ? [...(prev.showBy || []), "accountsName"]
+                        : prev.showBy?.filter(
+                            (item) => item !== "accountsName"
+                          ) || [],
+                    }))
+                  }
+                />
+                <Label>Accounts name</Label>
+              </div>
+              <div className="packages-name flex items-center gap-2">
+                <Checkbox
+                  id="packagesName"
+                  checked={filters.showBy?.includes("packagesName")}
+                  onCheckedChange={(checked) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      showBy: checked
+                        ? [...(prev.showBy || []), "packagesName"]
+                        : prev.showBy?.filter(
+                            (item) => item !== "packagesName"
+                          ) || [],
+                    }))
+                  }
+                />
+                <Label>Packages name</Label>
+              </div>
             </FilterBox>
           </FilterBar>
         </CollapsibleContent>

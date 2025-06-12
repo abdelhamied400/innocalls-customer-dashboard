@@ -70,12 +70,9 @@ import { Paginated } from "@/types/shared/paginated";
 import { useRouter } from "next/navigation";
 import { useFilters } from "@/hooks/use-filters";
 import { format } from "date-fns";
+import { isAxiosError } from "axios";
 
 interface UsageDetailedTableProps {
-  initialData: {
-    hasNext: boolean;
-    data: Paginated<any>;
-  };
   initialPagination?: {
     pageIndex: number;
     pageSize: number;
@@ -100,7 +97,6 @@ const defaultFilters: UsageDetailedFilters = {
 };
 
 const UsageDetailedTable = ({
-  initialData,
   initialFilters = {},
   initialSorting = [],
   initialPagination = {
@@ -119,9 +115,7 @@ const UsageDetailedTable = ({
   });
 
   const [pagesCount, setPagesCount] = useState<number>(
-    initialData.hasNext
-      ? initialPagination.pageIndex + 1
-      : initialPagination.pageIndex || 0
+    initialPagination.pageIndex
   );
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: initialPagination?.pageIndex || 0,
@@ -132,6 +126,8 @@ const UsageDetailedTable = ({
     data = { columns: [], list: [], hasNext: false },
     refetch,
     isFetching,
+    error,
+    isError,
   } = useQuery({
     queryKey: ["usage-detailed", pagination.pageIndex, pagination.pageSize],
     queryFn: async () =>
@@ -140,7 +136,8 @@ const UsageDetailedTable = ({
         pagination.pageSize,
         filters
       ),
-    placeholderData: initialData,
+    placeholderData: { columns: [], list: [], hasNext: false },
+    retry: 0,
   });
 
   const table = useReactTable({
@@ -201,19 +198,44 @@ const UsageDetailedTable = ({
   };
 
   const applyFilters = () => {
-    let isValid = true;
-    isValid = isValidDateRange(filters.fromDate, filters.toDate, (message) => {
-      toast({
-        title: "Invalid date range",
-        description: message,
-        variant: "destructive",
-      });
-    });
+    const isValid = isValidDateRange(
+      filters.fromDate,
+      filters.toDate,
+      (message) => {
+        toast({
+          title: "Invalid date range",
+          description: message,
+          variant: "destructive",
+        });
+      }
+    );
+
+    if (!isValid) return;
 
     setTimeout(() => {
       refetch();
     }, 0);
   };
+
+  useEffect(() => {
+    if (isError) {
+      let message = "An unexpected error occurred";
+      if (isAxiosError(error)) {
+        message = error?.response?.data.message;
+      } else {
+        message = error?.message;
+      }
+      toast({
+        title: "Error fetching data",
+        description: message,
+        variant: "destructive",
+      });
+      setFilters(defaultFilters);
+      setTimeout(() => {
+        refetch();
+      }, 0);
+    }
+  }, [isError, error, toast, router]);
 
   return (
     <div className="h-full flex flex-col">
