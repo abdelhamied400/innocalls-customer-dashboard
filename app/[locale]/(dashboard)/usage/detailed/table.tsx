@@ -7,6 +7,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  PaginationState,
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
@@ -19,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Pagination,
@@ -40,7 +41,7 @@ import Field from "@/components/ui/field";
 import { CalendarIcon, ChevronDownIcon, SearchIcon } from "lucide-react";
 import { createColumns } from "./columns";
 import { useQuery } from "@tanstack/react-query";
-import usageService, { UsageSummaryFilters } from "@/services/usage.service";
+import usageService, { UsageDetailedFilters } from "@/services/usage.service";
 import {
   Collapsible,
   CollapsibleContent,
@@ -62,64 +63,123 @@ import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { isValidDateRange } from "@/lib/date";
 import { useToast } from "@/hooks/use-toast";
-import { Checkbox } from "@/components/ui/checkbox";
+import useVocabStore from "@/store/vocab.slice";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Paginated } from "@/types/shared/paginated";
+import { useRouter } from "next/navigation";
+import { useFilters } from "@/hooks/use-filters";
+import { format } from "date-fns";
+import { isAxiosError } from "axios";
 
-interface UsageSummaryTableProps {}
+interface UsageDetailedTableProps {
+  initialPagination?: {
+    pageIndex: number;
+    pageSize: number;
+  };
+  initialFilters?: UsageDetailedFilters;
+  initialSorting?: SortingState;
+}
 
 // 30 days ago
-const fromDate = new Date();
-fromDate.setDate(fromDate.getDate() - 30);
+const defaultFromDate = new Date();
+defaultFromDate.setDate(defaultFromDate.getDate() - 30);
 // today
-const toDate = new Date();
+const defaultToDate = new Date();
 
-const UsageSummaryTable = ({}: UsageSummaryTableProps) => {
+const defaultFilters: UsageDetailedFilters = {
+  codeName: "",
+  fromDate: defaultFromDate,
+  toDate: defaultToDate,
+  accountId: "",
+  packageId: "",
+  origin: "",
+};
+
+const UsageDetailedTable = ({
+  initialFilters = {},
+  initialSorting = [],
+  initialPagination = {
+    pageIndex: 0,
+    pageSize: 10,
+  },
+}: UsageDetailedTableProps) => {
   const { toast } = useToast();
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [filters, setFilters] = useState<UsageSummaryFilters>({
-    search: "",
-    fromDate,
-    toDate,
-    showBy: [],
+  const router = useRouter();
+  const { updateFilters } = useFilters();
+  const { packages, accounts } = useVocabStore();
+
+  const [filters, setFilters] = useState<UsageDetailedFilters>({
+    ...defaultFilters,
+    ...initialFilters,
+  });
+
+  const [pagesCount, setPagesCount] = useState<number>(
+    initialPagination.pageIndex
+  );
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: initialPagination?.pageIndex || 0,
+    pageSize: initialPagination?.pageSize || 10,
   });
 
   const {
-    data = { columns: [], list: [] },
+    data = { columns: [], list: [], hasNext: false },
     refetch,
     isFetching,
+    error,
+    isError,
   } = useQuery({
-    queryKey: ["usageSummary", columnFilters],
-    queryFn: async () => usageService.fetchUsageSummary(filters),
+    queryKey: ["usage-detailed", pagination.pageIndex, pagination.pageSize],
+    queryFn: async () =>
+      usageService.fetchUsageDetailed(
+        pagination.pageIndex + 1,
+        pagination.pageSize,
+        filters
+      ),
+    placeholderData: { columns: [], list: [], hasNext: false },
+    retry: 0,
   });
-
-  const columns = createColumns(data.columns);
 
   const table = useReactTable({
     data: data.list,
-    columns,
+    columns: createColumns(data.columns),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
+    onPaginationChange: setPagination,
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
+    manualPagination: true,
     state: {
-      sorting,
-      columnFilters,
+      pagination,
     },
   });
 
+  // Update the pages count when callReporting data changes
+  useEffect(() => {
+    if (data.hasNext && !isFetching) {
+      setPagesCount((prev) => pagination.pageIndex + 2);
+    }
+  }, [data.hasNext, pagination.pageIndex, isFetching]);
+
+  // pagination calculations
+  const { pageIndex, pageSize } = table.getState().pagination;
   const totalItems = table.getFilteredRowModel().rows.length;
-  const startRowIndex =
-    table.getState().pagination.pageIndex *
-      table.getState().pagination.pageSize +
-    1;
-  const endRowIndex = Math.min(
-    (table.getState().pagination.pageIndex + 1) *
-      table.getState().pagination.pageSize,
-    totalItems
-  );
+  const startRowIndex = pageIndex * pageSize + 1;
+  const endRowIndex = Math.min((pageIndex + 1) * pageSize, totalItems);
+  const pages = Array.from({ length: pagesCount }, (_, i) => i + 1);
+
+  //? on any change in pagination, sorting, or filters, update the URL
+  useEffect(() => {
+    updateFilters({
+      page: (pageIndex + 1).toString(),
+      pageSize: pageSize.toString(),
+      ...filters,
+      fromDate: filters.fromDate
+        ? format(filters.fromDate, "yyyy-MM-dd")
+        : undefined,
+      toDate: filters.toDate ? format(filters.toDate, "yyyy-MM-dd") : undefined,
+    });
+  }, [pageIndex, pageSize, filters, updateFilters]);
 
   const handlePerPageChange = (value: string) => {
     table.setPageSize(Number(value));
@@ -127,46 +187,67 @@ const UsageSummaryTable = ({}: UsageSummaryTableProps) => {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    // setColumnFilters((prev) => [
-    //   {
-    //     id: "amount",
-    //     value,
-    //   },
-    // ]);
+    setFilters((prev) => ({
+      ...prev,
+      codeName: value,
+    }));
+    updateFilters({ codeName: value });
+    setTimeout(() => {
+      refetch();
+    }, 0);
   };
 
   const applyFilters = () => {
-    let isValid = true;
-    isValid = isValidDateRange(filters.fromDate, filters.toDate, (message) => {
-      toast({
-        title: "Invalid date range",
-        description: message,
-        variant: "destructive",
-      });
-    });
+    const isValid = isValidDateRange(
+      filters.fromDate,
+      filters.toDate,
+      (message) => {
+        toast({
+          title: "Invalid date range",
+          description: message,
+          variant: "destructive",
+        });
+      }
+    );
+
+    if (!isValid) return;
 
     setTimeout(() => {
       refetch();
     }, 0);
   };
 
-  const pages = table.getPageCount()
-    ? Array.from({ length: table.getPageCount() }, (_, i) => i + 1)
-    : [];
+  useEffect(() => {
+    if (isError) {
+      let message = "An unexpected error occurred";
+      if (isAxiosError(error)) {
+        message = error?.response?.data.message;
+      } else {
+        message = error?.message;
+      }
+      toast({
+        title: "Error fetching data",
+        description: message,
+        variant: "destructive",
+      });
+      setFilters(defaultFilters);
+      setTimeout(() => {
+        refetch();
+      }, 0);
+    }
+  }, [isError, error, toast, router]);
 
   return (
     <div className="h-full flex flex-col">
       <Collapsible>
-        <div className="usage-summary-table-head flex items-center justify-between p-4">
-          <h2>Usage Summary</h2>
+        <div className="usage-detailed-table-head flex items-center justify-between p-4">
+          <h2>Usage Detailed</h2>
           <div className="actions flex items-center gap-2">
             <Field preIcon={<SearchIcon />}>
               <Input
                 variant="field"
                 placeholder="Search..."
-                // value={
-                //   (table.getColumn("amount")?.getFilterValue() as string) ?? ""
-                // }
+                value={filters.codeName}
                 onChange={handleSearchChange}
                 type="search"
               />
@@ -181,27 +262,127 @@ const UsageSummaryTable = ({}: UsageSummaryTableProps) => {
         <CollapsibleContent>
           <FilterBar
             onClear={() => {
-              setFilters({
-                search: "",
-                fromDate: fromDate,
-                toDate: toDate,
-                showBy: [],
-              });
+              setFilters(defaultFilters);
               setTimeout(() => {
                 refetch();
               }, 0);
             }}
           >
             <FilterBox
-              triggerLabel="Creation Date"
-              label="Select a date range"
+              triggerLabel="Account"
+              label="Select an account"
               onReset={() => {
-                setFilters((prev) => ({ ...prev, fromDate, toDate }));
+                setFilters((prev) => ({ ...prev, accountId: "" }));
                 setTimeout(() => {
                   refetch();
                 }, 0);
               }}
               onApply={applyFilters}
+              numberOfFilters={filters.accountId ? 1 : 0}
+            >
+              <Select
+                onValueChange={(value) => {
+                  setFilters((prev) => ({
+                    ...prev,
+                    accountId: value || "",
+                  }));
+                }}
+                value={filters.accountId}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select an account" />
+                </SelectTrigger>
+                <SelectContent>
+                  {accounts?.map((account) => (
+                    <SelectItem key={account.id} value={account.id.toString()}>
+                      {account.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FilterBox>
+            <FilterBox
+              triggerLabel="Origin"
+              label="Select an origin"
+              onReset={() => {
+                setFilters((prev) => ({ ...prev, origin: "" }));
+                setTimeout(() => {
+                  refetch();
+                }, 0);
+              }}
+              onApply={applyFilters}
+              numberOfFilters={filters.origin ? 1 : 0}
+            >
+              <RadioGroup
+                defaultValue=""
+                onValueChange={(value) => {
+                  setFilters((prev) => ({
+                    ...prev,
+                    origin: value || "",
+                  }));
+                }}
+                value={filters.origin}
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="orig" id="orig" />
+                  <Label htmlFor="orig">Outgoing</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="term" id="term" />
+                  <Label htmlFor="term">Incoming</Label>
+                </div>
+              </RadioGroup>
+            </FilterBox>
+            <FilterBox
+              triggerLabel="Package"
+              label="Select a package"
+              onReset={() => {
+                setFilters((prev) => ({ ...prev, packageId: "" }));
+                setTimeout(() => {
+                  refetch();
+                }, 0);
+              }}
+              onApply={applyFilters}
+              numberOfFilters={filters.packageId ? 1 : 0}
+            >
+              <Select
+                onValueChange={(value) => {
+                  setFilters((prev) => ({
+                    ...prev,
+                    packageId: value || "",
+                  }));
+                }}
+                value={filters.packageId}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select an account" />
+                </SelectTrigger>
+                <SelectContent>
+                  {packages?.map((pkg) => (
+                    <SelectItem key={pkg.id} value={pkg.id.toString()}>
+                      {pkg.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FilterBox>
+            <FilterBox
+              triggerLabel="Date Range"
+              label="Select a date range"
+              onReset={() => {
+                setFilters((prev) => ({
+                  ...prev,
+                  fromDate: defaultToDate,
+                  toDate: defaultToDate,
+                }));
+                setTimeout(() => {
+                  refetch();
+                }, 0);
+              }}
+              onApply={applyFilters}
+              numberOfFilters={
+                (filters.fromDate ? 1 : 0) + (filters.toDate ? 1 : 0)
+              }
             >
               <Field
                 label="From"
@@ -238,87 +419,17 @@ const UsageSummaryTable = ({}: UsageSummaryTableProps) => {
                 />
               </Field>
             </FilterBox>
-            <FilterBox
-              triggerLabel="Show By"
-              label="Show by"
-              onReset={() => {
-                setFilters((prev) => ({
-                  ...prev,
-                  fromDate,
-                  toDate,
-                  showBy: [],
-                }));
-                setTimeout(() => {
-                  refetch();
-                }, 0);
-              }}
-              onApply={applyFilters}
-            >
-              <div className="code-name flex items-center gap-2">
-                <Checkbox
-                  id="codeName"
-                  checked={filters.showBy?.includes("codeName")}
-                  onCheckedChange={(checked) =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      showBy: checked
-                        ? [...(prev.showBy || []), "codeName"]
-                        : prev.showBy?.filter((item) => item !== "codeName") ||
-                          [],
-                    }))
-                  }
-                />
-                <Label>Code name</Label>
-              </div>
-              {/* accountsName,packagesName */}
-              <div className="accounts-name flex items-center gap-2">
-                <Checkbox
-                  id="accountsName"
-                  checked={filters.showBy?.includes("accountsName")}
-                  onCheckedChange={(checked) =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      showBy: checked
-                        ? [...(prev.showBy || []), "accountsName"]
-                        : prev.showBy?.filter(
-                            (item) => item !== "accountsName"
-                          ) || [],
-                    }))
-                  }
-                />
-                <Label>Accounts name</Label>
-              </div>
-              <div className="packages-name flex items-center gap-2">
-                <Checkbox
-                  id="packagesName"
-                  checked={filters.showBy?.includes("packagesName")}
-                  onCheckedChange={(checked) =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      showBy: checked
-                        ? [...(prev.showBy || []), "packagesName"]
-                        : prev.showBy?.filter(
-                            (item) => item !== "packagesName"
-                          ) || [],
-                    }))
-                  }
-                />
-                <Label>Packages name</Label>
-              </div>
-            </FilterBox>
           </FilterBar>
         </CollapsibleContent>
       </Collapsible>
 
-      {isFetching && (
-        <TableSkeleton cols={columns.length} rows={10} className="h-full" />
-      )}
+      {isFetching && <TableSkeleton cols={6} rows={10} className="h-full" />}
       {!isFetching && !data.list.length && (
         <div className="flex items-center justify-center h-full">
           <p className="text-gray-500">No data available.</p>
         </div>
       )}
-      {!isFetching && data.list.length && (
+      {!isFetching && data.list.length > 0 && (
         <div className="flex-1 overflow-auto">
           <Table className="min-h-full w-full">
             <TableHeader className="bg-gray-100 sticky top-0 z-10">
@@ -358,10 +469,7 @@ const UsageSummaryTable = ({}: UsageSummaryTableProps) => {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
+                  <TableCell colSpan={6} className="h-24 text-center">
                     No results.
                   </TableCell>
                 </TableRow>
@@ -432,4 +540,4 @@ const UsageSummaryTable = ({}: UsageSummaryTableProps) => {
   );
 };
 
-export default UsageSummaryTable;
+export default UsageDetailedTable;

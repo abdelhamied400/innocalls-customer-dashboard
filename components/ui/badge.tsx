@@ -17,6 +17,7 @@ const badgeVariants = cva(
         warning:
           "border-transparent bg-warning-100 text-warning-500 hover:bg-warning-200",
         muted: "border-transparent bg-gray-100 text-gray-600 hover:bg-gray-200",
+        gray: "border-transparent bg-neutral-500 text-neutral-50 hover:bg-neutral-600",
         success:
           "border-transparent bg-success-100 text-success-500 hover:bg-success-200",
       },
