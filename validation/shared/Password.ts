@@ -1,19 +1,23 @@
 import { z } from "zod";
+import { useTranslations } from "next-intl";
 
-export const PasswordSchema = z
-  .string()
-  .min(8, {
-    message: "Password must be at least 8 characters long",
-  })
-  .regex(/[a-z]/, {
-    message: "Password must contain at least one lowercase letter",
-  })
-  .regex(/[A-Z]/, {
-    message: "Password must contain at least one uppercase letter",
-  })
-  .regex(/[0-9]/, {
-    message: "Password must contain at least one number",
-  })
-  .regex(/[^a-zA-Z0-9]/, {
-    message: "Password must contain at least one special character",
-  });
+export const PasswordSchema = (t: ReturnType<typeof useTranslations>) =>
+  z
+    .string()
+    .min(8, {
+      message: t("form.validation.password.minLength",{ min: 8 }), 
+    })
+    .regex(/[a-z]/, {
+      message: t("form.validation.password.lowercase"),
+    })
+    .regex(/[A-Z]/, {
+      message: t("form.validation.password.uppercase"),
+    })
+    .regex(/[0-9]/, {
+      message: t("form.validation.password.number"),
+    })
+    .regex(/[^a-zA-Z0-9]/, {
+      message: t("form.validation.password.special"),
+    });
+
+

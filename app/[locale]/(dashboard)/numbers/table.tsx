@@ -43,6 +43,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { columns, PhoneNumber } from "./columns";
 import { useQuery } from "@tanstack/react-query";
 import numbersService from "@/services/numbers.service";
+import { useTranslations } from "next-intl";
+
 
 interface DataTableProps {
   initialData: PhoneNumber[];
@@ -61,6 +63,9 @@ const DataTable = ({
   initialPagination,
 }: DataTableProps) => {
   const router = useRouter();
+  const t = useTranslations('numbers');
+  const searchT = useTranslations('common.search');
+  const paginationT = useTranslations('common.pagination');
   // sorting, filters, and pagination state
   const [sorting, setSorting] = useState<SortingState>(initialSorting);
   const [columnFilters, setColumnFilters] =
@@ -137,12 +142,12 @@ const DataTable = ({
   return (
     <div className="h-full flex flex-col">
       <div className="number-table-head flex items-center justify-between p-4">
-        <h2>Numbers</h2>
+        <h2>{t('title')}</h2>
         <div className="searchbar">
           <Field preIcon={<SearchIcon />}>
             <Input
               variant="field"
-              placeholder="Search..."
+              placeholder={searchT('placeholder')}
               value={
                 (table.getColumn("number")?.getFilterValue() as string) ?? ""
               }
@@ -196,7 +201,7 @@ const DataTable = ({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                 {searchT('noResults')}
                 </TableCell>
               </TableRow>
             )}
@@ -241,7 +246,7 @@ const DataTable = ({
         </div>
 
         <div className="flex items-center gap-2 per-page">
-          <label className="text-sm">Rows per page:</label>
+          <label className="text-sm">{paginationT('rowsPerPage')}:</label>
           <Select
             onValueChange={(value) => table.setPageSize(Number(value))}
             defaultValue={table.getState().pagination.pageSize.toString()}
@@ -257,7 +262,7 @@ const DataTable = ({
           </Select>
           <p className="text-sm">
             {startRowIndex}-{endRowIndex}
-            {totalItems ? ` of ${totalItems}` : ""}
+            {totalItems ? ` ${paginationT('of')} ${totalItems}`: ""}
           </p>
         </div>
       </div>

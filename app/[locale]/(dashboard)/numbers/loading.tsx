@@ -3,18 +3,24 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import TableSkeleton from "@/components/ui/table-skeleton";
 import { SearchIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
+
 
 const Loading = () => {
+
+  const t = useTranslations('numbers');
+  const searchT = useTranslations('common.search');
+
   return (
     <div className="loading h-full">
       <div className="h-full flex flex-col">
         <div className="number-table-head flex items-center justify-between p-4">
-          <h2>Numbers</h2>
+          <h2>{t('title')}</h2>
           <div className="searchbar">
             <Field preIcon={<SearchIcon />}>
               <Input
                 variant="field"
-                placeholder="Search..."
+                placeholder={searchT('placeholder')}
                 type="search"
                 disabled
               />

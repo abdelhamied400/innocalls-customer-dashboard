@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -15,12 +16,14 @@ export const columns: ColumnDef<PhoneNumber>[] = [
   {
     accessorKey: "id",
     header: ({ column }) => {
+      const t = useTranslations("numbers");
+
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          #Ref-No
+          {t("refNo")}
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -28,6 +31,9 @@ export const columns: ColumnDef<PhoneNumber>[] = [
   },
   {
     accessorKey: "number",
-    header: "Phone number",
+    header: () => {
+      const t = useTranslations("numbers");
+      return t("phoneNumber");
+    },
   },
 ];

@@ -10,13 +10,17 @@ import Field from "@/components/ui/field";
 import authService from "@/services/auth.service";
 import { AxiosError } from "axios";
 import { ForgotPasswordSchema } from "@/validation/ForgotPassword";
+import { useTranslations } from "next-intl";
 
 const ForgotPasswordForm = () => {
   const { toast } = useToast();
+  const t = useTranslations("auth.forgotPassword");
 
   // 1. Define your form.
+  const schema = ForgotPasswordSchema(t);
+
   const form = useForm({
-    resolver: zodResolver(ForgotPasswordSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       email: "",
     },
@@ -30,13 +34,14 @@ const ForgotPasswordForm = () => {
     try {
       await authService.forgotPassword(data.email);
       toast({
-        title: "Email Sent",
-        description: "Check your inbox for a reset link.",
+        title: t("messages.emailSent"),
+        description: t("messages.emailSentDescription"),
       });
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
-          title: "Could not send email",
+          title: t("messages.couldNotSendEmail"),
+
           description: error.response?.data.message,
           variant: "destructive",
         });
@@ -44,8 +49,8 @@ const ForgotPasswordForm = () => {
       }
 
       toast({
-        title: "Something went wrong",
-        description: "We have a problem on our side. Please try again later.",
+        title: t("messages.somethingWentWrong"),
+        description: t("messages.defaultErrorDescription"),
         variant: "destructive",
       });
     }
@@ -60,7 +65,7 @@ const ForgotPasswordForm = () => {
             name="email"
             render={({ field }) => (
               <Field
-                label="Work Email"
+                label={t("form.fields.email.label")}
                 error={errors.email?.message}
                 htmlFor="email"
               >
@@ -69,7 +74,7 @@ const ForgotPasswordForm = () => {
                     <Input
                       id="email"
                       variant="field"
-                      placeholder="Enter email..."
+                      placeholder={t("form.fields.email.placeholder")}
                       type="email"
                       {...field}
                     />
@@ -86,7 +91,7 @@ const ForgotPasswordForm = () => {
             loading={isSubmitting}
             disabled={isSubmitting || !isDirty}
           >
-            Send Reset Email Link
+            {t("actions.submit")}
           </Button>
         </form>
       </Form>

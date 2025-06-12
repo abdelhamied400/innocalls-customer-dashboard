@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import ResetPasswordForm from "./form";
+import { useTranslations } from "next-intl";
 
 type ResetPasswordProps = {
   searchParams: Promise<{
@@ -7,6 +8,8 @@ type ResetPasswordProps = {
   }>;
 };
 const ResetPassword = async ({ searchParams }: ResetPasswordProps) => {
+  const t = useTranslations("auth.resetPassword");
+
   const { token } = await searchParams;
 
   if (!token) return redirect("/login");
@@ -17,8 +20,8 @@ const ResetPassword = async ({ searchParams }: ResetPasswordProps) => {
       id="reset-password"
     >
       <div className="flex flex-col items-center justify-center gap-2">
-        <h1>Reset Password!</h1>
-        <p className="text-sm">Reset your password via E-mail!</p>
+        <h1>{t("title")}</h1>
+        <p className="text-sm">{t("subtitle")}</p>
         <ResetPasswordForm token={token} />
       </div>
     </div>

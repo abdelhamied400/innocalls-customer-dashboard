@@ -1,6 +1,138 @@
 {
-  "HomePage": {
-    "title": "Hello world!",
-    "about": "Go to the about page"
+  "common": {
+    "pagination": {
+      "rowsPerPage": "Rows per page",
+      "of": "of",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "search": {
+      "placeholder": "Search...",
+      "noResults": "No results."
+    },
+    "form": {
+      "validation": {
+        "password": {
+          "minLength": "Password must be at least {min} characters long",
+          "lowercase": "Password must contain at least one lowercase letter",
+          "uppercase": "Password must contain at least one uppercase letter",
+          "number": "Password must contain at least one number",
+          "special": "Password must contain at least one special character"
+        }
+      }
+    }
+  },
+  "numbers": {
+    "title": "Numbers",
+    "refNo": "#Ref-No",
+    "phoneNumber": "Phone number"
+  },
+  "auth": {
+    "forgotPassword": {
+      "title": "Forgot Password!",
+      "subtitle": "Reset your password via E-mail!",
+      "form": {
+        "fields": {
+          "email": {
+            "label": "Work Email",
+            "placeholder": "Enter email..."
+          }
+        },
+        "validation": {
+          "email": {
+            "required": "Email is required",
+            "invalid": "Please enter a valid email address",
+            "minLength": "Email must be at least {min} characters"
+          }
+        }
+      },
+      "messages": {
+        "emailSent": "Email Sent",
+        "emailSentDescription": "Check your inbox for a reset link.",
+        "couldNotSendEmail": "Could not send email",
+        "somethingWentWrong": "Something went wrong",
+        "defaultErrorDescription": "We have a problem on our side. Please try again later."
+      },
+      "actions": {
+        "submit": "Send Reset Email Link"
+      }
+    },
+    "login": {
+      "title": "Sign in to Innocalls platform!",
+      "subtitle": "Elevate Your Business with Seamless Cloud Communication Solutions",
+      "form": {
+        "fields": {
+          "email": {
+            "label": "Work Email",
+            "placeholder": "Enter email..."
+          },
+          "password": {
+            "label": "Password",
+            "placeholder": "Enter password..."
+          },
+          "userType": {
+            "admin": "Admin",
+            "agent": "Agent"
+          }
+        },
+        "validation": {
+          "email": {
+            "required": "Email is required",
+            "invalid": "Please enter a valid email address",
+            "minLength": "Email must be at least {min} characters"
+          },
+          "password": {
+            "required": "Password is required",
+            "minLength": "Password must be at least {min} characters",
+            "maxLength": "Password must be no more than {max} characters"
+          },
+          "userType": {
+            "required": "Please select user type"
+          }
+        }
+      },
+      "messages": {
+        "loginFailed": "Login failed",
+        "loginSuccess": "Success",
+        "loginSuccessDescription": "Logged in successfully",
+        "somethingWentWrong": "Something went wrong",
+        "defaultErrorDescription": "We have an issue on our side. Please try again later."
+      },
+      "actions": {
+        "submit": "Login",
+        "forgotPassword": "Forget Password?",
+        "resetPassword": "Reset Password"
+      }
+    },
+    "resetPassword": {
+      "title": "Reset Password!",
+      "subtitle": "Reset your password via E-mail!",
+      "form": {
+        "fields": {
+          "password": {
+            "label": "Password",
+            "placeholder": "Enter password..."
+          },
+          "passwordConfirm": {
+            "label": "Confirm Password",
+            "placeholder": "Re-enter password..."
+          }
+        },
+        "validation": {
+          "passwordConfirm": {
+            "mismatch": "Passwords do not match"
+          }
+        }
+      },
+      "messages": {
+        "resetSuccess": "Password Reset",
+        "resetSuccessDescription": "Your password has been reset successfully.",
+        "resetFailed": "Error",
+        "defaultErrorDescription": "An error occurred while resetting your password."
+      },
+      "actions": {
+        "submit": "Reset Password"
+      }
+    }
   }
 }
