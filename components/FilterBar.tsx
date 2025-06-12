@@ -16,7 +16,7 @@ export const FilterBar = ({ children, onClear }: FilterBarProps) => {
             <Button
               variant="ghost"
               onClick={onClear}
-              className="flex items-center"
+              className="flex items-center bg-transparent"
             >
               <Close className="h-4 w-4" />
               Clear

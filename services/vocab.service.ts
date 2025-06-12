@@ -20,4 +20,12 @@ export default {
     const res = await api.get("/call-tag");
     return res.data.callTags;
   },
+  getAllAccounts: async () => {
+    const res = await api.get("/jera/accounts");
+    return res.data;
+  },
+  getAllPackages: async () => {
+    const res = await api.get("/jera/packages");
+    return res.data;
+  },
 };

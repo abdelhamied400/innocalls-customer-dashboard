@@ -37,30 +37,35 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Field from "@/components/ui/field";
-import { CalendarIcon, ChevronDownIcon } from "lucide-react";
 import { columns } from "./columns";
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
 import billingService from "@/services/billing.service";
-import { FilterAltOutlined, Search } from "@mui/icons-material";
+import { CalendarMonth, FilterAltOutlined, Search } from "@mui/icons-material";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Toggle } from "@/components/ui/toggle";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import FilterDialog from "@/components/FilterDialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
+import { FilterBar } from "@/components/FilterBar";
+import { FilterBox } from "@/components/FilterBox";
+import { isValidDateRange } from "@/lib/date";
+import DatePicker from "@/components/ui/date-picker";
+import { format } from "date-fns";
+
+// 30 days ago
+const fromDate = new Date();
+fromDate.setDate(fromDate.getDate() - 30);
+// today
+const toDate = new Date();
 
 type InvoicesFilters = {
   search: string;
+  fromDate?: Date | undefined;
+  toDate?: Date | undefined;
   fromTotal?: string;
   toTotal?: string;
   status?: "draft" | "overdue" | "paid" | "partially_paid" | null;
@@ -71,6 +76,8 @@ const BillingTable = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filters, setFilters] = useState<InvoicesFilters>({
     search: "",
+    fromDate: fromDate,
+    toDate: toDate,
     fromTotal: "",
     toTotal: "",
     status: null,
@@ -101,6 +108,12 @@ const BillingTable = () => {
         pagination.pageSize,
         {
           search: filters.search,
+          ...(filters.fromDate && {
+            fromDate: format(filters.fromDate, "yyyy-MM-dd"),
+          }),
+          ...(filters.toDate && {
+            toDate: format(filters.toDate, "yyyy-MM-dd"),
+          }),
           ...(filters.fromTotal && { fromTotal: filters.fromTotal }),
           ...(filters.toTotal && { toTotal: filters.toTotal }),
           status: filters.status,
@@ -136,6 +149,36 @@ const BillingTable = () => {
     }));
   };
 
+  const applyFilters = () => {
+    let isValid = true;
+    isValid = isValidDateRange(filters.fromDate, filters.toDate, (message) => {
+      toast({
+        title: "Invalid date range",
+        description: message,
+        variant: "destructive",
+      });
+    });
+
+    // Validate amount range
+    if (
+      !!filters.fromTotal &&
+      !!filters.toTotal &&
+      Number(filters.fromTotal) > Number(filters.toTotal)
+    ) {
+      isValid = false;
+      toast({
+        title: "Invalid Amount Range",
+        description: "From amount must be less than to amount.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!isValid) return;
+    // If valid, refetch the data
+    refetch();
+  };
+
   return (
     <div className="h-full flex flex-col border rounded-xl">
       <Collapsible>
@@ -159,127 +202,151 @@ const BillingTable = () => {
             </CollapsibleTrigger>
           </div>
         </div>
-        <CollapsibleContent className="border-t flex items-center gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="filter" size="filter">
-                Amount
-                <ChevronDownIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <FilterDialog
-                title="Search by amount"
-                onReset={() => {
-                  setFilters((prev) => ({
-                    ...prev,
-                    fromTotal: "",
-                    toTotal: "",
-                  }));
-                  setTimeout(() => {
-                    refetch();
-                  }, 0);
-                }}
-                onApply={() => {
-                  // validate the filters
-                  if (
-                    !!filters.fromTotal &&
-                    !!filters.toTotal &&
-                    Number(filters.fromTotal) > Number(filters.toTotal)
-                  ) {
-                    toast({
-                      title: "Invalid Amount Range",
-                      description: "From amount must be less than to amount.",
-                      variant: "destructive",
-                    });
-                    return;
-                  }
+        <CollapsibleContent>
+          <FilterBar
+            onClear={() => {
+              setFilters({
+                search: "",
+                fromDate: fromDate,
+                toDate: toDate,
+                fromTotal: "",
+                toTotal: "",
+                status: null,
+              });
+              setTimeout(() => {
+                refetch();
+              }, 0);
+            }}
+          >
+            <FilterBox
+              triggerLabel="Creation Date"
+              label="Select a date range"
+              onReset={() => {
+                setFilters((prev) => ({ ...prev, fromDate, toDate }));
+                setTimeout(() => {
                   refetch();
-                }}
+                }, 0);
+              }}
+              onApply={applyFilters}
+            >
+              <Field
+                label="From"
+                hint="DD/MM/YYYY"
+                postIcon={<CalendarMonth className="text-gray-400" />}
               >
-                <Field label="From Amount">
-                  <Input
-                    variant="field"
-                    type="number"
-                    placeholder="Enter from amount..."
-                    value={filters.fromTotal}
-                    onChange={(e) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        fromTotal: e.target.value,
-                      }))
-                    }
-                  />
-                </Field>
-                <Field label="To Amount">
-                  <Input
-                    variant="field"
-                    type="number"
-                    placeholder="Enter to amount..."
-                    value={filters.toTotal}
-                    onChange={(e) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        toTotal: e.target.value,
-                      }))
-                    }
-                  />
-                </Field>
-              </FilterDialog>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="filter" size="filter">
-                Status
-                <ChevronDownIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <FilterDialog
-                title="Select status"
-                onReset={() => {
-                  setFilters((prev) => ({ ...prev, status: null }));
-                  setTimeout(() => {
-                    refetch();
-                  }, 0);
-                }}
-                onApply={() => {
-                  refetch();
-                }}
-              >
-                <RadioGroup
-                  onValueChange={(status) =>
+                <DatePicker
+                  className="flex-1"
+                  placeholder="Enter from date"
+                  value={filters.fromDate}
+                  onChange={(date) =>
                     setFilters((prev) => ({
                       ...prev,
-                      status: status as InvoicesFilters["status"],
+                      fromDate: date || undefined,
                     }))
                   }
-                  value={filters.status}
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="draft" id="draft" />
-                    <Label htmlFor="draft">Draft</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="overdue" id="overdue" />
-                    <Label htmlFor="overdue">Overdue</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="paid" id="paid" />
-                    <Label htmlFor="paid">Paid</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem
-                      value="partially_paid"
-                      id="partially_paid"
-                    />
-                    <Label htmlFor="partially_paid">Partially Paid</Label>
-                  </div>
-                </RadioGroup>
-              </FilterDialog>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                />
+              </Field>
+              <Field
+                label="To"
+                hint="DD/MM/YYYY"
+                postIcon={<CalendarMonth className="text-gray-400" />}
+              >
+                <DatePicker
+                  className="flex-1"
+                  placeholder="Enter to date"
+                  value={filters.toDate}
+                  onChange={(date) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      toDate: date || undefined,
+                    }))
+                  }
+                />
+              </Field>
+            </FilterBox>
+            <FilterBox
+              triggerLabel="Amount"
+              label="Search by amount"
+              onReset={() => {
+                setFilters((prev) => ({
+                  ...prev,
+                  fromTotal: "",
+                  toTotal: "",
+                }));
+                setTimeout(() => {
+                  refetch();
+                }, 0);
+              }}
+              onApply={applyFilters}
+            >
+              <Field label="From Amount">
+                <Input
+                  variant="field"
+                  type="number"
+                  placeholder="Enter from amount..."
+                  value={filters.fromTotal}
+                  onChange={(e) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      fromTotal: e.target.value,
+                    }))
+                  }
+                />
+              </Field>
+              <Field label="To Amount">
+                <Input
+                  variant="field"
+                  type="number"
+                  placeholder="Enter to amount..."
+                  value={filters.toTotal}
+                  onChange={(e) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      toTotal: e.target.value,
+                    }))
+                  }
+                />
+              </Field>
+            </FilterBox>
+            <FilterBox
+              triggerLabel="Status"
+              label="Select invoice status"
+              onReset={() => {
+                setFilters((prev) => ({ ...prev, status: null }));
+                setTimeout(() => {
+                  refetch();
+                }, 0);
+              }}
+              onApply={applyFilters}
+            >
+              <RadioGroup
+                onValueChange={(status) =>
+                  setFilters((prev) => ({
+                    ...prev,
+                    status: status as InvoicesFilters["status"],
+                  }))
+                }
+                value={filters.status}
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="draft" id="draft" />
+                  <Label htmlFor="draft">Draft</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="overdue" id="overdue" />
+                  <Label htmlFor="overdue">Overdue</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="paid" id="paid" />
+                  <Label htmlFor="paid">Paid</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="partially_paid" id="partially_paid" />
+                  <Label htmlFor="partially_paid">Partially Paid</Label>
+                </div>
+              </RadioGroup>
+            </FilterBox>
+          </FilterBar>
         </CollapsibleContent>
       </Collapsible>
 

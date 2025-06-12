@@ -6,12 +6,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDownIcon } from "lucide-react";
+import { Badge } from "./ui/badge";
 
 type FilterBoxProps = PropsWithChildren<{
   triggerLabel?: string;
   label?: string;
   onReset?: () => void;
   onApply?: () => void;
+  numberOfFilters?: number;
 }>;
 export const FilterBox = ({
   triggerLabel = "Filter",
@@ -19,12 +21,18 @@ export const FilterBox = ({
   label,
   onReset,
   onApply,
+  numberOfFilters = 0,
 }: FilterBoxProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="filter">
           {triggerLabel}
+          {numberOfFilters > 0 && (
+            <Badge className="p-0.5" variant="gray">
+              {numberOfFilters}
+            </Badge>
+          )}
           <ChevronDownIcon />
         </Button>
       </DropdownMenuTrigger>
