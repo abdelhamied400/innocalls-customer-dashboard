@@ -13,14 +13,19 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import Field from "@/components/ui/field";
 import Link from "next/link";
 import { LoginSchema } from "@/validation/Login";
+import { useTranslations } from "next-intl";
 
 const LoginForm = () => {
   const { toast } = useToast();
   const router = useRouter();
+  const t = useTranslations("auth.login");
+  const tCommon = useTranslations("common");
+
+  const schema = LoginSchema(t,tCommon);
 
   // 1. Define your form.
   const form = useForm({
-    resolver: zodResolver(LoginSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       email: "",
       password: "",
@@ -44,14 +49,14 @@ const LoginForm = () => {
 
     if (result?.error) {
       toast({
-        title: "Login failed",
+        title: t("messages.loginFailed"),
         description: result.code,
         variant: "destructive",
       });
     } else {
       toast({
-        title: "Success",
-        description: "Logged in successfully",
+        title: t("messages.loginSuccess"),
+        description: t("messages.loginSuccessDescription"),
       });
       router.push("/");
     }
@@ -71,8 +76,13 @@ const LoginForm = () => {
               }
             }}
           >
-            <ToggleGroupItem value="user">Admin</ToggleGroupItem>
-            <ToggleGroupItem value="agent">Agent</ToggleGroupItem>
+            <ToggleGroupItem value="user">
+              {" "}
+              {t("form.fields.userType.admin")}
+            </ToggleGroupItem>
+            <ToggleGroupItem value="agent">
+              {t("form.fields.userType.agent")}
+            </ToggleGroupItem>
           </ToggleGroup>
 
           <FormField
@@ -82,14 +92,14 @@ const LoginForm = () => {
               <FormItem>
                 <FormControl>
                   <Field
-                    label="Work Email"
+                    label={t("form.fields.email.label")}
                     error={errors.email?.message}
                     htmlFor="email"
                   >
                     <Input
                       id="email"
                       variant="field"
-                      placeholder="Enter email..."
+                      placeholder={t("form.fields.email.placeholder")}
                       type="email"
                       {...field}
                     />
@@ -105,14 +115,14 @@ const LoginForm = () => {
               <FormItem>
                 <FormControl>
                   <Field
-                    label="Password"
+                    label={t("form.fields.password.label")}
                     error={errors.password?.message}
                     htmlFor="password"
                   >
                     <Input
                       id="password"
                       variant="field"
-                      placeholder="Enter password..."
+                      placeholder={t("form.fields.password.placeholder")}
                       type="password"
                       {...field}
                     />
@@ -129,13 +139,13 @@ const LoginForm = () => {
             loading={isSubmitting}
             disabled={isSubmitting}
           >
-            Login
+            {t("actions.submit")}
           </Button>
 
           <p className="text-center">
-            Forget Password?{" "}
+            {t("actions.forgotPassword")}{" "}
             <Link href="/forgot-password" className="text-secondary">
-              Reset Password
+              {t("actions.resetPassword")}
             </Link>
           </p>
         </form>

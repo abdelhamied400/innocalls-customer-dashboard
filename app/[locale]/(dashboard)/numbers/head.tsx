@@ -5,9 +5,12 @@ import { Input } from "@/components/ui/input";
 import { useFilters } from "@/hooks/use-filters";
 import SearchIcon from "@mui/icons-material/Search";
 import { useCallback } from "react";
+import { useTranslations } from "next-intl";
 
 const NumbersTableHead = () => {
   const { updateFilters } = useFilters();
+  const t = useTranslations("numbers");
+  const searchT = useTranslations("common.search");
 
   const onSearchChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,12 +22,12 @@ const NumbersTableHead = () => {
 
   return (
     <div className="number-table-head flex items-center justify-between p-4">
-      <h2>Numbers</h2>
+      <h2>{t("title")}</h2>
       <div className="searchbar">
         <Field preIcon={<SearchIcon />}>
           <Input
             variant="field"
-            placeholder="Search..."
+            placeholder={searchT("placeholder")}
             onChange={onSearchChange}
             type="search"
           />

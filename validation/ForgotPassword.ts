@@ -1,10 +1,16 @@
+import { useTranslations } from "next-intl";
 import { z } from "zod";
 
-export const ForgotPasswordSchema = z.object({
-  email: z
-    .string()
-    .min(2, {
-      message: "Email must be at least 2 characters.",
-    })
-    .email(),
-});
+export const ForgotPasswordSchema = (
+  t: ReturnType<typeof useTranslations>
+) =>
+  z.object({
+    email: z
+      .string()
+      .min(2, {
+        message: t("form.validation.email.minLength", { min: 2 }),
+      })
+      .email({
+        message: t("form.validation.email.invalid"),
+      }),
+  });

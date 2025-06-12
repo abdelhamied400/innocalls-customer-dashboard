@@ -1,13 +1,14 @@
 import LoginForm from "./form";
+import { useTranslations } from "next-intl";
 
 const Login = () => {
+  const t = useTranslations("auth.login");
+
   return (
     <div className="page h-full flex justify-center items-center" id="login">
       <div className="flex flex-col items-center justify-center gap-2">
-        <h1>Sign in to Innocalls platform!</h1>
-        <p className="text-sm">
-          Elevate Your Business with Seamless Cloud Communication Solutions
-        </p>
+        <h1>{t("title")}</h1>
+        <p className="text-sm">{t("subtitle")}</p>
         <LoginForm />
       </div>
     </div>

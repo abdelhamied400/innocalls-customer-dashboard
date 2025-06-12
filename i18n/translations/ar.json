@@ -1,6 +1,138 @@
 {
-  "HomePage": {
-    "title": "مرحبا بالعالم!",
-    "about": "اذهب إلى صفحة حول"
+  "common": {
+    "pagination": {
+      "rowsPerPage": "عدد الصفوف في الصفحة",
+      "of": "من",
+      "previous": "السابق",
+      "next": "التالي"
+    },
+    "search": {
+      "placeholder": "بحث...",
+      "noResults": "لا توجد نتائج."
+    },
+    "form": {
+      "validation": {
+        "password": {
+          "minLength": "يجب أن تتكون كلمة المرور من {min} أحرف على الأقل",
+          "lowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
+          "uppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
+          "number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
+          "special": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل"
+        }
+      }
+    }
+  },
+  "numbers": {
+    "title": "الأرقام",
+    "refNo": "#رقم المرجع",
+    "phoneNumber": "رقم الهاتف"
+  },
+  "auth": {
+    "forgotPassword": {
+      "title": "نسيت كلمة المرور!",
+      "subtitle": "إعادة تعيين كلمة المرور عبر البريد الإلكتروني!",
+      "form": {
+        "fields": {
+          "email": {
+            "label": "البريد الإلكتروني للعمل",
+            "placeholder": "أدخل البريد الإلكتروني..."
+          }
+        },
+        "validation": {
+          "email": {
+            "required": "البريد الإلكتروني مطلوب",
+            "invalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
+            "minLength": "يجب أن يكون البريد الإلكتروني على الأقل {min} أحرف"
+          }
+        }
+      },
+      "messages": {
+        "emailSent": "تم إرسال البريد الإلكتروني",
+        "emailSentDescription": "تحقق من صندوق الوارد للحصول على رابط إعادة التعيين.",
+        "couldNotSendEmail": "لا يمكن إرسال البريد الإلكتروني",
+        "somethingWentWrong": "حدث خطأ ما",
+        "defaultErrorDescription": "لدينا مشكلة من جانبنا. يرجى المحاولة مرة أخرى لاحقاً."
+      },
+      "actions": {
+        "submit": "إرسال رابط إعادة تعيين كلمة المرور"
+      }
+    },
+    "login": {
+      "title": "تسجيل الدخول إلى منصة إينوكولز!",
+      "subtitle": "ارتقِ بأعمالك مع حلول الاتصالات السحابية السلسة",
+      "form": {
+        "fields": {
+          "email": {
+            "label": "البريد الإلكتروني للعمل",
+            "placeholder": "أدخل البريد الإلكتروني..."
+          },
+          "password": {
+            "label": "كلمة المرور",
+            "placeholder": "أدخل كلمة المرور..."
+          },
+          "userType": {
+            "admin": "مدير",
+            "agent": "وكيل"
+          }
+        },
+        "validation": {
+          "email": {
+            "required": "البريد الإلكتروني مطلوب",
+            "invalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
+            "minLength": "يجب أن يكون البريد الإلكتروني على الأقل {min} أحرف"
+          },
+          "password": {
+            "required": "كلمة المرور مطلوبة",
+            "minLength": "يجب أن تكون كلمة المرور على الأقل {min} أحرف",
+            "maxLength": "يجب ألا تزيد كلمة المرور عن {max} حرف"
+          },
+          "userType": {
+            "required": "يرجي اختيار نوع المستخدم"
+          }
+        }
+      },
+      "messages": {
+        "loginFailed": "فشل تسجيل الدخول",
+        "loginSuccess": "نجح",
+        "loginSuccessDescription": "تم تسجيل الدخول بنجاح",
+        "somethingWentWrong": "حدث خطأ ما",
+        "defaultErrorDescription": "لدينا مشكلة من جانبنا. يرجى المحاولة مرة أخرى لاحقاً."
+      },
+      "actions": {
+        "submit": "تسجيل الدخول",
+        "forgotPassword": "نسيت كلمة المرور؟",
+        "resetPassword": "إعادة تعيين كلمة المرور"
+      }
+    },
+    "resetPassword": {
+      "title": "إعادة تعيين كلمة المرور!",
+      "subtitle": "إعادة تعيين كلمة المرور عبر البريد الإلكتروني!",
+      "form": {
+        "fields": {
+          "password": {
+            "label": "كلمة المرور",
+            "placeholder": "أدخل كلمة المرور..."
+          },
+          "passwordConfirm": {
+            "label": "تأكيد كلمة المرور",
+            "placeholder": "أعد إدخال كلمة المرور..."
+          }
+        },
+        "validation": {
+          "passwordConfirm": {
+            "mismatch": "كلمات المرور غير متطابقة"
+          }
+        }
+      },
+      "messages": {
+        "resetSuccess": "تم إعادة تعيين كلمة المرور",
+        "resetSuccessDescription": "تم إعادة تعيين كلمة المرور بنجاح.",
+        "resetFailed": "خطأ",
+        "defaultErrorDescription": "حدث خطأ أثناء إعادة تعيين كلمة المرور."
+      },
+      "actions": {
+        "submit": "إعادة تعيين كلمة المرور"
+      }
+    }
   }
 }
