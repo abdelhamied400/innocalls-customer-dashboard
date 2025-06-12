@@ -69,6 +69,7 @@ import { Label } from "@/components/ui/label";
 import { Paginated } from "@/types/shared/paginated";
 import { useRouter } from "next/navigation";
 import { useFilters } from "@/hooks/use-filters";
+import { format } from "date-fns";
 
 interface UsageDetailedTableProps {
   initialData: {
@@ -175,8 +176,13 @@ const UsageDetailedTable = ({
     updateFilters({
       page: (pageIndex + 1).toString(),
       pageSize: pageSize.toString(),
+      ...filters,
+      fromDate: filters.fromDate
+        ? format(filters.fromDate, "yyyy-MM-dd")
+        : undefined,
+      toDate: filters.toDate ? format(filters.toDate, "yyyy-MM-dd") : undefined,
     });
-  }, [pageIndex, pageSize, router]);
+  }, [pageIndex, pageSize, filters, updateFilters]);
 
   const handlePerPageChange = (value: string) => {
     table.setPageSize(Number(value));
