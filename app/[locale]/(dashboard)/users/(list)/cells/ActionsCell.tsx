@@ -29,6 +29,7 @@ import {
 import Spinner from "@/components/ui/spinner";
 import { X } from "lucide-react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 type ActionsCellProps = Cell<User>;
 const ActionsCell = ({ row }: ActionsCellProps) => {
@@ -39,6 +40,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(false);
+  const t = useTranslations("users.list");
 
   const handleActivate = async () => {
     try {
@@ -46,26 +48,27 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       await usersService.activateUser(row.original.id);
       await queryClient.invalidateQueries({ queryKey: ["users"] }); // Invalidate the users query to refresh the list
       toast({
-        title: "User activated successfully",
-        description: `User ${row.original.name} is now active.`,
+        title: t("messages.userActivated"),
+        description: t("messages.userActivatedDesc", {
+          name: row.original.name,
+        }),
         variant: "success",
       });
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
-          title: "Error activating user",
+          title: t("messages.errorActivating"),
           description:
-            error.response?.data?.message ||
-            "An error occurred while activating the user.",
+            error.response?.data?.message || t("messages.actionError"),
           variant: "destructive",
         });
       } else {
         toast({
-          title: "Error activating user",
+          title: t("messages.errorActivating"),
           description:
             error instanceof Error
               ? error.message
-              : "An unexpected error occurred.",
+              : t("messages.unexpectedError"),
           variant: "destructive",
         });
       }
@@ -80,26 +83,27 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       await usersService.deactivateUser(row.original.id);
       await queryClient.invalidateQueries({ queryKey: ["users"] }); // Invalidate the users query to refresh the list
       toast({
-        title: "User deactivated successfully",
-        description: `User ${row.original.name} is now inactive.`,
+        title: t("messages.userDeactivated"),
+        description: t("messages.userDeactivatedDesc", {
+          name: row.original.name,
+        }),
         variant: "success",
       });
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
-          title: "Error deactivating user",
+          title: t("messages.errorDeactivating"),
           description:
-            error.response?.data?.message ||
-            "An error occurred while deactivating the user.",
+            error.response?.data?.message || t("messages.actionError"),
           variant: "destructive",
         });
       } else {
         toast({
-          title: "Error deactivating user",
+          title: t("messages.errorDeactivating"),
           description:
             error instanceof Error
               ? error.message
-              : "An unexpected error occurred.",
+              : t("messages.unexpectedError"),
           variant: "destructive",
         });
       }
@@ -114,26 +118,25 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       await usersService.deleteUser(row.original.id);
       await queryClient.invalidateQueries({ queryKey: ["users"] }); // Invalidate the users query to refresh the list
       toast({
-        title: "User deleted successfully",
-        description: `User ${row.original.name} has been deleted.`,
+        title: t("messages.userDeleted"),
+        description: t("messages.userDeletedDesc", { name: row.original.name }),
         variant: "success",
       });
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
-          title: "Error deleting user",
+          title: t("messages.errorDeleting"),
           description:
-            error.response?.data?.message ||
-            "An error occurred while deleting the user.",
+            error.response?.data?.message || t("messages.actionError"),
           variant: "destructive",
         });
       } else {
         toast({
-          title: "Error deleting user",
+          title: t("messages.errorDeleting"),
           description:
             error instanceof Error
               ? error.message
-              : "An unexpected error occurred.",
+              : t("messages.unexpectedError"),
           variant: "destructive",
         });
       }
@@ -163,17 +166,21 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+              <AlertDialogTitle>
+                {t("confirmations.areYouSure")}
+              </AlertDialogTitle>
               <AlertDialogX />
 
               <AlertDialogDescription>
-                you want to disable this user?
+                {t("confirmations.disableUser")}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>No, Don't Proceed</AlertDialogCancel>
+              <AlertDialogCancel>
+                {t("confirmations.noCancel")}
+              </AlertDialogCancel>
               <AlertDialogAction onClick={handleDeactivate}>
-                Yes Disable it
+                {t("confirmations.yesDisable")}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -192,16 +199,20 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+              <AlertDialogTitle>
+                {t("confirmations.areYouSure")}
+              </AlertDialogTitle>
               <AlertDialogX />
               <AlertDialogDescription>
-                you want to enable this user?
+                {t("confirmations.enableUser")}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>No, Don't Proceed</AlertDialogCancel>
+              <AlertDialogCancel>
+                {t("confirmations.noCancel")}
+              </AlertDialogCancel>
               <AlertDialogAction onClick={handleActivate}>
-                Yes Enable it
+                {t("confirmations.yesEnable")}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
@@ -217,7 +228,8 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
         <DropdownMenuContent>
           <Link href={`/users/${row.original.id}/edit`}>
             <DropdownMenuItem>
-              <Edit /> Edit User
+              <Edit />
+              {t("actions.edit")}
             </DropdownMenuItem>
           </Link>
           <DropdownMenuItem
@@ -227,7 +239,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
               setShowAlert(true); // open alert
             }}
           >
-            <Delete /> Delete User
+            <Delete /> {t("actions.delete")}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -235,29 +247,29 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       {isDeleting && (
         <Button variant="ghost-destructive" disabled>
           <Spinner />
-          Deleting...
+          {t("messages.deleting")}
         </Button>
       )}
 
       <AlertDialog open={showAlert} onOpenChange={setShowAlert}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle>{t("confirmations.areYouSure")}</AlertDialogTitle>
             <AlertDialogX />
             <AlertDialogDescription>
-              You want to delete this user?
+              {t("confirmations.deleteUser")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel onClick={() => setShowAlert(false)}>
-              No, Don't Proceed
+              {t("confirmations.noCancel")}
             </AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 handleDelete();
               }}
             >
-              Yes, Delete it
+              {t("confirmations.yesDelete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

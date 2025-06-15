@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import ActionsCell from "./cells/ActionsCell";
+import { useTranslations } from "next-intl";
 
 // User type definition
 export type User = {
@@ -15,7 +16,9 @@ export type User = {
 };
 
 // Table columns definition
-export const columns: import("@tanstack/react-table").ColumnDef<User, any>[] = [
+export const columns = (
+  t: ReturnType<typeof useTranslations>
+): import("@tanstack/react-table").ColumnDef<User, any>[] => [
   {
     accessorKey: "ext",
     enablePinning: true,
@@ -24,7 +27,7 @@ export const columns: import("@tanstack/react-table").ColumnDef<User, any>[] = [
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Extension No.
+        {t("columns.extension")}
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
@@ -36,29 +39,29 @@ export const columns: import("@tanstack/react-table").ColumnDef<User, any>[] = [
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Name
+        {t("columns.name")}
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
   },
   {
     accessorKey: "email",
-    header: "Email",
+    header: t("columns.email"),
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: t("columns.status"),
     cell: ({ row }: { row: any }) => (
       <Badge
         variant={row.getValue("status") === "enabled" ? "success" : "muted"}
       >
-        {row.getValue("status")}
+        {t(`status.${row.getValue("status")}`)}
       </Badge>
     ),
   },
   {
     accessorKey: "actions",
-    header: "Actions",
+    header: t("columns.actions"),
     cell: ActionsCell,
   },
 ];

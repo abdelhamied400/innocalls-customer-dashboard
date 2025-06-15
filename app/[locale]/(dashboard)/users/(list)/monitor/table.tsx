@@ -46,7 +46,6 @@ import UsersLoading from "./loading";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
-
 type UsersMonitorTableProps = {
   initialData: MonitorUser[];
   initialPagination?: {
@@ -62,10 +61,10 @@ const UsersMonitorTable = ({
   initialSorting = [],
   initialPagination,
 }: UsersMonitorTableProps) => {
-  const router = useRouter(); 
-  const t = useTranslations('users.monitor');
-  const searchT = useTranslations('common.search');
-  const paginationT = useTranslations('common.pagination');
+  const router = useRouter();
+  const t = useTranslations("users.monitor");
+  const searchT = useTranslations("common.search");
+  const paginationT = useTranslations("common.pagination");
 
   // sorting, filters, and pagination state
   const [sorting, setSorting] = useState<SortingState>(initialSorting);
@@ -85,7 +84,7 @@ const UsersMonitorTable = ({
 
   const table = useReactTable({
     data,
-    columns:columns(t),
+    columns: columns(t),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -149,12 +148,12 @@ const UsersMonitorTable = ({
   return (
     <div className="flex flex-col gap-0 h-full border rounded-xl">
       <div className="users-table-head flex items-center justify-between p-4">
-        <h2>Monitor Users</h2>
+        <h2>{t("title")}</h2>
         <div className="actions flex items-center gap-2">
           <Field preIcon={<SearchIcon />}>
             <Input
               variant="field"
-              placeholder={searchT('placeholder')}
+              placeholder={searchT("placeholder")}
               value={searchValue}
               onChange={handleSearchChange}
               type="search"
@@ -206,7 +205,7 @@ const UsersMonitorTable = ({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  {searchT('noResults')}
+                  {searchT("noResults")}
                 </TableCell>
               </TableRow>
             )}
@@ -247,7 +246,7 @@ const UsersMonitorTable = ({
         </div>
 
         <div className="flex items-center gap-2 per-page">
-          <label className="text-sm">{paginationT('rowsPerPage')}:</label>
+          <label className="text-sm">{paginationT("rowsPerPage")}:</label>
           <Select
             onValueChange={(value) => table.setPageSize(Number(value))}
             defaultValue={table.getState().pagination.pageSize.toString()}
@@ -263,7 +262,7 @@ const UsersMonitorTable = ({
           </Select>
           <p className="text-sm">
             {startRowIndex}-{endRowIndex}
-            {totalItems ? ` ${paginationT('of')} ${totalItems}`: ""}
+            {totalItems ? ` ${paginationT("of")} ${totalItems}` : ""}
           </p>
         </div>
       </div>

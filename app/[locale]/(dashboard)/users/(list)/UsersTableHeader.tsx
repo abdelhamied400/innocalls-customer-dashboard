@@ -6,6 +6,7 @@ import { CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Toggle } from "@/components/ui/toggle";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 interface UsersTableHeaderProps {
   searchValue: string;
@@ -15,29 +16,34 @@ interface UsersTableHeaderProps {
 const UsersTableHeader = ({
   searchValue,
   onSearchChange,
-}: UsersTableHeaderProps) => (
-  <div className="users-table-head flex items-center justify-between p-4">
-    <h2>Users List</h2>
-    <div className="actions flex items-center gap-2">
-      <Field preIcon={<SearchIcon />}>
-        <Input
-          variant="field"
-          placeholder="Search..."
-          value={searchValue}
-          onChange={onSearchChange}
-          type="search"
-        />
-      </Field>
-      <CollapsibleTrigger asChild>
-        <Toggle pressed={true} className="rounded-full">
-          <FilterAltIcon />
-        </Toggle>
-      </CollapsibleTrigger>
-      <Link href="/users/create">
-        <Button>Create new user</Button>
-      </Link>
+}: UsersTableHeaderProps) => {
+  const t = useTranslations("users.list");
+  const commonT = useTranslations("common.search");
+
+  return (
+    <div className="users-table-head flex items-center justify-between p-4">
+      <h2>{t("title")}</h2>
+      <div className="actions flex items-center gap-2">
+        <Field preIcon={<SearchIcon />}>
+          <Input
+            variant="field"
+            placeholder={commonT("placeholder")}
+            value={searchValue}
+            onChange={onSearchChange}
+            type="search"
+          />
+        </Field>
+        <CollapsibleTrigger asChild>
+          <Toggle pressed={true} className="rounded-full">
+            <FilterAltIcon />
+          </Toggle>
+        </CollapsibleTrigger>
+        <Link href="/users/create">
+          <Button>{t("actions.create")}</Button>
+        </Link>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default UsersTableHeader;

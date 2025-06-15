@@ -20,6 +20,9 @@
           "special": "Password must contain at least one special character"
         }
       }
+    },
+    "actions": {
+      "close": "Close"
     }
   },
   "numbers": {
@@ -154,6 +157,57 @@
     }
   },
   "users": {
+    "list": {
+      "title": "Users List",
+      "columns": {
+        "extension": "Extension No.",
+        "name": "Name",
+        "email": "Email",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "enabled": "enabled",
+        "disabled": "disabled",
+        "pending": "pending"
+      },
+      "actions": {
+        "activate": "Activate",
+        "deactivate": "Deactivate",
+        "edit": "Edit User",
+        "delete": "Delete User",
+        "create": "Create new user"
+      },
+      "filters": {
+        "status": "Status",
+        "selectFromList": "Select from the list",
+        "clear": "Clear"
+      },
+      "confirmations": {
+        "areYouSure": "Are you sure?",
+        "enableUser": "you want to enable this user?",
+        "disableUser": "you want to disable this user?",
+        "deleteUser": "You want to delete this user?",
+        "noCancel": "No, Don't Proceed",
+        "yesEnable": "Yes Enable it",
+        "yesDisable": "Yes Disable it",
+        "yesDelete": "Yes, Delete it"
+      },
+      "messages": {
+        "userActivated": "User activated successfully",
+        "userActivatedDesc": "User {name} is now active.",
+        "userDeactivated": "User deactivated successfully",
+        "userDeactivatedDesc": "User {name} is now inactive.",
+        "userDeleted": "User deleted successfully",
+        "userDeletedDesc": "User {name} has been deleted.",
+        "errorActivating": "Error activating user",
+        "errorDeactivating": "Error deactivating user",
+        "errorDeleting": "Error deleting user",
+        "unexpectedError": "An unexpected error occurred.",
+        "actionError": "An error occurred while processing the request.",
+        "deleting": "Deleting..."
+      }
+    },
     "monitor": {
       "title": "Monitor Users",
       "columns": {
@@ -170,6 +224,108 @@
       "onCall": {
         "yes": "yes",
         "no": "no"
+      }
+    },
+    "tabs": {
+      "usersList": "Users List",
+      "monitorUsers": "Monitor Users"
+    },
+    "create": {
+      "title": "Create new user",
+      "description": "Create a new user by filling out the form below.",
+      "form": {
+        "fields": {
+          "name": {
+            "label": "Name",
+            "placeholder": "Enter name..."
+          },
+          "email": {
+            "label": "Email",
+            "placeholder": "Enter email..."
+          },
+          "ext": {
+            "label": "Extension",
+            "placeholder": "Enter extension..."
+          },
+          "pin": {
+            "label": "PIN",
+            "placeholder": "Enter PIN..."
+          },
+          "inbound": {
+            "label": "Inbound Calls",
+            "enable": "Enable",
+            "disable": "Disable"
+          },
+          "outbound": {
+            "label": "Outbound Calls",
+            "enable": "Enable",
+            "disable": "Disable"
+          },
+          "voicemail": {
+            "label": "Voicemail",
+            "enable": "Enable",
+            "disable": "Disable"
+          }
+        },
+        "validation": {
+          "name": {
+            "required": "Name is required",
+            "minLength": "Name must be at least {min} characters long",
+            "maxLength": "Name must be no more than {max} characters long",
+            "invalid": "Invalid name. Only English alphanumeric, punctuation, and whitespace characters are allowed"
+          },
+          "email": {
+            "required": "Email is required",
+            "invalid": "Please enter a valid email address"
+          },
+          "ext": {
+            "minLength": "Extension must be at least 3 digits",
+            "maxLength": "Extension must be no more than 4 digits"
+          },
+          "pin": {
+            "minLength": "PIN must be at least {min} digits long",
+            "maxLength": "PIN must be exactly {min} digits long",
+            "invalid": "PIN can only contain numbers"
+          },
+          "inbound": {
+            "invalid": "Invalid selection"
+          },
+          "outbound": {
+            "invalid": "Invalid selection"
+          },
+          "voicemail": {
+            "invalid": "Invalid selection"
+          }
+        }
+      },
+      "messages": {
+        "success": "User Created",
+        "successDescription": "User {name} has been created successfully",
+        "error": "Error",
+        "unknownError": "An unknown error occurred"
+      },
+      "actions": {
+        "submit": "Create new user"
+      }
+    },
+    "update": {
+      "title": "Edit User",
+      "description": "Edit the user by filling out the form below.",
+      "form": {
+        "validation": {
+          "extensionId": {
+            "invalid": "Extension ID must be a valid number"
+          }
+        }
+      },
+      "messages": {
+        "success": "User edited successfully",
+        "successDescription": "User {name} has been edited successfully.",
+        "error": "Error editing user",
+        "unknownError": "An unknown error occurred."
+      },
+      "actions": {
+        "submit": "Edit user"
       }
     }
   }

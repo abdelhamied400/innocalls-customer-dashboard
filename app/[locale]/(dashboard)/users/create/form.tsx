@@ -29,6 +29,7 @@ import usersService from "@/services/users.service";
 import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 type CreateUserFormProps = {
   ext: number;
@@ -39,9 +40,11 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const { toast } = useToast();
   const closeSheetRef = useRef<HTMLButtonElement>(null);
+  const t = useTranslations("users.create");
+  const commonT = useTranslations("common");
 
   const form = useForm<CreateUserSchema>({
-    resolver: zodResolver(createUserSchema),
+    resolver: zodResolver(createUserSchema(t)),
     defaultValues: {
       name: "",
       email: "",
@@ -57,8 +60,8 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
     try {
       const res = await usersService.createUser(data);
       toast({
-        title: "User created successfully",
-        description: `User ${res.name} has been created successfully.`,
+        title: t("messages.success"),
+        description: t("messages.successDescription", { name: res.name }),
       });
       closeSheetRef.current?.click(); // Close the sheet
       queryClient.invalidateQueries({ queryKey: ["users"] }); // Invalidate the users query to refresh the list
@@ -66,18 +69,16 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
       if (isAxiosError(error)) {
         toast({
           variant: "destructive",
-          title: "Error creating user",
+          title: t("messages.error"),
           description:
-            error.response?.data?.message || "An unknown error occurred.",
+            error.response?.data?.message || t("messages.unknownError"),
         });
       } else {
         toast({
           variant: "destructive",
-          title: "Error creating user",
+          title: t("messages.error"),
           description:
-            error instanceof Error
-              ? error.message
-              : "An unknown error occurred.",
+            error instanceof Error ? error.message : t("messages.unknownError"),
         });
       }
     }
@@ -85,7 +86,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
 
   return (
     <Stepper
-      steps={["Create new user"]}
+      steps={[t("title")]}
       currentStep={currentStep}
       onStepChange={setCurrentStep}
       className="h-full flex flex-col"
@@ -97,13 +98,13 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
 
         <div className="flex flex-1 justify-center gap-2">
           <StepperHeaderTitle idx={0}>
-            <p>Create new user</p>
+            <p>{t("title")}</p>
           </StepperHeaderTitle>
         </div>
         <Button size="icon" asChild variant="unstyled">
           <SheetClose ref={closeSheetRef}>
             <X className="h-4 w-4" />
-            <span className="sr-only">Close</span>
+            <span className="sr-only">{commonT("actions.close")}</span>
           </SheetClose>
         </Button>
       </StepperHeader>
@@ -122,7 +123,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                   <FormItem>
                     <FormControl>
                       <Field
-                        label="Name"
+                        label={t("form.fields.name.label")}
                         error={
                           form.formState.errors.name?.message?.toString() || ""
                         }
@@ -131,7 +132,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                         <Input
                           id="name"
                           variant="field"
-                          placeholder="Enter name..."
+                          placeholder={t("form.fields.name.placeholder")}
                           {...field}
                         />
                       </Field>
@@ -146,7 +147,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                   <FormItem>
                     <FormControl>
                       <Field
-                        label="Email"
+                        label={t("form.fields.email.label")}
                         error={
                           form.formState.errors.email?.message?.toString() || ""
                         }
@@ -155,7 +156,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                         <Input
                           id="email"
                           variant="field"
-                          placeholder="Enter email..."
+                          placeholder={t("form.fields.email.placeholder")}
                           type="email"
                           {...field}
                         />
@@ -171,7 +172,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                   <FormItem>
                     <FormControl>
                       <Field
-                        label="Extension"
+                        label={t("form.fields.ext.label")}
                         error={
                           form.formState.errors.ext?.message?.toString() || ""
                         }
@@ -180,7 +181,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                         <Input
                           id="ext"
                           variant="field"
-                          placeholder="Enter extension..."
+                          placeholder={t("form.fields.ext.placeholder")}
                           {...field}
                           onChange={(e) => {
                             const value = e.target.value;
@@ -202,7 +203,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                   <FormItem>
                     <FormControl>
                       <Field
-                        label="PIN"
+                        label={t("form.fields.pin.label")}
                         error={
                           form.formState.errors.pin?.message?.toString() || ""
                         }
@@ -211,7 +212,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                         <Input
                           id="pin"
                           variant="field"
-                          placeholder="Enter PIN..."
+                          placeholder={t("form.fields.pin.placeholder")}
                           type="password"
                           {...field}
                         />
@@ -227,7 +228,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                   <FormItem>
                     <FormControl>
                       <RadioGroupField
-                        label="Inbound Calls"
+                        label={t("form.fields.inbound.label")}
                         htmlFor="inbound"
                         error={form.formState.errors.inbound?.message?.toString()}
                       >
@@ -242,9 +243,13 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                         >
                           <div className="flex items-center space-x-4">
                             <RadioGroupItem value="1" id="inbound-enable" />
-                            <label htmlFor="inbound-enable">Enable</label>
+                            <label htmlFor="inbound-enable">
+                              {t("form.fields.inbound.enable")}
+                            </label>
                             <RadioGroupItem value="0" id="inbound-disable" />
-                            <label htmlFor="inbound-disable">Disable</label>
+                            <label htmlFor="inbound-disable">
+                              {t("form.fields.inbound.disable")}
+                            </label>
                           </div>
                         </RadioGroup>
                       </RadioGroupField>
@@ -259,7 +264,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                   <FormItem>
                     <FormControl>
                       <RadioGroupField
-                        label="Outbound Calls"
+                        label={t("form.fields.outbound.label")}
                         htmlFor="outbound"
                         error={form.formState.errors.outbound?.message?.toString()}
                       >
@@ -274,9 +279,13 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                         >
                           <div className="flex items-center space-x-4">
                             <RadioGroupItem value="1" id="outbound-enable" />
-                            <label htmlFor="outbound-enable">Enable</label>
+                            <label htmlFor="outbound-enable">
+                              {t("form.fields.outbound.enable")}
+                            </label>
                             <RadioGroupItem value="0" id="outbound-disable" />
-                            <label htmlFor="outbound-disable">Disable</label>
+                            <label htmlFor="outbound-disable">
+                              {t("form.fields.outbound.disable")}
+                            </label>
                           </div>
                         </RadioGroup>
                       </RadioGroupField>
@@ -291,7 +300,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                   <FormItem>
                     <FormControl>
                       <RadioGroupField
-                        label="Voicemail"
+                        label={t("form.fields.voicemail.label")}
                         htmlFor="voicemail"
                         error={form.formState.errors.voicemail?.message?.toString()}
                       >
@@ -306,9 +315,13 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                         >
                           <div className="flex items-center space-x-4">
                             <RadioGroupItem value="1" id="voicemail-enable" />
-                            <label htmlFor="voicemail-enable">Enable</label>
+                            <label htmlFor="voicemail-enable">
+                              {t("form.fields.voicemail.enable")}
+                            </label>
                             <RadioGroupItem value="0" id="voicemail-disable" />
-                            <label htmlFor="voicemail-disable">Disable</label>
+                            <label htmlFor="voicemail-disable">
+                              {t("form.fields.voicemail.disable")}
+                            </label>
                           </div>
                         </RadioGroup>
                       </RadioGroupField>
@@ -317,7 +330,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                 )}
               />
 
-              <Button type="submit">Create new user</Button>
+              <Button type="submit">{t("actions.submit")}</Button>
             </StepperStep>
           </form>
         </Form>

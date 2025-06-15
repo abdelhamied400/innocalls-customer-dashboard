@@ -5,17 +5,15 @@ import TableSkeleton from "@/components/ui/table-skeleton";
 import { SearchIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 
-
 const UsersLoading = () => {
-
-    const t= useTranslations('users.monitor');
-    const searchT = useTranslations('common.search');
+  const t = useTranslations("users.monitor");
+  const searchT = useTranslations("common.search");
 
   return (
     <div className="users-loading h-full">
       <div className="h-full flex flex-col">
         <div className="number-table-head flex items-center justify-between p-4">
-          <h2>{t('title')}</h2>
+          <h2>{t("title")}</h2>
           <div className="searchbar">
             <Field preIcon={<SearchIcon />}>
               <Input

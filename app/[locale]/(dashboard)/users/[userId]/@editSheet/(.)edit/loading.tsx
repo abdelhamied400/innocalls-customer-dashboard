@@ -8,12 +8,16 @@ import Stepper, {
   StepperSteps,
 } from "@/components/ui/stepper";
 import { ChevronLeftIcon, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 const EditUserLoading = () => {
+  const t = useTranslations("users.update");
+  const commonT = useTranslations("common");
+
   return (
     <div className="edit-user-loading">
       <Stepper
-        steps={["Edit new user"]}
+        steps={[t("title")]}
         currentStep={0}
         className="h-full flex flex-col"
       >
@@ -30,7 +34,7 @@ const EditUserLoading = () => {
           <Button size="icon" asChild variant="unstyled">
             <SheetClose>
               <X className="h-4 w-4" />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">{commonT("actions.close")}</span>
             </SheetClose>
           </Button>
         </StepperHeader>

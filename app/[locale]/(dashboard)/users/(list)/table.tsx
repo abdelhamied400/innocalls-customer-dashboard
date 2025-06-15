@@ -21,6 +21,7 @@ import UsersTableHeader from "./UsersTableHeader";
 import UsersTableFilters from "./UsersTableFilters";
 import UsersTableBody from "./UsersTableBody";
 import UsersTablePagination from "./UsersTablePagination";
+import { useTranslations } from "next-intl";
 
 interface UsersTableProps {
   initialData: User[];
@@ -39,6 +40,7 @@ const UsersTable = ({
   initialPagination,
 }: UsersTableProps) => {
   const router = useRouter();
+  const t = useTranslations("users.list");
 
   // sorting, filters, and pagination state
   const [sorting, setSorting] = useState<SortingState>(initialSorting);
@@ -77,7 +79,7 @@ const UsersTable = ({
   // use data and initials to set up the table
   const table = useReactTable({
     data,
-    columns,
+    columns: columns(t),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,

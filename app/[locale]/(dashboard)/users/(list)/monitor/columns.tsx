@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -17,7 +18,9 @@ export type MonitorUser = {
   ua: string;
 };
 
-export const columns= (t: any): ColumnDef<MonitorUser>[] => [
+export const columns = (
+  t: ReturnType<typeof useTranslations>
+): ColumnDef<MonitorUser>[] => [
   {
     accessorKey: "ext",
     header: ({ column }: { column: any }) => (
@@ -25,7 +28,7 @@ export const columns= (t: any): ColumnDef<MonitorUser>[] => [
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-         {t("columns.extension")}
+        {t("columns.extension")}
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
@@ -37,26 +40,23 @@ export const columns= (t: any): ColumnDef<MonitorUser>[] => [
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-      {t("columns.name")}
+        {t("columns.name")}
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
   },
   {
     accessorKey: "ip",
-    header: t("columns.ip")  },
+    header: t("columns.ip"),
+  },
   {
     accessorKey: "status",
-     header: t("columns.status"),
+    header: t("columns.status"),
     cell: ({ row }) => (
       <Badge
         variant={row.getValue("status") === "online" ? "success" : "muted"}
       >
-        {row.getValue("status") === "online" 
-          ? t("status.online")
-          : t("status.offline")
-        }
-
+        {t(`status.${row.getValue("status")}`)}
       </Badge>
     ),
   },
@@ -68,10 +68,7 @@ export const columns= (t: any): ColumnDef<MonitorUser>[] => [
         variant={row.getValue("on_call") ? "default" : "muted"}
         className="capitalize"
       >
-         {row.getValue("on_call") 
-          ? t("onCall.yes") 
-          : t("onCall.no")
-        }
+        {row.getValue("on_call") ? t("onCall.yes") : t("onCall.no")}
       </Badge>
     ),
   },

@@ -20,6 +20,9 @@
           "special": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل"
         }
       }
+    },
+    "actions": {
+      "close": "إغلاق"
     }
   },
   "numbers": {
@@ -154,10 +157,61 @@
     }
   },
   "users": {
+    "list": {
+      "title": "قائمة المستخدمين",
+      "columns": {
+        "extension": "رقم المستخدم",
+        "name": "الاسم",
+        "email": "البريد الإلكتروني",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "status": {
+        "enabled": "مفعل",
+        "disabled": "معطل",
+        "pending": "قيد الانتظار"
+      },
+      "actions": {
+        "activate": "تفعيل",
+        "deactivate": "إلغاء التفعيل",
+        "edit": "تعديل المستخدم",
+        "delete": "حذف المستخدم",
+        "create": "إنشاء مستخدم جديد"
+      },
+      "filters": {
+        "status": "الحالة",
+        "selectFromList": "اختر من القائمة",
+        "clear": "مسح"
+      },
+      "confirmations": {
+        "areYouSure": "هل أنت متأكد؟",
+        "enableUser": "تريد تفعيل هذا المستخدم؟",
+        "disableUser": "تريد تعطيل هذا المستخدم؟",
+        "deleteUser": "تريد حذف هذا المستخدم؟",
+        "noCancel": "لا، لا تتابع",
+        "yesEnable": "نعم فعله",
+        "yesDisable": "نعم عطله",
+        "yesDelete": "نعم، احذفه"
+      },
+      "messages": {
+        "userActivated": "تم تفعيل المستخدم بنجاح",
+        "userActivatedDesc": "المستخدم {name} نشط الآن.",
+        "userDeactivated": "تم تعطيل المستخدم بنجاح",
+        "userDeactivatedDesc": "المستخدم {name} غير نشط الآن.",
+        "userDeleted": "تم حذف المستخدم بنجاح",
+        "userDeletedDesc": "تم حذف المستخدم {name}.",
+        "errorActivating": "خطأ في تفعيل المستخدم",
+        "errorDeactivating": "خطأ في تعطيل المستخدم",
+        "errorDeleting": "خطأ في حذف المستخدم",
+        "unexpectedError": "حدث خطأ غير متوقع.",
+        "actionError": "حدث خطأ أثناء تنفيذ الطلب .",
+        "deleting": "جاري الحذف..."
+      }
+    },
     "monitor": {
       "title": "متابعة المستخدمين",
       "columns": {
-        "extension": "رقم الوكيل",
+        "extension": "رقم المستخدم",
         "name": "الاسم",
         "ip": "عنوان IP",
         "status": "الحالة",
@@ -170,6 +224,108 @@
       "onCall": {
         "yes": "نعم",
         "no": "لا"
+      }
+    },
+    "tabs": {
+      "usersList": "قائمة المستخدمين",
+      "monitorUsers": "  متابعة المستخدمين"
+    },
+    "create": {
+      "title": "إنشاء مستخدم جديد",
+      "description": "إنشاء مستخدم جديد عن طريق ملء النموذج أدناه.",
+      "form": {
+        "fields": {
+          "name": {
+            "label": "الاسم",
+            "placeholder": "أدخل الاسم..."
+          },
+          "email": {
+            "label": "البريد الإلكتروني",
+            "placeholder": "أدخل البريد الإلكتروني..."
+          },
+          "ext": {
+            "label": "رقم التحويلة",
+            "placeholder": "أدخل رقم التحويلة..."
+          },
+          "pin": {
+            "label": "الرقم السري",
+            "placeholder": "أدخل الرقم السري..."
+          },
+          "inbound": {
+            "label": "المكالمات الواردة",
+            "enable": "تفعيل",
+            "disable": "إلغاء تفعيل"
+          },
+          "outbound": {
+            "label": "المكالمات الصادرة",
+            "enable": "تفعيل",
+            "disable": "إلغاء تفعيل"
+          },
+          "voicemail": {
+            "label": "البريد الصوتي",
+            "enable": "تفعيل",
+            "disable": "إلغاء تفعيل"
+          }
+        },
+        "validation": {
+          "name": {
+            "required": "الاسم مطلوب",
+            "minLength": "يجب أن يكون الاسم على الأقل {min} أحرف",
+            "maxLength": "يجب ألا يزيد الاسم عن {max} حرف",
+            "invalid": "تنسيق الاسم غير صحيح. يُسمح فقط بالأحرف الإنجليزية والأرقام والرموز الترقيمية والمسافات"
+          },
+          "email": {
+            "required": "البريد الإلكتروني مطلوب",
+            "invalid": "يرجى إدخال عنوان بريد إلكتروني صالح"
+          },
+          "ext": {
+            "minLength": "يجب أن يكون رقم التحويلة على الأقل 3 أرقام",
+            "maxLength": "يجب ألا يزيد رقم التحويلة عن 4 أرقام"
+          },
+          "pin": {
+            "minLength": "يجب أن يكون الرقم السري على الأقل {min} أرقام",
+            "maxLength": "يجب أن يكون الرقم السري {min} أرقام بالضبط",
+            "invalid": "يمكن أن يحتوي الرقم السري على الأرقام فقط"
+          },
+          "inbound": {
+            "invalid": "اختيار غير صالح"
+          },
+          "outbound": {
+            "invalid": "اختيار غير صالح"
+          },
+          "voicemail": {
+            "invalid": "اختيار غير صالح"
+          }
+        }
+      },
+      "messages": {
+        "success": "تم إنشاء المستخدم",
+        "successDescription": "تم إنشاء المستخدم {name} بنجاح",
+        "error": "خطأ",
+        "unknownError": "حدث خطأ غير معروف"
+      },
+      "actions": {
+        "submit": "إنشاء مستخدم جديد"
+      }
+    },
+    "update": {
+      "title": "تعديل المستخدم",
+      "description": "تعديل بيانات المستخدم عن طريق ملء النموذج أدناه.",
+      "form": {
+        "validation": {
+          "extensionId": {
+            "invalid": "معرف التحويلة يجب أن يكون رقماً صالحاً"
+          }
+        }
+      },
+      "messages": {
+        "success": "تم تعديل المستخدم بنجاح",
+        "successDescription": "تم تعديل المستخدم {name} بنجاح.",
+        "error": "خطأ في تعديل المستخدم",
+        "unknownError": "حدث خطأ غير معروف."
+      },
+      "actions": {
+        "submit": "تعديل المستخدم"
       }
     }
   }

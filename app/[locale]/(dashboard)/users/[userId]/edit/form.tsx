@@ -28,6 +28,7 @@ import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 import { User } from "../../(list)/columns";
+import { useTranslations } from "next-intl";
 
 type EditUserFormProps = {
   initialUser: User;
@@ -37,9 +38,11 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const { toast } = useToast();
   const closeSheetRef = useRef<HTMLButtonElement>(null);
+  const t = useTranslations("users");
+  const commonT = useTranslations("common");
 
   const form = useForm<EditUserSchema>({
-    resolver: zodResolver(editUserSchema),
+    resolver: zodResolver(editUserSchema(t)),
     defaultValues: {
       ...initialUser,
       extensionId: parseInt(initialUser.id, 10),
@@ -53,8 +56,10 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
         ...data,
       });
       toast({
-        title: "User edited successfully",
-        description: `User ${res.name} has been edited successfully.`,
+        title: t("update.messages.success"),
+        description: t("update.messages.successDescription", {
+          name: res.name,
+        }),
       });
       closeSheetRef.current?.click(); // Close the sheet
       queryClient.invalidateQueries({ queryKey: ["users"] }); // Invalidate the users query to refresh the list
@@ -62,18 +67,18 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
       if (isAxiosError(error)) {
         toast({
           variant: "destructive",
-          title: "Error editing user",
+          title: t("update.messages.error"),
           description:
-            error.response?.data?.message || "An unknown error occurred.",
+            error.response?.data?.message || t("update.messages.unknownError"),
         });
       } else {
         toast({
           variant: "destructive",
-          title: "Error editing user",
+          title: t("update.messages.error"),
           description:
             error instanceof Error
               ? error.message
-              : "An unknown error occurred.",
+              : t("update.messages.unknownError"),
         });
       }
     }
@@ -81,7 +86,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
 
   return (
     <Stepper
-      steps={["Edit new user"]}
+      steps={[t("update.title")]}
       currentStep={currentStep}
       onStepChange={setCurrentStep}
       className="h-full flex flex-col"
@@ -93,13 +98,13 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
 
         <div className="flex flex-1 justify-center gap-2">
           <StepperHeaderTitle idx={0}>
-            <p>Edit new user</p>
+            <p>{t("update.title")}</p>
           </StepperHeaderTitle>
         </div>
         <Button size="icon" asChild variant="unstyled">
           <SheetClose ref={closeSheetRef}>
             <X className="h-4 w-4" />
-            <span className="sr-only">Close</span>
+            <span className="sr-only">{commonT("actions.close")}</span>
           </SheetClose>
         </Button>
       </StepperHeader>
@@ -118,7 +123,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                   <FormItem>
                     <FormControl>
                       <Field
-                        label="Name"
+                        label={t("create.form.fields.name.label")}
                         error={
                           form.formState.errors.name?.message?.toString() || ""
                         }
@@ -127,7 +132,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                         <Input
                           id="name"
                           variant="field"
-                          placeholder="Enter name..."
+                          placeholder={t("create.form.fields.name.placeholder")}
                           {...field}
                         />
                       </Field>
@@ -142,7 +147,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                   <FormItem>
                     <FormControl>
                       <Field
-                        label="Email"
+                        label={t("create.form.fields.email.label")}
                         error={
                           form.formState.errors.email?.message?.toString() || ""
                         }
@@ -151,7 +156,9 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                         <Input
                           id="email"
                           variant="field"
-                          placeholder="Enter email..."
+                          placeholder={t(
+                            "create.form.fields.email.placeholder"
+                          )}
                           type="email"
                           {...field}
                         />
@@ -167,7 +174,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                   <FormItem>
                     <FormControl>
                       <Field
-                        label="Extension"
+                        label={t("create.form.fields.ext.label")}
                         error={
                           form.formState.errors.ext?.message?.toString() || ""
                         }
@@ -176,7 +183,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                         <Input
                           id="ext"
                           variant="field"
-                          placeholder="Enter extension..."
+                          placeholder={t("create.form.fields.ext.placeholder")}
                           disabled
                           {...field}
                           onChange={(e) => {
@@ -199,7 +206,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                   <FormItem>
                     <FormControl>
                       <Field
-                        label="PIN"
+                        label={t("create.form.fields.pin.label")}
                         error={
                           form.formState.errors.pin?.message?.toString() || ""
                         }
@@ -208,7 +215,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                         <Input
                           id="pin"
                           variant="field"
-                          placeholder="Enter PIN..."
+                          placeholder={t("create.form.fields.pin.placeholder")}
                           type="password"
                           {...field}
                         />
@@ -224,7 +231,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                   <FormItem>
                     <FormControl>
                       <RadioGroupField
-                        label="Inbound Calls"
+                        label={t("create.form.fields.inbound.label")}
                         htmlFor="inbound"
                         error={form.formState.errors.inbound?.message?.toString()}
                       >
@@ -239,9 +246,14 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                         >
                           <div className="flex items-center space-x-4">
                             <RadioGroupItem value="1" id="inbound-enable" />
-                            <label htmlFor="inbound-enable">Enable</label>
+                            <label htmlFor="inbound-enable">
+                              {" "}
+                              {t("create.form.fields.inbound.enable")}
+                            </label>
                             <RadioGroupItem value="0" id="inbound-disable" />
-                            <label htmlFor="inbound-disable">Disable</label>
+                            <label htmlFor="inbound-disable">
+                              {t("create.form.fields.inbound.disable")}
+                            </label>
                           </div>
                         </RadioGroup>
                       </RadioGroupField>
@@ -256,7 +268,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                   <FormItem>
                     <FormControl>
                       <RadioGroupField
-                        label="Outbound Calls"
+                        label={t("create.form.fields.outbound.label")}
                         htmlFor="outbound"
                         error={form.formState.errors.outbound?.message?.toString()}
                       >
@@ -271,9 +283,15 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                         >
                           <div className="flex items-center space-x-4">
                             <RadioGroupItem value="1" id="outbound-enable" />
-                            <label htmlFor="outbound-enable">Enable</label>
+                            <label htmlFor="outbound-enable">
+                              {" "}
+                              {t("create.form.fields.outbound.enable")}
+                            </label>
                             <RadioGroupItem value="0" id="outbound-disable" />
-                            <label htmlFor="outbound-disable">Disable</label>
+                            <label htmlFor="outbound-disable">
+                              {" "}
+                              {t("create.form.fields.outbound.disable")}
+                            </label>
                           </div>
                         </RadioGroup>
                       </RadioGroupField>
@@ -288,7 +306,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                   <FormItem>
                     <FormControl>
                       <RadioGroupField
-                        label="Voicemail"
+                        label={t("create.form.fields.voicemail.label")}
                         htmlFor="voicemail"
                         error={form.formState.errors.voicemail?.message?.toString()}
                       >
@@ -303,9 +321,13 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                         >
                           <div className="flex items-center space-x-4">
                             <RadioGroupItem value="1" id="voicemail-enable" />
-                            <label htmlFor="voicemail-enable">Enable</label>
+                            <label htmlFor="voicemail-enable">
+                              {t("create.form.fields.voicemail.enable")}
+                            </label>
                             <RadioGroupItem value="0" id="voicemail-disable" />
-                            <label htmlFor="voicemail-disable">Disable</label>
+                            <label htmlFor="voicemail-disable">
+                              {t("create.form.fields.voicemail.disable")}
+                            </label>
                           </div>
                         </RadioGroup>
                       </RadioGroupField>
@@ -315,7 +337,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
               />
 
               <Button type="submit" disabled={form.formState.isSubmitting}>
-                Edit new user
+                {t("update.actions.submit")}
               </Button>
             </StepperStep>
           </form>
