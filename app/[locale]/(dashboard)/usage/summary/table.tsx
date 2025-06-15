@@ -7,6 +7,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  PaginationState,
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
@@ -19,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Pagination,
@@ -37,7 +38,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Field from "@/components/ui/field";
-import { CalendarIcon, ChevronDownIcon, SearchIcon } from "lucide-react";
+import { CalendarIcon, SearchIcon } from "lucide-react";
 import { createColumns } from "./columns";
 import { useQuery } from "@tanstack/react-query";
 import usageService, { UsageSummaryFilters } from "@/services/usage.service";
@@ -46,17 +47,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Toggle } from "@/components/ui/toggle";
 import { FilterAltOutlined } from "@mui/icons-material";
-import { Button } from "@/components/ui/button";
-import FilterDialog from "@/components/FilterDialog";
 import DatePicker from "@/components/ui/date-picker";
-import { DataTableSkeleton } from "@/components/ui/data-table";
 import TableSkeleton from "@/components/ui/table-skeleton";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
@@ -64,8 +57,18 @@ import { isValidDateRange } from "@/lib/date";
 import { useToast } from "@/hooks/use-toast";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { useFilters } from "@/hooks/use-filters";
+import { format } from "date-fns";
+import { isAxiosError } from "axios";
 
-interface UsageSummaryTableProps {}
+interface UsageSummaryTableProps {
+  initialPagination?: {
+    pageIndex: number;
+    pageSize: number;
+  };
+  initialFilters?: UsageSummaryFilters;
+  initialSorting?: SortingState;
+}
 
 // 30 days ago
 const fromDate = new Date();
@@ -73,24 +76,36 @@ fromDate.setDate(fromDate.getDate() - 30);
 // today
 const toDate = new Date();
 
-const UsageSummaryTable = ({}: UsageSummaryTableProps) => {
+const defaultFilters = {
+  search: "",
+  fromDate,
+  toDate,
+  showBy: [],
+};
+
+const UsageSummaryTable = ({
+  initialFilters = defaultFilters,
+  initialSorting = [],
+}: UsageSummaryTableProps) => {
   const { toast } = useToast();
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const { updateFilters } = useFilters();
+
   const [filters, setFilters] = useState<UsageSummaryFilters>({
-    search: "",
-    fromDate,
-    toDate,
-    showBy: [],
+    ...defaultFilters,
+    ...initialFilters,
   });
 
   const {
     data = { columns: [], list: [] },
     refetch,
     isFetching,
+    error,
+    isError,
   } = useQuery({
-    queryKey: ["usageSummary", columnFilters],
+    queryKey: ["usageSummary"],
     queryFn: async () => usageService.fetchUsageSummary(filters),
+    placeholderData: { columns: [], list: [] },
+    retry: 0,
   });
 
   const columns = createColumns(data.columns);
@@ -100,30 +115,24 @@ const UsageSummaryTable = ({}: UsageSummaryTableProps) => {
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
-    state: {
-      sorting,
-      columnFilters,
-    },
+    state: {},
   });
 
-  const totalItems = table.getFilteredRowModel().rows.length;
-  const startRowIndex =
-    table.getState().pagination.pageIndex *
-      table.getState().pagination.pageSize +
-    1;
-  const endRowIndex = Math.min(
-    (table.getState().pagination.pageIndex + 1) *
-      table.getState().pagination.pageSize,
-    totalItems
-  );
-
-  const handlePerPageChange = (value: string) => {
-    table.setPageSize(Number(value));
-  };
+  //? on any change in pagination, sorting, or filters, update the URL
+  useEffect(() => {
+    updateFilters({
+      ...filters,
+      fromDate: filters.fromDate
+        ? format(filters.fromDate, "yyyy-MM-dd")
+        : undefined,
+      toDate: filters.toDate ? format(filters.toDate, "yyyy-MM-dd") : undefined,
+      showBy: Array.isArray(filters.showBy)
+        ? filters.showBy.join(",")
+        : filters.showBy,
+    });
+  }, [filters, updateFilters]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -144,15 +153,32 @@ const UsageSummaryTable = ({}: UsageSummaryTableProps) => {
         variant: "destructive",
       });
     });
+    if (!isValid) return;
 
     setTimeout(() => {
       refetch();
     }, 0);
   };
 
-  const pages = table.getPageCount()
-    ? Array.from({ length: table.getPageCount() }, (_, i) => i + 1)
-    : [];
+  useEffect(() => {
+    if (isError) {
+      let message = "An unexpected error occurred";
+      if (isAxiosError(error)) {
+        message = error?.response?.data.message;
+      } else {
+        message = error?.message;
+      }
+      toast({
+        title: "Error fetching data",
+        description: message,
+        variant: "destructive",
+      });
+      setFilters(defaultFilters);
+      setTimeout(() => {
+        refetch();
+      }, 0);
+    }
+  }, [isError, error, toast]);
 
   return (
     <div className="h-full flex flex-col">
@@ -310,15 +336,13 @@ const UsageSummaryTable = ({}: UsageSummaryTableProps) => {
         </CollapsibleContent>
       </Collapsible>
 
-      {isFetching && (
-        <TableSkeleton cols={columns.length} rows={10} className="h-full" />
-      )}
+      {isFetching && <TableSkeleton cols={6} rows={10} className="h-full" />}
       {!isFetching && !data.list.length && (
         <div className="flex items-center justify-center h-full">
           <p className="text-gray-500">No data available.</p>
         </div>
       )}
-      {!isFetching && data.list.length && (
+      {!isFetching && data.list.length > 0 && (
         <div className="flex-1 overflow-auto">
           <Table className="min-h-full w-full">
             <TableHeader className="bg-gray-100 sticky top-0 z-10">
@@ -370,64 +394,6 @@ const UsageSummaryTable = ({}: UsageSummaryTableProps) => {
           </Table>
         </div>
       )}
-      <div className="flex justify-between items-center gap-2 p-4">
-        <div className="pagination">
-          <Pagination className="justify-normal">
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={() => {
-                    table.previousPage();
-                  }}
-                  disabled={!table.getCanPreviousPage()}
-                />
-              </PaginationItem>
-
-              {pages.map((page, idx) => (
-                <PaginationItem key={`page-${page}, ${idx}`}>
-                  <PaginationButton
-                    isActive={
-                      table.getState().pagination.pageIndex + 1 === page
-                    }
-                    onClick={() => table.setPageIndex(page - 1)}
-                  >
-                    {page}
-                  </PaginationButton>
-                </PaginationItem>
-              ))}
-              <PaginationItem>
-                <PaginationNext
-                  onClick={() => {
-                    table.nextPage();
-                  }}
-                  disabled={!table.getCanNextPage()}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
-
-        <div className="flex items-center gap-2 per-page">
-          <label className="text-sm">Rows per page:</label>
-          <Select
-            onValueChange={handlePerPageChange}
-            defaultValue={table.getState().pagination.pageSize.toString()}
-          >
-            <SelectTrigger className="w-max">
-              <SelectValue placeholder="" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="20">20</SelectItem>
-              <SelectItem value="30">30</SelectItem>
-            </SelectContent>
-          </Select>
-          <p className="text-sm">
-            {startRowIndex}-{endRowIndex}
-            {totalItems ? ` of ${totalItems}` : ""}
-          </p>
-        </div>
-      </div>
     </div>
   );
 };

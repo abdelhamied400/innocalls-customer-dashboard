@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  ColumnFiltersState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
@@ -38,7 +37,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import Field from "@/components/ui/field";
-import { CalendarIcon, ChevronDownIcon, SearchIcon } from "lucide-react";
+import { CalendarIcon, SearchIcon } from "lucide-react";
 import { createColumns } from "./columns";
 import { useQuery } from "@tanstack/react-query";
 import usageService, { UsageDetailedFilters } from "@/services/usage.service";
@@ -47,17 +46,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Toggle } from "@/components/ui/toggle";
 import { FilterAltOutlined } from "@mui/icons-material";
-import { Button } from "@/components/ui/button";
-import FilterDialog from "@/components/FilterDialog";
 import DatePicker from "@/components/ui/date-picker";
-import { DataTableSkeleton } from "@/components/ui/data-table";
 import TableSkeleton from "@/components/ui/table-skeleton";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
@@ -66,8 +57,6 @@ import { useToast } from "@/hooks/use-toast";
 import useVocabStore from "@/store/vocab.slice";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Paginated } from "@/types/shared/paginated";
-import { useRouter } from "next/navigation";
 import { useFilters } from "@/hooks/use-filters";
 import { format } from "date-fns";
 import { isAxiosError } from "axios";
@@ -105,7 +94,6 @@ const UsageDetailedTable = ({
   },
 }: UsageDetailedTableProps) => {
   const { toast } = useToast();
-  const router = useRouter();
   const { updateFilters } = useFilters();
   const { packages, accounts } = useVocabStore();
 
@@ -235,7 +223,7 @@ const UsageDetailedTable = ({
         refetch();
       }, 0);
     }
-  }, [isError, error, toast, router]);
+  }, [isError, error, toast]);
 
   return (
     <div className="h-full flex flex-col">

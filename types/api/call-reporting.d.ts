@@ -1,3 +1,5 @@
+import { Extension } from "./extension";
+
 type CallMember = {
   name: string;
   number: string;
@@ -19,9 +21,14 @@ export type Call = {
   };
 };
 
+type ExtensionOption = {
+  label: string;
+  value: string;
+};
+
 export type CallReportingFilters = {
-  sourceExtensions?: string;
-  destinationExtensions?: string;
+  sourceExtensions?: string | ExtensionOption[];
+  destinationExtensions?: string | ExtensionOption[];
   fromDate?: Date;
   toDate?: Date;
   callStatuses?: string;

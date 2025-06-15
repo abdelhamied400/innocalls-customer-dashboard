@@ -24,6 +24,16 @@ export default {
       toDate: filters?.toDate
         ? format(filters.toDate, "yyyy-MM-dd")
         : undefined,
+      sourceExtensions: filters?.sourceExtensions
+        ? Array.isArray(filters.sourceExtensions)
+          ? filters.sourceExtensions.map((ext) => ext.value).join(",")
+          : filters.sourceExtensions
+        : undefined,
+      destinationExtensions: filters?.destinationExtensions
+        ? Array.isArray(filters.destinationExtensions)
+          ? filters.destinationExtensions.map((ext) => ext.value).join(",")
+          : filters.destinationExtensions
+        : undefined,
     });
     const res = await api.get(`/cdr/user/report?${queryString}`);
     return res.data;

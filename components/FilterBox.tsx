@@ -7,8 +7,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ChevronDownIcon } from "lucide-react";
 import { Badge } from "./ui/badge";
+import { cn } from "@/lib/utils";
 
 type FilterBoxProps = PropsWithChildren<{
+  className?: string;
   triggerLabel?: string;
   label?: string;
   onReset?: () => void;
@@ -16,6 +18,7 @@ type FilterBoxProps = PropsWithChildren<{
   numberOfFilters?: number;
 }>;
 export const FilterBox = ({
+  className = "",
   triggerLabel = "Filter",
   children,
   label,
@@ -36,13 +39,15 @@ export const FilterBox = ({
           <ChevronDownIcon />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="p-0 rounded-lg">
+      <DropdownMenuContent
+        className={cn("p-0 rounded-lg overflow-visible", className)}
+      >
         <div className="flex flex-col gap-2 pt-2 min-w-72 filter-dialog">
           <h4 className="px-4 py-2 text-neutral-600 filter-dialog-header">
             {label}
           </h4>
           <div className="flex flex-col gap-2 filter-dialog-body">
-            <div className="flex flex-col gap-4 px-4 py-2 filter-dialog-content max-h-64 overflow-y-auto">
+            <div className="flex flex-col gap-4 px-4 py-2 filter-dialog-content">
               {children || (
                 <p className="text-sm text-gray-500">No filters available</p>
               )}

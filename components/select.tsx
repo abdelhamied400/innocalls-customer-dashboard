@@ -39,6 +39,7 @@ type SelectProps<OptionType> = {
   error?: string;
   hint?: string;
   isDisabled?: boolean;
+  badgeClassName?: string;
 } & Partial<
   Omit<
     ReactSelectProps<OptionType, boolean, GroupBase<OptionType>>,
@@ -64,6 +65,7 @@ const Select = ({
   error,
   hint,
   isDisabled,
+  badgeClassName,
   ...rest
 }: SelectProps<any>) => {
   type OptionType = (typeof options)[number];
@@ -205,7 +207,7 @@ const Select = ({
               <Badge
                 key={getOptionValue(item)}
                 variant="secondary"
-                className="flex items-center gap-1"
+                className={cn("flex items-center gap-1", badgeClassName)}
               >
                 {getOptionLabel(item)}
                 <Button

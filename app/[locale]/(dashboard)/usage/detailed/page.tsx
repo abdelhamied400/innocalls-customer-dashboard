@@ -1,14 +1,5 @@
 import { parseTableInitialParams } from "@/lib/queryParams";
 import UsageDetailedTable from "./table";
-import usageService from "@/services/usage.service";
-import { isValidDateRange } from "@/lib/date";
-import { format } from "date-fns";
-
-// 30 days ago
-const defaultFromDate = new Date();
-defaultFromDate.setDate(defaultFromDate.getDate() - 30);
-// today
-const defaultToDate = new Date();
 
 const UsageDetailed = async ({ searchParams }: { searchParams: any }) => {
   // Parse filters, sorting, and pagination from URL

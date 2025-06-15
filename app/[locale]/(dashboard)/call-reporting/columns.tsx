@@ -92,4 +92,27 @@ export const columns: ColumnDef<Call>[] = [
       </Badge>
     ),
   },
+  {
+    accessorKey: "callSummary",
+    header: "Call Summary",
+  },
+  {
+    accessorKey: "recording",
+    header: "Recording",
+    cell: ({ row }) => {
+      const recording = row.getValue("recording") as string;
+      return recording ? (
+        <a
+          href={recording}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-500 hover:underline"
+        >
+          View Recording
+        </a>
+      ) : (
+        <span className="text-gray-500">No Recording</span>
+      );
+    },
+  },
 ];
