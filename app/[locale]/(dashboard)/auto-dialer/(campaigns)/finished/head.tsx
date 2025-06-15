@@ -30,8 +30,10 @@ import { Label } from "@/components/ui/label";
 import { autoDialerCampaignInactiveStatuses } from "@/constants/auto-dialer";
 import { Clear } from "@mui/icons-material";
 import { useState } from "react";
+import { FilterBar } from "@/components/FilterBar";
+import { FilterBox } from "@/components/FilterBox";
 
-const AutoDialerFinshedHead = () => {
+const AutoDialerFinishedHead = () => {
   const {
     getFilter,
     updateFilters,
@@ -91,7 +93,79 @@ const AutoDialerFinshedHead = () => {
           </div>
         </div>
         <CollapsibleContent>
-          <div className="flex justify-between items-center p-3 border-t table-filters">
+          <FilterBar
+            onClear={() => {
+              clearAllFilters();
+              setSearch("");
+              setCreationDate({
+                from: undefined,
+                to: undefined,
+              });
+              setDurationType("");
+              setStatus({});
+            }}
+          >
+            <FilterBox
+              triggerLabel="Creation Date"
+              label="Select a date range"
+              onReset={() => {
+                setCreationDate({
+                  from: undefined,
+                  to: undefined,
+                });
+                clearGroup("creation-date");
+              }}
+              onApply={() => {
+                updateFilters({
+                  "creation-date.from": creationDate.from
+                    ? format(creationDate.from, "yyyy-MM-dd")
+                    : undefined,
+                  "creation-date.to": creationDate.to
+                    ? format(creationDate.to, "yyyy-MM-dd")
+                    : undefined,
+                });
+              }}
+              numberOfFilters={getFilterCountForGroup("creation-date")}
+            >
+              <Field
+                label="From"
+                hint="DD/MM/YYYY"
+                postIcon={<CalendarIcon className="text-gray-400" />}
+              >
+                <DatePicker
+                  className="flex-1"
+                  placeholder="Enter from date"
+                  value={creationDate.from}
+                  onChange={(date) =>
+                    setCreationDate((prev) => ({
+                      ...prev,
+                      from: date || undefined,
+                    }))
+                  }
+                />
+              </Field>
+              <Field
+                label="To"
+                hint="DD/MM/YYYY"
+                postIcon={<CalendarIcon className="text-gray-400" />}
+              >
+                <DatePicker
+                  className="flex-1"
+                  placeholder="Enter to date"
+                  value={creationDate.to}
+                  onChange={(date) =>
+                    setCreationDate((prev) => ({
+                      ...prev,
+                      to: date || undefined,
+                    }))
+                  }
+                />
+              </Field>
+            </FilterBox>
+          </FilterBar>
+
+          {/* TODO: remove this if the new filter bar works  */}
+          {/* <div className="flex justify-between items-center p-3 border-t table-filters">
             <div className="flex items-center gap-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -243,14 +317,14 @@ const AutoDialerFinshedHead = () => {
                     }}
                     onApply={() =>
                       updateFilters(
-                        autoDialerCampaignInactiveStatuses.reduce((acc, s) => {
+                        autoDialerCampaignActiveStatuses.reduce((acc, s) => {
                           acc[`status.${s.value}`] = status[s.value];
                           return acc;
                         }, {} as Record<string, string>)
                       )
                     }
                   >
-                    {autoDialerCampaignInactiveStatuses.map((s) => (
+                    {autoDialerCampaignActiveStatuses.map((s) => (
                       <div
                         className="flex items-center space-x-2"
                         key={s.value}
@@ -293,11 +367,11 @@ const AutoDialerFinshedHead = () => {
             >
               <Clear /> Clear
             </Button>
-          </div>
+          </div> */}
         </CollapsibleContent>
       </div>
     </Collapsible>
   );
 };
 
-export default AutoDialerFinshedHead;
+export default AutoDialerFinishedHead;

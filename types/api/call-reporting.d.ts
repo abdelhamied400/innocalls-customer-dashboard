@@ -21,18 +21,18 @@ export type Call = {
   };
 };
 
-type ExtensionOption = {
+export type Option = {
   label: string;
   value: string;
 };
 
 export type CallReportingFilters = {
-  sourceExtensions?: string | ExtensionOption[];
-  destinationExtensions?: string | ExtensionOption[];
+  sourceExtensions?: string | Option[];
+  destinationExtensions?: string | Option[];
   fromDate?: Date;
   toDate?: Date;
   callStatuses?: string;
-  tags?: string;
+  tags?: string | Option[];
   search?: string;
 };
 

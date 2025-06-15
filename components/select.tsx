@@ -10,6 +10,7 @@ import ReactSelect, {
   Props as ReactSelectProps,
   GroupBase,
 } from "react-select";
+import CreatableReactSelect from "react-select/creatable";
 import { FixedSizeList as List } from "react-window";
 
 const heightPerItem = 40;
@@ -24,9 +25,11 @@ type SelectProps<OptionType> = {
   options: OptionType[];
   value: OptionType | OptionType[] | null;
   onChange: (value: OptionType | OptionType[] | null) => void;
+  onCreateOption?: (inputValue: string) => void;
   isMulti?: boolean;
   isVirtualized?: boolean;
   showSelectedTags?: boolean;
+  isCreatable?: boolean;
 
   // Custom option access
   getLabel?: (option: OptionType) => string;
@@ -52,9 +55,11 @@ const Select = ({
   options,
   value,
   onChange,
+  onCreateOption,
   isMulti = false,
   isVirtualized = false,
   showSelectedTags = true,
+  isCreatable = false,
 
   getLabel,
   getValue,
@@ -94,6 +99,8 @@ const Select = ({
     );
   };
 
+  const SelectComponent = isCreatable ? CreatableReactSelect : ReactSelect;
+
   return (
     <div className="select space-y-2 w-full">
       <div className="relative w-full">
@@ -117,7 +124,7 @@ const Select = ({
             </span>
           )}
 
-          <ReactSelect<OptionType, boolean>
+          <SelectComponent<OptionType, boolean>
             {...rest}
             options={options}
             value={value as any}
@@ -128,6 +135,7 @@ const Select = ({
             openMenuOnFocus
             getOptionLabel={getOptionLabel}
             getOptionValue={getOptionValue}
+            onCreateOption={onCreateOption}
             classNames={{
               control: () => "control",
               valueContainer: () => "value-container",
