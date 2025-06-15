@@ -44,6 +44,8 @@ import { useQuery } from "@tanstack/react-query";
 import usersService from "@/services/users.service";
 import UsersLoading from "./loading";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+
 
 type UsersMonitorTableProps = {
   initialData: MonitorUser[];
@@ -60,7 +62,10 @@ const UsersMonitorTable = ({
   initialSorting = [],
   initialPagination,
 }: UsersMonitorTableProps) => {
-  const router = useRouter();
+  const router = useRouter(); 
+  const t = useTranslations('users.monitor');
+  const searchT = useTranslations('common.search');
+  const paginationT = useTranslations('common.pagination');
 
   // sorting, filters, and pagination state
   const [sorting, setSorting] = useState<SortingState>(initialSorting);
@@ -80,7 +85,7 @@ const UsersMonitorTable = ({
 
   const table = useReactTable({
     data,
-    columns,
+    columns:columns(t),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -149,7 +154,7 @@ const UsersMonitorTable = ({
           <Field preIcon={<SearchIcon />}>
             <Input
               variant="field"
-              placeholder="Search..."
+              placeholder={searchT('placeholder')}
               value={searchValue}
               onChange={handleSearchChange}
               type="search"
@@ -201,7 +206,7 @@ const UsersMonitorTable = ({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {searchT('noResults')}
                 </TableCell>
               </TableRow>
             )}
@@ -242,7 +247,7 @@ const UsersMonitorTable = ({
         </div>
 
         <div className="flex items-center gap-2 per-page">
-          <label className="text-sm">Rows per page:</label>
+          <label className="text-sm">{paginationT('rowsPerPage')}:</label>
           <Select
             onValueChange={(value) => table.setPageSize(Number(value))}
             defaultValue={table.getState().pagination.pageSize.toString()}
@@ -258,7 +263,7 @@ const UsersMonitorTable = ({
           </Select>
           <p className="text-sm">
             {startRowIndex}-{endRowIndex}
-            {totalItems ? ` of ${totalItems}` : ""}
+            {totalItems ? ` ${paginationT('of')} ${totalItems}`: ""}
           </p>
         </div>
       </div>

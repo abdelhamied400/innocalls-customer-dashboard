@@ -1,155 +1,175 @@
 {
   "common": {
     "pagination": {
-      "rowsPerPage": "عدد الصفوف في الصفحة",
-      "of": "من",
-      "previous": "السابق",
-      "next": "التالي"
+      "rowsPerPage": "Rows per page",
+      "of": "of",
+      "previous": "Previous",
+      "next": "Next"
     },
     "search": {
-      "placeholder": "بحث...",
-      "noResults": "لا توجد نتائج."
+      "placeholder": "Search...",
+      "noResults": "No results."
     },
     "form": {
       "validation": {
         "password": {
-          "minLength": "يجب أن تتكون كلمة المرور من {min} أحرف على الأقل",
-          "lowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
-          "uppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
-          "number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
-          "special": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل"
+          "minLength": "Password must be at least {min} characters long",
+          "lowercase": "Password must contain at least one lowercase letter",
+          "uppercase": "Password must contain at least one uppercase letter",
+          "number": "Password must contain at least one number",
+          "special": "Password must contain at least one special character"
         }
       }
     }
   },
   "numbers": {
-    "title": "الأرقام",
-    "refNo": "#رقم المرجع",
-    "phoneNumber": "رقم الهاتف"
+    "title": "Numbers",
+    "refNo": "#Ref-No",
+    "phoneNumber": "Phone number"
   },
   "auth": {
     "banner": {
-      "title": "مركز اتصال ذكي <br/> وحلول مدعومة بالسحابة",
-      "subtitle": "عزز تواصلك وتواصل مع العملاء بسلاسة، بغض النظر عن مكان تواجدك",
+      "title": "Smart call center & <br/> cloud-powered solutions",
+      "subtitle": "Get your communication boosted and connect with customers seamlessly, no matter where you are",
       "features": {
         "phoneSystem": {
-          "title": "أنظمة هاتفية شاملة",
-          "description": "إدارة اتصالات أعمالك بسهولة مع قدرات مركز اتصالات سحابية متقدمة لإرسال واستقبال المكالمات."
+          "title": "Comprehensive Phone Systems",
+          "description": "Effortlessly manage your business communications with advanced cloud call center capabilities for sending and receiving calls."
         },
         "ivrRouting": {
-          "title": "الرد الآلي وتوجيه المكالمات",
-          "description": "توفير إمكانية الوصول على مدار الساعة طوال أيام الأسبوع، وتقليل أوقات الانتظار والتأكد من توجيه المكالمات عبر المسار الصحيح داخل قطاعات شركتك."
+          "title": "IVR & Call routing",
+          "description": "Provide 24/7 accessibility, reduce wait times and make sure calls are routed through the right path inside your company's sectors."
         },
         "reporting": {
-          "title": "التقارير والتحليلات",
-          "description": "ابق على اطلاع على أعمالك من خلال تحليلات البيانات المباشرة والتقارير المحدثة لدعم التخطيط الاستراتيجي والقرارات الذكية."
+          "title": "Reporting & analytics",
+          "description": "Stay on top of your business with live data analyses & updated reports to support strategic planning and smart decisions."
         }
       }
     },
     "forgotPassword": {
-      "title": "نسيت كلمة المرور!",
-      "subtitle": "إعادة تعيين كلمة المرور عبر البريد الإلكتروني!",
+      "title": "Forgot Password!",
+      "subtitle": "Reset your password via E-mail!",
       "form": {
         "fields": {
           "email": {
-            "label": "البريد الإلكتروني للعمل",
-            "placeholder": "أدخل البريد الإلكتروني..."
+            "label": "Work Email",
+            "placeholder": "Enter email..."
           }
         },
         "validation": {
           "email": {
-            "required": "البريد الإلكتروني مطلوب",
-            "invalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
-            "minLength": "يجب أن يكون البريد الإلكتروني على الأقل {min} أحرف"
+            "required": "Email is required",
+            "invalid": "Please enter a valid email address",
+            "minLength": "Email must be at least {min} characters"
           }
         }
       },
       "messages": {
-        "emailSent": "تم إرسال البريد الإلكتروني",
-        "emailSentDescription": "تحقق من صندوق الوارد للحصول على رابط إعادة التعيين.",
-        "couldNotSendEmail": "لا يمكن إرسال البريد الإلكتروني",
-        "somethingWentWrong": "حدث خطأ ما",
-        "defaultErrorDescription": "لدينا مشكلة من جانبنا. يرجى المحاولة مرة أخرى لاحقاً."
+        "emailSent": "Email Sent",
+        "emailSentDescription": "Check your inbox for a reset link.",
+        "couldNotSendEmail": "Could not send email",
+        "somethingWentWrong": "Something went wrong",
+        "defaultErrorDescription": "We have a problem on our side. Please try again later."
       },
       "actions": {
-        "submit": "إرسال رابط إعادة تعيين كلمة المرور"
+        "submit": "Send Reset Email Link"
       }
     },
     "login": {
-      "title": "تسجيل الدخول إلى منصة إينوكولز!",
-      "subtitle": "ارتقِ بأعمالك مع حلول الاتصالات السحابية السلسة",
+      "title": "Sign in to Innocalls platform!",
+      "subtitle": "Elevate Your Business with Seamless Cloud Communication Solutions",
       "form": {
         "fields": {
           "email": {
-            "label": "البريد الإلكتروني للعمل",
-            "placeholder": "أدخل البريد الإلكتروني..."
+            "label": "Work Email",
+            "placeholder": "Enter email..."
           },
           "password": {
-            "label": "كلمة المرور",
-            "placeholder": "أدخل كلمة المرور..."
+            "label": "Password",
+            "placeholder": "Enter password..."
           },
           "userType": {
-            "admin": "مدير",
-            "agent": "وكيل"
+            "admin": "Admin",
+            "agent": "Agent"
           }
         },
         "validation": {
           "email": {
-            "required": "البريد الإلكتروني مطلوب",
-            "invalid": "يرجى إدخال عنوان بريد إلكتروني صالح",
-            "minLength": "يجب أن يكون البريد الإلكتروني على الأقل {min} أحرف"
+            "required": "Email is required",
+            "invalid": "Please enter a valid email address",
+            "minLength": "Email must be at least {min} characters"
           },
           "password": {
-            "required": "كلمة المرور مطلوبة",
-            "minLength": "يجب أن تكون كلمة المرور على الأقل {min} أحرف",
-            "maxLength": "يجب ألا تزيد كلمة المرور عن {max} حرف"
+            "required": "Password is required",
+            "minLength": "Password must be at least {min} characters",
+            "maxLength": "Password must be no more than {max} characters"
           },
           "userType": {
-            "required": "يرجي اختيار نوع المستخدم"
+            "required": "Please select user type"
           }
         }
       },
       "messages": {
-        "loginFailed": "فشل تسجيل الدخول",
-        "loginSuccess": "نجح",
-        "loginSuccessDescription": "تم تسجيل الدخول بنجاح",
-        "somethingWentWrong": "حدث خطأ ما",
-        "defaultErrorDescription": "لدينا مشكلة من جانبنا. يرجى المحاولة مرة أخرى لاحقاً."
+        "loginFailed": "Login failed",
+        "loginSuccess": "Success",
+        "loginSuccessDescription": "Logged in successfully",
+        "somethingWentWrong": "Something went wrong",
+        "defaultErrorDescription": "We have an issue on our side. Please try again later."
       },
       "actions": {
-        "submit": "تسجيل الدخول",
-        "forgotPassword": "نسيت كلمة المرور؟",
-        "resetPassword": "إعادة تعيين كلمة المرور"
+        "submit": "Login",
+        "forgotPassword": "Forget Password?",
+        "resetPassword": "Reset Password"
       }
     },
     "resetPassword": {
-      "title": "إعادة تعيين كلمة المرور!",
-      "subtitle": "إعادة تعيين كلمة المرور عبر البريد الإلكتروني!",
+      "title": "Reset Password!",
+      "subtitle": "Reset your password via E-mail!",
       "form": {
         "fields": {
           "password": {
-            "label": "كلمة المرور",
-            "placeholder": "أدخل كلمة المرور..."
+            "label": "Password",
+            "placeholder": "Enter password..."
           },
           "passwordConfirm": {
-            "label": "تأكيد كلمة المرور",
-            "placeholder": "أعد إدخال كلمة المرور..."
+            "label": "Confirm Password",
+            "placeholder": "Re-enter password..."
           }
         },
         "validation": {
           "passwordConfirm": {
-            "mismatch": "كلمات المرور غير متطابقة"
+            "mismatch": "Passwords do not match"
           }
         }
       },
       "messages": {
-        "resetSuccess": "تم إعادة تعيين كلمة المرور",
-        "resetSuccessDescription": "تم إعادة تعيين كلمة المرور بنجاح.",
-        "resetFailed": "خطأ",
-        "defaultErrorDescription": "حدث خطأ أثناء إعادة تعيين كلمة المرور."
+        "resetSuccess": "Password Reset",
+        "resetSuccessDescription": "Your password has been reset successfully.",
+        "resetFailed": "Error",
+        "defaultErrorDescription": "An error occurred while resetting your password."
       },
       "actions": {
-        "submit": "إعادة تعيين كلمة المرور"
+        "submit": "Reset Password"
+      }
+    }
+  },
+  "users": {
+    "monitor": {
+      "title": "Monitor Users",
+      "columns": {
+        "extension": "Extension No.",
+        "name": "Name",
+        "ip": "IP",
+        "status": "Status",
+        "onCall": "On Call"
+      },
+      "status": {
+        "online": "online",
+        "offline": "offline"
+      },
+      "onCall": {
+        "yes": "yes",
+        "no": "no"
       }
     }
   }

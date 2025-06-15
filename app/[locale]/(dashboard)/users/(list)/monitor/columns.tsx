@@ -17,7 +17,7 @@ export type MonitorUser = {
   ua: string;
 };
 
-export const columns: ColumnDef<MonitorUser>[] = [
+export const columns= (t: any): ColumnDef<MonitorUser>[] => [
   {
     accessorKey: "ext",
     header: ({ column }: { column: any }) => (
@@ -25,7 +25,7 @@ export const columns: ColumnDef<MonitorUser>[] = [
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Extension No.
+         {t("columns.extension")}
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
@@ -37,35 +37,41 @@ export const columns: ColumnDef<MonitorUser>[] = [
         variant="ghost"
         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
       >
-        Name
+      {t("columns.name")}
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
   },
   {
     accessorKey: "ip",
-    header: "IP",
-  },
+    header: t("columns.ip")  },
   {
     accessorKey: "status",
-    header: "Status",
+     header: t("columns.status"),
     cell: ({ row }) => (
       <Badge
         variant={row.getValue("status") === "online" ? "success" : "muted"}
       >
-        {row.getValue("status")}
+        {row.getValue("status") === "online" 
+          ? t("status.online")
+          : t("status.offline")
+        }
+
       </Badge>
     ),
   },
   {
     accessorKey: "on_call",
-    header: "On Call",
+    header: t("columns.onCall"),
     cell: ({ row }) => (
       <Badge
         variant={row.getValue("on_call") ? "default" : "muted"}
         className="capitalize"
       >
-        {row.getValue("on_call") ? "yes" : "no"}
+         {row.getValue("on_call") 
+          ? t("onCall.yes") 
+          : t("onCall.no")
+        }
       </Badge>
     ),
   },
