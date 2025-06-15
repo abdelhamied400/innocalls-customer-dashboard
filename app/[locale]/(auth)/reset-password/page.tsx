@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import ResetPasswordForm from "./form";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 
 type ResetPasswordProps = {
   searchParams: Promise<{
@@ -8,7 +8,7 @@ type ResetPasswordProps = {
   }>;
 };
 const ResetPassword = async ({ searchParams }: ResetPasswordProps) => {
-  const t = useTranslations("auth.resetPassword");
+  const t = await getTranslations("auth.resetPassword");
 
   const { token } = await searchParams;
 

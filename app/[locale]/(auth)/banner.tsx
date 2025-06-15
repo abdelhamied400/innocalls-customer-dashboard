@@ -11,25 +11,25 @@ import FeatureCard from "@/components/FeatureCard";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import DotGrid from "@/components/DotGrid";
+import { useTranslations } from "next-intl";
 
 const AuthBanner = () => {
+  const t = useTranslations("auth.banner");
+
   const items = [
     {
-      title: "Comprehensive Phone Systems",
-      description:
-        "Effortlessly manage your business communications with advanced cloud call center capabilities for sending and receiving calls.",
+      title: t("features.phoneSystem.title"),
+      description: t("features.phoneSystem.description"),
       image: "/assets/icons/features/phone-rotate.svg",
     },
     {
-      title: "IVR & Call routing",
-      description:
-        "Provide 24/7 accessibility, reduce wait times and make sure calls are routed through the right path inside your company’s sectors.",
+      title: t("features.ivrRouting.title"),
+      description: t("features.ivrRouting.description"),
       image: "/assets/icons/features/call.svg",
     },
     {
-      title: "Reporting & analytics",
-      description:
-        "Stay on top of your business with live data analyses & updated reports to support strategic planning and smart decisions.",
+      title: t("features.reporting.title"),
+      description: t("features.reporting.description"),
       image: "/assets/icons/features/chart.svg",
     },
   ];
@@ -80,12 +80,12 @@ const AuthBanner = () => {
 
         {/* Title & Subtitle */}
         <div className="text-left max-w-2xl space-y-4 px-12">
-          <h1 className="text-4xl font-bold leading-tight">
-            Smart call center & <br /> cloud-powered solutions
-          </h1>
+            <h1 
+            className="text-4xl font-bold leading-tight"
+            dangerouslySetInnerHTML={{ __html: t("title") }}
+          />
           <p className="text-white/80 text-lg">
-            Get your communication boosted and connect with customers
-            seamlessly, no matter where you are
+              {t("subtitle")}
           </p>
         </div>
 
