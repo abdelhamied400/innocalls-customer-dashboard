@@ -8,17 +8,9 @@ const CallReporting = async ({ searchParams }: { searchParams: any }) => {
     searchParams
   );
 
-  // Fetch data from the service
-  const data = await callReportingService.getCallReporting(
-    Number(page),
-    Number(pageSize),
-    filtersObj
-  );
-
   return (
     <div className="page h-full" id="call-reporting">
       <CallReportingTable
-        initialData={data}
         initialPagination={{
           pageIndex: Number(page) - 1,
           pageSize: Number(pageSize),

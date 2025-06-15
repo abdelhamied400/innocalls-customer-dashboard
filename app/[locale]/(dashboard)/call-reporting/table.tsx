@@ -1,12 +1,14 @@
 "use client";
 
 import callReportingService from "@/services/call-reporting.service";
-import { Call, CallReportingFilters } from "@/types/api/call-reporting";
-import { Paginated } from "@/types/shared/paginated";
+import { CallReportingFilters } from "@/types/api/call-reporting";
 import { useQuery } from "@tanstack/react-query";
 import {
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
   PaginationState,
   SortingState,
   useReactTable,
@@ -39,6 +41,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import MultiSelect from "@/components/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useRouter } from "next/navigation";
 import {
@@ -47,21 +50,22 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Toggle } from "@/components/ui/toggle";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Calendar, ChevronDownIcon } from "lucide-react";
-import FilterDialog from "@/components/FilterDialog";
+import { Calendar } from "lucide-react";
 import DatePicker from "@/components/ui/date-picker";
 import { format } from "date-fns";
 import { useFilters } from "@/hooks/use-filters";
 import useVocabStore from "@/store/vocab.slice";
+import { isValidDateRange } from "@/lib/date";
+import { useToast } from "@/hooks/use-toast";
+import { isAxiosError } from "axios";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { useSession } from "next-auth/react";
+import { FilterBar } from "@/components/FilterBar";
+import { FilterBox } from "@/components/FilterBox";
 
 type CallReportingTableProps = {
-  initialData: Paginated<Call>;
   initialPagination?: {
     pageIndex: number;
     pageSize: number;
@@ -71,31 +75,50 @@ type CallReportingTableProps = {
 };
 
 // 30 days ago
-const initialFromDate = new Date();
-initialFromDate.setDate(initialFromDate.getDate() - 30);
+const defaultFromDate = new Date();
+defaultFromDate.setDate(defaultFromDate.getDate() - 30);
 // today
-const initialToDate = new Date();
+const defaultToDate = new Date();
+
+const defaultFilters: CallReportingFilters = {
+  fromDate: defaultFromDate,
+  toDate: defaultToDate,
+  sourceExtensions: [],
+  destinationExtensions: [],
+  tags: "",
+  callStatuses: "",
+  search: "",
+};
 
 const CallReportingTable = ({
-  initialData,
   initialFilters = {},
   initialSorting = [],
-  initialPagination,
+  initialPagination = {
+    pageIndex: 0,
+    pageSize: 10,
+  },
 }: CallReportingTableProps) => {
   const router = useRouter();
   const { updateFilters } = useFilters();
+  const { toast } = useToast();
   const { extensions, tags } = useVocabStore();
+  const { data: session, status } = useSession();
+
+  const [isExporting, setIsExporting] = useState(false);
+
+  const extensionsOptions = extensions.map((ext) => ({
+    label: `${ext.name} (${ext.ext})`,
+    value: ext.ext,
+  }));
+
   const [filters, setFilters] = useState<CallReportingFilters>({
+    ...defaultFilters,
     ...initialFilters,
-    fromDate: initialFilters.fromDate
-      ? new Date(initialFilters.fromDate)
-      : initialFromDate,
-    toDate: initialFilters.toDate
-      ? new Date(initialFilters.toDate)
-      : initialToDate,
   });
 
-  const [pagesCount, setPagesCount] = useState<number>(initialData.last_page);
+  const [pagesCount, setPagesCount] = useState<number>(
+    initialPagination.pageIndex
+  );
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: initialPagination?.pageIndex || 0,
     pageSize: initialPagination?.pageSize || 10,
@@ -107,6 +130,8 @@ const CallReportingTable = ({
     isFetching,
     isPlaceholderData,
     refetch,
+    isError,
+    error,
   } = useQuery({
     queryKey: ["call-reporting", pagination.pageIndex, pagination.pageSize],
     queryFn: async () =>
@@ -115,16 +140,28 @@ const CallReportingTable = ({
         pagination.pageSize,
         filters
       ),
-    placeholderData: initialData,
+    placeholderData: {
+      data: [],
+      current_page: 0,
+      from: 0,
+      last_page: 0,
+      page: 0,
+      per_page: 0,
+      to: 0,
+      total: 0,
+    },
+    retry: 0,
   });
 
   const table = useReactTable({
     data: callReporting?.data || [],
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     onPaginationChange: setPagination,
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     manualPagination: true,
-    pageCount: callReporting?.last_page || 0,
     state: {
       pagination,
     },
@@ -149,8 +186,89 @@ const CallReportingTable = ({
     updateFilters({
       page: (pageIndex + 1).toString(),
       pageSize: pageSize.toString(),
+      ...filters,
+      fromDate: filters.fromDate
+        ? format(filters.fromDate, "yyyy-MM-dd")
+        : undefined,
+      toDate: filters.toDate ? format(filters.toDate, "yyyy-MM-dd") : undefined,
+      sourceExtensions: Array.isArray(filters.sourceExtensions)
+        ? filters.sourceExtensions.map((ext) => ext.value).join(",")
+        : typeof filters.sourceExtensions === "string"
+        ? filters.sourceExtensions
+        : undefined,
+      destinationExtensions: Array.isArray(filters.destinationExtensions)
+        ? filters.destinationExtensions.map((ext) => ext.value).join(",")
+        : typeof filters.destinationExtensions === "string"
+        ? filters.destinationExtensions
+        : undefined,
     });
-  }, [pageIndex, pageSize, router]);
+  }, [pageIndex, pageSize, filters, updateFilters]);
+
+  const applyFilters = () => {
+    let isValid = true;
+    isValid = isValidDateRange(filters.fromDate, filters.toDate, (message) => {
+      toast({
+        title: "Invalid date range",
+        description: message,
+        variant: "destructive",
+      });
+    });
+
+    if (!isValid) return;
+
+    setTimeout(() => {
+      refetch();
+    }, 0);
+  };
+
+  useEffect(() => {
+    if (isError) {
+      let message = "An unexpected error occurred";
+      if (isAxiosError(error)) {
+        message = error?.response?.data.message;
+      } else {
+        message = error?.message;
+      }
+      toast({
+        title: "Error fetching data",
+        description: message,
+        variant: "destructive",
+      });
+      setFilters(defaultFilters);
+      setTimeout(() => {
+        refetch();
+      }, 0);
+    }
+  }, [isError, error, toast]);
+
+  const handleExport = async () => {
+    try {
+      setIsExporting(true);
+      const res = await callReportingService.exportCallReporting({
+        ...filters,
+        userEmail: session?.user?.email || "",
+      });
+
+      toast({
+        title: "Export started",
+        description:
+          "Your export is being processed. You will be notified by email when it's ready.",
+      });
+    } catch (error) {
+      let message = "An unexpected error occurred";
+      if (isAxiosError(error)) {
+        message = error?.response?.data.message;
+      }
+      toast({
+        title: "Error exporting data",
+        description: message,
+        variant: "destructive",
+      });
+      console.error("Export error:", error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   return (
     <div className="h-full flex flex-col">
@@ -170,235 +288,324 @@ const CallReportingTable = ({
                   <FilterAltOutlined />
                 </Toggle>
               </CollapsibleTrigger>
+              <Button variant="default" onClick={handleExport}>
+                Export
+              </Button>
             </div>
           </div>
         </div>
-        <CollapsibleContent className="border-t p-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="filter" size="filter">
-                Call Date
-                <ChevronDownIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <FilterDialog
-                title="Select a date range"
-                onReset={() => {
-                  setFilters({
-                    fromDate: initialFromDate,
-                    toDate: initialToDate,
-                  });
-                  updateFilters({
-                    fromDate: format(initialFromDate, "yyyy-MM-dd"),
-                    toDate: format(initialToDate, "yyyy-MM-dd"),
-                  });
-                  setTimeout(() => {
-                    refetch();
-                  }, 0);
-                }}
-                onApply={() => {
-                  updateFilters({
-                    fromDate: filters.fromDate
-                      ? format(filters.fromDate, "yyyy-MM-dd")
-                      : format(initialFromDate, "yyyy-MM-dd"),
-                    toDate: filters.toDate
-                      ? format(filters.toDate, "yyyy-MM-dd")
-                      : format(initialToDate, "yyyy-MM-dd"),
-                  });
+        <CollapsibleContent className="">
+          <FilterBar
+            onClear={() => {
+              setFilters(defaultFilters);
+              setTimeout(() => {
+                refetch();
+              }, 0);
+            }}
+          >
+            <FilterBox
+              triggerLabel="Call Date"
+              label="Select a date range"
+              onReset={() => {
+                setFilters({
+                  ...filters,
+                  fromDate: defaultFromDate,
+                  toDate: defaultToDate,
+                });
+                updateFilters({
+                  fromDate: format(defaultFromDate, "yyyy-MM-dd"),
+                  toDate: format(defaultToDate, "yyyy-MM-dd"),
+                });
+                setTimeout(() => {
                   refetch();
-                }}
+                }, 0);
+              }}
+              onApply={applyFilters}
+              numberOfFilters={
+                (filters.fromDate ? 1 : 0) + (filters.toDate ? 1 : 0)
+              }
+            >
+              <Field
+                label="From"
+                hint="DD/MM/YYYY"
+                postIcon={<Calendar className="text-gray-400" />}
               >
-                <Field
-                  label="From"
-                  hint="DD/MM/YYYY"
-                  postIcon={<Calendar className="text-gray-400" />}
-                >
-                  <DatePicker
-                    className="flex-1"
-                    placeholder="Enter from date"
-                    value={filters.fromDate}
-                    onChange={(date) => {
-                      setFilters((prev) => ({
-                        ...prev,
-                        fromDate: date || undefined,
-                      }));
-                    }}
-                  />
-                </Field>
-                <Field
-                  label="To"
-                  hint="DD/MM/YYYY"
-                  postIcon={<Calendar className="text-gray-400" />}
-                >
-                  <DatePicker
-                    className="flex-1"
-                    placeholder="Enter to date"
-                    value={filters.toDate}
-                    onChange={(date) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        toDate: date || undefined,
-                      }))
-                    }
-                  />
-                </Field>
-              </FilterDialog>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="filter" size="filter">
-                Source
-                <ChevronDownIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <FilterDialog
-                title="Filter by Source Extensions"
-                onReset={() => {
-                  setFilters((prev) => ({
-                    ...prev,
-                    sourceExtensions: undefined,
-                  }));
-                  updateFilters({ sourceExtensions: undefined });
-                  setTimeout(() => {
-                    refetch();
-                  }, 0);
-                }}
-                onApply={() => {
-                  updateFilters({
-                    sourceExtensions: filters.sourceExtensions,
-                  });
-                  refetch();
-                }}
-              >
-                <Select
-                  value={filters.sourceExtensions}
-                  onValueChange={(value) => {
+                <DatePicker
+                  className="flex-1"
+                  placeholder="Enter from date"
+                  value={filters.fromDate}
+                  onChange={(date) => {
                     setFilters((prev) => ({
                       ...prev,
-                      sourceExtensions: value || undefined,
+                      fromDate: date || undefined,
                     }));
                   }}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select source extensions" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {extensions.map((ext) => (
-                      <SelectItem key={ext.id} value={ext.ext}>
-                        {ext.name} ({ext.ext})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FilterDialog>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          {/* destination filter */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="filter" size="filter">
-                Destination
-                <ChevronDownIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <FilterDialog
-                title="Filter by Destination Extensions"
-                onReset={() => {
-                  setFilters((prev) => ({
-                    ...prev,
-                    destinationExtensions: undefined,
-                  }));
-                  updateFilters({ destinationExtensions: undefined });
-                  setTimeout(() => {
-                    refetch();
-                  }, 0);
-                }}
-                onApply={() => {
-                  updateFilters({
-                    destinationExtensions: filters.destinationExtensions,
-                  });
-                  refetch();
-                }}
+                />
+              </Field>
+              <Field
+                label="To"
+                hint="DD/MM/YYYY"
+                postIcon={<Calendar className="text-gray-400" />}
               >
-                <Select
-                  value={filters.destinationExtensions}
-                  onValueChange={(value) => {
+                <DatePicker
+                  className="flex-1"
+                  placeholder="Enter to date"
+                  value={filters.toDate}
+                  onChange={(date) =>
                     setFilters((prev) => ({
                       ...prev,
-                      destinationExtensions: value || undefined,
-                    }));
-                  }}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select destination extensions" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {extensions.map((ext) => (
-                      <SelectItem key={ext.id} value={ext.ext}>
-                        {ext.name} ({ext.ext})
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FilterDialog>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {/* tags filter */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="filter" size="filter">
-                Tags
-                <ChevronDownIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <FilterDialog
-                title="Filter by Tags"
-                onReset={() => {
+                      toDate: date || undefined,
+                    }))
+                  }
+                />
+              </Field>
+            </FilterBox>
+            <FilterBox
+              className="max-w-sm"
+              triggerLabel="Source"
+              label="Filter by Source Extensions"
+              onReset={() => {
+                setFilters((prev) => ({
+                  ...prev,
+                  sourceExtensions: undefined,
+                }));
+                updateFilters({ sourceExtensions: undefined });
+                setTimeout(() => {
+                  refetch();
+                }, 0);
+              }}
+              onApply={() => {
+                updateFilters({
+                  sourceExtensions: Array.isArray(filters.sourceExtensions)
+                    ? filters.sourceExtensions.map((ext) => ext.value).join(",")
+                    : typeof filters.sourceExtensions === "string"
+                    ? filters.sourceExtensions
+                    : undefined,
+                });
+                refetch();
+              }}
+              numberOfFilters={
+                Array.isArray(filters.sourceExtensions)
+                  ? filters.sourceExtensions.length
+                  : filters.sourceExtensions
+                  ? filters.sourceExtensions.split(",").filter(Boolean).length
+                  : 0
+              }
+            >
+              <MultiSelect
+                options={extensionsOptions}
+                onChange={(extensions) => {
                   setFilters((prev) => ({
                     ...prev,
-                    tags: undefined,
+                    sourceExtensions: extensions,
                   }));
-                  updateFilters({ tags: undefined });
-                  setTimeout(() => {
-                    refetch();
-                  }, 0);
                 }}
-                onApply={() => {
-                  updateFilters({
-                    tags: filters.tags,
-                  });
+                value={
+                  Array.isArray(filters.sourceExtensions)
+                    ? filters.sourceExtensions
+                    : typeof filters.sourceExtensions === "string"
+                    ? filters.sourceExtensions
+                        .split(",")
+                        .map(
+                          (ext) =>
+                            extensionsOptions.find(
+                              (option) => option.value === ext
+                            ) || { label: ext, value: ext }
+                        )
+                    : undefined
+                }
+                isMulti
+                badgeClassName="text-sm"
+                getLabel={(option) => option?.label || ""}
+                getValue={(option) => option?.value || ""}
+              />
+            </FilterBox>
+            <FilterBox
+              className="max-w-sm"
+              triggerLabel="Destination"
+              label="Filter by Destination Extensions"
+              onReset={() => {
+                setFilters((prev) => ({
+                  ...prev,
+                  destinationExtensions: undefined,
+                }));
+                updateFilters({ destinationExtensions: undefined });
+                setTimeout(() => {
                   refetch();
+                }, 0);
+              }}
+              onApply={() => {
+                updateFilters({
+                  destinationExtensions: Array.isArray(
+                    filters.destinationExtensions
+                  )
+                    ? filters.destinationExtensions
+                        .map((ext) => ext.value)
+                        .join(",")
+                    : typeof filters.destinationExtensions === "string"
+                    ? filters.destinationExtensions
+                    : undefined,
+                });
+                refetch();
+              }}
+              numberOfFilters={
+                Array.isArray(filters.destinationExtensions)
+                  ? filters.destinationExtensions.length
+                  : filters.destinationExtensions
+                  ? filters.destinationExtensions.split(",").filter(Boolean)
+                      .length
+                  : 0
+              }
+            >
+              <MultiSelect
+                options={extensionsOptions}
+                onChange={(extensions) => {
+                  setFilters((prev) => ({
+                    ...prev,
+                    destinationExtensions: extensions,
+                  }));
+                }}
+                value={
+                  Array.isArray(filters.destinationExtensions)
+                    ? filters.destinationExtensions
+                    : typeof filters.destinationExtensions === "string"
+                    ? filters.destinationExtensions
+                        .split(",")
+                        .map(
+                          (ext) =>
+                            extensionsOptions.find(
+                              (option) => option.value === ext
+                            ) || { label: ext, value: ext }
+                        )
+                    : undefined
+                }
+                isMulti
+                badgeClassName="text-sm"
+                getLabel={(option) => option?.label || ""}
+                getValue={(option) => option?.value || ""}
+              />
+            </FilterBox>
+            <FilterBox
+              triggerLabel="Tags"
+              label="Filter by Tags"
+              onReset={() => {
+                setFilters((prev) => ({
+                  ...prev,
+                  tags: undefined,
+                }));
+                updateFilters({ tags: undefined });
+                setTimeout(() => {
+                  refetch();
+                }, 0);
+              }}
+              onApply={() => {
+                updateFilters({
+                  tags: filters.tags,
+                });
+                refetch();
+              }}
+              numberOfFilters={filters.tags ? 1 : 0}
+            >
+              <Select
+                value={filters.tags}
+                onValueChange={(value) => {
+                  setFilters((prev) => ({
+                    ...prev,
+                    tags: value || undefined,
+                  }));
                 }}
               >
-                <Select
-                  value={filters.tags}
-                  onValueChange={(value) => {
-                    setFilters((prev) => ({
-                      ...prev,
-                      tags: value || undefined,
-                    }));
-                  }}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select tags" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {tags.map((tag) => (
-                      <SelectItem key={tag.id} value={tag.nameEN}>
-                        {tag.nameEN}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </FilterDialog>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select tags" />
+                </SelectTrigger>
+                <SelectContent>
+                  {tags.map((tag) => (
+                    <SelectItem key={tag.id} value={tag.nameEN}>
+                      {tag.nameEN}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </FilterBox>
+            <FilterBox
+              triggerLabel="Call Status"
+              label="Filter by Call Statuses"
+              onReset={() => {
+                setFilters((prev) => ({
+                  ...prev,
+                  callStatuses: undefined,
+                }));
+                updateFilters({ callStatuses: undefined });
+                setTimeout(() => {
+                  refetch();
+                }, 0);
+              }}
+              onApply={() => {
+                updateFilters({
+                  callStatuses: filters.callStatuses,
+                });
+                refetch();
+              }}
+              numberOfFilters={
+                filters.callStatuses
+                  ? Array.isArray(filters.callStatuses)
+                    ? filters.callStatuses.length
+                    : filters.callStatuses.split(",").filter(Boolean).length
+                  : 0
+              }
+            >
+              <div className="flex flex-col gap-2">
+                {[
+                  { value: "ANSWERED", label: "Answered" },
+                  { value: "FAILED", label: "Failed" },
+                  { value: "NO ANSWER", label: "No Answer" },
+                  { value: "BUSY", label: "Busy" },
+                ].map((status) => (
+                  <div key={status.value} className="flex items-center gap-2">
+                    <Checkbox
+                      id={`call-status-${status.value}`}
+                      checked={
+                        Array.isArray(filters.callStatuses)
+                          ? filters.callStatuses.includes(status.value)
+                          : typeof filters.callStatuses === "string"
+                          ? filters.callStatuses
+                              .split(",")
+                              .includes(status.value)
+                          : false
+                      }
+                      onCheckedChange={(checked) => {
+                        let current: string[] = [];
+                        if (Array.isArray(filters.callStatuses)) {
+                          current = filters.callStatuses;
+                        } else if (
+                          typeof filters.callStatuses === "string" &&
+                          filters.callStatuses
+                        ) {
+                          current = filters.callStatuses.split(",");
+                        }
+                        let updated: string[];
+                        if (checked) {
+                          updated = Array.from(
+                            new Set([...current, status.value])
+                          );
+                        } else {
+                          updated = current.filter((v) => v !== status.value);
+                        }
+                        setFilters((prev) => ({
+                          ...prev,
+                          callStatuses:
+                            updated.length > 0 ? updated.join(",") : undefined,
+                        }));
+                      }}
+                    />
+                    <Label htmlFor={`call-status-${status.value}`}>
+                      {status.label}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </FilterBox>
+          </FilterBar>
         </CollapsibleContent>
       </Collapsible>
 
