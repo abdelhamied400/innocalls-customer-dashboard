@@ -22,7 +22,12 @@
       }
     },
     "actions": {
-      "close": "إغلاق"
+      "close": "إغلاق",
+      "reset": "إعادة تعيين",
+      "apply": "تطبيق"
+    },
+    "states": {
+      "loading": "جارٍ التحميل..."
     }
   },
   "numbers": {
@@ -326,6 +331,147 @@
       },
       "actions": {
         "submit": "تعديل المستخدم"
+      }
+    }
+  },
+  "billing": {
+    "layout": {
+      "tabs": {
+        "charges": "الرسوم",
+        "paymentHistory": "تاريخ الدفع",
+        "rates": "الأسعار",
+        "invoices": "الفواتير"
+      },
+      "actions": {
+        "refillBalance": "إعادة شحن الرصيد"
+      }
+    },
+    "rates": {
+      "title": "الأسعار",
+      "columns": {
+        "sourceCode": "رمز المصدر",
+        "destinationName": "اسم الوجهة",
+        "destinationCode": "رمز الوجهة",
+        "rate": "السعر"
+      },
+      "filters": {
+        "service": "الخدمة",
+        "selectFromList": "اختر من القائمة"
+      },
+      "services": {
+        "calls": "المكالمات",
+        "sms": "الرسائل القصيرة"
+      }
+    },
+    "paymentHistory": {
+      "title": "تاريخ الدفع",
+      "columns": {
+        "refNo": "#رقم المرجع",
+        "date": "التاريخ",
+        "amount": "المبلغ",
+        "description": "الوصف"
+      },
+      "filters": {
+        "creationDate": "تاريخ الإنشاء",
+        "selectDateRange": "اختر نطاق التاريخ",
+        "from": "من",
+        "to": "إلى",
+        "fromDateHint": "يوم/شهر/سنة",
+        "toDateHint": "يوم/شهر/سنة",
+        "enterFromDate": "أدخل تاريخ البداية",
+        "enterToDate": "أدخل تاريخ النهاية"
+      },
+      "messages": {
+        "error": "خطأ في جلب تاريخ الدفع",
+        "errorDescription": "حدث خطأ أثناء جلب تاريخ الدفع.",
+        "invalidDateRange": "نطاق تاريخ غير صحيح"
+      }
+    },
+    "invoices": {
+      "title": "الفواتير",
+      "columns": {
+        "refNo": "#رقم المرجع",
+        "date": "التاريخ",
+        "email": "البريد الإلكتروني",
+        "total": "الإجمالي",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "status": {
+        "paid": "مدفوعة",
+        "overdue": "متأخرة",
+        "draft": "مسودة",
+        "partially_paid": "مدفوعة جزئياً"
+      },
+      "actions": {
+        "pay": "دفع الفاتورة",
+        "download": "تحميل الفاتورة"
+      },
+      "filters": {
+        "creationDate": "تاريخ الإنشاء",
+        "selectDateRange": "اختر نطاق التاريخ",
+        "from": "من",
+        "to": "إلى",
+        "fromDateHint": "يوم/شهر/سنة",
+        "toDateHint": "يوم/شهر/سنة",
+        "enterFromDate": "أدخل التاريخ من",
+        "enterToDate": "أدخل التاريخ إلى",
+        "amount": "المبلغ",
+        "searchByAmount": "البحث بالمبلغ",
+        "fromAmount": "المبلغ من",
+        "toAmount": "المبلغ إلى",
+        "enterFromAmount": "أدخل المبلغ من...",
+        "enterToAmount": "أدخل المبلغ إلى...",
+        "status": "الحالة",
+        "selectInvoiceStatus": "اختر حالة الفاتورة",
+        "draft": "مسودة",
+        "overdue": "متأخرة",
+        "paid": "مدفوعة",
+        "partiallyPaid": "مدفوعة جزئياً"
+      },
+      "messages": {
+        "error": "خطأ في جلب رابط الفاتورة",
+        "downloadError": "خطأ في تحميل الفاتورة",
+        "unknownError": "حدث خطأ غير معروف.",
+        "invalidDateRange": "نطاق تاريخ غير صحيح",
+        "invalidAmountRange": "نطاق مبلغ غير صحيح",
+        "invalidAmountRangeDesc": "يجب أن يكون المبلغ من أقل من المبلغ إلى."
+      }
+    },
+    "charges": {
+      "title": "الرسوم",
+      "columns": {
+        "refNo": "#رقم المرجع",
+        "date": "التاريخ",
+        "amount": "المبلغ",
+        "description": "الوصف"
+      },
+      "filters": {
+        "creationDate": "تاريخ الإنشاء",
+        "selectDateRange": "اختر نطاق التاريخ",
+        "from": "من",
+        "to": "إلى",
+        "fromDateHint": "يوم/شهر/سنة",
+        "toDateHint": "يوم/شهر/سنة",
+        "enterFromDate": "أدخل التاريخ من",
+        "enterToDate": "أدخل التاريخ إلى"
+      },
+      "messages": {
+        "error": "خطأ في جلب تاريخ الدفع",
+        "errorDescription": "حدث خطأ أثناء جلب تاريخ الدفع.",
+        "invalidDateRange": "نطاق تاريخ غير صحيح"
+      }
+    },
+    "common": {
+      "filters": {
+        "creationDate": "تاريخ الإنشاء",
+        "selectDateRange": "اختر نطاق التاريخ",
+        "from": "من",
+        "to": "إلى",
+        "fromDateHint": "يوم/شهر/سنة",
+        "toDateHint": "يوم/شهر/سنة",
+        "enterFromDate": "أدخل التاريخ من",
+        "enterToDate": "أدخل التاريخ إلى"
       }
     }
   }

@@ -62,6 +62,7 @@ import { AxiosError } from "axios";
 import { isValidDateRange } from "@/lib/date";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
+import { useTranslations } from "next-intl";
 
 type ChargesFilters = {
   fromDate?: Date;
@@ -76,6 +77,11 @@ const toDate = new Date();
 
 const BillingTable = () => {
   const { toast } = useToast();
+
+  const t = useTranslations("billing.charges");
+  const tCommon = useTranslations("common");
+  const tBillingCommon = useTranslations("billing.common");
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filters, setFilters] = useState<ChargesFilters>({
     fromDate,
@@ -117,7 +123,7 @@ const BillingTable = () => {
 
   const table = useReactTable({
     data: charges.data,
-    columns,
+    columns: columns(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -136,10 +142,9 @@ const BillingTable = () => {
   useEffect(() => {
     if (isError && error instanceof AxiosError) {
       toast({
-        title: "Error fetching payment history",
+        title: t("messages.error"),
         description:
-          error.response?.data?.message ||
-          "An error occurred while fetching payment history.",
+          error.response?.data?.message || t("messages.errorDescription"),
         variant: "destructive",
       });
     }
@@ -149,7 +154,7 @@ const BillingTable = () => {
     <div className="h-full flex flex-col border rounded-xl">
       <Collapsible>
         <div className="users-table-head flex items-center justify-between p-4">
-          <h2>Charges</h2>
+          <h2>{t("title")}</h2>
           <div className="actions flex items-center gap-2">
             <CollapsibleTrigger asChild>
               <Toggle pressed={true} className="rounded-full">
@@ -168,8 +173,8 @@ const BillingTable = () => {
             }}
           >
             <FilterBox
-              triggerLabel="Creation Date"
-              label="Select a date range"
+              triggerLabel={tBillingCommon("filters.creationDate")}
+              label={tBillingCommon("filters.selectDateRange")}
               onReset={() => {
                 setFilters((prev) => ({ ...prev, fromDate, toDate }));
                 setTimeout(() => {
@@ -182,7 +187,7 @@ const BillingTable = () => {
                   filters.toDate,
                   (message) => {
                     toast({
-                      title: "Invalid date range",
+                      title: t("messages.invalidDateRange"),
                       description: message,
                       variant: "destructive",
                     });
@@ -194,13 +199,13 @@ const BillingTable = () => {
               }}
             >
               <Field
-                label="From"
-                hint="DD/MM/YYYY"
+                label={tBillingCommon("filters.from")}
+                hint={tBillingCommon("filters.fromDateHint")}
                 postIcon={<CalendarIcon className="text-gray-400" />}
               >
                 <DatePicker
                   className="flex-1"
-                  placeholder="Enter from date"
+                  placeholder={tBillingCommon("filters.enterFromDate")}
                   value={filters.fromDate}
                   onChange={(date) =>
                     setFilters((prev) => ({
@@ -211,13 +216,13 @@ const BillingTable = () => {
                 />
               </Field>
               <Field
-                label="To"
-                hint="DD/MM/YYYY"
+                label={tBillingCommon("filters.to")}
+                hint={tBillingCommon("filters.toDateHint")}
                 postIcon={<CalendarIcon className="text-gray-400" />}
               >
                 <DatePicker
                   className="flex-1"
-                  placeholder="Enter to date"
+                  placeholder={tBillingCommon("filters.enterToDate")}
                   value={filters.toDate}
                   onChange={(date) =>
                     setFilters((prev) => ({
@@ -260,7 +265,7 @@ const BillingTable = () => {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Loading...
+                  {tCommon("states.loading")}
                 </TableCell>
               </TableRow>
             )}
@@ -287,7 +292,7 @@ const BillingTable = () => {
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    {tCommon("search.noResults")}
                   </TableCell>
                 </TableRow>
               ))}
@@ -332,7 +337,9 @@ const BillingTable = () => {
           </div>
 
           <div className="flex items-center gap-2 per-page">
-            <label className="text-sm">Rows per page:</label>
+            <label className="text-sm">
+              {tCommon("pagination.rowsPerPage")}:
+            </label>
             <Select
               onValueChange={(pageSize) =>
                 table.setPageSize(parseInt(pageSize, 10))
@@ -350,7 +357,9 @@ const BillingTable = () => {
             </Select>
             <p className="text-sm">
               {charges.from}-{charges.to}
-              {charges.total ? ` of ${charges.total}` : ""}
+              {charges.total
+                ? ` ${tCommon("pagination.of")} ${charges.total}`
+                : ""}
             </p>
           </div>
         </div>

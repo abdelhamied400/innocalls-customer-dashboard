@@ -18,7 +18,7 @@ const UsersTableFilters = ({
   statusColumn,
   table,
 }: UsersTableFiltersProps) => {
-  const t = useTranslations("users.list.filters");
+  const t = useTranslations("users.list");
   return (
     <FilterBar
       onClear={() => {
@@ -28,8 +28,8 @@ const UsersTableFilters = ({
       }}
     >
       <FilterBox
-        triggerLabel={t("status")}
-        label={t("selectFromList")}
+        triggerLabel={t("filters.status")}
+        label={t("filters.selectFromList")}
         onReset={() => {
           statusColumn?.setFilterValue("");
           setStatus([]);
@@ -53,7 +53,7 @@ const UsersTableFilters = ({
           {userStatuses.map((s) => (
             <div className="flex items-center space-x-2" key={s.value}>
               <RadioGroupItem value={s.value} id={s.value} />
-              <Label htmlFor={s.value}>{s.label}</Label>
+              <Label htmlFor={s.value}>{t(`status.${s.value}`)}</Label>
             </div>
           ))}
         </RadioGroup>

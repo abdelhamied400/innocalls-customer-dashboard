@@ -22,7 +22,12 @@
       }
     },
     "actions": {
-      "close": "Close"
+      "close": "Close",
+      "reset": "Reset",
+      "apply": "Apply"
+    },
+    "states": {
+      "loading": "Loading..."
     }
   },
   "numbers": {
@@ -326,6 +331,119 @@
       },
       "actions": {
         "submit": "Edit user"
+      }
+    }
+  },
+  "billing": {
+    "layout": {
+      "tabs": {
+        "charges": "Charges",
+        "paymentHistory": "Payment History",
+        "rates": "Rates",
+        "invoices": "Invoices"
+      },
+      "actions": {
+        "refillBalance": "Refill Balance"
+      }
+    },
+    "rates": {
+      "title": "Rates",
+      "columns": {
+        "sourceCode": "Source Code",
+        "destinationName": "Destination Name",
+        "destinationCode": "Destination Code",
+        "rate": "Rate"
+      },
+      "filters": {
+        "service": "Service",
+        "selectFromList": "Select from the list"
+      },
+      "services": {
+        "calls": "Calls",
+        "sms": "Sms"
+      }
+    },
+    "paymentHistory": {
+      "title": "Payment History",
+      "columns": {
+        "refNo": "#Ref-No",
+        "date": "Date",
+        "amount": "Amount",
+        "description": "Description"
+      },
+      "messages": {
+        "error": "Error fetching payment history",
+        "errorDescription": "An error occurred while fetching payment history.",
+        "invalidDateRange": "Invalid date range"
+      }
+    },
+    "invoices": {
+      "title": "Invoices",
+      "columns": {
+        "refNo": "#Ref-No",
+        "date": "Date",
+        "email": "Email",
+        "total": "Total",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "paid": "paid",
+        "overdue": "overdue",
+        "draft": "draft",
+        "partially_paid": "partially_paid"
+      },
+      "actions": {
+        "pay": "Pay Invoice",
+        "download": "Download Invoice"
+      },
+      "filters": {
+        "amount": "Amount",
+        "searchByAmount": "Search by amount",
+        "fromAmount": "From Amount",
+        "toAmount": "To Amount",
+        "enterFromAmount": "Enter from amount...",
+        "enterToAmount": "Enter to amount...",
+        "status": "Status",
+        "selectInvoiceStatus": "Select invoice status",
+        "draft": "Draft",
+        "overdue": "Overdue",
+        "paid": "Paid",
+        "partiallyPaid": "Partially Paid"
+      },
+      "messages": {
+        "error": "Error fetching invoice URL",
+        "downloadError": "Error downloading invoice",
+        "unknownError": "An unknown error occurred.",
+        "invalidDateRange": "Invalid date range",
+        "invalidAmountRange": "Invalid Amount Range",
+        "invalidAmountRangeDesc": "From amount must be less than to amount."
+      }
+    },
+    "charges": {
+      "title": "Charges",
+      "columns": {
+        "refNo": "#Ref-No",
+        "date": "Date",
+        "amount": "Amount",
+        "description": "Description"
+      },
+      "messages": {
+        "error": "Error fetching payment history",
+        "errorDescription": "An error occurred while fetching payment history.",
+        "invalidDateRange": "Invalid date range"
+      }
+    },
+    "common": {
+      "filters": {
+        "creationDate": "Creation Date",
+        "selectDateRange": "Select a date range",
+        "from": "From",
+        "to": "To",
+        "fromDateHint": "DD/MM/YYYY",
+        "toDateHint": "DD/MM/YYYY",
+        "enterFromDate": "Enter from date",
+        "enterToDate": "Enter to date"
       }
     }
   }

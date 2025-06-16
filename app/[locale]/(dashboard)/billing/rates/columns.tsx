@@ -1,6 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import { useTranslations } from "next-intl";
 
 export type Rate = {
   currency: string;
@@ -11,31 +12,35 @@ export type Rate = {
   sourceName: string;
 };
 
-export const columns: ColumnDef<Rate>[] = [
-  {
-    accessorKey: "sourceCode",
-    header: "Source Code",
-  },
-  {
-    accessorKey: "destinationName",
-    header: "Destination Name",
-  },
-  {
-    accessorKey: "destinationCode",
-    header: "Destination Code",
-  },
-  {
-    accessorKey: "rate",
-    header: "Rate",
-    cell: ({ row }) => {
-      const rate = row.getValue("rate") as string;
-      const currency = row.original.currency as string;
-      return (
-        <div className="flex flex-col items-center w-min font-normal">
-          <p>{rate}</p>
-          <p className="text-gray-500">{currency}</p>
-        </div>
-      );
+export const columns = (): ColumnDef<Rate>[] => {
+  const t = useTranslations("billing.rates.columns");
+
+  return [
+    {
+      accessorKey: "sourceCode",
+      header: t("sourceCode"),
     },
-  },
-];
+    {
+      accessorKey: "destinationName",
+      header: t("destinationName"),
+    },
+    {
+      accessorKey: "destinationCode",
+      header: t("destinationCode"),
+    },
+    {
+      accessorKey: "rate",
+      header: t("rate"),
+      cell: ({ row }) => {
+        const rate = row.getValue("rate") as string;
+        const currency = row.original.currency as string;
+        return (
+          <div className="flex flex-col items-center w-min font-normal">
+            <p>{rate}</p>
+            <p className="text-gray-500">{currency}</p>
+          </div>
+        );
+      },
+    },
+  ];
+};
