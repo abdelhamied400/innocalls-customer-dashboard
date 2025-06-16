@@ -1,8 +1,16 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import WavesurferPlayer from "@wavesurfer/react";
+import { useToast } from "@/hooks/use-toast";
+import callReportingService from "@/services/call-reporting.service";
 import { Call } from "@/types/api/call-reporting";
+import { PlayCircle } from "@mui/icons-material";
 import { ColumnDef } from "@tanstack/react-table";
+import { useMemo, useState } from "react";
+import SoundPlayer from "@/components/SoundPlayer";
 
 export const columns: ColumnDef<Call>[] = [
   {
@@ -100,18 +108,60 @@ export const columns: ColumnDef<Call>[] = [
     accessorKey: "recording",
     header: "Recording",
     cell: ({ row }) => {
-      const recording = row.getValue("recording") as string;
-      return recording ? (
-        <a
-          href={recording}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-500 hover:underline"
-        >
-          View Recording
-        </a>
-      ) : (
-        <span className="text-gray-500">No Recording</span>
+      const hasRecording = row.original.hasRecording;
+      const callId = row.original.id;
+      const { toast } = useToast();
+      const [isLoading, setIsLoading] = useState(false);
+      const [isModalOpen, setIsModalOpen] = useState(false);
+      const [recordingUrl, setRecordingUrl] = useState<string | null>(null);
+      const recordingFileName = useMemo(() => {
+        if (recordingUrl) {
+          const urlParts = recordingUrl.split("/");
+          return urlParts[urlParts.length - 1];
+        }
+        return null;
+      }, [recordingUrl]);
+
+      const getRecording = async (callId: string) => {
+        try {
+          setIsLoading(true);
+          const recordingUrl = await callReportingService.getCallRecording(
+            callId
+          );
+          setRecordingUrl(recordingUrl);
+          setIsModalOpen(true);
+        } catch (error) {
+          toast({
+            title: "Error",
+            description: "Failed to fetch recording. Please try again later.",
+            variant: "destructive",
+          });
+          console.error("Error fetching recording:", error);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      return (
+        hasRecording && (
+          <>
+            <Button
+              size="icon"
+              variant="ghost-success"
+              onClick={() => getRecording(callId)}
+              loading={isLoading}
+            >
+              <PlayCircle />
+            </Button>
+            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+              <DialogContent>
+                <DialogTitle>Call Recording</DialogTitle>
+                {recordingUrl && (
+                  <SoundPlayer label={recordingFileName} url={recordingUrl} />
+                )}
+              </DialogContent>
+            </Dialog>
+          </>
+        )
       );
     },
   },
