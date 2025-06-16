@@ -9,7 +9,7 @@ import callReportingService from "@/services/call-reporting.service";
 import { Call } from "@/types/api/call-reporting";
 import { PlayCircle } from "@mui/icons-material";
 import { ColumnDef } from "@tanstack/react-table";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import SoundPlayer from "@/components/SoundPlayer";
 
 export const columns: ColumnDef<Call>[] = [
@@ -114,6 +114,13 @@ export const columns: ColumnDef<Call>[] = [
       const [isLoading, setIsLoading] = useState(false);
       const [isModalOpen, setIsModalOpen] = useState(false);
       const [recordingUrl, setRecordingUrl] = useState<string | null>(null);
+      const recordingFileName = useMemo(() => {
+        if (recordingUrl) {
+          const urlParts = recordingUrl.split("/");
+          return urlParts[urlParts.length - 1];
+        }
+        return null;
+      }, [recordingUrl]);
 
       const getRecording = async (callId: string) => {
         try {
@@ -148,7 +155,9 @@ export const columns: ColumnDef<Call>[] = [
             <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
               <DialogContent>
                 <DialogTitle>Call Recording</DialogTitle>
-                {recordingUrl && <SoundPlayer url={recordingUrl} />}
+                {recordingUrl && (
+                  <SoundPlayer label={recordingFileName} url={recordingUrl} />
+                )}
               </DialogContent>
             </Dialog>
           </>

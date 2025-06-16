@@ -6,9 +6,10 @@ import { format, formatDuration } from "date-fns";
 
 interface SoundPlayerProps {
   url: string;
+  label?: string | null;
 }
 
-const SoundPlayer = ({ url }: SoundPlayerProps) => {
+const SoundPlayer = ({ label, url }: SoundPlayerProps) => {
   const waveformRef = useRef<HTMLDivElement | null>(null);
   const wavesurferRef = useRef<WaveSurfer | null>(null);
   const [playerStatus, setPlayerStatus] = useState<"playing" | "paused">(
@@ -67,30 +68,38 @@ const SoundPlayer = ({ url }: SoundPlayerProps) => {
   };
 
   return (
-    <div className="flex items-center gap-4">
-      <Button
-        size="icon"
-        variant="ghost-primary"
-        className="w-16 h-16 flex items-center justify-center rounded-3xl [&_svg]:size-6"
-        onClick={handleDownload}
-      >
-        <Download />
-      </Button>
-      <Button
-        size="icon"
-        variant={
-          playerStatus === "playing" ? "ghost-destructive" : "ghost-success"
-        }
-        onClick={handlePlayPause}
-        className="w-16 h-16 flex items-center justify-center rounded-3xl [&_svg]:size-6"
-      >
-        {playerStatus === "playing" ? <Pause /> : <PlayArrow />}
-      </Button>
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between">
+        <p className="text-gray-500 text-sm">{label}</p>
+        <p className="text-gray-500 text-sm">{formattedDuration}</p>
+      </div>
+      <div className="flex items-center gap-12">
+        <div className="flex items-center gap-4">
+          <Button
+            size="icon"
+            variant="ghost-primary"
+            className="w-16 h-16 flex items-center justify-center rounded-3xl [&_svg]:size-6"
+            onClick={handleDownload}
+          >
+            <Download />
+          </Button>
+          <Button
+            size="icon"
+            variant={
+              playerStatus === "playing" ? "ghost-destructive" : "ghost-success"
+            }
+            onClick={handlePlayPause}
+            className="w-16 h-16 flex items-center justify-center rounded-3xl [&_svg]:size-6"
+          >
+            {playerStatus === "playing" ? <Pause /> : <PlayArrow />}
+          </Button>
+        </div>
 
-      <div
-        ref={waveformRef}
-        style={{ width: "100%", marginBottom: 8, flex: 1 }}
-      />
+        <div
+          ref={waveformRef}
+          style={{ width: "100%", marginBottom: 8, flex: 1 }}
+        />
+      </div>
     </div>
   );
 };
