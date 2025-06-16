@@ -19,9 +19,11 @@ export const isValidDateRange = (
     onInvalid?.("From date cannot be after to date.");
     return false;
   }
-  if (differenceInDays(toDate, fromDate) > maxRange) {
-    onInvalid?.(`Maximum date range is ${maxRange} days`);
-    return false;
+  if (maxRange !== -1) {
+    if (differenceInDays(toDate, fromDate) > maxRange) {
+      onInvalid?.(`Maximum date range is ${maxRange} days`);
+      return false;
+    }
   }
   return true;
 };

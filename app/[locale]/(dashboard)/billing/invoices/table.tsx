@@ -151,13 +151,18 @@ const BillingTable = () => {
 
   const applyFilters = () => {
     let isValid = true;
-    isValid = isValidDateRange(filters.fromDate, filters.toDate, (message) => {
-      toast({
-        title: "Invalid date range",
-        description: message,
-        variant: "destructive",
-      });
-    });
+    isValid = isValidDateRange(
+      filters.fromDate,
+      filters.toDate,
+      (message) => {
+        toast({
+          title: "Invalid date range",
+          description: message,
+          variant: "destructive",
+        });
+      },
+      -1
+    );
 
     // Validate amount range
     if (

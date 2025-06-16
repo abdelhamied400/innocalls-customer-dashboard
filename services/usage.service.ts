@@ -54,4 +54,19 @@ export default {
     const res = await api.get(`/jera/stats-detailed?${queryParams}`);
     return res.data;
   },
+  exportUsageDetailed: async (filters: UsageDetailedFilters = {}) => {
+    const queryParams = objToQueryString({
+      ...filters,
+      fromDate: filters.fromDate
+        ? format(filters.fromDate, "yyyy-MM-dd")
+        : undefined,
+      toDate: filters.toDate ? format(filters.toDate, "yyyy-MM-dd") : undefined,
+      codeName: filters.codeName || undefined,
+      accountId: filters.accountId || undefined,
+      packageId: filters.packageId || undefined,
+      origin: filters.origin || undefined,
+    });
+    const res = await api.get(`/jera/stats-detailed/export?${queryParams}`);
+    return res.data;
+  },
 };

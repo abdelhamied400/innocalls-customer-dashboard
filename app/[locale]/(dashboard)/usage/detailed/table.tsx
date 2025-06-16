@@ -47,7 +47,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Toggle } from "@/components/ui/toggle";
-import { FilterAltOutlined } from "@mui/icons-material";
+import { Download, FilterAltOutlined } from "@mui/icons-material";
 import DatePicker from "@/components/ui/date-picker";
 import TableSkeleton from "@/components/ui/table-skeleton";
 import { FilterBar } from "@/components/FilterBar";
@@ -60,6 +60,7 @@ import { Label } from "@/components/ui/label";
 import { useFilters } from "@/hooks/use-filters";
 import { format } from "date-fns";
 import { isAxiosError } from "axios";
+import { Button } from "@/components/ui/button";
 
 interface UsageDetailedTableProps {
   initialPagination?: {
@@ -97,6 +98,7 @@ const UsageDetailedTable = ({
   const { updateFilters } = useFilters();
   const { packages, accounts } = useVocabStore();
 
+  const [isExporting, setIsExporting] = useState(false);
   const [filters, setFilters] = useState<UsageDetailedFilters>({
     ...defaultFilters,
     ...initialFilters,
@@ -126,6 +128,7 @@ const UsageDetailedTable = ({
       ),
     placeholderData: { columns: [], list: [], hasNext: false },
     retry: 0,
+    staleTime: 0,
   });
 
   const table = useReactTable({
@@ -146,6 +149,8 @@ const UsageDetailedTable = ({
   useEffect(() => {
     if (data.hasNext && !isFetching) {
       setPagesCount((prev) => pagination.pageIndex + 2);
+    } else {
+      setPagesCount(pagination.pageIndex + 1);
     }
   }, [data.hasNext, pagination.pageIndex, isFetching]);
 
@@ -180,6 +185,8 @@ const UsageDetailedTable = ({
       codeName: value,
     }));
     updateFilters({ codeName: value });
+
+    table.setPageIndex(0);
     setTimeout(() => {
       refetch();
     }, 0);
@@ -195,10 +202,13 @@ const UsageDetailedTable = ({
           description: message,
           variant: "destructive",
         });
-      }
+      },
+      30 // max 30 days range
     );
 
     if (!isValid) return;
+
+    table.setPageIndex(0);
 
     setTimeout(() => {
       refetch();
@@ -225,6 +235,31 @@ const UsageDetailedTable = ({
     }
   }, [isError, error, toast]);
 
+  const exportUsage = async () => {
+    try {
+      setIsExporting(true);
+      await usageService.exportUsageDetailed(filters);
+      toast({
+        title: "Export started",
+        description:
+          "Your export is being processed. You will be notified by email when it's ready.",
+      });
+    } catch (error) {
+      let message = "An unexpected error occurred";
+      if (isAxiosError(error)) {
+        message = error?.response?.data.message;
+      }
+      toast({
+        title: "Error exporting data",
+        description: message,
+        variant: "destructive",
+      });
+      console.error("Export error:", error);
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
   return (
     <div className="h-full flex flex-col">
       <Collapsible>
@@ -245,6 +280,14 @@ const UsageDetailedTable = ({
                 <FilterAltOutlined />
               </Toggle>
             </CollapsibleTrigger>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={exportUsage}
+              loading={isExporting}
+            >
+              <Download />
+            </Button>
           </div>
         </div>
         <CollapsibleContent>
@@ -496,7 +539,7 @@ const UsageDetailedTable = ({
                   onClick={() => {
                     table.nextPage();
                   }}
-                  disabled={!table.getCanNextPage()}
+                  disabled={!data.hasNext}
                 />
               </PaginationItem>
             </PaginationContent>

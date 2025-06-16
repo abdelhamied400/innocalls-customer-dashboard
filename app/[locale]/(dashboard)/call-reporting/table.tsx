@@ -293,7 +293,11 @@ const CallReportingTable = ({
                   <FilterAltOutlined />
                 </Toggle>
               </CollapsibleTrigger>
-              <Button variant="default" onClick={handleExport}>
+              <Button
+                variant="default"
+                onClick={handleExport}
+                loading={isExporting}
+              >
                 Export
               </Button>
             </div>
