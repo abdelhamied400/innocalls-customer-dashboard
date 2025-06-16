@@ -45,4 +45,8 @@ export default {
     const res = await api.get(`/cdr/user/export?${queryString}`);
     return res.data;
   },
+  getCallRecording: async (callId: string): Promise<string> => {
+    const res = await api.get(`/cdr/user/download-record/${callId}`);
+    return res.data;
+  },
 };
