@@ -1,17 +1,9 @@
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
-import { ChevronDownIcon } from "lucide-react";
-import FilterDialog from "@/components/FilterDialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { userStatuses } from "@/constants/user";
-import { Clear } from "@mui/icons-material";
 import { useTranslations } from "next-intl";
+import { FilterBar } from "@/components/FilterBar";
+import { FilterBox } from "@/components/FilterBox";
 
 interface UsersTableFiltersProps {
   status: string[];
@@ -28,8 +20,50 @@ const UsersTableFilters = ({
 }: UsersTableFiltersProps) => {
   const t = useTranslations("users.list.filters");
   return (
-    <div className="flex justify-between items-center p-3 border-t table-filters">
+    <>
+      <FilterBar
+        onClear={() => {
+          table.resetColumnFilters();
+          table.setSorting([]);
+          setStatus([]);
+        }}
+      >
+        <FilterBox
+          triggerLabel={t("status")}
+          label={t("selectFromList")}
+          onReset={() => {
+            statusColumn?.setFilterValue("");
+            setStatus([]);
+          }}
+          onApply={() => {
+            statusColumn?.setFilterValue(status.join(","));
+          }}
+          numberOfFilters={status.length}
+        >
+          <RadioGroup
+            defaultValue=""
+            onValueChange={(value: string) => {
+              if (value === "") {
+                setStatus([]);
+              } else {
+                setStatus(value.split(","));
+              }
+            }}
+            value={status.length === 1 ? status[0] : ""}
+          >
+            {userStatuses.map((s) => (
+              <div className="flex items-center space-x-2" key={s.value}>
+                <RadioGroupItem value={s.value} id={s.value} />
+                <Label htmlFor={s.value}>{s.label}</Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </FilterBox>
+      </FilterBar>
+
+      {/* <div className="flex justify-between items-center p-3 border-t table-filters">
       <div className="flex items-center gap-4">
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="filter" size="filter">
@@ -88,7 +122,8 @@ const UsersTableFilters = ({
       >
         <Clear /> {t("clear")}
       </Button>
-    </div>
+    </div> */}
+    </>
   );
 };
 

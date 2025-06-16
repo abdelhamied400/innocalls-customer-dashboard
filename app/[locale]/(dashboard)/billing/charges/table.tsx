@@ -295,7 +295,7 @@ const BillingTable = () => {
         </Table>
       </div>
 
-      {!isLoading && table.getRowModel().rows?.length && (
+      {!isLoading && table.getRowModel().rows?.length > 0 && (
         <div className="flex flex-wrap justify-between items-center gap-2 p-4">
           <div className="pagination">
             <Pagination className="justify-normal">

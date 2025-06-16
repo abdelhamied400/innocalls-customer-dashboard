@@ -1,7 +1,7 @@
 "use client";
 
 import callReportingService from "@/services/call-reporting.service";
-import { CallReportingFilters } from "@/types/api/call-reporting";
+import { CallReportingFilters, Option } from "@/types/api/call-reporting";
 import { useQuery } from "@tanstack/react-query";
 import {
   flexRender,
@@ -85,7 +85,7 @@ const defaultFilters: CallReportingFilters = {
   toDate: defaultToDate,
   sourceExtensions: [],
   destinationExtensions: [],
-  tags: "",
+  tags: [],
   callStatuses: "",
   search: "",
 };
@@ -200,6 +200,11 @@ const CallReportingTable = ({
         ? filters.destinationExtensions.map((ext) => ext.value).join(",")
         : typeof filters.destinationExtensions === "string"
         ? filters.destinationExtensions
+        : undefined,
+      tags: Array.isArray(filters.tags)
+        ? filters.tags.map((tag) => tag.value).join(",")
+        : typeof filters.tags === "string"
+        ? filters.tags
         : undefined,
     });
   }, [pageIndex, pageSize, filters, updateFilters]);
@@ -393,6 +398,7 @@ const CallReportingTable = ({
               }
             >
               <MultiSelect
+                isCreatable
                 options={extensionsOptions}
                 onChange={(extensions) => {
                   setFilters((prev) => ({
@@ -415,9 +421,31 @@ const CallReportingTable = ({
                     : undefined
                 }
                 isMulti
-                badgeClassName="text-sm"
+                badgeClassName="text-xs"
                 getLabel={(option) => option?.label || ""}
                 getValue={(option) => option?.value || ""}
+                onCreateOption={(newOption) => {
+                  // accept only numbers
+                  if (/^\d+$/.test(newOption)) {
+                    const newExt = { label: newOption, value: newOption };
+                    setFilters((prev) => ({
+                      ...prev,
+                      sourceExtensions: [
+                        ...(Array.isArray(prev.sourceExtensions)
+                          ? prev.sourceExtensions
+                          : []),
+                        newExt,
+                      ],
+                    }));
+                    return newExt;
+                  }
+                  toast({
+                    title: "Invalid extension",
+                    description: "Please enter a valid number.",
+                    variant: "destructive",
+                  });
+                  return false;
+                }}
               />
             </FilterBox>
             <FilterBox
@@ -458,6 +486,7 @@ const CallReportingTable = ({
               }
             >
               <MultiSelect
+                isCreatable
                 options={extensionsOptions}
                 onChange={(extensions) => {
                   setFilters((prev) => ({
@@ -480,7 +509,7 @@ const CallReportingTable = ({
                     : undefined
                 }
                 isMulti
-                badgeClassName="text-sm"
+                badgeClassName="text-xs"
                 getLabel={(option) => option?.label || ""}
                 getValue={(option) => option?.value || ""}
               />
@@ -500,32 +529,53 @@ const CallReportingTable = ({
               }}
               onApply={() => {
                 updateFilters({
-                  tags: filters.tags,
+                  tags: Array.isArray(filters.tags)
+                    ? filters.tags.map((tag) => tag.value).join(",")
+                    : typeof filters.tags === "string"
+                    ? filters.tags
+                    : undefined,
                 });
                 refetch();
               }}
-              numberOfFilters={filters.tags ? 1 : 0}
+              numberOfFilters={
+                filters.tags
+                  ? Array.isArray(filters.tags)
+                    ? filters.tags.length
+                    : filters.tags.split(",").filter(Boolean).length
+                  : 0
+              }
             >
-              <Select
-                value={filters.tags}
-                onValueChange={(value) => {
+              <MultiSelect
+                options={tags.map((tag) => ({
+                  label: tag.nameEN,
+                  value: tag.nameEN,
+                }))}
+                onChange={(selectedTags) => {
                   setFilters((prev) => ({
                     ...prev,
-                    tags: value || undefined,
+                    tags:
+                      selectedTags && selectedTags.length
+                        ? selectedTags.map((tag: Option) => tag.value).join(",")
+                        : undefined,
                   }));
                 }}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select tags" />
-                </SelectTrigger>
-                <SelectContent>
-                  {tags.map((tag) => (
-                    <SelectItem key={tag.id} value={tag.nameEN}>
-                      {tag.nameEN}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                value={
+                  Array.isArray(filters.tags)
+                    ? filters.tags
+                    : typeof filters.tags === "string"
+                    ? filters.tags.split(",").map((tagValue) => ({
+                        label:
+                          tags.find((tag) => tag.nameEN === tagValue)?.nameEN ||
+                          tagValue,
+                        value: tagValue,
+                      }))
+                    : []
+                }
+                isMulti
+                badgeClassName="text-xs"
+                getLabel={(option) => option?.label || ""}
+                getValue={(option) => option?.value || ""}
+              />
             </FilterBox>
             <FilterBox
               triggerLabel="Call Status"
