@@ -6,7 +6,7 @@ export interface UsageSummaryFilters {
   search: string;
   fromDate?: Date;
   toDate?: Date;
-  showBy?: string[];
+  groupBy?: string[];
 }
 
 export interface UsageDetailedFilters {

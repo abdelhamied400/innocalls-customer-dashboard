@@ -80,7 +80,7 @@ const defaultFilters = {
   search: "",
   fromDate,
   toDate,
-  showBy: [],
+  groupBy: [],
 };
 
 const UsageSummaryTable = ({
@@ -128,9 +128,9 @@ const UsageSummaryTable = ({
         ? format(filters.fromDate, "yyyy-MM-dd")
         : undefined,
       toDate: filters.toDate ? format(filters.toDate, "yyyy-MM-dd") : undefined,
-      showBy: Array.isArray(filters.showBy)
-        ? filters.showBy.join(",")
-        : filters.showBy,
+      groupBy: Array.isArray(filters.groupBy)
+        ? filters.groupBy.join(",")
+        : filters.groupBy,
     });
   }, [filters, updateFilters]);
 
@@ -186,7 +186,7 @@ const UsageSummaryTable = ({
         <div className="usage-summary-table-head flex items-center justify-between p-4">
           <h2>Usage Summary</h2>
           <div className="actions flex items-center gap-2">
-            <Field preIcon={<SearchIcon />}>
+            {/* <Field preIcon={<SearchIcon />}>
               <Input
                 variant="field"
                 placeholder="Search..."
@@ -196,7 +196,7 @@ const UsageSummaryTable = ({
                 onChange={handleSearchChange}
                 type="search"
               />
-            </Field>
+            </Field> */}
             <CollapsibleTrigger asChild>
               <Toggle pressed={true} className="rounded-full">
                 <FilterAltOutlined />
@@ -211,7 +211,7 @@ const UsageSummaryTable = ({
                 search: "",
                 fromDate: fromDate,
                 toDate: toDate,
-                showBy: [],
+                groupBy: [],
               });
               setTimeout(() => {
                 refetch();
@@ -283,30 +283,30 @@ const UsageSummaryTable = ({
               <div className="code-name flex items-center gap-2">
                 <Checkbox
                   id="codeName"
-                  checked={filters.showBy?.includes("codeName")}
+                  checked={filters.groupBy?.includes("codeName")}
                   onCheckedChange={(checked) =>
                     setFilters((prev) => ({
                       ...prev,
-                      showBy: checked
-                        ? [...(prev.showBy || []), "codeName"]
-                        : prev.showBy?.filter((item) => item !== "codeName") ||
+                      groupBy: checked
+                        ? [...(prev.groupBy || []), "codeName"]
+                        : prev.groupBy?.filter((item) => item !== "codeName") ||
                           [],
                     }))
                   }
                 />
-                <Label>Code name</Label>
+                <Label>Service name</Label>
               </div>
               {/* accountsName,packagesName */}
               <div className="accounts-name flex items-center gap-2">
                 <Checkbox
                   id="accountsName"
-                  checked={filters.showBy?.includes("accountsName")}
+                  checked={filters.groupBy?.includes("accountsName")}
                   onCheckedChange={(checked) =>
                     setFilters((prev) => ({
                       ...prev,
-                      showBy: checked
-                        ? [...(prev.showBy || []), "accountsName"]
-                        : prev.showBy?.filter(
+                      groupBy: checked
+                        ? [...(prev.groupBy || []), "accountsName"]
+                        : prev.groupBy?.filter(
                             (item) => item !== "accountsName"
                           ) || [],
                     }))
@@ -317,13 +317,13 @@ const UsageSummaryTable = ({
               <div className="packages-name flex items-center gap-2">
                 <Checkbox
                   id="packagesName"
-                  checked={filters.showBy?.includes("packagesName")}
+                  checked={filters.groupBy?.includes("packagesName")}
                   onCheckedChange={(checked) =>
                     setFilters((prev) => ({
                       ...prev,
-                      showBy: checked
-                        ? [...(prev.showBy || []), "packagesName"]
-                        : prev.showBy?.filter(
+                      groupBy: checked
+                        ? [...(prev.groupBy || []), "packagesName"]
+                        : prev.groupBy?.filter(
                             (item) => item !== "packagesName"
                           ) || [],
                     }))

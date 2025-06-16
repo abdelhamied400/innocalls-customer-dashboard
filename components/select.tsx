@@ -136,6 +136,8 @@ const Select = ({
             getOptionLabel={getOptionLabel}
             getOptionValue={getOptionValue}
             onCreateOption={onCreateOption}
+            menuPortalTarget={document.body}
+            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
             classNames={{
               control: () => "control",
               valueContainer: () => "value-container",

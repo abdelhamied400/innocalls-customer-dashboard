@@ -40,7 +40,10 @@ export const FilterBox = ({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        className={cn("p-0 rounded-lg overflow-visible", className)}
+        className={cn(
+          "p-0 rounded-lg overflow-y-auto max-w-sm max-h-96",
+          className
+        )}
       >
         <div className="flex flex-col gap-2 pt-2 min-w-72 filter-dialog">
           <h4 className="px-4 py-2 text-neutral-600 filter-dialog-header">

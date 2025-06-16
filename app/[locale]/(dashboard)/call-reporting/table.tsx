@@ -282,11 +282,11 @@ const CallReportingTable = ({
         <div className="call-reporting-table-head flex items-center justify-between p-4">
           <h2>Call Reporting</h2>
           <div className="flex items-center gap-2">
-            <div className="searchbar">
+            {/* <div className="searchbar">
               <Field preIcon={<Search />}>
                 <Input variant="field" placeholder="Search..." type="search" />
               </Field>
-            </div>
+            </div> */}
             <div className="actions flex items-center gap-2">
               <CollapsibleTrigger asChild>
                 <Toggle pressed={true} className="rounded-full">
@@ -370,7 +370,6 @@ const CallReportingTable = ({
               </Field>
             </FilterBox>
             <FilterBox
-              className="max-w-sm"
               triggerLabel="Source"
               label="Filter by Source Extensions"
               onReset={() => {
@@ -453,7 +452,6 @@ const CallReportingTable = ({
               />
             </FilterBox>
             <FilterBox
-              className="max-w-sm"
               triggerLabel="Destination"
               label="Filter by Destination Extensions"
               onReset={() => {
@@ -552,7 +550,7 @@ const CallReportingTable = ({
               <MultiSelect
                 options={tags.map((tag) => ({
                   label: tag.nameEN,
-                  value: tag.nameEN,
+                  value: tag.id,
                 }))}
                 onChange={(selectedTags) => {
                   setFilters((prev) => ({
@@ -569,7 +567,7 @@ const CallReportingTable = ({
                     : typeof filters.tags === "string"
                     ? filters.tags.split(",").map((tagValue) => ({
                         label:
-                          tags.find((tag) => tag.nameEN === tagValue)?.nameEN ||
+                          tags.find((tag) => tag.id === tagValue)?.nameEN ||
                           tagValue,
                         value: tagValue,
                       }))
