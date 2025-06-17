@@ -173,8 +173,8 @@ const BillingTable = () => {
             }}
           >
             <FilterBox
-              triggerLabel={tBillingCommon("filters.creationDate")}
-              label={tBillingCommon("filters.selectDateRange")}
+              triggerLabel={tBillingCommon("filters.creationDate.label")}
+              label={tBillingCommon("filters.creationDate.placeholder")}
               onReset={() => {
                 setFilters((prev) => ({ ...prev, fromDate, toDate }));
                 setTimeout(() => {
@@ -187,7 +187,7 @@ const BillingTable = () => {
                   filters.toDate,
                   (message) => {
                     toast({
-                      title: t("messages.invalidDateRange"),
+                      title: tBillingCommon("messages.invalidDateRange"),
                       description: message,
                       variant: "destructive",
                     });
@@ -199,13 +199,13 @@ const BillingTable = () => {
               }}
             >
               <Field
-                label={tBillingCommon("filters.from")}
-                hint={tBillingCommon("filters.fromDateHint")}
+                label={tBillingCommon("filters.fromDate.label")}
+                hint={tBillingCommon("filters.fromDate.hint")}
                 postIcon={<CalendarIcon className="text-gray-400" />}
               >
                 <DatePicker
                   className="flex-1"
-                  placeholder={tBillingCommon("filters.enterFromDate")}
+                  placeholder={tBillingCommon("filters.fromDate.placeholder")}
                   value={filters.fromDate}
                   onChange={(date) =>
                     setFilters((prev) => ({
@@ -216,13 +216,13 @@ const BillingTable = () => {
                 />
               </Field>
               <Field
-                label={tBillingCommon("filters.to")}
-                hint={tBillingCommon("filters.toDateHint")}
+                label={tBillingCommon("filters.toDate.label")}
+                hint={tBillingCommon("filters.toDate.hint")}
                 postIcon={<CalendarIcon className="text-gray-400" />}
               >
                 <DatePicker
                   className="flex-1"
-                  placeholder={tBillingCommon("filters.enterToDate")}
+                  placeholder={tBillingCommon("filters.toDate.placeholder")}
                   value={filters.toDate}
                   onChange={(date) =>
                     setFilters((prev) => ({

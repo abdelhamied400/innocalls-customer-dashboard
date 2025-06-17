@@ -383,8 +383,7 @@
       },
       "messages": {
         "error": "خطأ في جلب تاريخ الدفع",
-        "errorDescription": "حدث خطأ أثناء جلب تاريخ الدفع.",
-        "invalidDateRange": "نطاق تاريخ غير صحيح"
+        "errorDescription": "حدث خطأ أثناء جلب تاريخ الدفع."
       }
     },
     "invoices": {
@@ -433,7 +432,6 @@
         "error": "خطأ في جلب رابط الفاتورة",
         "downloadError": "خطأ في تحميل الفاتورة",
         "unknownError": "حدث خطأ غير معروف.",
-        "invalidDateRange": "نطاق تاريخ غير صحيح",
         "invalidAmountRange": "نطاق مبلغ غير صحيح",
         "invalidAmountRangeDesc": "يجب أن يكون المبلغ من أقل من المبلغ إلى."
       }
@@ -458,20 +456,28 @@
       },
       "messages": {
         "error": "خطأ في جلب تاريخ الدفع",
-        "errorDescription": "حدث خطأ أثناء جلب تاريخ الدفع.",
-        "invalidDateRange": "نطاق تاريخ غير صحيح"
+        "errorDescription": "حدث خطأ أثناء جلب تاريخ الدفع."
       }
     },
     "common": {
       "filters": {
-        "creationDate": "تاريخ الإنشاء",
-        "selectDateRange": "اختر نطاق التاريخ",
-        "from": "من",
-        "to": "إلى",
-        "fromDateHint": "يوم/شهر/سنة",
-        "toDateHint": "يوم/شهر/سنة",
-        "enterFromDate": "أدخل التاريخ من",
-        "enterToDate": "أدخل التاريخ إلى"
+        "fromDate": {
+          "hint": "يوم/شهر/سنة",
+          "label": "من",
+          "placeholder": "أدخل التاريخ من"
+        },
+        "toDate": {
+          "label": "إلى",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل التاريخ إلى"
+        },
+        "creationDate": {
+          "label": "تاريخ الإنشاء",
+          "placeholder": "اختر نطاق التاريخ"
+        }
+      },
+      "messages": {
+        "invalidDateRange": "نطاق تاريخ غير صحيح"
       }
     }
   },

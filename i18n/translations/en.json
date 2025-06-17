@@ -373,8 +373,7 @@
       },
       "messages": {
         "error": "Error fetching payment history",
-        "errorDescription": "An error occurred while fetching payment history.",
-        "invalidDateRange": "Invalid date range"
+        "errorDescription": "An error occurred while fetching payment history."
       }
     },
     "invoices": {
@@ -415,7 +414,6 @@
         "error": "Error fetching invoice URL",
         "downloadError": "Error downloading invoice",
         "unknownError": "An unknown error occurred.",
-        "invalidDateRange": "Invalid date range",
         "invalidAmountRange": "Invalid Amount Range",
         "invalidAmountRangeDesc": "From amount must be less than to amount."
       }
@@ -430,20 +428,28 @@
       },
       "messages": {
         "error": "Error fetching payment history",
-        "errorDescription": "An error occurred while fetching payment history.",
-        "invalidDateRange": "Invalid date range"
+        "errorDescription": "An error occurred while fetching payment history."
       }
     },
     "common": {
       "filters": {
-        "creationDate": "Creation Date",
-        "selectDateRange": "Select a date range",
-        "from": "From",
-        "to": "To",
-        "fromDateHint": "DD/MM/YYYY",
-        "toDateHint": "DD/MM/YYYY",
-        "enterFromDate": "Enter from date",
-        "enterToDate": "Enter to date"
+        "fromDate": {
+          "hint": "DD/MM/YYYY",
+          "label": "From",
+          "placeholder": "Enter from date"
+        },
+        "toDate": {
+          "label": "To",
+          "hint": "DD/MM/YYYY",
+          "placeholder": "Enter to date"
+        },
+        "creationDate": {
+          "label": "Creation Date",
+          "hint": "Select a date range"
+        }
+      },
+      "messages": {
+        "invalidDateRange": "Invalid date range"
       }
     }
   },
