@@ -9,7 +9,7 @@ import { useTranslations } from "next-intl";
 const Loading = () => {
 
   const t = useTranslations('numbers');
-  const searchT = useTranslations('common.search');
+  const tCommonSearch = useTranslations('common.search');
 
   return (
     <div className="loading h-full">
@@ -20,7 +20,7 @@ const Loading = () => {
             <Field preIcon={<SearchIcon />}>
               <Input
                 variant="field"
-                placeholder={searchT('placeholder')}
+                placeholder={tCommonSearch('placeholder')}
                 type="search"
                 disabled
               />

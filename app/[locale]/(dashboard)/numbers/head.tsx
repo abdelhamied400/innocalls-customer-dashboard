@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 const NumbersTableHead = () => {
   const { updateFilters } = useFilters();
   const t = useTranslations("numbers");
-  const searchT = useTranslations("common.search");
+  const tCommonSearch = useTranslations("common.search");
 
   const onSearchChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,7 +27,7 @@ const NumbersTableHead = () => {
         <Field preIcon={<SearchIcon />}>
           <Input
             variant="field"
-            placeholder={searchT("placeholder")}
+            placeholder={tCommonSearch("placeholder")}
             onChange={onSearchChange}
             type="search"
           />

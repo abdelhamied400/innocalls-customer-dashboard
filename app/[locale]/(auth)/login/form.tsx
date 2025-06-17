@@ -21,11 +21,9 @@ const LoginForm = () => {
   const t = useTranslations("auth.login");
   const tCommon = useTranslations("common");
 
-  const schema = LoginSchema(t,tCommon);
-
   // 1. Define your form.
   const form = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(LoginSchema(t, tCommon)),
     defaultValues: {
       email: "",
       password: "",
