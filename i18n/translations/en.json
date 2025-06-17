@@ -446,5 +446,22 @@
         "enterToDate": "Enter to date"
       }
     }
+  },
+  "sidebar": {
+    "navigation": {
+      "dashboard": "Dashboard",
+      "numbers": "Numbers",
+      "users": "Users",
+      "callReporting": "Call Reporting",
+      "billing": "Billing",
+      "usage": "Usage",
+      "orderConfirmation": "Order Confirmation",
+      "autoDialer": "Auto Dialer",
+      "developersTab": "Developers Tab",
+      "settings": "Settings"
+    },
+    "support": {
+      "innoSupport": "Inno Support"
+    }
   }
 }

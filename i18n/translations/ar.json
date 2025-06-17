@@ -474,5 +474,22 @@
         "enterToDate": "أدخل التاريخ إلى"
       }
     }
+  },
+  "sidebar": {
+    "navigation": {
+      "dashboard": "لوحة التحكم",
+      "numbers": "الأرقام",
+      "users": "المستخدمين",
+      "callReporting": "تقارير المكالمات",
+      "billing": "الفواتير",
+      "usage": "الاستخدام",
+      "orderConfirmation": "تأكيد الطلب",
+      "autoDialer": "الاتصال التلقائي",
+      "developersTab": "إعدادات المطورين",
+      "settings": "الإعدادات"
+    },
+    "support": {
+      "innoSupport": "دعم إنو"
+    }
   }
 }
