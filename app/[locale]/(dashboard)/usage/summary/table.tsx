@@ -117,6 +117,7 @@ const UsageSummaryTable = ({
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    manualPagination: true,
     state: {},
   });
 
@@ -272,7 +273,7 @@ const UsageSummaryTable = ({
                   ...prev,
                   fromDate,
                   toDate,
-                  showBy: [],
+                  groupBy: [],
                 }));
                 setTimeout(() => {
                   refetch();
