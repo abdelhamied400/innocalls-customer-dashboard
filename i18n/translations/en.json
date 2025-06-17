@@ -18,9 +18,21 @@
           "uppercase": "Password must contain at least one uppercase letter",
           "number": "Password must contain at least one number",
           "special": "Password must contain at least one special character"
+        },
+        "date":{
+          "from":{
+            "required":"From date is required",
+            "isBeforeTo":"From date cannot be after to date"
+          },
+          "to":{
+            "required":"To date is required"
+          },
+          "maxRangeExceeded":"Maximum date range is {maxRange} days"
         }
       }
     },
+
+
     "actions": {
       "close": "Close",
       "reset": "Reset",
@@ -445,7 +457,7 @@
         },
         "creationDate": {
           "label": "Creation Date",
-          "hint": "Select a date range"
+          "placeholder": "Select a date range"
         }
       },
       "messages": {

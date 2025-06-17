@@ -166,7 +166,8 @@ const BillingTable = () => {
           variant: "destructive",
         });
       },
-      -1
+      -1,
+      tCommon
     );
 
     // Validate amount range

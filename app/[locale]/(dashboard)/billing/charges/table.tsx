@@ -191,7 +191,9 @@ const BillingTable = () => {
                       description: message,
                       variant: "destructive",
                     });
-                  }
+                  },
+                  90,
+                  tCommon
                 );
                 if (!isValid) return;
                 // If valid, refetch the data
