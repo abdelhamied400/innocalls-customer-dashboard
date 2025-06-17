@@ -3,6 +3,7 @@ import WaveSurfer from "wavesurfer.js";
 import { Button } from "./ui/button";
 import { Download, Pause, PlayArrow } from "@mui/icons-material";
 import { format, formatDuration } from "date-fns";
+import { downloadFile } from "../lib/downloadFile";
 
 interface SoundPlayerProps {
   url: string;
@@ -15,6 +16,7 @@ const SoundPlayer = ({ label, url }: SoundPlayerProps) => {
   const [playerStatus, setPlayerStatus] = useState<"playing" | "paused">(
     "paused"
   );
+  const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
   const formattedDuration = useMemo(
     () => formatDuration({ seconds: duration }),
@@ -58,13 +60,10 @@ const SoundPlayer = ({ label, url }: SoundPlayerProps) => {
     }
   };
 
-  const handleDownload = () => {
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = url.split("/").pop() || "audio.wav";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownload = async () => {
+    setDownloadLoading(true);
+    await downloadFile(url, label || "audio.mp3");
+    setDownloadLoading(false);
   };
 
   return (
@@ -80,6 +79,7 @@ const SoundPlayer = ({ label, url }: SoundPlayerProps) => {
             variant="ghost-primary"
             className="w-16 h-16 flex items-center justify-center rounded-3xl [&_svg]:size-6"
             onClick={handleDownload}
+            loading={downloadLoading}
           >
             <Download />
           </Button>
