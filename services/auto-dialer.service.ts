@@ -23,7 +23,10 @@ export default {
 
     const queryString = objToQueryString(filtersObj);
     const res = await api.get(`/auto-dialer/campaigns?${queryString}`);
-    return res.data.data;
+    return {
+      ...res.data.data,
+      campaigns: Array(20).fill(res.data.data.campaigns[0]),
+    };
   },
   fetchFinshedCampaigns: async (
     filters?: any

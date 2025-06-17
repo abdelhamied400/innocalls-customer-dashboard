@@ -9,9 +9,8 @@ const AutoDialerActiveCampaigns = async ({
   searchParams,
 }: AutoDialerActiveCampaignsProps) => {
   return (
-    <div className="page" id="auto-dialer">
-      <div className="border rounded-xl">
-        <AutoDialerActiveHead />
+    <div className="page flex-1 overflow-hidden" id="auto-dialer">
+      <div className="border rounded-xl h-full flex flex-col overflow-hidden">
         <AutoDialerActiveCampaignsTable />
       </div>
     </div>

@@ -4,13 +4,13 @@ import { columns } from "./columns";
 import AutoDialerService from "@/services/auto-dialer.service";
 import { useSearchParams } from "next/navigation";
 import { useFilters } from "@/hooks/use-filters";
-import DataTableProvider, {
-  DataTable,
-  DataTableBody,
-  DataTableHeader,
-  DataTableSkeleton,
-} from "@/components/ui/data-table";
-import DataTablePagination from "@/components/ui/data-table-pagination";
+import PaginatedTable from "@/components/Table/PaginatedTable";
+import AutoDialerActiveHead from "./head";
+import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
+import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
+import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
+import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
+import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
 
 const ActiveCampaignsTable = () => {
   const filters = useSearchParams();
@@ -31,30 +31,17 @@ const ActiveCampaignsTable = () => {
   const { campaigns = [], ...pagination } = data || {};
 
   return (
-    <DataTableProvider
-      data={campaigns}
-      columns={columns}
-      pagination={{
-        ...pagination,
-        perPage,
-      }}
-      manualPagination
-      onPaginationChange={({ pageSize, pageIndex }) => {
-        updateFilters({
-          page: String(pageIndex + 1),
-          perPage: String(pageSize),
-        });
-      }}
-      defaultPageIndex={pageIndex}
-    >
-      <DataTable>
-        <DataTableHeader />
-        {isLoading && <DataTableSkeleton rows={3} />}
-        {!isLoading && <DataTableBody />}
-      </DataTable>
-
-      {!isLoading && <DataTablePagination />}
-    </DataTableProvider>
+    <div className="rounded-lg flex-1 flex flex-col overflow-hidden">
+      <AutoDialerActiveHead />
+      <PaginatedTable data={campaigns} columns={columns}>
+        <PaginatedTableContent>
+          <PaginatedTableHead />
+          {isLoading && <PaginatedTableSkeleton />}
+          {!isLoading && <PaginatedTableBody />}
+        </PaginatedTableContent>
+        {!isLoading && <PaginatedTablePagination />}
+      </PaginatedTable>
+    </div>
   );
 };
 

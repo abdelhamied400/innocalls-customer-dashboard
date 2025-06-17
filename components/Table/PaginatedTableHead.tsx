@@ -1,0 +1,31 @@
+"use client";
+
+import { flexRender } from "@tanstack/react-table";
+import { TableHead, TableHeader, TableRow } from "../ui/table";
+import { usePaginatedTable } from "./PaginatedTable";
+
+const PaginatedTableHead = () => {
+  const { table } = usePaginatedTable();
+  return (
+    <TableHeader className="bg-gray-100 sticky top-0 z-10">
+      {table.getHeaderGroups().map((headerGroup) => (
+        <TableRow key={headerGroup.id}>
+          {headerGroup.headers.map((header) => {
+            return (
+              <TableHead key={header.id}>
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+              </TableHead>
+            );
+          })}
+        </TableRow>
+      ))}
+    </TableHeader>
+  );
+};
+
+export default PaginatedTableHead;
