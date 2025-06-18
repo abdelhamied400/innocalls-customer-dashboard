@@ -163,13 +163,13 @@ const BillingTable = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="filter" size="filter">
-                {t("filters.service")}
+                {t("filters.service.label")}
                 <ChevronDownIcon />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <FilterDialog
-                title={t("filters.selectFromList")}
+                title={t("filters.service.placeholder")}
                 onReset={() => {
                   setFilters((prev) => ({ ...prev, serviceId: "1" }));
                   setTimeout(() => {

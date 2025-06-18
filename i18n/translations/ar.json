@@ -365,8 +365,10 @@
         "rate": "السعر"
       },
       "filters": {
-        "service": "الخدمة",
-        "selectFromList": "اختر من القائمة"
+        "service": {
+          "label": "الخدمة",
+          "placeholder": "اختر من القائمة"
+        }
       },
       "services": {
         "calls": "المكالمات",
@@ -415,24 +417,22 @@
         "download": "تحميل الفاتورة"
       },
       "filters": {
-        "from": "من",
-        "to": "إلى",
-        "fromDateHint": "يوم/شهر/سنة",
-        "toDateHint": "يوم/شهر/سنة",
-        "enterFromDate": "أدخل التاريخ من",
-        "enterToDate": "أدخل التاريخ إلى",
-        "amount": "المبلغ",
-        "searchByAmount": "البحث بالمبلغ",
-        "fromAmount": "المبلغ من",
-        "toAmount": "المبلغ إلى",
-        "enterFromAmount": "أدخل المبلغ من...",
-        "enterToAmount": "أدخل المبلغ إلى...",
-        "status": "الحالة",
-        "selectInvoiceStatus": "اختر حالة الفاتورة",
-        "draft": "مسودة",
-        "overdue": "متأخرة",
-        "paid": "مدفوعة",
-        "partiallyPaid": "مدفوعة جزئياً"
+        "amount": {
+          "triggerLabel": "المبلغ",
+          "label": "البحث بالمبلغ",
+          "from": {
+            "label": "المبلغ من",
+            "placeholder": "أدخل المبلغ من..."
+          },
+          "to": {
+            "label": "المبلغ إلى",
+            "placeholder": "أدخل المبلغ إلى..."
+          }
+        },
+        "status": {
+          "triggerLabel": "الحالة",
+          "label": "اختر حالة الفاتورة"
+        }
       },
       "messages": {
         "error": "خطأ في جلب رابط الفاتورة",
@@ -483,8 +483,56 @@
       "messages": {
         "invalidDateRange": "نطاق تاريخ غير صحيح"
       }
+    },
+    "refillBalance": {
+      "title": "إعادة شحن الرصيد",
+      "description": "أضف أموال إلى حسابك هنا.",
+      "form": {
+        "fields": {
+          "amount": {
+            "label": "المبلغ (دولار أمريكي)",
+            "placeholder": "أدخل المبلغ..."
+          },
+          "cardNumber": {
+            "label": "رقم البطاقة",
+            "placeholder": "رقم البطاقة..."
+          },
+          "expiryDate": {
+            "label": "تاريخ الانتهاء",
+            "placeholder": "شهر/سنة"
+          },
+          "cvc": {
+            "label": "رمز الأمان",
+            "placeholder": "رمز الأمان"
+          },
+          "country": {
+            "label": "البلد",
+            "placeholder": "اختر بلد..."
+          }
+        },
+        "validation": {
+          "amount": {
+            "required": "المبلغ مطلوب",
+            "invalid": "يرجى إدخال مبلغ صحيح",
+            "minimum": "يجب أن يكون المبلغ على الأقل دولار واحد"
+          }
+        }
+      },
+      "messages": {
+        "paymentSuccess": "تم الدفع بنجاح",
+        "paymentSuccessDescription": "تم معالجة دفعتك بنجاح.",
+        "paymentFailed": "فشل الدفع",
+        "refillError": "خطأ أثناء إعادة تعبئة الرصيد",
+        "unknownError": "حدث خطأ غير معروف."
+      },
+      "actions": {
+        "refillBalance": "إعادة شحن الرصيد",
+        "payNow": "ادفع الآن",
+        "close": "إغلاق"
+      }
     }
   },
+
   "sidebar": {
     "navigation": {
       "dashboard": "لوحة التحكم",

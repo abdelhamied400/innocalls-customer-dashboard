@@ -276,8 +276,8 @@ const BillingTable = () => {
               </Field>
             </FilterBox>
             <FilterBox
-              triggerLabel={t("filters.amount")}
-              label={t("filters.searchByAmount")}
+              triggerLabel={t("filters.amount.triggerLabel")}
+              label={t("filters.amount.label")}
               onReset={() => {
                 setFilters((prev) => ({
                   ...prev,
@@ -290,11 +290,11 @@ const BillingTable = () => {
               }}
               onApply={applyFilters}
             >
-              <Field label={t("filters.fromAmount")}>
+              <Field label={t("filters.amount.from.label")}>
                 <Input
                   variant="field"
                   type="number"
-                  placeholder={t("filters.enterFromAmount")}
+                  placeholder={t("filters.amount.from.placeholder")}
                   value={filters.fromTotal}
                   onChange={(e) =>
                     setFilters((prev) => ({
@@ -304,11 +304,11 @@ const BillingTable = () => {
                   }
                 />
               </Field>
-              <Field label={t("filters.toAmount")}>
+              <Field label={t("filters.amount.to.label")}>
                 <Input
                   variant="field"
                   type="number"
-                  placeholder={t("filters.enterToAmount")}
+                  placeholder={t("filters.amount.to.placeholder")}
                   value={filters.toTotal}
                   onChange={(e) =>
                     setFilters((prev) => ({
@@ -320,8 +320,8 @@ const BillingTable = () => {
               </Field>
             </FilterBox>
             <FilterBox
-              triggerLabel={t("filters.status")}
-              label={t("filters.selectInvoiceStatus")}
+              triggerLabel={t("filters.status.triggerLabel")}
+              label={t("filters.status.label")}
               onReset={() => {
                 setFilters((prev) => ({ ...prev, status: null }));
                 setTimeout(() => {
@@ -341,20 +341,20 @@ const BillingTable = () => {
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="draft" id="draft" />
-                  <Label htmlFor="draft">{t("filters.draft")}</Label>
+                  <Label htmlFor="draft">{t("status.draft")}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="overdue" id="overdue" />
-                  <Label htmlFor="overdue">{t("filters.overdue")}</Label>
+                  <Label htmlFor="overdue">{t("status.overdue")}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="paid" id="paid" />
-                  <Label htmlFor="paid">{t("filters.paid")}</Label>
+                  <Label htmlFor="paid">{t("status.paid")}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="partially_paid" id="partially_paid" />
                   <Label htmlFor="partially_paid">
-                    {t("filters.partiallyPaid")}
+                    {t("status.partially_paid")}
                   </Label>
                 </div>
               </RadioGroup>
