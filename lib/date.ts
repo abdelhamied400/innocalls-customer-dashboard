@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 export const isValidDateRange = (
   fromDate?: Date,
   toDate?: Date,
-  onInvalid?: (message: string) => void,
+  onInvalid?: (message?: string) => void,
   maxRange: number = 90,
   t?: ReturnType<typeof useTranslations>
 ): boolean => {
@@ -18,14 +18,9 @@ export const isValidDateRange = (
     return false;
   }
 
-  if (maxRange !== -1) {
-    if (differenceInDays(toDate, fromDate) > maxRange) {
-      onInvalid?.(
-        t?.("form.validation.date.maxRangeExceeded", { maxRange }) ||
-          `Maximum range is ${maxRange} days`
-      );
-      return false;
-    }
+  if (maxRange !== -1 && differenceInDays(toDate, fromDate) > maxRange) {
+    onInvalid?.(t?.("form.validation.date.maxRangeExceeded", { maxRange }));
+    return false;
   }
 
   return true;

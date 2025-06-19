@@ -1,5 +1,4 @@
 import AutoDialerActiveCampaignsTable from "./table";
-import AutoDialerActiveHead from "./head";
 
 export type Filters = {};
 type AutoDialerActiveCampaignsProps = {
