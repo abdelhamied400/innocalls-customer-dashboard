@@ -2,65 +2,76 @@
 import { useQuery } from "@tanstack/react-query";
 import { columns } from "./columns";
 import AutoDialerService from "@/services/auto-dialer.service";
-import { useSearchParams } from "next/navigation";
-import { useFilters } from "@/hooks/use-filters";
-import DataTableProvider, {
-  DataTable,
-  DataTableBody,
-  DataTableHeader,
-  DataTableSkeleton,
-} from "@/components/ui/data-table";
-import DataTablePagination from "@/components/ui/data-table-pagination";
-import { useMemo } from "react";
+import PaginatedTable from "@/components/Table/PaginatedTable";
+import AutoDialerFinishedHead from "./head";
+import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
+import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
+import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
+import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
+import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
+import { useEffect, useState } from "react";
+import { PaginationState } from "@tanstack/react-table";
+import { useToast } from "@/hooks/use-toast";
+import { isAxiosError } from "axios";
 
-const FinshedCampaignsTable = () => {
-  const filters = useSearchParams();
-  const { updateFilters, getAllFilters } = useFilters();
-  const filtersObject = useMemo(() => getAllFilters(), [filters]);
-
-  const perPage = parseInt(filters.get("perPage") || "10");
-  const pageIndex = parseInt(filters.get("page") || "1") - 1;
-
-  const { data, isLoading } = useQuery({
-    queryKey: ["auto-dialer-finshed-campaigns", filtersObject],
+const FinishedCampaignsTable = () => {
+  const { toast } = useToast();
+  const [filters, setFilters] = useState({});
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["auto-dialer-finished-campaigns", filters, pagination],
     queryFn: async () =>
-      await AutoDialerService.fetchFinshedCampaigns({
-        ...filtersObject,
-        limit: perPage,
+      await AutoDialerService.fetchFinishedCampaigns({
+        ...filters,
+        page: pagination.pageIndex + 1,
+        limit: pagination.pageSize,
       }),
-    refetchOnMount: "always",
   });
 
-  const { campaigns = [], ...pagination } = data || {};
+  useEffect(() => {
+    if (isError) {
+      if (isAxiosError(error)) {
+        toast({
+          title: "Error",
+          description: error.response?.data?.message || "An error occurred",
+          variant: "destructive",
+        });
+        return;
+      }
+      toast({
+        title: "Error",
+        description: "An error occurred",
+        variant: "destructive",
+      });
+    }
+  }, [isError, error, toast]);
 
   return (
-    <div className="">
-      <DataTableProvider
-        data={campaigns}
+    <div className="rounded-lg flex-1 flex flex-col overflow-hidden">
+      <PaginatedTable
+        data={data?.campaigns || []}
         columns={columns}
         pagination={{
-          ...pagination,
-          perPage,
+          totalItems: data?.totalItems || 0,
+          totalPages: data?.totalPages || 0,
         }}
-        manualPagination
-        onPaginationChange={({ pageSize, pageIndex }) => {
-          updateFilters({
-            page: String(pageIndex + 1),
-            perPage: String(pageSize),
-          });
+        onPaginationChange={(pagination) => {
+          setPagination(pagination);
         }}
-        defaultPageIndex={pageIndex}
       >
-        <DataTable>
-          <DataTableHeader />
-          {isLoading && <DataTableSkeleton rows={3} />}
-          {!isLoading && <DataTableBody />}
-        </DataTable>
-
-        {!isLoading && <DataTablePagination />}
-      </DataTableProvider>
+        <AutoDialerFinishedHead filters={filters} setFilters={setFilters} />
+        <PaginatedTableContent>
+          <PaginatedTableHead />
+          {isLoading && <PaginatedTableSkeleton />}
+          {!isLoading && <PaginatedTableBody />}
+        </PaginatedTableContent>
+        {!isLoading && <PaginatedTablePagination />}
+      </PaginatedTable>
     </div>
   );
 };
 
-export default FinshedCampaignsTable;
+export default FinishedCampaignsTable;

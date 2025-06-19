@@ -19,21 +19,40 @@ export default {
     const filtersObj = {
       ...filters,
       isActive: true,
+      state: "active",
     };
 
     const queryString = objToQueryString(filtersObj);
     const res = await api.get(`/auto-dialer/campaigns?${queryString}`);
     return {
       ...res.data.data,
-      campaigns: Array(20).fill(res.data.data.campaigns[0]),
+      campaigns: [
+        ...res.data.data.campaigns,
+        ...res.data.data.campaigns,
+        ...res.data.data.campaigns,
+      ],
     };
   },
-  fetchFinshedCampaigns: async (
+  fetchFinishedCampaigns: async (
     filters?: any
   ): Promise<FetchActiveCampaignsResponse> => {
     const filtersObj = {
       ...filters,
       isActive: false,
+      state: "finished",
+    };
+
+    const queryString = objToQueryString(filtersObj);
+    const res = await api.get(`/auto-dialer/campaigns?${queryString}`);
+    return res.data.data;
+  },
+  fetchArchivedCampaigns: async (
+    filters?: any
+  ): Promise<FetchActiveCampaignsResponse> => {
+    const filtersObj = {
+      ...filters,
+      isActive: false,
+      state: "archived",
     };
 
     const queryString = objToQueryString(filtersObj);

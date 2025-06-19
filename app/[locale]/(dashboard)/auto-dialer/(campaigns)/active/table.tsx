@@ -11,29 +11,43 @@ import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
+import { useState } from "react";
+import { PaginationState } from "@tanstack/react-table";
 
 const ActiveCampaignsTable = () => {
-  const filters = useSearchParams();
-  const { updateFilters, getAllFilters } = useFilters();
-  const perPage = parseInt(filters.get("perPage") || "10");
-  const pageIndex = parseInt(filters.get("page") || "1") - 1;
-
+  const [filters, setFilters] = useState({});
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   const { data, isLoading } = useQuery({
-    queryKey: ["auto-dialer-active-campaigns", getAllFilters()],
+    queryKey: [
+      "auto-dialer-active-campaigns",
+      JSON.stringify(filters),
+      pagination,
+    ],
     queryFn: async () =>
       await AutoDialerService.fetchActiveCampaigns({
-        ...getAllFilters(),
-        limit: perPage,
+        ...filters,
+        page: pagination.pageIndex + 1,
+        limit: pagination.pageSize,
       }),
-    refetchOnMount: "always",
   });
-
-  const { campaigns = [], ...pagination } = data || {};
 
   return (
     <div className="rounded-lg flex-1 flex flex-col overflow-hidden">
-      <AutoDialerActiveHead />
-      <PaginatedTable data={campaigns} columns={columns}>
+      <AutoDialerActiveHead filters={filters} setFilters={setFilters} />
+      <PaginatedTable
+        data={data?.campaigns || []}
+        columns={columns}
+        pagination={{
+          totalItems: data?.totalItems || 0,
+          totalPages: data?.totalPages || 0,
+        }}
+        onPaginationChange={(pagination) => {
+          setPagination(pagination);
+        }}
+      >
         <PaginatedTableContent>
           <PaginatedTableHead />
           {isLoading && <PaginatedTableSkeleton />}

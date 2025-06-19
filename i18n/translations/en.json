@@ -478,7 +478,7 @@
           "amount": {
             "required": "Amount is required",
             "invalid": "Please enter a valid amount",
-            "minimum": "Amount must be at least $1"
+            "minimum": "Amount must be at least ${min}"
           }
         }
       },

@@ -1,66 +1,34 @@
 "use client";
-import FilterDialog from "@/components/FilterDialog";
-import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import DatePicker from "@/components/ui/date-picker";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import Field from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Toggle } from "@/components/ui/toggle";
-import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import ChevronDownIcon from "@mui/icons-material/ExpandMore";
 import CalendarIcon from "@mui/icons-material/CalendarToday";
-import { useFilters } from "@/hooks/use-filters";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { autoDialerCampaignActiveStatuses } from "@/constants/auto-dialer";
-import { Clear } from "@mui/icons-material";
-import { useState } from "react";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
-import { isValidDateRange } from "@/lib/date";
+import { useState } from "react";
 
-const AutoDialerActiveHead = () => {
-  const {
-    getFilter,
-    updateFilters,
-    getFilterCountForGroup,
-    clearGroup,
-    clearAllFilters,
-  } = useFilters();
-
-  const [search, setSearch] = useState(getFilter("search"));
-  const [creationDate, setCreationDate] = useState({
-    from: getFilter("creation-date.from")
-      ? new Date(getFilter("creation-date.from"))
-      : undefined,
-    to: getFilter("creation-date.to")
-      ? new Date(getFilter("creation-date.from"))
-      : undefined,
-  });
-
-  const [durationType, setDurationType] = useState(getFilter("duration-type"));
-
-  const [status, setStatus] = useState<Record<string, string>>(
-    autoDialerCampaignActiveStatuses.reduce((acc, status) => {
-      acc[status.value] = getFilter(`status.${status.value}`);
-      return acc;
-    }, {} as Record<string, string>)
-  );
+type AutoDialerActiveHeadProps = {
+  filters: Record<string, string>;
+  setFilters: React.Dispatch<React.SetStateAction<Record<string, any>>>;
+};
+const AutoDialerActiveHead = ({
+  filters,
+  setFilters,
+}: AutoDialerActiveHeadProps) => {
+  const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
+  const [toDate, setToDate] = useState<Date | undefined>(undefined);
 
   return (
     <Collapsible>
@@ -73,12 +41,13 @@ const AutoDialerActiveHead = () => {
                 placeholder="Search"
                 type="search"
                 variant="field"
-                value={search}
+                value={filters.search || ""}
                 onChange={(e) => {
-                  setSearch(e.target.value);
-                  updateFilters({
-                    search: e.target.value,
-                  });
+                  const value = e.target.value;
+                  setFilters((prev) => ({
+                    ...prev,
+                    search: value,
+                  }));
                 }}
               />
             </Field>
@@ -95,37 +64,31 @@ const AutoDialerActiveHead = () => {
         <CollapsibleContent>
           <FilterBar
             onClear={() => {
-              clearAllFilters();
-              setSearch("");
-              setCreationDate({
-                from: undefined,
-                to: undefined,
-              });
-              setDurationType("");
-              setStatus({});
+              setFromDate(undefined);
+              setToDate(undefined);
+              setFilters({});
             }}
           >
             <FilterBox
               triggerLabel="Creation Date"
               label="Select a date range"
               onReset={() => {
-                setCreationDate({
-                  from: undefined,
-                  to: undefined,
-                });
-                clearGroup("creation-date");
+                setFilters((prev) => ({
+                  ...prev,
+                  fromDate: undefined,
+                  toDate: undefined,
+                }));
               }}
               onApply={() => {
-                updateFilters({
-                  "creation-date.from": creationDate.from
-                    ? format(creationDate.from, "yyyy-MM-dd")
+                setFilters((prev) => ({
+                  ...prev,
+                  fromDate: fromDate
+                    ? format(fromDate, "yyyy-MM-dd")
                     : undefined,
-                  "creation-date.to": creationDate.to
-                    ? format(creationDate.to, "yyyy-MM-dd")
-                    : undefined,
-                });
+                  toDate: toDate ? format(toDate, "yyyy-MM-dd") : undefined,
+                }));
               }}
-              numberOfFilters={getFilterCountForGroup("creation-date")}
+              numberOfFilters={(fromDate ? 1 : 0) + (toDate ? 1 : 0)}
             >
               <Field
                 label="From"
@@ -135,13 +98,8 @@ const AutoDialerActiveHead = () => {
                 <DatePicker
                   className="flex-1"
                   placeholder="Enter from date"
-                  value={creationDate.from}
-                  onChange={(date) =>
-                    setCreationDate((prev) => ({
-                      ...prev,
-                      from: date || undefined,
-                    }))
-                  }
+                  value={fromDate}
+                  onChange={(date) => setFromDate(date || undefined)}
                 />
               </Field>
               <Field
@@ -152,13 +110,8 @@ const AutoDialerActiveHead = () => {
                 <DatePicker
                   className="flex-1"
                   placeholder="Enter to date"
-                  value={creationDate.to}
-                  onChange={(date) =>
-                    setCreationDate((prev) => ({
-                      ...prev,
-                      to: date || undefined,
-                    }))
-                  }
+                  value={toDate}
+                  onChange={(date) => setToDate(date || undefined)}
                 />
               </Field>
             </FilterBox>
