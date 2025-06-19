@@ -1,38 +1,39 @@
 import { Badge } from "@/components/ui/badge";
 import { AutoDialerCampaignCols } from "../columns";
 import {
+  Pause as PauseIcon,
+  PlayArrow as PlayIcon,
   CheckCircle as CheckCircleIcon,
   Cancel as XCircleIcon,
+  Warning as AlertTriangleIcon,
+  Autorenew as Loader2Icon,
   CheckBox as CheckSquareIcon,
-  Clear,
+  ArrowForward as ArrowRightCircleIcon,
+  Stop,
+  Check,
+  CancelRounded,
 } from "@mui/icons-material";
 import { Cell } from "@/types/cell";
 import { cn } from "@/lib/utils";
-import { AutoDialerCampaignInactiveStatus } from "@/constants/auto-dialer";
+import { AutoDialerCampaignFinishedStatus } from "@/constants/auto-dialer";
 
-const classNames: Record<AutoDialerCampaignInactiveStatus, string> = {
-  cancelled: "bg-orange-100 text-orange-600 hover:bg-orange-200",
-  failed: "bg-red-100 text-red-600 hover:bg-red-200",
-  finished: "bg-green-100 text-green-600 hover:bg-green-200",
-  completed: "bg-blue-100 text-blue-600 hover:bg-blue-200",
+const classNames: Record<AutoDialerCampaignFinishedStatus, string> = {
+  completed: "bg-success-200 hover:bg-success-200 text-success-500",
+  cancelled: "bg-destructive-200 hover:bg-destructive-200 text-destructive-500",
+  failed: "bg-warning-200 hover:bg-warning-200 text-warning-500",
+  finished: "bg-gray-200 hover:bg-gray-200 text-gray-500",
 };
 
 type StatusCellProps = Cell<AutoDialerCampaignCols>;
 const StatusCell = ({ cell }: StatusCellProps) => {
-  const status = cell.getValue() as AutoDialerCampaignInactiveStatus;
+  const status = cell.getValue() as AutoDialerCampaignFinishedStatus;
   return (
-    <Badge className={cn(classNames[status])}>
+    <Badge className={cn("font-bold", classNames[status])}>
       <span className="flex items-center gap-2">
-        {status === "cancelled" && (
-          <Clear className="text-orange-600 animate-pulse" />
-        )}
-        {status === "failed" && (
-          <XCircleIcon className="text-red-600 animate-pulse" />
-        )}
-        {status === "finished" && <CheckCircleIcon />}
-        {status === "completed" && (
-          <CheckSquareIcon className="text-sky-600 animate-pulse" />
-        )}
+        {status === "completed" && <Check />}
+        {status === "cancelled" && <CancelRounded />}
+        {status === "failed" && <XCircleIcon />}
+        {status === "finished" && <Stop />}
         {cell.renderValue()}
       </span>
     </Badge>

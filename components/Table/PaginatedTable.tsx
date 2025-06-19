@@ -3,19 +3,17 @@ import {
   Table as TanstackTable,
   ColumnDef,
   getCoreRowModel,
-  getFilteredRowModel,
   getPaginationRowModel,
-  getSortedRowModel,
   PaginationState,
   useReactTable,
 } from "@tanstack/react-table";
-import { Table } from "../ui/table";
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 
 type DataTableContextType<TData, TValue> = {
   table: TanstackTable<TData>;
   data: TData[];
   columns: ColumnDef<TData, TValue>[];
+  pagination: PaginationState;
 };
 
 export const PaginatedTableContext = createContext<
@@ -25,11 +23,16 @@ export const PaginatedTableContext = createContext<
 type PaginatedTableProps<TData, TValue> = PropsWithChildren<{
   data: TData[];
   columns: ColumnDef<TData, TValue>[];
+  pagination?: {
+    totalItems: number;
+    totalPages: number;
+  };
   onPaginationChange?: (pagination: PaginationState) => void;
 }>;
 const PaginatedTable = <TData, TValue>({
   data,
   columns,
+  pagination: { totalItems, totalPages } = { totalItems: 0, totalPages: 0 },
   onPaginationChange,
   children,
 }: PaginatedTableProps<TData, TValue>) => {
@@ -43,10 +46,10 @@ const PaginatedTable = <TData, TValue>({
     columns,
     // models
     getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     // state
+    pageCount: totalPages,
+    rowCount: totalItems,
     state: {
       pagination,
     },
@@ -63,7 +66,7 @@ const PaginatedTable = <TData, TValue>({
 
   return (
     <div className="paginated-table flex-1 flex flex-col overflow-hidden">
-      <PaginatedTableContext value={{ table, data, columns }}>
+      <PaginatedTableContext value={{ table, data, columns, pagination }}>
         {children}
       </PaginatedTableContext>
     </div>

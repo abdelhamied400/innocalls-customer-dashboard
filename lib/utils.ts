@@ -13,8 +13,16 @@ export const generateUUID = () =>
 export const objToQueryString = (obj: Record<string, any>) => {
   const params = new URLSearchParams();
   for (const key in obj) {
-    if (obj[key] !== undefined && obj[key] !== null) {
-      params.append(key, obj[key]);
+    const value = obj[key];
+    if (value === undefined || value === null) continue;
+    if (Array.isArray(value)) {
+      value.forEach((v, i) => {
+        if (v !== undefined && v !== null) {
+          params.append(`${key}[${i}]`, v);
+        }
+      });
+    } else {
+      params.append(key, value);
     }
   }
   return params.toString();

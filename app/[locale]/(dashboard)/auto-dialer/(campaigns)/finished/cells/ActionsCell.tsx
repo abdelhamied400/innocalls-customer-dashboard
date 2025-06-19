@@ -1,87 +1,70 @@
 import { AutoDialerCampaignCols } from "../columns";
 import {
   MoreVert as EllipsisVerticalIcon,
-  Download as DownloadIcon,
   Visibility as EyeIcon,
-  Autorenew as HalfCircleSpinner,
+  Download,
+  Archive,
 } from "@mui/icons-material";
 import { Cell } from "@/types/cell";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import autoDialerService from "@/services/auto-dialer.service";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
+import { isAxiosError } from "axios";
 
 type ActionsCellProps = Cell<AutoDialerCampaignCols>;
 const ActionsCell = ({ row }: ActionsCellProps) => {
-  const [isDownloadingReport, setIsDownloadingReport] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const { toast } = useToast();
 
-  const onDownloadReport = async () => {
+  const DownloadReport = async () => {
     try {
-      setIsDownloadingReport(true);
+      setIsDownloading(true);
       await autoDialerService.downloadReport(row.original.id);
       toast({
-        title: "Report will be sent to your email",
+        title: "Download started",
         description:
-          "The report is being processed and will be sent to your email shortly.",
+          "Your report is being Processed. You will receive an email with the download link once it's ready.",
         variant: "success",
       });
     } catch (error) {
-      console.error("Error downloading report:", error);
+      if (isAxiosError(error)) {
+        toast({
+          title: "Error",
+          description: error.response?.data?.message || "An error occurred",
+          variant: "destructive",
+        });
+        return;
+      }
+      toast({
+        title: "Error",
+        description: "An error occurred while downloading the report.",
+        variant: "destructive",
+      });
     } finally {
-      setIsDownloadingReport(false);
+      setIsDownloading(false);
     }
   };
 
   return (
     <div className="flex items-center gap-4">
-      {["finished", "completed"].includes(row.original.status) && (
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button size="icon" disabled={isDownloadingReport}>
-              <div className="flex items-center">
-                {isDownloadingReport ? (
-                  <HalfCircleSpinner className="animate-spin" />
-                ) : (
-                  <DownloadIcon />
-                )}
-              </div>
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action will download the report for the campaign.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={onDownloadReport}>
-                Continue
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      )}
-
-      <Button size="icon">
-        <EyeIcon />
+      <Button
+        variant="ghost-success"
+        size="icon"
+        onClick={DownloadReport}
+        loading={isDownloading}
+      >
+        <Download />
       </Button>
+      <Link href={`/auto-dialer/campaigns/${row.original.id}/edit`}>
+        <Button variant="ghost-primary" size="icon">
+          <EyeIcon />
+        </Button>
+      </Link>
 
-      <Button variant="unstyled" size="icon">
-        <EllipsisVerticalIcon />
+      <Button variant="ghost" size="icon">
+        <Archive />
       </Button>
     </div>
   );

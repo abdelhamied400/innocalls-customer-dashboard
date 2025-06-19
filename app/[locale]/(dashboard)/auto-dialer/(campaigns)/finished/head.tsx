@@ -1,65 +1,84 @@
 "use client";
-import FilterDialog from "@/components/FilterDialog";
-import { Badge } from "@/components/ui/badge";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import DatePicker from "@/components/ui/date-picker";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import Field from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Toggle } from "@/components/ui/toggle";
-import { Checkbox } from "@/components/ui/checkbox";
 import { format } from "date-fns";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import ChevronDownIcon from "@mui/icons-material/ExpandMore";
 import CalendarIcon from "@mui/icons-material/CalendarToday";
-import { useFilters } from "@/hooks/use-filters";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { autoDialerCampaignInactiveStatuses } from "@/constants/auto-dialer";
-import { Clear } from "@mui/icons-material";
-import { useState } from "react";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
+import { useEffect, useState } from "react";
+import { usePaginatedTable } from "@/components/Table/PaginatedTable";
+import { isValidDateRange } from "@/lib/date";
+import { useToast } from "@/hooks/use-toast";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  autoDialerCampaignActiveStatuses,
+  autoDialerCampaignFinishedStatuses,
+} from "@/constants/auto-dialer";
 
-const AutoDialerFinishedHead = () => {
-  const {
-    getFilter,
-    updateFilters,
-    getFilterCountForGroup,
-    clearGroup,
-    clearAllFilters,
-  } = useFilters();
+type AutoDialerFinishedHeadProps = {
+  filters: Record<string, string>;
+  setFilters: React.Dispatch<React.SetStateAction<Record<string, any>>>;
+};
+const AutoDialerFinishedHead = ({
+  filters,
+  setFilters,
+}: AutoDialerFinishedHeadProps) => {
+  const { toast } = useToast();
+  const { table } = usePaginatedTable();
+  const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
+  const [toDate, setToDate] = useState<Date | undefined>(undefined);
+  const [durationType, setDurationType] = useState<string>("");
+  const [status, setStatus] = useState<Record<string, string>>({});
 
-  const [search, setSearch] = useState(getFilter("search"));
-  const [creationDate, setCreationDate] = useState({
-    from: getFilter("creation-date.from")
-      ? new Date(getFilter("creation-date.from"))
-      : undefined,
-    to: getFilter("creation-date.to")
-      ? new Date(getFilter("creation-date.from"))
-      : undefined,
-  });
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setFilters((prev) => ({
+      ...prev,
+      name: value,
+    }));
+  };
 
-  const [durationType, setDurationType] = useState(getFilter("duration-type"));
+  const applyFilters = () => {
+    const isValid = isValidDateRange(
+      fromDate,
+      toDate,
+      (message) => {
+        toast({
+          title: "Invalid Date Range",
+          description: message,
+          variant: "destructive",
+        });
+      },
+      -1
+    );
+    if (!isValid) return;
 
-  const [status, setStatus] = useState<Record<string, string>>(
-    autoDialerCampaignInactiveStatuses.reduce((acc, status) => {
-      acc[status.value] = getFilter(`status.${status.value}`);
-      return acc;
-    }, {} as Record<string, string>)
-  );
+    setFilters((prev) => ({
+      ...prev,
+      fromDate: fromDate ? format(fromDate, "yyyy-MM-dd") : undefined,
+      toDate: toDate ? format(toDate, "yyyy-MM-dd") : undefined,
+    }));
+  };
+
+  // Reset pagination when filters change
+  // This ensures that when filters are applied, the table starts from the first page
+  useEffect(() => {
+    table.setPageIndex(0);
+  }, [filters]);
 
   return (
     <Collapsible>
@@ -69,17 +88,11 @@ const AutoDialerFinishedHead = () => {
           <div className="flex items-center gap-4 actions">
             <Field preIcon={<SearchIcon className="text-muted-foreground" />}>
               <Input
-                placeholder="Search"
+                placeholder="search by name..."
                 type="search"
                 variant="field"
-                value={search}
-                onChange={(e) => {
-                  setSearch(e.target.value);
-                  updateFilters({
-                    search: e.target.value,
-                    page: "1",
-                  });
-                }}
+                value={filters.name || ""}
+                onChange={handleSearchChange}
               />
             </Field>
             <CollapsibleTrigger asChild>
@@ -95,37 +108,27 @@ const AutoDialerFinishedHead = () => {
         <CollapsibleContent>
           <FilterBar
             onClear={() => {
-              clearAllFilters();
-              setSearch("");
-              setCreationDate({
-                from: undefined,
-                to: undefined,
-              });
+              setFromDate(undefined);
+              setToDate(undefined);
               setDurationType("");
               setStatus({});
+              setFilters({});
             }}
           >
             <FilterBox
               triggerLabel="Creation Date"
               label="Select a date range"
               onReset={() => {
-                setCreationDate({
-                  from: undefined,
-                  to: undefined,
-                });
-                clearGroup("creation-date");
+                setFromDate(undefined);
+                setToDate(undefined);
+                setFilters((prev) => ({
+                  ...prev,
+                  fromDate: undefined,
+                  toDate: undefined,
+                }));
               }}
-              onApply={() => {
-                updateFilters({
-                  "creation-date.from": creationDate.from
-                    ? format(creationDate.from, "yyyy-MM-dd")
-                    : undefined,
-                  "creation-date.to": creationDate.to
-                    ? format(creationDate.to, "yyyy-MM-dd")
-                    : undefined,
-                });
-              }}
-              numberOfFilters={getFilterCountForGroup("creation-date")}
+              onApply={applyFilters}
+              numberOfFilters={(fromDate ? 1 : 0) + (toDate ? 1 : 0)}
             >
               <Field
                 label="From"
@@ -135,13 +138,8 @@ const AutoDialerFinishedHead = () => {
                 <DatePicker
                   className="flex-1"
                   placeholder="Enter from date"
-                  value={creationDate.from}
-                  onChange={(date) =>
-                    setCreationDate((prev) => ({
-                      ...prev,
-                      from: date || undefined,
-                    }))
-                  }
+                  value={fromDate}
+                  onChange={(date) => setFromDate(date || undefined)}
                 />
               </Field>
               <Field
@@ -152,147 +150,98 @@ const AutoDialerFinishedHead = () => {
                 <DatePicker
                   className="flex-1"
                   placeholder="Enter to date"
-                  value={creationDate.to}
-                  onChange={(date) =>
-                    setCreationDate((prev) => ({
-                      ...prev,
-                      to: date || undefined,
-                    }))
-                  }
+                  value={toDate}
+                  onChange={(date) => setToDate(date || undefined)}
                 />
               </Field>
+            </FilterBox>
+            {/* duration type */}
+            <FilterBox
+              triggerLabel="Duration Type"
+              label="Select duration type"
+              onReset={() => {
+                setDurationType("");
+                setFilters((prev) => ({
+                  ...prev,
+                  durationType: undefined,
+                }));
+              }}
+              onApply={() => {
+                setFilters((prev) => ({
+                  ...prev,
+                  durationType: durationType,
+                }));
+              }}
+              numberOfFilters={durationType ? 1 : 0}
+            >
+              <RadioGroup
+                defaultValue=""
+                onValueChange={setDurationType}
+                value={durationType}
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="time-limited" id="time-limited" />
+                  <Label htmlFor="time-limited">Time Limited</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem
+                    value="agent-availability"
+                    id="agent-availability"
+                  />
+                  <Label htmlFor="agent-availability">Agent Availability</Label>
+                </div>
+              </RadioGroup>
+            </FilterBox>
+            {/* status */}
+
+            <FilterBox
+              triggerLabel="Status"
+              label="Select campaign status"
+              onReset={() => {
+                setStatus({});
+                setFilters((prev) => ({
+                  ...prev,
+                  statuses: [],
+                }));
+              }}
+              onApply={() => {
+                setFilters((prev) => ({
+                  ...prev,
+                  statuses: Object.entries(status)
+                    .filter(([_, value]) => value)
+                    .map(([key, _]) => key),
+                }));
+              }}
+              numberOfFilters={Object.keys(status).length}
+            >
+              {autoDialerCampaignFinishedStatuses.map((s) => (
+                <div className="flex items-center space-x-2" key={s.value}>
+                  <Checkbox
+                    id={s.value}
+                    checked={!!status[s.value]}
+                    onCheckedChange={(checked) =>
+                      setStatus((prev) => ({
+                        ...prev,
+                        [s.value]: checked as string,
+                      }))
+                    }
+                  />
+                  <label
+                    htmlFor={s.value}
+                    className="peer-disabled:opacity-70 font-medium text-sm leading-none peer-disabled:cursor-not-allowed"
+                  >
+                    {s.label}
+                  </label>
+                </div>
+              ))}
             </FilterBox>
           </FilterBar>
 
           {/* TODO: remove this if the new filter bar works  */}
           {/* <div className="flex justify-between items-center p-3 border-t table-filters">
             <div className="flex items-center gap-4">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="filter" size="filter">
-                    Creation Date
-                    {getFilterCountForGroup("creation-date") > 0 && (
-                      <Badge
-                        variant="outline"
-                        className="bg-neutral-500 px-1.5 rounded-md text-white"
-                      >
-                        {getFilterCountForGroup("creation-date")}
-                      </Badge>
-                    )}
-                    <ChevronDownIcon />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <FilterDialog
-                    title="Select a date range"
-                    onReset={() => {
-                      setCreationDate({
-                        from: undefined,
-                        to: undefined,
-                      });
-                      clearGroup("creation-date");
-                    }}
-                    onApply={() => {
-                      updateFilters({
-                        "creation-date.from": creationDate.from
-                          ? format(creationDate.from, "yyyy-MM-dd")
-                          : undefined,
-                        "creation-date.to": creationDate.to
-                          ? format(creationDate.to, "yyyy-MM-dd")
-                          : undefined,
-                      });
-                    }}
-                  >
-                    <Field
-                      label="From"
-                      hint="DD/MM/YYYY"
-                      postIcon={<CalendarIcon className="text-gray-400" />}
-                    >
-                      <DatePicker
-                        className="flex-1"
-                        placeholder="Enter from date"
-                        value={creationDate.from}
-                        onChange={(date) =>
-                          setCreationDate((prev) => ({
-                            ...prev,
-                            from: date || undefined,
-                          }))
-                        }
-                      />
-                    </Field>
-                    <Field
-                      label="To"
-                      hint="DD/MM/YYYY"
-                      postIcon={<CalendarIcon className="text-gray-400" />}
-                    >
-                      <DatePicker
-                        className="flex-1"
-                        placeholder="Enter to date"
-                        value={creationDate.to}
-                        onChange={(date) =>
-                          setCreationDate((prev) => ({
-                            ...prev,
-                            to: date || undefined,
-                          }))
-                        }
-                      />
-                    </Field>
-                  </FilterDialog>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="filter" size="filter">
-                    Duration Type
-                    {getFilterCountForGroup("duration-type") > 0 && (
-                      <Badge
-                        variant="outline"
-                        className="bg-neutral-500 px-1.5 rounded-md text-white"
-                      >
-                        {getFilterCountForGroup("duration-type")}
-                      </Badge>
-                    )}
-                    <ChevronDownIcon />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <FilterDialog
-                    title="Select from the list"
-                    onReset={() => {
-                      setDurationType("");
-                      clearGroup("duration-type");
-                    }}
-                    onApply={() => {
-                      updateFilters({
-                        "duration-type": durationType,
-                      });
-                    }}
-                  >
-                    <RadioGroup
-                      defaultValue=""
-                      onValueChange={setDurationType}
-                      value={durationType}
-                    >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem
-                          value="time-limited"
-                          id="time-limited"
-                        />
-                        <Label htmlFor="time-limited">Time Limited</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem
-                          value="agent-availability"
-                          id="agent-availability"
-                        />
-                        <Label htmlFor="agent-availability">
-                          Agent Availability
-                        </Label>
-                      </div>
-                    </RadioGroup>
-                  </FilterDialog>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              
+            
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="filter" size="filter">

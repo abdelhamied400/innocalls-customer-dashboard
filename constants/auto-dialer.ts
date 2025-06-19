@@ -9,14 +9,14 @@ export type AutoDialerCampaignActiveStatus =
   | "active"
   | "paused"
   | "corrupted-ignored";
-export type AutoDialerCampaignInactiveStatus =
+export type AutoDialerCampaignFinishedStatus =
   | "completed"
   | "cancelled"
   | "failed"
   | "finished";
 export type AutoDialerCampaignStatus =
   | AutoDialerCampaignActiveStatus
-  | AutoDialerCampaignInactiveStatus;
+  | AutoDialerCampaignFinishedStatus;
 
 export const autoDialerCampaignActiveStatuses = [
   { value: "schedule-customers", label: "schedule-customers" },
@@ -31,7 +31,7 @@ export const autoDialerCampaignActiveStatuses = [
   { value: "corrupted-ignored", label: "corrupted-ignored" },
 ];
 
-export const autoDialerCampaignInactiveStatuses = [
+export const autoDialerCampaignFinishedStatuses = [
   { value: "completed", label: "completed" },
   { value: "cancelled", label: "cancelled" },
   { value: "failed", label: "failed" },
@@ -40,5 +40,5 @@ export const autoDialerCampaignInactiveStatuses = [
 
 export const autoDialerCampaignStatuses = [
   ...autoDialerCampaignActiveStatuses,
-  ...autoDialerCampaignInactiveStatuses,
+  ...autoDialerCampaignFinishedStatuses,
 ];
