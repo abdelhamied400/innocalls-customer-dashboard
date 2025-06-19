@@ -19,24 +19,27 @@ export type AutoDialerCampaignStatus =
   | AutoDialerCampaignFinishedStatus;
 
 export const autoDialerCampaignActiveStatuses = [
-  { value: "schedule-customers", label: "schedule-customers" },
-  { value: "customers-inserted", label: "customers-inserted" },
-  { value: "verifying-customers", label: "verifying-customers" },
-  { value: "verification-failed", label: "verification-failed" },
-  { value: "created", label: "created" },
-  { value: "started", label: "started" },
-  { value: "in-progress", label: "in-progress" },
-  { value: "active", label: "active" },
-  { value: "paused", label: "paused" },
-  { value: "corrupted-ignored", label: "corrupted-ignored" },
+  { value: "schedule-customers", label: "Schedule customers" },
+  { value: "customers-inserted", label: "Customers inserted" },
+  { value: "verifying-customers", label: "Verifying customers" },
+  { value: "verification-failed", label: "Verification failed" },
+  { value: "created", label: "Created" },
+  { value: "started", label: "Started" },
+  { value: "in-progress", label: "In progress" },
+  { value: "active", label: "Active" },
+  { value: "paused", label: "Paused" },
+  { value: "corrupted-ignored", label: "Corrupted ignored" },
 ];
 
 export const autoDialerCampaignFinishedStatuses = [
-  { value: "completed", label: "completed" },
-  { value: "cancelled", label: "cancelled" },
-  { value: "failed", label: "failed" },
-  { value: "finished", label: "finished" },
+  { value: "completed", label: "Completed" },
+  { value: "cancelled", label: "Cancelled" },
+  { value: "failed", label: "Failed" },
+  { value: "finished", label: "Finished" },
 ];
+
+export const autoDialerCampaignArchivedStatuses =
+  autoDialerCampaignFinishedStatuses;
 
 export const autoDialerCampaignStatuses = [
   ...autoDialerCampaignActiveStatuses,

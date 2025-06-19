@@ -29,10 +29,10 @@ const AutoDialerHead = () => {
         Finished Campaigns
       </Link>
       <Link
-        href="/auto-dialer/Archived"
+        href="/auto-dialer/archived"
         className={cn(
           "bg-gray-200 px-4 py-2 rounded-full font-semibold",
-          pathname === "/auto-dialer/Archived" &&
+          pathname === "/auto-dialer/archived" &&
             "bg-primary-100 border border-primary text-primary"
         )}
       >

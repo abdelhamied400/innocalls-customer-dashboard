@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { columns } from "./columns";
 import AutoDialerService from "@/services/auto-dialer.service";
 import PaginatedTable from "@/components/Table/PaginatedTable";
-import AutoDialerActiveHead from "./head";
+import AutoDialerArchivedHead from "./head";
 import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
 import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
@@ -14,7 +14,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
 
-const ActiveCampaignsTable = () => {
+const ArchivedCampaignsTable = () => {
   const { toast } = useToast();
   const [filters, setFilters] = useState({});
   const [pagination, setPagination] = useState<PaginationState>({
@@ -22,9 +22,9 @@ const ActiveCampaignsTable = () => {
     pageSize: 10,
   });
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["auto-dialer-active-campaigns", filters, pagination],
+    queryKey: ["auto-dialer-archived-campaigns", filters, pagination],
     queryFn: async () =>
-      await AutoDialerService.fetchActiveCampaigns({
+      await AutoDialerService.fetchArchivedCampaigns({
         ...filters,
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
@@ -62,7 +62,7 @@ const ActiveCampaignsTable = () => {
           setPagination(pagination);
         }}
       >
-        <AutoDialerActiveHead filters={filters} setFilters={setFilters} />
+        <AutoDialerArchivedHead filters={filters} setFilters={setFilters} />
         <PaginatedTableContent>
           <PaginatedTableHead />
           {isLoading && <PaginatedTableSkeleton />}
@@ -74,4 +74,4 @@ const ActiveCampaignsTable = () => {
   );
 };
 
-export default ActiveCampaignsTable;
+export default ArchivedCampaignsTable;

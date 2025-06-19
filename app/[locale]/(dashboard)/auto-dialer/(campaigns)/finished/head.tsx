@@ -100,9 +100,6 @@ const AutoDialerFinishedHead = ({
                 <FilterAltIcon />
               </Toggle>
             </CollapsibleTrigger>
-            <Link className={cn(buttonVariants())} href="/auto-dialer/create">
-              Create new campaign
-            </Link>
           </div>
         </div>
         <CollapsibleContent>

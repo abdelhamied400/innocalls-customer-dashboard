@@ -24,14 +24,7 @@ export default {
 
     const queryString = objToQueryString(filtersObj);
     const res = await api.get(`/auto-dialer/campaigns?${queryString}`);
-    return {
-      ...res.data.data,
-      campaigns: [
-        ...res.data.data.campaigns,
-        ...res.data.data.campaigns,
-        ...res.data.data.campaigns,
-      ],
-    };
+    return res.data.data;
   },
   fetchFinishedCampaigns: async (
     filters?: any

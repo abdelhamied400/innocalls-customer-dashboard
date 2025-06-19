@@ -24,16 +24,16 @@ import { useToast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { autoDialerCampaignActiveStatuses } from "@/constants/auto-dialer";
+import { autoDialerCampaignArchivedStatuses } from "@/constants/auto-dialer";
 
-type AutoDialerActiveHeadProps = {
+type AutoDialerArchivedHeadProps = {
   filters: Record<string, string>;
   setFilters: React.Dispatch<React.SetStateAction<Record<string, any>>>;
 };
-const AutoDialerActiveHead = ({
+const AutoDialerArchivedHead = ({
   filters,
   setFilters,
-}: AutoDialerActiveHeadProps) => {
+}: AutoDialerArchivedHeadProps) => {
   const { toast } = useToast();
   const { table } = usePaginatedTable();
   const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
@@ -81,7 +81,7 @@ const AutoDialerActiveHead = ({
     <Collapsible>
       <div className="table-head">
         <div className="flex justify-between items-center gap-4 p-3">
-          <h3>Active Campaigns</h3>
+          <h3>Archived Campaigns</h3>
           <div className="flex items-center gap-4 actions">
             <Field preIcon={<SearchIcon className="text-muted-foreground" />}>
               <Input
@@ -97,9 +97,6 @@ const AutoDialerActiveHead = ({
                 <FilterAltIcon />
               </Toggle>
             </CollapsibleTrigger>
-            <Link className={cn(buttonVariants())} href="/auto-dialer/create">
-              Create new campaign
-            </Link>
           </div>
         </div>
         <CollapsibleContent>
@@ -211,7 +208,7 @@ const AutoDialerActiveHead = ({
               }}
               numberOfFilters={Object.keys(status).length}
             >
-              {autoDialerCampaignActiveStatuses.map((s) => (
+              {autoDialerCampaignArchivedStatuses.map((s) => (
                 <div className="flex items-center space-x-2" key={s.value}>
                   <Checkbox
                     id={s.value}
@@ -233,10 +230,91 @@ const AutoDialerActiveHead = ({
               ))}
             </FilterBox>
           </FilterBar>
+
+          {/* TODO: remove this if the new filter bar works  */}
+          {/* <div className="flex justify-between items-center p-3 border-t table-filters">
+            <div className="flex items-center gap-4">
+              
+            
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="filter" size="filter">
+                    Status
+                    {getFilterCountForGroup("status") > 0 && (
+                      <Badge
+                        variant="outline"
+                        className="bg-neutral-500 px-1.5 rounded-md text-white"
+                      >
+                        {getFilterCountForGroup("status")}
+                      </Badge>
+                    )}
+                    <ChevronDownIcon />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <FilterDialog
+                    title="Select from the list"
+                    onReset={() => {
+                      setStatus({});
+                      clearGroup("status");
+                    }}
+                    onApply={() =>
+                      updateFilters(
+                        autoDialerCampaignActiveStatuses.reduce((acc, s) => {
+                          acc[`status.${s.value}`] = status[s.value];
+                          return acc;
+                        }, {} as Record<string, string>)
+                      )
+                    }
+                  >
+                    {autoDialerCampaignActiveStatuses.map((s) => (
+                      <div
+                        className="flex items-center space-x-2"
+                        key={s.value}
+                      >
+                        <Checkbox
+                          id={s.value}
+                          checked={!!status[s.value]}
+                          onCheckedChange={(checked) =>
+                            setStatus((prev) => ({
+                              ...prev,
+                              [s.value]: checked as string,
+                            }))
+                          }
+                        />
+                        <label
+                          htmlFor={s.value}
+                          className="peer-disabled:opacity-70 font-medium text-sm leading-none peer-disabled:cursor-not-allowed"
+                        >
+                          {s.label}
+                        </label>
+                      </div>
+                    ))}
+                  </FilterDialog>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+
+            <Button
+              onClick={() => {
+                clearAllFilters();
+                setSearch("");
+                setCreationDate({
+                  from: undefined,
+                  to: undefined,
+                });
+                setDurationType("");
+                setStatus({});
+              }}
+              variant="ghost"
+            >
+              <Clear /> Clear
+            </Button>
+          </div> */}
         </CollapsibleContent>
       </div>
     </Collapsible>
   );
 };
 
-export default AutoDialerActiveHead;
+export default AutoDialerArchivedHead;

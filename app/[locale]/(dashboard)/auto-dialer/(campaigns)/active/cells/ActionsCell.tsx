@@ -24,6 +24,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useToast } from "@/hooks/use-toast";
+import { isAxiosError } from "axios";
 
 type ActionsCellProps = Cell<AutoDialerCampaignCols>;
 const ActionsCell = ({ row }: ActionsCellProps) => {
@@ -32,14 +34,31 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
   const [isResuming, setIsResuming] = useState(false);
   const [isFinishing, setIsFinishing] = useState(false);
 
+  const { toast } = useToast();
+
   const onStart = async () => {
     try {
       setIsStarting(true);
-      console.log("Starting campaign...");
-      const res = await autoDialerService.startCampaign(row.original.id);
-      console.log("Campaign started successfully:", res);
+      await autoDialerService.startCampaign(row.original.id);
+      toast({
+        title: "Campaign started",
+        description: "The campaign has been successfully started.",
+        variant: "success",
+      });
     } catch (error) {
-      console.error("Error starting campaign:", error);
+      if (isAxiosError(error)) {
+        toast({
+          title: "Campaign start failed",
+          description: error.response?.data?.message || "An error occurred",
+          variant: "destructive",
+        });
+        return;
+      }
+      toast({
+        title: "Campaign start failed",
+        description: "An error occurred while starting the campaign.",
+        variant: "destructive",
+      });
     } finally {
       setIsStarting(false);
     }
@@ -48,11 +67,26 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
   const onPause = async () => {
     try {
       setIsPausing(true);
-      console.log("Pausing campaign...");
-      const res = await autoDialerService.pauseCampaign(row.original.id);
-      console.log("Campaign paused successfully:", res);
+      await autoDialerService.pauseCampaign(row.original.id);
+      toast({
+        title: "Campaign paused",
+        description: "The campaign has been successfully paused.",
+        variant: "success",
+      });
     } catch (error) {
-      console.error("Error pausing campaign:", error);
+      if (isAxiosError(error)) {
+        toast({
+          title: "Campaign pause failed",
+          description: error.response?.data?.message || "An error occurred",
+          variant: "destructive",
+        });
+        return;
+      }
+      toast({
+        title: "Campaign pause failed",
+        description: "An error occurred while pausing the campaign.",
+        variant: "destructive",
+      });
     } finally {
       setIsPausing(false);
     }
@@ -61,11 +95,26 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
   const onResume = async () => {
     try {
       setIsResuming(true);
-      console.log("Resuming campaign...");
-      const res = await autoDialerService.resumeCampaign(row.original.id);
-      console.log("Campaign resumed successfully:", res);
+      await autoDialerService.resumeCampaign(row.original.id);
+      toast({
+        title: "Campaign resumed",
+        description: "The campaign has been successfully resumed.",
+        variant: "success",
+      });
     } catch (error) {
-      console.error("Error resuming campaign:", error);
+      if (isAxiosError(error)) {
+        toast({
+          title: "Campaign resume failed",
+          description: error.response?.data?.message || "An error occurred",
+          variant: "destructive",
+        });
+        return;
+      }
+      toast({
+        title: "Campaign resume failed",
+        description: "An error occurred while resuming the campaign.",
+        variant: "destructive",
+      });
     } finally {
       setIsResuming(false);
     }
@@ -74,11 +123,26 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
   const onFinish = async () => {
     try {
       setIsFinishing(true);
-      console.log("Finishing campaign...");
-      const res = await autoDialerService.finishCampaign(row.original.id);
-      console.log("Campaign finished successfully:", res);
+      await autoDialerService.finishCampaign(row.original.id);
+      toast({
+        title: "Campaign finished",
+        description: "The campaign has been successfully finished.",
+        variant: "success",
+      });
     } catch (error) {
-      console.error("Error finishing campaign:", error);
+      if (isAxiosError(error)) {
+        toast({
+          title: "Campaign finish failed",
+          description: error.response?.data?.message || "An error occurred",
+          variant: "destructive",
+        });
+        return;
+      }
+      toast({
+        title: "Campaign finish failed",
+        description: "An error occurred while finishing the campaign.",
+        variant: "destructive",
+      });
     } finally {
       setIsFinishing(false);
     }
