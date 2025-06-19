@@ -32,6 +32,8 @@ const RefillBalanceForm = () => {
   const { toast } = useToast();
   const [clientSecret, setClientSecret] = useState<string>();
   const [currentStep, setCurrentStep] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+
   const closeSheetRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
 
@@ -44,6 +46,7 @@ const RefillBalanceForm = () => {
 
   const onSubmit = form.handleSubmit(async (data) => {
     try {
+      setSubmitting(true);
       form.reset(form.getValues());
 
       const res = await billingService.createStripeIntent(Number(data.amount));
@@ -65,6 +68,8 @@ const RefillBalanceForm = () => {
             error instanceof Error ? error.message : t("messages.unknownError"),
         });
       }
+    } finally {
+      setSubmitting(false);
     }
   });
 
@@ -152,7 +157,7 @@ const RefillBalanceForm = () => {
               )}
 
               {!clientSecret && (
-                <Button type="submit" disabled={!form.formState.isDirty}>
+                <Button type="submit" disabled={submitting}>
                   {t("actions.refillBalance")}
                 </Button>
               )}

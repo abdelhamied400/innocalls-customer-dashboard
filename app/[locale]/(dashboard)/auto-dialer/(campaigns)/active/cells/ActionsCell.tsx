@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
+import { useQueryClient } from "@tanstack/react-query";
 
 type ActionsCellProps = Cell<AutoDialerCampaignCols>;
 const ActionsCell = ({ row }: ActionsCellProps) => {
@@ -34,12 +35,20 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
   const [isResuming, setIsResuming] = useState(false);
   const [isFinishing, setIsFinishing] = useState(false);
 
+  const queryClient = useQueryClient();
   const { toast } = useToast();
+
+  const refetchCampaigns = async () => {
+    await queryClient.invalidateQueries({
+      queryKey: ["auto-dialer-active-campaigns"],
+    });
+  };
 
   const onStart = async () => {
     try {
       setIsStarting(true);
       await autoDialerService.startCampaign(row.original.id);
+      refetchCampaigns();
       toast({
         title: "Campaign started",
         description: "The campaign has been successfully started.",
@@ -68,6 +77,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
     try {
       setIsPausing(true);
       await autoDialerService.pauseCampaign(row.original.id);
+      refetchCampaigns();
       toast({
         title: "Campaign paused",
         description: "The campaign has been successfully paused.",
@@ -96,6 +106,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
     try {
       setIsResuming(true);
       await autoDialerService.resumeCampaign(row.original.id);
+      refetchCampaigns();
       toast({
         title: "Campaign resumed",
         description: "The campaign has been successfully resumed.",
@@ -124,6 +135,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
     try {
       setIsFinishing(true);
       await autoDialerService.finishCampaign(row.original.id);
+      refetchCampaigns();
       toast({
         title: "Campaign finished",
         description: "The campaign has been successfully finished.",

@@ -74,15 +74,9 @@ type CallReportingTableProps = {
   initialSorting?: SortingState;
 };
 
-// 30 days ago
-const defaultFromDate = new Date();
-defaultFromDate.setDate(defaultFromDate.getDate() - 30);
-// today
-const defaultToDate = new Date();
-
 const defaultFilters: CallReportingFilters = {
-  fromDate: defaultFromDate,
-  toDate: defaultToDate,
+  fromDate: undefined,
+  toDate: undefined,
   sourceExtensions: [],
   destinationExtensions: [],
   tags: [],
@@ -318,12 +312,12 @@ const CallReportingTable = ({
               onReset={() => {
                 setFilters({
                   ...filters,
-                  fromDate: defaultFromDate,
-                  toDate: defaultToDate,
+                  fromDate: undefined,
+                  toDate: undefined,
                 });
                 updateFilters({
-                  fromDate: format(defaultFromDate, "yyyy-MM-dd"),
-                  toDate: format(defaultToDate, "yyyy-MM-dd"),
+                  fromDate: undefined,
+                  toDate: undefined,
                 });
                 setTimeout(() => {
                   refetch();

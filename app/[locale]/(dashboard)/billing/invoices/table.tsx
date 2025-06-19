@@ -57,12 +57,6 @@ import DatePicker from "@/components/ui/date-picker";
 import { format } from "date-fns";
 import { useTranslations } from "next-intl";
 
-// 30 days ago
-const fromDate = new Date();
-fromDate.setDate(fromDate.getDate() - 30);
-// today
-const toDate = new Date();
-
 type InvoicesFilters = {
   search: string;
   fromDate?: Date | undefined;
@@ -81,8 +75,8 @@ const BillingTable = () => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filters, setFilters] = useState<InvoicesFilters>({
     search: "",
-    fromDate: fromDate,
-    toDate: toDate,
+    fromDate: undefined,
+    toDate: undefined,
     fromTotal: "",
     toTotal: "",
     status: null,
@@ -218,8 +212,8 @@ const BillingTable = () => {
             onClear={() => {
               setFilters({
                 search: "",
-                fromDate: fromDate,
-                toDate: toDate,
+                fromDate: undefined,
+                toDate: undefined,
                 fromTotal: "",
                 toTotal: "",
                 status: null,
@@ -233,7 +227,11 @@ const BillingTable = () => {
               triggerLabel={tBillingCommon("filters.creationDate.label")}
               label={tBillingCommon("filters.creationDate.placeholder")}
               onReset={() => {
-                setFilters((prev) => ({ ...prev, fromDate, toDate }));
+                setFilters((prev) => ({
+                  ...prev,
+                  fromDate: undefined,
+                  toDate: undefined,
+                }));
                 setTimeout(() => {
                   refetch();
                 }, 0);

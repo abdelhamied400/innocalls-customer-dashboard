@@ -29,6 +29,7 @@ const ActiveCampaignsTable = () => {
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
       }),
+    refetchInterval: 30000, // Refetch every 30 seconds
   });
 
   useEffect(() => {

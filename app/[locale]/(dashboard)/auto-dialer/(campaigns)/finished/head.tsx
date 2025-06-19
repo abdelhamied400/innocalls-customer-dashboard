@@ -1,5 +1,4 @@
 "use client";
-import { buttonVariants } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
@@ -10,8 +9,6 @@ import Field from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Toggle } from "@/components/ui/toggle";
 import { format } from "date-fns";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import CalendarIcon from "@mui/icons-material/CalendarToday";
@@ -24,10 +21,7 @@ import { useToast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  autoDialerCampaignActiveStatuses,
-  autoDialerCampaignFinishedStatuses,
-} from "@/constants/auto-dialer";
+import { autoDialerCampaignFinishedStatuses } from "@/constants/auto-dialer";
 
 type AutoDialerFinishedHeadProps = {
   filters: Record<string, string>;
@@ -39,9 +33,9 @@ const AutoDialerFinishedHead = ({
 }: AutoDialerFinishedHeadProps) => {
   const { toast } = useToast();
   const { table } = usePaginatedTable();
-  const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
-  const [toDate, setToDate] = useState<Date | undefined>(undefined);
-  const [durationType, setDurationType] = useState<string>("");
+  const [fromDate, setFromDate] = useState<Date>();
+  const [toDate, setToDate] = useState<Date>();
+  const [durationType, setDurationType] = useState<string>();
   const [status, setStatus] = useState<Record<string, string>>({});
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,7 +101,7 @@ const AutoDialerFinishedHead = ({
             onClear={() => {
               setFromDate(undefined);
               setToDate(undefined);
-              setDurationType("");
+              setDurationType(undefined);
               setStatus({});
               setFilters({});
             }}
@@ -157,7 +151,7 @@ const AutoDialerFinishedHead = ({
               triggerLabel="Duration Type"
               label="Select duration type"
               onReset={() => {
-                setDurationType("");
+                setDurationType(undefined);
                 setFilters((prev) => ({
                   ...prev,
                   durationType: undefined,
@@ -306,7 +300,7 @@ const AutoDialerFinishedHead = ({
                   from: undefined,
                   to: undefined,
                 });
-                setDurationType("");
+                setDurationType(undefined);
                 setStatus({});
               }}
               variant="ghost"

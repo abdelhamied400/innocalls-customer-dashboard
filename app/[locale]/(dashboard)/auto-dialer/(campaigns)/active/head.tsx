@@ -36,9 +36,9 @@ const AutoDialerActiveHead = ({
 }: AutoDialerActiveHeadProps) => {
   const { toast } = useToast();
   const { table } = usePaginatedTable();
-  const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
-  const [toDate, setToDate] = useState<Date | undefined>(undefined);
-  const [durationType, setDurationType] = useState<string>("");
+  const [fromDate, setFromDate] = useState<Date>();
+  const [toDate, setToDate] = useState<Date>();
+  const [durationType, setDurationType] = useState<string>();
   const [status, setStatus] = useState<Record<string, string>>({});
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,7 +107,7 @@ const AutoDialerActiveHead = ({
             onClear={() => {
               setFromDate(undefined);
               setToDate(undefined);
-              setDurationType("");
+              setDurationType(undefined);
               setStatus({});
               setFilters({});
             }}
@@ -157,7 +157,7 @@ const AutoDialerActiveHead = ({
               triggerLabel="Duration Type"
               label="Select duration type"
               onReset={() => {
-                setDurationType("");
+                setDurationType(undefined);
                 setFilters((prev) => ({
                   ...prev,
                   durationType: undefined,

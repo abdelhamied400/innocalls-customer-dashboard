@@ -1,8 +1,8 @@
 "use client";
-import Select from "@/components/select";
+import CountrySelect from "@/components/CountrySelect";
 import { Button } from "@/components/ui/button";
 import Field from "@/components/ui/field";
-import { countries } from "@/constants/countries";
+import { CountryOption } from "@/constants/countries";
 import { useToast } from "@/hooks/use-toast";
 import {
   CardNumberElement,
@@ -20,9 +20,8 @@ const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
   const elements = useElements();
   const { toast } = useToast();
   const t = useTranslations("billing.refillBalance");
-  const locale = useLocale(); // This gives you "en" or "ar"
 
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
+  const [selectedCountry, setSelectedCountry] = useState<CountryOption>();
   const [isPaying, setIsPaying] = useState(false);
 
   const handleSubmit = async () => {
@@ -42,7 +41,7 @@ const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
         card,
         billing_details: {
           address: {
-            country: selectedCountry.code,
+            country: selectedCountry?.value,
           },
         },
       },
@@ -99,7 +98,9 @@ const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
         />
       </Field>
 
-      <Select
+      <CountrySelect value={selectedCountry} onChange={setSelectedCountry} />
+
+      {/* <Select
         options={countries}
         value={selectedCountry}
         onChange={setSelectedCountry}
@@ -108,7 +109,7 @@ const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
         isVirtualized
         getLabel={(opt) => opt.name[locale]}
         getValue={(opt) => opt.code}
-      />
+      /> */}
 
       <Button
         onClick={handleSubmit}
