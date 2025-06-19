@@ -79,4 +79,8 @@ export default {
     const res = await api.get(`auto-dialer/campaigns/${campaignId}/stats`);
     return res.data;
   },
+  archiveCampaign: async (campaignId: string) => {
+    const res = await api.patch(`/auto-dialer/campaigns/${campaignId}/archive`);
+    return res.data;
+  },
 };
