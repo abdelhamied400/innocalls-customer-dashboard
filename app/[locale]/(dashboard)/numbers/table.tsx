@@ -64,8 +64,8 @@ const DataTable = ({
 }: DataTableProps) => {
   const router = useRouter();
   const t = useTranslations('numbers');
-  const searchT = useTranslations('common.search');
-  const paginationT = useTranslations('common.pagination');
+  const tCommonSearch = useTranslations('common.search');
+  const tCommonPagination = useTranslations('common.pagination');
   // sorting, filters, and pagination state
   const [sorting, setSorting] = useState<SortingState>(initialSorting);
   const [columnFilters, setColumnFilters] =
@@ -85,7 +85,7 @@ const DataTable = ({
   // use data and initials to set up the table
   const table = useReactTable({
     data,
-    columns,
+    columns:columns(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -147,7 +147,7 @@ const DataTable = ({
           <Field preIcon={<SearchIcon />}>
             <Input
               variant="field"
-              placeholder={searchT('placeholder')}
+              placeholder={tCommonSearch('placeholder')}
               value={
                 (table.getColumn("number")?.getFilterValue() as string) ?? ""
               }
@@ -201,7 +201,7 @@ const DataTable = ({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                 {searchT('noResults')}
+                 {tCommonSearch('noResults')}
                 </TableCell>
               </TableRow>
             )}
@@ -246,7 +246,7 @@ const DataTable = ({
         </div>
 
         <div className="flex items-center gap-2 per-page">
-          <label className="text-sm">{paginationT('rowsPerPage')}:</label>
+          <label className="text-sm">{tCommonPagination('rowsPerPage')}:</label>
           <Select
             onValueChange={(value) => table.setPageSize(Number(value))}
             defaultValue={table.getState().pagination.pageSize.toString()}
@@ -262,7 +262,7 @@ const DataTable = ({
           </Select>
           <p className="text-sm">
             {startRowIndex}-{endRowIndex}
-            {totalItems ? ` ${paginationT('of')} ${totalItems}`: ""}
+            {totalItems ? ` ${tCommonPagination('of')} ${totalItems}`: ""}
           </p>
         </div>
       </div>

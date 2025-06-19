@@ -8,6 +8,7 @@ import {
 import { ChevronDownIcon } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 type FilterBoxProps = PropsWithChildren<{
   className?: string;
@@ -26,6 +27,8 @@ export const FilterBox = ({
   onApply,
   numberOfFilters = 0,
 }: FilterBoxProps) => {
+  const t = useTranslations("common");
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -62,14 +65,14 @@ export const FilterBox = ({
                 className="text-primary"
                 onClick={onReset}
               >
-                Reset
+                {t("actions.reset")}
               </Button>
               <Button
                 variant="unstyled"
                 className="text-primary"
                 onClick={onApply}
               >
-                Apply
+                {t("actions.apply")}
               </Button>
             </div>
           </div>

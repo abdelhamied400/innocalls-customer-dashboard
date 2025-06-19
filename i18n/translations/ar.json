@@ -18,11 +18,26 @@
           "uppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
           "number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
           "special": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل"
+        },
+        "date": {
+          "from": {
+            "required": "تاريخ البداية مطلوب",
+            "isBeforeTo": "تاريخ البداية لا يمكن أن يكون بعد تاريخ النهاية"
+          },
+          "to": {
+            "required": "تاريخ النهاية مطلوب"
+          },
+          "maxRangeExceeded": "المدة القصوى للفترة هي {maxRange} يومًا"
         }
       }
     },
     "actions": {
-      "close": "إغلاق"
+      "close": "إغلاق",
+      "reset": "إعادة تعيين",
+      "apply": "تطبيق"
+    },
+    "states": {
+      "loading": "جارٍ التحميل..."
     }
   },
   "numbers": {
@@ -327,6 +342,212 @@
       "actions": {
         "submit": "تعديل المستخدم"
       }
+    }
+  },
+  "billing": {
+    "layout": {
+      "tabs": {
+        "charges": "الرسوم",
+        "paymentHistory": "تاريخ الدفع",
+        "rates": "الأسعار",
+        "invoices": "الفواتير"
+      },
+      "actions": {
+        "refillBalance": "إعادة شحن الرصيد"
+      }
+    },
+    "rates": {
+      "title": "الأسعار",
+      "columns": {
+        "sourceCode": "رمز المصدر",
+        "destinationName": "اسم الوجهة",
+        "destinationCode": "رمز الوجهة",
+        "rate": "السعر"
+      },
+      "filters": {
+        "service": {
+          "label": "الخدمة",
+          "placeholder": "اختر من القائمة"
+        }
+      },
+      "services": {
+        "calls": "المكالمات",
+        "sms": "الرسائل القصيرة"
+      }
+    },
+    "paymentHistory": {
+      "title": "تاريخ الدفع",
+      "columns": {
+        "refNo": "#رقم المرجع",
+        "date": "التاريخ",
+        "amount": "المبلغ",
+        "description": "الوصف"
+      },
+      "filters": {
+        "from": "من",
+        "to": "إلى",
+        "fromDateHint": "يوم/شهر/سنة",
+        "toDateHint": "يوم/شهر/سنة",
+        "enterFromDate": "أدخل تاريخ البداية",
+        "enterToDate": "أدخل تاريخ النهاية"
+      },
+      "messages": {
+        "error": "خطأ في جلب تاريخ الدفع",
+        "errorDescription": "حدث خطأ أثناء جلب تاريخ الدفع."
+      }
+    },
+    "invoices": {
+      "title": "الفواتير",
+      "columns": {
+        "refNo": "#رقم المرجع",
+        "date": "التاريخ",
+        "email": "البريد الإلكتروني",
+        "total": "الإجمالي",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "status": {
+        "paid": "مدفوعة",
+        "overdue": "متأخرة",
+        "draft": "مسودة",
+        "partially_paid": "مدفوعة جزئياً"
+      },
+      "actions": {
+        "pay": "دفع الفاتورة",
+        "download": "تحميل الفاتورة"
+      },
+      "filters": {
+        "amount": {
+          "triggerLabel": "المبلغ",
+          "label": "البحث بالمبلغ",
+          "from": {
+            "label": "المبلغ من",
+            "placeholder": "أدخل المبلغ من..."
+          },
+          "to": {
+            "label": "المبلغ إلى",
+            "placeholder": "أدخل المبلغ إلى..."
+          }
+        },
+        "status": {
+          "triggerLabel": "الحالة",
+          "label": "اختر حالة الفاتورة"
+        }
+      },
+      "messages": {
+        "error": "خطأ في جلب رابط الفاتورة",
+        "downloadError": "خطأ في تحميل الفاتورة",
+        "unknownError": "حدث خطأ غير معروف.",
+        "invalidAmountRange": "نطاق مبلغ غير صحيح",
+        "invalidAmountRangeDesc": "يجب أن يكون المبلغ من أقل من المبلغ إلى."
+      }
+    },
+    "charges": {
+      "title": "الرسوم",
+      "columns": {
+        "refNo": "#رقم المرجع",
+        "date": "التاريخ",
+        "amount": "المبلغ",
+        "description": "الوصف"
+      },
+      "filters": {
+        "from": "من",
+        "to": "إلى",
+        "fromDateHint": "يوم/شهر/سنة",
+        "toDateHint": "يوم/شهر/سنة",
+        "enterFromDate": "أدخل التاريخ من",
+        "enterToDate": "أدخل التاريخ إلى"
+      },
+      "messages": {
+        "error": "خطأ في جلب تاريخ الدفع",
+        "errorDescription": "حدث خطأ أثناء جلب تاريخ الدفع."
+      }
+    },
+    "common": {
+      "filters": {
+        "fromDate": {
+          "hint": "يوم/شهر/سنة",
+          "label": "من",
+          "placeholder": "أدخل التاريخ من"
+        },
+        "toDate": {
+          "label": "إلى",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل التاريخ إلى"
+        },
+        "creationDate": {
+          "label": "تاريخ الإنشاء",
+          "placeholder": "اختر نطاق التاريخ"
+        }
+      },
+      "messages": {
+        "invalidDateRange": "نطاق تاريخ غير صحيح"
+      }
+    },
+    "refillBalance": {
+      "title": "إعادة شحن الرصيد",
+      "description": "أضف أموال إلى حسابك هنا.",
+      "form": {
+        "fields": {
+          "amount": {
+            "label": "المبلغ (دولار أمريكي)",
+            "placeholder": "أدخل المبلغ..."
+          },
+          "cardNumber": {
+            "label": "رقم البطاقة",
+            "placeholder": "رقم البطاقة..."
+          },
+          "expiryDate": {
+            "label": "تاريخ الانتهاء",
+            "placeholder": "شهر/سنة"
+          },
+          "cvc": {
+            "label": "رمز الأمان",
+            "placeholder": "رمز الأمان"
+          },
+          "country": {
+            "label": "البلد",
+            "placeholder": "اختر بلد..."
+          }
+        },
+        "validation": {
+          "amount": {
+            "required": "المبلغ مطلوب",
+            "invalid": "يرجى إدخال مبلغ صحيح",
+            "minimum": "يجب أن يكون المبلغ على الأقل دولار واحد"
+          }
+        }
+      },
+      "messages": {
+        "paymentSuccess": "تم الدفع بنجاح",
+        "paymentSuccessDescription": "تم معالجة دفعتك بنجاح.",
+        "paymentFailed": "فشل الدفع",
+        "refillError": "خطأ أثناء إعادة تعبئة الرصيد",
+        "unknownError": "حدث خطأ غير معروف."
+      },
+      "actions": {
+        "refillBalance": "إعادة شحن الرصيد",
+        "payNow": "ادفع الآن",
+        "close": "إغلاق"
+      }
+    }
+  },
+
+  "sidebar": {
+    "navigation": {
+      "dashboard": "لوحة التحكم",
+      "numbers": "الأرقام",
+      "users": "المستخدمين",
+      "callReporting": "تقارير المكالمات",
+      "billing": "الفواتير",
+      "usage": "الاستخدام",
+      "orderConfirmation": "تأكيد الطلب",
+      "autoDialer": "الاتصال التلقائي",
+      "developersTab": "إعدادات المطورين",
+      "settings": "الإعدادات"
+    },
+    "support": {
+      "innoSupport": "دعم إنو"
     }
   }
 }

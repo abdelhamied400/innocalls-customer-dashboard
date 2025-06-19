@@ -12,28 +12,27 @@ export type PhoneNumber = {
   number: string;
 };
 
-export const columns: ColumnDef<PhoneNumber>[] = [
-  {
-    accessorKey: "id",
-    header: ({ column }) => {
-      const t = useTranslations("numbers");
+export const columns = (): ColumnDef<PhoneNumber>[] => {
+  const t = useTranslations("numbers");
 
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          {t("refNo")}
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
+  return [
+    {
+      accessorKey: "id",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            {t("refNo")}
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
     },
-  },
-  {
-    accessorKey: "number",
-    header: () => {
-      const t = useTranslations("numbers");
-      return t("phoneNumber");
+    {
+      accessorKey: "number",
+      header: t("phoneNumber")
     },
-  },
-];
+  ];
+};

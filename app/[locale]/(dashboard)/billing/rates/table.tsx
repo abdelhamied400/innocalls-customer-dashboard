@@ -58,6 +58,7 @@ import FilterDialog from "@/components/FilterDialog";
 import { format } from "date-fns";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useTranslations } from "next-intl";
 
 type RatesFilters = {
   search: string;
@@ -74,6 +75,9 @@ const BillingTable = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const t = useTranslations("billing.rates");
+  const tCommon = useTranslations("common");
 
   const {
     data: rates = {
@@ -108,7 +112,7 @@ const BillingTable = () => {
 
   const table = useReactTable({
     data: rates.data,
-    columns,
+    columns: columns(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -136,12 +140,12 @@ const BillingTable = () => {
     <div className="h-full flex flex-col border rounded-xl">
       <Collapsible>
         <div className="users-table-head flex items-center justify-between p-4">
-          <h2>Rates</h2>
+          <h2>{t("title")}</h2>
           <div className="actions flex items-center gap-2">
             <Field preIcon={<Search />}>
               <Input
                 variant="field"
-                placeholder="Search..."
+                placeholder={tCommon("search.placeholder")}
                 value={filters.search}
                 onChange={handleSearchChange}
                 type="search"
@@ -159,13 +163,13 @@ const BillingTable = () => {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="filter" size="filter">
-                Service
+                {t("filters.service.label")}
                 <ChevronDownIcon />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <FilterDialog
-                title="Select from the list"
+                title={t("filters.service.placeholder")}
                 onReset={() => {
                   setFilters((prev) => ({ ...prev, serviceId: "1" }));
                   setTimeout(() => {
@@ -185,11 +189,11 @@ const BillingTable = () => {
                 >
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="1" id="calls" />
-                    <Label htmlFor="calls">Calls</Label>
+                    <Label htmlFor="calls">{t("services.calls")}</Label>
                   </div>
                   <div className="flex items-center space-x-2">
                     <RadioGroupItem value="2" id="sms" />
-                    <Label htmlFor="sms">Sms</Label>
+                    <Label htmlFor="sms">{t("services.sms")}</Label>
                   </div>
                 </RadioGroup>
               </FilterDialog>
@@ -226,7 +230,7 @@ const BillingTable = () => {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Loading...
+                  {tCommon("states.loading")}
                 </TableCell>
               </TableRow>
             )}
@@ -253,7 +257,7 @@ const BillingTable = () => {
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    {tCommon("search.noResults")}
                   </TableCell>
                 </TableRow>
               ))}
@@ -297,7 +301,9 @@ const BillingTable = () => {
           </div>
 
           <div className="flex items-center gap-2 per-page">
-            <label className="text-sm">Rows per page:</label>
+            <label className="text-sm">
+              {tCommon("pagination.rowsPerPage")}:
+            </label>
             <Select
               onValueChange={(pageSize) =>
                 table.setPageSize(parseInt(pageSize, 10))
@@ -315,7 +321,7 @@ const BillingTable = () => {
             </Select>
             <p className="text-sm">
               {rates.from}-{rates.to}
-              {rates.total ? ` of ${rates.total}` : ""}
+              {rates.total ? ` ${tCommon("pagination.of")} ${rates.total}` : ""}
             </p>
           </div>
         </div>

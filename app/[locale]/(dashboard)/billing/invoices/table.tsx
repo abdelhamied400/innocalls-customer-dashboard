@@ -55,6 +55,7 @@ import { FilterBox } from "@/components/FilterBox";
 import { isValidDateRange } from "@/lib/date";
 import DatePicker from "@/components/ui/date-picker";
 import { format } from "date-fns";
+import { useTranslations } from "next-intl";
 
 // 30 days ago
 const fromDate = new Date();
@@ -73,6 +74,10 @@ type InvoicesFilters = {
 
 const BillingTable = () => {
   const { toast } = useToast();
+  const t = useTranslations("billing.invoices");
+  const tCommon = useTranslations("common");
+  const tBillingCommon = useTranslations("billing.common");
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filters, setFilters] = useState<InvoicesFilters>({
     search: "",
@@ -124,7 +129,7 @@ const BillingTable = () => {
 
   const table = useReactTable({
     data: invoices.data,
-    columns,
+    columns: columns(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -156,12 +161,13 @@ const BillingTable = () => {
       filters.toDate,
       (message) => {
         toast({
-          title: "Invalid date range",
+          title: tBillingCommon("messages.invalidDateRange"),
           description: message,
           variant: "destructive",
         });
       },
-      -1
+      -1,
+      tCommon
     );
 
     // Validate amount range
@@ -172,8 +178,8 @@ const BillingTable = () => {
     ) {
       isValid = false;
       toast({
-        title: "Invalid Amount Range",
-        description: "From amount must be less than to amount.",
+        title: t("messages.invalidAmountRange"),
+        description: t("messages.invalidAmountRangeDesc"),
         variant: "destructive",
       });
       return;
@@ -188,12 +194,12 @@ const BillingTable = () => {
     <div className="h-full flex flex-col border rounded-xl">
       <Collapsible>
         <div className="table-head flex items-center justify-between p-4">
-          <h2>Invoices</h2>
+          <h2>{t("title")}</h2>
           <div className="actions flex items-center gap-2">
             <Field preIcon={<Search />}>
               <Input
                 variant="field"
-                placeholder="Search..."
+                placeholder={tCommon("search.placeholder")}
                 value={filters.search}
                 onChange={handleSearchChange}
                 type="search"
@@ -224,8 +230,8 @@ const BillingTable = () => {
             }}
           >
             <FilterBox
-              triggerLabel="Creation Date"
-              label="Select a date range"
+              triggerLabel={tBillingCommon("filters.creationDate.label")}
+              label={tBillingCommon("filters.creationDate.placeholder")}
               onReset={() => {
                 setFilters((prev) => ({ ...prev, fromDate, toDate }));
                 setTimeout(() => {
@@ -235,13 +241,13 @@ const BillingTable = () => {
               onApply={applyFilters}
             >
               <Field
-                label="From"
-                hint="DD/MM/YYYY"
+                label={tBillingCommon("filters.fromDate.label")}
+                hint={tBillingCommon("filters.fromDate.hint")}
                 postIcon={<CalendarMonth className="text-gray-400" />}
               >
                 <DatePicker
                   className="flex-1"
-                  placeholder="Enter from date"
+                  placeholder={tBillingCommon("filters.fromDate.placeholder")}
                   value={filters.fromDate}
                   onChange={(date) =>
                     setFilters((prev) => ({
@@ -252,13 +258,13 @@ const BillingTable = () => {
                 />
               </Field>
               <Field
-                label="To"
-                hint="DD/MM/YYYY"
+                label={tBillingCommon("filters.toDate.label")}
+                hint={tBillingCommon("filters.toDate.hint")}
                 postIcon={<CalendarMonth className="text-gray-400" />}
               >
                 <DatePicker
                   className="flex-1"
-                  placeholder="Enter to date"
+                  placeholder={tBillingCommon("filters.toDate.placeholder")}
                   value={filters.toDate}
                   onChange={(date) =>
                     setFilters((prev) => ({
@@ -270,8 +276,8 @@ const BillingTable = () => {
               </Field>
             </FilterBox>
             <FilterBox
-              triggerLabel="Amount"
-              label="Search by amount"
+              triggerLabel={t("filters.amount.triggerLabel")}
+              label={t("filters.amount.label")}
               onReset={() => {
                 setFilters((prev) => ({
                   ...prev,
@@ -284,11 +290,11 @@ const BillingTable = () => {
               }}
               onApply={applyFilters}
             >
-              <Field label="From Amount">
+              <Field label={t("filters.amount.from.label")}>
                 <Input
                   variant="field"
                   type="number"
-                  placeholder="Enter from amount..."
+                  placeholder={t("filters.amount.from.placeholder")}
                   value={filters.fromTotal}
                   onChange={(e) =>
                     setFilters((prev) => ({
@@ -298,11 +304,11 @@ const BillingTable = () => {
                   }
                 />
               </Field>
-              <Field label="To Amount">
+              <Field label={t("filters.amount.to.label")}>
                 <Input
                   variant="field"
                   type="number"
-                  placeholder="Enter to amount..."
+                  placeholder={t("filters.amount.to.placeholder")}
                   value={filters.toTotal}
                   onChange={(e) =>
                     setFilters((prev) => ({
@@ -314,8 +320,8 @@ const BillingTable = () => {
               </Field>
             </FilterBox>
             <FilterBox
-              triggerLabel="Status"
-              label="Select invoice status"
+              triggerLabel={t("filters.status.triggerLabel")}
+              label={t("filters.status.label")}
               onReset={() => {
                 setFilters((prev) => ({ ...prev, status: null }));
                 setTimeout(() => {
@@ -335,19 +341,21 @@ const BillingTable = () => {
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="draft" id="draft" />
-                  <Label htmlFor="draft">Draft</Label>
+                  <Label htmlFor="draft">{t("status.draft")}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="overdue" id="overdue" />
-                  <Label htmlFor="overdue">Overdue</Label>
+                  <Label htmlFor="overdue">{t("status.overdue")}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="paid" id="paid" />
-                  <Label htmlFor="paid">Paid</Label>
+                  <Label htmlFor="paid">{t("status.paid")}</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="partially_paid" id="partially_paid" />
-                  <Label htmlFor="partially_paid">Partially Paid</Label>
+                  <Label htmlFor="partially_paid">
+                    {t("status.partially_paid")}
+                  </Label>
                 </div>
               </RadioGroup>
             </FilterBox>
@@ -383,7 +391,7 @@ const BillingTable = () => {
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Loading...
+                  {tCommon("states.loading")}
                 </TableCell>
               </TableRow>
             )}
@@ -410,7 +418,7 @@ const BillingTable = () => {
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    {tCommon("search.noResults")}
                   </TableCell>
                 </TableRow>
               ))}
@@ -455,7 +463,10 @@ const BillingTable = () => {
           </div>
 
           <div className="flex items-center gap-2 per-page">
-            <label className="text-sm">Rows per page:</label>
+            <label className="text-sm">
+              {" "}
+              {tCommon("pagination.rowsPerPage")}:
+            </label>
             <Select
               onValueChange={(pageSize) =>
                 table.setPageSize(parseInt(pageSize, 10))
@@ -473,7 +484,9 @@ const BillingTable = () => {
             </Select>
             <p className="text-sm">
               {invoices.from}-{invoices.to}
-              {invoices.total ? ` of ${invoices.total}` : ""}
+              {invoices.total
+                ? ` ${tCommon("pagination.of")} ${invoices.total}`
+                : ""}
             </p>
           </div>
         </div>

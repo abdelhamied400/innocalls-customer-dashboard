@@ -22,12 +22,9 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
   const t = useTranslations("auth.resetPassword");
   const tCommon = useTranslations("common");
 
-  
-  const schema = ResetPasswordSchema(t,tCommon);
-
   // 1. Define your form.
   const form = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(ResetPasswordSchema(t, tCommon)),
     defaultValues: {
       password: "",
       passwordConfirm: "",
@@ -43,14 +40,14 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
       // Call your API to reset the password
       await authService.resetPassword(token, values.password);
       toast({
-       title: t('messages.resetSuccess'),
-        description: t('messages.resetSuccessDescription'),
+        title: t("messages.resetSuccess"),
+        description: t("messages.resetSuccessDescription"),
       });
       router.push("/login");
     } catch (error) {
       if (error instanceof AxiosError) {
         toast({
-          title: t('messages.resetFailed'),
+          title: t("messages.resetFailed"),
           description: error.response?.data.message,
           variant: "destructive",
         });
@@ -58,8 +55,8 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
       }
       // Handle other types of errors
       toast({
-        title: t('messages.resetFailed'),
-        description: t('messages.defaultErrorDescription'),
+        title: t("messages.resetFailed"),
+        description: t("messages.defaultErrorDescription"),
         variant: "destructive",
       });
     }
@@ -76,14 +73,14 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
               <FormItem>
                 <FormControl>
                   <Field
-                    label={t('form.fields.password.label')}
+                    label={t("form.fields.password.label")}
                     error={errors.password?.message}
                     htmlFor="password"
                   >
                     <Input
                       id="password"
                       variant="field"
-                      placeholder={t('form.fields.password.label')}
+                      placeholder={t("form.fields.password.label")}
                       type="password"
                       {...field}
                     />
@@ -100,14 +97,14 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
               <FormItem>
                 <FormControl>
                   <Field
-                    label={t('form.fields.password.label')}
+                    label={t("form.fields.password.label")}
                     error={errors.passwordConfirm?.message}
                     htmlFor="passwordConfirm"
                   >
                     <Input
                       id="passwordConfirm"
                       variant="field"
-                      placeholder={t('form.fields.password.label')}
+                      placeholder={t("form.fields.password.label")}
                       type="password"
                       {...field}
                     />
@@ -125,7 +122,7 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
             loading={isSubmitting}
             disabled={isSubmitting}
           >
-             {t('actions.submit')}
+            {t("actions.submit")}
           </Button>
         </form>
       </Form>

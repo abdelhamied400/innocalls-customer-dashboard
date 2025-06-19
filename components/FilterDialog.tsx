@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import { PropsWithChildren } from "react";
 
 type FilterDialogProps = PropsWithChildren<{
@@ -12,6 +13,8 @@ const FilterDialog = ({
   onApply,
   onReset,
 }: FilterDialogProps) => {
+  const t = useTranslations("common.actions");
+
   return (
     <div className="flex flex-col gap-2 pt-2 min-w-72 filter-dialog">
       <div className="px-2 text-neutral-600 filter-dialog-header">
@@ -24,10 +27,10 @@ const FilterDialog = ({
         <hr className="mx-2" />
         <div className="flex justify-between mb-2 px-2 filter-dialog-footer">
           <Button variant="ghost" className="text-primary" onClick={onReset}>
-            Reset
+            {t("reset")}
           </Button>
           <Button variant="ghost" className="text-primary" onClick={onApply}>
-            Apply
+            {t("apply")}
           </Button>
         </div>
       </div>

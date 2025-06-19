@@ -18,11 +18,27 @@
           "uppercase": "Password must contain at least one uppercase letter",
           "number": "Password must contain at least one number",
           "special": "Password must contain at least one special character"
+        },
+        "date": {
+          "from": {
+            "required": "From date is required",
+            "isBeforeTo": "From date cannot be after to date"
+          },
+          "to": {
+            "required": "To date is required"
+          },
+          "maxRangeExceeded": "Maximum date range is {maxRange} days"
         }
       }
     },
+
     "actions": {
-      "close": "Close"
+      "close": "Close",
+      "reset": "Reset",
+      "apply": "Apply"
+    },
+    "states": {
+      "loading": "Loading..."
     }
   },
   "numbers": {
@@ -327,6 +343,195 @@
       "actions": {
         "submit": "Edit user"
       }
+    }
+  },
+  "billing": {
+    "layout": {
+      "tabs": {
+        "charges": "Charges",
+        "paymentHistory": "Payment History",
+        "rates": "Rates",
+        "invoices": "Invoices"
+      },
+      "actions": {
+        "refillBalance": "Refill Balance"
+      }
+    },
+    "rates": {
+      "title": "Rates",
+      "columns": {
+        "sourceCode": "Source Code",
+        "destinationName": "Destination Name",
+        "destinationCode": "Destination Code",
+        "rate": "Rate"
+      },
+      "filters": {
+        "service": {
+          "label": "Service",
+          "placeholder": "Select from the list"
+        }
+      },
+      "services": {
+        "calls": "Calls",
+        "sms": "Sms"
+      }
+    },
+    "paymentHistory": {
+      "title": "Payment History",
+      "columns": {
+        "refNo": "#Ref-No",
+        "date": "Date",
+        "amount": "Amount",
+        "description": "Description"
+      },
+      "messages": {
+        "error": "Error fetching payment history",
+        "errorDescription": "An error occurred while fetching payment history."
+      }
+    },
+    "invoices": {
+      "title": "Invoices",
+      "columns": {
+        "refNo": "#Ref-No",
+        "date": "Date",
+        "email": "Email",
+        "total": "Total",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "paid": "Paid",
+        "overdue": "Overdue",
+        "draft": "Draft",
+        "partially_paid": "Partially Paid"
+      },
+      "actions": {
+        "pay": "Pay Invoice",
+        "download": "Download Invoice"
+      },
+      "filters": {
+        "amount": {
+          "triggerLabel": "Amount",
+          "label": "Search by amount",
+          "from": {
+            "label": "From Amount",
+            "placeholder": "Enter from amount..."
+          },
+          "to": {
+            "label": "To Amount",
+            "placeholder": "Enter to amount..."
+          }
+        },
+        "status": {
+          "triggerLabel": "Status",
+          "label": "Select invoice status"
+        }
+      },
+      "messages": {
+        "error": "Error fetching invoice URL",
+        "downloadError": "Error downloading invoice",
+        "unknownError": "An unknown error occurred.",
+        "invalidAmountRange": "Invalid Amount Range",
+        "invalidAmountRangeDesc": "From amount must be less than to amount."
+      }
+    },
+    "charges": {
+      "title": "Charges",
+      "columns": {
+        "refNo": "#Ref-No",
+        "date": "Date",
+        "amount": "Amount",
+        "description": "Description"
+      },
+      "messages": {
+        "error": "Error fetching payment history",
+        "errorDescription": "An error occurred while fetching payment history."
+      }
+    },
+    "refillBalance": {
+      "title": "Refill Balance",
+      "description": "Add funds to your account here.",
+      "form": {
+        "fields": {
+          "amount": {
+            "label": "Amount (USD)",
+            "placeholder": "Enter amount..."
+          },
+          "cardNumber": {
+            "label": "Card Number",
+            "placeholder": "Card Number..."
+          },
+          "expiryDate": {
+            "label": "Expiry Date",
+            "placeholder": "MM/YY"
+          },
+          "cvc": {
+            "label": "CVC",
+            "placeholder": "CVC"
+          },
+          "country": {
+            "label": "Country",
+            "placeholder": "Choose a country..."
+          }
+        },
+        "validation": {
+          "amount": {
+            "required": "Amount is required",
+            "invalid": "Please enter a valid amount",
+            "minimum": "Amount must be at least $1"
+          }
+        }
+      },
+      "messages": {
+        "paymentSuccess": "Payment successful",
+        "paymentSuccessDescription": "Your payment has been processed successfully.",
+        "paymentFailed": "Payment failed",
+        "refillError": "Error while refilling balance",
+        "unknownError": "An unknown error occurred."
+      },
+      "actions": {
+        "refillBalance": "Refill Balance",
+        "payNow": "Pay Now",
+        "close": "Close"
+      }
+    },
+    "common": {
+      "filters": {
+        "fromDate": {
+          "hint": "DD/MM/YYYY",
+          "label": "From",
+          "placeholder": "Enter from date"
+        },
+        "toDate": {
+          "label": "To",
+          "hint": "DD/MM/YYYY",
+          "placeholder": "Enter to date"
+        },
+        "creationDate": {
+          "label": "Creation Date",
+          "placeholder": "Select a date range"
+        }
+      },
+      "messages": {
+        "invalidDateRange": "Invalid date range"
+      }
+    }
+  },
+  "sidebar": {
+    "navigation": {
+      "dashboard": "Dashboard",
+      "numbers": "Numbers",
+      "users": "Users",
+      "callReporting": "Call Reporting",
+      "billing": "Billing",
+      "usage": "Usage",
+      "orderConfirmation": "Order Confirmation",
+      "autoDialer": "Auto Dialer",
+      "developersTab": "Developers Tab",
+      "settings": "Settings"
+    },
+    "support": {
+      "innoSupport": "Inno Support"
     }
   }
 }

@@ -26,6 +26,7 @@ import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import CheckoutForm from "./checkout-form";
 import { useQueryClient } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 const RefillBalanceForm = () => {
   const { toast } = useToast();
@@ -34,8 +35,10 @@ const RefillBalanceForm = () => {
   const closeSheetRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
 
+  const t = useTranslations("billing.refillBalance");
+
   const form = useForm<RefillBalanceSchema>({
-    resolver: zodResolver(refillBalanceSchema),
+    resolver: zodResolver(refillBalanceSchema(t)),
     defaultValues: { amount: 5 },
   });
 
@@ -50,18 +53,16 @@ const RefillBalanceForm = () => {
       if (isAxiosError(error)) {
         toast({
           variant: "destructive",
-          title: "Error while refilling balance",
+          title: t("messages.refillError"),
           description:
-            error.response?.data?.message || "An unknown error occurred.",
+            error.response?.data?.message || t("messages.unknownError"),
         });
       } else {
         toast({
           variant: "destructive",
-          title: "Error creating user",
+          title: t("messages.refillError"),
           description:
-            error instanceof Error
-              ? error.message
-              : "An unknown error occurred.",
+            error instanceof Error ? error.message : t("messages.unknownError"),
         });
       }
     }
@@ -69,7 +70,7 @@ const RefillBalanceForm = () => {
 
   return (
     <Stepper
-      steps={["Create new user"]}
+      steps={[t("title")]}
       currentStep={currentStep}
       onStepChange={setCurrentStep}
       className="h-full flex flex-col"
@@ -81,13 +82,13 @@ const RefillBalanceForm = () => {
 
         <div className="flex flex-1 justify-center gap-2">
           <StepperHeaderTitle idx={0}>
-            <p>Refill Balance</p>
+            <p>{t("title")}</p>
           </StepperHeaderTitle>
         </div>
         <Button size="icon" asChild variant="unstyled">
           <SheetClose ref={closeSheetRef}>
             <X className="h-4 w-4" />
-            <span className="sr-only">Close</span>
+            <span className="sr-only">{t("actions.close")}</span>
           </SheetClose>
         </Button>
       </StepperHeader>
@@ -106,7 +107,7 @@ const RefillBalanceForm = () => {
                   <FormItem>
                     <FormControl>
                       <Field
-                        label="Amount (USD)"
+                        label={t("form.fields.amount.label")}
                         error={
                           form.formState.errors.amount?.message?.toString() ||
                           ""
@@ -116,7 +117,7 @@ const RefillBalanceForm = () => {
                         <Input
                           id="amount"
                           variant="field"
-                          placeholder="Enter amount..."
+                          placeholder={t("form.fields.amount.placeholder")}
                           {...field}
                           onChange={(e) => {
                             const value = e.target.value;
@@ -152,7 +153,7 @@ const RefillBalanceForm = () => {
 
               {!clientSecret && (
                 <Button type="submit" disabled={!form.formState.isDirty}>
-                  Refill Balance
+                  {t("actions.refillBalance")}
                 </Button>
               )}
             </StepperStep>

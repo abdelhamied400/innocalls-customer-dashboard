@@ -14,47 +14,51 @@ import ShoppingCart from "@mui/icons-material/ShoppingCart";
 import Code from "@mui/icons-material/Code";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import { useTranslations } from "next-intl";
 
 const AppSidebar = () => {
+
+    const t = useTranslations("sidebar");
+  
   return (
     <Sidebar>
       <SidebarHeader />
       <div className="flex flex-col gap-2 p-4 overflow-y-auto">
-        <SidebarItem icon={<DashboardCustomize />} title="Dashboard" href="/" />
-        <SidebarItem icon={<Phone />} title="Numbers" href="/numbers" />
-        <SidebarItem icon={<Users />} title="Users" href="/users" />
+        <SidebarItem icon={<DashboardCustomize />} title={t("navigation.dashboard")} href="/" />
+        <SidebarItem icon={<Phone />} title={t("navigation.numbers")} href="/numbers" />
+        <SidebarItem icon={<Users />} title={t("navigation.users")} href="/users" />
         <SidebarItem
           icon={<Timeline />}
-          title="Call Reporting"
+          title={t("navigation.callReporting")}
           href="/call-reporting"
         />
         <SidebarItem
           icon={<MonetizationOn />}
-          title="Billing"
+          title={t("navigation.billing")}
           href="/billing"
         />
-        <SidebarItem icon={<DataUsage />} title="Usage" href="/usage" />
+        <SidebarItem icon={<DataUsage />} title={t("navigation.usage")} href="/usage" />
         <SidebarItem
           disabled
           icon={<ShoppingCart />}
-          title="Order Confirmation"
+          title={t("navigation.orderConfirmation")}
           href="/order-confirmation"
         />
         <SidebarItem
           icon={<RingVolume />}
-          title="Auto Dialer"
+          title={t("navigation.autoDialer")}
           href="/auto-dialer/active"
         />
         <SidebarItem
           disabled
           icon={<Code />}
-          title="Developers Tab"
+          title={t("navigation.developersTab")}
           href="/developers-tab"
         />
         <SidebarItem
           disabled
           icon={<Settings />}
-          title="Settings"
+          title={t("navigation.settings")}
           href="/settings"
         />
         <hr />
@@ -66,7 +70,7 @@ const AppSidebar = () => {
             height={200}
             className="mx-auto"
           />
-          <Button size="lg">Inno Support</Button>
+          <Button size="lg">{t("support.innoSupport")}</Button>
         </div>
       </div>
     </Sidebar>

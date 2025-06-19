@@ -11,6 +11,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
+import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 
 type CheckoutFormProps = { clientSecret: string; onSuccess?: () => void };
@@ -18,6 +19,8 @@ const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
   const stripe = useStripe();
   const elements = useElements();
   const { toast } = useToast();
+  const t = useTranslations("billing.refillBalance");
+  const locale = useLocale(); // This gives you "en" or "ar"
 
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [isPaying, setIsPaying] = useState(false);
@@ -49,7 +52,7 @@ const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
       console.log("[Payment error]", result.error.message);
       toast({
         variant: "destructive",
-        title: "Payment failed",
+        title: t("messages.paymentFailed"),
         description: result.error.message,
       });
       // Show error to customer
@@ -57,8 +60,8 @@ const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
       if (result.paymentIntent.status === "succeeded") {
         console.log("[Payment succeeded]", result.paymentIntent);
         toast({
-          title: "Payment successful",
-          description: "Your payment has been processed successfully.",
+          title: t("messages.paymentSuccess"),
+          description: t("messages.paymentSuccessDescription"),
         });
         onSuccess?.();
       }
@@ -69,29 +72,29 @@ const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <Field label="Card Number" htmlFor="card-number">
+      <Field label={t("form.fields.cardNumber.label")} htmlFor="card-number">
         <CardNumberElement
           className="flex-1 py-2"
           options={{
             showIcon: true,
-            placeholder: "Card Number...",
+            placeholder: t("form.fields.cardNumber.placeholder"),
           }}
         />
       </Field>
 
-      <Field label="Expiry Date" htmlFor="card-expiry">
+      <Field label={t("form.fields.expiryDate.label")} htmlFor="card-expiry">
         <CardExpiryElement
           className="flex-1 py-2"
           options={{
-            placeholder: "MM/YY",
+            placeholder: t("form.fields.expiryDate.placeholder"),
           }}
         />
       </Field>
-      <Field label="CVC" htmlFor="card-cvc">
+      <Field label={t("form.fields.cvc.label")} htmlFor="card-cvc">
         <CardCvcElement
           className="flex-1 py-2"
           options={{
-            placeholder: "CVC",
+            placeholder: t("form.fields.cvc.placeholder"),
           }}
         />
       </Field>
@@ -100,10 +103,10 @@ const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
         options={countries}
         value={selectedCountry}
         onChange={setSelectedCountry}
-        label="Country"
-        placeholder="Choose a country..."
+        label={t("form.fields.country.label")}
+        placeholder={t("form.fields.country.placeholder")}
         isVirtualized
-        getLabel={(opt) => opt.name}
+        getLabel={(opt) => opt.name[locale]}
         getValue={(opt) => opt.code}
       />
 
@@ -112,8 +115,8 @@ const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
         disabled={!stripe || isPaying}
         className="w-full"
       >
-        <span>Pay Now</span>
-        <span className="sr-only">Pay Now</span>
+        <span>{t("actions.payNow")}</span>
+        <span className="sr-only">{t("actions.payNow")}</span>
       </Button>
     </div>
   );

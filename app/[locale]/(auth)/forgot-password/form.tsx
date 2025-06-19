@@ -17,10 +17,9 @@ const ForgotPasswordForm = () => {
   const t = useTranslations("auth.forgotPassword");
 
   // 1. Define your form.
-  const schema = ForgotPasswordSchema(t);
 
   const form = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(ForgotPasswordSchema(t)),
     defaultValues: {
       email: "",
     },
