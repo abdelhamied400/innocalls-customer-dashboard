@@ -89,6 +89,7 @@ const CountrySelect = ({
         options={countries}
         value={value}
         isClearable
+        placeholder="Select a country..."
         isMulti={false}
         onChange={handleChange}
         components={{
