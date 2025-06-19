@@ -13,6 +13,17 @@ import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 type ActionsCellProps = Cell<AutoDialerCampaignCols>;
 const ActionsCell = ({ row }: ActionsCellProps) => {
@@ -57,6 +68,9 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       await queryClient.invalidateQueries({
         queryKey: ["auto-dialer-finished-campaigns"],
       });
+      await queryClient.invalidateQueries({
+        queryKey: ["auto-dialer-archived-campaigns"],
+      });
       toast({
         title: "Campaign Archived",
         description: "The campaign has been successfully archived.",
@@ -98,15 +112,32 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
         </Button>
       </Link>
 
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={archiveCampaign}
-        loading={isArchiving}
-        disabled={isArchiving}
-      >
-        <Archive />
-      </Button>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button
+            variant="ghost"
+            size="icon"
+            loading={isArchiving}
+            disabled={isArchiving}
+          >
+            <Archive />
+          </Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will archive the campaign.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={archiveCampaign}>
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
