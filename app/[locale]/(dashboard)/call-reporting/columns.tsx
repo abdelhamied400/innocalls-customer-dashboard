@@ -110,6 +110,10 @@ export const columns: ColumnDef<Call>[] = [
     header: "Call Summary",
     cell: ({ row }) => {
       const summary = row.original.callSummary;
+      if (!summary) {
+        return <></>;
+      }
+
       return (
         <div className="call-summary-cell">
           <Dialog>

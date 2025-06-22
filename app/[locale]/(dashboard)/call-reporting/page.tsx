@@ -1,5 +1,4 @@
 import CallReportingTable from "./table";
-import callReportingService from "@/services/call-reporting.service";
 import { parseTableInitialParams } from "@/lib/queryParams";
 
 const CallReporting = async ({ searchParams }: { searchParams: any }) => {
