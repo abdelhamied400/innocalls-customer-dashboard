@@ -2,12 +2,17 @@
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import WavesurferPlayer from "@wavesurfer/react";
 import { useToast } from "@/hooks/use-toast";
 import callReportingService from "@/services/call-reporting.service";
 import { Call } from "@/types/api/call-reporting";
-import { PlayCircle } from "@mui/icons-material";
+import { Info, PlayCircle } from "@mui/icons-material";
 import { ColumnDef } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 import SoundPlayer from "@/components/SoundPlayer";
@@ -103,6 +108,42 @@ export const columns: ColumnDef<Call>[] = [
   {
     accessorKey: "callSummary",
     header: "Call Summary",
+    cell: ({ row }) => {
+      const summary = row.original.callSummary;
+      return (
+        <div className="call-summary-cell">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <Info />
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogTitle>Call Summary</DialogTitle>
+              <div className="flex flex-col gap-2">
+                {summary?.postCallTags && (
+                  <div className="flex flex-wrap gap-1">
+                    {summary.postCallTags.map((tag) => (
+                      <Badge key={tag} variant="outline">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+                {summary?.comment && (
+                  <p className="text-sm text-gray-700">{summary.comment}</p>
+                )}
+                {summary?.addedBy && (
+                  <p className="text-xs text-gray-500">
+                    Added by: {summary.addedBy}
+                  </p>
+                )}
+              </div>
+            </DialogContent>
+          </Dialog>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "recording",

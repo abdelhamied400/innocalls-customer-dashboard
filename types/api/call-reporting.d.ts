@@ -5,7 +5,11 @@ type CallMember = {
   number: string;
 };
 export type Call = {
-  callSummary?: string;
+  callSummary?: {
+    addedBy: string;
+    comment: string;
+    postCallTags: string[];
+  };
   call_status: "Answered" | "Busy" | "Failed" | "Not Answered";
   canListenToRecords: boolean;
   direction: "incoming" | "outgoing";

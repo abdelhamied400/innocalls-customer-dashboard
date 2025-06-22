@@ -160,15 +160,14 @@ const AutoDialerFinishedHead = ({
               onApply={() => {
                 setFilters((prev) => ({
                   ...prev,
-                  durationType: durationType,
+                  durationType,
                 }));
               }}
               numberOfFilters={durationType ? 1 : 0}
             >
               <RadioGroup
-                defaultValue=""
                 onValueChange={setDurationType}
-                value={durationType}
+                value={durationType || ""}
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="time-limited" id="time-limited" />

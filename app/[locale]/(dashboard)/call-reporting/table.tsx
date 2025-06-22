@@ -204,17 +204,6 @@ const CallReportingTable = ({
   }, [pageIndex, pageSize, filters, updateFilters]);
 
   const applyFilters = () => {
-    let isValid = true;
-    isValid = isValidDateRange(filters.fromDate, filters.toDate, (message) => {
-      toast({
-        title: "Invalid date range",
-        description: message,
-        variant: "destructive",
-      });
-    });
-
-    if (!isValid) return;
-
     setTimeout(() => {
       refetch();
     }, 0);

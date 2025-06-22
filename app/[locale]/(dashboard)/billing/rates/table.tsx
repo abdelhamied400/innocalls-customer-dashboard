@@ -134,6 +134,7 @@ const BillingTable = () => {
       ...prev,
       search,
     }));
+    table.setPageIndex(0); // Reset to first page on search
   };
 
   return (

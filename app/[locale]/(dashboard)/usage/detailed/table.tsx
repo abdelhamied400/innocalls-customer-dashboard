@@ -61,6 +61,13 @@ import { useFilters } from "@/hooks/use-filters";
 import { format } from "date-fns";
 import { isAxiosError } from "axios";
 import { Button } from "@/components/ui/button";
+import PaginatedTable from "@/components/Table/PaginatedTable";
+import DetailedUsageHead from "./head";
+import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
+import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
+import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
+import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
+import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 
 interface UsageDetailedTableProps {
   initialPagination?: {
@@ -95,18 +102,12 @@ const UsageDetailedTable = ({
   },
 }: UsageDetailedTableProps) => {
   const { toast } = useToast();
-  const { updateFilters } = useFilters();
-  const { packages, accounts } = useVocabStore();
 
-  const [isExporting, setIsExporting] = useState(false);
   const [filters, setFilters] = useState<UsageDetailedFilters>({
     ...defaultFilters,
     ...initialFilters,
   });
 
-  const [pagesCount, setPagesCount] = useState<number>(
-    initialPagination.pageIndex
-  );
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: initialPagination?.pageIndex || 0,
     pageSize: initialPagination?.pageSize || 10,
@@ -114,106 +115,18 @@ const UsageDetailedTable = ({
 
   const {
     data = { columns: [], list: [], hasNext: false },
-    refetch,
     isFetching,
     error,
     isError,
   } = useQuery({
-    queryKey: ["usage-detailed", pagination.pageIndex, pagination.pageSize],
+    queryKey: ["usage-detailed", filters, pagination],
     queryFn: async () =>
       usageService.fetchUsageDetailed(
         pagination.pageIndex + 1,
         pagination.pageSize,
         filters
       ),
-    placeholderData: { columns: [], list: [], hasNext: false },
-    retry: 0,
-    staleTime: 0,
   });
-
-  const table = useReactTable({
-    data: data.list,
-    columns: createColumns(data.columns),
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onPaginationChange: setPagination,
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    manualPagination: true,
-    state: {
-      pagination,
-    },
-  });
-
-  // Update the pages count when callReporting data changes
-  useEffect(() => {
-    if (data.hasNext && !isFetching) {
-      setPagesCount((prev) => pagination.pageIndex + 2);
-    } else {
-      setPagesCount(pagination.pageIndex + 1);
-    }
-  }, [data.hasNext, pagination.pageIndex, isFetching]);
-
-  // pagination calculations
-  const { pageIndex, pageSize } = table.getState().pagination;
-  const totalItems = table.getFilteredRowModel().rows.length;
-  const startRowIndex = pageIndex * pageSize + 1;
-  const endRowIndex = Math.min((pageIndex + 1) * pageSize, totalItems);
-  const pages = Array.from({ length: pagesCount }, (_, i) => i + 1);
-
-  //? on any change in pagination, sorting, or filters, update the URL
-  useEffect(() => {
-    updateFilters({
-      page: (pageIndex + 1).toString(),
-      pageSize: pageSize.toString(),
-      ...filters,
-      fromDate: filters.fromDate
-        ? format(filters.fromDate, "yyyy-MM-dd")
-        : undefined,
-      toDate: filters.toDate ? format(filters.toDate, "yyyy-MM-dd") : undefined,
-    });
-  }, [pageIndex, pageSize, filters, updateFilters]);
-
-  const handlePerPageChange = (value: string) => {
-    table.setPageSize(Number(value));
-  };
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setFilters((prev) => ({
-      ...prev,
-      codeName: value,
-    }));
-    updateFilters({ codeName: value });
-
-    table.setPageIndex(0);
-    setTimeout(() => {
-      refetch();
-    }, 0);
-  };
-
-  const applyFilters = () => {
-    const isValid = isValidDateRange(
-      filters.fromDate,
-      filters.toDate,
-      (message) => {
-        toast({
-          title: "Invalid date range",
-          description: message,
-          variant: "destructive",
-        });
-      },
-      30 // max 30 days range
-    );
-
-    if (!isValid) return;
-
-    table.setPageIndex(0);
-
-    setTimeout(() => {
-      refetch();
-    }, 0);
-  };
 
   useEffect(() => {
     if (isError) {
@@ -229,344 +142,32 @@ const UsageDetailedTable = ({
         variant: "destructive",
       });
       setFilters(defaultFilters);
-      setTimeout(() => {
-        refetch();
-      }, 0);
     }
   }, [isError, error, toast]);
 
-  const exportUsage = async () => {
-    try {
-      setIsExporting(true);
-      await usageService.exportUsageDetailed(filters);
-      toast({
-        title: "Export started",
-        description:
-          "Your export is being processed. You will be notified by email when it's ready.",
-      });
-    } catch (error) {
-      let message = "An unexpected error occurred";
-      if (isAxiosError(error)) {
-        message = error?.response?.data.message;
-      }
-      toast({
-        title: "Error exporting data",
-        description: message,
-        variant: "destructive",
-      });
-      console.error("Export error:", error);
-    } finally {
-      setIsExporting(false);
-    }
-  };
-
   return (
     <div className="h-full flex flex-col">
-      <Collapsible>
-        <div className="usage-detailed-table-head flex items-center justify-between p-4">
-          <h2>Usage Detailed</h2>
-          <div className="actions flex items-center gap-2">
-            <Field preIcon={<SearchIcon />}>
-              <Input
-                variant="field"
-                placeholder="Search..."
-                value={filters.codeName}
-                onChange={handleSearchChange}
-                type="search"
-              />
-            </Field>
-            <CollapsibleTrigger asChild>
-              <Toggle pressed={true} className="rounded-full">
-                <FilterAltOutlined />
-              </Toggle>
-            </CollapsibleTrigger>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={exportUsage}
-              loading={isExporting}
-            >
-              <Download />
-            </Button>
-          </div>
-        </div>
-        <CollapsibleContent>
-          <FilterBar
-            onClear={() => {
-              setFilters(defaultFilters);
-              setTimeout(() => {
-                refetch();
-              }, 0);
-            }}
-          >
-            <FilterBox
-              triggerLabel="Account"
-              label="Select an account"
-              onReset={() => {
-                setFilters((prev) => ({ ...prev, accountId: "" }));
-                setTimeout(() => {
-                  refetch();
-                }, 0);
-              }}
-              onApply={applyFilters}
-              numberOfFilters={filters.accountId ? 1 : 0}
-            >
-              <Select
-                onValueChange={(value) => {
-                  setFilters((prev) => ({
-                    ...prev,
-                    accountId: value || "",
-                  }));
-                }}
-                value={filters.accountId}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select an account" />
-                </SelectTrigger>
-                <SelectContent>
-                  {accounts?.map((account) => (
-                    <SelectItem key={account.id} value={account.id.toString()}>
-                      {account.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FilterBox>
-            <FilterBox
-              triggerLabel="Origin"
-              label="Select an origin"
-              onReset={() => {
-                setFilters((prev) => ({ ...prev, origin: "" }));
-                setTimeout(() => {
-                  refetch();
-                }, 0);
-              }}
-              onApply={applyFilters}
-              numberOfFilters={filters.origin ? 1 : 0}
-            >
-              <RadioGroup
-                defaultValue=""
-                onValueChange={(value) => {
-                  setFilters((prev) => ({
-                    ...prev,
-                    origin: value || "",
-                  }));
-                }}
-                value={filters.origin}
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="orig" id="orig" />
-                  <Label htmlFor="orig">Outgoing</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="term" id="term" />
-                  <Label htmlFor="term">Incoming</Label>
-                </div>
-              </RadioGroup>
-            </FilterBox>
-            <FilterBox
-              triggerLabel="Package"
-              label="Select a package"
-              onReset={() => {
-                setFilters((prev) => ({ ...prev, packageId: "" }));
-                setTimeout(() => {
-                  refetch();
-                }, 0);
-              }}
-              onApply={applyFilters}
-              numberOfFilters={filters.packageId ? 1 : 0}
-            >
-              <Select
-                onValueChange={(value) => {
-                  setFilters((prev) => ({
-                    ...prev,
-                    packageId: value || "",
-                  }));
-                }}
-                value={filters.packageId}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select an account" />
-                </SelectTrigger>
-                <SelectContent>
-                  {packages?.map((pkg) => (
-                    <SelectItem key={pkg.id} value={pkg.id.toString()}>
-                      {pkg.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </FilterBox>
-            <FilterBox
-              triggerLabel="Date Range"
-              label="Select a date range"
-              onReset={() => {
-                setFilters((prev) => ({
-                  ...prev,
-                  fromDate: defaultToDate,
-                  toDate: defaultToDate,
-                }));
-                setTimeout(() => {
-                  refetch();
-                }, 0);
-              }}
-              onApply={applyFilters}
-              numberOfFilters={
-                (filters.fromDate ? 1 : 0) + (filters.toDate ? 1 : 0)
-              }
-            >
-              <Field
-                label="From"
-                hint="DD/MM/YYYY"
-                postIcon={<CalendarIcon className="text-gray-400" />}
-              >
-                <DatePicker
-                  className="flex-1"
-                  placeholder="Enter from date"
-                  value={filters.fromDate}
-                  onChange={(date) =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      fromDate: date || undefined,
-                    }))
-                  }
-                />
-              </Field>
-              <Field
-                label="To"
-                hint="DD/MM/YYYY"
-                postIcon={<CalendarIcon className="text-gray-400" />}
-              >
-                <DatePicker
-                  className="flex-1"
-                  placeholder="Enter to date"
-                  value={filters.toDate}
-                  onChange={(date) =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      toDate: date || undefined,
-                    }))
-                  }
-                />
-              </Field>
-            </FilterBox>
-          </FilterBar>
-        </CollapsibleContent>
-      </Collapsible>
-
-      {isFetching && <TableSkeleton cols={6} rows={10} className="h-full" />}
-      {!isFetching && !data.list.length && (
-        <div className="flex items-center justify-center h-full">
-          <p className="text-gray-500">No data available.</p>
-        </div>
-      )}
-      {!isFetching && data.list.length > 0 && (
-        <div className="flex-1 overflow-auto">
-          <Table className="min-h-full w-full">
-            <TableHeader className="bg-gray-100 sticky top-0 z-10">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={6} className="h-24 text-center">
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-      )}
-      <div className="flex justify-between items-center gap-2 p-4">
-        <div className="pagination">
-          <Pagination className="justify-normal">
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={() => {
-                    table.previousPage();
-                  }}
-                  disabled={!table.getCanPreviousPage()}
-                />
-              </PaginationItem>
-
-              {pages.map((page, idx) => (
-                <PaginationItem key={`page-${page}, ${idx}`}>
-                  <PaginationButton
-                    isActive={
-                      table.getState().pagination.pageIndex + 1 === page
-                    }
-                    onClick={() => table.setPageIndex(page - 1)}
-                  >
-                    {page}
-                  </PaginationButton>
-                </PaginationItem>
-              ))}
-              <PaginationItem>
-                <PaginationNext
-                  onClick={() => {
-                    table.nextPage();
-                  }}
-                  disabled={!data.hasNext}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
-
-        <div className="flex items-center gap-2 per-page">
-          <label className="text-sm">Rows per page:</label>
-          <Select
-            onValueChange={handlePerPageChange}
-            defaultValue={table.getState().pagination.pageSize.toString()}
-          >
-            <SelectTrigger className="w-max">
-              <SelectValue placeholder="" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="20">20</SelectItem>
-              <SelectItem value="30">30</SelectItem>
-            </SelectContent>
-          </Select>
-          <p className="text-sm">
-            {startRowIndex}-{endRowIndex}
-            {totalItems ? ` of ${totalItems}` : ""}
-          </p>
-        </div>
-      </div>
+      <PaginatedTable
+        data={data?.list || []}
+        columns={createColumns(data.columns)}
+        pagination={{
+          totalItems: data?.list?.length || 0,
+          totalPages: data?.hasNext
+            ? pagination.pageIndex + 2
+            : pagination.pageIndex + 1,
+        }}
+        onPaginationChange={(pagination) => {
+          setPagination(pagination);
+        }}
+      >
+        <DetailedUsageHead filters={filters} setFilters={setFilters} />
+        <PaginatedTableContent>
+          <PaginatedTableHead />
+          {isFetching && <PaginatedTableSkeleton />}
+          {!isFetching && <PaginatedTableBody />}
+        </PaginatedTableContent>
+        {!isFetching && <PaginatedTablePagination />}
+      </PaginatedTable>
     </div>
   );
 };

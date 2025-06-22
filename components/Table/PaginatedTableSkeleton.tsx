@@ -12,7 +12,7 @@ const PaginatedTableSkeleton = ({ rows = 20 }: PaginatedTableSkeletonProps) => {
     <TableBody className="paginated-table-skeleton">
       {[...Array(rows)].map((_, rIdx) => (
         <TableRow key={`loading-${rIdx}`} className="h-14">
-          {[...Array(columns.length)].map((_, cIdx) => (
+          {[...Array(columns.length || 5)].map((_, cIdx) => (
             <TableCell key={`loading-${cIdx}`} className="h-10">
               <Skeleton className="w-full h-10" />
             </TableCell>
