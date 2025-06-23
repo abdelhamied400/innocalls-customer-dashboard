@@ -75,7 +75,7 @@ const PaginatedTablePagination = () => {
       </div>
 
       <div className="flex items-center gap-2 per-page">
-        <label className="text-sm">{t('rowsPerPage')}:</label>
+        <label className="text-sm">{t("rowsPerPage")}:</label>
         <Select
           onValueChange={handlePerPageChange}
           defaultValue={pagination?.pageSize?.toString()}
@@ -91,7 +91,7 @@ const PaginatedTablePagination = () => {
         </Select>
         <p className="text-sm">
           {startRowIndex}-{endRowIndex}
-          {totalItems ? ` ${t('of')} ${totalItems}` : ""}
+          {totalItems ? ` ${t("of")} ${totalItems}` : ""}
         </p>
       </div>
     </div>

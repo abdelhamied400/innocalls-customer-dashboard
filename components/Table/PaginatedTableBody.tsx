@@ -8,8 +8,8 @@ import { useTranslations } from "next-intl";
 const PaginatedTableBody = () => {
   const { table } = usePaginatedTable();
 
-    const t = useTranslations("common.search");
-  
+  const t = useTranslations("common.search");
+
   return (
     <TableBody>
       {table.getRowModel().rows?.length ? (
@@ -32,7 +32,7 @@ const PaginatedTableBody = () => {
             colSpan={table.getAllColumns().length}
             className="h-24 text-center"
           >
-           {t('noResults')}
+            {t("noResults")}
           </TableCell>
         </TableRow>
       )}
