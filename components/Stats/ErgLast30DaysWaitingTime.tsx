@@ -44,37 +44,37 @@ const ErgLast30DaysWaitingTime = () => {
       info={
         <div className="flex flex-col gap-1">
           <MiniStatsCard
-            icon="/assets/icons/stats/erg/mini/alarm_on.png"
+            icon="/assets/icons/stats/erg/mini/alarm_on.svg"
             label="Completed"
             variant="success"
             value={ergStats.totalWaitTimeCompletedCalls}
           />
           <MiniStatsCard
-            icon="/assets/icons/stats/erg/mini/timer_2.png"
+            icon="/assets/icons/stats/erg/mini/timer_2.svg"
             label="Avg-Completed"
             variant="default"
             value={ergStats.avgWaitTimeCompletedCalls}
           />
           <MiniStatsCard
-            icon="/assets/icons/stats/erg/mini/ring_volume.png"
+            icon="/assets/icons/stats/erg/mini/ring_volume.svg"
             label="Abandoned"
             variant="warning"
             value={ergStats.totalWaitTimeAbandonCalls}
           />
           <MiniStatsCard
-            icon="/assets/icons/stats/erg/mini/timer.png"
+            icon="/assets/icons/stats/erg/mini/timer.svg"
             label="Avg-Abandoned"
             variant="info"
             value={ergStats.avgWaitTimeAbandonCalls}
           />
           <MiniStatsCard
-            icon="/assets/icons/stats/erg/mini/ring_volume.png"
+            icon="/assets/icons/stats/erg/mini/ring_volume.svg"
             label="Exit Timeout"
             variant="destructive"
             value={ergStats.totalWaitTimeExitTimeout}
           />
           <MiniStatsCard
-            icon="/assets/icons/stats/erg/mini/timer.png"
+            icon="/assets/icons/stats/erg/mini/timer.svg"
             label="Avg-Exit Timeout"
             variant="indigo"
             value={ergStats.avgWaitTimeExitTimeout}

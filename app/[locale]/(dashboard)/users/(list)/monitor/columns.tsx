@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -64,12 +65,24 @@ export const columns = (
     accessorKey: "on_call",
     header: t("columns.onCall"),
     cell: ({ row }) => (
-      <Badge
-        variant={row.getValue("on_call") ? "default" : "muted"}
-        className="capitalize"
-      >
-        {row.getValue("on_call") ? t("onCall.yes") : t("onCall.no")}
-      </Badge>
+      <div className="on-call flex items-center gap-2">
+        <Badge
+          variant={row.getValue("on_call") ? "default" : "muted"}
+          className="capitalize"
+        >
+          {row.getValue("on_call") ? t("onCall.yes") : t("onCall.no")}
+        </Badge>
+        {!!row.getValue("on_call") && (
+          <Button size="icon" variant="ghost">
+            <Image
+              src="/assets/icons/incognito.svg"
+              alt="Incognito"
+              width={24}
+              height={24}
+            />
+          </Button>
+        )}
+      </div>
     ),
   },
 ];

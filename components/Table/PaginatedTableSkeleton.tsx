@@ -5,7 +5,7 @@ import { usePaginatedTable } from "./PaginatedTable";
 type PaginatedTableSkeletonProps = {
   rows?: number;
 };
-const PaginatedTableSkeleton = ({ rows = 20 }: PaginatedTableSkeletonProps) => {
+const PaginatedTableSkeleton = ({ rows = 10 }: PaginatedTableSkeletonProps) => {
   const { columns } = usePaginatedTable();
 
   return (

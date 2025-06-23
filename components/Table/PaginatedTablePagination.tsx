@@ -24,7 +24,7 @@ const PaginatedTablePagination = () => {
   const { startRowIndex, endRowIndex, totalItems, pages } = usePagination(
     table,
     {
-      isManualPagination: true,
+      isManualPagination: table.options.manualPagination,
     }
   );
 
