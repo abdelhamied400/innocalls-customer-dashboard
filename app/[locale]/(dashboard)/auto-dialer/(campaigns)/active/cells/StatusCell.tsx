@@ -13,6 +13,7 @@ import {
 import { Cell } from "@/types/cell";
 import { cn } from "@/lib/utils";
 import { AutoDialerCampaignActiveStatus } from "@/constants/auto-dialer";
+import { ReactNode } from "react";
 
 const classNames: Record<AutoDialerCampaignActiveStatus, string> = {
   created: "bg-green-100 text-green-600 hover:bg-green-200",
@@ -27,7 +28,7 @@ const classNames: Record<AutoDialerCampaignActiveStatus, string> = {
   started: "bg-cyan-100 text-cyan-600 hover:bg-cyan-200",
 };
 
-type StatusCellProps = Cell<AutoDialerCampaignCols>;
+type StatusCellProps = Cell<AutoDialerCampaignCols, ReactNode>;
 const StatusCell = ({ cell }: StatusCellProps) => {
   const status = cell.getValue() as AutoDialerCampaignActiveStatus;
   return (
