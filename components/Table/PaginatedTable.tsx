@@ -30,6 +30,7 @@ type PaginatedTableProps<TData, TValue> = PropsWithChildren<{
   };
   onPaginationChange?: (pagination: PaginationState) => void;
   onSortingChange?: (sorting: SortingState) => void;
+  manualPagination?: boolean;
 }>;
 const PaginatedTable = <TData, TValue>({
   data,
@@ -37,6 +38,7 @@ const PaginatedTable = <TData, TValue>({
   pagination: { totalItems, totalPages } = { totalItems: 0, totalPages: 0 },
   onPaginationChange,
   onSortingChange,
+  manualPagination = true,
   children,
 }: PaginatedTableProps<TData, TValue>) => {
   const [pagination, setPagination] = useState<PaginationState>({
@@ -52,14 +54,17 @@ const PaginatedTable = <TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     // state
-    pageCount: totalPages,
-    rowCount: totalItems,
+
     state: {
       sorting,
       pagination,
     },
     // options
-    manualPagination: true,
+    manualPagination,
+    ...(manualPagination && {
+      pageCount: totalPages,
+      rowCount: totalItems,
+    }),
     // callbacks
     onPaginationChange: setPagination,
     onSortingChange: setSorting,

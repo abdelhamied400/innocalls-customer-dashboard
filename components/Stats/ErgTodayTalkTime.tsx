@@ -43,7 +43,7 @@ const ErgTodayTalkTime = () => {
       info={
         <div className="flex flex-col gap-1">
           <MiniStatsCard
-            icon="/assets/icons/stats/erg/mini/timer.png"
+            icon="/assets/icons/stats/erg/mini/timer.svg"
             label="Average"
             variant="info"
             value={ergStats.average}

@@ -24,6 +24,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type ActionsCellProps = Cell<AutoDialerCampaignCols>;
 const ActionsCell = ({ row }: ActionsCellProps) => {
@@ -97,15 +103,25 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
 
   return (
     <div className="flex items-center gap-4">
-      <Button
-        variant="ghost-success"
-        size="icon"
-        onClick={downloadReport}
-        loading={isDownloading}
-        disabled={isDownloading}
-      >
-        <Download />
-      </Button>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost-success"
+              size="icon"
+              onClick={downloadReport}
+              loading={isDownloading}
+              disabled={isDownloading}
+            >
+              <Download />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Download "{row.original.name}" campaign results report</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
       <Link href={`/auto-dialer/campaigns/${row.original.id}/edit`}>
         <Button variant="ghost-primary" size="icon">
           <EyeIcon />
@@ -114,14 +130,23 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
 
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button
-            variant="ghost"
-            size="icon"
-            loading={isArchiving}
-            disabled={isArchiving}
-          >
-            <Archive />
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  loading={isArchiving}
+                  disabled={isArchiving}
+                >
+                  <Archive />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Archive "{row.original.name}" campaign</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>

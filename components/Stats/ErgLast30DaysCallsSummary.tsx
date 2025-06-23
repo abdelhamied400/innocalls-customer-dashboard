@@ -45,19 +45,19 @@ const ErgLast30DaysCallsSummary = () => {
       info={
         <div className="flex flex-col gap-1">
           <MiniStatsCard
-            icon="/assets/icons/stats/erg/mini/ring_volume.png"
+            icon="/assets/icons/stats/erg/mini/ring_volume.svg"
             label="Abandon"
             variant="warning"
             value={ergStats.abandon}
           />
           <MiniStatsCard
-            icon="/assets/icons/stats/erg/mini/timer_2.png"
+            icon="/assets/icons/stats/erg/mini/timer_2.svg"
             label="Completed"
             variant="default"
             value={ergStats.completed}
           />
           <MiniStatsCard
-            icon="/assets/icons/stats/erg/mini/timer_2.png"
+            icon="/assets/icons/stats/erg/mini/timer_off.svg"
             label="Timeout"
             variant="destructive"
             value={ergStats.timeout}
