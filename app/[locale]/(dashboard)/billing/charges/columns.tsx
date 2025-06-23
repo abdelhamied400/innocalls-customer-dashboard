@@ -1,5 +1,6 @@
 "use client";
 
+import SortingHead from "@/components/SortingHead";
 import { Badge } from "@/components/ui/badge";
 import { ColumnDef } from "@tanstack/react-table";
 import { useTranslations } from "next-intl";

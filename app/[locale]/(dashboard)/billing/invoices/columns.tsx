@@ -1,5 +1,6 @@
 "use client";
 
+import SortingHead from "@/components/SortingHead";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -32,13 +33,7 @@ export const columns = (): ColumnDef<Invoice>[] => {
     {
       accessorKey: "date",
       header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          {t("columns.date")}
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
-        </Button>
+        <SortingHead column={column}>{t("columns.date")}</SortingHead>
       ),
     },
     {
@@ -48,13 +43,7 @@ export const columns = (): ColumnDef<Invoice>[] => {
     {
       accessorKey: "total",
       header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          {t("columns.total")}
-          <ArrowUpDownIcon className="ml-2 h-4 w-4" />
-        </Button>
+        <SortingHead column={column}>{t("columns.total")}</SortingHead>
       ),
       cell: ({ row }) => {
         const total = row.getValue("total") as number;

@@ -6,6 +6,7 @@ import {
   getPaginationRowModel,
   PaginationState,
   useReactTable,
+  SortingState,
 } from "@tanstack/react-table";
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 
@@ -28,18 +29,21 @@ type PaginatedTableProps<TData, TValue> = PropsWithChildren<{
     totalPages: number;
   };
   onPaginationChange?: (pagination: PaginationState) => void;
+  onSortingChange?: (sorting: SortingState) => void;
 }>;
 const PaginatedTable = <TData, TValue>({
   data,
   columns,
   pagination: { totalItems, totalPages } = { totalItems: 0, totalPages: 0 },
   onPaginationChange,
+  onSortingChange,
   children,
 }: PaginatedTableProps<TData, TValue>) => {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
+  const [sorting, setSorting] = useState<SortingState>([]);
 
   const table = useReactTable({
     data,
@@ -51,18 +55,25 @@ const PaginatedTable = <TData, TValue>({
     pageCount: totalPages,
     rowCount: totalItems,
     state: {
+      sorting,
       pagination,
     },
     // options
     manualPagination: true,
     // callbacks
     onPaginationChange: setPagination,
+    onSortingChange: setSorting,
   });
 
   //* watch pagination change
   useEffect(() => {
     onPaginationChange?.(pagination);
   }, [pagination]);
+
+  // * watch sorting change
+  useEffect(() => {
+    onSortingChange?.(sorting);
+  }, [sorting]);
 
   return (
     <div className="paginated-table flex-1 flex flex-col overflow-hidden">

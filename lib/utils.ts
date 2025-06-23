@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { format } from "date-fns";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -21,6 +22,9 @@ export const objToQueryString = (obj: Record<string, any>) => {
           params.append(`${key}[${i}]`, v);
         }
       });
+    } else if (value instanceof Date) {
+      // If the value is a Date object, format it and append
+      params.append(key, format(value, "yyyy-MM-dd"));
     } else {
       params.append(key, value);
     }

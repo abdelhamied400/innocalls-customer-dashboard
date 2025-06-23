@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Pagination,
@@ -56,6 +56,14 @@ import { isValidDateRange } from "@/lib/date";
 import DatePicker from "@/components/ui/date-picker";
 import { format } from "date-fns";
 import { useTranslations } from "next-intl";
+import PaginatedTable from "@/components/Table/PaginatedTable";
+import InvoicesHead from "./head";
+import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
+import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
+import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
+import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
+import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
+import { isAxiosError } from "axios";
 
 type InvoicesFilters = {
   search: string;
@@ -68,10 +76,6 @@ type InvoicesFilters = {
 
 const BillingTable = () => {
   const { toast } = useToast();
-  const t = useTranslations("billing.invoices");
-  const tCommon = useTranslations("common");
-  const tBillingCommon = useTranslations("billing.common");
-
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filters, setFilters] = useState<InvoicesFilters>({
     search: "",
@@ -97,398 +101,60 @@ const BillingTable = () => {
       to: 1,
       total: 0,
     },
-    isFetching,
-    refetch,
+    isLoading,
+    isError,
+    error,
   } = useQuery({
-    queryKey: ["invoices", pagination, sorting],
+    queryKey: ["invoices", filters, pagination, sorting],
     queryFn: async () =>
       await billingService.getInvoicesList(
         pagination.pageIndex + 1,
         pagination.pageSize,
-        {
-          search: filters.search,
-          ...(filters.fromDate && {
-            fromDate: format(filters.fromDate, "yyyy-MM-dd"),
-          }),
-          ...(filters.toDate && {
-            toDate: format(filters.toDate, "yyyy-MM-dd"),
-          }),
-          ...(filters.fromTotal && { fromTotal: filters.fromTotal }),
-          ...(filters.toTotal && { toTotal: filters.toTotal }),
-          status: filters.status,
-        },
+        filters,
         sorting
       ),
   });
 
-  const table = useReactTable({
-    data: invoices.data,
-    columns: columns(),
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onPaginationChange: setPagination,
-    onSortingChange: setSorting,
-    pageCount: invoices.last_page,
-    manualPagination: true,
-    manualFiltering: true,
-    manualSorting: true,
-    state: {
-      sorting,
-      pagination,
-    },
-  });
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const search = event.target.value;
-    setFilters((prev) => ({
-      ...prev,
-      search,
-    }));
-  };
-
-  const applyFilters = () => {
-    let isValid = true;
-    isValid = isValidDateRange(
-      filters.fromDate,
-      filters.toDate,
-      (message) => {
+  useEffect(() => {
+    if (isError) {
+      if (isAxiosError(error)) {
         toast({
-          title: tBillingCommon("messages.invalidDateRange"),
-          description: message,
+          title: "Error",
+          description: error.response?.data?.message || "An error occurred",
           variant: "destructive",
         });
-      },
-      -1,
-      tCommon
-    );
-
-    // Validate amount range
-    if (
-      !!filters.fromTotal &&
-      !!filters.toTotal &&
-      Number(filters.fromTotal) > Number(filters.toTotal)
-    ) {
-      isValid = false;
+        return;
+      }
       toast({
-        title: t("messages.invalidAmountRange"),
-        description: t("messages.invalidAmountRangeDesc"),
+        title: "Error",
+        description: "An error occurred",
         variant: "destructive",
       });
-      return;
     }
-
-    if (!isValid) return;
-    // If valid, refetch the data
-    refetch();
-  };
+  }, [isError, error, toast]);
 
   return (
     <div className="h-full flex flex-col border rounded-xl">
-      <Collapsible>
-        <div className="table-head flex items-center justify-between p-4">
-          <h2>{t("title")}</h2>
-          <div className="actions flex items-center gap-2">
-            <Field preIcon={<Search />}>
-              <Input
-                variant="field"
-                placeholder={tCommon("search.placeholder")}
-                value={filters.search}
-                onChange={handleSearchChange}
-                type="search"
-              />
-            </Field>
-
-            <CollapsibleTrigger asChild>
-              <Toggle pressed={true} className="rounded-full">
-                <FilterAltOutlined />
-              </Toggle>
-            </CollapsibleTrigger>
-          </div>
-        </div>
-        <CollapsibleContent>
-          <FilterBar
-            onClear={() => {
-              setFilters({
-                search: "",
-                fromDate: undefined,
-                toDate: undefined,
-                fromTotal: "",
-                toTotal: "",
-                status: null,
-              });
-              setTimeout(() => {
-                refetch();
-              }, 0);
-            }}
-          >
-            <FilterBox
-              triggerLabel={tBillingCommon("filters.creationDate.label")}
-              label={tBillingCommon("filters.creationDate.placeholder")}
-              onReset={() => {
-                setFilters((prev) => ({
-                  ...prev,
-                  fromDate: undefined,
-                  toDate: undefined,
-                }));
-                setTimeout(() => {
-                  refetch();
-                }, 0);
-              }}
-              onApply={applyFilters}
-            >
-              <Field
-                label={tBillingCommon("filters.fromDate.label")}
-                hint={tBillingCommon("filters.fromDate.hint")}
-                postIcon={<CalendarMonth className="text-gray-400" />}
-              >
-                <DatePicker
-                  className="flex-1"
-                  placeholder={tBillingCommon("filters.fromDate.placeholder")}
-                  value={filters.fromDate}
-                  onChange={(date) =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      fromDate: date || undefined,
-                    }))
-                  }
-                />
-              </Field>
-              <Field
-                label={tBillingCommon("filters.toDate.label")}
-                hint={tBillingCommon("filters.toDate.hint")}
-                postIcon={<CalendarMonth className="text-gray-400" />}
-              >
-                <DatePicker
-                  className="flex-1"
-                  placeholder={tBillingCommon("filters.toDate.placeholder")}
-                  value={filters.toDate}
-                  onChange={(date) =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      toDate: date || undefined,
-                    }))
-                  }
-                />
-              </Field>
-            </FilterBox>
-            <FilterBox
-              triggerLabel={t("filters.amount.triggerLabel")}
-              label={t("filters.amount.label")}
-              onReset={() => {
-                setFilters((prev) => ({
-                  ...prev,
-                  fromTotal: "",
-                  toTotal: "",
-                }));
-                setTimeout(() => {
-                  refetch();
-                }, 0);
-              }}
-              onApply={applyFilters}
-            >
-              <Field label={t("filters.amount.from.label")}>
-                <Input
-                  variant="field"
-                  type="number"
-                  placeholder={t("filters.amount.from.placeholder")}
-                  value={filters.fromTotal}
-                  onChange={(e) =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      fromTotal: e.target.value,
-                    }))
-                  }
-                />
-              </Field>
-              <Field label={t("filters.amount.to.label")}>
-                <Input
-                  variant="field"
-                  type="number"
-                  placeholder={t("filters.amount.to.placeholder")}
-                  value={filters.toTotal}
-                  onChange={(e) =>
-                    setFilters((prev) => ({
-                      ...prev,
-                      toTotal: e.target.value,
-                    }))
-                  }
-                />
-              </Field>
-            </FilterBox>
-            <FilterBox
-              triggerLabel={t("filters.status.triggerLabel")}
-              label={t("filters.status.label")}
-              onReset={() => {
-                setFilters((prev) => ({ ...prev, status: null }));
-                setTimeout(() => {
-                  refetch();
-                }, 0);
-              }}
-              onApply={applyFilters}
-            >
-              <RadioGroup
-                onValueChange={(status) =>
-                  setFilters((prev) => ({
-                    ...prev,
-                    status: status as InvoicesFilters["status"],
-                  }))
-                }
-                value={filters.status}
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="draft" id="draft" />
-                  <Label htmlFor="draft">{t("status.draft")}</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="overdue" id="overdue" />
-                  <Label htmlFor="overdue">{t("status.overdue")}</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="paid" id="paid" />
-                  <Label htmlFor="paid">{t("status.paid")}</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="partially_paid" id="partially_paid" />
-                  <Label htmlFor="partially_paid">
-                    {t("status.partially_paid")}
-                  </Label>
-                </div>
-              </RadioGroup>
-            </FilterBox>
-          </FilterBar>
-        </CollapsibleContent>
-      </Collapsible>
-
-      <div className="flex-1 overflow-auto">
-        <Table className="min-h-full w-full">
-          <TableHeader className="bg-gray-100 sticky top-0 z-10">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-
-          <TableBody>
-            {isFetching && (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  {tCommon("states.loading")}
-                </TableCell>
-              </TableRow>
-            )}
-            {!isFetching &&
-              (table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    {tCommon("search.noResults")}
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </div>
-      {!isFetching && table.getRowModel().rows?.length > 0 && (
-        <div className="flex flex-wrap justify-between items-center gap-2 p-4">
-          <div className="pagination">
-            <Pagination className="justify-normal">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    onClick={table.previousPage}
-                    disabled={!table.getCanPreviousPage()}
-                  />
-                </PaginationItem>
-
-                {Array.from(
-                  { length: invoices.last_page },
-                  (_, i) => i + 1
-                ).map((page, idx) => (
-                  <PaginationItem key={`page-${page}, ${idx}`}>
-                    <PaginationButton
-                      isActive={
-                        table.getState().pagination.pageIndex + 1 === page
-                      }
-                      onClick={() => table.setPageIndex(page - 1)}
-                    >
-                      {page}
-                    </PaginationButton>
-                  </PaginationItem>
-                ))}
-                <PaginationItem>
-                  <PaginationNext
-                    onClick={table.nextPage}
-                    disabled={!table.getCanNextPage()}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
-
-          <div className="flex items-center gap-2 per-page">
-            <label className="text-sm">
-              {" "}
-              {tCommon("pagination.rowsPerPage")}:
-            </label>
-            <Select
-              onValueChange={(pageSize) =>
-                table.setPageSize(parseInt(pageSize, 10))
-              }
-              defaultValue={table.getState().pagination.pageSize.toString()}
-            >
-              <SelectTrigger className="w-max">
-                <SelectValue placeholder="" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="10">10</SelectItem>
-                <SelectItem value="20">20</SelectItem>
-                <SelectItem value="30">30</SelectItem>
-              </SelectContent>
-            </Select>
-            <p className="text-sm">
-              {invoices.from}-{invoices.to}
-              {invoices.total
-                ? ` ${tCommon("pagination.of")} ${invoices.total}`
-                : ""}
-            </p>
-          </div>
-        </div>
-      )}
+      <PaginatedTable
+        data={invoices?.data || []}
+        columns={columns()}
+        pagination={{
+          totalItems: invoices?.total || 0,
+          totalPages: invoices?.last_page || 0,
+        }}
+        onPaginationChange={(pagination) => {
+          setPagination(pagination);
+        }}
+        onSortingChange={setSorting}
+      >
+        <InvoicesHead filters={filters} setFilters={setFilters} />
+        <PaginatedTableContent>
+          <PaginatedTableHead />
+          {isLoading && <PaginatedTableSkeleton />}
+          {!isLoading && <PaginatedTableBody />}
+        </PaginatedTableContent>
+        {!isLoading && <PaginatedTablePagination />}
+      </PaginatedTable>
     </div>
   );
 };

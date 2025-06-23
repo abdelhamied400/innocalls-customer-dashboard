@@ -4,7 +4,7 @@ import { format } from "date-fns";
 
 type CreatedAtCellProps = Cell<AutoDialerCampaignCols>;
 const CreatedAtCell = ({ cell }: CreatedAtCellProps) => {
-  return format(new Date(cell.getValue() as string), "PP");
+  return format(new Date(cell.getValue() as string), "d MMM yyyy");
 };
 
 export default CreatedAtCell;
