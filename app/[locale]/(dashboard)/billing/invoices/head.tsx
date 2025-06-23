@@ -62,7 +62,7 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
       toDate,
       (message) => {
         toast({
-          title: "Invalid Date Range",
+          title: tBillingCommon("messages.invalidDateRange"),
           description: message,
           variant: "destructive",
         });

@@ -76,6 +76,8 @@ type InvoicesFilters = {
 
 const BillingTable = () => {
   const { toast } = useToast();
+  const t = useTranslations("billing.invoices");
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filters, setFilters] = useState<InvoicesFilters>({
     search: "",
@@ -120,14 +122,15 @@ const BillingTable = () => {
       if (isAxiosError(error)) {
         toast({
           title: "Error",
-          description: error.response?.data?.message || "An error occurred",
+          description:
+            error.response?.data?.message || t("messages.unknownError"),
           variant: "destructive",
         });
         return;
       }
       toast({
         title: "Error",
-        description: "An error occurred",
+        description: t("messages.unknownError"),
         variant: "destructive",
       });
     }

@@ -65,6 +65,7 @@ import { useSession } from "next-auth/react";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
+import { useTranslations } from "next-intl";
 
 type CallReportingHeadProps = {
   filters: CallReportingFilters;
@@ -72,6 +73,9 @@ type CallReportingHeadProps = {
 };
 const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
   const { toast } = useToast();
+  const t = useTranslations("callReporting");
+  const tCommon = useTranslations("common");
+
   const { table } = usePaginatedTable();
   const [isExporting, setIsExporting] = useState(false);
   const { data: session } = useSession();
@@ -85,10 +89,10 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
     value: tag.id,
   }));
   const statusesOptions = [
-    { value: "ANSWERED", label: "Answered" },
-    { value: "FAILED", label: "Failed" },
-    { value: "NO ANSWER", label: "No Answer" },
-    { value: "BUSY", label: "Busy" },
+    { value: "ANSWERED", label: "answered" },
+    { value: "FAILED", label: "failed" },
+    { value: "NO ANSWER", label: "notAnswered" },
+    { value: "BUSY", label: "busy" },
   ];
 
   const [fromDate, setFromDate] = useState<Date | undefined>(
@@ -113,17 +117,16 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
       });
 
       toast({
-        title: "Export started",
-        description:
-          "Your export is being processed. You will be notified by email when it's ready.",
+        title: t("export.title"),
+        description: t("export.description"),
       });
     } catch (error) {
-      let message = "An unexpected error occurred";
+      let message = t("messages.unexpectedError");
       if (isAxiosError(error)) {
         message = error?.response?.data.message;
       }
       toast({
-        title: "Error exporting data",
+        title: t("export.description"),
         description: message,
         variant: "destructive",
       });
@@ -144,7 +147,8 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
           variant: "destructive",
         });
       },
-      -1
+      -1,
+      tCommon
     );
 
     if (!isValid) return;
@@ -175,7 +179,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
   return (
     <Collapsible>
       <div className="call-reporting-table-head flex items-center justify-between p-4">
-        <h2>Call Reporting</h2>
+        <h2>{t("title")}</h2>
         <div className="flex items-center gap-2">
           <div className="actions flex items-center gap-2">
             <CollapsibleTrigger asChild>
@@ -188,7 +192,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
               onClick={handleExport}
               loading={isExporting}
             >
-              Export
+              {t("export.button")}
             </Button>
           </div>
         </div>
@@ -206,8 +210,8 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
           }}
         >
           <FilterBox
-            triggerLabel="Call Date"
-            label="Select a date range"
+            triggerLabel={t("filters.callDate.triggerLabel")}
+            label={t("filters.callDate.label")}
             onReset={() => {
               setFilters({
                 ...filters,
@@ -221,33 +225,33 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
             numberOfFilters={(fromDate ? 1 : 0) + (toDate ? 1 : 0)}
           >
             <Field
-              label="From"
-              hint="DD/MM/YYYY"
+              label={t("filters.fromDate.label")}
+              hint={t("filters.fromDate.hint")}
               postIcon={<Calendar className="text-gray-400" />}
             >
               <DatePicker
                 className="flex-1"
-                placeholder="Enter from date"
+                placeholder={t("filters.fromDate.placeholder")}
                 value={fromDate}
                 onChange={setFromDate}
               />
             </Field>
             <Field
-              label="To"
-              hint="DD/MM/YYYY"
+              label={t("filters.toDate.label")}
+              hint={t("filters.toDate.hint")}
               postIcon={<Calendar className="text-gray-400" />}
             >
               <DatePicker
                 className="flex-1"
-                placeholder="Enter to date"
+                placeholder={t("filters.toDate.placeholder")}
                 value={toDate}
                 onChange={setToDate}
               />
             </Field>
           </FilterBox>
           <FilterBox
-            triggerLabel="Source"
-            label="Filter by Source Extensions"
+            triggerLabel={t("filters.source.triggerLabel")}
+            label={t("filters.source.label")}
             onReset={() => {
               setFilters((prev) => ({
                 ...prev,
@@ -275,8 +279,10 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
                   return newExt;
                 }
                 toast({
-                  title: "Invalid extension",
-                  description: "Please enter a valid number.",
+                  title: t("filters.validation.number.invalid"),
+                  description: t(
+                    "filters.validation.number.invalidDescription"
+                  ),
                   variant: "destructive",
                 });
                 return false;
@@ -284,8 +290,8 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
             />
           </FilterBox>
           <FilterBox
-            triggerLabel="Destination"
-            label="Filter by Destination Extensions"
+            triggerLabel={t("filters.destination.triggerLabel")}
+            label={t("filters.destination.triggerLabel")}
             onReset={() => {
               setFilters((prev) => ({
                 ...prev,
@@ -305,11 +311,27 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
               badgeClassName="text-xs"
               getLabel={(option) => option?.label || ""}
               getValue={(option) => option?.value || ""}
+              onCreateOption={(newOption) => {
+                // accept only numbers
+                if (/^\d+$/.test(newOption)) {
+                  const newExt = { label: newOption, value: newOption };
+                  setDestinationExtensions((prev) => [...prev, newExt]);
+                  return newExt;
+                }
+                toast({
+                  title: t("filters.validation.number.invalid"),
+                  description: t(
+                    "filters.validation.number.invalidDescription"
+                  ),
+                  variant: "destructive",
+                });
+                return false;
+              }}
             />
           </FilterBox>
           <FilterBox
-            triggerLabel="Tags"
-            label="Filter by Tags"
+            triggerLabel={t("filters.tags.triggerLabel")}
+            label={t("filters.tags.triggerLabel")}
             onReset={() => {
               setFilters((prev) => ({
                 ...prev,
@@ -331,8 +353,8 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
             />
           </FilterBox>
           <FilterBox
-            triggerLabel="Call Status"
-            label="Filter by Call Statuses"
+            triggerLabel={t("filters.callStatus.triggerLabel")}
+            label={t("filters.callStatus.label")}
             onReset={() => {
               setFilters((prev) => ({
                 ...prev,
@@ -358,7 +380,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
                     }}
                   />
                   <Label htmlFor={`call-status-${status.value}`}>
-                    {status.label}
+                    {t(`status.${status.label}`)}
                   </Label>
                 </div>
               ))}

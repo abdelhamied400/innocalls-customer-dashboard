@@ -15,6 +15,7 @@ import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
 import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
+import { useTranslations } from "next-intl";
 
 type CallReportingTableProps = {
   initialPagination?: {
@@ -45,6 +46,8 @@ const CallReportingTable = ({
 }: CallReportingTableProps) => {
   const { toast } = useToast();
 
+  const t = useTranslations("callReporting.messages");
+
   const [filters, setFilters] = useState<CallReportingFilters>({
     ...defaultFilters,
     ...initialFilters,
@@ -74,14 +77,14 @@ const CallReportingTable = ({
 
   useEffect(() => {
     if (isError) {
-      let message = "An unexpected error occurred";
+      let message = t("unexpectedError");
       if (isAxiosError(error)) {
         message = error?.response?.data.message;
       } else {
         message = error?.message;
       }
       toast({
-        title: "Error fetching data",
+        title: t("errorFetchingData"),
         description: message,
         variant: "destructive",
       });
@@ -96,7 +99,7 @@ const CallReportingTable = ({
     <div className="h-full flex flex-col">
       <PaginatedTable
         data={callReporting?.data || []}
-        columns={columns}
+        columns={columns()}
         pagination={{
           totalItems: callReporting?.total || 0,
           totalPages: callReporting?.last_page || 0,

@@ -1,12 +1,15 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import TableSkeleton from "@/components/ui/table-skeleton";
+import { useTranslations } from "next-intl";
 
 const Loading = () => {
+  const t = useTranslations("callReporting");
+
   return (
     <div className="loading h-full">
       <div className="h-full flex flex-col">
         <div className="call-reporting-table-head flex items-center justify-between p-4">
-          <h2>Call Reporting</h2>
+          <h2>{t("title")}</h2>
         </div>
 
         <div className="flex-1 overflow-auto">

@@ -8,45 +8,50 @@ import DateTimeCell from "./cells/DateTimeCell";
 import CallStatusCell from "./cells/CallStatusCell";
 import CallDirectionCell from "./cells/CallDirectionCell";
 import CallRecordingCell from "./cells/CallRecordingCell";
+import { useTranslations } from "next-intl";
 
-export const columns: ColumnDef<Call>[] = [
-  {
-    accessorKey: "destination",
-    header: "Destination",
-    cell: DestinationCell,
-  },
-  {
-    accessorKey: "source",
-    header: "Source",
-    cell: SourceCell,
-  },
-  {
-    accessorKey: "datetime",
-    header: "Call Date",
-    cell: DateTimeCell,
-  },
-  {
-    accessorKey: "duration",
-    header: "Call Duration",
-  },
-  {
-    accessorKey: "call_status",
-    header: "Call Status",
-    cell: CallStatusCell,
-  },
-  {
-    accessorKey: "direction",
-    header: "Call Direction",
-    cell: CallDirectionCell,
-  },
-  {
-    accessorKey: "callSummary",
-    header: "Call Summary",
-    cell: CallSummaryCell,
-  },
-  {
-    accessorKey: "recording",
-    header: "Recording",
-    cell: CallRecordingCell,
-  },
-];
+export const columns = (): ColumnDef<Call>[] => {
+  const t = useTranslations("callReporting.columns");
+
+  return [
+    {
+      accessorKey: "destination",
+      header: t("destination"),
+      cell: DestinationCell,
+    },
+    {
+      accessorKey: "source",
+      header: t("source"),
+      cell: SourceCell,
+    },
+    {
+      accessorKey: "datetime",
+      header: t("callDate"),
+      cell: DateTimeCell,
+    },
+    {
+      accessorKey: "duration",
+      header: t("callDuration"),
+    },
+    {
+      accessorKey: "call_status",
+      header: t("callStatus"),
+      cell: CallStatusCell,
+    },
+    {
+      accessorKey: "direction",
+      header: t("callDirection"),
+      cell: CallDirectionCell,
+    },
+    {
+      accessorKey: "callSummary",
+      header: t("callSummary"),
+      cell: CallSummaryCell,
+    },
+    {
+      accessorKey: "recording",
+      header: t("recording"),
+      cell: CallRecordingCell,
+    },
+  ];
+};

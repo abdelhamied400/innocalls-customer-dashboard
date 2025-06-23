@@ -3,9 +3,13 @@
 import { flexRender } from "@tanstack/react-table";
 import { TableBody, TableCell, TableRow } from "../ui/table";
 import { usePaginatedTable } from "./PaginatedTable";
+import { useTranslations } from "next-intl";
 
 const PaginatedTableBody = () => {
   const { table } = usePaginatedTable();
+
+    const t = useTranslations("common.search");
+  
   return (
     <TableBody>
       {table.getRowModel().rows?.length ? (
@@ -28,7 +32,7 @@ const PaginatedTableBody = () => {
             colSpan={table.getAllColumns().length}
             className="h-24 text-center"
           >
-            No results.
+           {t('noResults')}
           </TableCell>
         </TableRow>
       )}

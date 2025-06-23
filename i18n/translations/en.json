@@ -533,5 +533,89 @@
     "support": {
       "innoSupport": "Inno Support"
     }
+  },
+  "callReporting": {
+    "title": "Call Reporting",
+    "columns": {
+      "destination": "Destination",
+      "source": "Source",
+      "callDate": "Call Date",
+      "callDuration": "Call Duration",
+      "callStatus": "Call Status",
+      "callDirection": "Call Direction",
+      "callSummary": "Call Summary",
+      "recording": "Recording"
+    },
+    "direction": {
+      "incoming": "Incoming",
+      "outgoing": "Outgoing",
+      "local": "Local"
+    },
+    "status": {
+      "answered": "Answered",
+      "busy": "Busy",
+      "failed": "Failed",
+      "notAnswered": "Not Answered"
+    },
+    "recording": {
+      "title": "Call Recording",
+      "error": "Error",
+      "errorDescription": "Failed to fetch recording. Please try again later."
+    },
+    "summary": {
+      "title": "Call Summary",
+      "comment": "Comment",
+      "addedBy": "Added by",
+      "tags": "Tags"
+    },
+    "filters": {
+      "callDate": {
+        "triggerLabel": "Call Date",
+        "label": "Select a date range"
+      },
+      "source": {
+        "triggerLabel": "Source",
+        "label": "Filter by Source"
+      },
+      "destination": {
+        "triggerLabel": "Destination",
+        "label": "Filter by Destination"
+      },
+      "tags": {
+        "triggerLabel": "Tags",
+        "label": "Filter by Tags"
+      },
+      "callStatus": {
+        "triggerLabel": "Call Status",
+        "label": "Filter by Call Statuses"
+      },
+      "fromDate": {
+        "hint": "DD/MM/YYYY",
+        "label": "From",
+        "placeholder": "Enter from date"
+      },
+      "toDate": {
+        "label": "To",
+        "hint": "DD/MM/YYYY",
+        "placeholder": "Enter to date"
+      },
+      "validation": {
+        "number": {
+          "invalid": "Invalid number",
+          "invalidDescription": "Please enter a valid number."
+        }
+      }
+    },
+    "export": {
+      "button": "Export",
+      "title": "Export started",
+      "description": "Your export is being processed. You will be notified by email when it's ready.",
+      "error": "Error exporting data"
+    },
+    "messages": {
+      "errorFetchingData": "Error fetching data",
+      "unexpectedError": "An unexpected error occurred",
+      "invalidDateRange": "Invalid date range"
+    }
   }
 }

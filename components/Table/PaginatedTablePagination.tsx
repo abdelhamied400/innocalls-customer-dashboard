@@ -17,6 +17,7 @@ import {
   PaginationPrevious,
 } from "../ui/pagination";
 import usePagination from "./usePagination";
+import { useTranslations } from "next-intl";
 
 const PaginatedTablePagination = () => {
   const { table, pagination } = usePaginatedTable();
@@ -26,6 +27,8 @@ const PaginatedTablePagination = () => {
       isManualPagination: true,
     }
   );
+
+  const t = useTranslations("common.pagination");
 
   const handlePerPageChange = (value: string) => {
     table.setPageSize(Number(value));
@@ -72,7 +75,7 @@ const PaginatedTablePagination = () => {
       </div>
 
       <div className="flex items-center gap-2 per-page">
-        <label className="text-sm">Rows per page:</label>
+        <label className="text-sm">{t('rowsPerPage')}:</label>
         <Select
           onValueChange={handlePerPageChange}
           defaultValue={pagination?.pageSize?.toString()}
@@ -88,7 +91,7 @@ const PaginatedTablePagination = () => {
         </Select>
         <p className="text-sm">
           {startRowIndex}-{endRowIndex}
-          {totalItems ? ` of ${totalItems}` : ""}
+          {totalItems ? ` ${t('of')} ${totalItems}` : ""}
         </p>
       </div>
     </div>

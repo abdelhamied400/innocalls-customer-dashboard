@@ -384,14 +384,6 @@
         "amount": "المبلغ",
         "description": "الوصف"
       },
-      "filters": {
-        "from": "من",
-        "to": "إلى",
-        "fromDateHint": "يوم/شهر/سنة",
-        "toDateHint": "يوم/شهر/سنة",
-        "enterFromDate": "أدخل تاريخ البداية",
-        "enterToDate": "أدخل تاريخ النهاية"
-      },
       "messages": {
         "error": "خطأ في جلب تاريخ الدفع",
         "errorDescription": "حدث خطأ أثناء جلب تاريخ الدفع."
@@ -548,6 +540,90 @@
     },
     "support": {
       "innoSupport": "دعم إنو"
+    }
+  },
+  "callReporting": {
+    "title": "تقارير المكالمات",
+    "columns": {
+      "destination": "المُسْتَقْبِل",
+      "source": "المتصل",
+      "callDate": "تاريخ المكالمة",
+      "callDuration": "مدة المكالمة",
+      "callStatus": "حالة المكالمة",
+      "callDirection": "اتجاه المكالمة",
+      "callSummary": "ملخص المكالمة",
+      "recording": "التسجيل"
+    },
+    "direction": {
+      "incoming": "واردة",
+      "outgoing": "صادرة",
+      "local": "محلية"
+    },
+    "status": {
+      "answered": "تم الرد",
+      "busy": "مشغول",
+      "failed": "فشلت",
+      "notAnswered": "لم يتم الرد"
+    },
+    "recording": {
+      "title": "تسجيل المكالمة",
+      "error": "خطأ",
+      "errorDescription": "فشل في جلب التسجيل. يرجى المحاولة مرة أخرى لاحقاً."
+    },
+    "summary": {
+      "title": "ملخص المكالمة",
+      "comment": "تعليق",
+      "addedBy": "أضيف بواسطة",
+      "tags": "العلامات"
+    },
+    "filters": {
+      "callDate": {
+        "triggerLabel": "تاريخ المكالمة",
+        "label": "اختر نطاق التاريخ"
+      },
+      "source": {
+        "triggerLabel": "المتصل",
+        "label": "تصفية حسب المتصل"
+      },
+      "destination": {
+        "triggerLabel": "المُسْتَقْبِل",
+        "label": "تصفية حسب المُسْتَقْبِل"
+      },
+      "tags": {
+        "triggerLabel": "العلامات",
+        "label": "تصفية حسب العلامات"
+      },
+      "callStatus": {
+        "triggerLabel": "حالة المكالمة",
+        "label": "تصفية حسب حالات المكالمة"
+      },
+      "fromDate": {
+        "hint": "يوم/شهر/سنة",
+        "label": "من",
+        "placeholder": "أدخل التاريخ من"
+      },
+      "toDate": {
+        "label": "إلى",
+        "hint": "يوم/شهر/سنة",
+        "placeholder": "أدخل التاريخ إلى"
+      },
+      "validation": {
+        "number": {
+          "invalid": "الرقم غير صالح",
+          "invalidDescription": "يرجى إدخال رقم صحيح."
+        }
+      }
+    },
+    "export": {
+      "button": "استخراج",
+      "title": "تم بدء الاستخراج",
+      "description": "يتم معالجة عملية الاستخراج. سيتم إشعارك بالبريد الإلكتروني عند الانتهاء.",
+      "error": "خطأ في استخراج البيانات"
+    },
+    "messages": {
+      "errorFetchingData": "خطأ في جلب البيانات",
+      "unexpectedError": "حدث خطأ غير متوقع",
+      "invalidDateRange": "نطاق تاريخ غير صحيح"
     }
   }
 }

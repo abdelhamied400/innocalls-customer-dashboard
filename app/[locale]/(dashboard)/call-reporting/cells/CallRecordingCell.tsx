@@ -6,15 +6,18 @@ import callReportingService from "@/services/call-reporting.service";
 import { Call } from "@/types/api/call-reporting";
 import { Cell } from "@/types/cell";
 import { PlayCircle } from "@mui/icons-material";
+import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
 const CallRecordingCell = ({ row }: Cell<Call>) => {
   const hasRecording = row.original.hasRecording;
   const callId = row.original.id;
   const { toast } = useToast();
+  const t = useTranslations("callReporting.recording");
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [recordingUrl, setRecordingUrl] = useState<string | null>(null);
+
   const recordingFileName = useMemo(() => {
     if (recordingUrl) {
       const urlParts = recordingUrl.split("/");
@@ -31,8 +34,8 @@ const CallRecordingCell = ({ row }: Cell<Call>) => {
       setIsModalOpen(true);
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to fetch recording. Please try again later.",
+        title: t("error"),
+        description: t("errorDescription"),
         variant: "destructive",
       });
       console.error("Error fetching recording:", error);
@@ -53,7 +56,7 @@ const CallRecordingCell = ({ row }: Cell<Call>) => {
         </Button>
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent>
-            <DialogTitle>Call Recording</DialogTitle>
+            <DialogTitle>{t("title")}</DialogTitle>
             {recordingUrl && (
               <SoundPlayer label={recordingFileName} url={recordingUrl} />
             )}
