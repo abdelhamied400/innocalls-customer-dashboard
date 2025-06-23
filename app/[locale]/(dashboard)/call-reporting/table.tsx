@@ -58,7 +58,7 @@ const CallReportingTable = ({
   // Initialize the query to fetch call reporting data
   const {
     data: callReporting,
-    isFetching,
+    isLoading,
     refetch,
     isError,
     error,
@@ -108,10 +108,10 @@ const CallReportingTable = ({
         <CallReportingHead filters={filters} setFilters={setFilters} />
         <PaginatedTableContent>
           <PaginatedTableHead />
-          {isFetching && <PaginatedTableSkeleton />}
-          {!isFetching && <PaginatedTableBody />}
+          {isLoading && <PaginatedTableSkeleton />}
+          {!isLoading && <PaginatedTableBody />}
         </PaginatedTableContent>
-        {!isFetching && <PaginatedTablePagination />}
+        {!isLoading && <PaginatedTablePagination />}
       </PaginatedTable>
     </div>
   );

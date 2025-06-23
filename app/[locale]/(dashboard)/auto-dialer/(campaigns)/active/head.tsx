@@ -174,7 +174,7 @@ const AutoDialerActiveHead = ({
               <RadioGroup
                 defaultValue=""
                 onValueChange={setDurationType}
-                value={durationType}
+                value={durationType || ""}
               >
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="time-limited" id="time-limited" />

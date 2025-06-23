@@ -216,7 +216,7 @@ const Select = ({
             {value.map((item) => (
               <Badge
                 key={getOptionValue(item)}
-                variant="secondary"
+                variant="default"
                 className={cn("flex items-center gap-1", badgeClassName)}
               >
                 {getOptionLabel(item)}

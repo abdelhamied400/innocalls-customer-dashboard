@@ -64,6 +64,7 @@ import { Label } from "@/components/ui/label";
 import { useSession } from "next-auth/react";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
+import { usePaginatedTable } from "@/components/Table/PaginatedTable";
 
 type CallReportingHeadProps = {
   filters: CallReportingFilters;
@@ -71,6 +72,7 @@ type CallReportingHeadProps = {
 };
 const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
   const { toast } = useToast();
+  const { table } = usePaginatedTable();
   const [isExporting, setIsExporting] = useState(false);
   const { data: session } = useSession();
   const { extensions, tags } = useVocabStore();
@@ -132,13 +134,18 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
   };
 
   const applyFilters = () => {
-    const isValid = isValidDateRange(fromDate, toDate, (message) => {
-      toast({
-        title: "Invalid date range",
-        description: message,
-        variant: "destructive",
-      });
-    });
+    const isValid = isValidDateRange(
+      fromDate,
+      toDate,
+      (message) => {
+        toast({
+          title: "Invalid date range",
+          description: message,
+          variant: "destructive",
+        });
+      },
+      -1
+    );
 
     if (!isValid) return;
 
@@ -161,6 +168,8 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
       callStatuses:
         selectedStatuses.length > 0 ? selectedStatuses.join(",") : undefined,
     }));
+
+    table.setPageIndex(0); // Reset to first page on filter change
   };
 
   return (

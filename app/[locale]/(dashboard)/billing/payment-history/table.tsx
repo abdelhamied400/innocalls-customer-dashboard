@@ -61,6 +61,13 @@ import { useToast } from "@/hooks/use-toast";
 import { AxiosError } from "axios";
 import { isValidDateRange } from "@/lib/date";
 import { useTranslations } from "next-intl";
+import PaginatedTable from "@/components/Table/PaginatedTable";
+import PaymentHistoryHead from "./head";
+import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
+import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
+import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
+import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
+import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 
 type PaymentHistoryFilters = {
   fromDate?: Date;
@@ -77,8 +84,6 @@ const BillingTable = () => {
   const { toast } = useToast();
 
   const t = useTranslations("billing.paymentHistory");
-  const tCommon = useTranslations("common");
-  const tBillingCommon = useTranslations("billing.common");
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filters, setFilters] = useState<PaymentHistoryFilters>({
@@ -104,37 +109,15 @@ const BillingTable = () => {
     isLoading,
     isError,
     error,
-    refetch,
   } = useQuery({
-    queryKey: ["payment-history", pagination.pageIndex, pagination.pageSize],
+    queryKey: ["payment-history", pagination, filters, sorting],
     queryFn: async () =>
       await billingService.getPaymentsList(
         pagination.pageIndex + 1,
         pagination.pageSize,
-        {
-          fromDate: format(filters.fromDate || fromDate, "yyyy-MM-dd"),
-          toDate: format(filters.toDate || toDate, "yyyy-MM-dd"),
-        }
+        filters
       ),
     retry: 0,
-  });
-
-  const table = useReactTable({
-    data: paymentHistory.data,
-    columns: columns(),
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onPaginationChange: setPagination,
-    onSortingChange: setSorting,
-    pageCount: paymentHistory.last_page,
-    manualPagination: true,
-    manualFiltering: true,
-    state: {
-      sorting,
-      pagination,
-    },
   });
 
   useEffect(() => {
@@ -150,220 +133,25 @@ const BillingTable = () => {
 
   return (
     <div className="h-full flex flex-col border rounded-xl">
-      <Collapsible>
-        <div className="users-table-head flex items-center justify-between p-4">
-          <h2>{t("title")}</h2>
-          <div className="actions flex items-center gap-2">
-            <CollapsibleTrigger asChild>
-              <Toggle pressed={true} className="rounded-full">
-                <FilterAltOutlined />
-              </Toggle>
-            </CollapsibleTrigger>
-          </div>
-        </div>
-        <CollapsibleContent className="border-t p-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="filter" size="filter">
-                {tBillingCommon("filters.creationDate.label")}
-                <ChevronDownIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <FilterDialog
-                title={tBillingCommon("filters.creationDate.placeholder")}
-                onReset={() => {
-                  setFilters((prev) => ({ ...prev, fromDate, toDate }));
-                  setTimeout(() => {
-                    refetch();
-                  }, 0);
-                }}
-                onApply={() => {
-                  const isValid = isValidDateRange(
-                    filters.fromDate,
-                    filters.toDate,
-                    (message) => {
-                      toast({
-                        title: tBillingCommon("messages.invalidDateRange"),
-                        description: message,
-                        variant: "destructive",
-                      });
-                    },
-                    90,
-                    tCommon
-                  );
-                  if (!isValid) return;
-                  // If valid, refetch the data
-                  refetch();
-                }}
-              >
-                <Field
-                  label={tBillingCommon("filters.fromDate.label")}
-                  hint={tBillingCommon("filters.fromDate.hint")}
-                  postIcon={<CalendarIcon className="text-gray-400" />}
-                >
-                  <DatePicker
-                    className="flex-1"
-                    placeholder={tBillingCommon("filters.fromDate.placeholder")}
-                    value={filters.fromDate}
-                    onChange={(date) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        fromDate: date || undefined,
-                      }))
-                    }
-                  />
-                </Field>
-                <Field
-                  label={tBillingCommon("filters.toDate.label")}
-                  hint={tBillingCommon("filters.toDate.hint")}
-                  postIcon={<CalendarIcon className="text-gray-400" />}
-                >
-                  <DatePicker
-                    className="flex-1"
-                    placeholder={tBillingCommon("filters.toDate.placeholder")}
-                    value={filters.toDate}
-                    onChange={(date) =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        toDate: date || undefined,
-                      }))
-                    }
-                  />
-                </Field>
-              </FilterDialog>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </CollapsibleContent>
-      </Collapsible>
+      <PaginatedTable
+        data={paymentHistory.data || []}
+        columns={columns()}
+        pagination={{
+          totalItems: paymentHistory.total || 0,
+          totalPages: paymentHistory.last_page || 0,
+        }}
+        onPaginationChange={setPagination}
+        onSortingChange={setSorting}
+      >
+        <PaymentHistoryHead filters={filters} setFilters={setFilters} />
 
-      <div className="flex-1 overflow-auto">
-        <Table className="min-h-full w-full">
-          <TableHeader className="bg-gray-100 sticky z-10">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-
-          <TableBody>
-            {isLoading && (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  {tCommon("states.loading")}
-                </TableCell>
-              </TableRow>
-            )}
-            {!isLoading &&
-              (table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    {tCommon("search.noResults")}
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </div>
-      {!isLoading && table.getRowModel().rows?.length > 0 && (
-        <div className="flex flex-wrap justify-between items-center gap-2 p-4">
-          <div className="pagination">
-            <Pagination className="justify-normal">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    onClick={table.previousPage}
-                    disabled={!table.getCanPreviousPage()}
-                  />
-                </PaginationItem>
-
-                {Array.from(
-                  { length: paymentHistory.last_page },
-                  (_, i) => i + 1
-                ).map((page, idx) => (
-                  <PaginationItem key={`page-${page}, ${idx}`}>
-                    <PaginationButton
-                      isActive={
-                        table.getState().pagination.pageIndex + 1 === page
-                      }
-                      onClick={() => table.setPageIndex(page - 1)}
-                    >
-                      {page}
-                    </PaginationButton>
-                  </PaginationItem>
-                ))}
-                <PaginationItem>
-                  <PaginationNext
-                    onClick={table.nextPage}
-                    disabled={!table.getCanNextPage()}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
-
-          <div className="flex items-center gap-2 per-page">
-            <label className="text-sm">
-              {tCommon("pagination.rowsPerPage")}:
-            </label>
-            <Select
-              onValueChange={(pageSize) =>
-                table.setPageSize(parseInt(pageSize, 10))
-              }
-              defaultValue={table.getState().pagination.pageSize.toString()}
-            >
-              <SelectTrigger className="w-max">
-                <SelectValue placeholder="" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="10">10</SelectItem>
-                <SelectItem value="20">20</SelectItem>
-                <SelectItem value="30">30</SelectItem>
-              </SelectContent>
-            </Select>
-            <p className="text-sm">
-              {paymentHistory.from}-{paymentHistory.to}
-              {paymentHistory.total
-                ? ` ${tCommon("pagination.of")} ${paymentHistory.total}`
-                : ""}
-            </p>
-          </div>
-        </div>
-      )}
+        <PaginatedTableContent>
+          <PaginatedTableHead />
+          {isLoading && <PaginatedTableSkeleton />}
+          {!isLoading && <PaginatedTableBody />}
+        </PaginatedTableContent>
+        {!isLoading && <PaginatedTablePagination />}
+      </PaginatedTable>
     </div>
   );
 };

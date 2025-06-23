@@ -31,7 +31,6 @@
         }
       }
     },
-
     "actions": {
       "close": "Close",
       "reset": "Reset",
@@ -91,7 +90,8 @@
         "defaultErrorDescription": "We have a problem on our side. Please try again later."
       },
       "actions": {
-        "submit": "Send Reset Email Link"
+        "submit": "Send Reset Email Link",
+        "backToLogin": "Back to Login"
       }
     },
     "login": {

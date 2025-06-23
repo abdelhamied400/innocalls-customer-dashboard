@@ -11,6 +11,7 @@ import authService from "@/services/auth.service";
 import { AxiosError } from "axios";
 import { ForgotPasswordSchema } from "@/validation/ForgotPassword";
 import { useTranslations } from "next-intl";
+import Link from "next/link";
 
 const ForgotPasswordForm = () => {
   const { toast } = useToast();
@@ -92,6 +93,12 @@ const ForgotPasswordForm = () => {
           >
             {t("actions.submit")}
           </Button>
+          <Link
+            href="/login"
+            className="text-center block text-sm text-primary-500"
+          >
+            {t("actions.backToLogin")}
+          </Link>
         </form>
       </Form>
     </div>

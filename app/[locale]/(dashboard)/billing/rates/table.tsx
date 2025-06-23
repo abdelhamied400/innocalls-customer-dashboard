@@ -59,6 +59,13 @@ import { format } from "date-fns";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useTranslations } from "next-intl";
+import RatesHead from "./head";
+import PaginatedTable from "@/components/Table/PaginatedTable";
+import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
+import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
+import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
+import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
+import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 
 type RatesFilters = {
   search: string;
@@ -76,9 +83,6 @@ const BillingTable = () => {
     pageSize: 10,
   });
 
-  const t = useTranslations("billing.rates");
-  const tCommon = useTranslations("common");
-
   const {
     data: rates = {
       data: [],
@@ -91,14 +95,8 @@ const BillingTable = () => {
       total: 0,
     },
     isLoading,
-    refetch,
   } = useQuery({
-    queryKey: [
-      "rates",
-      pagination.pageIndex,
-      pagination.pageSize,
-      filters.search,
-    ],
+    queryKey: ["rates", pagination, filters],
     queryFn: async () =>
       await billingService.getRatesList(
         pagination.pageIndex + 1,
@@ -110,223 +108,27 @@ const BillingTable = () => {
       ),
   });
 
-  const table = useReactTable({
-    data: rates.data,
-    columns: columns(),
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onPaginationChange: setPagination,
-    onSortingChange: setSorting,
-    pageCount: rates.last_page,
-    manualPagination: true,
-    manualFiltering: true,
-    state: {
-      sorting,
-      pagination,
-    },
-  });
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const search = event.target.value;
-    setFilters((prev) => ({
-      ...prev,
-      search,
-    }));
-    table.setPageIndex(0); // Reset to first page on search
-  };
-
   return (
     <div className="h-full flex flex-col border rounded-xl">
-      <Collapsible>
-        <div className="users-table-head flex items-center justify-between p-4">
-          <h2>{t("title")}</h2>
-          <div className="actions flex items-center gap-2">
-            <Field preIcon={<Search />}>
-              <Input
-                variant="field"
-                placeholder={tCommon("search.placeholder")}
-                value={filters.search}
-                onChange={handleSearchChange}
-                type="search"
-              />
-            </Field>
+      <PaginatedTable
+        data={rates.data || []}
+        columns={columns()}
+        pagination={{
+          totalItems: rates.total || 0,
+          totalPages: rates.last_page || 0,
+        }}
+        onPaginationChange={setPagination}
+        onSortingChange={setSorting}
+      >
+        <RatesHead filters={filters} setFilters={setFilters} />
 
-            <CollapsibleTrigger asChild>
-              <Toggle pressed={true} className="rounded-full">
-                <FilterAltOutlined />
-              </Toggle>
-            </CollapsibleTrigger>
-          </div>
-        </div>
-        <CollapsibleContent className="border-t p-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="filter" size="filter">
-                {t("filters.service.label")}
-                <ChevronDownIcon />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <FilterDialog
-                title={t("filters.service.placeholder")}
-                onReset={() => {
-                  setFilters((prev) => ({ ...prev, serviceId: "1" }));
-                  setTimeout(() => {
-                    refetch();
-                  }, 0);
-                }}
-                onApply={() => {
-                  refetch();
-                }}
-              >
-                <RadioGroup
-                  defaultValue=""
-                  onValueChange={(value) => {
-                    setFilters((prev) => ({ ...prev, serviceId: value }));
-                  }}
-                  value={filters.serviceId || "1"}
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="1" id="calls" />
-                    <Label htmlFor="calls">{t("services.calls")}</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="2" id="sms" />
-                    <Label htmlFor="sms">{t("services.sms")}</Label>
-                  </div>
-                </RadioGroup>
-              </FilterDialog>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </CollapsibleContent>
-      </Collapsible>
-
-      <div className="flex-1 overflow-auto">
-        <Table className="min-h-full w-full">
-          <TableHeader className="bg-gray-100 sticky top-0 z-10">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-
-          <TableBody>
-            {isLoading && (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  {tCommon("states.loading")}
-                </TableCell>
-              </TableRow>
-            )}
-            {!isLoading &&
-              (table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    {tCommon("search.noResults")}
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </div>
-      {!isLoading && table.getRowModel().rows?.length > 0 && (
-        <div className="flex flex-wrap justify-between items-center gap-2 p-4">
-          <div className="pagination">
-            <Pagination className="justify-normal">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious
-                    onClick={table.previousPage}
-                    disabled={!table.getCanPreviousPage()}
-                  />
-                </PaginationItem>
-
-                {Array.from({ length: rates.last_page }, (_, i) => i + 1).map(
-                  (page, idx) => (
-                    <PaginationItem key={`page-${page}, ${idx}`}>
-                      <PaginationButton
-                        isActive={
-                          table.getState().pagination.pageIndex + 1 === page
-                        }
-                        onClick={() => table.setPageIndex(page - 1)}
-                      >
-                        {page}
-                      </PaginationButton>
-                    </PaginationItem>
-                  )
-                )}
-                <PaginationItem>
-                  <PaginationNext
-                    onClick={table.nextPage}
-                    disabled={!table.getCanNextPage()}
-                  />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
-
-          <div className="flex items-center gap-2 per-page">
-            <label className="text-sm">
-              {tCommon("pagination.rowsPerPage")}:
-            </label>
-            <Select
-              onValueChange={(pageSize) =>
-                table.setPageSize(parseInt(pageSize, 10))
-              }
-              defaultValue={table.getState().pagination.pageSize.toString()}
-            >
-              <SelectTrigger className="w-max">
-                <SelectValue placeholder="" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="10">10</SelectItem>
-                <SelectItem value="20">20</SelectItem>
-                <SelectItem value="30">30</SelectItem>
-              </SelectContent>
-            </Select>
-            <p className="text-sm">
-              {rates.from}-{rates.to}
-              {rates.total ? ` ${tCommon("pagination.of")} ${rates.total}` : ""}
-            </p>
-          </div>
-        </div>
-      )}
+        <PaginatedTableContent>
+          <PaginatedTableHead />
+          {isLoading && <PaginatedTableSkeleton />}
+          {!isLoading && <PaginatedTableBody />}
+        </PaginatedTableContent>
+        {!isLoading && <PaginatedTablePagination />}
+      </PaginatedTable>
     </div>
   );
 };

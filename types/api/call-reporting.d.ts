@@ -12,7 +12,7 @@ export type Call = {
   };
   call_status: "Answered" | "Busy" | "Failed" | "Not Answered";
   canListenToRecords: boolean;
-  direction: "incoming" | "outgoing";
+  direction: "incoming" | "outgoing" | "local";
   duration: string;
   hasRecording: boolean;
   id: string;
