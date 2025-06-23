@@ -24,7 +24,7 @@ const classNames: Record<AutoDialerCampaignFinishedStatus, string> = {
   finished: "bg-gray-200 hover:bg-gray-200 text-gray-500",
 };
 
-type StatusCellProps = Cell<AutoDialerCampaignCols>;
+type StatusCellProps = Cell<AutoDialerCampaignCols, React.ReactNode>;
 const StatusCell = ({ cell }: StatusCellProps) => {
   const status = cell.getValue() as AutoDialerCampaignFinishedStatus;
   return (
