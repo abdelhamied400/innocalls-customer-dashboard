@@ -18,7 +18,7 @@ const cairo = localFont({
   weight: "100 900",
 });
 
-export const fonts: Record<LocaleSlug, NextFontWithVariable> = {
+const fonts: Record<LocaleSlug, NextFontWithVariable> = {
   en: poppins,
   ar: cairo,
 };
