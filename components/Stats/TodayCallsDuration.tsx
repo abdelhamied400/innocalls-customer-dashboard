@@ -2,12 +2,19 @@ import StatsCard, {
   StatsCardError,
   StatsCardSkeleton,
 } from "@/components/StatsCard";
+import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
+import { IntervalValue } from "@/constants/stats";
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
 
+const DEFAULT_REFETCH_INTERVAL = 30000; // 30 seconds in milliseconds
 const TodayCallsDuration = () => {
   const t = useTranslations("dashboard.stats.todayCallsDuration");
+  const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
+    "today_calls_duration_refetch_interval"
+  );
 
   const {
     data: lastHourCallsDuration,
@@ -15,11 +22,12 @@ const TodayCallsDuration = () => {
     isLoading,
     isError,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["today-calls-duration"],
     queryFn: statsService.getTodayCallsDuration,
     refetchOnWindowFocus: false,
-    refetchInterval: 60000,
+    refetchInterval,
     refetchIntervalInBackground: true,
     refetchOnMount: "always",
     retry: false,
@@ -36,7 +44,7 @@ const TodayCallsDuration = () => {
       .join(" ");
   };
 
-  if (isLoading || isRefetching) {
+  if (isLoading) {
     return <StatsCardSkeleton />;
   }
 
@@ -68,6 +76,11 @@ const TodayCallsDuration = () => {
           {t("calls")}
         </p>
       }
+      isRefetching={isRefetching}
+      canRefetch
+      refetchInterval={refetchInterval}
+      setRefetchInterval={setRefetchInterval}
+      refetch={refetch}
     ></StatsCard>
   );
 };

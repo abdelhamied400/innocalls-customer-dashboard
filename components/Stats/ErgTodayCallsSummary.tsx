@@ -3,14 +3,17 @@ import StatsCard, {
   StatsCardError,
   StatsCardSkeleton,
 } from "@/components/StatsCard";
-import { Badge } from "@/components/ui/badge";
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
 import MiniStatsCard from "../MiniStatsCard";
 import { useTranslations } from "next-intl";
+import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 
 const ErgTodayCallsSummary = () => {
   const t = useTranslations("dashboard.stats.ergStats.todayCallsSummary");
+  const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
+    "erg_today_calls_summary_refetch_interval"
+  );
 
   const {
     data: ergStats,
@@ -18,11 +21,12 @@ const ErgTodayCallsSummary = () => {
     isLoading,
     isError,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["ErgTodayCallsSummary"],
     queryFn: statsService.getErgTodayCallsSummary,
     refetchOnWindowFocus: false,
-    refetchInterval: 60000,
+    refetchInterval,
     refetchIntervalInBackground: true,
     refetchOnMount: "always",
     retry: false,
@@ -69,6 +73,10 @@ const ErgTodayCallsSummary = () => {
         </div>
       }
       isRefetching={isRefetching}
+      canRefetch
+      refetchInterval={refetchInterval}
+      setRefetchInterval={setRefetchInterval}
+      refetch={refetch}
     ></StatsCard>
   );
 };
