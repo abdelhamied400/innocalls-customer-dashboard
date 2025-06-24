@@ -45,123 +45,77 @@ import usersService from "@/services/users.service";
 import UsersLoading from "./loading";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import MonitorUsersHead from "./head";
+import PaginatedTable from "@/components/Table/PaginatedTable";
+import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
+import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
+import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
+import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
+import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
+import { isAxiosError } from "axios";
+import { useToast } from "@/hooks/use-toast";
 
-type UsersMonitorTableProps = {
-  initialData: MonitorUser[];
-  initialPagination?: {
-    pageIndex: number;
-    pageSize: number;
-  };
-  initialFilters?: ColumnFiltersState;
-  initialSorting?: SortingState;
+type UsersMonitorFilters = {};
+
+const defaultFilters: UsersMonitorFilters = {
+  search: "",
 };
-const UsersMonitorTable = ({
-  initialData,
-  initialFilters = [],
-  initialSorting = [],
-  initialPagination,
-}: UsersMonitorTableProps) => {
-  const router = useRouter();
+
+const UsersMonitorTable = ({}) => {
+  const { toast } = useToast();
   const t = useTranslations("users.monitor");
-  const searchT = useTranslations("common.search");
-  const paginationT = useTranslations("common.pagination");
 
-  // sorting, filters, and pagination state
-  const [sorting, setSorting] = useState<SortingState>(initialSorting);
-  const [columnFilters, setColumnFilters] =
-    useState<ColumnFiltersState>(initialFilters);
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: initialPagination?.pageIndex || 0,
-    pageSize: initialPagination?.pageSize || 10,
-  });
+  const [filters, setFilters] = useState<UsersMonitorFilters>(defaultFilters);
 
-  const { data = [], isLoading } = useQuery({
-    queryKey: ["monitor-users"],
+  const {
+    data = [],
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["monitor-users", filters],
     queryFn: async () => usersService.getUsersMonitor(),
-    initialData,
     refetchInterval: 30000,
   });
 
-  const table = useReactTable({
-    data,
-    columns: columns(t),
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onSortingChange: setSorting,
-    onPaginationChange: setPagination,
-    onColumnFiltersChange: setColumnFilters,
-    autoResetAll: false,
-    state: {
-      pagination,
-      sorting,
-      columnFilters,
-    },
-  });
-
-  // sorting calculations
-  const tableSorting = table.getState().sorting;
-
-  // pagination calculations
-  const { pageIndex, pageSize } = table.getState().pagination;
-  const totalItems = table.getFilteredRowModel().rows.length;
-  const startRowIndex = pageIndex * pageSize + 1;
-  const endRowIndex = Math.min((pageIndex + 1) * pageSize, totalItems);
-  const pages = table.getPageCount()
-    ? Array.from({ length: table.getPageCount() }, (_, i) => i + 1)
-    : [];
-
-  // filters calculations
-  const nameColumn = table.getColumn("name");
-  const searchValue = (nameColumn?.getFilterValue() as string) || "";
-
-  // Callbacks
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.value;
-    table.getColumn("name")?.setFilterValue(name);
-  };
-
-  //? on any change in pagination, sorting, or filters, update the URL
   useEffect(() => {
-    const params = new URLSearchParams();
-    params.set("page", (pageIndex + 1).toString());
-    params.set("pageSize", pageSize.toString());
-
-    if (columnFilters.length > 0) {
-      columnFilters.forEach((filter) => {
-        if (filter.value) {
-          params.set(filter.id, filter.value as string);
-        }
+    if (isError) {
+      let message = "An unexpected error occurred";
+      if (isAxiosError(error)) {
+        message = error?.response?.data.message;
+      } else {
+        message = error?.message;
+      }
+      toast({
+        title: "Error fetching data",
+        description: message,
+        variant: "destructive",
       });
+      setFilters(defaultFilters);
+      setTimeout(() => {
+        refetch();
+      }, 0);
     }
-
-    if (tableSorting.length > 0) {
-      tableSorting.forEach((sort) => {
-        params.set(`sort_${sort.id}`, sort.desc ? "desc" : "asc");
-      });
-    }
-
-    router.push(`?${params.toString()}`);
-  }, [pageIndex, pageSize, columnFilters, tableSorting, router]);
+  }, [isError, error, toast]);
 
   return (
     <div className="flex flex-col gap-0 h-full border rounded-xl">
-      <div className="users-table-head flex items-center justify-between p-4">
-        <h2>{t("title")}</h2>
-        <div className="actions flex items-center gap-2">
-          <Field preIcon={<SearchIcon />}>
-            <Input
-              variant="field"
-              placeholder={searchT("placeholder")}
-              value={searchValue}
-              onChange={handleSearchChange}
-              type="search"
-            />
-          </Field>
-        </div>
-      </div>
+      <PaginatedTable
+        data={data || []}
+        columns={columns(t)}
+        manualPagination={false}
+      >
+        <MonitorUsersHead filters={filters} setFilters={setFilters} />
 
+        <PaginatedTableContent>
+          <PaginatedTableHead />
+          {isLoading && <PaginatedTableSkeleton />}
+          {!isLoading && <PaginatedTableBody />}
+        </PaginatedTableContent>
+        {!isLoading && <PaginatedTablePagination />}
+      </PaginatedTable>
+      {/* 
       <div className="flex-1 overflow-y-auto">
         <Table className="min-h-full w-full">
           <TableHeader className="bg-gray-100 sticky top-0 z-10">
@@ -265,7 +219,7 @@ const UsersMonitorTable = ({
             {totalItems ? ` ${paginationT("of")} ${totalItems}` : ""}
           </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

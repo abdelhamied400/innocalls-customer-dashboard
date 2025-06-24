@@ -2,8 +2,8 @@ import React, { useRef, useEffect, useState, useMemo } from "react";
 import WaveSurfer from "wavesurfer.js";
 import { Button } from "./ui/button";
 import { Download, Pause, PlayArrow } from "@mui/icons-material";
-import { format, formatDuration } from "date-fns";
 import { downloadFile } from "../lib/downloadFile";
+import { formatDuration } from "@/lib/date";
 
 interface SoundPlayerProps {
   url: string;
@@ -18,10 +18,7 @@ const SoundPlayer = ({ label, url }: SoundPlayerProps) => {
   );
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
-  const formattedDuration = useMemo(
-    () => formatDuration({ seconds: duration }),
-    [duration]
-  );
+  const formattedDuration = useMemo(() => formatDuration(duration), [duration]);
 
   useEffect(() => {
     if (waveformRef.current) {

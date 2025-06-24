@@ -2,48 +2,10 @@
 
 import callReportingService from "@/services/call-reporting.service";
 import { CallReportingFilters, Option } from "@/types/api/call-reporting";
-import { useQuery } from "@tanstack/react-query";
-import {
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  PaginationState,
-  SortingState,
-  useReactTable,
-} from "@tanstack/react-table";
-import { useEffect, useState } from "react";
-import { columns } from "./columns";
+import { useState } from "react";
 import Field from "@/components/ui/field";
-import { FilterAltOutlined, Search } from "@mui/icons-material";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Pagination,
-  PaginationButton,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { FilterAltOutlined } from "@mui/icons-material";
 import MultiSelect from "@/components/select";
-import { Skeleton } from "@/components/ui/skeleton";
-import { useRouter } from "next/navigation";
 import {
   Collapsible,
   CollapsibleContent,
@@ -53,8 +15,6 @@ import { Toggle } from "@/components/ui/toggle";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import DatePicker from "@/components/ui/date-picker";
-import { format, set } from "date-fns";
-import { useFilters } from "@/hooks/use-filters";
 import useVocabStore from "@/store/vocab.slice";
 import { isValidDateRange } from "@/lib/date";
 import { useToast } from "@/hooks/use-toast";
@@ -207,6 +167,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
             setDestinationExtensions([]);
             setSelectedTags([]);
             setSelectedStatuses([]);
+            table.setPageIndex(0); // Reset to first page on filter change
           }}
         >
           <FilterBox
@@ -220,6 +181,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
               });
               setFromDate(undefined);
               setToDate(undefined);
+              table.setPageIndex(0); // Reset to first page on filter change
             }}
             onApply={applyFilters}
             numberOfFilters={(fromDate ? 1 : 0) + (toDate ? 1 : 0)}
@@ -258,6 +220,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
                 sourceExtensions: [],
               }));
               setSourceExtensions([]);
+              table.setPageIndex(0); // Reset to first page on filter change
             }}
             onApply={applyFilters}
             numberOfFilters={sourceExtensions.length}
@@ -298,6 +261,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
                 destinationExtensions: [],
               }));
               setDestinationExtensions([]);
+              table.setPageIndex(0); // Reset to first page on filter change
             }}
             onApply={applyFilters}
             numberOfFilters={destinationExtensions.length}
@@ -338,6 +302,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
                 tags: [],
               }));
               setSelectedTags([]);
+              table.setPageIndex(0); // Reset to first page on filter change
             }}
             onApply={applyFilters}
             numberOfFilters={selectedTags.length}
@@ -361,6 +326,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
                 callStatuses: undefined,
               }));
               setSelectedStatuses([]);
+              table.setPageIndex(0); // Reset to first page on filter change
             }}
             onApply={applyFilters}
             numberOfFilters={selectedStatuses.length}

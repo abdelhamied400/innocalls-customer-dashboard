@@ -47,7 +47,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {type === "password" && (
           <Button
             type="button"
-            className="absolute inset-y-0 right-0 flex items-center px-2 focus:outline-none"
+            className="absolute inset-y-0 end-0 flex items-center px-2 focus:outline-none"
             variant="unstyled"
             onClick={togglePasswordVisibility}
           >
