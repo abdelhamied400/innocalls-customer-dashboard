@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,9 +28,24 @@ export const FilterBox = ({
   numberOfFilters = 0,
 }: FilterBoxProps) => {
   const t = useTranslations("common");
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleReset = () => {
+    if (onReset) {
+      onReset();
+    }
+    setIsOpen(false);
+  };
+
+  const handleApply = () => {
+    if (onApply) {
+      onApply();
+    }
+    setIsOpen(false);
+  };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant="filter">
           {triggerLabel}
@@ -63,14 +78,14 @@ export const FilterBox = ({
               <Button
                 variant="unstyled"
                 className="text-primary"
-                onClick={onReset}
+                onClick={handleReset}
               >
                 {t("actions.reset")}
               </Button>
               <Button
                 variant="unstyled"
                 className="text-primary"
-                onClick={onApply}
+                onClick={handleApply}
               >
                 {t("actions.apply")}
               </Button>

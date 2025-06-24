@@ -1,64 +1,17 @@
 "use client";
 
-import {
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  PaginationState,
-  SortingState,
-  useReactTable,
-} from "@tanstack/react-table";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
-import {
-  Pagination,
-  PaginationButton,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { useState } from "react";
 import Field from "@/components/ui/field";
-import { CalendarIcon, ChevronDownIcon } from "lucide-react";
-import { columns } from "./columns";
-import { useQuery } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
-import billingService from "@/services/billing.service";
-import { FilterAltOutlined, Search } from "@mui/icons-material";
+import { CalendarIcon } from "lucide-react";
+import { FilterAltOutlined } from "@mui/icons-material";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Toggle } from "@/components/ui/toggle";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import FilterDialog from "@/components/FilterDialog";
 import DatePicker from "@/components/ui/date-picker";
-import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
-import { AxiosError } from "axios";
 import { isValidDateRange } from "@/lib/date";
 import { useTranslations } from "next-intl";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
