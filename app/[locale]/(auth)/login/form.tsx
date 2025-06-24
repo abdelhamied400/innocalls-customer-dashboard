@@ -5,7 +5,6 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
@@ -75,7 +74,6 @@ const LoginForm = () => {
             }}
           >
             <ToggleGroupItem value="user">
-              {" "}
               {t("form.fields.userType.admin")}
             </ToggleGroupItem>
             <ToggleGroupItem value="agent">
@@ -132,7 +130,6 @@ const LoginForm = () => {
           <Button
             className="w-full py-6"
             size="lg"
-            variant="secondary"
             type="submit"
             loading={isSubmitting}
             disabled={isSubmitting}
@@ -142,7 +139,7 @@ const LoginForm = () => {
 
           <p className="text-center">
             {t("actions.forgotPassword")}{" "}
-            <Link href="/forgot-password" className="text-secondary">
+            <Link href="/forgot-password" className="text-primary">
               {t("actions.resetPassword")}
             </Link>
           </p>
