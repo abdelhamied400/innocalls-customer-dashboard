@@ -70,7 +70,7 @@ export const FilterBox = ({
           <div className="flex flex-col gap-2 filter-dialog-body">
             <div className="flex flex-col gap-4 px-4 py-2 filter-dialog-content">
               {children || (
-                <p className="text-sm text-gray-500">No filters available</p>
+                <p className="text-sm text-gray-500">{t('filter.noFiltersAvailable')}</p>
               )}
             </div>
             <hr className="" />

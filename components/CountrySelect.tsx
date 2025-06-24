@@ -4,6 +4,7 @@ import React from "react";
 import Select, { components, SingleValueProps } from "react-select";
 import { FixedSizeList as List } from "react-window";
 import { countries, CountryOption } from "@/constants/countries";
+import { useTranslations } from "next-intl";
 
 // Single value display (selected country)
 const customSingleValue = (props: SingleValueProps<CountryOption>) => (
@@ -34,6 +35,8 @@ const MenuList = (props: any) => {
 
   const outerRef = React.useRef<HTMLDivElement | null>(null);
 
+  const tCommon = useTranslations("common.select");
+
   return (
     <components.MenuList
       {...props}
@@ -48,7 +51,7 @@ const MenuList = (props: any) => {
     >
       {itemCount === 0 ? (
         <div className="p-2 text-sm text-muted-foreground text-center">
-          No countries found
+          {tCommon("noCountriesFound")}
         </div>
       ) : (
         <List
@@ -81,6 +84,8 @@ const CountrySelect = ({
     onChange?.(newValue ?? undefined);
   };
 
+  const t = useTranslations("components.countrySelect");
+
   return (
     <div className="space-y-2">
       <Select
@@ -89,7 +94,7 @@ const CountrySelect = ({
         options={countries}
         value={value}
         isClearable
-        placeholder="Select a country..."
+        placeholder={t("placeholder")}
         isMulti={false}
         onChange={handleChange}
         components={{

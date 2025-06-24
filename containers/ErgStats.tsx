@@ -6,11 +6,14 @@ import ErgTodayCallsSummary from "@/components/Stats/ErgTodayCallsSummary";
 import ErgTodayTalkTime from "@/components/Stats/ErgTodayTalkTime";
 import ErgTodayWaitingTime from "@/components/Stats/ErgTodayWaitingTime";
 import ErgWaitingCallsCount from "@/components/Stats/ErgWaitingCallsCount";
+import { useTranslations } from "next-intl";
 
 const ErgStats = () => {
+  const t = useTranslations("dashboard.containers");
+
   return (
     <div className="erg-stats">
-      <h3>Queue Statistics</h3>
+      <h3>{t("queueStats")}</h3>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
         <ErgInProgressCallsCount />
         <ErgWaitingCallsCount />

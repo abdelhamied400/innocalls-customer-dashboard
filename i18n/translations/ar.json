@@ -34,10 +34,33 @@
     "actions": {
       "close": "إغلاق",
       "reset": "إعادة تعيين",
-      "apply": "تطبيق"
+      "apply": "تطبيق",
+      "clear": "مسح",
+      "download": "تحميل",
+      "play": "تشغيل",
+      "pause": "إيقاف مؤقت",
+      "logout": "تسجيل الخروج",
+      "select": "اختر",
+      "create": "إنشاء",
+      "filter": "فلتر"
     },
     "states": {
-      "loading": "جارٍ التحميل..."
+      "loading": "جارٍ التحميل...",
+      "error": "خطأ",
+      "noData": "لا توجد بيانات متاحة",
+      "notFound": "غير موجود"
+    },
+    "filter": {
+      "noFiltersAvailable": "لا توجد خيارات فلترة"
+    },
+    "select": {
+      "placeholder": "اختر...",
+      "createOption": "إنشاء \"{inputValue}\"",
+      "noCountriesFound": "لم يتم العثور على دول"
+    },
+    "audio": {
+      "duration": "المدة",
+      "unknownError": "حدث خطأ غير معروف"
     }
   },
   "numbers": {
@@ -707,6 +730,49 @@
         "title": "إجمالي المكالمات المجابة/يوم",
         "totalCalls": "إجمالي المكالمات"
       }
+    },
+    "containers": {
+      "billingStats": "تفاصيل الفواتير",
+      "queueStats": "إحصائيات صفوف المكالمات",
+      "serviceLevelStats": "تفاصيل مستوى الخدمة"
+    }
+  },
+  "components": {
+    "breadcrumbs": {
+      "item": "عنصر التنقل"
+    },
+    "countrySelect": {
+      "placeholder": "اختر دولة..."
+    },
+    "profileMenu": {
+      "organizations": "المؤسسات",
+      "tenant": "مستأجر",
+      "noTenant": "لا يوجد مستأجر"
+    },
+    "sortingHead": {
+      "sortAscending": "ترتيب تصاعدي",
+      "sortDescending": "ترتيب تنازلي",
+      "unsorted": "غير مُرتب"
+    },
+    "soundPlayer": {
+      "audio": "الصوت"
+    },
+    "statsCard": {
+      "errorOccurred": "حدث خطأ"
+    },
+    "miniStatsCard": {
+      "waitingTime": "وقت الانتظار"
+    },
+    "featureCard": {
+      "feature": "ميزة"
+    },
+    "localeSwitcher": {
+      "language": "اللغة",
+      "selectLanguage": "اختر اللغة"
+    },
+    "linkTabs": {
+      "tab": "تبويب",
+      "activeTab": "التبويب النشط"
     }
   }
 }

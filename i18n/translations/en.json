@@ -34,10 +34,33 @@
     "actions": {
       "close": "Close",
       "reset": "Reset",
-      "apply": "Apply"
+      "apply": "Apply",
+      "clear": "Clear",
+      "download": "Download",
+      "play": "Play",
+      "pause": "Pause",
+      "logout": "Logout",
+      "select": "Select",
+      "create": "Create",
+      "filter": "Filter"
     },
     "states": {
-      "loading": "Loading..."
+      "loading": "Loading...",
+      "error": "Error",
+      "noData": "No data available",
+      "notFound": "Not found"
+    },
+    "filter": {
+      "noFiltersAvailable": "No filters available"
+    },
+    "select": {
+      "placeholder": "Select...",
+      "createOption": "Create \"{inputValue}\"",
+      "noCountriesFound": "No countries found"
+    },
+    "audio": {
+      "duration": "Duration",
+      "unknownError": "An unknown error occurred"
     }
   },
   "numbers": {
@@ -697,8 +720,51 @@
       },
       "totalAnsweredCalls": {
         "title": "Total Answered Calls/Day",
-        "totalCalls":"Total Calls"
+        "totalCalls": "Total Calls"
       }
+    },
+    "containers": {
+      "billingStats": "Billing Details",
+      "queueStats": "Queue Statistics",
+      "serviceLevelStats": "Service Level Details"
+    }
+  },
+  "components": {
+    "breadcrumbs": {
+      "item": "BreadcrumbItem"
+    },
+    "countrySelect": {
+      "placeholder": "Select a country..."
+    },
+    "profileMenu": {
+      "organizations": "Organizations",
+      "tenant": "Tenant",
+      "noTenant": "No Tenant"
+    },
+    "sortingHead": {
+      "sortAscending": "Sort ascending",
+      "sortDescending": "Sort descending",
+      "unsorted": "Unsorted"
+    },
+    "soundPlayer": {
+      "audio": "Audio"
+    },
+    "statsCard": {
+      "errorOccurred": "Error Occurred"
+    },
+    "miniStatsCard": {
+      "waitingTime": "Waiting Time"
+    },
+    "featureCard": {
+      "feature": "Feature"
+    },
+    "localeSwitcher": {
+      "language": "Language",
+      "selectLanguage": "Select Language"
+    },
+    "linkTabs": {
+      "tab": "Tab",
+      "activeTab": "Active Tab"
     }
   }
 }

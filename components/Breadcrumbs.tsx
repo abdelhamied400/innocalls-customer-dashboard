@@ -1,3 +1,5 @@
+import { useTranslations } from "next-intl";
+
 const Breadcrumbs = () => {
   return (
     <div className="flex gap-2 bg-blue-300 breadcrumbs">
@@ -13,9 +15,11 @@ const Breadcrumbs = () => {
 };
 
 const BreadcrumbItem = () => {
+  const t = useTranslations("components.breadcrumbs");
+
   return (
     <div className="bg-blue-400 breadcrumb-item">
-      <p>BreadcrumbItem</p>
+      <p>{t("item")}</p>
     </div>
   );
 };
