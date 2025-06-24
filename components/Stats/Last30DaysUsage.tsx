@@ -1,8 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import StatsCard, { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 import statsService from "@/services/stats.service";
+import { useTranslations } from "next-intl";
 
 const Last30DaysUsage = () => {
+  const t = useTranslations("dashboard.stats.last30DaysUsage");
+
   const {
     data: usage,
     isRefetching,
@@ -28,7 +31,7 @@ const Last30DaysUsage = () => {
   return (
     <StatsCard
       icon={<img src="/assets/icons/stats/carousel.svg" alt="" />}
-      title="Last 30 days usage"
+      title={t("title")}
       value={`${usage?.amount} ${usage?.currency}`}
       isRefetching={isRefetching}
     ></StatsCard>

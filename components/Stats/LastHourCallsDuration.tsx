@@ -5,8 +5,12 @@ import StatsCard, {
 } from "@/components/StatsCard";
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 const LastHourCallsDuration = () => {
+
+    const t = useTranslations("dashboard.stats.lastHourCallsDuration");
+  
   const {
     data: lastHourCallsDuration,
     isRefetching,
@@ -50,22 +54,22 @@ const LastHourCallsDuration = () => {
           alt="Last Hour Calls Icon"
         />
       }
-      title="Total call duration last hour"
+      title={t('title')}
       value={formatDuration(
         lastHourCallsDuration.lastHourOfDay.totalAnsweredDuration
       )}
       className="shadow-none"
       info={
         <p className="text-sm text-gray-500">
-          Based on{" "}
+          {t('basedOn')}{" "}
           <span className="font-bold">
             {lastHourCallsDuration.lastHourOfDay.totalAnsweredCount}
           </span>{" "}
-          calls of total{" "}
+          {t('calls')} {t('ofTotal')}{" "}
           <span className="font-bold">
             {lastHourCallsDuration.lastHourOfDay.total}
           </span>{" "}
-          calls
+          {t('calls')}
         </p>
       }
     ></StatsCard>

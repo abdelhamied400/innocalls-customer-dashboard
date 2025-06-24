@@ -4,8 +4,11 @@ import StatsCard, {
 } from "@/components/StatsCard";
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 const ErgWaitingCallsCount = () => {
+  const t = useTranslations("dashboard.stats.ergStats.waitingCallsCount");
+
   const {
     data: ergStats,
     isRefetching,
@@ -38,7 +41,7 @@ const ErgWaitingCallsCount = () => {
           alt="Waiting Calls Icon"
         />
       }
-      title="Waiting Calls Count"
+      title={t("title")}
       value={ergStats.calls.length}
       isRefetching={isRefetching}
       info={

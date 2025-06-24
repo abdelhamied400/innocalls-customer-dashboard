@@ -617,5 +617,88 @@
       "unexpectedError": "An unexpected error occurred",
       "invalidDateRange": "Invalid date range"
     }
+  },
+  "dashboard": {
+    "stats": {
+      "balance": {
+        "title": "Balance"
+      },
+      "callDistribution": {
+        "title": "Call Distribution",
+        "incomingCalls": "Incoming Calls",
+        "outgoingCalls": "Outgoing Calls"
+      },
+      "ergStats": {
+        "inProgressCallsCount": {
+          "title": "In Progress Calls Count"
+        },
+        "last30DaysCallsSummary": {
+          "title": "Last 30 Days Calls Summary",
+          "abandon": "Abandon",
+          "completed": "Completed",
+          "timeout": "Timeout"
+        },
+        "last30DaysTalkTime": {
+          "title": "Last 30 Days Talk Time",
+          "average": "Average"
+        },
+        "last30DaysWaitingTime": {
+          "title": "Last 30 Days Waiting Time",
+          "completed": "Completed",
+          "avgCompleted": "Avg-Completed",
+          "abandoned": "Abandoned",
+          "avgAbandoned": "Avg-Abandoned",
+          "exitTimeout": "Exit Timeout",
+          "avgExitTimeout": "Avg-Exit Timeout"
+        },
+        "todayCallsSummary": {
+          "title": "Today's Calls Summary",
+          "abandon": "Abandon",
+          "completed": "Completed",
+          "timeout": "Timeout"
+        },
+        "todayTalkTime": {
+          "title": "Today's Talk Time",
+          "average": "Average"
+        },
+        "todayWaitingTime": {
+          "title": "Today's Waiting Time",
+          "completed": "Completed",
+          "avgCompleted": "Avg-Completed",
+          "abandoned": "Abandoned",
+          "avgAbandoned": "Avg-Abandoned",
+          "exitTimeout": "Exit Timeout",
+          "avgExitTimeout": "Avg-Exit Timeout"
+        },
+        "waitingCallsCount": {
+          "title": "Waiting Calls Count"
+        }
+      },
+      "last30DaysUsage": {
+        "title": "Last 30 days usage"
+      },
+      "lastHourCallsDuration": {
+        "title": "Total call duration last hour",
+        "basedOn": "Based on",
+        "calls": "calls",
+        "ofTotal": "calls of total"
+      },
+      "liveCallsCount": {
+        "title": "Live Calls Count"
+      },
+      "overdueInvoices": {
+        "title": "Overdue Invoices"
+      },
+      "todayCallsDuration": {
+        "title": "Total call duration today",
+        "basedOn": "Based on",
+        "calls": "calls",
+        "ofTotal": "calls of total"
+      },
+      "totalAnsweredCalls": {
+        "title": "Total Answered Calls/Day",
+        "totalCalls":"Total Calls"
+      }
+    }
   }
 }

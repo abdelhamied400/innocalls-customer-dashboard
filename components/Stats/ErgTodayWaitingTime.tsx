@@ -7,8 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
 import MiniStatsCard from "../MiniStatsCard";
+import { useTranslations } from "next-intl";
 
 const ErgTodayWaitingTime = () => {
+  const t = useTranslations("dashboard.stats.ergStats.todayWaitingTime");
+
   const {
     data: ergStats,
     isRefetching,
@@ -41,43 +44,43 @@ const ErgTodayWaitingTime = () => {
           alt="Today Waiting Time Icon"
         />
       }
-      title="Today's Waiting Time"
+      title={t("title")}
       value={ergStats.totalWaitTime}
       info={
         <div className="flex flex-col gap-1">
           <MiniStatsCard
             icon="/assets/icons/stats/erg/mini/alarm_on.svg"
-            label="Completed"
+            label={t("completed")}
             variant="success"
             value={ergStats.totalWaitTimeCompletedCalls}
           />
           <MiniStatsCard
             icon="/assets/icons/stats/erg/mini/timer_2.svg"
-            label="Avg-Completed"
+            label={t("avgCompleted")}
             variant="default"
             value={ergStats.avgWaitTimeCompletedCalls}
           />
           <MiniStatsCard
             icon="/assets/icons/stats/erg/mini/ring_volume.svg"
-            label="Abandoned"
+            label={t("abandoned")}
             variant="warning"
             value={ergStats.totalWaitTimeAbandonCalls}
           />
           <MiniStatsCard
             icon="/assets/icons/stats/erg/mini/timer.svg"
-            label="Avg-Abandoned"
+            label={t("avgAbandoned")}
             variant="info"
             value={ergStats.avgWaitTimeAbandonCalls}
           />
           <MiniStatsCard
             icon="/assets/icons/stats/erg/mini/ring_volume.svg"
-            label="Exit Timeout"
+            label={t("exitTimeout")}
             variant="destructive"
             value={ergStats.totalWaitTimeExitTimeout}
           />
           <MiniStatsCard
             icon="/assets/icons/stats/erg/mini/timer.svg"
-            label="Avg-Exit Timeout"
+            label={t("avgExitTimeout")}
             variant="indigo"
             value={ergStats.avgWaitTimeExitTimeout}
           />

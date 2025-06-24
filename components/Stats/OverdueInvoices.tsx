@@ -1,8 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import StatsCard, { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 import statsService from "@/services/stats.service";
+import { useTranslations } from "next-intl";
 
 const OverdueInvoices = () => {
+  const t = useTranslations("dashboard.stats.overdueInvoices");
+
   const {
     data: overdueInvoices,
     isRefetching,
@@ -28,7 +31,7 @@ const OverdueInvoices = () => {
   return (
     <StatsCard
       icon={<img src="/assets/icons/stats/calendar.svg" alt="" />}
-      title="Overdue Invoices"
+      title={t("title")}
       value={`${overdueInvoices?.totalAmount.toFixed(2)} ${
         overdueInvoices?.currency
       }`}

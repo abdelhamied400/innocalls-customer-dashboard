@@ -7,8 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
 import MiniStatsCard from "../MiniStatsCard";
+import { useTranslations } from "next-intl";
 
 const ErgLast30DaysTalkTime = () => {
+  const t = useTranslations("dashboard.stats.ergStats.last30DaysTalkTime");
+
   const {
     data: ergStats,
     isRefetching,
@@ -39,13 +42,13 @@ const ErgLast30DaysTalkTime = () => {
           alt="Last 30 Days Talk Time Icon"
         />
       }
-      title="Last 30 Days Talk Time"
+      title={t('title')}
       value={ergStats.total}
       info={
         <div className="flex flex-col gap-1">
           <MiniStatsCard
             icon="/assets/icons/stats/erg/mini/timer.svg"
-            label="Average"
+            label={t('average')}
             variant="info"
             value={ergStats.average}
           />

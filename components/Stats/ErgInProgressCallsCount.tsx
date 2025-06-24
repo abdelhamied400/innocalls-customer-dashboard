@@ -5,8 +5,11 @@ import StatsCard, {
 } from "@/components/StatsCard";
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 const ErgInProgressCallsCount = () => {
+  const t = useTranslations("dashboard.stats.ergStats.inProgressCallsCount");
+
   const {
     data: ergStats,
     isRefetching,
@@ -34,7 +37,7 @@ const ErgInProgressCallsCount = () => {
   return (
     <StatsCard
       icon={<img src="/assets/icons/stats/phone.svg" alt="Live Calls Icon" />}
-      title="In Progress Calls Count"
+      title={t("title")}
       value={ergStats.inProgressCallsCount}
       isRefetching={isRefetching}
     ></StatsCard>

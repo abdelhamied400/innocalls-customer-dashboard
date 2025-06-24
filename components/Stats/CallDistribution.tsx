@@ -10,19 +10,22 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import statsService from "@/services/stats.service";
 import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
-
-const chartConfig: ChartConfig = {
-  incomingCalls: {
-    label: "Incoming Calls",
-    color: "#23C998",
-  },
-  outgoingCalls: {
-    label: "Outgoing Calls",
-    color: "#5BC9F7",
-  },
-};
+import { useTranslations } from "next-intl";
 
 const CallDistribution = () => {
+  const t = useTranslations("dashboard.stats.callDistribution");
+
+  const chartConfig: ChartConfig = {
+    incomingCalls: {
+      label: t("incomingCalls"),
+      color: "#23C998",
+    },
+    outgoingCalls: {
+      label: t("outgoingCalls"),
+      color: "#5BC9F7",
+    },
+  };
+
   const {
     data: callDistributionData,
     isRefetching,
@@ -50,7 +53,7 @@ const CallDistribution = () => {
     <div className="page h-full" id="callDistribution">
       <div className="bg-white p-4 ps-0 pe-8 pt-2 rounded-lg h-full flex flex-col gap-4">
         <div className="head flex justify-between items-center ps-4 py-2">
-          <h2 className="text-lg font-semibold">Call Distribution</h2>
+          <h2 className="text-lg font-semibold">{t("title")}</h2>
           <div className="flex items-center gap-2">
             {Object.entries(chartConfig).map(([key, value]) => (
               <div className="legend flex items-center gap-2" key={key}>

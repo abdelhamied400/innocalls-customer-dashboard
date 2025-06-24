@@ -12,14 +12,18 @@ import {
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
 import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
+import { useTranslations } from "next-intl";
 
-const chartConfig: ChartConfig = {
-  totalCalls: {
-    label: "Total Calls",
-    color: "#5BC9F7",
-  },
-};
 const TotalAnsweredCalls = () => {
+  const t = useTranslations("dashboard.stats.totalAnsweredCalls");
+
+  const chartConfig: ChartConfig = {
+    totalCalls: {
+      label: t("totalCalls"),
+      color: "#5BC9F7",
+    },
+  };
+
   const {
     data: totalAnsweredCalls,
     isRefetching,
@@ -47,7 +51,7 @@ const TotalAnsweredCalls = () => {
     <div className="page h-full" id="callDistribution">
       <div className="bg-white p-4 rounded-lg h-full flex flex-col gap-2">
         <div className="mb-4">
-          <h3>Total Answered Calls/Day</h3>
+          <h3>{t("title")}</h3>
         </div>
         <ChartContainer
           config={chartConfig}

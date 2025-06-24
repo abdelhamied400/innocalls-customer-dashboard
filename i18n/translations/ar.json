@@ -625,5 +625,88 @@
       "unexpectedError": "حدث خطأ غير متوقع",
       "invalidDateRange": "نطاق تاريخ غير صحيح"
     }
+  },
+  "dashboard": {
+    "stats": {
+      "balance": {
+        "title": "الرصيد"
+      },
+      "callDistribution": {
+        "title": "توزيع المكالمات",
+        "incomingCalls": "المكالمات الواردة",
+        "outgoingCalls": "المكالمات الصادرة"
+      },
+      "ergStats": {
+        "inProgressCallsCount": {
+          "title": "عدد المكالمات الجارية"
+        },
+        "last30DaysCallsSummary": {
+          "title": "ملخص مكالمات آخر 30 يوم",
+          "abandon": "غير مُجابة",
+          "completed": "مكتملة",
+          "timeout": "منتهية بالمهلة"
+        },
+        "last30DaysTalkTime": {
+          "title": "وقت المحادثة آخر 30 يوم",
+          "average": "المتوسط"
+        },
+        "last30DaysWaitingTime": {
+          "title": "وقت الانتظار آخر 30 يوم",
+          "completed": "مكتملة",
+          "avgCompleted": "متوسط-المكتملة",
+          "abandoned": "غير مُجابة",
+          "avgAbandoned": "متوسط-الغير مُجابة",
+          "exitTimeout": "منتهية بالمهلة",
+          "avgExitTimeout": "متوسط-المنتهية بالمهلة"
+        },
+        "todayCallsSummary": {
+          "title": "ملخص مكالمات اليوم",
+          "abandon": "غير مُجابة",
+          "completed": "مكتملة",
+          "timeout": "منتهية بالمهلة"
+        },
+        "todayTalkTime": {
+          "title": "وقت المحادثة اليوم",
+          "average": "المتوسط"
+        },
+        "todayWaitingTime": {
+          "title": "وقت الانتظار اليوم",
+          "completed": "مكتملة",
+          "avgCompleted": "متوسط-مكتملة",
+          "abandoned": "غير مُجابة",
+          "avgAbandoned": "متوسط-الغير مُجابة",
+          "exitTimeout": "منتهية بالمهلة",
+          "avgExitTimeout": "متوسط-المنتهية بالمهلة"
+        },
+        "waitingCallsCount": {
+          "title": "عدد المكالمات المنتظرة"
+        }
+      },
+      "last30DaysUsage": {
+        "title": "الاستخدام آخر 30 يوم"
+      },
+      "lastHourCallsDuration": {
+        "title": "إجمالي مدة المكالمات الساعة الماضية",
+        "basedOn": "بناءً على",
+        "calls": "مكالمة",
+        "ofTotal": "مكالمة من إجمالي"
+      },
+      "liveCallsCount": {
+        "title": "عدد المكالمات المباشرة"
+      },
+      "overdueInvoices": {
+        "title": "الفواتير المتأخرة"
+      },
+      "todayCallsDuration": {
+        "title": "إجمالي مدة المكالمات اليوم",
+        "basedOn": "بناءً على",
+        "calls": "مكالمة",
+        "ofTotal": "مكالمة من إجمالي"
+      },
+      "totalAnsweredCalls": {
+        "title": "إجمالي المكالمات المجابة/يوم",
+        "totalCalls": "إجمالي المكالمات"
+      }
+    }
   }
 }

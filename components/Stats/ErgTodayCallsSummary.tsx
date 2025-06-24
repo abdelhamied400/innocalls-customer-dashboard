@@ -7,8 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
 import MiniStatsCard from "../MiniStatsCard";
+import { useTranslations } from "next-intl";
 
 const ErgTodayCallsSummary = () => {
+  const t = useTranslations("dashboard.stats.ergStats.todayCallsSummary");
+
   const {
     data: ergStats,
     isRefetching,
@@ -41,25 +44,25 @@ const ErgTodayCallsSummary = () => {
           alt="Today Calls Summary Icon"
         />
       }
-      title="Today's Calls Summary"
+      title={t("title")}
       value={ergStats.total}
       info={
         <div className="flex flex-col gap-1">
           <MiniStatsCard
             icon="/assets/icons/stats/erg/mini/ring_volume.svg"
-            label="Abandon"
+            label={t("abandon")}
             variant="warning"
             value={ergStats.abandon}
           />
           <MiniStatsCard
             icon="/assets/icons/stats/erg/mini/timer_2.svg"
-            label="Completed"
+            label={t("completed")}
             variant="default"
             value={ergStats.completed}
           />
           <MiniStatsCard
             icon="/assets/icons/stats/erg/mini/timer_off.svg"
-            label="Timeout"
+            label={t("timeout")}
             variant="destructive"
             value={ergStats.timeout}
           />

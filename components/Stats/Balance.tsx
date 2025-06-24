@@ -1,8 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import StatsCard, { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 import statsService from "@/services/stats.service";
+import { useTranslations } from "next-intl";
 
 const Balance = () => {
+  const t = useTranslations("dashboard.stats.balance");
+
   const {
     data: balance,
     isRefetching,
@@ -29,7 +32,7 @@ const Balance = () => {
   return (
     <StatsCard
       icon={<img src="/assets/icons/stats/wallet.svg" alt="" />}
-      title="Balance"
+      title={t("title")}
       value={`${balance?.balance} ${balance?.currency}`}
       isRefetching={isRefetching}
       className="bg-amber-100"
