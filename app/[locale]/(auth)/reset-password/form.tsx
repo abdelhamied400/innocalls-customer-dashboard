@@ -117,7 +117,6 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
           <Button
             className="w-full py-6"
             size="lg"
-            variant="secondary"
             type="submit"
             loading={isSubmitting}
             disabled={isSubmitting}

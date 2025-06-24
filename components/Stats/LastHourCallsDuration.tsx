@@ -6,22 +6,26 @@ import StatsCard, {
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 
 const LastHourCallsDuration = () => {
+  const t = useTranslations("dashboard.stats.lastHourCallsDuration");
+  const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
+    "last_hour_calls_duration_refetch_interval"
+  );
 
-    const t = useTranslations("dashboard.stats.lastHourCallsDuration");
-  
   const {
     data: lastHourCallsDuration,
     isRefetching,
     isLoading,
     isError,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["last-hour-calls-duration"],
     queryFn: statsService.getLastHourCallsDuration,
     refetchOnWindowFocus: false,
-    refetchInterval: 60000,
+    refetchInterval,
     refetchIntervalInBackground: true,
     refetchOnMount: "always",
     retry: false,
@@ -38,7 +42,9 @@ const LastHourCallsDuration = () => {
       .join(" ");
   };
 
-  if (isLoading || isRefetching) {
+  // Remove handleRefetchIntervalChange and useEffect for refetchInterval
+
+  if (isLoading) {
     return <StatsCardSkeleton />;
   }
 
@@ -54,24 +60,29 @@ const LastHourCallsDuration = () => {
           alt="Last Hour Calls Icon"
         />
       }
-      title={t('title')}
+      title={t("title")}
       value={formatDuration(
         lastHourCallsDuration.lastHourOfDay.totalAnsweredDuration
       )}
       className="shadow-none"
       info={
         <p className="text-sm text-gray-500">
-          {t('basedOn')}{" "}
+          {t("basedOn")}{" "}
           <span className="font-bold">
             {lastHourCallsDuration.lastHourOfDay.totalAnsweredCount}
           </span>{" "}
-          {t('calls')} {t('ofTotal')}{" "}
+          {t("calls")} {t("ofTotal")}{" "}
           <span className="font-bold">
             {lastHourCallsDuration.lastHourOfDay.total}
           </span>{" "}
-          {t('calls')}
+          {t("calls")}
         </p>
       }
+      isRefetching={isRefetching}
+      canRefetch
+      refetchInterval={refetchInterval}
+      setRefetchInterval={setRefetchInterval}
+      refetch={refetch}
     ></StatsCard>
   );
 };

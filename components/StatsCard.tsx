@@ -4,6 +4,18 @@ import { XIcon } from "lucide-react";
 import { AxiosError } from "axios";
 import { Skeleton } from "./ui/skeleton";
 import Spinner from "./ui/spinner";
+import { Button } from "./ui/button";
+import { MoreVert, Refresh } from "@mui/icons-material";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { refetchIntervals } from "@/constants/stats";
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 
 type StatsCardProps = {
   icon: React.ReactNode;
@@ -12,6 +24,12 @@ type StatsCardProps = {
   className?: string;
   isRefetching?: boolean;
   info?: React.ReactNode;
+  canRefetch?: boolean;
+  refetchInterval?: number | false;
+  setRefetchInterval?: (interval: number | false) => void;
+  refetch?: (
+    options?: RefetchOptions
+  ) => Promise<QueryObserverResult<any, Error>>;
 };
 const StatsCard = ({
   icon,
@@ -20,6 +38,10 @@ const StatsCard = ({
   className = "",
   isRefetching = false,
   info,
+  canRefetch = false,
+  refetchInterval,
+  setRefetchInterval,
+  refetch,
 }: StatsCardProps) => {
   return (
     <div
@@ -29,9 +51,45 @@ const StatsCard = ({
         className
       )}
     >
-      <div className="flex items-center gap-2">
-        {isRefetching ? <Spinner className="size-4" /> : icon}
-        <h3 className="text-lg text-gray-500">{title}</h3>
+      <div className="flex justify-between items-center gap-1">
+        <div className="flex items-center gap-2">
+          {isRefetching ? <Spinner className="size-4" /> : icon}
+          <h3 className="text-lg text-gray-500">{title}</h3>
+        </div>
+        {canRefetch && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="unstyled" size="icon">
+                <MoreVert />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Refresh Intervals</DropdownMenuLabel>
+              {refetchIntervals.map((interval) => (
+                <DropdownMenuItem
+                  key={interval.label}
+                  onClick={() => {
+                    setRefetchInterval?.(interval.value ?? 0);
+                  }}
+                >
+                  {interval.label}
+                  {refetchInterval === interval.value && (
+                    <span className="ml-auto text-blue-500">✓</span>
+                  )}
+                </DropdownMenuItem>
+              ))}
+              {!!refetch && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={() => refetch()}>
+                    <Refresh />
+                    Refresh Now
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
       <div className="flex flex-col gap-2">
         <p className="font-bold text-2xl text-gray-800">{value}</p>

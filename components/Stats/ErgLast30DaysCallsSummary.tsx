@@ -3,7 +3,6 @@ import StatsCard, {
   StatsCardError,
   StatsCardSkeleton,
 } from "@/components/StatsCard";
-import { Badge } from "@/components/ui/badge";
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
 import MiniStatsCard from "../MiniStatsCard";

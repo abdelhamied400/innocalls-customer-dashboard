@@ -4,10 +4,14 @@ import StatsCard, {
 } from "@/components/StatsCard";
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
+import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 import { useTranslations } from "next-intl";
 
 const ErgWaitingCallsCount = () => {
   const t = useTranslations("dashboard.stats.ergStats.waitingCallsCount");
+  const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
+    "erg_waiting_calls_count_refetch_interval"
+  );
 
   const {
     data: ergStats,
@@ -15,11 +19,12 @@ const ErgWaitingCallsCount = () => {
     isLoading,
     isError,
     error,
+    refetch,
   } = useQuery({
     queryKey: ["ErgWaitingCallsCount"],
     queryFn: statsService.getErgWaitingCallsCount,
     refetchOnWindowFocus: false,
-    refetchInterval: 60000,
+    refetchInterval,
     refetchIntervalInBackground: true,
     refetchOnMount: "always",
     retry: false,
@@ -43,7 +48,6 @@ const ErgWaitingCallsCount = () => {
       }
       title={t("title")}
       value={ergStats.calls.length}
-      isRefetching={isRefetching}
       info={
         <div className="flex flex-col gap-1 rounded-lg bg-gray-100 max-h-48 overflow-y-auto">
           {ergStats.calls.map((call: { queueName: string; caller: string }) => (
@@ -57,6 +61,11 @@ const ErgWaitingCallsCount = () => {
           ))}
         </div>
       }
+      isRefetching={isRefetching}
+      canRefetch
+      refetchInterval={refetchInterval}
+      setRefetchInterval={setRefetchInterval}
+      refetch={refetch}
     ></StatsCard>
   );
 };
