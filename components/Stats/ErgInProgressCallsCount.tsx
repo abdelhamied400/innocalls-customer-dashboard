@@ -3,12 +3,10 @@ import StatsCard, {
   StatsCardError,
   StatsCardSkeleton,
 } from "@/components/StatsCard";
-import { IntervalValue } from "@/constants/stats";
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
 
 const ErgInProgressCallsCount = () => {
   const t = useTranslations("dashboard.stats.ergStats.inProgressCallsCount");

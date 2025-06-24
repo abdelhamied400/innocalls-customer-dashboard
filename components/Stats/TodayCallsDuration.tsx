@@ -3,13 +3,10 @@ import StatsCard, {
   StatsCardSkeleton,
 } from "@/components/StatsCard";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
-import { IntervalValue } from "@/constants/stats";
 import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
 
-const DEFAULT_REFETCH_INTERVAL = 30000; // 30 seconds in milliseconds
 const TodayCallsDuration = () => {
   const t = useTranslations("dashboard.stats.todayCallsDuration");
   const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
