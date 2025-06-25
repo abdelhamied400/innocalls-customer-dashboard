@@ -68,6 +68,7 @@ import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
 import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
+import { useTranslations } from "next-intl";
 
 interface UsageDetailedTableProps {
   initialPagination?: {
@@ -102,6 +103,8 @@ const UsageDetailedTable = ({
   },
 }: UsageDetailedTableProps) => {
   const { toast } = useToast();
+  const t = useTranslations("usage.detailed");
+  const tCommon = useTranslations("usage.common");
 
   const [filters, setFilters] = useState<UsageDetailedFilters>({
     ...defaultFilters,
@@ -130,14 +133,15 @@ const UsageDetailedTable = ({
 
   useEffect(() => {
     if (isError) {
-      let message = "An unexpected error occurred";
+      let message = tCommon("unknownError");
       if (isAxiosError(error)) {
-        message = error?.response?.data.message;
+        message =
+          error?.response?.data.message || t("messages.errorDescription");
       } else {
-        message = error?.message;
+        message = error?.message || t("messages.errorDescription");
       }
       toast({
-        title: "Error fetching data",
+        title: t("messages.error"),
         description: message,
         variant: "destructive",
       });

@@ -884,22 +884,28 @@
         "incoming": "واردة",
         "outgoing": "صادرة",
         "internal": "داخلي"
+      },
+      "filters": {
+        "account": {
+          "triggerLabel": "الحساب",
+          "label": "اختر حساباً"
+        },
+        "origin": {
+          "triggerLabel": "اتجاه المكالمة",
+          "label": "اختر الاتجاه"
+        },
+        "package": {
+          "triggerLabel": "الباقة",
+          "label": "اختر باقة"
+        },
+        "dateRange": {
+          "triggerLabel": "نطاق التاريخ",
+          "label": "اختر نطاق التاريخ"
+        }
       }
     },
     "filters": {
-      "origin": "المصدر",
-      "internal": "داخلي",
-      "account": "الحساب",
-      "package": "الباقة",
-      "dateRange": "نطاق التاريخ",
-      "selectAccount": "اختر حساباً",
-      "selectPackage": "اختر باقة",
-      "selectOrigin": "اختر مصدراً",
-      "actions": {
-        "apply": "تطبيق",
-        "reset": "إعادة تعيين",
-        "clear": "مسح الكل"
-      }
+      "dateRange": "نطاق التاريخ"
     },
     "common": {
       "filters": {
@@ -914,15 +920,6 @@
           "placeholder": "أدخل التاريخ إلى"
         }
       },
-      "pagination": {
-        "previous": "السابق",
-        "next": "التالي",
-        "page": "صفحة",
-        "of": "من",
-        "rowsPerPage": "صفوف لكل صفحة"
-      },
-      "loading": "جارٍ التحميل...",
-      "noResults": "لم يتم العثور على نتائج",
       "unknownError": "حدث خطأ غير معروف."
     }
   }

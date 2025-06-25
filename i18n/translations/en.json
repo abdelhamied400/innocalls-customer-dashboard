@@ -875,23 +875,24 @@
       "origin": {
         "outgoing": "Outgoing",
         "incoming": "Incoming"
-      }
-    },
-    "filters": {
-      "origin": "Origin",
-      "outgoing": "Outgoing",
-      "incoming": "Incoming",
-      "internal": "Internal",
-      "account": "Account",
-      "package": "Package",
-      "dateRange": "Date Range",
-      "selectAccount": "Select an account",
-      "selectPackage": "Select a package",
-      "selectOrigin": "Select an origin",
-      "actions": {
-        "apply": "Apply",
-        "reset": "Reset",
-        "clear": "Clear All"
+      },
+      "filters": {
+        "account": {
+          "triggerLabel": "Account",
+          "label": "Select an account"
+        },
+        "origin": {
+          "triggerLabel": "Origin",
+          "label": "Select an origin"
+        },
+        "package": {
+          "triggerLabel": "Package",
+          "label": "Select a package"
+        },
+        "dateRange": {
+          "triggerLabel": "Date Range",
+          "label": "Select a date range"
+        }
       }
     },
     "common": {
@@ -907,15 +908,6 @@
           "placeholder": "Enter to date"
         }
       },
-      "pagination": {
-        "previous": "Previous",
-        "next": "Next",
-        "page": "Page",
-        "of": "of",
-        "rowsPerPage": "Rows per page"
-      },
-      "loading": "Loading...",
-      "noResults": "No results found",
       "unknownError": "An unknown error occurred."
     }
   }
