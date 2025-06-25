@@ -1,9 +1,9 @@
 "use client";
 
+import SortingHead from "@/components/SortingHead";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
@@ -25,25 +25,13 @@ export const columns = (
   {
     accessorKey: "ext",
     header: ({ column }: { column: any }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        {t("columns.extension")}
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
+      <SortingHead column={column}>{t("columns.extension")}</SortingHead>
     ),
   },
   {
     accessorKey: "name",
     header: ({ column }: { column: any }) => (
-      <Button
-        variant="ghost"
-        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-      >
-        {t("columns.name")}
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
+      <SortingHead column={column}>{t("columns.name")}</SortingHead>
     ),
   },
   {

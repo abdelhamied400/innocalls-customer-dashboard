@@ -1,15 +1,24 @@
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 import { auth } from "./auth";
+import { localeSlugs } from "./i18n/config";
 
-const intlMiddleware = createMiddleware(routing);
-
-const publicPages = [
+const basePublicPages = [
   "/login",
   "/register",
   "/forgot-password",
   "/reset-password",
 ];
+
+// Generate public pages for each locale
+const publicPages = [
+  ...basePublicPages,
+  ...localeSlugs.flatMap((locale) =>
+    basePublicPages.map((page) => `/${locale}${page}`)
+  ),
+];
+
+const intlMiddleware = createMiddleware(routing);
 
 export default auth((request) => {
   if (!request.auth && !publicPages.includes(request.nextUrl.pathname)) {
@@ -25,7 +34,6 @@ export default auth((request) => {
 });
 
 export const config = {
-  // Match only internationalized pathnames
   matcher: [
     "/((?!api|_next/static|assets|fonts|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
     `/(en|ar)/:path*`,

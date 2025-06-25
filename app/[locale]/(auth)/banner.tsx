@@ -11,9 +11,13 @@ import FeatureCard from "@/components/FeatureCard";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import DotGrid from "@/components/DotGrid";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
+import { locales, LocaleSlug } from "@/i18n/config";
 
 const AuthBanner = () => {
+  const locale = useLocale() as LocaleSlug;
+  const { dir } = locales[locale];
+
   const t = useTranslations("auth.banner");
 
   const items = [
@@ -79,14 +83,12 @@ const AuthBanner = () => {
         </div>
 
         {/* Title & Subtitle */}
-        <div className="text-left max-w-2xl space-y-4 px-12">
-            <h1 
+        <div className="text-start max-w-2xl space-y-4 px-12">
+          <h1
             className="text-4xl font-bold leading-tight"
             dangerouslySetInnerHTML={{ __html: t("title") }}
           />
-          <p className="text-white/80 text-lg">
-              {t("subtitle")}
-          </p>
+          <p className="text-white/80 text-lg">{t("subtitle")}</p>
         </div>
 
         {/* Features Carousel */}
@@ -96,7 +98,7 @@ const AuthBanner = () => {
             <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#3888E7] to-transparent z-10 pointer-events-none" />
           </div>
 
-          <div className="mx-auto z-0">
+          <div className="mx-auto z-0" dir="ltr">
             <Carousel
               setApi={setApi}
               opts={{ loop: true, startIndex: 1 }}
@@ -105,7 +107,7 @@ const AuthBanner = () => {
             >
               <CarouselContent className="items-center">
                 {items.map((item, i) => (
-                  <CarouselItem key={i} className={cn("basis-[66%]")}>
+                  <CarouselItem key={i} className={cn("basis-[66%]")} dir={dir}>
                     <FeatureCard
                       title={item.title}
                       description={item.description}
