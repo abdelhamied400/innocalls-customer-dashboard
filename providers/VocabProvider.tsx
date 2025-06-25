@@ -14,42 +14,54 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
     setAccounts,
     setPackages,
   } = useVocabStore();
-  const { status } = useSession();
+  const { data: user, status } = useSession();
 
-  // Fetch countries on mount
-  useEffect(() => {
-    if (status !== "authenticated") return;
-    const fetchCountries = async () => {
-      const countries = await vocabService.getAllCountries();
-      setCountries(countries);
-    };
-    const fetchDids = async () => {
-      const dids = await vocabService.getAllDids();
-      setDids(dids);
-    };
-    const fetchExtensions = async () => {
-      const extensions = await vocabService.getAllExtensions();
-      setExtensions(extensions);
-    };
-    const fetchTags = async () => {
-      const tags = await vocabService.getAllTags();
-      setTags(tags);
-    };
-    const fetchAccounts = async () => {
-      const accounts = await vocabService.getAllAccounts();
-      setAccounts(accounts);
-    };
-    const fetchPackages = async () => {
-      const packages = await vocabService.getAllPackages();
-      setPackages(packages);
-    };
+  const fetchCountries = async () => {
+    const countries = await vocabService.getAllCountries();
+    setCountries(countries);
+  };
+  const fetchDids = async () => {
+    const dids = await vocabService.getAllDids();
+    setDids(dids);
+  };
+  const fetchExtensions = async () => {
+    const extensions = await vocabService.getAllExtensions();
+    setExtensions(extensions);
+  };
+  const fetchTags = async () => {
+    const tags = await vocabService.getAllTags();
+    setTags(tags);
+  };
+  const fetchAccounts = async () => {
+    const accounts = await vocabService.getAllAccounts();
+    setAccounts(accounts);
+  };
+  const fetchPackages = async () => {
+    const packages = await vocabService.getAllPackages();
+    setPackages(packages);
+  };
 
+  const fetchUserVocab = async () => {
     fetchCountries();
     fetchDids();
     fetchExtensions();
     fetchTags();
     fetchAccounts();
     fetchPackages();
+  };
+
+  const fetchAgentVocab = async () => {
+    fetchCountries();
+  };
+
+  // Fetch countries on mount
+  useEffect(() => {
+    if (status !== "authenticated") return;
+    if (user?.user?.role === "agent") {
+      fetchAgentVocab();
+    } else {
+      fetchUserVocab();
+    }
   }, [status]);
 
   return children;

@@ -39,6 +39,7 @@ const CredentialsProvider = Credentials({
         ...res.agent,
         organizations: res.organizations || [res.agent.organization],
         accessToken: res.accessToken,
+        role: userType,
       };
     } catch (error) {
       if (error instanceof AxiosError) {

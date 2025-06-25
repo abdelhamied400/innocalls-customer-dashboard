@@ -1,10 +1,10 @@
 "use client";
 
 import useAuthStore from "@/store/auth.slice";
-import ServiceLevelStats from "@/containers/ServiceLevelStats";
-import ErgStats from "@/containers/ErgStats";
-import CallDistributionStats from "@/containers/CallDistributionStats";
-import BillingStats from "@/containers/BillingStats";
+import ServiceLevelStats from "@/containers/user/ServiceLevelStats";
+import ErgStats from "@/containers/user/ErgStats";
+import CallDistributionStats from "@/containers/user/CallDistributionStats";
+import BillingStats from "@/containers/user/BillingStats";
 
 const Dashboard = () => {
   const { Organization } = useAuthStore();
