@@ -18,6 +18,20 @@ const editUserSchema = (t: ReturnType<typeof useTranslations>) =>
       .trim()
       .min(1, t("create.form.validation.email.required"))
       .email(t("create.form.validation.email.invalid")),
+    password: z
+      .string({
+        required_error: t("create.form.validation.password.required"),
+      })
+      .trim()
+      .min(8, t("create.form.validation.password.minLength", { min: 8 }))
+      // uppercase
+      .regex(/[A-Z]/, t("create.form.validation.password.uppercase"))
+      // lowercase
+      .regex(/[a-z]/, t("create.form.validation.password.lowercase"))
+      // number
+      .regex(/\d/, t("create.form.validation.password.number"))
+      // special character
+      .regex(/[%$*!@_\\-]/, t("create.form.validation.password.special")),
     ext: z
       .number()
       .int()
@@ -37,13 +51,11 @@ const editUserSchema = (t: ReturnType<typeof useTranslations>) =>
       .number()
       .int(t("create.form.validation.inbound.invalid"))
       .min(0, t("create.form.validation.inbound.invalid"))
-      .max(1, t("create.form.validation.inbound.invalid"))
       .default(1),
     outbound: z
       .number()
       .int(t("create.form.validation.outbound.invalid"))
       .min(0, t("create.form.validation.outbound.invalid"))
-      .max(1, t("create.form.validation.outbound.invalid"))
       .default(1),
     voicemail: z
       .number()
