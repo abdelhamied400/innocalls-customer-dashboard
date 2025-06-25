@@ -169,6 +169,34 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
               />
               <FormField
                 control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Field
+                        label={t("create.form.fields.password.label")}
+                        error={
+                          form.formState.errors.password?.message?.toString() ||
+                          ""
+                        }
+                        htmlFor="password"
+                      >
+                        <Input
+                          id="password"
+                          variant="field"
+                          placeholder={t(
+                            "create.form.fields.password.placeholder"
+                          )}
+                          type="password"
+                          {...field}
+                        />
+                      </Field>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="ext"
                 render={({ field }) => (
                   <FormItem>
@@ -237,7 +265,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                       >
                         <RadioGroup
                           {...field}
-                          value={field.value?.toString() || "1"}
+                          value={field.value > 0 ? "1" : "0"}
                           onValueChange={(value) => {
                             if (/^\d+$/.test(value)) {
                               onChange(parseInt(value, 10));
@@ -274,7 +302,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                       >
                         <RadioGroup
                           {...field}
-                          value={field.value?.toString() || "1"}
+                          value={field.value > 0 ? "1" : "0"}
                           onValueChange={(value) => {
                             if (/^\d+$/.test(value)) {
                               onChange(parseInt(value, 10));
@@ -312,7 +340,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                       >
                         <RadioGroup
                           {...field}
-                          value={field.value?.toString() || "0"}
+                          value={field.value > 0 ? "1" : "0"}
                           onValueChange={(value) => {
                             if (/^\d+$/.test(value)) {
                               onChange(parseInt(value, 10));

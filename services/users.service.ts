@@ -1,6 +1,7 @@
 import { CreateUserSchema } from "@/validation/CreateUser";
 import { EditUserSchema } from "@/validation/EditUser";
 import api from "./api";
+import CryptoJS from "crypto-js";
 
 export default {
   getUsers: async () => {
@@ -13,7 +14,16 @@ export default {
   },
   getUserById: async (id: string) => {
     const res = await api.get(`/extension/show/${id}`);
-    return res.data;
+    const passwordBytes = CryptoJS.AES.decrypt(
+      res.data.password,
+      "e6PyV2@*KYkNBFdU04CZ/n8x"
+    );
+    const decryptedPassword = passwordBytes.toString(CryptoJS.enc.Utf8);
+
+    return {
+      ...res.data,
+      password: decryptedPassword, // Decrypt the password before returning
+    };
   },
   createUser: async (data: CreateUserSchema) => {
     const res = await api.post("/extension", data);

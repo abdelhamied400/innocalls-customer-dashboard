@@ -10,6 +10,7 @@ import { useTranslations } from "next-intl";
 export type User = {
   id: string;
   email: string;
+  password: string;
   ext: string;
   name: string;
   status: string;

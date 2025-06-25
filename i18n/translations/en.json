@@ -284,6 +284,10 @@
             "label": "Email",
             "placeholder": "Enter email..."
           },
+          "password": {
+            "label": "Password",
+            "placeholder": "Enter password..."
+          },
           "ext": {
             "label": "Extension",
             "placeholder": "Enter extension..."
@@ -322,6 +326,14 @@
           "ext": {
             "minLength": "Extension must be at least 3 digits",
             "maxLength": "Extension must be no more than 4 digits"
+          },
+          "password": {
+            "required": "Password is required",
+            "uppercase": "Password must contain at least one uppercase letter",
+            "lowercase": "Password must contain at least one lowercase letter",
+            "number": "Password must contain at least one number",
+            "special": "Password must contain at least one special character",
+            "minLength": "Password must be at least {min} characters long"
           },
           "pin": {
             "minLength": "PIN must be at least {min} digits long",
