@@ -67,6 +67,7 @@ import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import UsageSummaryHead from "./head";
+import { useTranslations } from "next-intl";
 
 // 30 days ago
 const defaultFromDate = new Date();
@@ -83,6 +84,8 @@ const defaultFilters = {
 
 const UsageSummaryTable = ({}) => {
   const { toast } = useToast();
+  const t = useTranslations("usage.summary");
+  const tCommon = useTranslations("usage.common");
 
   const [filters, setFilters] = useState<UsageSummaryFilters>(defaultFilters);
 
@@ -101,14 +104,16 @@ const UsageSummaryTable = ({}) => {
 
   useEffect(() => {
     if (isError) {
-      let message = "An unexpected error occurred";
+      let message = tCommon("unknownError");
+
       if (isAxiosError(error)) {
-        message = error?.response?.data.message;
+        message =
+          error?.response?.data.message || t("messages.errorDescription");
       } else {
-        message = error?.message;
+        message = error?.message || t("messages.errorDescription");
       }
       toast({
-        title: "Error fetching data",
+        title: t("messages.error"),
         description: message,
         variant: "destructive",
       });

@@ -69,6 +69,7 @@ import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useTranslations } from "next-intl";
 
 // 30 days ago
 const defaultFromDate = new Date();
@@ -95,6 +96,9 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
 
   const { toast } = useToast();
   const { table } = usePaginatedTable();
+  const t = useTranslations("usage.summary");
+  const tUsageCommon = useTranslations("usage.common");
+  const tCommon = useTranslations("common");
 
   const applyFilters = () => {
     const isValidRange = isValidDateRange(
@@ -102,12 +106,13 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
       toDate,
       (message) => {
         toast({
-          title: "Invalid date range",
+          title: t("messages.invalidDateRange"),
           description: message,
           variant: "destructive",
         });
       },
-      30
+      30,
+      tCommon
     );
 
     if (!isValidRange) return;
@@ -129,7 +134,7 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
   return (
     <Collapsible>
       <div className="usage-summary-table-head flex items-center justify-between p-4">
-        <h2>Usage Summary</h2>
+        <h2>{t("title")}</h2>
         <div className="actions flex items-center gap-2">
           <CollapsibleTrigger asChild>
             <Toggle pressed={true} className="rounded-full">
@@ -149,8 +154,8 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
           }}
         >
           <FilterBox
-            triggerLabel="Creation Date"
-            label="Select a date range"
+            triggerLabel={t("filters.creationDate.label")}
+            label={t("filters.creationDate.placeholder")}
             onReset={() => {
               setFilters((prev) => ({
                 ...prev,
@@ -165,13 +170,13 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
             numberOfFilters={(fromDate ? 1 : 0) + (toDate ? 1 : 0)}
           >
             <Field
-              label="From"
-              hint="DD/MM/YYYY"
+              label={tUsageCommon("filters.fromDate.label")}
+              hint={tUsageCommon("filters.fromDate.hint")}
               postIcon={<CalendarIcon className="text-gray-400" />}
             >
               <DatePicker
                 className="flex-1"
-                placeholder="Enter from date"
+                placeholder={tUsageCommon("filters.fromDate.placeholder")}
                 value={fromDate}
                 onChange={(date) => {
                   if (date) setFromDate(date);
@@ -179,13 +184,13 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
               />
             </Field>
             <Field
-              label="To"
-              hint="DD/MM/YYYY"
+              label={tUsageCommon("filters.toDate.label")}
+              hint={tUsageCommon("filters.toDate.hint")}
               postIcon={<CalendarIcon className="text-gray-400" />}
             >
               <DatePicker
                 className="flex-1"
-                placeholder="Enter to date"
+                placeholder={tUsageCommon("filters.toDate.placeholder")}
                 value={toDate}
                 onChange={(date) => {
                   if (date) setToDate(date);
@@ -194,8 +199,8 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
             </Field>
           </FilterBox>
           <FilterBox
-            triggerLabel="Show By"
-            label="Show by"
+            triggerLabel={t("filters.showBy.triggerLabel")}
+            label={t("filters.showBy.label")}
             onReset={() => {
               setFilters((prev) => ({
                 ...prev,
@@ -219,7 +224,7 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
                   );
                 }}
               />
-              <Label>Service name</Label>
+              <Label>{t("showBy.serviceName")}</Label>
             </div>
             {/* accountsName,packagesName */}
             <div className="accounts-name flex items-center gap-2">
@@ -234,7 +239,7 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
                   );
                 }}
               />
-              <Label>Accounts name</Label>
+              <Label>{t("showBy.accountName")}</Label>
             </div>
             <div className="packages-name flex items-center gap-2">
               <Checkbox
@@ -248,12 +253,12 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
                   );
                 }}
               />
-              <Label>Packages name</Label>
+              <Label>{t("showBy.packageName")}</Label>
             </div>
           </FilterBox>
           <FilterBox
-            triggerLabel="Summary By"
-            label="Summary By"
+            triggerLabel={t("filters.summaryBy.triggerLabel")}
+            label={t("filters.summaryBy.label")}
             onReset={() => {
               setFilters((prev) => ({
                 ...prev,
@@ -272,15 +277,15 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="" id="general" />
-                <Label htmlFor="general">General</Label>
+                <Label htmlFor="general">{t("summaryBy.general")}</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="dateDay" id="dateDay" />
-                <Label htmlFor="dateDay">by day</Label>
+                <Label htmlFor="dateDay">{t("summaryBy.byDay")}</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="dateMonth" id="dateMonth" />
-                <Label htmlFor="dateMonth">by month</Label>
+                <Label htmlFor="dateMonth">{t("summaryBy.byMonth")}</Label>
               </div>
             </RadioGroup>
           </FilterBox>

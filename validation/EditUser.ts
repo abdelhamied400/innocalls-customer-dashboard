@@ -31,7 +31,12 @@ const editUserSchema = (t: ReturnType<typeof useTranslations>) =>
       // number
       .regex(/\d/, t("create.form.validation.password.number"))
       // special character
-      .regex(/[%$*!@_\\-]/, t("create.form.validation.password.special")),
+      .regex(/[%$*!@_\\-]/, t("create.form.validation.password.special"))
+      // Only allow supported characters (English letters, digits, allowed symbols)
+      .regex(
+        /^[a-zA-Z0-9%$*!@_\-]+$/,
+        t("create.form.validation.password.unsupportedChars")
+      ),
     ext: z
       .number()
       .int()

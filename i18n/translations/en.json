@@ -333,7 +333,8 @@
             "lowercase": "Password must contain at least one lowercase letter",
             "number": "Password must contain at least one number",
             "special": "Password must contain at least one special character",
-            "minLength": "Password must be at least {min} characters long"
+            "minLength": "Password must be at least {min} characters long",
+            "unsupportedChars": "Password contains unsupported characters. Only English letters, numbers, and % $ * ! @ _ - are allowed."
           },
           "pin": {
             "minLength": "PIN must be at least {min} digits long",
@@ -792,6 +793,130 @@
     "linkTabs": {
       "tab": "Tab",
       "activeTab": "Active Tab"
+    }
+  },
+  "usage": {
+    "layout": {
+      "tabs": {
+        "summary": "Summary",
+        "detailed": "Detailed"
+      }
+    },
+    "summary": {
+      "title": "Usage Summary",
+      "columns": {
+        "servicesName": "Service Name",
+        "recordOrigin": "Record Origin",
+        "volumeRated": "Volume Rated",
+        "quantityTotal": "Total Quantity",
+        "costRated": "Rated Cost",
+        "ratesCodeName": "Rate Code",
+        "accountsName": "Account Name",
+        "packagesName": "Package Name",
+        "dateDay": "Date (Day)",
+        "dateMonth": "Date (Month)"
+      },
+      "filters": {
+        "showBy": {
+          "label": "Show By ",
+          "triggerLabel": "Show By"
+        },
+        "summaryBy": {
+          "label": "Summary By",
+          "triggerLabel": "Summary By"
+        },
+        "creationDate": {
+          "label": "Creation Date",
+          "placeholder": "Select a date range"
+        }
+      },
+      "showBy": {
+        "serviceName": "Service Name",
+        "accountName": "Account Name",
+        "packageName": "Package Name"
+      },
+      "summaryBy": {
+        "general": "General",
+        "byDay": "By Day",
+        "byMonth": "By Month"
+      },
+      "messages": {
+        "error": "Error fetching usage summary",
+        "errorDescription": "An unexpected error occurred while loading usage summary data.",
+        "invalidDateRange": "Invalid date range",
+        "noData": "No usage data found for the selected criteria."
+      }
+    },
+    "detailed": {
+      "title": "Usage Detailed",
+      "columns": {
+        "origin": "Origin",
+        "dt": "Date & Time",
+        "srcPartyId": "Source Party",
+        "dstPartyId": "Destination Party",
+        "codeName": "Service Code",
+        "rate": "Rate",
+        "volume": "Volume",
+        "volumeBilled": "Billed Volume",
+        "cost": "Cost"
+      },
+      "actions": {
+        "export": "Export Data",
+        "search": "Search..."
+      },
+      "messages": {
+        "error": "Error fetching detailed usage",
+        "errorDescription": "An unexpected error occurred while loading detailed usage data.",
+        "exportStarted": "Export started",
+        "exportStartedDescription": "Your export is being processed. You will be notified by email when it's ready.",
+        "exportError": "Error exporting data",
+        "noData": "No detailed usage data found for the selected criteria."
+      }
+    },
+    "filters": {
+      "general": "General",
+      "byDay": "By Day",
+      "byMonth": "By Month",
+
+      "origin": "Origin",
+      "outgoing": "Outgoing",
+      "incoming": "Incoming",
+      "internal": "Internal",
+      "account": "Account",
+      "package": "Package",
+      "dateRange": "Date Range",
+      "selectAccount": "Select an account",
+      "selectPackage": "Select a package",
+      "selectOrigin": "Select an origin",
+      "actions": {
+        "apply": "Apply",
+        "reset": "Reset",
+        "clear": "Clear All"
+      }
+    },
+    "common": {
+      "filters": {
+        "fromDate": {
+          "hint": "DD/MM/YYYY",
+          "label": "From",
+          "placeholder": "Enter from date"
+        },
+        "toDate": {
+          "label": "To",
+          "hint": "DD/MM/YYYY",
+          "placeholder": "Enter to date"
+        }
+      },
+      "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "page": "Page",
+        "of": "of",
+        "rowsPerPage": "Rows per page"
+      },
+      "loading": "Loading...",
+      "noResults": "No results found",
+      "unknownError": "An unknown error occurred."
     }
   }
 }

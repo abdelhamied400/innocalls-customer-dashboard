@@ -329,7 +329,8 @@
             "lowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
             "number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
             "special": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل",
-            "minLength": "يجب أن تكون كلمة المرور على الأقل {min} أحرف"
+            "minLength": "يجب أن تكون كلمة المرور على الأقل {min} أحرف",
+            "unsupportedChars": "تحتوي كلمة المرور على أحرف غير مدعومة. يُسمح فقط بالأحرف الإنجليزية والأرقام والرموز % $ * ! @ _ -."
           },
           "ext": {
             "minLength": "يجب أن يكون رقم التحويلة على الأقل 3 أرقام",
@@ -800,6 +801,132 @@
     "linkTabs": {
       "tab": "تبويب",
       "activeTab": "التبويب النشط"
+    }
+  },
+  "usage": {
+    "layout": {
+      "tabs": {
+        "summary": "الملخص",
+        "detailed": "التفاصيل"
+      }
+    },
+    "summary": {
+      "title": "ملخص الاستخدام",
+      "columns": {
+        "servicesName": "اسم الخدمة",
+        "recordOrigin": "نوع المكالمة",
+        "volumeRated": "الحجم المُقيم",
+        "quantityTotal": "إجمالي الكمية",
+        "costRated": "التكلفة المُقيمة",
+        "ratesCodeName": "رمز التعرفة",
+        "accountsName": "اسم الحساب",
+        "packagesName": "اسم الباقة",
+        "dateDay": "تاريخ اليوم",
+        "dateMonth": "تاريخ الشهر"
+      },
+      "filters": {
+        "showBy": {
+          "label": "عرض حسب",
+          "triggerLabel": "عرض حسب"
+        },
+        "summaryBy": {
+          "label": "تلخيص بواسطة",
+          "triggerLabel": "تلخيص بواسطة"
+        },
+        "creationDate": {
+          "label": "تاريخ الإنشاء",
+          "placeholder": "اختر نطاق التاريخ"
+        }
+      },
+      "showBy": {
+        "serviceName": "اسم الخدمة",
+        "accountName": "اسم الحساب",
+        "packageName": "اسم الباقة"
+      },
+      "summaryBy": {
+        "general": "عام",
+        "byDay": "اليوم",
+        "byMonth": "الشهر"
+      },
+      "messages": {
+        "error": "خطأ في جلب ملخص الاستخدام",
+        "errorDescription": "حدث خطأ غير متوقع أثناء تحميل بيانات ملخص الاستخدام.",
+        "invalidDateRange": "نطاق تاريخ غير صالح",
+        "noData": "لم يتم العثور على بيانات استخدام للمعايير المحددة."
+      }
+    },
+    "detailed": {
+      "title": "تفاصيل الاستخدام",
+      "columns": {
+        "origin": "المصدر",
+        "dt": "التاريخ والوقت",
+        "srcPartyId": "الطرف المرسل",
+        "dstPartyId": "الطرف المستقبل",
+        "codeName": "رمز الخدمة",
+        "rate": "التعرفة",
+        "volume": "الحجم",
+        "volumeBilled": "الحجم المفوتر",
+        "cost": "التكلفة"
+      },
+      "actions": {
+        "export": "تصدير البيانات",
+        "search": "البحث..."
+      },
+      "messages": {
+        "error": "خطأ في جلب تفاصيل الاستخدام",
+        "errorDescription": "حدث خطأ غير متوقع أثناء تحميل بيانات تفاصيل الاستخدام.",
+        "exportStarted": "بدأ التصدير",
+        "exportStartedDescription": "يتم معالجة التصدير الخاص بك. سيتم إشعارك عبر البريد الإلكتروني عند الانتهاء.",
+        "exportError": "خطأ في تصدير البيانات",
+        "noData": "لم يتم العثور على بيانات تفاصيل الاستخدام للمعايير المحددة."
+      }
+    },
+    "filters": {
+      "showBy": "عرض بواسطة",
+      "summaryBy": "تلخيص بواسطة",
+      "general": "عام",
+      "byDay": "حسب اليوم",
+      "byMonth": "حسب الشهر",
+
+      "origin": "المصدر",
+      "outgoing": "صادر",
+      "incoming": "وارد",
+      "internal": "داخلي",
+      "account": "الحساب",
+      "package": "الباقة",
+      "dateRange": "نطاق التاريخ",
+      "selectAccount": "اختر حساباً",
+      "selectPackage": "اختر باقة",
+      "selectOrigin": "اختر مصدراً",
+      "actions": {
+        "apply": "تطبيق",
+        "reset": "إعادة تعيين",
+        "clear": "مسح الكل"
+      }
+    },
+    "common": {
+      "filters": {
+        "fromDate": {
+          "hint": "يوم/شهر/سنة",
+          "label": "من",
+          "placeholder": "أدخل التاريخ من"
+        },
+        "toDate": {
+          "label": "إلى",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل التاريخ إلى"
+        }
+      },
+      "pagination": {
+        "previous": "السابق",
+        "next": "التالي",
+        "page": "صفحة",
+        "of": "من",
+        "rowsPerPage": "صفوف لكل صفحة"
+      },
+      "loading": "جارٍ التحميل...",
+      "noResults": "لم يتم العثور على نتائج",
+      "unknownError": "حدث خطأ غير معروف."
     }
   }
 }
