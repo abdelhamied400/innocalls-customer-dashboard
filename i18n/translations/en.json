@@ -871,13 +871,13 @@
         "exportStartedDescription": "Your export is being processed. You will be notified by email when it's ready.",
         "exportError": "Error exporting data",
         "noData": "No detailed usage data found for the selected criteria."
+      },
+      "origin": {
+        "outgoing": "Outgoing",
+        "incoming": "Incoming"
       }
     },
     "filters": {
-      "general": "General",
-      "byDay": "By Day",
-      "byMonth": "By Month",
-
       "origin": "Origin",
       "outgoing": "Outgoing",
       "incoming": "Incoming",

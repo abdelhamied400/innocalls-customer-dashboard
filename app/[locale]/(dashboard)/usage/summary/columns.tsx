@@ -38,7 +38,6 @@ export const createColumns = (columnKeys: string[]) => {
       return predefinedColumns[key];
     }
 
-    // Fallback to translated column name or generate from key
     const translatedHeader = t(key as any) || generateHeaderFromKey(key);
 
     return {
