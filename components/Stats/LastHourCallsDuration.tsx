@@ -31,12 +31,15 @@ const LastHourCallsDuration = () => {
     retry: false,
   });
 
-  const formatDuration = (duration: string[]) => {
+  const formatDuration = (
+    duration: string[],
+    t: ReturnType<typeof useTranslations>
+  ) => {
     return duration
       .map((time, index) => {
-        if (index === 0) return `${time}H`;
-        if (index === 1) return `${time}M`;
-        if (index === 2) return `${time}S`;
+        if (index === 0) return `${time}${t("h")}`;
+        if (index === 1) return `${time}${t("m")}`;
+        if (index === 2) return `${time}${t("s")}`;
         return "";
       })
       .join(" ");
@@ -62,7 +65,8 @@ const LastHourCallsDuration = () => {
       }
       title={t("title")}
       value={formatDuration(
-        lastHourCallsDuration.lastHourOfDay.totalAnsweredDuration
+        lastHourCallsDuration.lastHourOfDay.totalAnsweredDuration,
+        t
       )}
       className="shadow-none"
       info={

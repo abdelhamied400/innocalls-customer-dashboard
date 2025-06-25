@@ -56,7 +56,9 @@
     "select": {
       "placeholder": "اختر...",
       "createOption": "إنشاء \"{inputValue}\"",
-      "noCountriesFound": "لم يتم العثور على دول"
+      "noCountriesFound": "لم يتم العثور على دول",
+      "noOptionsMessage": "لا توجد خيارات",
+      "loadingMessage": "جاري التحميل..."
     },
     "audio": {
       "duration": "المدة",
@@ -709,22 +711,28 @@
         "title": "الاستخدام آخر 30 يوم"
       },
       "lastHourCallsDuration": {
-        "title": "إجمالي مدة المكالمات الساعة الماضية",
+        "title": "مدة مكالمات آخر ساعة",
         "basedOn": "بناءً على",
         "calls": "مكالمة",
-        "ofTotal": "مكالمة من إجمالي"
+        "ofTotal": "مكالمة من إجمالي",
+        "h": "س",
+        "m": "د",
+        "s": "ث"
       },
       "liveCallsCount": {
-        "title": "عدد المكالمات المباشرة"
+        "title": "عدد المكالمات الحالية"
       },
       "overdueInvoices": {
         "title": "الفواتير المتأخرة"
       },
       "todayCallsDuration": {
-        "title": "إجمالي مدة المكالمات اليوم",
+        "title": " مدة مكالمات اليوم",
         "basedOn": "بناءً على",
         "calls": "مكالمة",
-        "ofTotal": "مكالمة من إجمالي"
+        "ofTotal": "مكالمة من إجمالي",
+        "h": "س",
+        "m": "د",
+        "s": "ث"
       },
       "totalAnsweredCalls": {
         "title": "إجمالي المكالمات المجابة/يوم",
@@ -758,7 +766,14 @@
       "audio": "الصوت"
     },
     "statsCard": {
-      "errorOccurred": "حدث خطأ"
+      "errorOccurred": "حدث خطأ",
+      "unknownError": "حدث خطأ غير معروف",
+      "refreshIntervals": "فترات التحديث",
+      "refreshNow": "تحديث الآن",
+      "noRefresh": "بلا تحديث",
+      "thirtySeconds": "30 ثانية",
+      "oneMinute": "دقيقة واحدة",
+      "fiveMinutes": "5 دقائق"
     },
     "miniStatsCard": {
       "waitingTime": "وقت الانتظار"

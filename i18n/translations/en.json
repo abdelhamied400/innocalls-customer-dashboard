@@ -56,7 +56,9 @@
     "select": {
       "placeholder": "Select...",
       "createOption": "Create \"{inputValue}\"",
-      "noCountriesFound": "No countries found"
+      "noCountriesFound": "No countries found",
+      "noOptionsMessage": "No options",
+      "loadingMessage": "Loading..."
     },
     "audio": {
       "duration": "Duration",
@@ -704,7 +706,10 @@
         "title": "Total call duration last hour",
         "basedOn": "Based on",
         "calls": "calls",
-        "ofTotal": "calls of total"
+        "ofTotal": "calls of total",
+        "h": "H",
+        "m": "M",
+        "s": "S"
       },
       "liveCallsCount": {
         "title": "Live Calls Count"
@@ -716,7 +721,10 @@
         "title": "Total call duration today",
         "basedOn": "Based on",
         "calls": "calls",
-        "ofTotal": "calls of total"
+        "ofTotal": "calls of total",
+        "h": "H",
+        "m": "M",
+        "s": "S"
       },
       "totalAnsweredCalls": {
         "title": "Total Answered Calls/Day",
@@ -750,7 +758,14 @@
       "audio": "Audio"
     },
     "statsCard": {
-      "errorOccurred": "Error Occurred"
+      "errorOccurred": "Error Occurred",
+      "unknownError": "An unknown error occurred",
+      "refreshIntervals": "Refresh Intervals",
+      "refreshNow": "Refresh Now",
+      "noRefresh": "No Refresh",
+      "thirtySeconds": "30 seconds",
+      "oneMinute": "1 minute",
+      "fiveMinutes": "5 minutes"
     },
     "miniStatsCard": {
       "waitingTime": "Waiting Time"

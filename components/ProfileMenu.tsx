@@ -104,7 +104,7 @@ const ProfileMenu = () => {
           >
             <span>{org.name}</span>
             <span className="text-xs text-gray-600">
-              {org.hasTenant ? t("tenant") : t("noTenant")}
+              {/* {org.hasTenant ? t("tenant") : t("noTenant")} */}
             </span>
           </DropdownMenuItem>
         ))}
