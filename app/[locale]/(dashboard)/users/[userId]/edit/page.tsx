@@ -11,7 +11,7 @@ const EditUser = async ({ params }: EditUserProps) => {
   const initialUser = await usersService.getUserById(userId);
 
   return (
-    <div className="page" id="edit-user">
+    <div className="page h-screen" id="edit-user">
       <EditUserForm
         initialUser={{
           id: userId,
