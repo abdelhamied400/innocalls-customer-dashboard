@@ -34,10 +34,35 @@
     "actions": {
       "close": "إغلاق",
       "reset": "إعادة تعيين",
-      "apply": "تطبيق"
+      "apply": "تطبيق",
+      "clear": "مسح",
+      "download": "تحميل",
+      "play": "تشغيل",
+      "pause": "إيقاف مؤقت",
+      "logout": "تسجيل الخروج",
+      "select": "اختر",
+      "create": "إنشاء",
+      "filter": "فلتر"
     },
     "states": {
-      "loading": "جارٍ التحميل..."
+      "loading": "جارٍ التحميل...",
+      "error": "خطأ",
+      "noData": "لا توجد بيانات متاحة",
+      "notFound": "غير موجود"
+    },
+    "filter": {
+      "noFiltersAvailable": "لا توجد خيارات فلترة"
+    },
+    "select": {
+      "placeholder": "اختر...",
+      "createOption": "إنشاء \"{inputValue}\"",
+      "noCountriesFound": "لم يتم العثور على دول",
+      "noOptionsMessage": "لا توجد خيارات",
+      "loadingMessage": "جاري التحميل..."
+    },
+    "audio": {
+      "duration": "المدة",
+      "unknownError": "حدث خطأ غير معروف"
     }
   },
   "numbers": {
@@ -304,7 +329,8 @@
             "lowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
             "number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
             "special": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل",
-            "minLength": "يجب أن تكون كلمة المرور على الأقل {min} أحرف"
+            "minLength": "يجب أن تكون كلمة المرور على الأقل {min} أحرف",
+            "unsupportedChars": "تحتوي كلمة المرور على أحرف غير مدعومة. يُسمح فقط بالأحرف الإنجليزية والأرقام والرموز % $ * ! @ _ -."
           },
           "ext": {
             "minLength": "يجب أن يكون رقم التحويلة على الأقل 3 أرقام",
@@ -698,27 +724,203 @@
         "title": "الاستخدام آخر 30 يوم"
       },
       "lastHourCallsDuration": {
-        "title": "إجمالي مدة المكالمات الساعة الماضية",
+        "title": "مدة مكالمات آخر ساعة",
         "basedOn": "بناءً على",
         "calls": "مكالمة",
-        "ofTotal": "مكالمة من إجمالي"
+        "ofTotal": "مكالمة من إجمالي",
+        "h": "س",
+        "m": "د",
+        "s": "ث"
       },
       "liveCallsCount": {
-        "title": "عدد المكالمات المباشرة"
+        "title": "عدد المكالمات الحالية"
       },
       "overdueInvoices": {
         "title": "الفواتير المتأخرة"
       },
       "todayCallsDuration": {
-        "title": "إجمالي مدة المكالمات اليوم",
+        "title": " مدة مكالمات اليوم",
         "basedOn": "بناءً على",
         "calls": "مكالمة",
-        "ofTotal": "مكالمة من إجمالي"
+        "ofTotal": "مكالمة من إجمالي",
+        "h": "س",
+        "m": "د",
+        "s": "ث"
       },
       "totalAnsweredCalls": {
         "title": "إجمالي المكالمات المجابة/يوم",
         "totalCalls": "إجمالي المكالمات"
       }
+    },
+    "containers": {
+      "billingStats": "تفاصيل الفواتير",
+      "queueStats": "إحصائيات صفوف المكالمات",
+      "serviceLevelStats": "تفاصيل مستوى الخدمة"
+    }
+  },
+  "components": {
+    "breadcrumbs": {
+      "item": "عنصر التنقل"
+    },
+    "countrySelect": {
+      "placeholder": "اختر دولة..."
+    },
+    "profileMenu": {
+      "organizations": "المؤسسات",
+      "tenant": "مستأجر",
+      "noTenant": "لا يوجد مستأجر"
+    },
+    "sortingHead": {
+      "sortAscending": "ترتيب تصاعدي",
+      "sortDescending": "ترتيب تنازلي",
+      "unsorted": "غير مُرتب"
+    },
+    "soundPlayer": {
+      "audio": "الصوت"
+    },
+    "statsCard": {
+      "errorOccurred": "حدث خطأ",
+      "unknownError": "حدث خطأ غير معروف",
+      "refreshIntervals": "فترات التحديث",
+      "refreshNow": "تحديث الآن",
+      "noRefresh": "بلا تحديث",
+      "thirtySeconds": "30 ثانية",
+      "oneMinute": "دقيقة واحدة",
+      "fiveMinutes": "5 دقائق"
+    },
+    "miniStatsCard": {
+      "waitingTime": "وقت الانتظار"
+    },
+    "featureCard": {
+      "feature": "ميزة"
+    },
+    "localeSwitcher": {
+      "language": "اللغة",
+      "selectLanguage": "اختر اللغة"
+    },
+    "linkTabs": {
+      "tab": "تبويب",
+      "activeTab": "التبويب النشط"
+    }
+  },
+  "usage": {
+    "layout": {
+      "tabs": {
+        "summary": "الملخص",
+        "detailed": "التفاصيل"
+      }
+    },
+    "summary": {
+      "title": "ملخص الاستخدام",
+      "columns": {
+        "servicesName": "اسم الخدمة",
+        "recordOrigin": "نوع المكالمة",
+        "volumeRated": "الحجم المُقيم",
+        "quantityTotal": "إجمالي الكمية",
+        "costRated": "التكلفة المُقيمة",
+        "ratesCodeName": "رمز التعرفة",
+        "accountsName": "اسم الحساب",
+        "packagesName": "اسم الباقة",
+        "dateDay": "تاريخ اليوم",
+        "dateMonth": "تاريخ الشهر"
+      },
+      "filters": {
+        "showBy": {
+          "label": "عرض حسب",
+          "triggerLabel": "عرض حسب"
+        },
+        "summaryBy": {
+          "label": "تلخيص بواسطة",
+          "triggerLabel": "تلخيص بواسطة"
+        },
+        "creationDate": {
+          "label": "تاريخ الإنشاء",
+          "placeholder": "اختر نطاق التاريخ"
+        }
+      },
+      "showBy": {
+        "serviceName": "اسم الخدمة",
+        "accountName": "اسم الحساب",
+        "packageName": "اسم الباقة"
+      },
+      "summaryBy": {
+        "general": "عام",
+        "byDay": "اليوم",
+        "byMonth": "الشهر"
+      },
+      "messages": {
+        "error": "خطأ في جلب ملخص الاستخدام",
+        "errorDescription": "حدث خطأ غير متوقع أثناء تحميل بيانات ملخص الاستخدام.",
+        "invalidDateRange": "نطاق تاريخ غير صالح",
+        "noData": "لم يتم العثور على بيانات استخدام للمعايير المحددة."
+      }
+    },
+    "detailed": {
+      "title": "تفاصيل الاستخدام",
+      "columns": {
+        "origin": "اتجاه المكالمة",
+        "dt": "التاريخ والوقت",
+        "srcPartyId": "الطرف المتصل",
+        "dstPartyId": "الطرف المُسْتَقْبِل",
+        "codeName": "رمز الخدمة",
+        "rate": "التعرفة",
+        "volume": "الحجم",
+        "volumeBilled": "الحجم المفوتر",
+        "cost": "التكلفة"
+      },
+      "actions": {
+        "export": "تصدير البيانات",
+        "search": "البحث..."
+      },
+      "messages": {
+        "error": "خطأ في جلب تفاصيل الاستخدام",
+        "errorDescription": "حدث خطأ غير متوقع أثناء تحميل بيانات تفاصيل الاستخدام.",
+        "exportStarted": "بدأ التصدير",
+        "exportStartedDescription": "يتم معالجة التصدير الخاص بك. سيتم إشعارك عبر البريد الإلكتروني عند الانتهاء.",
+        "exportError": "خطأ في تصدير البيانات",
+        "noData": "لم يتم العثور على بيانات تفاصيل الاستخدام للمعايير المحددة."
+      },
+      "origin": {
+        "incoming": "واردة",
+        "outgoing": "صادرة",
+        "internal": "داخلي"
+      },
+      "filters": {
+        "account": {
+          "triggerLabel": "الحساب",
+          "label": "اختر حساباً"
+        },
+        "origin": {
+          "triggerLabel": "اتجاه المكالمة",
+          "label": "اختر الاتجاه"
+        },
+        "package": {
+          "triggerLabel": "الباقة",
+          "label": "اختر باقة"
+        },
+        "dateRange": {
+          "triggerLabel": "نطاق التاريخ",
+          "label": "اختر نطاق التاريخ"
+        }
+      }
+    },
+    "filters": {
+      "dateRange": "نطاق التاريخ"
+    },
+    "common": {
+      "filters": {
+        "fromDate": {
+          "hint": "يوم/شهر/سنة",
+          "label": "من",
+          "placeholder": "أدخل التاريخ من"
+        },
+        "toDate": {
+          "label": "إلى",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل التاريخ إلى"
+        }
+      },
+      "unknownError": "حدث خطأ غير معروف."
     }
   }
 }

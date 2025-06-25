@@ -16,6 +16,7 @@ import {
 } from "./ui/dropdown-menu";
 import { refetchIntervals } from "@/constants/stats";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import { useTranslations } from "next-intl";
 
 type StatsCardProps = {
   icon: React.ReactNode;
@@ -43,6 +44,8 @@ const StatsCard = ({
   setRefetchInterval,
   refetch,
 }: StatsCardProps) => {
+  const t = useTranslations("components.statsCard");
+
   return (
     <div
       className={cn(
@@ -64,7 +67,7 @@ const StatsCard = ({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>Refresh Intervals</DropdownMenuLabel>
+              <DropdownMenuLabel>{t("refreshIntervals")}</DropdownMenuLabel>
               {refetchIntervals.map((interval) => (
                 <DropdownMenuItem
                   key={interval.label}
@@ -72,7 +75,10 @@ const StatsCard = ({
                     setRefetchInterval?.(interval.value ?? 0);
                   }}
                 >
-                  {interval.label}
+                  {interval.translationKey
+                    ? t(interval.translationKey)
+                    : interval.label}
+
                   {refetchInterval === interval.value && (
                     <span className="ml-auto text-blue-500">✓</span>
                   )}
@@ -83,7 +89,7 @@ const StatsCard = ({
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => refetch()}>
                     <Refresh />
-                    Refresh Now
+                    {t("refreshNow")}
                   </DropdownMenuItem>
                 </>
               )}
@@ -103,12 +109,14 @@ type StatsCardErrorProps = {
   error: unknown;
 };
 export const StatsCardError = ({ error }: StatsCardErrorProps) => {
+  const t = useTranslations("components.statsCard");
+
   if (error instanceof AxiosError) {
     const errorMessage = error?.response?.data?.message || error.message;
     return (
       <StatsCard
         icon={<XIcon className="text-red-500" />}
-        title="Error Occurred"
+        title={t("errorOccurred")}
         value=""
         info={errorMessage}
         className="bg-red-100 shadow-none"
@@ -118,9 +126,9 @@ export const StatsCardError = ({ error }: StatsCardErrorProps) => {
   return (
     <StatsCard
       icon={<XIcon className="text-red-500" />}
-      title="Error Occurred"
+      title={t("errorOccurred")}
       value=""
-      info="An unknown error occurred"
+      info={t("unknownError")}
       className="bg-red-100 shadow-none"
     />
   );

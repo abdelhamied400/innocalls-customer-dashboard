@@ -4,8 +4,11 @@ import LocaleSwitcher from "./LocaleSwitcher";
 import ProfileMenu from "./ProfileMenu";
 import { Button } from "./ui/button";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
+import { useTranslations } from "next-intl";
 
 const AppNavbar = () => {
+  const t = useTranslations("sidebar");
+
   const { isSidebarOpen, toggleSidebar } = useAppStore();
 
   return (
@@ -18,7 +21,7 @@ const AppNavbar = () => {
             </Button>
           )}
 
-          <h1>Dashboard</h1>
+          <h1>{t("navigation.dashboard")}</h1>
         </div>
         <div className="flex items-center gap-4 actions">
           <LocaleSwitcher />

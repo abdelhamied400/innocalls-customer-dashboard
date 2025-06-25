@@ -34,10 +34,35 @@
     "actions": {
       "close": "Close",
       "reset": "Reset",
-      "apply": "Apply"
+      "apply": "Apply",
+      "clear": "Clear",
+      "download": "Download",
+      "play": "Play",
+      "pause": "Pause",
+      "logout": "Logout",
+      "select": "Select",
+      "create": "Create",
+      "filter": "Filter"
     },
     "states": {
-      "loading": "Loading..."
+      "loading": "Loading...",
+      "error": "Error",
+      "noData": "No data available",
+      "notFound": "Not found"
+    },
+    "filter": {
+      "noFiltersAvailable": "No filters available"
+    },
+    "select": {
+      "placeholder": "Select...",
+      "createOption": "Create \"{inputValue}\"",
+      "noCountriesFound": "No countries found",
+      "noOptionsMessage": "No options",
+      "loadingMessage": "Loading..."
+    },
+    "audio": {
+      "duration": "Duration",
+      "unknownError": "An unknown error occurred"
     }
   },
   "numbers": {
@@ -308,7 +333,8 @@
             "lowercase": "Password must contain at least one lowercase letter",
             "number": "Password must contain at least one number",
             "special": "Password must contain at least one special character",
-            "minLength": "Password must be at least {min} characters long"
+            "minLength": "Password must be at least {min} characters long",
+            "unsupportedChars": "Password contains unsupported characters. Only English letters, numbers, and % $ * ! @ _ - are allowed."
           },
           "pin": {
             "minLength": "PIN must be at least {min} digits long",
@@ -693,7 +719,10 @@
         "title": "Total call duration last hour",
         "basedOn": "Based on",
         "calls": "calls",
-        "ofTotal": "calls of total"
+        "ofTotal": "calls of total",
+        "h": "H",
+        "m": "M",
+        "s": "S"
       },
       "liveCallsCount": {
         "title": "Live Calls Count"
@@ -705,12 +734,181 @@
         "title": "Total call duration today",
         "basedOn": "Based on",
         "calls": "calls",
-        "ofTotal": "calls of total"
+        "ofTotal": "calls of total",
+        "h": "H",
+        "m": "M",
+        "s": "S"
       },
       "totalAnsweredCalls": {
         "title": "Total Answered Calls/Day",
         "totalCalls": "Total Calls"
       }
+    },
+    "containers": {
+      "billingStats": "Billing Details",
+      "queueStats": "Queue Statistics",
+      "serviceLevelStats": "Service Level Details"
+    }
+  },
+  "components": {
+    "breadcrumbs": {
+      "item": "BreadcrumbItem"
+    },
+    "countrySelect": {
+      "placeholder": "Select a country..."
+    },
+    "profileMenu": {
+      "organizations": "Organizations",
+      "tenant": "Tenant",
+      "noTenant": "No Tenant"
+    },
+    "sortingHead": {
+      "sortAscending": "Sort ascending",
+      "sortDescending": "Sort descending",
+      "unsorted": "Unsorted"
+    },
+    "soundPlayer": {
+      "audio": "Audio"
+    },
+    "statsCard": {
+      "errorOccurred": "Error Occurred",
+      "unknownError": "An unknown error occurred",
+      "refreshIntervals": "Refresh Intervals",
+      "refreshNow": "Refresh Now",
+      "noRefresh": "No Refresh",
+      "thirtySeconds": "30 seconds",
+      "oneMinute": "1 minute",
+      "fiveMinutes": "5 minutes"
+    },
+    "miniStatsCard": {
+      "waitingTime": "Waiting Time"
+    },
+    "featureCard": {
+      "feature": "Feature"
+    },
+    "localeSwitcher": {
+      "language": "Language",
+      "selectLanguage": "Select Language"
+    },
+    "linkTabs": {
+      "tab": "Tab",
+      "activeTab": "Active Tab"
+    }
+  },
+  "usage": {
+    "layout": {
+      "tabs": {
+        "summary": "Summary",
+        "detailed": "Detailed"
+      }
+    },
+    "summary": {
+      "title": "Usage Summary",
+      "columns": {
+        "servicesName": "Service Name",
+        "recordOrigin": "Record Origin",
+        "volumeRated": "Volume Rated",
+        "quantityTotal": "Total Quantity",
+        "costRated": "Rated Cost",
+        "ratesCodeName": "Rate Code",
+        "accountsName": "Account Name",
+        "packagesName": "Package Name",
+        "dateDay": "Date (Day)",
+        "dateMonth": "Date (Month)"
+      },
+      "filters": {
+        "showBy": {
+          "label": "Show By ",
+          "triggerLabel": "Show By"
+        },
+        "summaryBy": {
+          "label": "Summary By",
+          "triggerLabel": "Summary By"
+        },
+        "creationDate": {
+          "label": "Creation Date",
+          "placeholder": "Select a date range"
+        }
+      },
+      "showBy": {
+        "serviceName": "Service Name",
+        "accountName": "Account Name",
+        "packageName": "Package Name"
+      },
+      "summaryBy": {
+        "general": "General",
+        "byDay": "By Day",
+        "byMonth": "By Month"
+      },
+      "messages": {
+        "error": "Error fetching usage summary",
+        "errorDescription": "An unexpected error occurred while loading usage summary data.",
+        "invalidDateRange": "Invalid date range",
+        "noData": "No usage data found for the selected criteria."
+      }
+    },
+    "detailed": {
+      "title": "Usage Detailed",
+      "columns": {
+        "origin": "Origin",
+        "dt": "Date & Time",
+        "srcPartyId": "Source Party",
+        "dstPartyId": "Destination Party",
+        "codeName": "Service Code",
+        "rate": "Rate",
+        "volume": "Volume",
+        "volumeBilled": "Billed Volume",
+        "cost": "Cost"
+      },
+      "actions": {
+        "export": "Export Data",
+        "search": "Search..."
+      },
+      "messages": {
+        "error": "Error fetching detailed usage",
+        "errorDescription": "An unexpected error occurred while loading detailed usage data.",
+        "exportStarted": "Export started",
+        "exportStartedDescription": "Your export is being processed. You will be notified by email when it's ready.",
+        "exportError": "Error exporting data",
+        "noData": "No detailed usage data found for the selected criteria."
+      },
+      "origin": {
+        "outgoing": "Outgoing",
+        "incoming": "Incoming"
+      },
+      "filters": {
+        "account": {
+          "triggerLabel": "Account",
+          "label": "Select an account"
+        },
+        "origin": {
+          "triggerLabel": "Origin",
+          "label": "Select an origin"
+        },
+        "package": {
+          "triggerLabel": "Package",
+          "label": "Select a package"
+        },
+        "dateRange": {
+          "triggerLabel": "Date Range",
+          "label": "Select a date range"
+        }
+      }
+    },
+    "common": {
+      "filters": {
+        "fromDate": {
+          "hint": "DD/MM/YYYY",
+          "label": "From",
+          "placeholder": "Enter from date"
+        },
+        "toDate": {
+          "label": "To",
+          "hint": "DD/MM/YYYY",
+          "placeholder": "Enter to date"
+        }
+      },
+      "unknownError": "An unknown error occurred."
     }
   }
 }

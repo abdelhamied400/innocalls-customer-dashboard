@@ -20,7 +20,10 @@ export const isValidDateRange = (
   }
 
   if (maxRange !== -1 && differenceInDays(toDate, fromDate) > maxRange) {
-    onInvalid?.(t?.("form.validation.date.maxRangeExceeded", { maxRange }));
+    onInvalid?.(
+      t?.("form.validation.date.maxRangeExceeded", { maxRange }) ||
+        `Maximum date range is ${maxRange} days`
+    );
     return false;
   }
 

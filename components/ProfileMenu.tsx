@@ -17,11 +17,14 @@ import useAuthStore from "@/store/auth.slice";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "./ui/skeleton";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 const ProfileMenu = () => {
   const { data: session, status } = useSession();
   const { Organization, setOrganization } = useAuthStore();
   const router = useRouter();
+  const t = useTranslations("components.profileMenu");
+  const tActions = useTranslations("common.actions");
 
   const handleLogout = () => {
     signOut();
@@ -91,7 +94,7 @@ const ProfileMenu = () => {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>Organizations</DropdownMenuLabel>
+        <DropdownMenuLabel>{t("organizations")}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {session?.user.organizations?.map((org) => (
           <DropdownMenuItem
@@ -101,7 +104,7 @@ const ProfileMenu = () => {
           >
             <span>{org.name}</span>
             <span className="text-xs text-gray-600">
-              {org.hasTenant ? "Tenant" : "No Tenant"}
+              {/* {org.hasTenant ? t("tenant") : t("noTenant")} */}
             </span>
           </DropdownMenuItem>
         ))}
@@ -112,7 +115,7 @@ const ProfileMenu = () => {
             variant="ghost-destructive"
             onClick={handleLogout}
           >
-            Logout
+            {tActions("logout")}
           </Button>
         </DropdownMenuItem>
       </DropdownMenuContent>

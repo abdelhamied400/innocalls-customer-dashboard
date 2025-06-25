@@ -17,16 +17,27 @@ import { Button } from "./ui/button";
 import { useTranslations } from "next-intl";
 
 const AppSidebar = () => {
+  const t = useTranslations("sidebar");
 
-    const t = useTranslations("sidebar");
-  
   return (
     <Sidebar>
       <SidebarHeader />
       <div className="flex flex-col gap-2 p-4 overflow-y-auto">
-        <SidebarItem icon={<DashboardCustomize />} title={t("navigation.dashboard")} href="/" />
-        <SidebarItem icon={<Phone />} title={t("navigation.numbers")} href="/numbers" />
-        <SidebarItem icon={<Users />} title={t("navigation.users")} href="/users" />
+        <SidebarItem
+          icon={<DashboardCustomize />}
+          title={t("navigation.dashboard")}
+          href="/"
+        />
+        <SidebarItem
+          icon={<Phone />}
+          title={t("navigation.numbers")}
+          href="/numbers"
+        />
+        <SidebarItem
+          icon={<Users />}
+          title={t("navigation.users")}
+          href="/users"
+        />
         <SidebarItem
           icon={<Timeline />}
           title={t("navigation.callReporting")}
@@ -37,8 +48,12 @@ const AppSidebar = () => {
           title={t("navigation.billing")}
           href="/billing"
         />
-        <SidebarItem icon={<DataUsage />} title={t("navigation.usage")} href="/usage" />
         <SidebarItem
+          icon={<DataUsage />}
+          title={t("navigation.usage")}
+          href="/usage"
+        />
+        {/* <SidebarItem
           disabled
           icon={<ShoppingCart />}
           title={t("navigation.orderConfirmation")}
@@ -60,7 +75,7 @@ const AppSidebar = () => {
           icon={<Settings />}
           title={t("navigation.settings")}
           href="/settings"
-        />
+        /> */}
         <hr />
         <div className="py-2 flex flex-col gap-2">
           <Image
@@ -70,7 +85,7 @@ const AppSidebar = () => {
             height={200}
             className="mx-auto"
           />
-          <Button size="lg">{t("support.innoSupport")}</Button>
+          {/* <Button size="lg">{t("support.innoSupport")}</Button> */}
         </div>
       </div>
     </Sidebar>

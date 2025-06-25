@@ -12,6 +12,7 @@ import ReactSelect, {
 } from "react-select";
 import CreatableReactSelect from "react-select/creatable";
 import { FixedSizeList as List } from "react-window";
+import { useTranslations } from "next-intl";
 
 const heightPerItem = 40;
 const maxVisibleItems = 6;
@@ -64,7 +65,7 @@ const Select = ({
   getLabel,
   getValue,
 
-  placeholder = "Select...",
+  placeholder = "",
   label,
   labelAlign,
   error,
@@ -73,6 +74,10 @@ const Select = ({
   badgeClassName,
   ...rest
 }: SelectProps<any>) => {
+  const t = useTranslations("common.select");
+
+  placeholder = placeholder || t("placeholder");
+
   type OptionType = (typeof options)[number];
   const getOptionLabel =
     getLabel || ((opt: OptionType) => opt?.label as string);
@@ -136,6 +141,11 @@ const Select = ({
             getOptionLabel={getOptionLabel}
             getOptionValue={getOptionValue}
             onCreateOption={onCreateOption}
+            formatCreateLabel={(inputValue) =>
+              t("createOption", { inputValue })
+            }
+            noOptionsMessage={() => t("noOptionsMessage")}
+            loadingMessage={() => t("loadingMessage")}
             menuPortalTarget={document.body}
             styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
             classNames={{

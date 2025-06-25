@@ -62,6 +62,7 @@ import { format } from "date-fns";
 import { isAxiosError } from "axios";
 import { Button } from "@/components/ui/button";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
+import { useTranslations } from "next-intl";
 
 // 30 days ago
 const defaultFromDate = new Date();
@@ -88,6 +89,10 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
 
   const [isExporting, setIsExporting] = useState(false);
 
+  const t = useTranslations("usage.detailed");
+  const tUsageCommon = useTranslations("usage.common");
+  const tCommon = useTranslations("common");
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilters((prev) => ({
       ...prev,
@@ -101,12 +106,13 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
       toDate,
       (message) => {
         toast({
-          title: "Invalid date range",
+          title: t("messages.invalidDateRange"),
           description: message,
           variant: "destructive",
         });
       },
-      30 // max 30 days range
+      30, // max 30 days range
+      tCommon
     );
 
     if (!isValid) return;
@@ -128,17 +134,16 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
       setIsExporting(true);
       await usageService.exportUsageDetailed(filters);
       toast({
-        title: "Export started",
-        description:
-          "Your export is being processed. You will be notified by email when it's ready.",
+        title: t("messages.exportStarted"),
+        description: t("messages.exportStartedDescription"),
       });
     } catch (error) {
-      let message = "An unexpected error occurred";
+      let message = tUsageCommon("unknownError");
       if (isAxiosError(error)) {
-        message = error?.response?.data.message;
+        message = error?.response?.data.message || t("messages.exportError");
       }
       toast({
-        title: "Error exporting data",
+        title: t("messages.exportError"),
         description: message,
         variant: "destructive",
       });
@@ -151,12 +156,12 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
   return (
     <Collapsible>
       <div className="usage-detailed-table-head flex items-center justify-between p-4">
-        <h2>Usage Detailed</h2>
+        <h2>{t("title")}</h2>
         <div className="actions flex items-center gap-2">
           <Field preIcon={<SearchIcon />}>
             <Input
               variant="field"
-              placeholder="Search..."
+              placeholder={t("actions.search")}
               value={filters.codeName}
               onChange={handleSearchChange}
               type="search"
@@ -187,8 +192,8 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
           }}
         >
           <FilterBox
-            triggerLabel="Account"
-            label="Select an account"
+            triggerLabel={t("filters.account.triggerLabel")}
+            label={t("filters.account.label")}
             onReset={() => {
               setFilters((prev) => ({ ...prev, accountId: "" }));
               setAccountId("");
@@ -198,7 +203,7 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
           >
             <Select onValueChange={setAccountId} value={accountId}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select an account" />
+                <SelectValue placeholder={t("filters.account.label")} />
               </SelectTrigger>
               <SelectContent>
                 {accounts?.map((account) => (
@@ -210,8 +215,8 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
             </Select>
           </FilterBox>
           <FilterBox
-            triggerLabel="Origin"
-            label="Select an origin"
+            triggerLabel={t("filters.origin.triggerLabel")}
+            label={t("filters.origin.triggerLabel")}
             onReset={() => {
               setFilters((prev) => ({ ...prev, origin: "" }));
               setOrigin("");
@@ -226,17 +231,17 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="orig" id="orig" />
-                <Label htmlFor="orig">Outgoing</Label>
+                <Label htmlFor="orig">{t("origin.outgoing")}</Label>
               </div>
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="term" id="term" />
-                <Label htmlFor="term">Incoming</Label>
+                <Label htmlFor="term">{t("origin.incoming")}</Label>
               </div>
             </RadioGroup>
           </FilterBox>
           <FilterBox
-            triggerLabel="Package"
-            label="Select a package"
+            triggerLabel={t("filters.package.triggerLabel")}
+            label={t("filters.package.label")}
             onReset={() => {
               setFilters((prev) => ({ ...prev, packageId: "" }));
               setPackageId("");
@@ -246,7 +251,7 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
           >
             <Select onValueChange={setPackageId} value={packageId}>
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Select an account" />
+                <SelectValue placeholder={t("filters.package.label")} />
               </SelectTrigger>
               <SelectContent>
                 {packages?.map((pkg) => (
@@ -258,8 +263,8 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
             </Select>
           </FilterBox>
           <FilterBox
-            triggerLabel="Date Range"
-            label="Select a date range"
+            triggerLabel={t("filters.dateRange.triggerLabel")}
+            label={t("filters.dateRange.label")}
             onReset={() => {
               setFilters((prev) => ({
                 ...prev,
@@ -273,25 +278,25 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
             numberOfFilters={(fromDate ? 1 : 0) + (toDate ? 1 : 0)}
           >
             <Field
-              label="From"
-              hint="DD/MM/YYYY"
+              label={tUsageCommon("filters.fromDate.label")}
+              hint={tUsageCommon("filters.fromDate.hint")}
               postIcon={<CalendarIcon className="text-gray-400" />}
             >
               <DatePicker
                 className="flex-1"
-                placeholder="Enter from date"
+                placeholder={tUsageCommon("filters.fromDate.placeholder")}
                 value={fromDate}
                 onChange={(date) => setFromDate(date || defaultFromDate)}
               />
             </Field>
             <Field
-              label="To"
-              hint="DD/MM/YYYY"
+              label={tUsageCommon("filters.toDate.label")}
+              hint={tUsageCommon("filters.toDate.hint")}
               postIcon={<CalendarIcon className="text-gray-400" />}
             >
               <DatePicker
                 className="flex-1"
-                placeholder="Enter to date"
+                placeholder={tUsageCommon("filters.toDate.placeholder")}
                 value={toDate}
                 onChange={(date) => setToDate(date || defaultToDate)}
               />
