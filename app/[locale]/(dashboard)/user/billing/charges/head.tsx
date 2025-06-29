@@ -45,8 +45,8 @@ const ChargesHead = ({ filters, setFilters }: ChargesHeadProps) => {
 
   const applyFilters = () => {
     const isValid = isValidDateRange(
-      filters.fromDate,
-      filters.toDate,
+      fromDate,
+      toDate,
       (message) => {
         toast({
           title: tBillingCommon("messages.invalidDateRange"),
