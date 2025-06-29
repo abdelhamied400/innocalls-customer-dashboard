@@ -32,28 +32,23 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
     >
       <div
         className={cn(
-          "h-screen w-screen grid grid-rows-[96px_1fr] gap-2 box-border transition-all duration-800 ease-in-out",
+          "h-screen w-screen grid grid-rows-[96px_1fr] box-border transition-all duration-800 ease-in-out",
           isSidebarOpen
-            ? "grid-cols-[320px_1fr_200px]"
-            : "grid-cols-[0px_1fr_200px]"
+            ? "grid-cols-[360px_1fr_360px]"
+            : "grid-cols-[0px_1fr_360px]"
         )}
       >
-        {/* Sidebar */}
-        <div className="row-span-3 overflow-y-auto rounded-lg border-e px-2">
+        <div className="row-span-3 overflow-y-auto border-e">
           <AppSidebar />
         </div>
 
-        {/* Navbar */}
         <div className="col-span-2 col-start-2 col-end-4">
           <AppNavbar />
         </div>
 
-        {/* Table content */}
-        <div className="overflow-auto rounded-lg p-2">{children}</div>
+        <div className="overflow-auto p-4">{children}</div>
 
-        {/* Sidebar2 */}
-        <div className="row-span-2 col-start-3 overflow-y-auto rounded-lg border-s p-2">
-          <p className="sticky top-0 p-2 mb-2">Sidebar2</p>
+        <div className="row-span-2 col-start-3 overflow-y-auto border-s p-4">
           <Innortc />
         </div>
       </div>
