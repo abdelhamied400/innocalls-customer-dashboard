@@ -801,6 +801,10 @@
     "linkTabs": {
       "tab": "تبويب",
       "activeTab": "التبويب النشط"
+    },
+    "sidebarItem":{
+      "new":"جديد",
+      "soon":"قريباً"
     }
   },
   "usage": {

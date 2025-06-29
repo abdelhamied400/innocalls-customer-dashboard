@@ -793,6 +793,10 @@
     "linkTabs": {
       "tab": "Tab",
       "activeTab": "Active Tab"
+    },
+    "sidebarItem":{
+      "new":"New",
+      "soon":"Soon"
     }
   },
   "usage": {
