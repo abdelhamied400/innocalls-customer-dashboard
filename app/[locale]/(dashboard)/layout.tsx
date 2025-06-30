@@ -7,6 +7,7 @@ import AppNavbar from "@/components/AppNavbar";
 import useAppStore from "@/store/app.slice";
 import { cn } from "@/lib/utils";
 import { getCookie } from "cookies-next/client";
+import { WebrtcProvider } from "@/providers/webrtc/WebrtcProvider";
 
 type DashboardLayoutProps = PropsWithChildren<object>;
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
@@ -34,8 +35,8 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         className={cn(
           "h-screen w-screen grid grid-rows-[96px_1fr] box-border transition-all duration-800 ease-in-out",
           isSidebarOpen
-            ? "grid-cols-[360px_1fr_360px]"
-            : "grid-cols-[0px_1fr_360px]"
+            ? "grid-cols-[360px_1fr_280px]"
+            : "grid-cols-[0px_1fr_280px]"
         )}
       >
         <div className="row-span-3 overflow-y-auto border-e">
@@ -48,8 +49,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
         <div className="overflow-auto p-4">{children}</div>
 
-        <div className="row-span-2 col-start-3 overflow-y-auto border-s p-4">
-          <Innortc />
+        <div className="row-span-2 col-start-3 overflow-y-auto border-s">
+          <WebrtcProvider>
+            <Innortc />
+          </WebrtcProvider>
         </div>
       </div>
     </div>

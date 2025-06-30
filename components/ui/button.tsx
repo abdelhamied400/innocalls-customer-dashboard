@@ -16,6 +16,7 @@ const buttonVariants = cva(
           "border border-primary text-primary bg-background hover:bg-accent",
         secondary:
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        success: "bg-[#34C85A] text-white hover:bg-[#34C85A]/90",
         ghost: "bg-neutral-100 text-neutral-800 hover:bg-neutral-200",
         calendar: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
