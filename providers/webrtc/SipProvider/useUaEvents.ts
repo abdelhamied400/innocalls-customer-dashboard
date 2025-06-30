@@ -3,13 +3,17 @@ import { useRouting } from "@/providers/RoutingProvider";
 import { ExtensionState } from "./types";
 import JsSIP from "jssip";
 import { RTCSessionEvent } from "jssip/lib/UA";
-import { ConnectingEvent } from "jssip/lib/RTCSession";
+import { RTCSession } from "jssip/lib/RTCSession";
 
 export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
+  setCurrentSession?: React.Dispatch<React.SetStateAction<RTCSession | null>>;
 };
 
-export const useUaEvents = ({ setExtensionState }: useUAEventsDeps) => {
+export const useUaEvents = ({
+  setExtensionState,
+  setCurrentSession,
+}: useUAEventsDeps) => {
   const { navigate } = useRouting();
 
   const handleIncomingCall = useCallback(
@@ -59,6 +63,8 @@ export const useUaEvents = ({ setExtensionState }: useUAEventsDeps) => {
         setExtensionState("disconnected");
       });
       userAgent.on("newRTCSession", (e: RTCSessionEvent) => {
+        setCurrentSession?.(e.session);
+
         if (e.session.direction === "incoming") {
           handleIncomingCall(e);
         } else {

@@ -10,6 +10,7 @@ export type SipContextType = {
   ua: JsSIP.UA | null;
   extensionState: ExtensionState;
   number: string;
+  currentSession: RTCSession | null;
   login: (extension: ExtensionWithCredentials) => void;
   logout: () => void;
   reconnect: () => void;

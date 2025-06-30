@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import CallScreen from "@/components/Webrtc/Call";
 import Dialpad from "@/components/Webrtc/Dialpad";
 import Extensions from "@/components/Webrtc/Extensions";
 import ExtensionStateBar from "@/components/Webrtc/Shared/ExtensionStateBar";
@@ -28,7 +29,7 @@ const Innortc = () => {
       <div className="body flex-1 px-4 overflow-auto">
         {route === "dialpad" && <Dialpad />}
         {route === "extensions" && <Extensions />}
-        {route === "call" && <h2>Call Pad</h2>}
+        {route === "call" && <CallScreen />}
         {route === "voicemail" && <h2>Voicemail</h2>}
         {route === "settings" && <h2>Settings</h2>}
       </div>

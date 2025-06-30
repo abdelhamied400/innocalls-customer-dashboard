@@ -8,6 +8,7 @@ import type { SipContextType, ExtensionState } from "./SipProvider/types";
 
 import JsSIP from "jssip";
 import { useUaEvents } from "./SipProvider/useUaEvents";
+import { RTCSession } from "jssip/lib/RTCSession";
 
 const SipContext = createContext<SipContextType | null>(null);
 
@@ -18,11 +19,16 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   const [extension, setExtension] = useState<ExtensionWithCredentials | null>(
     null
   );
+  const [currentSession, setCurrentSession] = useState<RTCSession | null>(null);
+
   const [number, setNumber] = useState<string>("");
   const [extensionState, setExtensionState] =
     useState<ExtensionState>("disconnected");
 
-  const { bindEvents, unbindEvents } = useUaEvents({ setExtensionState });
+  const { bindEvents, unbindEvents } = useUaEvents({
+    setExtensionState,
+    setCurrentSession,
+  });
 
   const login = (extension: ExtensionWithCredentials) => {
     setExtensionState("connecting");
@@ -84,6 +90,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         extension,
         extensionState,
         number,
+        currentSession,
         login,
         logout,
         reconnect,
