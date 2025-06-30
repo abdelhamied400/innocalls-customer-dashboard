@@ -3,6 +3,9 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import Spinner from "./spinner";
+
+const LONG_PRESS_DURATION = 300;
 
 const buttonVariants = cva(
   "inline-flex justify-center items-center gap-2 disabled:opacity-50 rounded-md focus-visible:ring-1 focus-visible:ring-ring font-semibold text-sm whitespace-nowrap transition-colors disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-5 focus-visible:outline-none",
@@ -54,37 +57,63 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   loading?: boolean;
+  onLongPress?: () => void;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { className, variant, size, asChild = false, children, loading, ...props },
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      children,
+      loading,
+      onLongPress,
+      onClick,
+      ...props
+    },
     ref
   ) => {
     const Comp = asChild ? Slot : "button";
+
+    const timerRef = React.useRef<NodeJS.Timeout | null>(null);
+    const longPressTriggeredRef = React.useRef(false);
+
+    const handleMouseDown = () => {
+      longPressTriggeredRef.current = false;
+      timerRef.current = setTimeout(() => {
+        longPressTriggeredRef.current = true;
+        onLongPress?.();
+      }, LONG_PRESS_DURATION);
+    };
+
+    const handleMouseUp = () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (longPressTriggeredRef.current) return;
+      onClick?.(e);
+    };
+
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant, size }), className)}
         ref={ref}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        onTouchStart={handleMouseDown}
+        onTouchEnd={handleMouseUp}
+        onClick={handleClick}
         {...props}
       >
-        <span className="flex items-center gap-1">
-          {loading && (
-            <svg
-              className="animate-spin h-4 w-4"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M12 2a10 10 0 1 1-7.07 17.07" />
-            </svg>
-          )}
-          {size === "icon" && loading ? "" : children}
-        </span>
+        {loading && <Spinner />}
+        {size === "icon" && loading ? "" : children}
       </Comp>
     );
   }

@@ -71,6 +71,7 @@ export const useUaEvents = ({ setExtensionState }: useUAEventsDeps) => {
 
   const unbindEvents = useCallback((userAgent: JsSIP.UA) => {
     userAgent.removeAllListeners(); // or remove specific if needed
+    setExtensionState("disconnected");
   }, []);
 
   return { bindEvents, unbindEvents };

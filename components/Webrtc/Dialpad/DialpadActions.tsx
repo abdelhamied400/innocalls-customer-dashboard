@@ -16,10 +16,12 @@ const DialpadActions = () => {
     call();
   };
 
-  const backspace = () => {
-    // Implement backspace functionality here
-    console.log("Backspace clicked");
+  const handleBackspace = () => {
     setNumber((prev) => prev.slice(0, -1));
+  };
+
+  const handleLongBackspace = () => {
+    setNumber("");
   };
 
   return (
@@ -44,7 +46,8 @@ const DialpadActions = () => {
         size="icon"
         variant="ghost"
         className="rounded-full w-16 h-16"
-        onClick={backspace}
+        onClick={handleBackspace}
+        onLongPress={handleLongBackspace}
       >
         <Backspace />
       </Button>

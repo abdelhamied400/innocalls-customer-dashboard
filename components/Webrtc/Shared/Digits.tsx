@@ -6,7 +6,11 @@ const Digits = () => {
   const { setNumber } = useSip();
 
   const handleDigitClick = (digit: string) => {
-    setNumber((prev) => prev + digit);
+    if (digit === "+") {
+      setNumber((prev) => (prev.length === 0 ? "+" : prev));
+    } else if (/^[0-9#*]$/.test(digit)) {
+      setNumber((prev) => prev + digit);
+    }
   };
 
   return (
@@ -16,6 +20,7 @@ const Digits = () => {
           key={digit.number}
           digit={digit}
           onClick={() => handleDigitClick(digit.value)}
+          onLongPress={() => handleDigitClick(digit.long)}
         />
       ))}
     </div>

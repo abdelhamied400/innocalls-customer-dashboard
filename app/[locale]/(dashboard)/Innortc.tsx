@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import Dialpad from "@/components/Webrtc/Dialpad";
 import Extensions from "@/components/Webrtc/Extensions";
+import ExtensionStateBar from "@/components/Webrtc/Shared/ExtensionStateBar";
 import { useRouting } from "@/providers/RoutingProvider";
 import { ArrowForward, Dialpad as DialpadIcon } from "@mui/icons-material";
 import React from "react";
@@ -9,7 +10,7 @@ const Innortc = () => {
   const { route } = useRouting();
 
   return (
-    <div className="innortc flex flex-col gap-2 h-full">
+    <div className="innortc flex flex-col h-full">
       <div className="head border-b p-6 flex justify-center items-center">
         <Button
           variant="unstyled"
@@ -19,7 +20,12 @@ const Innortc = () => {
           <ArrowForward />
         </Button>
       </div>
-      <div className="body flex-1 p-4 overflow-auto">
+
+      <div className="mb-4">
+        <ExtensionStateBar />
+      </div>
+
+      <div className="body flex-1 px-4 overflow-auto">
         {route === "dialpad" && <Dialpad />}
         {route === "extensions" && <Extensions />}
         {route === "call" && <h2>Call Pad</h2>}
