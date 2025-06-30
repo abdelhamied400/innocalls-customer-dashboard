@@ -18,6 +18,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   const [extension, setExtension] = useState<ExtensionWithCredentials | null>(
     null
   );
+  const [number, setNumber] = useState<string>("");
   const [extensionState, setExtensionState] =
     useState<ExtensionState>("disconnected");
 
@@ -58,12 +59,22 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     navigate("extensions");
   };
 
-  const call = (number?: string) => {
+  const call = (phoneNumber: string = number) => {
     if (!ua) {
       console.error("User agent is not initialized");
       return;
     }
-    return ua.call(number || "");
+    if (!phoneNumber) {
+      console.error("Phone number is not provided");
+      return;
+    }
+
+    return ua.call(phoneNumber, {
+      mediaConstraints: {
+        audio: true,
+        video: false,
+      },
+    });
   };
 
   return (
@@ -72,10 +83,12 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         ua,
         extension,
         extensionState,
+        number,
         login,
         logout,
         reconnect,
         call,
+        setNumber,
       }}
     >
       {children}

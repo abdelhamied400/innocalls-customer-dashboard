@@ -22,7 +22,7 @@ const Innortc = () => {
       <div className="body flex-1 p-4 overflow-auto">
         {route === "dialpad" && <Dialpad />}
         {route === "extensions" && <Extensions />}
-        {route === "conference" && <h2>Conference</h2>}
+        {route === "call" && <h2>Call Pad</h2>}
         {route === "voicemail" && <h2>Voicemail</h2>}
         {route === "settings" && <h2>Settings</h2>}
       </div>

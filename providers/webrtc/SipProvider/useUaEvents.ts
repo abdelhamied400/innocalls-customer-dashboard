@@ -3,6 +3,7 @@ import { useRouting } from "@/providers/RoutingProvider";
 import { ExtensionState } from "./types";
 import JsSIP from "jssip";
 import { RTCSessionEvent } from "jssip/lib/UA";
+import { ConnectingEvent } from "jssip/lib/RTCSession";
 
 export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
@@ -21,8 +22,29 @@ export const useUaEvents = ({ setExtensionState }: useUAEventsDeps) => {
 
   const handleOutgoingCall = useCallback(
     (e: RTCSessionEvent) => {
-      console.log("Outgoing call:", e.session);
       navigate("call");
+
+      const session = e.session;
+      const connection = session.connection;
+
+      connection.addEventListener("track", (event) => {
+        const remoteAudio = document.createElement("audio");
+        remoteAudio.srcObject = event.streams?.[0] || null;
+        remoteAudio.play();
+      });
+
+      connection.addEventListener("addstream", (event) => {
+        console.log(event);
+      });
+
+      session.on("ended", (event) => {
+        console.log("Call ended:", event);
+        navigate("dialpad");
+      });
+      session.on("failed", (event) => {
+        console.log("Call failed:", event);
+        navigate("dialpad");
+      });
     },
     [navigate]
   );
