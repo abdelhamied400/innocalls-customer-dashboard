@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren, ReactNode, useMemo } from "react";
 import { Badge } from "./badge";
+import { useTranslations } from "next-intl";
 
 type SidebarItemProps = PropsWithChildren<{
   icon?: ReactNode;
@@ -28,6 +29,9 @@ const SidebarItem = ({
     else return pathname.includes(href);
   }, [pathname, href]);
 
+    const t = useTranslations("components.sidebarItem");
+  
+
   return (
     <div className="sidebar-item">
       <Link
@@ -47,7 +51,7 @@ const SidebarItem = ({
               className="ml-auto text-xs px-1 py-0.5 [&_svg]:size-4 flex items-center gap-1"
               variant="default"
             >
-              <AutoAwesome className="text-sm" /> New
+              <AutoAwesome className="text-sm" /> {t("new")}
             </Badge>
           )}
           {isComingSoon && (
@@ -55,7 +59,7 @@ const SidebarItem = ({
               className="ml-auto text-xs px-1 py-0.5 [&_svg]:size-4 flex items-center gap-1"
               variant="muted"
             >
-              <Timelapse className="text-sm" /> Soon
+              <Timelapse className="text-sm" />  {t("soon")} 
             </Badge>
           )}
         </div>
