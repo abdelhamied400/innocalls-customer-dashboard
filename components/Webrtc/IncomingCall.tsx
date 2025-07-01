@@ -1,33 +1,37 @@
 import { useSip } from "@/providers/webrtc/SipProvider";
 import { Button } from "../ui/button";
-import { CallEnd } from "@mui/icons-material";
-import CallActions from "./Call/CallActions";
+import { CallEnd, Phone } from "@mui/icons-material";
 import { SessionDirection } from "jssip/lib/RTCSession";
 
-const Call = () => {
+const IncomingCall = () => {
   const { currentSession } = useSip();
   const number = currentSession?.remote_identity?.uri?.user || "Unknown Number";
   const name =
     currentSession?.remote_identity?.display_name || "Unknown Caller";
+  const direction = currentSession?.direction;
 
   const handleHangup = () => {
     currentSession?.terminate();
   };
 
+  const handleAnswer = () => {
+    if (currentSession) {
+      currentSession.answer({
+        mediaConstraints: { audio: true, video: false },
+      });
+    }
+  };
+
   return (
-    <div className="screen" id="call-screen">
+    <div className="screen" id="incoming-call-screen">
       <div className="flex flex-col gap-2">
         <h4 className="text-center">
-          {currentSession?.direction === ("incoming" as SessionDirection) &&
-            "Incoming Call"}
-          {currentSession?.direction === ("outgoing" as SessionDirection) &&
-            "Outgoing Call"}
+          {direction === ("incoming" as SessionDirection) && "Incoming Call"}
+          {direction === ("outgoing" as SessionDirection) && "Outgoing Call"}
         </h4>
         {number && <h4 className="text-center">{number}</h4>}
         {name && <h2 className="text-center">{name}</h2>}
-        <CallActions />
-        <div className="grid grid-cols-3 gap-5 place-items-center">
-          <div className=""></div>
+        <div className="grid grid-cols-2 gap-5 place-items-center">
           <Button
             size="icon"
             className="[&_svg]:size-8 size-12 rounded-full w-16 h-16"
@@ -36,11 +40,18 @@ const Call = () => {
           >
             <CallEnd />
           </Button>
-          <div className=""></div>
+          <Button
+            size="icon"
+            className="[&_svg]:size-8 size-12 rounded-full w-16 h-16"
+            variant="success"
+            onClick={handleAnswer}
+          >
+            <Phone />
+          </Button>
         </div>
       </div>
     </div>
   );
 };
 
-export default Call;
+export default IncomingCall;

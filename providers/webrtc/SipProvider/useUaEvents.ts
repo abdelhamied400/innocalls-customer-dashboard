@@ -16,19 +16,12 @@ export const useUaEvents = ({
 }: useUAEventsDeps) => {
   const { navigate } = useRouting();
 
-  const handleIncomingCall = useCallback(
-    (e: RTCSessionEvent) => {
-      console.log("Incoming call:", e.session);
-      navigate("call");
-    },
-    [navigate]
-  );
+  const handleIncomingCall = useCallback((e: RTCSessionEvent) => {
+    console.log("Incoming call:", e.session);
+    const session = e.session;
 
-  const handleOutgoingCall = useCallback(
-    (e: RTCSessionEvent) => {
+    session.on("confirmed", () => {
       navigate("call");
-
-      const session = e.session;
       const connection = session.connection;
 
       connection.addEventListener("track", (event) => {
@@ -37,21 +30,30 @@ export const useUaEvents = ({
         remoteAudio.play();
       });
 
-      connection.addEventListener("addstream", (event) => {
+      connection.addEventListener("addstream", (event: any) => {
         console.log(event);
       });
+    });
 
-      session.on("ended", (event) => {
-        console.log("Call ended:", event);
-        navigate("dialpad");
-      });
-      session.on("failed", (event) => {
-        console.log("Call failed:", event);
-        navigate("dialpad");
-      });
-    },
-    [navigate]
-  );
+    navigate("incoming-call");
+  }, []);
+
+  const handleOutgoingCall = useCallback((e: RTCSessionEvent) => {
+    console.log("Outgoing call:", e.session);
+    const session = e.session;
+    const connection = session.connection;
+
+    connection.addEventListener("track", (event) => {
+      const remoteAudio = document.createElement("audio");
+      remoteAudio.srcObject = event.streams?.[0] || null;
+      remoteAudio.play();
+    });
+
+    connection.addEventListener("addstream", (event: any) => {
+      console.log(event);
+    });
+    navigate("call");
+  }, []);
 
   const bindEvents = useCallback(
     (userAgent: JsSIP.UA) => {
@@ -63,7 +65,17 @@ export const useUaEvents = ({
         setExtensionState("disconnected");
       });
       userAgent.on("newRTCSession", (e: RTCSessionEvent) => {
-        setCurrentSession?.(e.session);
+        const session = e.session;
+        setCurrentSession?.(session);
+
+        session.on("ended", (event) => {
+          console.log("Call ended:", event);
+          navigate("dialpad");
+        });
+        session.on("failed", (event) => {
+          console.log("Call failed:", event);
+          navigate("dialpad");
+        });
 
         if (e.session.direction === "incoming") {
           handleIncomingCall(e);
