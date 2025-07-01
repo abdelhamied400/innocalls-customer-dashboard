@@ -42,16 +42,16 @@
       "logout": "تسجيل الخروج",
       "select": "اختر",
       "create": "إنشاء",
-      "filter": "فلتر"
+      "filter": "تصفية"
     },
     "states": {
       "loading": "جارٍ التحميل...",
       "error": "خطأ",
       "noData": "لا توجد بيانات متاحة",
-      "notFound": "غير موجود"
+      "notFound": "لم يتم العثور على بيانات"
     },
     "filter": {
-      "noFiltersAvailable": "لا توجد خيارات فلترة"
+      "noFiltersAvailable": "لا توجد خيارات تخصيص"
     },
     "select": {
       "placeholder": "اختر...",
@@ -73,7 +73,7 @@
   "auth": {
     "banner": {
       "title": "مركز اتصال ذكي <br/> وحلول مدعومة بالسحابة",
-      "subtitle": "عزز تواصلك وتواصل مع العملاء بسلاسة، بغض النظر عن مكان تواجدك",
+      "subtitle": "عزز تواصلك وتواصل مع العملاء بسلاسة أينما كنت",
       "features": {
         "phoneSystem": {
           "title": "أنظمة هاتفية شاملة",
@@ -236,9 +236,9 @@
       },
       "messages": {
         "userActivated": "تم تفعيل المستخدم بنجاح",
-        "userActivatedDesc": "المستخدم {name} نشط الآن.",
+        "userActivatedDesc": "المستخدم {name} فعال الآن.",
         "userDeactivated": "تم تعطيل المستخدم بنجاح",
-        "userDeactivatedDesc": "المستخدم {name} غير نشط الآن.",
+        "userDeactivatedDesc": "المستخدم {name} غير فعال الآن.",
         "userDeleted": "تم حذف المستخدم بنجاح",
         "userDeletedDesc": "تم حذف المستخدم {name}.",
         "errorActivating": "خطأ في تفعيل المستخدم",
@@ -256,7 +256,7 @@
         "name": "الاسم",
         "ip": "عنوان IP",
         "status": "الحالة",
-        "onCall": "في مكالمة"
+        "onCall": "يجري مكالمة"
       },
       "status": {
         "online": "متصل",
@@ -338,7 +338,7 @@
           },
           "pin": {
             "minLength": "يجب أن يكون الرقم السري على الأقل {min} أرقام",
-            "maxLength": "يجب أن يكون الرقم السري {min} أرقام بالضبط",
+            "maxLength": "يجب ألا يزيد الرقم السري عن {min} أرقام بالضبط",
             "invalid": "يمكن أن يحتوي الرقم السري على الأرقام فقط"
           },
           "inbound": {
@@ -550,8 +550,8 @@
         }
       },
       "messages": {
-        "paymentSuccess": "تم الدفع بنجاح",
-        "paymentSuccessDescription": "تم معالجة دفعتك بنجاح.",
+        "paymentSuccess": "عملية ناجحة",
+        "paymentSuccessDescription": "تم الدفع بنجاح.",
         "paymentFailed": "فشل الدفع",
         "refillError": "خطأ أثناء إعادة تعبئة الرصيد",
         "unknownError": "حدث خطأ غير معروف."
@@ -655,7 +655,7 @@
     "export": {
       "button": "استخراج",
       "title": "تم بدء الاستخراج",
-      "description": "يتم معالجة عملية الاستخراج. سيتم إشعارك بالبريد الإلكتروني عند الانتهاء.",
+      "description": "يتم معالجة عملية الاستخراج. سيتم إبلاغك بالبريد الإلكتروني عند الانتهاء.",
       "error": "خطأ في استخراج البيانات"
     },
     "messages": {
@@ -760,7 +760,7 @@
   },
   "components": {
     "breadcrumbs": {
-      "item": "عنصر التنقل"
+      "item": "تنقل تفصيلي"
     },
     "countrySelect": {
       "placeholder": "اختر دولة..."
@@ -802,9 +802,9 @@
       "tab": "تبويب",
       "activeTab": "التبويب النشط"
     },
-    "sidebarItem":{
-      "new":"جديد",
-      "soon":"قريباً"
+    "sidebarItem": {
+      "new": "جديد",
+      "soon": "قريباً"
     }
   },
   "usage": {
@@ -819,9 +819,9 @@
       "columns": {
         "servicesName": "اسم الخدمة",
         "recordOrigin": "نوع المكالمة",
-        "volumeRated": "الحجم المُقيم",
+        "volumeRated": "الحجم المُقدر",
         "quantityTotal": "إجمالي الكمية",
-        "costRated": "التكلفة المُقيمة",
+        "costRated": "التكلفة المُقدرة",
         "ratesCodeName": "رمز التعرفة",
         "accountsName": "اسم الحساب",
         "packagesName": "اسم الباقة",
@@ -867,7 +867,7 @@
         "srcPartyId": "الطرف المتصل",
         "dstPartyId": "الطرف المُسْتَقْبِل",
         "codeName": "رمز الخدمة",
-        "rate": "التعرفة",
+        "rate": "التعريفة",
         "volume": "الحجم",
         "volumeBilled": "الحجم المفوتر",
         "cost": "التكلفة"
@@ -880,7 +880,7 @@
         "error": "خطأ في جلب تفاصيل الاستخدام",
         "errorDescription": "حدث خطأ غير متوقع أثناء تحميل بيانات تفاصيل الاستخدام.",
         "exportStarted": "بدأ التصدير",
-        "exportStartedDescription": "يتم معالجة التصدير الخاص بك. سيتم إشعارك عبر البريد الإلكتروني عند الانتهاء.",
+        "exportStartedDescription": "يتم معالجة التصدير الخاص بك. سيتم إبلاغك عبر البريد الإلكتروني عند الانتهاء.",
         "exportError": "خطأ في تصدير البيانات",
         "noData": "لم يتم العثور على بيانات تفاصيل الاستخدام للمعايير المحددة."
       },
