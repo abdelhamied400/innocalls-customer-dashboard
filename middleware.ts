@@ -10,8 +10,6 @@ const basePublicPages = [
   "/reset-password",
 ];
 
-const roles = ["user", "agent"];
-
 // Generate public pages with locale prefixes
 const publicPages = [
   ...basePublicPages,
@@ -40,12 +38,16 @@ export default auth((request) => {
   }
 
   // If logged in but URL doesn't include the role correctly
-  if (request.auth && userRole && (!maybeRole || maybeRole !== userRole)) {
-    // Build new pathname with locale (if any) and role
+  if (
+    request.auth &&
+    userRole &&
+    !isPublicPage &&
+    (!maybeRole || maybeRole !== userRole)
+  ) {
     const remainingPath = segments.slice(maybeLocale ? 1 : 0).join("/");
     const correctedPath = `/${maybeLocale ?? ""}/${userRole}/${remainingPath}`
-      .replace(/\/+/g, "/") // Remove duplicate slashes
-      .replace(/\/$/, ""); // Remove trailing slash
+      .replace(/\/+/g, "/")
+      .replace(/\/$/, "");
 
     const newUrl = new URL(correctedPath, request.nextUrl.origin);
     return Response.redirect(newUrl);

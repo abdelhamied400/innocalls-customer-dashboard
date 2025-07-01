@@ -33,7 +33,6 @@ const ProfileMenu = () => {
   const handleOrganizationChange = async (org: Organization) => {
     setCookie("OrganizationId", org.id);
     setOrganization(org);
-    router.refresh();
   };
 
   useEffect(() => {
