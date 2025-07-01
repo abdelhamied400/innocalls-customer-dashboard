@@ -12,10 +12,27 @@ import { WebrtcProvider } from "@/providers/webrtc/WebrtcProvider";
 type DashboardLayoutProps = PropsWithChildren<object>;
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const { Organization } = useAuthStore();
-  const { isSidebarOpen } = useAppStore();
+  const { isSidebarOpen, isWebrtcOpen } = useAppStore();
   const [defaultOrganizationId, setDefaultOrganizationId] = useState<
     string | null
   >(null);
+
+  const getLayoutClassName = () => {
+    const bothOpen = "grid-cols-[360px_1fr_280px]";
+    const sidebarOpen = "grid-cols-[360px_1fr_80px]";
+    const webrtcOpen = "grid-cols-[0px_1fr_280px]";
+    const bothClosed = "grid-cols-[0px_1fr_80px]";
+
+    if (isSidebarOpen && isWebrtcOpen) {
+      return bothOpen;
+    } else if (isSidebarOpen) {
+      return sidebarOpen;
+    } else if (isWebrtcOpen) {
+      return webrtcOpen;
+    } else {
+      return bothClosed;
+    }
+  };
 
   useEffect(() => {
     const orgId = getCookie("OrganizationId");
@@ -34,9 +51,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <div
         className={cn(
           "h-screen w-screen grid grid-rows-[96px_1fr] box-border transition-all duration-800 ease-in-out",
-          isSidebarOpen
-            ? "grid-cols-[360px_1fr_280px]"
-            : "grid-cols-[0px_1fr_280px]"
+          getLayoutClassName()
         )}
       >
         <div className="row-span-3 overflow-y-auto border-e">

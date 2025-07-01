@@ -9,7 +9,6 @@ export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
   setCurrentSession?: React.Dispatch<React.SetStateAction<RTCSession | null>>;
 };
-
 export const useUaEvents = ({
   setExtensionState,
   setCurrentSession,
@@ -19,8 +18,20 @@ export const useUaEvents = ({
   const handleIncomingCall = useCallback((e: RTCSessionEvent) => {
     console.log("Incoming call:", e.session);
     const session = e.session;
+    const ringtone = document.createElement("audio");
+    ringtone.src = "/assets/sound/ringtone.mp3";
+    ringtone.load();
 
+    session.on("progress", () => {
+      console.log("Call is in progress");
+      ringtone
+        .play()
+        .catch((err) => console.error("Error playing ringtone:", err));
+    });
     session.on("confirmed", () => {
+      ringtone.pause();
+      ringtone.currentTime = 0;
+      console.log("Call confirmed");
       navigate("call");
       const connection = session.connection;
 
@@ -31,8 +42,20 @@ export const useUaEvents = ({
       });
 
       connection.addEventListener("addstream", (event: any) => {
-        console.log(event);
+        console.log("addstream", event);
       });
+    });
+
+    session.on("ended", (event) => {
+      ringtone.pause();
+      ringtone.currentTime = 0;
+      console.log("Call ended:", event);
+    });
+
+    session.on("failed", (event) => {
+      ringtone.pause();
+      ringtone.currentTime = 0;
+      console.log("Call failed:", event);
     });
 
     navigate("incoming-call");
