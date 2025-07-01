@@ -71,8 +71,8 @@ const sidebarItems = (t: IntlT) => [
     href: "/order-confirmation",
     disabled: true,
     roles: ["user"],
-    isNew: true,
-    isComingSoon: false,
+    isNew: false,
+    isComingSoon: true,
   },
   {
     icon: <RingVolume />,
@@ -88,8 +88,8 @@ const sidebarItems = (t: IntlT) => [
     href: "/developers-tab",
     disabled: true,
     roles: ["user"],
-    isNew: true,
-    isComingSoon: false,
+    isNew: false,
+    isComingSoon: true,
   },
   {
     icon: <Settings />,
@@ -97,8 +97,8 @@ const sidebarItems = (t: IntlT) => [
     href: "/settings",
     disabled: true,
     roles: ["user"],
-    isNew: true,
-    isComingSoon: false,
+    isNew: false,
+    isComingSoon: true,
   },
 ];
 

@@ -1,0 +1,32 @@
+version: "3"
+services:
+  caddy:
+    image: caddy/caddy
+    container_name: innocalls-new-portal-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - $PWD/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_config:/config
+    depends_on:
+      - innocalls-new-portal
+    networks:
+      - innocalls-new-portal
+
+  innocalls-new-portal:
+    container_name: innocalls-new-portal
+    image: itcsoftnet/innocalls-new-portal:0.1
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    networks:
+      - innocalls-new-portal
+
+volumes:
+  caddy_config:
+
+networks:
+  innocalls-new-portal:

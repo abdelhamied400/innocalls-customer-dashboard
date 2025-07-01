@@ -1,0 +1,6 @@
+:80 {
+ route {
+
+        reverse_proxy http://innocalls-new-portal:3000
+    }
+}
