@@ -27,7 +27,7 @@ const ProfileMenu = () => {
   const tActions = useTranslations("common.actions");
 
   const handleLogout = () => {
-    signOut();
+    signOut({ callbackUrl: "/" });
   };
 
   const handleOrganizationChange = async (org: Organization) => {
