@@ -9,26 +9,30 @@ export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
   setCurrentSession?: React.Dispatch<React.SetStateAction<RTCSession | null>>;
 };
-
 export const useUaEvents = ({
   setExtensionState,
   setCurrentSession,
 }: useUAEventsDeps) => {
   const { navigate } = useRouting();
 
-  const handleIncomingCall = useCallback(
-    (e: RTCSessionEvent) => {
-      console.log("Incoming call:", e.session);
-      navigate("call");
-    },
-    [navigate]
-  );
+  const handleIncomingCall = useCallback((e: RTCSessionEvent) => {
+    console.log("Incoming call:", e.session);
+    const session = e.session;
+    const ringtone = document.createElement("audio");
+    ringtone.src = "/assets/sound/ringtone.mp3";
+    ringtone.load();
 
-  const handleOutgoingCall = useCallback(
-    (e: RTCSessionEvent) => {
+    session.on("progress", () => {
+      console.log("Call is in progress");
+      ringtone
+        .play()
+        .catch((err) => console.error("Error playing ringtone:", err));
+    });
+    session.on("confirmed", () => {
+      ringtone.pause();
+      ringtone.currentTime = 0;
+      console.log("Call confirmed");
       navigate("call");
-
-      const session = e.session;
       const connection = session.connection;
 
       connection.addEventListener("track", (event) => {
@@ -37,21 +41,42 @@ export const useUaEvents = ({
         remoteAudio.play();
       });
 
-      connection.addEventListener("addstream", (event) => {
-        console.log(event);
+      connection.addEventListener("addstream", (event: any) => {
+        console.log("addstream", event);
       });
+    });
 
-      session.on("ended", (event) => {
-        console.log("Call ended:", event);
-        navigate("dialpad");
-      });
-      session.on("failed", (event) => {
-        console.log("Call failed:", event);
-        navigate("dialpad");
-      });
-    },
-    [navigate]
-  );
+    session.on("ended", (event) => {
+      ringtone.pause();
+      ringtone.currentTime = 0;
+      console.log("Call ended:", event);
+    });
+
+    session.on("failed", (event) => {
+      ringtone.pause();
+      ringtone.currentTime = 0;
+      console.log("Call failed:", event);
+    });
+
+    navigate("incoming-call");
+  }, []);
+
+  const handleOutgoingCall = useCallback((e: RTCSessionEvent) => {
+    console.log("Outgoing call:", e.session);
+    const session = e.session;
+    const connection = session.connection;
+
+    connection.addEventListener("track", (event) => {
+      const remoteAudio = document.createElement("audio");
+      remoteAudio.srcObject = event.streams?.[0] || null;
+      remoteAudio.play();
+    });
+
+    connection.addEventListener("addstream", (event: any) => {
+      console.log(event);
+    });
+    navigate("call");
+  }, []);
 
   const bindEvents = useCallback(
     (userAgent: JsSIP.UA) => {
@@ -63,7 +88,17 @@ export const useUaEvents = ({
         setExtensionState("disconnected");
       });
       userAgent.on("newRTCSession", (e: RTCSessionEvent) => {
-        setCurrentSession?.(e.session);
+        const session = e.session;
+        setCurrentSession?.(session);
+
+        session.on("ended", (event) => {
+          console.log("Call ended:", event);
+          navigate("dialpad");
+        });
+        session.on("failed", (event) => {
+          console.log("Call failed:", event);
+          navigate("dialpad");
+        });
 
         if (e.session.direction === "incoming") {
           handleIncomingCall(e);

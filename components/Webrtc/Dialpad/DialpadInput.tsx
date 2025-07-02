@@ -5,7 +5,7 @@ import { useSip } from "@/providers/webrtc/SipProvider";
 import React from "react";
 
 const DialpadInput = () => {
-  const { number, setNumber } = useSip();
+  const { number, setNumber, call } = useSip();
 
   const onNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
@@ -22,6 +22,12 @@ const DialpadInput = () => {
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const key = e.key;
+
+    if (key === "Enter") {
+      call();
+      return;
+    }
+
     const digit = digits.find((d) => d.value === key);
     if (digit) {
       // play tone

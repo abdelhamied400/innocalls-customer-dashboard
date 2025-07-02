@@ -3,12 +3,16 @@ import { create } from "zustand";
 type AppState = {
   isSidebarOpen: boolean;
   toggleSidebar: () => void;
+  isWebrtcOpen: boolean; // Optional property for WebRTC state
+  setWebrtcOpen: (isOpen: boolean) => void; // Optional method to
 };
 
 const useAppStore = create<AppState>()((set) => ({
   isSidebarOpen: true,
   toggleSidebar: () =>
     set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
+  isWebrtcOpen: false,
+  setWebrtcOpen: (isOpen: boolean) => set(() => ({ isWebrtcOpen: isOpen })),
 }));
 
 export default useAppStore;

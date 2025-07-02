@@ -27,7 +27,7 @@ export const WebrtcProvider = ({ children }: WebrtcProviderProps) => {
   }
 
   return (
-    <RoutingProvider initialRoute={role === "agent" ? "dialpad" : "extensions"}>
+    <RoutingProvider initialRoute={initialRoute}>
       <SipProvider>{children}</SipProvider>
     </RoutingProvider>
   );
