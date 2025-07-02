@@ -10,10 +10,12 @@ export type SipContextType = {
   ua: JsSIP.UA | null;
   extensionState: ExtensionState;
   number: string;
+  countryCode: string;
   currentSession: RTCSession | null;
   login: (extension: ExtensionWithCredentials) => void;
   logout: () => void;
   reconnect: () => void;
   call: (number?: string) => RTCSession | undefined;
   setNumber: React.Dispatch<React.SetStateAction<string>>;
+  setCountryCode: React.Dispatch<React.SetStateAction<string>>;
 };

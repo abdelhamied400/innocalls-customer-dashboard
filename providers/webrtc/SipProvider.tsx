@@ -22,6 +22,8 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   const [currentSession, setCurrentSession] = useState<RTCSession | null>(null);
 
   const [number, setNumber] = useState<string>("");
+  const [countryCode, setCountryCode] = useState<string>("");
+
   const [extensionState, setExtensionState] =
     useState<ExtensionState>("disconnected");
 
@@ -65,17 +67,18 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     navigate("extensions");
   };
 
-  const call = (phoneNumber: string = number) => {
+  const call = (phoneNumber?: string) => {
+    const calleeNumber = phoneNumber || `${countryCode}${number}`;
     if (!ua) {
       console.error("User agent is not initialized");
       return;
     }
-    if (!phoneNumber) {
+    if (!phoneNumber && !number) {
       console.error("Phone number is not provided");
       return;
     }
 
-    return ua.call(phoneNumber, {
+    return ua.call(calleeNumber, {
       mediaConstraints: {
         audio: true,
         video: false,
@@ -90,12 +93,14 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         extension,
         extensionState,
         number,
+        countryCode,
         currentSession,
         login,
         logout,
         reconnect,
         call,
         setNumber,
+        setCountryCode,
       }}
     >
       {children}
