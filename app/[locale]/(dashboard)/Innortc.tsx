@@ -11,15 +11,18 @@ import { ArrowForward, Dialpad as DialpadIcon } from "@mui/icons-material";
 import React from "react";
 
 const Innortc = () => {
-  const { route } = useRouting();
+  const { isRoute } = useRouting();
   const { isWebrtcOpen, setWebrtcOpen } = useAppStore();
 
   return (
     <div className="innortc flex flex-col h-full">
-      <div className="head border-b p-6 flex justify-center items-center">
+      <div className="head border-b flex justify-center items-center">
         <Button
           variant="unstyled"
-          className="[&_svg]:size-6"
+          className={cn(
+            "[&_svg]:size-6 w-full p-6 h-auto transition-transform duration-400 ease-in-out",
+            isWebrtcOpen ? "rotate-180" : "rotate-0"
+          )}
           onClick={() => setWebrtcOpen(!isWebrtcOpen)}
         >
           <ArrowForward />
@@ -37,17 +40,17 @@ const Innortc = () => {
         </div>
 
         <div className="body flex-1 px-4 ">
-          {route === "dialpad" && <Dialpad />}
-          {route === "extensions" && <Extensions />}
-          {route === "call" && <Call />}
-          {route === "incoming-call" && <IncomingCall />}
+          {isRoute("/dialpad") && <Dialpad />}
+          {isRoute("/extensions") && <Extensions />}
+          {isRoute("/call") && <Call />}
+          {isRoute("/incoming-call") && <IncomingCall />}
         </div>
       </div>
 
-      <div className="foot border-t p-6 flex justify-center items-center">
+      <div className="foot border-t flex justify-center items-center">
         <Button
           variant="unstyled"
-          className="[&_svg]:size-6 text-primary-500"
+          className="[&_svg]:size-6 text-primary-500 w-full p-6 h-auto"
           onClick={() => setWebrtcOpen(!isWebrtcOpen)}
         >
           <DialpadIcon />

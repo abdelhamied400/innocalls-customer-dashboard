@@ -1,7 +1,7 @@
 import Digits from "./Shared/Digits";
 import DialpadActions from "./Dialpad/DialpadActions";
 import DialpadInput from "./Dialpad/DialpadInput";
-import ExtensionStateBar from "./Shared/ExtensionStateBar";
+import WebrtcActions from "./Shared/WebrtcActions";
 
 const Dialpad = () => {
   return (
@@ -10,6 +10,7 @@ const Dialpad = () => {
         <DialpadInput />
         <Digits />
         <DialpadActions />
+        <WebrtcActions />
       </div>
     </div>
   );

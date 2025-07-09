@@ -9,6 +9,8 @@ import type { SipContextType, ExtensionState } from "./SipProvider/types";
 import JsSIP from "jssip";
 import { useUaEvents } from "./SipProvider/useUaEvents";
 import { RTCSession } from "jssip/lib/RTCSession";
+import { countries } from "@/constants/countries";
+import { replaceCountryCode } from "@/lib/webrtc";
 
 const SipContext = createContext<SipContextType | null>(null);
 
@@ -22,6 +24,8 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   const [currentSession, setCurrentSession] = useState<RTCSession | null>(null);
 
   const [number, setNumber] = useState<string>("");
+  const [countryCode, setCountryCode] = useState<string>("");
+
   const [extensionState, setExtensionState] =
     useState<ExtensionState>("disconnected");
 
@@ -37,10 +41,10 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
     const userAgent = createUserAgent(extension.uri, extension.password);
     setExtension(extension);
-    bindEvents(userAgent);
+    bindEvents(userAgent, extension);
     setUa(userAgent);
 
-    navigate("dialpad");
+    navigate("/dialpad");
   };
 
   const reconnect = () => {
@@ -51,7 +55,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     unbindEvents(ua);
 
     const userAgent = createUserAgent(extension.uri, extension.password);
-    bindEvents(userAgent);
+    bindEvents(userAgent, extension);
     setUa(userAgent);
   };
 
@@ -62,20 +66,23 @@ export const SipProvider = ({ children }: SipProviderProps) => {
       setUa(null);
       setExtension(null);
     }
-    navigate("extensions");
+    navigate("/extensions");
   };
 
-  const call = (phoneNumber: string = number) => {
+  const call = (phoneNumber?: string) => {
+    const calleeNumber = replaceCountryCode(
+      phoneNumber || `${countryCode}${number}`
+    );
     if (!ua) {
       console.error("User agent is not initialized");
       return;
     }
-    if (!phoneNumber) {
+    if (!phoneNumber && !number) {
       console.error("Phone number is not provided");
       return;
     }
 
-    return ua.call(phoneNumber, {
+    return ua.call(calleeNumber, {
       mediaConstraints: {
         audio: true,
         video: false,
@@ -90,12 +97,14 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         extension,
         extensionState,
         number,
+        countryCode,
         currentSession,
         login,
         logout,
         reconnect,
         call,
         setNumber,
+        setCountryCode,
       }}
     >
       {children}

@@ -4,6 +4,9 @@ import { ExtensionState } from "./types";
 import JsSIP from "jssip";
 import { RTCSessionEvent } from "jssip/lib/UA";
 import { RTCSession } from "jssip/lib/RTCSession";
+import { ExtensionWithCredentials } from "@/types/api/extension";
+
+import { addCallToLog } from "@/lib/call-log";
 
 export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
@@ -15,25 +18,100 @@ export const useUaEvents = ({
 }: useUAEventsDeps) => {
   const { navigate } = useRouting();
 
-  const handleIncomingCall = useCallback((e: RTCSessionEvent) => {
-    console.log("Incoming call:", e.session);
-    const session = e.session;
-    const ringtone = document.createElement("audio");
-    ringtone.src = "/assets/sound/ringtone.mp3";
-    ringtone.load();
+  const handleIncomingCall = useCallback(
+    (e: RTCSessionEvent, extension: ExtensionWithCredentials) => {
+      console.log("Incoming call:", e.session);
+      const session = e.session;
+      const ringtone = document.createElement("audio");
+      ringtone.src = "/assets/sound/ringtone.mp3";
+      ringtone.load();
 
-    session.on("progress", () => {
-      console.log("Call is in progress");
-      ringtone
-        .play()
-        .catch((err) => console.error("Error playing ringtone:", err));
-    });
-    session.on("confirmed", () => {
-      ringtone.pause();
-      ringtone.currentTime = 0;
-      console.log("Call confirmed");
-      navigate("call");
+      const calleeNumber = session.remote_identity?.uri?.user || "Unknown";
+      const calleeName = session.remote_identity?.display_name || "Unknown";
+
+      session.on("progress", () => {
+        console.log("Call is in progress");
+        ringtone
+          .play()
+          .catch((err) => console.error("Error playing ringtone:", err));
+      });
+
+      session.on("confirmed", () => {
+        ringtone.pause();
+        ringtone.currentTime = 0;
+        console.log("Call confirmed");
+
+        // Log incoming call as answered
+        addCallToLog(
+          {
+            type: "incoming",
+            number: calleeNumber,
+            name: calleeName,
+          },
+          extension.ext
+        );
+
+        navigate("/call");
+        const connection = session.connection;
+
+        connection.addEventListener("track", (event) => {
+          const remoteAudio = document.createElement("audio");
+          remoteAudio.srcObject = event.streams?.[0] || null;
+          remoteAudio.play();
+        });
+
+        connection.addEventListener("addstream", (event: any) => {
+          console.log("addstream", event);
+        });
+      });
+
+      session.on("ended", (event) => {
+        ringtone.pause();
+        ringtone.currentTime = 0;
+        console.log("Call ended:", event);
+
+        // Check if call was never answered (missed call)
+        if (session.start_time === null) {
+          addCallToLog(
+            {
+              type: "missed",
+              number: calleeNumber,
+              name: calleeName,
+            },
+            extension.ext
+          );
+        }
+      });
+
+      session.on("failed", (event) => {
+        ringtone.pause();
+        ringtone.currentTime = 0;
+      });
+
+      navigate("/incoming-call");
+    },
+    []
+  );
+
+  const handleOutgoingCall = useCallback(
+    (e: RTCSessionEvent, extension: ExtensionWithCredentials) => {
+      console.log("Outgoing call:", e.session);
+      const session = e.session;
       const connection = session.connection;
+
+      const calledNumber = session.remote_identity?.uri?.user || "Unknown";
+
+      session.on("confirmed", () => {
+        console.log("Call confirmed");
+        // Log outgoing call when call is initiated
+        addCallToLog(
+          {
+            type: "outgoing",
+            number: calledNumber,
+          },
+          extension.ext
+        );
+      });
 
       connection.addEventListener("track", (event) => {
         const remoteAudio = document.createElement("audio");
@@ -42,44 +120,16 @@ export const useUaEvents = ({
       });
 
       connection.addEventListener("addstream", (event: any) => {
-        console.log("addstream", event);
+        console.log(event);
       });
-    });
 
-    session.on("ended", (event) => {
-      ringtone.pause();
-      ringtone.currentTime = 0;
-      console.log("Call ended:", event);
-    });
-
-    session.on("failed", (event) => {
-      ringtone.pause();
-      ringtone.currentTime = 0;
-      console.log("Call failed:", event);
-    });
-
-    navigate("incoming-call");
-  }, []);
-
-  const handleOutgoingCall = useCallback((e: RTCSessionEvent) => {
-    console.log("Outgoing call:", e.session);
-    const session = e.session;
-    const connection = session.connection;
-
-    connection.addEventListener("track", (event) => {
-      const remoteAudio = document.createElement("audio");
-      remoteAudio.srcObject = event.streams?.[0] || null;
-      remoteAudio.play();
-    });
-
-    connection.addEventListener("addstream", (event: any) => {
-      console.log(event);
-    });
-    navigate("call");
-  }, []);
+      navigate("/call");
+    },
+    []
+  );
 
   const bindEvents = useCallback(
-    (userAgent: JsSIP.UA) => {
+    (userAgent: JsSIP.UA, extension: ExtensionWithCredentials) => {
       userAgent.on("connecting", () => setExtensionState("connecting"));
       userAgent.on("connected", () => setExtensionState("connected"));
       userAgent.on("disconnected", () => setExtensionState("disconnected"));
@@ -89,21 +139,49 @@ export const useUaEvents = ({
       });
       userAgent.on("newRTCSession", (e: RTCSessionEvent) => {
         const session = e.session;
+        const calleeNumber = session.remote_identity?.uri?.user || "Unknown";
+        const calleeName = session.remote_identity?.display_name || "Unknown";
+
         setCurrentSession?.(session);
 
         session.on("ended", (event) => {
           console.log("Call ended:", event);
-          navigate("dialpad");
+          navigate("/dialpad");
         });
         session.on("failed", (event) => {
           console.log("Call failed:", event);
-          navigate("dialpad");
+          navigate("/dialpad");
+
+          // Log as rejected if call was actively rejected
+          if (
+            event.cause === JsSIP.C.causes.REJECTED ||
+            event.cause === JsSIP.C.causes.BUSY
+          ) {
+            addCallToLog(
+              {
+                type: "rejected",
+                number: calleeNumber,
+                name: calleeName,
+              },
+              extension.ext
+            );
+          } else {
+            // Otherwise log as missed
+            addCallToLog(
+              {
+                type: "missed",
+                number: calleeNumber,
+                name: calleeName,
+              },
+              extension.ext
+            );
+          }
         });
 
         if (e.session.direction === "incoming") {
-          handleIncomingCall(e);
+          handleIncomingCall(e, extension);
         } else {
-          handleOutgoingCall(e);
+          handleOutgoingCall(e, extension);
         }
       });
     },

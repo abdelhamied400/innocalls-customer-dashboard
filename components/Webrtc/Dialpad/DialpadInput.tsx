@@ -3,9 +3,10 @@ import { Input } from "@/components/ui/input";
 import { digits } from "@/constants/digits";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import React from "react";
+import { CountrySelect } from "./DialpadCountrySelect";
 
 const DialpadInput = () => {
-  const { number, setNumber, call } = useSip();
+  const { number, setNumber, countryCode, setCountryCode, call } = useSip();
 
   const onNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
@@ -38,6 +39,11 @@ const DialpadInput = () => {
 
   return (
     <Field label="Number">
+      <CountrySelect
+        value={countryCode}
+        onChange={setCountryCode}
+        placeholder="Select country"
+      />
       <Input
         value={number}
         variant="field"
