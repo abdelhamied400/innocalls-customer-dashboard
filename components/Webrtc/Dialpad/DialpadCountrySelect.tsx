@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { countries, defaultCountry } from "@/constants/countries";
+import { webrtcCountries, defaultCountry } from "@/constants/countries";
 import { useMemo } from "react";
 
 type CountrySelectProps = {
@@ -22,12 +22,12 @@ export const CountrySelect = ({
   placeholder = "Select a country",
 }: CountrySelectProps) => {
   const selectedCountry = useMemo(
-    () => countries.find((c) => c.code === value),
+    () => webrtcCountries.find((c) => c.code === value),
     [value]
   );
 
   const handleChange = (countryCode?: string) => {
-    const country = countries.find((c) => c.code === countryCode);
+    const country = webrtcCountries.find((c) => c.code === countryCode);
     onChange(country?.code || defaultCountry.code);
   };
 
@@ -42,7 +42,7 @@ export const CountrySelect = ({
         </SelectValue>
       </SelectTrigger>
       <SelectContent>
-        {countries.map((country) => {
+        {webrtcCountries.map((country) => {
           return (
             <SelectItem key={country.code} value={country.code}>
               <span className="flex items-center gap-2">

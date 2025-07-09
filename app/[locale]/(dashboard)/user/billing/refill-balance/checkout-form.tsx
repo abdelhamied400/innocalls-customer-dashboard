@@ -11,7 +11,7 @@ import {
   useStripe,
   useElements,
 } from "@stripe/react-stripe-js";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 type CheckoutFormProps = { clientSecret: string; onSuccess?: () => void };
