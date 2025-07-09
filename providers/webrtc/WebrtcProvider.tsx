@@ -21,9 +21,9 @@ export const WebrtcProvider = ({ children }: WebrtcProviderProps) => {
   const role = session.user?.role;
 
   if (role === "agent") {
-    initialRoute = "dialpad";
+    initialRoute = "/dialpad";
   } else if (role === "user") {
-    initialRoute = "extensions";
+    initialRoute = "/extensions";
   }
 
   return (

@@ -9,6 +9,8 @@ import type { SipContextType, ExtensionState } from "./SipProvider/types";
 import JsSIP from "jssip";
 import { useUaEvents } from "./SipProvider/useUaEvents";
 import { RTCSession } from "jssip/lib/RTCSession";
+import { countries } from "@/constants/countries";
+import { replaceCountryCode } from "@/lib/webrtc";
 
 const SipContext = createContext<SipContextType | null>(null);
 
@@ -39,10 +41,10 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
     const userAgent = createUserAgent(extension.uri, extension.password);
     setExtension(extension);
-    bindEvents(userAgent);
+    bindEvents(userAgent, extension);
     setUa(userAgent);
 
-    navigate("dialpad");
+    navigate("/dialpad");
   };
 
   const reconnect = () => {
@@ -53,7 +55,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     unbindEvents(ua);
 
     const userAgent = createUserAgent(extension.uri, extension.password);
-    bindEvents(userAgent);
+    bindEvents(userAgent, extension);
     setUa(userAgent);
   };
 
@@ -64,11 +66,13 @@ export const SipProvider = ({ children }: SipProviderProps) => {
       setUa(null);
       setExtension(null);
     }
-    navigate("extensions");
+    navigate("/extensions");
   };
 
   const call = (phoneNumber?: string) => {
-    const calleeNumber = phoneNumber || `${countryCode}${number}`;
+    const calleeNumber = replaceCountryCode(
+      phoneNumber || `${countryCode}${number}`
+    );
     if (!ua) {
       console.error("User agent is not initialized");
       return;

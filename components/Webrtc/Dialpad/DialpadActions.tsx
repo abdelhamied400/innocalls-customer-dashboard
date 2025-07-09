@@ -3,12 +3,7 @@ import { useSip } from "@/providers/webrtc/SipProvider";
 import { Backspace, Logout, Phone } from "@mui/icons-material";
 
 const DialpadActions = () => {
-  const { call, logout, setNumber } = useSip();
-  const handleLogout = () => {
-    // Implement logout functionality here
-    logout();
-    console.log("Logout clicked");
-  };
+  const { call, setNumber } = useSip();
 
   const handleCall = () => {
     // Implement call functionality here
@@ -26,14 +21,7 @@ const DialpadActions = () => {
 
   return (
     <div className="dialpad-actions grid grid-cols-3 gap-5 place-items-center">
-      <Button
-        size="icon"
-        className="size-12 rounded-full w-16 h-16"
-        variant="ghost-destructive"
-        onClick={handleLogout}
-      >
-        <Logout />
-      </Button>
+      <div className=""></div>
       <Button
         size="icon"
         className="[&_svg]:size-8 size-12 rounded-full w-16 h-16"

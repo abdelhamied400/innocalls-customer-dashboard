@@ -40,6 +40,10 @@ api.interceptors.request.use(async (config) => {
     config.headers.Authorization = `Bearer ${session.user.accessToken}`;
   }
 
+  if (session?.user.role) {
+    config.headers["x-user-type"] = session.user.role;
+  }
+
   if (organizationId) {
     config.headers["Organization"] = organizationId;
   }
