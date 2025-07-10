@@ -13,12 +13,15 @@ const UsageLayout = ({ children }: UsageLayoutProps) => {
     <div className="bg-white rounded-xl p-4 h-full flex flex-col gap-2">
       <div className="flex justify-between items-center">
         <LinkTabs>
-          <LinkTab href="/usage/summary" active={pathname === "/usage/summary"}>
+          <LinkTab
+            href="/usage/summary"
+            active={pathname === "/user/usage/summary"}
+          >
             {t("summary")}
           </LinkTab>
           <LinkTab
             href="/usage/detailed"
-            active={pathname === "/usage/detailed"}
+            active={pathname === "/user/usage/detailed"}
           >
             {t("detailed")}
           </LinkTab>

@@ -12,10 +12,13 @@ const UsersLayout = ({ children }: UsersLayoutProps) => {
   return (
     <>
       <LinkTabs>
-        <LinkTab href="/users" active={pathname === "/users"}>
+        <LinkTab href="/users" active={pathname === "/user/users"}>
           {t("usersList")}
         </LinkTab>
-        <LinkTab href="/users/monitor" active={pathname === "/users/monitor"}>
+        <LinkTab
+          href="/users/monitor"
+          active={pathname === "/user/users/monitor"}
+        >
           {t("monitorUsers")}
         </LinkTab>
       </LinkTabs>

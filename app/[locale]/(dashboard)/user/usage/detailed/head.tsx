@@ -189,6 +189,11 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
               fromDate: defaultFromDate,
               toDate: defaultToDate,
             });
+            setAccountId("");
+            setOrigin("");
+            setPackageId("");
+            setFromDate(defaultFromDate);
+            setToDate(defaultToDate);
           }}
         >
           <FilterBox

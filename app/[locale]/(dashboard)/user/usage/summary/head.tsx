@@ -150,6 +150,7 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
             setFromDate(defaultFromDate);
             setToDate(defaultToDate);
             setGroupBy([]);
+            setSummaryBy("");
             table.setPageIndex(0); // Reset to first page on filter change
           }}
         >

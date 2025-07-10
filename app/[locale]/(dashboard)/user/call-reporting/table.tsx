@@ -27,8 +27,8 @@ type CallReportingTableProps = {
 };
 
 const defaultFilters: CallReportingFilters = {
-  fromDate: undefined,
-  toDate: undefined,
+  fromDate: new Date(),
+  toDate: new Date(),
   sourceExtensions: [],
   destinationExtensions: [],
   tags: [],

@@ -35,18 +35,18 @@ export default {
           : filters.destinationExtensions
         : undefined,
     });
-    const res = await api.get(`/cdr/user/report?${queryString}`);
+    const res = await api.get(`/v2/cdrs/report?${queryString}`);
     return res.data;
   },
   exportCallReporting: async (
     filters: ExportCallReportingFilters
   ): Promise<void> => {
     const queryString = objectToQueryString(filters);
-    const res = await api.get(`/cdr/user/export?${queryString}`);
+    const res = await api.get(`/v2/cdrs/export?${queryString}`);
     return res.data;
   },
   getCallRecording: async (callId: string): Promise<string> => {
-    const res = await api.get(`/cdr/user/download-record/${callId}`);
+    const res = await api.get(`/v2/cdrs/download-record/${callId}`);
     return res.data;
   },
 };

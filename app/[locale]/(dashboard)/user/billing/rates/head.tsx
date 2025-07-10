@@ -39,6 +39,7 @@ const RatesHead = ({ filters, setFilters }: RatesHeadProps) => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setFilters((prev) => ({ ...prev, search: value }));
+    setSearch(value);
   };
 
   const applyFilters = () => {
@@ -75,7 +76,7 @@ const RatesHead = ({ filters, setFilters }: RatesHeadProps) => {
       <CollapsibleContent>
         <FilterBar
           onClear={() => {
-            setFilters((prev) => ({ ...prev, serviceId: "1" }));
+            setFilters({ search: "", serviceId: "1" });
             setServiceId("1");
             setSearch("");
 

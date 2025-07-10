@@ -2,10 +2,11 @@
 import vocabService from "@/services/vocab.service";
 import useVocabStore from "@/store/vocab.slice";
 import { useSession } from "next-auth/react";
-import { PropsWithChildren, useEffect } from "react";
+import { PropsWithChildren, useEffect, useRef, useState } from "react";
 
 type VocabProviderProps = PropsWithChildren<{}>;
 const VocabProvider = ({ children }: VocabProviderProps) => {
+  const [loading, setLoading] = useState(false);
   const {
     setCountries,
     setDids,
@@ -15,6 +16,7 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
     setPackages,
   } = useVocabStore();
   const { data: user, status } = useSession();
+  const didFetch = useRef(false);
 
   const fetchCountries = async () => {
     const countries = await vocabService.getAllCountries();
@@ -42,27 +44,64 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
   };
 
   const fetchUserVocab = async () => {
-    fetchCountries();
-    fetchDids();
-    fetchExtensions();
-    fetchTags();
-    fetchAccounts();
-    fetchPackages();
+    const promises = [
+      fetchCountries(),
+      fetchDids(),
+      fetchExtensions(),
+      fetchTags(),
+      fetchAccounts(),
+      fetchPackages(),
+    ];
+    try {
+      setLoading(true);
+      await Promise.all(promises);
+    } catch (error) {
+      console.error("Error fetching user vocab:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const fetchAgentVocab = async () => {
-    fetchCountries();
+    const promises = [fetchCountries()];
+    try {
+      setLoading(true);
+      await Promise.all(promises);
+    } catch (error) {
+      console.error("Error fetching agent vocab:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Fetch countries on mount
   useEffect(() => {
-    if (status !== "authenticated") return;
+    if (status !== "authenticated" || didFetch.current) return;
+
+    didFetch.current = true;
+
     if (user?.user?.role === "agent") {
       fetchAgentVocab();
     } else {
       fetchUserVocab();
     }
   }, [status]);
+
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <span className="text-gray-500">Authenticating...</span>
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <span className="text-gray-500">Loading vocab...</span>
+      </div>
+    );
+  }
 
   return children;
 };

@@ -9,7 +9,7 @@ import type { SipContextType, ExtensionState } from "./SipProvider/types";
 import JsSIP from "jssip";
 import { useUaEvents } from "./SipProvider/useUaEvents";
 import { RTCSession } from "jssip/lib/RTCSession";
-import { countries } from "@/constants/countries";
+import { defaultCountry } from "@/constants/countries";
 import { replaceCountryCode } from "@/lib/webrtc";
 
 const SipContext = createContext<SipContextType | null>(null);
@@ -24,7 +24,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   const [currentSession, setCurrentSession] = useState<RTCSession | null>(null);
 
   const [number, setNumber] = useState<string>("");
-  const [countryCode, setCountryCode] = useState<string>("");
+  const [countryCode, setCountryCode] = useState<string>(defaultCountry.code);
 
   const [extensionState, setExtensionState] =
     useState<ExtensionState>("disconnected");

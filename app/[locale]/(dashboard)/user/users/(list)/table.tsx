@@ -41,6 +41,7 @@ const UsersTable = ({
 }: UsersTableProps) => {
   const router = useRouter();
   const t = useTranslations("users.list");
+  const [search, setSearch] = useState("");
 
   // sorting, filters, and pagination state
   const [sorting, setSorting] = useState<SortingState>(initialSorting);
@@ -114,8 +115,9 @@ const UsersTable = ({
 
   // Callbacks
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const name = event.target.value;
-    table.getColumn("name")?.setFilterValue(name);
+    const value = event.target.value;
+    setSearch(value);
+    table.setGlobalFilter(value);
   };
 
   //? on any change in pagination, sorting, or filters, update the URL
@@ -145,7 +147,7 @@ const UsersTable = ({
     <div className="flex flex-col gap-0 h-full border rounded-xl">
       <Collapsible>
         <UsersTableHeader
-          searchValue={searchValue}
+          searchValue={search}
           onSearchChange={handleSearchChange}
         />
         <CollapsibleContent>
