@@ -12,6 +12,7 @@ import {
   CollapsibleTrigger,
 } from "./collapsible";
 import { useSession } from "next-auth/react";
+import { ChevronDown } from "lucide-react";
 
 type SidebarCollapsibleItemProps = {
   icon?: ReactNode;
@@ -67,22 +68,30 @@ const SidebarCollapsibleItem = ({
                 {icon}
                 <span>{title}</span>
               </div>
-              {isNew && (
-                <Badge
-                  className="text-xs px-1 py-0.5 [&_svg]:size-4 flex items-center gap-1"
-                  variant="default"
-                >
-                  <AutoAwesome className="text-sm" /> {t("new")}
-                </Badge>
-              )}
-              {isComingSoon && (
-                <Badge
-                  className="text-xs px-1 py-0.5 [&_svg]:size-4 flex items-center gap-1"
-                  variant="muted"
-                >
-                  <Timelapse className="text-sm" /> {t("soon")}
-                </Badge>
-              )}
+              <div className="flex items-center gap-2">
+                {isNew && (
+                  <Badge
+                    className="text-xs px-1 py-0.5 [&_svg]:size-4 flex items-center gap-1"
+                    variant="default"
+                  >
+                    <AutoAwesome className="text-sm" /> {t("new")}
+                  </Badge>
+                )}
+                {isComingSoon && (
+                  <Badge
+                    className="text-xs px-1 py-0.5 [&_svg]:size-4 flex items-center gap-1"
+                    variant="muted"
+                  >
+                    <Timelapse className="text-sm" /> {t("soon")}
+                  </Badge>
+                )}
+                <ChevronDown
+                  className={cn(
+                    "transition-transform",
+                    isOpen ? "rotate-180" : "rotate-0"
+                  )}
+                />
+              </div>
             </div>
           </button>
         </CollapsibleTrigger>
