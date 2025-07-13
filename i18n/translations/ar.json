@@ -566,6 +566,7 @@
   "sidebar": {
     "navigation": {
       "dashboard": "لوحة التحكم",
+      "liveMonitoring": "المراقبة المباشرة",
       "numbers": "الأرقام",
       "users": "المستخدمين",
       "callReporting": "تقارير المكالمات",
@@ -574,10 +575,12 @@
       "orderConfirmation": "تأكيد الطلب",
       "autoDialer": "الاتصال التلقائي",
       "developersTab": "إعدادات المطورين",
-      "settings": "الإعدادات"
+      "settings": "الإعدادات",
+      "callBridge": "جسر المكالمات",
+      "postCallSurvey": "استطلاع ما بعد المكالمة"
     },
     "support": {
-      "innoSupport": "دعم إنو"
+      "innoSupport": "دعم سوبرسيل"
     }
   },
   "callReporting": {
@@ -753,9 +756,12 @@
       }
     },
     "containers": {
-      "billingStats": "تفاصيل الفواتير",
-      "queueStats": "إحصائيات صفوف المكالمات",
-      "serviceLevelStats": "تفاصيل مستوى الخدمة"
+      "serviceLevelStats": "إحصائيات مستوى الخدمة",
+      "liveMonitoringStats": "المراقبة المباشرة",
+      "historicalStats": "الإحصائيات التاريخية",
+      "queueStats": "إحصائيات الطابور",
+      "callDistributionStats": "توزيع المكالمات",
+      "billingStats": "إحصائيات الفواتير"
     }
   },
   "components": {

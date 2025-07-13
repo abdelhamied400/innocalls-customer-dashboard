@@ -8,7 +8,6 @@ const BillingStats = () => {
 
   return (
     <div className="billing-stats">
-      <h3>{t("billingStats")}</h3>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
         <Balance />
         <Last30DaysUsage />

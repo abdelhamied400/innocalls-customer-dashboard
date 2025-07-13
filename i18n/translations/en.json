@@ -558,6 +558,7 @@
   "sidebar": {
     "navigation": {
       "dashboard": "Dashboard",
+      "liveMonitoring": "Live Monitoring",
       "numbers": "Numbers",
       "users": "Users",
       "callReporting": "Call Reporting",
@@ -566,10 +567,12 @@
       "orderConfirmation": "Order Confirmation",
       "autoDialer": "Auto Dialer",
       "developersTab": "Developers Tab",
-      "settings": "Settings"
+      "settings": "Settings",
+      "callBridge": "Call Bridge",
+      "postCallSurvey": "Post Call Survey"
     },
     "support": {
-      "innoSupport": "Inno Support"
+      "innoSupport": "Innocalls Support"
     }
   },
   "callReporting": {
@@ -745,9 +748,12 @@
       }
     },
     "containers": {
-      "billingStats": "Billing Details",
+      "serviceLevelStats": "Service Level Statistics",
+      "liveMonitoringStats": "Live Monitoring",
+      "historicalStats": "Historical Statistics",
       "queueStats": "Queue Statistics",
-      "serviceLevelStats": "Service Level Details"
+      "callDistributionStats": "Call Distribution",
+      "billingStats": "Billing Statistics"
     }
   },
   "components": {
@@ -794,9 +800,9 @@
       "tab": "Tab",
       "activeTab": "Active Tab"
     },
-    "sidebarItem":{
-      "new":"New",
-      "soon":"Soon"
+    "sidebarItem": {
+      "new": "New",
+      "soon": "Soon"
     }
   },
   "usage": {

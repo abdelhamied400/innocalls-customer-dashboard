@@ -25,9 +25,10 @@ const fonts: Record<LocaleSlug, NextFontWithVariable> = {
 
 // 🌐 Metadata for the application
 export const metadata: Metadata = {
-  title: "Innocalls 🚀 | Leading VoIP Solutions Provider in the Middle East 🌍",
+  title:
+    "Innocalls 🚀 | Leading Contact Center Solutions Provider in the Middle East 🌍",
   description:
-    "Leading VoIP Solutions Provider for Call Centers in the Middle East",
+    "Leading Contact Center Solutions Provider for Call Centers in the Middle East",
 };
 
 type RootLayoutProps = PropsWithChildren<{

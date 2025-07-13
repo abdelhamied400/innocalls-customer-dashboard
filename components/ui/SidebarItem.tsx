@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { PropsWithChildren, ReactNode, useMemo } from "react";
 import { Badge } from "./badge";
 import { useTranslations } from "next-intl";
+import { useSession } from "next-auth/react";
 
 type SidebarItemProps = PropsWithChildren<{
   icon?: ReactNode;
@@ -24,13 +25,16 @@ const SidebarItem = ({
   isComingSoon,
 }: SidebarItemProps) => {
   const pathname = usePathname();
-  const isActive = useMemo(() => {
-    if (href === "/") return pathname === "/";
-    else return pathname.includes(href);
-  }, [pathname, href]);
+  const { data: session } = useSession();
+  const role = session?.user?.role;
 
-    const t = useTranslations("components.sidebarItem");
-  
+  const isActive = useMemo(() => {
+    if (href === `/${role}`) return pathname === `/${role}`;
+    else return pathname.includes(href);
+    //
+  }, [pathname, href, role]);
+
+  const t = useTranslations("components.sidebarItem");
 
   return (
     <div className="sidebar-item">
@@ -43,12 +47,14 @@ const SidebarItem = ({
           disabled && "cursor-not-allowed text-gray-400 hover:bg-transparent"
         )}
       >
-        <div className="flex gap-2">
-          {icon}
-          <span>{title}</span>
+        <div className="flex gap-2 items-center justify-between w-full">
+          <div className="flex gap-2 items-center">
+            {icon}
+            <span>{title}</span>
+          </div>
           {isNew && (
             <Badge
-              className="ml-auto text-xs px-1 py-0.5 [&_svg]:size-4 flex items-center gap-1"
+              className="text-xs px-1 py-0.5 [&_svg]:size-4 flex items-center gap-1"
               variant="default"
             >
               <AutoAwesome className="text-sm" /> {t("new")}
@@ -56,10 +62,10 @@ const SidebarItem = ({
           )}
           {isComingSoon && (
             <Badge
-              className="ml-auto text-xs px-1 py-0.5 [&_svg]:size-4 flex items-center gap-1"
+              className="text-xs px-1 py-0.5 [&_svg]:size-4 flex items-center gap-1"
               variant="muted"
             >
-              <Timelapse className="text-sm" />  {t("soon")} 
+              <Timelapse className="text-sm" /> {t("soon")}
             </Badge>
           )}
         </div>

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
@@ -99,6 +101,24 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       if (longPressTriggeredRef.current) return;
       onClick?.(e);
     };
+
+    if (asChild) {
+      return (
+        <Comp
+          className={cn(buttonVariants({ variant, size }), className)}
+          ref={ref}
+          onMouseDown={handleMouseDown}
+          onMouseUp={handleMouseUp}
+          onMouseLeave={handleMouseUp}
+          onTouchStart={handleMouseDown}
+          onTouchEnd={handleMouseUp}
+          onClick={handleClick}
+          {...props}
+        >
+          {children}
+        </Comp>
+      );
+    }
 
     return (
       <Comp

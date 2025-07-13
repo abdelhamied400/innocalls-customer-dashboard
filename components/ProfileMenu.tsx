@@ -26,8 +26,16 @@ const ProfileMenu = () => {
   const t = useTranslations("components.profileMenu");
   const tActions = useTranslations("common.actions");
 
-  const handleLogout = () => {
-    signOut({ callbackUrl: "/" });
+  const handleLogout = async() => {
+    // TODO: FIND ANOTHER WAY TP LOGOUT ... 
+    // Get the current base URL
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
+    
+    // Sign out without redirect first
+    await signOut({ redirect: false });
+    
+    // Then manually redirect to the login page using the correct base URL
+    window.location.href = `${baseUrl}/login`;
   };
 
   const handleOrganizationChange = async (org: Organization) => {

@@ -8,8 +8,7 @@ import { useTranslations } from "next-intl";
 
 const AppNavbar = () => {
   const t = useTranslations("sidebar");
-
-  const { isSidebarOpen, toggleSidebar } = useAppStore();
+  const { isSidebarOpen, toggleSidebar, pageTitle } = useAppStore();
 
   return (
     <nav className="navbar">
@@ -21,7 +20,7 @@ const AppNavbar = () => {
             </Button>
           )}
 
-          <h1>{t("navigation.dashboard")}</h1>
+          <h1>{pageTitle || t("navigation.dashboard")}</h1>
         </div>
         <div className="flex items-center gap-4 actions">
           <LocaleSwitcher />
