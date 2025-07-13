@@ -36,7 +36,7 @@ const OverdueInvoices = () => {
         overdueInvoices?.currency
       }`}
       isRefetching={isRefetching}
-      className="bg-destructive-100"
+      color="destructive"
     ></StatsCard>
   );
 };

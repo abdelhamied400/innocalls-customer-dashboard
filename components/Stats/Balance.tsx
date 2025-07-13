@@ -39,7 +39,7 @@ const Balance = () => {
       icon={<img src="/assets/icons/stats/wallet.svg" alt="" />}
       title={t("title")}
       value={`${balance?.balance} ${balance?.currency}`}
-      className="bg-amber-100"
+      color="warning"
       isRefetching={isRefetching}
       canRefetch
       refetchInterval={refetchInterval}

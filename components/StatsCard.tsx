@@ -17,8 +17,15 @@ import {
 import { refetchIntervals } from "@/constants/stats";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
+import {
+  statsCardIconVariants,
+  statsCardInfoVariants,
+  statsCardValueVariants,
+  StatsCardVariants,
+  statsCardVariants,
+} from "./statsCardVariants";
 
-type StatsCardProps = {
+type StatsCardProps = StatsCardVariants & {
   icon: React.ReactNode;
   title: string;
   value: string | number;
@@ -32,6 +39,7 @@ type StatsCardProps = {
     options?: RefetchOptions
   ) => Promise<QueryObserverResult<any, Error>>;
 };
+
 const StatsCard = ({
   icon,
   title,
@@ -43,20 +51,24 @@ const StatsCard = ({
   refetchInterval,
   setRefetchInterval,
   refetch,
+  variant = "default",
+  color = "default",
 }: StatsCardProps) => {
   const t = useTranslations("components.statsCard");
 
   return (
     <div
       className={cn(
-        "p-4 bg-white shadow-sm rounded-lg hover:shadow-lg transition-shadow text-gray-800 flex flex-col gap-2",
-        isRefetching && "animate-pulse",
-        className
+        statsCardVariants({ variant, color }),
+        className,
+        isRefetching && "animate-pulse"
       )}
     >
       <div className="flex justify-between items-center gap-1">
         <div className="flex items-center gap-2">
-          {isRefetching ? <Spinner className="size-4" /> : icon}
+          <div className={cn(statsCardIconVariants({ color }))}>
+            {isRefetching ? <Spinner className="size-4" /> : icon}
+          </div>
           <h3 className="text-lg text-gray-500">{title}</h3>
         </div>
         {canRefetch && (
@@ -98,8 +110,8 @@ const StatsCard = ({
         )}
       </div>
       <div className="flex flex-col gap-2">
-        <p className="font-bold text-2xl text-gray-800">{value}</p>
-        {info}
+        <p className={cn(statsCardValueVariants({ color }))}>{value}</p>
+        <div className={cn(statsCardInfoVariants({ color }))}>{info}</div>
       </div>
     </div>
   );
@@ -119,7 +131,7 @@ export const StatsCardError = ({ error }: StatsCardErrorProps) => {
         title={t("errorOccurred")}
         value=""
         info={errorMessage}
-        className="bg-red-100 shadow-none"
+        color="destructive"
       />
     );
   }
@@ -129,7 +141,7 @@ export const StatsCardError = ({ error }: StatsCardErrorProps) => {
       title={t("errorOccurred")}
       value=""
       info={t("unknownError")}
-      className="bg-red-100 shadow-none"
+      color="destructive"
     />
   );
 };
