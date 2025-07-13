@@ -81,7 +81,7 @@
         },
         "ivrRouting": {
           "title": "IVR & Call routing",
-          "description": "Provide 24/7 accessibility, reduce wait times and make sure calls are routed through the right path inside your company's sectors."
+          "description": "Provide 24/7 accessibility, reduce wait times and make sure calls are routed through the right path inside your companys sectors."
         },
         "reporting": {
           "title": "Reporting & analytics",
@@ -229,7 +229,7 @@
         "enableUser": "you want to enable this user?",
         "disableUser": "you want to disable this user?",
         "deleteUser": "You want to delete this user?",
-        "noCancel": "No, Don't Proceed",
+        "noCancel": "No, Dont Proceed",
         "yesEnable": "Yes Enable it",
         "yesDisable": "Yes Disable it",
         "yesDelete": "Yes, Delete it"
@@ -650,7 +650,7 @@
     "export": {
       "button": "Export",
       "title": "Export started",
-      "description": "Your export is being processed. You will be notified by email when it's ready.",
+      "description": "Your export is being processed. You will be notified by email when its ready.",
       "error": "Error exporting data"
     },
     "messages": {
@@ -693,17 +693,17 @@
           "avgExitTimeout": "Avg-Exit Timeout"
         },
         "todayCallsSummary": {
-          "title": "Today's Calls Summary",
+          "title": "Todays Calls Summary",
           "abandon": "Abandon",
           "completed": "Completed",
           "timeout": "Timeout"
         },
         "todayTalkTime": {
-          "title": "Today's Talk Time",
+          "title": "Todays Talk Time",
           "average": "Average"
         },
         "todayWaitingTime": {
-          "title": "Today's Waiting Time",
+          "title": "Todays Waiting Time",
           "completed": "Completed",
           "avgCompleted": "Avg-Completed",
           "abandoned": "Abandoned",
@@ -740,7 +740,9 @@
         "ofTotal": "calls of total",
         "h": "H",
         "m": "M",
-        "s": "S"
+        "s": "S",
+        "totalCallsTitle": "Total Calls",
+        "totalAnsweredCalls": "Total Answered Calls"
       },
       "totalAnsweredCalls": {
         "title": "Total Answered Calls/Day",
@@ -878,7 +880,7 @@
         "error": "Error fetching detailed usage",
         "errorDescription": "An unexpected error occurred while loading detailed usage data.",
         "exportStarted": "Export started",
-        "exportStartedDescription": "Your export is being processed. You will be notified by email when it's ready.",
+        "exportStartedDescription": "Your export is being processed. You will be notified by email when its ready.",
         "exportError": "Error exporting data",
         "noData": "No detailed usage data found for the selected criteria."
       },

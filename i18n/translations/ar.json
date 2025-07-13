@@ -748,7 +748,9 @@
         "ofTotal": "مكالمة من إجمالي",
         "h": "س",
         "m": "د",
-        "s": "ث"
+        "s": "ث",
+        "totalCallsTitle": "إجمالي المكالمات",
+        "totalAnsweredCalls": "إجمالي المكالمات المجابة"
       },
       "totalAnsweredCalls": {
         "title": "إجمالي المكالمات المجابة/يوم",

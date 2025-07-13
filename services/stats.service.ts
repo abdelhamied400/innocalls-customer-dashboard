@@ -43,11 +43,11 @@ export default {
     return res.data;
   },
   getLastHourCallsDuration: async () => {
-    const res = await api.get("/cdr/user/today");
+    const res = await api.get("/v2/cdrs/today");
     return res.data;
   },
   getTodayCallsDuration: async () => {
-    const res = await api.get("/cdr/user/today");
+    const res = await api.get("/v2/cdrs/today");
     return res.data;
   },
   // ------->
