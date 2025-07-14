@@ -11,6 +11,7 @@ import IvrDistributionChart from "@/components/Analytics/IvrDistributionChart";
 import AnalyticsTabs from "@/components/Analytics/AnalyticsTabs";
 import DateRangeSearch from "@/components/Analytics/DateRangeSearch";
 import { BarChart3, Users, Phone, Clock, PieChart } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend } from "recharts";
 
 // Function to generate data based on date range
 const generateDataForDateRange = (fromDate: Date, toDate: Date) => {
@@ -86,6 +87,36 @@ const generateDataForDateRange = (fromDate: Date, toDate: Date) => {
           { optionNumber: 4, clickCount: Math.floor(15 * multiplier), optionName: "Demo" },
         ]
       }
+    ],
+    callers: [
+      {
+        caller: "4456",
+        totalCalls: 3,
+        abandonedCalls: 0,
+        timeoutCalls: 1,
+        completedCalls: 2,
+        abandonRate: 0,
+        timeoutRate: 33.33,
+        completionRate: 66.67,
+        avgWaitTime: "00:02:39",
+        avgTalkTime: "00:00:28",
+        firstCallTime: "2025-06-01 09:12:54",
+        lastCallTime: "2025-06-03 10:21:35"
+      },
+      {
+        caller: "4455",
+        totalCalls: 3,
+        abandonedCalls: 2,
+        timeoutCalls: 1,
+        completedCalls: 0,
+        abandonRate: 66.67,
+        timeoutRate: 33.33,
+        completionRate: 0,
+        avgWaitTime: "00:03:02",
+        avgTalkTime: "00:00:00",
+        firstCallTime: "2025-06-01 09:16:47",
+        lastCallTime: "2025-06-03 10:19:19"
+      }
     ]
   };
 };
@@ -123,6 +154,7 @@ const InboundAnalytics = () => {
     { id: "distribution", label: "Distribution", icon: <PieChart className="w-4 h-4" /> },
     { id: "agents", label: "Agent Performance", icon: <Users className="w-4 h-4" /> },
     { id: "ivr", label: "IVR Analysis", icon: <Phone className="w-4 h-4" /> },
+    { id: "repeated", label: "Repeated Callers", icon: <Users className="w-4 h-4 text-yellow-500" /> },
   ];
 
   return (
@@ -252,6 +284,71 @@ const InboundAnalytics = () => {
               </Card>
             ))}
           </div>
+        </div>
+
+        {/* Repeated Callers Tab */}
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Repeated Callers</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {/* Stacked Bar Chart */}
+              <div className="w-full h-80 mb-8">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={data.callers}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                    <XAxis dataKey="caller" fontSize={12} tickLine={false} axisLine={false} />
+                    <YAxis fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="completedCalls" stackId="a" fill="#10B981" name="Completed" />
+                    <Bar dataKey="abandonedCalls" stackId="a" fill="#F59E42" name="Abandoned" />
+                    <Bar dataKey="timeoutCalls" stackId="a" fill="#EF4444" name="Timeout" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              {/* Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left p-2">Caller</th>
+                      <th className="text-left p-2">Total Calls</th>
+                      <th className="text-left p-2">Abandoned</th>
+                      <th className="text-left p-2">Timeout</th>
+                      <th className="text-left p-2">Completed</th>
+                      <th className="text-left p-2">Abandon Rate (%)</th>
+                      <th className="text-left p-2">Timeout Rate (%)</th>
+                      <th className="text-left p-2">Completion Rate (%)</th>
+                      <th className="text-left p-2">Avg Wait Time</th>
+                      <th className="text-left p-2">Avg Talk Time</th>
+                      <th className="text-left p-2">First Call</th>
+                      <th className="text-left p-2">Last Call</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.callers.map((caller) => (
+                      <tr key={caller.caller} className="border-b hover:bg-gray-50">
+                        <td className="p-2 font-medium">{caller.caller}</td>
+                        <td className="p-2">{caller.totalCalls}</td>
+                        <td className="p-2">{caller.abandonedCalls}</td>
+                        <td className="p-2">{caller.timeoutCalls}</td>
+                        <td className="p-2">{caller.completedCalls}</td>
+                        <td className="p-2">{caller.abandonRate}</td>
+                        <td className="p-2">{caller.timeoutRate}</td>
+                        <td className="p-2">{caller.completionRate}</td>
+                        <td className="p-2">{caller.avgWaitTime}</td>
+                        <td className="p-2">{caller.avgTalkTime}</td>
+                        <td className="p-2">{caller.firstCallTime}</td>
+                        <td className="p-2">{caller.lastCallTime}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </AnalyticsTabs>
     </div>
