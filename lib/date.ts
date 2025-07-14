@@ -42,3 +42,23 @@ export const formatDuration = (seconds: number) => {
     Math.floor(secs).toString().padStart(2, "0"),
   ].join(":");
 };
+
+// 2m 30s format
+export const formatDurationShort = (seconds: number): string => {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60) % 60;
+  const secs = Math.round(seconds % 60);
+
+  const parts: string[] = [];
+  if (hours > 0) {
+    parts.push(`${hours}h`);
+  }
+  if (minutes > 0) {
+    parts.push(`${minutes}m`);
+  }
+  if (secs > 0 || parts.length === 0) {
+    parts.push(`${secs}s`);
+  }
+
+  return parts.join(" ");
+};
