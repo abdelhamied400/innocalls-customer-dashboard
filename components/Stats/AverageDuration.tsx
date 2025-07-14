@@ -8,7 +8,6 @@ const AverageDuration = () => {
       value="4m 32s"
       info="+12s vs last month"
       icon={<TimerOutlined />}
-      variant="ghost"
       color="warning"
     />
   );

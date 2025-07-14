@@ -11,6 +11,8 @@ import statsService from "@/services/stats.service";
 import { useQuery } from "@tanstack/react-query";
 import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 import { useTranslations } from "next-intl";
+import ChartCard from "../ChartCard";
+import { CallMerge } from "@mui/icons-material";
 
 const TotalAnsweredCalls = () => {
   const t = useTranslations("dashboard.stats.totalAnsweredCalls");
@@ -46,46 +48,46 @@ const TotalAnsweredCalls = () => {
   }
 
   return (
-    <div className="page h-full" id="callDistribution">
-      <div className="bg-white p-4 rounded-lg h-full flex flex-col gap-2">
-        <div className="mb-4">
-          <h3>{t("title")}</h3>
-        </div>
-        <ChartContainer
-          config={chartConfig}
-          className="w-full min-h-[200px] h-full"
-        >
-          <BarChart accessibilityLayer data={totalAnsweredCalls}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="day"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-            />
-            <YAxis
-              dataKey="totalCalls"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => {
-                if (value >= 1000) {
-                  return `${(value / 1000).toFixed(1)}k`;
-                }
-                return value;
-              }}
-            />
-            <ChartTooltip content={<ChartTooltipContent />} />
+    <ChartCard
+      title={t("title")}
+      icon={<CallMerge />}
+      color="primary"
+      className="h-full"
+      legends={Object.values(chartConfig).map((config) => ({
+        label: config.label,
+        color: config.color,
+      }))}
+    >
+      <ChartContainer
+        config={chartConfig}
+        className="w-full min-h-[200px] h-full"
+      >
+        <BarChart accessibilityLayer data={totalAnsweredCalls}>
+          <CartesianGrid vertical={false} />
+          <XAxis
+            dataKey="day"
+            tickLine={false}
+            tickMargin={10}
+            axisLine={false}
+          />
+          <YAxis
+            dataKey="totalCalls"
+            tickLine={false}
+            tickMargin={10}
+            axisLine={false}
+            tickFormatter={(value) => {
+              if (value >= 1000) {
+                return `${(value / 1000).toFixed(1)}k`;
+              }
+              return value;
+            }}
+          />
+          <ChartTooltip content={<ChartTooltipContent />} />
 
-            <Bar
-              dataKey="totalCalls"
-              fill="var(--color-totalCalls)"
-              radius={4}
-            />
-          </BarChart>
-        </ChartContainer>
-      </div>
-    </div>
+          <Bar dataKey="totalCalls" fill="var(--color-totalCalls)" radius={4} />
+        </BarChart>
+      </ChartContainer>
+    </ChartCard>
   );
 };
 

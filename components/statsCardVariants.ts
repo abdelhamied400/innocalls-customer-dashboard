@@ -5,8 +5,7 @@ export const statsCardVariants = cva(
   {
     variants: {
       variant: {
-        default: "",
-        ghost: "bg-white border-t-4 border-transparent",
+        default: "bg-white border-t-4 border-transparent",
       },
       color: {
         default: "",
@@ -21,55 +20,30 @@ export const statsCardVariants = cva(
       {
         variant: "default",
         color: "default",
-        className: "bg-white",
-      },
-      {
-        variant: "default",
-        color: "warning",
-        className: "bg-amber-100",
-      },
-      {
-        variant: "default",
-        color: "destructive",
-        className: "bg-destructive-100",
-      },
-      {
-        variant: "default",
-        color: "success",
-        className: "bg-success-100",
-      },
-      {
-        variant: "default",
-        color: "info",
-        className: "bg-indigo-100",
-      },
-      {
-        variant: "ghost",
-        color: "default",
         className: "border-gray-100 hover:border-gray-500",
       },
       {
-        variant: "ghost",
+        variant: "default",
         color: "primary",
         className: "border-primary-100 hover:border-primary-500",
       },
       {
-        variant: "ghost",
+        variant: "default",
         color: "warning",
         className: "border-amber-100 hover:border-amber-500",
       },
       {
-        variant: "ghost",
+        variant: "default",
         color: "destructive",
         className: "border-destructive-100 hover:border-destructive-500",
       },
       {
-        variant: "ghost",
+        variant: "default",
         color: "success",
         className: "border-success-100 hover:border-success-500",
       },
       {
-        variant: "ghost",
+        variant: "default",
         color: "info",
         className: "border-indigo-100 hover:border-indigo-500",
       },
@@ -121,15 +95,17 @@ export const statsCardInfoVariants = cva(
 export const statsCardIconVariants = cva("transition-colors rounded-full p-1", {
   variants: {
     color: {
-      default: "bg-gray-100 group-hover:bg-gray-500 group-hover:text-white",
+      default:
+        "bg-gray-100 text-gray-500 group-hover:bg-gray-500 group-hover:text-white",
       primary:
-        "bg-primary-100 group-hover:bg-primary-500 group-hover:text-white",
-      warning: "bg-amber-100 group-hover:bg-amber-500 group-hover:text-white",
+        "bg-primary-100 text-primary-500 group-hover:bg-primary-500 group-hover:text-white",
+      warning:
+        "bg-amber-100 text-amber-500 group-hover:bg-amber-500 group-hover:text-white",
       destructive:
-        "bg-destructive-100 group-hover:bg-destructive-500 group-hover:text-white",
+        "bg-destructive-100 text-destructive-500 group-hover:bg-destructive-500 group-hover:text-white",
       success:
-        "bg-success-100 group-hover:bg-success-500 group-hover:text-white",
-      info: "bg-indigo-100 group-hover:bg-indigo-500 group-hover:text-white",
+        "bg-success-100 text-success-500 group-hover:bg-success-500 group-hover:text-white",
+      info: "bg-indigo-100 text-indigo-500 group-hover:bg-indigo-500 group-hover:text-white",
     },
   },
   defaultVariants: {

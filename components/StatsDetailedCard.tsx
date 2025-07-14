@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import { XIcon } from "lucide-react";
 import { AxiosError } from "axios";
 import { Skeleton } from "./ui/skeleton";
@@ -25,35 +25,40 @@ import {
   statsCardVariants,
 } from "./statsCardVariants";
 
-type StatsCardProps = StatsCardVariants & {
-  icon: React.ReactNode;
-  title: string;
-  value: string | number;
-  className?: string;
-  isRefetching?: boolean;
-  info?: React.ReactNode;
-  canRefetch?: boolean;
-  refetchInterval?: number | false;
-  setRefetchInterval?: (interval: number | false) => void;
-  refetch?: (
-    options?: RefetchOptions
-  ) => Promise<QueryObserverResult<any, Error>>;
-};
+type StatsDetailedCardProps = PropsWithChildren<
+  StatsCardVariants & {
+    icon: React.ReactNode;
+    title: string;
+    value: string | number;
+    subtitle?: string;
+    valueSubtitle?: string;
+    className?: string;
+    isRefetching?: boolean;
+    canRefetch?: boolean;
+    refetchInterval?: number | false;
+    setRefetchInterval?: (interval: number | false) => void;
+    refetch?: (
+      options?: RefetchOptions
+    ) => Promise<QueryObserverResult<any, Error>>;
+  }
+>;
 
-const StatsCard = ({
+const StatsDetailedCard = ({
   icon,
   title,
   value,
   className = "",
   isRefetching = false,
-  info,
+  children,
   canRefetch = false,
   refetchInterval,
   setRefetchInterval,
   refetch,
   variant = "default",
   color = "default",
-}: StatsCardProps) => {
+  subtitle,
+  valueSubtitle,
+}: StatsDetailedCardProps) => {
   const t = useTranslations("components.statsCard");
 
   return (
@@ -64,12 +69,23 @@ const StatsCard = ({
         isRefetching && "animate-pulse"
       )}
     >
-      <div className="flex justify-between items-center gap-1">
-        <div className="flex items-center gap-2">
-          <div className={cn(statsCardIconVariants({ color }))}>
-            {isRefetching ? <Spinner className="size-6" /> : icon}
+      <div className="flex justify-between items-center gap-1 mb-2">
+        <div className="flex justify-between items-center gap-2 flex-1">
+          <div className="flex items-center gap-2">
+            <div className={cn(statsCardIconVariants({ color }))}>
+              {isRefetching ? <Spinner className="size-6" /> : icon}
+            </div>
+            <div className="head-title">
+              <h3 className="text-lg">{title}</h3>
+              <p className="text-sm text-gray-500">{subtitle}</p>
+            </div>
           </div>
-          <h3 className="text-lg text-gray-500">{title}</h3>
+          <div className="head-value text-end">
+            <p className={cn(statsCardValueVariants({ color }))}>{value}</p>
+            <p className={cn(statsCardInfoVariants({ color }))}>
+              {valueSubtitle}
+            </p>
+          </div>
         </div>
         {canRefetch && (
           <DropdownMenu>
@@ -109,44 +125,48 @@ const StatsCard = ({
           </DropdownMenu>
         )}
       </div>
-      <div className="flex flex-col gap-2">
-        <p className={cn(statsCardValueVariants({ color }))}>{value}</p>
-        <div className={cn(statsCardInfoVariants({ color }))}>{info}</div>
-      </div>
+      <div className="flex flex-col gap-2">{children}</div>
     </div>
   );
 };
 
-type StatsCardErrorProps = {
+type StatsDetailedCardErrorProps = {
   error: unknown;
+  children?: React.ReactNode;
 };
-export const StatsCardError = ({ error }: StatsCardErrorProps) => {
+
+export const StatsDetailedCardError = ({
+  error,
+  children,
+}: StatsDetailedCardErrorProps) => {
   const t = useTranslations("components.statsCard");
 
   if (error instanceof AxiosError) {
     const errorMessage = error?.response?.data?.message || error.message;
     return (
-      <StatsCard
+      <StatsDetailedCard
         icon={<XIcon className="text-red-500" />}
         title={t("errorOccurred")}
         value=""
-        info={errorMessage}
         color="destructive"
-      />
+      >
+        {children || errorMessage}
+      </StatsDetailedCard>
     );
   }
   return (
-    <StatsCard
+    <StatsDetailedCard
       icon={<XIcon className="text-red-500" />}
       title={t("errorOccurred")}
       value=""
-      info={t("unknownError")}
       color="destructive"
-    />
+    >
+      {children || t("unknownError")}
+    </StatsDetailedCard>
   );
 };
 
-export const StatsCardSkeleton = () => {
+export const StatsDetailedCardSkeleton = () => {
   return (
     <div className="p-4 bg-white shadow-sm rounded-lg flex flex-col gap-2">
       <div className="flex items-center gap-2">
@@ -156,9 +176,10 @@ export const StatsCardSkeleton = () => {
       <div className="flex flex-col gap-2">
         <Skeleton className="h-8 w-full" />
         <Skeleton className="h-4 w-full" />
+        <Skeleton className="h-16 w-full" />
       </div>
     </div>
   );
 };
 
-export default StatsCard;
+export default StatsDetailedCard;

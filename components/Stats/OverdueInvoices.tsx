@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import StatsCard, { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 import statsService from "@/services/stats.service";
 import { useTranslations } from "next-intl";
+import { Event } from "@mui/icons-material";
 
 const OverdueInvoices = () => {
   const t = useTranslations("dashboard.stats.overdueInvoices");
@@ -30,7 +31,7 @@ const OverdueInvoices = () => {
 
   return (
     <StatsCard
-      icon={<img src="/assets/icons/stats/calendar.svg" alt="" />}
+      icon={<Event />}
       title={t("title")}
       value={`${overdueInvoices?.totalAmount.toFixed(2)} ${
         overdueInvoices?.currency

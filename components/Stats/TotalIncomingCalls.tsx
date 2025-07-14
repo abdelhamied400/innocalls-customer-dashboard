@@ -8,7 +8,6 @@ const TotalIncomingCalls = () => {
       value="12,847"
       info="+8.2% vs last month"
       icon={<CallReceived />}
-      variant="ghost"
       color="primary"
     />
   );

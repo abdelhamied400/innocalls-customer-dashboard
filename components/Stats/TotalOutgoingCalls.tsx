@@ -8,7 +8,6 @@ const TotalOutgoingCalls = () => {
       value="8,234"
       info="+5.1% vs last month"
       icon={<CallMade />}
-      variant="ghost"
       color="success"
     />
   );

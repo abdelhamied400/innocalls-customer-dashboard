@@ -8,7 +8,6 @@ const AnswerRate = () => {
       value="94.2%"
       info="+2.1% vs last month"
       icon={<Call />}
-      variant="ghost"
       color="info"
     />
   );

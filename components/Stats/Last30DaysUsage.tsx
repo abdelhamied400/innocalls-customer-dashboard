@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import StatsCard, { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 import statsService from "@/services/stats.service";
 import { useTranslations } from "next-intl";
+import { ViewCarousel } from "@mui/icons-material";
 
 const Last30DaysUsage = () => {
   const t = useTranslations("dashboard.stats.last30DaysUsage");
@@ -30,10 +31,11 @@ const Last30DaysUsage = () => {
 
   return (
     <StatsCard
-      icon={<img src="/assets/icons/stats/carousel.svg" alt="" />}
+      icon={<ViewCarousel />}
       title={t("title")}
       value={`${usage?.amount} ${usage?.currency}`}
       isRefetching={isRefetching}
+      color="primary"
     ></StatsCard>
   );
 };

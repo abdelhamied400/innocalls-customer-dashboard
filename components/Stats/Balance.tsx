@@ -3,6 +3,7 @@ import StatsCard, { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 import statsService from "@/services/stats.service";
 import { useTranslations } from "next-intl";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
+import { AccountBalanceWallet } from "@mui/icons-material";
 
 const Balance = () => {
   const t = useTranslations("dashboard.stats.balance");
@@ -36,7 +37,7 @@ const Balance = () => {
 
   return (
     <StatsCard
-      icon={<img src="/assets/icons/stats/wallet.svg" alt="" />}
+      icon={<AccountBalanceWallet />}
       title={t("title")}
       value={`${balance?.balance} ${balance?.currency}`}
       color="warning"
