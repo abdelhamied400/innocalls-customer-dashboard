@@ -19,10 +19,6 @@ const TotalIncomingCalls = () => {
   } = useQuery({
     queryKey: ["total-incoming-calls"],
     queryFn: statsService.getTotalIncomingCalls,
-    refetchOnWindowFocus: false,
-    refetchInterval,
-    refetchOnMount: "always",
-    retry: false,
   });
 
   if (isLoading) {
@@ -37,7 +33,9 @@ const TotalIncomingCalls = () => {
     <StatsCard
       title="Total Incoming"
       value={totalIncomingCalls.totalCalls}
-      info={`${totalIncomingCalls.totalCallsChangePercentage}% vs last month`}
+      info={`${Math.round(
+        totalIncomingCalls.totalCallsChangePercentage
+      )}% vs last month`}
       icon={<CallReceived />}
       color="primary"
       isRefetching={isRefetching}

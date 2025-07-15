@@ -64,9 +64,22 @@ type QuickStatsResponse = {
   totalCallsChangePercentage: number;
 };
 
-type CallsTrendResponse = {};
+type CallsTrendResponse = {
+  calls: Array<{
+    total: number;
+    missed: number;
+    answered: number;
+    date: string;
+  }>;
+};
 
-type PerformanceOverviewResponse = {};
+type PerformanceOverviewResponse = {
+  dailyMetrics: Array<{
+    waitTime: number;
+    talkTime: number;
+    date: string;
+  }>;
+};
 
 export default {
   // statistics

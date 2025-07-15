@@ -5,15 +5,19 @@ import useAuthStore from "@/store/auth.slice";
 import useAppStore from "@/store/app.slice";
 import LiveMonitoringStats from "@/containers/user/LiveMonitoringStats";
 import { useTranslations } from "next-intl";
+import LiveCalls from "./LiveCalls";
+import Agents from "./Agents";
+import PerformanceStats from "./PerformanceStats";
+import QueueManagement from "./QueueManagement";
 
 const LiveMonitoring = () => {
   const { Organization } = useAuthStore();
   const { setPageTitle } = useAppStore();
   const t = useTranslations("dashboard.containers");
-  
+
   useEffect(() => {
     setPageTitle(t("liveMonitoringStats"));
-    
+
     // Cleanup when component unmounts
     return () => setPageTitle(null);
   }, [setPageTitle, t]);
@@ -21,10 +25,21 @@ const LiveMonitoring = () => {
   return (
     <div className="page" id="live-monitoring">
       <div className="flex flex-col gap-4">
-        {Organization?.hasTenant && <LiveMonitoringStats />}
+        <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
+          {/* Main Content */}
+          <div className="lg:col-span-7 space-y-6">
+            <LiveCalls />
+            <PerformanceStats />
+            <QueueManagement />
+          </div>
+          {/* Sidebar */}
+          <div className="lg:col-span-3">
+            <Agents />
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default LiveMonitoring; 
+export default LiveMonitoring;

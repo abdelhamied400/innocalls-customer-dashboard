@@ -24,10 +24,6 @@ const WaitTimeStats = () => {
   } = useQuery({
     queryKey: ["wait-time-stats"],
     queryFn: statsService.getWaitingTimeStats,
-    refetchOnWindowFocus: false,
-    refetchInterval,
-    refetchOnMount: "always",
-    retry: false,
   });
 
   if (isLoading) {

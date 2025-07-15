@@ -26,10 +26,6 @@ const QuickStats = () => {
   } = useQuery({
     queryKey: ["quick-stats"],
     queryFn: statsService.getQuickStats,
-    refetchOnWindowFocus: false,
-    refetchInterval,
-    refetchOnMount: "always",
-    retry: false,
   });
 
   if (isLoading) {
