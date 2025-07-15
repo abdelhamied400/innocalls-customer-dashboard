@@ -29,9 +29,10 @@ type StatsDetailedCardProps = PropsWithChildren<
   StatsCardVariants & {
     icon: React.ReactNode;
     title: string;
-    value: string | number;
     subtitle?: string;
+    value: string | number;
     valueSubtitle?: string;
+    renderValue?: React.ReactNode;
     className?: string;
     isRefetching?: boolean;
     canRefetch?: boolean;
@@ -46,7 +47,9 @@ type StatsDetailedCardProps = PropsWithChildren<
 const StatsDetailedCard = ({
   icon,
   title,
+  subtitle,
   value,
+  valueSubtitle,
   className = "",
   isRefetching = false,
   children,
@@ -56,8 +59,7 @@ const StatsDetailedCard = ({
   refetch,
   variant = "default",
   color = "default",
-  subtitle,
-  valueSubtitle,
+  renderValue,
 }: StatsDetailedCardProps) => {
   const t = useTranslations("components.statsCard");
 
@@ -81,10 +83,16 @@ const StatsDetailedCard = ({
             </div>
           </div>
           <div className="head-value text-end">
-            <p className={cn(statsCardValueVariants({ color }))}>{value}</p>
-            <p className={cn(statsCardInfoVariants({ color }))}>
-              {valueSubtitle}
-            </p>
+            {renderValue || (
+              <>
+                <p className={cn(statsCardValueVariants({ color }))}>{value}</p>
+                {valueSubtitle && (
+                  <p className={cn(statsCardInfoVariants({ color }))}>
+                    {valueSubtitle}
+                  </p>
+                )}
+              </>
+            )}
           </div>
         </div>
         {canRefetch && (

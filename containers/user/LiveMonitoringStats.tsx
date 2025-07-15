@@ -2,15 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import StatsCard, { StatsCardSkeleton } from "@/components/StatsCard";
-import MiniStatsCard from "@/components/MiniStatsCard";
-import LiveCallDetails from "@/components/LiveMonitoring/LiveCallDetails";
-import PerformanceMetrics from "@/components/LiveMonitoring/PerformanceMetrics";
-import QueueOverview from "@/components/LiveMonitoring/QueueOverview";
-import QueueStatistics from "@/components/LiveMonitoring/QueueStatistics";
-// import AgentManagement from "@/components/LiveMonitoring/AgentManagement";
+import StatsCard from "@/components/StatsCard";
 
-// Mock data generators (you can replace these with real API calls)
 const generateMockMetrics = () => ({
   onlineUsers: {
     value: Math.floor(Math.random() * 50) + 20,
