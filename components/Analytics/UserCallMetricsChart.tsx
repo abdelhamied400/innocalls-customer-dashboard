@@ -33,7 +33,6 @@ const UserCallMetricsChart: React.FC<UserCallMetricsChartProps> = ({ data }) => 
           <p className="text-red-600 text-sm">{`Missed: ${user.missedCalls}`}</p>
           <p className="text-purple-600 text-sm">{`Answer Rate: ${answerRate}%`}</p>
           <p className="text-orange-600 text-sm">{`Avg Duration: ${avgDurationFormatted}`}</p>
-          <p className="text-indigo-600 text-sm">{`Availability: ${user.availability}%`}</p>
         </div>
       );
     }
