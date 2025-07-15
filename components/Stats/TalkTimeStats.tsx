@@ -25,10 +25,6 @@ const TalkTimeStats = () => {
   } = useQuery({
     queryKey: ["talk-time-stats"],
     queryFn: statsService.getTalkTimeStats,
-    refetchOnWindowFocus: false,
-    refetchInterval,
-    refetchOnMount: "always",
-    retry: false,
   });
 
   if (isLoading) {

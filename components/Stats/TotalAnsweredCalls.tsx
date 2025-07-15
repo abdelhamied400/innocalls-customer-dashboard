@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 import { useTranslations } from "next-intl";
 import ChartCard from "../ChartCard";
-import { CallMerge } from "@mui/icons-material";
+import { BarChart as BarChartIcon } from "@mui/icons-material";
 
 const TotalAnsweredCalls = () => {
   const t = useTranslations("dashboard.stats.totalAnsweredCalls");
@@ -50,7 +50,7 @@ const TotalAnsweredCalls = () => {
   return (
     <ChartCard
       title={t("title")}
-      icon={<CallMerge />}
+      icon={<BarChartIcon />}
       color="primary"
       className="h-full"
       legends={Object.values(chartConfig).map((config) => ({

@@ -12,7 +12,7 @@ import statsService from "@/services/stats.service";
 import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 import { useTranslations } from "next-intl";
 import ChartCard from "../ChartCard";
-import { CallMerge } from "@mui/icons-material";
+import { StackedBarChart } from "@mui/icons-material";
 
 const CallDistribution = () => {
   const t = useTranslations("dashboard.stats.callDistribution");
@@ -54,7 +54,7 @@ const CallDistribution = () => {
   return (
     <ChartCard
       title={t("title")}
-      icon={<CallMerge />}
+      icon={<StackedBarChart />}
       color="primary"
       className="h-full"
       legends={Object.values(chartConfig).map((config) => ({

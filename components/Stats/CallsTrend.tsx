@@ -16,35 +16,13 @@ import {
 } from "@/components/ui/chart";
 import ChartCard from "../ChartCard";
 import { CallMerge } from "@mui/icons-material";
-
-// Sample data for 30 days
-const generateSampleData = () => {
-  const data = [];
-  const today = new Date();
-
-  for (let i = 29; i >= 0; i--) {
-    const date = new Date(today);
-    date.setDate(date.getDate() - i);
-
-    data.push({
-      date: date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-      }),
-      calls: Math.floor(Math.random() * 200) + 800, // 800-1000 calls per day
-      answered: Math.floor(Math.random() * 150) + 700, // 700-850 answered per day
-      missed: Math.floor(Math.random() * 50) + 50, // 50-100 missed per day
-    });
-  }
-
-  return data;
-};
+import { useQuery } from "@tanstack/react-query";
+import statsService from "@/services/stats.service";
+import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 
 const CallsTrend = () => {
-  const sampleData = generateSampleData();
-
   const chartConfig: ChartConfig = {
-    calls: {
+    total: {
       label: "Total Calls",
       color: "#3B82F6",
     },
@@ -57,6 +35,25 @@ const CallsTrend = () => {
       color: "#EF4444",
     },
   };
+
+  const {
+    data: callsTrendData,
+    isRefetching,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["calls-trend"],
+    queryFn: statsService.getCallsTrend,
+  });
+
+  if (isLoading || isRefetching) {
+    return <StatsCardSkeleton />;
+  }
+
+  if (isError || !callsTrendData) {
+    return <StatsCardError error={error} />;
+  }
 
   return (
     <ChartCard
@@ -71,7 +68,7 @@ const CallsTrend = () => {
     >
       <ChartContainer config={chartConfig} className="w-full h-full">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={sampleData}>
+          <LineChart data={callsTrendData.calls}>
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
             <XAxis
               dataKey="date"
@@ -96,11 +93,11 @@ const CallsTrend = () => {
 
             <Line
               type="monotone"
-              dataKey="calls"
-              stroke="var(--color-calls)"
+              dataKey="total"
+              stroke="var(--color-total)"
               strokeWidth={3}
-              dot={{ fill: "var(--color-calls)", strokeWidth: 2, r: 4 }}
-              activeDot={{ r: 6, stroke: "var(--color-calls)", strokeWidth: 2 }}
+              dot={{ fill: "var(--color-total)", strokeWidth: 2, r: 4 }}
+              activeDot={{ r: 6, stroke: "var(--color-total)", strokeWidth: 2 }}
             />
             <Line
               type="monotone"

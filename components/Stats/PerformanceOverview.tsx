@@ -16,32 +16,11 @@ import {
 } from "@/components/ui/chart";
 import ChartCard from "../ChartCard";
 import { CallMerge } from "@mui/icons-material";
-
-// Sample data for 30 days
-const generatePerformanceData = () => {
-  const data = [];
-  const today = new Date();
-
-  for (let i = 29; i >= 0; i--) {
-    const date = new Date(today);
-    date.setDate(date.getDate() - i);
-
-    data.push({
-      date: date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-      }),
-      talkTime: Math.floor(Math.random() * 120) + 180, // 180-300 seconds (3-5 minutes)
-      waitTime: Math.floor(Math.random() * 30) + 10, // 10-40 seconds
-    });
-  }
-
-  return data;
-};
+import { useQuery } from "@tanstack/react-query";
+import statsService from "@/services/stats.service";
+import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 
 const PerformanceOverview = () => {
-  const sampleData = generatePerformanceData();
-
   const chartConfig: ChartConfig = {
     talkTime: {
       label: "Talk Time (min)",
@@ -52,6 +31,25 @@ const PerformanceOverview = () => {
       color: "#F59E0B",
     },
   };
+
+  const {
+    data: performanceData,
+    isRefetching,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["performance-overview"],
+    queryFn: statsService.getPerformanceOverview,
+  });
+
+  if (isLoading || isRefetching) {
+    return <StatsCardSkeleton />;
+  }
+
+  if (isError || !performanceData) {
+    return <StatsCardError error={error} />;
+  }
 
   return (
     <ChartCard
@@ -66,7 +64,7 @@ const PerformanceOverview = () => {
     >
       <ChartContainer config={chartConfig} className="w-full h-full">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={sampleData}>
+          <AreaChart data={performanceData.dailyMetrics}>
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
             <XAxis
               dataKey="date"

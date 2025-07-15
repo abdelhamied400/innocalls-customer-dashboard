@@ -23,10 +23,6 @@ const TotalCallsStats = () => {
   } = useQuery({
     queryKey: ["total-calls-stats"],
     queryFn: statsService.getTotalCallsStats,
-    refetchOnWindowFocus: false,
-    refetchInterval,
-    refetchOnMount: "always",
-    retry: false,
   });
 
   if (isLoading) {
