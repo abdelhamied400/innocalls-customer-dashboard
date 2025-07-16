@@ -444,7 +444,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:00",
     totalTalkTime: "00:00:47",
     answeredCount: 3,
-    missedCalls: 2917,
     answerRate: "0.10",
     longestCall: "00:00:44",
     shortestCall: "00:00:01",
@@ -456,7 +455,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:37",
     totalTalkTime: "07:29:56",
     answeredCount: 148,
-    missedCalls: 575,
     answerRate: "20.47",
     longestCall: "00:31:44",
     shortestCall: "00:00:02",
@@ -468,7 +466,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:00",
     totalTalkTime: "00:00:00",
     answeredCount: 0,
-    missedCalls: 305,
     answerRate: 0,
     longestCall: "00:00:00",
     shortestCall: "00:00:00",
@@ -480,7 +477,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:27",
     totalTalkTime: "01:45:17",
     answeredCount: 106,
-    missedCalls: 124,
     answerRate: "46.09",
     longestCall: "00:59:43",
     shortestCall: "00:00:01",
@@ -492,7 +488,6 @@ const agentPerformance = [
     avgCallDuration: "00:01:52",
     totalTalkTime: "06:20:57",
     answeredCount: 100,
-    missedCalls: 103,
     answerRate: "49.26",
     longestCall: "00:21:26",
     shortestCall: "00:00:01",
@@ -504,7 +499,6 @@ const agentPerformance = [
     avgCallDuration: "00:01:55",
     totalTalkTime: "05:00:55",
     answeredCount: 76,
-    missedCalls: 81,
     answerRate: "48.41",
     longestCall: "00:15:16",
     shortestCall: "00:00:03",
@@ -516,7 +510,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:19",
     totalTalkTime: "00:51:33",
     answeredCount: 80,
-    missedCalls: 75,
     answerRate: "51.61",
     longestCall: "00:05:01",
     shortestCall: "00:00:04",
@@ -528,7 +521,6 @@ const agentPerformance = [
     avgCallDuration: "00:01:54",
     totalTalkTime: "04:18:02",
     answeredCount: 68,
-    missedCalls: 67,
     answerRate: "50.37",
     longestCall: "00:25:08",
     shortestCall: "00:00:02",
@@ -540,7 +532,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:09",
     totalTalkTime: "00:20:37",
     answeredCount: 26,
-    missedCalls: 107,
     answerRate: "19.55",
     longestCall: "00:05:10",
     shortestCall: "00:00:01",
@@ -552,7 +543,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:12",
     totalTalkTime: "00:27:59",
     answeredCount: 68,
-    missedCalls: 63,
     answerRate: "51.91",
     longestCall: "00:08:33",
     shortestCall: "00:00:01",
@@ -564,7 +554,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:20",
     totalTalkTime: "00:30:52",
     answeredCount: 46,
-    missedCalls: 43,
     answerRate: "51.69",
     longestCall: "00:03:35",
     shortestCall: "00:00:02",
@@ -576,7 +565,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:08",
     totalTalkTime: "00:11:36",
     answeredCount: 34,
-    missedCalls: 48,
     answerRate: "41.46",
     longestCall: "00:01:45",
     shortestCall: "00:00:01",
@@ -588,7 +576,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:09",
     totalTalkTime: "00:12:12",
     answeredCount: 41,
-    missedCalls: 36,
     answerRate: "53.25",
     longestCall: "00:02:43",
     shortestCall: "00:00:01",
@@ -600,7 +587,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:44",
     totalTalkTime: "00:47:01",
     answeredCount: 39,
-    missedCalls: 25,
     answerRate: "60.94",
     longestCall: "00:06:12",
     shortestCall: "00:00:03",
@@ -612,7 +598,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:17",
     totalTalkTime: "00:11:55",
     answeredCount: 23,
-    missedCalls: 17,
     answerRate: "57.50",
     longestCall: "00:02:42",
     shortestCall: "00:00:01",
@@ -624,7 +609,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:14",
     totalTalkTime: "00:07:15",
     answeredCount: 25,
-    missedCalls: 6,
     answerRate: "80.65",
     longestCall: "00:02:41",
     shortestCall: "00:00:02",
@@ -636,7 +620,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:08",
     totalTalkTime: "00:03:42",
     answeredCount: 13,
-    missedCalls: 12,
     answerRate: "52.00",
     longestCall: "00:01:17",
     shortestCall: "00:00:02",
@@ -648,7 +631,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:09",
     totalTalkTime: "00:03:10",
     answeredCount: 13,
-    missedCalls: 8,
     answerRate: "61.90",
     longestCall: "00:00:41",
     shortestCall: "00:00:02",
@@ -660,7 +642,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:02",
     totalTalkTime: "00:00:19",
     answeredCount: 5,
-    missedCalls: 3,
     answerRate: "62.50",
     longestCall: "00:00:09",
     shortestCall: "00:00:01",
@@ -672,7 +653,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:14",
     totalTalkTime: "00:01:53",
     answeredCount: 8,
-    missedCalls: 0,
     answerRate: "100.00",
     longestCall: "00:00:30",
     shortestCall: "00:00:05",
@@ -684,7 +664,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:04",
     totalTalkTime: "00:00:26",
     answeredCount: 3,
-    missedCalls: 3,
     answerRate: "50.00",
     longestCall: "00:00:11",
     shortestCall: "00:00:07",
@@ -696,7 +675,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:39",
     totalTalkTime: "00:03:58",
     answeredCount: 1,
-    missedCalls: 5,
     answerRate: "16.67",
     longestCall: "00:03:58",
     shortestCall: "00:03:58",
@@ -708,7 +686,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:13",
     totalTalkTime: "00:01:08",
     answeredCount: 5,
-    missedCalls: 0,
     answerRate: "100.00",
     longestCall: "00:00:29",
     shortestCall: "00:00:06",
@@ -720,7 +697,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:00",
     totalTalkTime: "00:00:00",
     answeredCount: 0,
-    missedCalls: 2,
     answerRate: 0,
     longestCall: "00:00:00",
     shortestCall: "00:00:00",
@@ -732,7 +708,6 @@ const agentPerformance = [
     avgCallDuration: "00:00:07",
     totalTalkTime: "00:00:07",
     answeredCount: 1,
-    missedCalls: 0,
     answerRate: "100.00",
     longestCall: "00:00:07",
     shortestCall: "00:00:07",
@@ -1260,8 +1235,6 @@ const UserActivityAnalytics = () => {
                                 return [value, "Total Calls"];
                               case "answeredCount":
                                 return [value, "Answered"];
-                              case "missedCalls":
-                                return [value, "Missed"];
                               default:
                                 return [value, name];
                             }
@@ -1278,11 +1251,6 @@ const UserActivityAnalytics = () => {
                           fill="#10B981"
                           name="Answered"
                         />
-                        <Bar
-                          dataKey="missedCalls"
-                          fill="#EF4444"
-                          name="Missed"
-                        />
                       </BarChart>
                     </div>
                   </CardContent>
@@ -1293,7 +1261,7 @@ const UserActivityAnalytics = () => {
                     <CardTitle>Call Statistics by Agent</CardTitle>
                     <p className="text-sm text-muted-foreground mt-1">
                       This table summarizes call statistics for each agent,
-                      including totals, answered/missed, answer rate, durations,
+                      including totals, answered, answer rate, durations,
                       and talk time.
                     </p>
                   </CardHeader>
@@ -1305,7 +1273,6 @@ const UserActivityAnalytics = () => {
                             <TableHead>Number</TableHead>
                             <TableHead>Total Calls</TableHead>
                             <TableHead>Answered</TableHead>
-                            <TableHead>Missed</TableHead>
                             <TableHead>Answer Rate (%)</TableHead>
                             <TableHead>Avg Duration </TableHead>
                             <TableHead>Total Talk Time </TableHead>
@@ -1321,7 +1288,6 @@ const UserActivityAnalytics = () => {
                               </TableCell>
                               <TableCell>{row.totalCalls}</TableCell>
                               <TableCell>{row.answeredCount}</TableCell>
-                              <TableCell>{row.missedCalls}</TableCell>
                               <TableCell>{row.answerRate}</TableCell>
                               <TableCell>{row.avgCallDuration}</TableCell>
                               <TableCell>{row.totalTalkTime}</TableCell>
