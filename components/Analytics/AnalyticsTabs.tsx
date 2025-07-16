@@ -41,7 +41,7 @@ const AnalyticsTabs: React.FC<AnalyticsTabsProps> = ({ tabs, children, defaultTa
         </div>
       </CardHeader>
       <CardContent className="pt-6">
-        {children.map((child, index) => (
+        {React.Children.toArray(children).map((child, index) => (
           <div key={tabs[index]?.id} className={activeTab === tabs[index]?.id ? "block" : "hidden"}>
             {child}
           </div>

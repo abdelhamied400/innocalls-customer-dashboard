@@ -16,10 +16,10 @@ const OutboundCallDistributionLineChart = ({ data }) => (
             <YAxis fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="totalOutboundCalls" stroke="#6366F1" strokeWidth={2.5} dot={false} name="All Outgoing" />
+            <Line type="monotone" dataKey="totalOutboundCalls" stroke="#6366F1" strokeWidth={2.5} dot={false} name="All" />
             <Line type="monotone" dataKey="unansweredCalls" stroke="#EF4444" strokeWidth={2.5} dot={false} name="Unanswered" />
-            <Line type="monotone" dataKey="totalOutboundInternal" stroke="#10B981" strokeWidth={2} dot={false} name="Internal Outgoing" />
-            <Line type="monotone" dataKey="totalOutboundExternal" stroke="#F59E42" strokeWidth={2} dot={false} name="External Outgoing" />
+            <Line type="monotone" dataKey="totalOutboundInternal" stroke="#10B981" strokeWidth={2} dot={false} name="Internal" />
+            <Line type="monotone" dataKey="totalOutboundExternal" stroke="#F59E42" strokeWidth={2} dot={false} name="External" />
             <Line type="monotone" dataKey="internalUnanswered" stroke="#6366F1" strokeWidth={1.5} dot={false} name="Internal Unanswered" />
             <Line type="monotone" dataKey="externalUnanswered" stroke="#F59E42" strokeWidth={1.5} dot={false} name="External Unanswered" />
 

@@ -6,14 +6,22 @@ import DateRangeSearch from "@/components/Analytics/DateRangeSearch";
 import AbandonedCallsChart from "@/components/Analytics/AbandonedCallsChart";
 import ExitTimeoutChart from "@/components/Analytics/ExitTimeoutChart";
 import AnalyticsTabs from "@/components/Analytics/AnalyticsTabs";
-import { PhoneOff, Clock, PhoneCall, AlertTriangle } from "lucide-react";
+import {
+  PhoneOff,
+  Clock,
+  PhoneCall,
+  AlertTriangle,
+  Layers,
+} from "lucide-react";
 import OutboundUnansweredHourlyChart from "@/components/Analytics/OutboundUnansweredHourlyChart";
 import OutboundCallDistributionLineChart from "@/components/Analytics/OutboundCallDistributionChart";
 
 // Function to generate data based on date range
 const generateUnansweredData = (fromDate: Date, toDate: Date) => {
-  const daysDiff = Math.ceil((toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24));
-  console.log({daysDiff});
+  const daysDiff = Math.ceil(
+    (toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24)
+  );
+  console.log({ daysDiff });
   const multiplier = Math.max(1, daysDiff / 7);
 
   return {
@@ -51,17 +59,23 @@ const generateUnansweredData = (fromDate: Date, toDate: Date) => {
       veryLongWait_2min_plus: Math.floor(3 * multiplier),
       peakTimeoutHour: 15,
     },
-    outboundUnanswered: Array.from({ length: Math.min(daysDiff, 30) }, (_, i) => {
-      const date = new Date(fromDate);
-      date.setDate(date.getDate() + i);
-      const totalCalls = Math.floor(Math.random() * 50) + 100;
-      const unanswered = Math.floor(Math.random() * 20) + 10;
-      return {
-        date: date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-        totalOutboundCalls: totalCalls,
-        unansweredCalls: unanswered,
-      };
-    }),
+    outboundUnanswered: Array.from(
+      { length: Math.min(daysDiff, 30) },
+      (_, i) => {
+        const date = new Date(fromDate);
+        date.setDate(date.getDate() + i);
+        const totalCalls = Math.floor(Math.random() * 50) + 100;
+        const unanswered = Math.floor(Math.random() * 20) + 10;
+        return {
+          date: date.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+          }),
+          totalOutboundCalls: totalCalls,
+          unansweredCalls: unanswered,
+        };
+      }
+    ),
   };
 };
 
@@ -79,43 +93,72 @@ const UnansweredAnalytics = () => {
   };
 
   // Calculate overall summary stats
-  const totalInboundUnanswered = data.abandonedCalls.totalAbandonedCalls + data.exitTimeout.totalTimeoutCalls;
-  const totalOutboundUnanswered = data.outboundUnanswered.reduce((sum, day) => sum + day.unansweredCalls, 0);
+  const totalInboundUnanswered =
+    data.abandonedCalls.totalAbandonedCalls +
+    data.exitTimeout.totalTimeoutCalls;
+  const totalOutboundUnanswered = data.outboundUnanswered.reduce(
+    (sum, day) => sum + day.unansweredCalls,
+    0
+  );
   const totalUnanswered = totalInboundUnanswered + totalOutboundUnanswered;
 
   const summaryStats = [
-    { 
-      icon: <PhoneOff className="w-6 h-6 text-red-600" />, 
-      title: "Total Unanswered", 
+    {
+      icon: <PhoneOff className="w-6 h-6 text-red-600" />,
+      title: "Total Unanswered",
       value: totalUnanswered,
-      color: "bg-red-50 text-red-800"
+      color: "bg-red-50 text-red-800",
     },
-    { 
-      icon: <AlertTriangle className="w-6 h-6 text-orange-600" />, 
-      title: "Inbound Unanswered", 
+    {
+      icon: <AlertTriangle className="w-6 h-6 text-orange-600" />,
+      title: "Inbound Unanswered",
       value: totalInboundUnanswered,
-      color: "bg-orange-50 text-orange-800"
+      color: "bg-orange-50 text-orange-800",
     },
-    { 
-      icon: <PhoneCall className="w-6 h-6 text-blue-600" />, 
-      title: "Outbound Unanswered", 
+    {
+      icon: <PhoneCall className="w-6 h-6 text-blue-600" />,
+      title: "Outbound Unanswered",
       value: totalOutboundUnanswered,
-      color: "bg-blue-50 text-blue-800"
+      color: "bg-blue-50 text-blue-800",
     },
-    { 
-      icon: <Clock className="w-6 h-6 text-purple-600" />, 
-      title: "Avg Wait Time", 
-      value: `${Math.floor((data.abandonedCalls.avgWaitTimeBeforeAbandon + data.exitTimeout.avgWaitTimeBeforeTimeout) / 2 / 60)}:${(((data.abandonedCalls.avgWaitTimeBeforeAbandon + data.exitTimeout.avgWaitTimeBeforeTimeout) / 2) % 60).toString().padStart(2, '0')}`,
-      color: "bg-purple-50 text-purple-800"
+    {
+      icon: <Clock className="w-6 h-6 text-purple-600" />,
+      title: "Avg Wait Time",
+      value: `${Math.floor(
+        (data.abandonedCalls.avgWaitTimeBeforeAbandon +
+          data.exitTimeout.avgWaitTimeBeforeTimeout) /
+          2 /
+          60
+      )}:${(
+        ((data.abandonedCalls.avgWaitTimeBeforeAbandon +
+          data.exitTimeout.avgWaitTimeBeforeTimeout) /
+          2) %
+        60
+      )
+        .toString()
+        .padStart(2, "0")}`,
+      color: "bg-purple-50 text-purple-800",
     },
   ];
-
   const tabs = [
-    { id: "inbound", label: "Inbound Unanswered", icon: <PhoneOff className="w-4 h-4" /> },
-    { id: "outbound", label: "Outbound Unanswered", icon: <PhoneCall className="w-4 h-4" /> },
+    {
+      id: "all-inbound",
+      label: "All Inbound Unanswered",
+      icon: <PhoneOff className="w-4 h-4" />,
+    },
+    {
+      id: "queue-inbound",
+      label: "Queue Inbound Unanswered",
+      icon: <Layers className="w-4 h-4" />,
+    },
+    {
+      id: "outbound",
+      label: "Outbound Unanswered",
+      icon: <PhoneCall className="w-4 h-4" />,
+    },
   ];
 
-  const outboundUnansweredDaily = data.outboundUnanswered.map(day => ({
+  const outboundUnansweredDaily = data.outboundUnanswered.map((day) => ({
     date: day.date,
     totalOutboundCalls: day.totalOutboundCalls,
     unansweredCalls: day.unansweredCalls,
@@ -139,7 +182,10 @@ const UnansweredAnalytics = () => {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {summaryStats.map((stat) => (
-          <div key={stat.title} className={`p-4 rounded-lg border ${stat.color}`}>
+          <div
+            key={stat.title}
+            className={`p-4 rounded-lg border ${stat.color}`}
+          >
             <div className="flex items-center gap-2 mb-2">
               {stat.icon}
               <h3 className="text-lg font-semibold">{stat.title}</h3>
@@ -150,8 +196,27 @@ const UnansweredAnalytics = () => {
       </div>
 
       {/* Analytics Tabs */}
-      <AnalyticsTabs tabs={tabs} defaultTab="inbound">
+      <AnalyticsTabs tabs={tabs} defaultTab="queue-inbound">
         {/* Inbound Unanswered Tab */}
+
+        <div className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <PhoneCall className="w-5 h-5 text-blue-600" />
+                Inbound Unanswered Analysis
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <OutboundCallDistributionLineChart
+                data={outboundUnansweredDaily}
+              />
+            </CardContent>
+          </Card>
+          <OutboundUnansweredHourlyChart data={outboundUnansweredHourly} />
+        </div>
+
+        {/* Queue Inbound Unanswered Tab */}
         <div className="space-y-6">
           {/* Abandoned Calls Section */}
           <Card>
@@ -187,41 +252,66 @@ const UnansweredAnalytics = () => {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-white p-4 rounded-lg border">
-                  <h3 className="text-lg font-semibold mb-4 text-red-600">Abandoned vs Timeout</h3>
+                  <h3 className="text-lg font-semibold mb-4 text-red-600">
+                    Abandoned vs Timeout
+                  </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center p-2 bg-red-50 rounded">
                       <span className="font-medium">Abandoned Calls</span>
-                      <span className="text-red-600 font-semibold">{data.abandonedCalls.totalAbandonedCalls}</span>
+                      <span className="text-red-600 font-semibold">
+                        {data.abandonedCalls.totalAbandonedCalls}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-purple-50 rounded">
                       <span className="font-medium">Timeout Calls</span>
-                      <span className="text-purple-600 font-semibold">{data.exitTimeout.totalTimeoutCalls}</span>
+                      <span className="text-purple-600 font-semibold">
+                        {data.exitTimeout.totalTimeoutCalls}
+                      </span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-blue-50 rounded">
-                      <span className="font-medium">Total Inbound Unanswered</span>
-                      <span className="text-blue-600 font-semibold">{totalInboundUnanswered}</span>
+                      <span className="font-medium">
+                        Total Inbound Unanswered
+                      </span>
+                      <span className="text-blue-600 font-semibold">
+                        {totalInboundUnanswered}
+                      </span>
                     </div>
                   </div>
                 </div>
                 <div className="bg-white p-4 rounded-lg border">
-                  <h3 className="text-lg font-semibold mb-4">Wait Time Comparison</h3>
+                  <h3 className="text-lg font-semibold mb-4">
+                    Wait Time Comparison
+                  </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between items-center p-2 bg-red-50 rounded">
                       <span className="font-medium">Avg Abandon Wait</span>
                       <span className="text-red-600 font-semibold">
-                        {Math.floor(data.abandonedCalls.avgWaitTimeBeforeAbandon / 60)}:{(data.abandonedCalls.avgWaitTimeBeforeAbandon % 60).toString().padStart(2, '0')}
+                        {Math.floor(
+                          data.abandonedCalls.avgWaitTimeBeforeAbandon / 60
+                        )}
+                        :
+                        {(data.abandonedCalls.avgWaitTimeBeforeAbandon % 60)
+                          .toString()
+                          .padStart(2, "0")}
                       </span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-purple-50 rounded">
                       <span className="font-medium">Avg Timeout Wait</span>
                       <span className="text-purple-600 font-semibold">
-                        {Math.floor(data.exitTimeout.avgWaitTimeBeforeTimeout / 60)}:{(data.exitTimeout.avgWaitTimeBeforeTimeout % 60).toString().padStart(2, '0')}
+                        {Math.floor(
+                          data.exitTimeout.avgWaitTimeBeforeTimeout / 60
+                        )}
+                        :
+                        {(data.exitTimeout.avgWaitTimeBeforeTimeout % 60)
+                          .toString()
+                          .padStart(2, "0")}
                       </span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-gray-50 rounded">
                       <span className="font-medium">Peak Hours</span>
                       <span className="text-gray-600 font-semibold">
-                        {data.abandonedCalls.peakAbandonHour}:00 / {data.exitTimeout.peakTimeoutHour}:00
+                        {data.abandonedCalls.peakAbandonHour}:00 /{" "}
+                        {data.exitTimeout.peakTimeoutHour}:00
                       </span>
                     </div>
                   </div>
@@ -241,7 +331,9 @@ const UnansweredAnalytics = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <OutboundCallDistributionLineChart data={outboundUnansweredDaily} />
+              <OutboundCallDistributionLineChart
+                data={outboundUnansweredDaily}
+              />
             </CardContent>
           </Card>
           <OutboundUnansweredHourlyChart data={outboundUnansweredHourly} />
@@ -251,4 +343,4 @@ const UnansweredAnalytics = () => {
   );
 };
 
-export default UnansweredAnalytics; 
+export default UnansweredAnalytics;

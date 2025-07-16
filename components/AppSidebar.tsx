@@ -34,6 +34,7 @@ import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
 import { IntlT } from "@/types/next-intl";
 import { ReactElement } from "react";
+import { Layers } from "lucide-react";
 
 // TypeScript interfaces for sidebar items
 interface SidebarChildItem {
@@ -109,6 +110,13 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
         isNew: true,
         isComingSoon: false,
       },
+      // {
+      //   title: "Queue Analytics",
+      //   href: `/${role}/analytics/queue`,
+      //   icon: <Layers />,
+      //   isNew: true,
+      //   isComingSoon: false,
+      // },
       {
         title: "User Activity",
         href: `/${role}/analytics/user-activity`,
