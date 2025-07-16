@@ -995,7 +995,7 @@ const UserActivityAnalytics = () => {
       <DateRangeSearch onDateRangeChange={handleDateRangeChange} />
 
       {/* Render agent overview cards only */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
         <StatsCard
           icon={<PhoneIncoming className="w-6 h-6 text-green-600" />}
           title="Top Answered Incoming"
@@ -1022,18 +1022,6 @@ const UserActivityAnalytics = () => {
               ? `${bestSlaAgent.name} (${Number(
                   bestSlaAgent.slaCompliance
                 ).toFixed(1)}%)`
-              : "-"
-          }
-        />
-        <StatsCard
-          icon={<AlertTriangle className="w-6 h-6 text-red-600" />}
-          title="Most Missed Incoming"
-          value={
-            mostMissedIncoming
-              ? `${mostMissedIncoming.name} (${
-                  Number(mostMissedIncoming.totalIncomingCalls) -
-                  Number(mostMissedIncoming.totalAnsweredIncomingCalls)
-                })`
               : "-"
           }
         />
