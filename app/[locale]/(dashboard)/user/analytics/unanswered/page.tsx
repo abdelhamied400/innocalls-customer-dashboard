@@ -5,13 +5,15 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import DateRangeSearch from "@/components/Analytics/DateRangeSearch";
 import AbandonedCallsChart from "@/components/Analytics/AbandonedCallsChart";
 import ExitTimeoutChart from "@/components/Analytics/ExitTimeoutChart";
-import OutboundUnansweredChart from "@/components/Analytics/OutboundUnansweredChart";
 import AnalyticsTabs from "@/components/Analytics/AnalyticsTabs";
 import { PhoneOff, Clock, PhoneCall, AlertTriangle } from "lucide-react";
+import OutboundUnansweredHourlyChart from "@/components/Analytics/OutboundUnansweredHourlyChart";
+import OutboundCallDistributionLineChart from "@/components/Analytics/OutboundCallDistributionChart";
 
 // Function to generate data based on date range
 const generateUnansweredData = (fromDate: Date, toDate: Date) => {
   const daysDiff = Math.ceil((toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24));
+  console.log({daysDiff});
   const multiplier = Math.max(1, daysDiff / 7);
 
   return {
@@ -112,6 +114,22 @@ const UnansweredAnalytics = () => {
     { id: "inbound", label: "Inbound Unanswered", icon: <PhoneOff className="w-4 h-4" /> },
     { id: "outbound", label: "Outbound Unanswered", icon: <PhoneCall className="w-4 h-4" /> },
   ];
+
+  const outboundUnansweredDaily = data.outboundUnanswered.map(day => ({
+    date: day.date,
+    totalOutboundCalls: day.totalOutboundCalls,
+    unansweredCalls: day.unansweredCalls,
+    totalOutboundInternal: Math.floor(Math.random() * 5), // Placeholder for internal
+    totalOutboundExternal: Math.floor(Math.random() * 10), // Placeholder for external
+    internalUnanswered: Math.floor(Math.random() * 5), // Placeholder for internal
+    externalUnanswered: Math.floor(Math.random() * 10), // Placeholder for external
+  }));
+
+  const outboundUnansweredHourly = Array.from({ length: 24 }, (_, i) => ({
+    hour: i,
+    internal: Math.floor(Math.random() * 10), // Placeholder for internal
+    external: Math.floor(Math.random() * 20), // Placeholder for external
+  }));
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -223,9 +241,10 @@ const UnansweredAnalytics = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <OutboundUnansweredChart data={data.outboundUnanswered} />
+              <OutboundCallDistributionLineChart data={outboundUnansweredDaily} />
             </CardContent>
           </Card>
+          <OutboundUnansweredHourlyChart data={outboundUnansweredHourly} />
         </div>
       </AnalyticsTabs>
     </div>
