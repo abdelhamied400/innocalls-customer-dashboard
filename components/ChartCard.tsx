@@ -15,10 +15,9 @@ import { Button } from "./ui/button";
 import { refetchIntervals } from "@/constants/stats";
 import { useTranslations } from "next-intl";
 import React, { PropsWithChildren } from "react";
-import { ChartConfig } from "./ui/chart";
 
 export const chartCardVariants = cva(
-  "group p-4 shadow rounded-lg transition-all flex flex-col gap-2 hover:shadow-lg text-gray-800",
+  "group/chart-card p-4 shadow rounded-lg transition-all flex flex-col gap-2 hover:shadow-lg text-gray-800",
   {
     variants: {
       variant: {
@@ -75,16 +74,16 @@ const chartCardIconVariants = cva("transition-colors rounded-full p-1", {
   variants: {
     color: {
       default:
-        "bg-gray-100 text-gray-500 group-hover:bg-gray-500 group-hover:text-white",
+        "bg-gray-100 text-gray-500 group-hover/chart-card:bg-gray-500 group-hover/chart-card:text-white",
       primary:
-        "bg-primary-100 text-primary-500 group-hover:bg-primary-500 group-hover:text-white",
+        "bg-primary-100 text-primary-500 group-hover/chart-card:bg-primary-500 group-hover/chart-card:text-white",
       warning:
-        "bg-amber-100 text-amber-500 group-hover:bg-amber-500 group-hover:text-white",
+        "bg-amber-100 text-amber-500 group-hover/chart-card:bg-amber-500 group-hover/chart-card:text-white",
       destructive:
-        "bg-destructive-100 text-destructive-500 group-hover:bg-destructive-500 group-hover:text-white",
+        "bg-destructive-100 text-destructive-500 group-hover/chart-card:bg-destructive-500 group-hover/chart-card:text-white",
       success:
-        "bg-success-100 text-success-500 group-hover:bg-success-500 group-hover:text-white",
-      info: "bg-indigo-100 text-indigo-500 group-hover:bg-indigo-500 group-hover:text-white",
+        "bg-success-100 text-success-500 group-hover/chart-card:bg-success-500 group-hover/chart-card:text-white",
+      info: "bg-indigo-100 text-indigo-500 group-hover/chart-card:bg-indigo-500 group-hover/chart-card:text-white",
     },
   },
   defaultVariants: {
