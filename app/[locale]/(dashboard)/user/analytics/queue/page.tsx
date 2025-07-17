@@ -61,7 +61,7 @@ const tabs = [
 const QueueAnalyticsPage = () => {
   const [selectedQueue, setSelectedQueue] = useState(queueList[0].id);
 
-  const handleDateRangeChange = (fromDate, toDate) => {
+  const handleDateRangeChange = (fromDate:Date, toDate:Date) => {
     // TODO: Fetch/filter data by date
   };
 
@@ -86,30 +86,32 @@ const QueueAnalyticsPage = () => {
         </div>
       </div>
       <AnalyticsTabs tabs={tabs} defaultTab="unanswered">
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-red-600" />
-                Queue Unanswered Calls Analysis
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <AbandonedCallsChart data={queueUnansweredData.abandonedCalls} />
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-purple-600" />
-                Queue Exit Timeout Analysis
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ExitTimeoutChart data={queueUnansweredData.exitTimeout} />
-            </CardContent>
-          </Card>
-        </div>
+        {[
+          <div className="space-y-6" key="unanswered">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5 text-red-600" />
+                  Queue Unanswered Calls Analysis
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <AbandonedCallsChart data={queueUnansweredData.abandonedCalls} />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5 text-purple-600" />
+                  Queue Exit Timeout Analysis
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ExitTimeoutChart data={queueUnansweredData.exitTimeout} />
+              </CardContent>
+            </Card>
+          </div>
+        ]}
       </AnalyticsTabs>
     </div>
   );
