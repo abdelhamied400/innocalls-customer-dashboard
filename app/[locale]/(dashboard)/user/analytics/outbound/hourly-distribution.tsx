@@ -1,0 +1,156 @@
+"use client";
+
+import React from "react";
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip as RechartsTooltip,
+  Legend as RechartsLegend,
+} from "recharts";
+import { useQuery } from "@tanstack/react-query";
+import outboundAnalyticsService from "@/services/outbound-analytics.service";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ChartCard, { ChartCardSkeleton } from "@/components/ChartCard";
+import PaginatedTable from "@/components/Table/PaginatedTable";
+import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
+import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
+import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
+import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
+import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
+import { ShowChart, TableView } from "@mui/icons-material";
+import { OutboundAnalyticsFilters } from "./page";
+import NoData from "./NoData";
+
+type HourlyDistributionAnalyticsProps = {
+  filters: OutboundAnalyticsFilters;
+};
+
+const columns = [
+  {
+    header: "Hour",
+    accessorKey: "hourOfDay",
+  },
+  {
+    header: "Total Calls",
+    accessorKey: "totalCalls",
+  },
+  {
+    header: "Answered",
+    accessorKey: "answeredCalls",
+  },
+  {
+    header: "Unanswered",
+    accessorKey: "unansweredCalls",
+  },
+  {
+    header: "Internal",
+    accessorKey: "internalCalls",
+  },
+  {
+    header: "External",
+    accessorKey: "externalCalls",
+  },
+];
+
+const HourlyDistributionAnalytics = ({
+  filters,
+}: HourlyDistributionAnalyticsProps) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["hourlyDistribution", filters],
+    queryFn: () =>
+      outboundAnalyticsService.fetchHourlyDistributionAnalytics(filters),
+  });
+
+  console.log("Hourly Distribution Data:", data);
+
+  return (
+    <div className="hourly-distribution-analytics">
+      <Tabs defaultValue="chart" className="w-full">
+        <TabsList className="w-full flex justify-end">
+          <TabsTrigger value="chart" className="flex items-center gap-1">
+            <ShowChart />
+          </TabsTrigger>
+          <TabsTrigger value="table" className="flex items-center gap-1">
+            <TableView />
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="chart">
+          {isLoading && <ChartCardSkeleton />}
+          {!isLoading && data && data.length > 0 && (
+            <ChartCard
+              title="Hourly Distribution"
+              icon={<ShowChart />}
+              color="primary"
+              className="shadow-none hover:shadow-none border bg-gradient-to-b from-primary-100/0 to-primary-100/50 hover:from-primary-100/20 hover:to-primary-100/70"
+            >
+              <ResponsiveContainer width="100%" height={320}>
+                <LineChart data={data}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                  <XAxis
+                    dataKey="hourOfDay"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    allowDecimals={false}
+                  />
+                  <RechartsTooltip />
+                  <RechartsLegend />
+                  <Line
+                    type="monotone"
+                    dataKey="totalCalls"
+                    stroke="#3B82F6"
+                    strokeWidth={2}
+                    dot={false}
+                    name="Total"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="answeredCalls"
+                    stroke="#10B981"
+                    strokeWidth={2}
+                    dot={false}
+                    name="Answered"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="unansweredCalls"
+                    stroke="#EF4444"
+                    strokeWidth={2}
+                    dot={false}
+                    name="Unanswered"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </ChartCard>
+          )}
+          {!isLoading && (!data || data.length === 0) && <NoData />}
+        </TabsContent>
+        <TabsContent value="table">
+          <PaginatedTable
+            data={data || []}
+            columns={columns}
+            manualPagination={false}
+          >
+            <PaginatedTableContent>
+              <PaginatedTableHead />
+              {isLoading && <PaginatedTableSkeleton />}
+              {!isLoading && <PaginatedTableBody />}
+            </PaginatedTableContent>
+            {!isLoading && <PaginatedTablePagination />}
+          </PaginatedTable>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+};
+
+export default HourlyDistributionAnalytics;

@@ -36,6 +36,7 @@ export type UserActivityAnalyticsFilters = {
 };
 
 const UserActivityAnalytics = () => {
+  const { extensions } = useVocabStore();
   const [fromDate, setFromDate] = useState<Date>(new Date());
   const [toDate, setToDate] = useState<Date>(new Date());
   const [agents, setAgents] = useState<Option[]>([]);
@@ -47,8 +48,6 @@ const UserActivityAnalytics = () => {
     agents,
     slaCompliance,
   });
-
-  const { extensions } = useVocabStore();
 
   return (
     <div className="page" id="user-activity-analytics">
