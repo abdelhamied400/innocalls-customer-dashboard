@@ -258,4 +258,18 @@ export const ChartCardSkeleton = () => {
   );
 };
 
+export const ChartCardNoData = () => {
+  const t = useTranslations("components.statsCard");
+
+  return (
+    <ChartCard
+      icon={<XIcon className="text-gray-500 group-hover:text-white" />}
+      title={t("noDataAvailable")}
+      color="default"
+    >
+      <p className="text-gray-500">{t("noDataMessage")}</p>
+    </ChartCard>
+  );
+};
+
 export default ChartCard;
