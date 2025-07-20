@@ -4,16 +4,7 @@ import React, { useState, useEffect } from "react";
 import StatsCard from "@/components/StatsCard";
 import DateRangeSearch from "@/components/Analytics/DateRangeSearch";
 import AnalyticsTabs from "@/components/Analytics/AnalyticsTabs";
-import { BarChart3, Phone, Clock, Users, TrendingUp } from "lucide-react";
-import {
-  Timer,
-  PieChart as PieChartIcon,
-  Users as UsersIcon,
-  BarChart3 as BarChartIcon,
-  Clock as ClockIcon,
-  Table as TableIcon,
-  LineChart as LineChartIcon,
-} from "lucide-react";
+import { Clock , BarChart3, PhoneOff, PhoneCall, Percent, Globe, Timer , Users} from "lucide-react";
 import {
   PieChart,
   Pie,
@@ -31,23 +22,51 @@ import {
 } from "recharts";
 
 // --- Summary Cards Data ---
+// Example summary data (replace with real data source as needed)
+const summary = {
+  totalCalls: 41,
+  unansweredCalls: 35,
+  answeredCalls: 6,
+  answerRate: 14.63,
+  externalCalls: 6,
+  avgDuration: "00:00:43",
+};
+
 const summaryStats = [
   {
-    icon: <BarChart3 className="w-6 h-6 text-blue-600" />, // Example icon
-    title: "Total Outbound Calls",
-    value: 510, // Replace with real data if available
+    icon: <BarChart3 className="w-6 h-6 text-blue-600" />, // Total Calls
+    title: "Total Calls",
+    value: summary.totalCalls,
     color: "bg-blue-50 text-blue-800",
   },
   {
-    icon: <Users className="w-6 h-6 text-green-600" />,
-    title: "Total Agents",
-    value: 5, // Replace with real data if available
+    icon: <PhoneOff className="w-6 h-6 text-red-600" />, // Unanswered Calls
+    title: "Unanswered Calls",
+    value: summary.unansweredCalls,
+    color: "bg-red-50 text-red-800",
+  },
+  {
+    icon: <PhoneCall className="w-6 h-6 text-green-600" />, // Answered Calls
+    title: "Answered Calls",
+    value: summary.answeredCalls,
     color: "bg-green-50 text-green-800",
   },
   {
-    icon: <Clock className="w-6 h-6 text-indigo-600" />,
-    title: "Avg Call Duration (s)",
-    value: 32, // Replace with real data if available
+    icon: <Percent className="w-6 h-6 text-purple-600" />, // Answer Rate
+    title: "Answer Rate",
+    value: `${summary.answerRate}%`,
+    color: "bg-purple-50 text-purple-800",
+  },
+  {
+    icon: <Globe className="w-6 h-6 text-orange-600" />, // External Calls
+    title: "External Calls",
+    value: summary.externalCalls,
+    color: "bg-orange-50 text-orange-800",
+  },
+  {
+    icon: <Timer className="w-6 h-6 text-indigo-600" />, // Avg Duration
+    title: "Avg Duration",
+    value: summary.avgDuration,
     color: "bg-indigo-50 text-indigo-800",
   },
 ];
@@ -607,17 +626,17 @@ const tabs = [
   {
     id: "hourly-distribution",
     label: "Hourly Distribution",
-    icon: <ClockIcon className="w-4 h-4" />,
+    icon: <Clock className="w-4 h-4" />,
   },
   {
     id: "date-distribution",
     label: "Date Distribution",
-    icon: <BarChartIcon className="w-4 h-4" />,
+    icon: <BarChart3 className="w-4 h-4" />,
   },
   {
     id: "agent-stats",
     label: "Agent Stats",
-    icon: <UsersIcon className="w-4 h-4" />,
+    icon: <Users className="w-4 h-4" />,
   },
 ];
 
@@ -940,14 +959,18 @@ const OutboundAnalytics = () => {
       <DateRangeSearch onDateRangeChange={handleDateRangeChange} />
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
         {summaryStats.map((stat) => (
-          <StatsCard
+          <div
             key={stat.title}
-            icon={stat.icon}
-            title={stat.title}
-            value={stat.value}
-          />
+            className={`p-4 rounded-lg border ${stat.color}`}
+          >
+            <div className="flex items-center gap-2 mb-2">
+              {stat.icon}
+              <h3 className="text-lg font-semibold">{stat.title}</h3>
+            </div>
+            <p className="text-2xl font-bold">{stat.value}</p>
+          </div>
         ))}
       </div>
 
