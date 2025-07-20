@@ -15,6 +15,9 @@ import { Button } from "./ui/button";
 import { refetchIntervals } from "@/constants/stats";
 import { useTranslations } from "next-intl";
 import React, { PropsWithChildren } from "react";
+import { AxiosError } from "axios";
+import { XIcon } from "lucide-react";
+import { Skeleton } from "./ui/skeleton";
 
 export const chartCardVariants = cva(
   "group/chart-card p-4 shadow rounded-lg transition-all flex flex-col gap-2 hover:shadow-lg text-gray-800",
@@ -203,6 +206,53 @@ const ChartCard = ({
         <div className="flex flex-col gap-2 h-[calc(100%-50px)]">
           {children}
         </div>
+      </div>
+    </div>
+  );
+};
+
+type ChartCardErrorProps = {
+  error: unknown;
+};
+export const ChartCardError = ({ error }: ChartCardErrorProps) => {
+  const t = useTranslations("components.statsCard");
+
+  if (error instanceof AxiosError) {
+    const errorMessage = error?.response?.data?.message || error.message;
+    return (
+      <ChartCard
+        icon={<XIcon className="text-red-500 group-hover:text-white" />}
+        title={t("errorOccurred")}
+        color="destructive"
+      >
+        <p className="text-red-500">{errorMessage}</p>
+      </ChartCard>
+    );
+  }
+  return (
+    <ChartCard
+      icon={<XIcon className="text-red-500 group-hover:text-white" />}
+      title={t("errorOccurred")}
+      color="destructive"
+    >
+      <p className="text-red-500">{t("unknownError")}</p>
+    </ChartCard>
+  );
+};
+
+export const ChartCardSkeleton = () => {
+  return (
+    <div className="p-4 shadow rounded-lg bg-white animate-pulse">
+      <div className="flex items-center gap-2">
+        <Skeleton className="h-6 w-6 rounded-full" />
+        <Skeleton className="h-4 w-1/2" />
+      </div>
+      <div className="mt-2">
+        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-4 w-1/2 mt-2" />
+      </div>
+      <div className="mt-4">
+        <Skeleton className="h-8 w-full" />
       </div>
     </div>
   );

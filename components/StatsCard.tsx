@@ -127,7 +127,7 @@ export const StatsCardError = ({ error }: StatsCardErrorProps) => {
     const errorMessage = error?.response?.data?.message || error.message;
     return (
       <StatsCard
-        icon={<XIcon className="text-red-500" />}
+        icon={<XIcon className="text-red-500 group-hover:text-white" />}
         title={t("errorOccurred")}
         value=""
         info={errorMessage}
@@ -137,7 +137,7 @@ export const StatsCardError = ({ error }: StatsCardErrorProps) => {
   }
   return (
     <StatsCard
-      icon={<XIcon className="text-red-500" />}
+      icon={<XIcon className="text-red-500 group-hover:text-white" />}
       title={t("errorOccurred")}
       value=""
       info={t("unknownError")}
