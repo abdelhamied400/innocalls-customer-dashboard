@@ -51,7 +51,7 @@ export default {
       params: {
         fromDate: format(filters.fromDate, "yyyy-MM-dd"),
         toDate: format(filters.toDate, "yyyy-MM-dd"),
-        agents:
+        exts:
           filters.agents.length > 0
             ? filters.agents.map((agent) => agent.value).join(",")
             : undefined,
@@ -68,7 +68,7 @@ export default {
         params: {
           fromDate: format(filters.fromDate, "yyyy-MM-dd"),
           toDate: format(filters.toDate, "yyyy-MM-dd"),
-          agents:
+          exts:
             filters.agents.length > 0
               ? filters.agents.map((agent) => agent.value).join(",")
               : undefined,
@@ -86,7 +86,7 @@ export default {
         params: {
           fromDate: format(filters.fromDate, "yyyy-MM-dd"),
           toDate: format(filters.toDate, "yyyy-MM-dd"),
-          agents:
+          exts:
             filters.agents.length > 0
               ? filters.agents.map((agent) => agent.value).join(",")
               : undefined,
@@ -104,7 +104,7 @@ export default {
         params: {
           fromDate: format(filters.fromDate, "yyyy-MM-dd"),
           toDate: format(filters.toDate, "yyyy-MM-dd"),
-          agents:
+          exts:
             filters.agents.length > 0
               ? filters.agents.map((agent) => agent.value).join(",")
               : undefined,
@@ -122,7 +122,7 @@ export default {
         params: {
           fromDate: format(filters.fromDate, "yyyy-MM-dd"),
           toDate: format(filters.toDate, "yyyy-MM-dd"),
-          agents:
+          exts:
             filters.agents.length > 0
               ? filters.agents.map((agent) => agent.value).join(",")
               : undefined,
