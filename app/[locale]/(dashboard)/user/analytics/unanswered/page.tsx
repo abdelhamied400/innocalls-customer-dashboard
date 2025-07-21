@@ -1,205 +1,160 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import DateRangeSearch from "@/components/Analytics/DateRangeSearch";
-import AnalyticsTabs from "@/components/Analytics/AnalyticsTabs";
+import React, { useState } from "react";
 import {
-  PhoneOff,
-  PhoneCall,
-  ArrowDownLeft,
-  ArrowUpRight,
-  Users,
-} from "lucide-react";
+  AccessTime,
+  BarChart,
+  CalendarMonth,
+  Insights,
+} from "@mui/icons-material";
+import StatsDetailedCard from "@/components/StatsDetailedCard";
+import Field from "@/components/ui/field";
+import DatePicker from "@/components/ui/date-picker";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TabsContent } from "@radix-ui/react-tabs";
+import Select from "@/components/select";
+import { Input } from "@/components/ui/input";
+import useVocabStore from "@/store/vocab.slice";
+import InboundDistribution from "./inbound-distribution";
+import InboundUnansweredHourly from "./inbound-hourly";
+import OutboundDistribution from "./outbound-distribution";
+import OutboundUnansweredHourly from "./outbound-hourly";
+import QuickStats from "./quick-stats";
 
-import OutboundUnansweredHourlyChart from "@/components/Analytics/OutboundUnansweredHourlyChart";
-import OutboundCallDistributionLineChart from "@/components/Analytics/OutboundCallDistributionChart";
-
-// Function to generate data based on date range
-const generateUnansweredData = (fromDate: Date, toDate: Date) => {
-  const daysDiff = Math.ceil(
-    (toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60 * 24)
-  );
-  const multiplier = Math.max(1, daysDiff / 7);
-
-  return {
-    outboundUnanswered: Array.from(
-      { length: Math.min(daysDiff, 30) },
-      (_, i) => {
-        const date = new Date(fromDate);
-        date.setDate(date.getDate() + i);
-        const totalCalls = Math.floor(Math.random() * 50) + 100;
-        const unanswered = Math.floor(Math.random() * 20) + 10;
-        return {
-          date: date.toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-          }),
-          totalOutboundCalls: totalCalls,
-          unansweredCalls: unanswered,
-        };
-      }
-    ),
-  };
+type Option = {
+  value: string;
+  label: string;
 };
-
-// SUMMARY CARDS DATA
-const summaryData = {
-  totalUnansweredCalls: 131,
-  totalExternalUnansweredIncomingCalls: 1,
-  totalExternalUnansweredOutgoingCalls: 32,
-  totalInternalUnansweredCalls: 98,
+export type UnAnsweredAnalyticsFilters = {
+  fromDate: Date;
+  toDate: Date;
+  agents: Option[];
+  slaCompliance: number;
 };
-
-// SEPARATE DATA SOURCES FOR CHARTS
-// Example inbound unanswered data
-const inboundChartData = [
-  { date: "2024-07-01", internal: 12, external: 5, unanswered: 17 },
-  { date: "2024-07-02", internal: 10, external: 7, unanswered: 17 },
-  { date: "2024-07-03", internal: 15, external: 4, unanswered: 19 },
-];
-// Example outbound unanswered data
-const outboundChartData = [
-  { date: "2024-07-01", internal: 8, external: 14, unanswered: 22 },
-  { date: "2024-07-02", internal: 9, external: 11, unanswered: 20 },
-  { date: "2024-07-03", internal: 7, external: 13, unanswered: 20 },
-];
-
-const summaryStats = [
-  {
-    icon: <PhoneOff className="w-6 h-6 text-red-600" />,
-    title: "Total Unanswered Calls",
-    value: summaryData.totalUnansweredCalls,
-    color: "bg-red-50 text-red-800",
-  },
-  {
-    icon: <ArrowDownLeft className="w-6 h-6 text-blue-600" />,
-    title: "External Unanswered Incoming",
-    value: summaryData.totalExternalUnansweredIncomingCalls,
-    color: "bg-blue-50 text-blue-800",
-  },
-  {
-    icon: <ArrowUpRight className="w-6 h-6 text-orange-600" />,
-    title: "External Unanswered Outgoing",
-    value: summaryData.totalExternalUnansweredOutgoingCalls,
-    color: "bg-orange-50 text-orange-800",
-  },
-  {
-    icon: <Users className="w-6 h-6 text-purple-600" />,
-    title: "Internal Unanswered Calls",
-    value: summaryData.totalInternalUnansweredCalls,
-    color: "bg-purple-50 text-purple-800",
-  },
-];
 
 const UnansweredAnalytics = () => {
-  const [data, setData] = useState(() => {
-    const today = new Date();
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(today.getDate() - 7);
-    return generateUnansweredData(sevenDaysAgo, today);
+  const { extensions } = useVocabStore();
+  const [fromDate, setFromDate] = useState<Date>(new Date());
+  const [toDate, setToDate] = useState<Date>(new Date());
+  const [agents, setAgents] = useState<Option[]>([]);
+  const [slaCompliance, setSlaCompliance] = useState<number>(10);
+
+  const [filters, setFilters] = useState<UnAnsweredAnalyticsFilters>({
+    fromDate,
+    toDate,
+    agents,
+    slaCompliance,
   });
 
-  const handleDateRangeChange = (fromDate: Date, toDate: Date) => {
-    const newData = generateUnansweredData(fromDate, toDate);
-    setData(newData);
-  };
-
-  const tabs = [
-    {
-      id: "inbound",
-      label: "Inbound Unanswered",
-      icon: <PhoneOff className="w-4 h-4" />,
-    },
-    {
-      id: "outbound",
-      label: "Outbound Unanswered",
-      icon: <PhoneCall className="w-4 h-4" />,
-    },
-  ];
-
-  const outboundUnansweredDaily = data.outboundUnanswered.map((day) => ({
-    date: day.date,
-    totalOutboundCalls: day.totalOutboundCalls,
-    unansweredCalls: day.unansweredCalls,
-    totalOutboundInternal: Math.floor(Math.random() * 5), // Placeholder for internal
-    totalOutboundExternal: Math.floor(Math.random() * 10), // Placeholder for external
-    internalUnanswered: Math.floor(Math.random() * 5), // Placeholder for internal
-    externalUnanswered: Math.floor(Math.random() * 10), // Placeholder for external
-  }));
-
-  const outboundUnansweredHourly = Array.from({ length: 24 }, (_, i) => ({
-    hour: i,
-    internal: Math.floor(Math.random() * 10), // Placeholder for internal
-    external: Math.floor(Math.random() * 20), // Placeholder for external
-  }));
-
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      {/* Date Range Search */}
-      <DateRangeSearch onDateRangeChange={handleDateRangeChange} />
-
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {summaryStats.map((stat) => (
-          <div
-            key={stat.title}
-            className={`p-4 rounded-lg border ${stat.color}`}
+    <div className="page" id="unanswered-analytics">
+      <div className="flex flex-col gap-2">
+        <div className="filters">
+          <StatsDetailedCard
+            title="Date Range Search"
+            icon={<BarChart />}
+            value=""
+            color="primary"
           >
-            <div className="flex items-center gap-2 mb-2">
-              {stat.icon}
-              <h3 className="text-lg font-semibold">{stat.title}</h3>
+            <div className="py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <Field
+                label="From"
+                postIcon={<CalendarMonth className="text-gray-400" />}
+              >
+                <DatePicker
+                  className="min-w-36 flex-1"
+                  placeholder="Enter from date"
+                  value={fromDate}
+                  onChange={(date) => setFromDate(date || new Date())}
+                />
+              </Field>
+              <Field
+                label="To"
+                postIcon={<CalendarMonth className="text-gray-400" />}
+              >
+                <DatePicker
+                  className="min-w-36 flex-1"
+                  placeholder="Enter to date"
+                  value={toDate}
+                  onChange={(date) => setToDate(date || new Date())}
+                />
+              </Field>
+              <Field
+                label="SLA Compliance"
+                postIcon={<AccessTime className="text-gray-400" />}
+              >
+                <Input
+                  type="number"
+                  variant="field"
+                  className=""
+                  placeholder="Enter SLA compliance percentage"
+                  value={slaCompliance}
+                  onChange={(e) => setSlaCompliance(Number(e.target.value))}
+                />
+              </Field>
+              <div className="col-span-1 sm:col-span-2 lg:col-span-3">
+                <Select
+                  className="w-full"
+                  placeholder="Select agents"
+                  value={agents}
+                  onChange={(value) => setAgents(value || [])}
+                  options={extensions.map((ext) => ({
+                    value: ext.ext,
+                    label: ext.name,
+                  }))}
+                  isMulti
+                  label="Select Agents"
+                  showSelectedTags={false}
+                />
+              </div>
             </div>
-            <p className="text-2xl font-bold">{stat.value}</p>
-          </div>
-        ))}
+            <div className="flex justify-end">
+              <Button
+                onClick={() =>
+                  setFilters({
+                    fromDate,
+                    toDate,
+                    agents,
+                    slaCompliance,
+                  })
+                }
+              >
+                Apply Filters
+              </Button>
+            </div>
+          </StatsDetailedCard>
+        </div>
+
+        <QuickStats filters={filters} />
+
+        <div className="analytics-tabs">
+          <StatsDetailedCard
+            title="Unanswered Analytics"
+            subtitle="View detailed analytics for unanswered calls"
+            icon={<Insights />}
+            value=""
+            color="primary"
+          >
+            <Tabs defaultValue="inbound" className="w-full">
+              <TabsList>
+                <TabsTrigger value="inbound">Inbound Unanswered</TabsTrigger>
+                <TabsTrigger value="outbound">Outbound Unanswered</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="inbound" className="flex flex-col gap-4">
+                <InboundDistribution filters={filters} />
+                <InboundUnansweredHourly filters={filters} />
+              </TabsContent>
+
+              <TabsContent value="outbound" className="flex flex-col gap-4">
+                <OutboundDistribution filters={filters} />
+                <OutboundUnansweredHourly filters={filters} />
+              </TabsContent>
+            </Tabs>
+          </StatsDetailedCard>
+        </div>
       </div>
-
-      {/* Analytics Tabs */}
-      <AnalyticsTabs tabs={tabs} defaultTab="inbound">
-        {/* Inbound Unanswered Tab */}
-
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <PhoneOff className="w-5 h-5 text-blue-600" />
-                Inbound Unanswered Analysis
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <OutboundCallDistributionLineChart
-                data={outboundUnansweredDaily}
-              />
-            </CardContent>
-          </Card>
-          <OutboundUnansweredHourlyChart
-            data={outboundUnansweredHourly}
-            barColors={{ internal: "#06B6D4", external: "#6366F1" }}
-          />
-        </div>
-
-        {/* Outbound Unanswered Tab */}
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <PhoneCall className="w-5 h-5 text-blue-600" />
-                Outbound Unanswered Analysis
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <OutboundCallDistributionLineChart
-                data={outboundUnansweredDaily}
-              />
-            </CardContent>
-          </Card>
-          <OutboundUnansweredHourlyChart
-            data={outboundUnansweredHourly}
-            barColors={{ internal: "#3b82f6", external: "#9CA3AF" }}
-          />
-        </div>
-      </AnalyticsTabs>
     </div>
   );
 };

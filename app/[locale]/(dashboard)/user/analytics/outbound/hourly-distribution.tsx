@@ -23,7 +23,7 @@ import PaginatedTablePagination from "@/components/Table/PaginatedTablePaginatio
 import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import { ShowChart, TableView } from "@mui/icons-material";
 import { OutboundAnalyticsFilters } from "./page";
-import NoData from "./NoData";
+import NoData from "../../../../../../components/Analytics/NoData";
 
 type HourlyDistributionAnalyticsProps = {
   filters: OutboundAnalyticsFilters;

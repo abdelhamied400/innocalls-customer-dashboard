@@ -22,7 +22,7 @@ import ShowChartIcon from "@mui/icons-material/ShowChart";
 import TableViewIcon from "@mui/icons-material/TableView";
 import PeopleIcon from "@mui/icons-material/People";
 import outboundAnalyticsService from "@/services/outbound-analytics.service";
-import NoData from "./NoData";
+import NoData from "../../../../../../components/Analytics/NoData";
 
 type OutboundAnalyticsFilters = {
   fromDate: Date;

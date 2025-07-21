@@ -13,7 +13,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import ChartCard, { ChartCardSkeleton } from "@/components/ChartCard";
 import { OutboundAnalyticsFilters } from "./page";
-import NoData from "./NoData";
+import NoData from "../../../../../../components/Analytics/NoData";
 import outboundAnalyticsService from "@/services/outbound-analytics.service";
 import { Timer, TimeToLeave } from "@mui/icons-material";
 

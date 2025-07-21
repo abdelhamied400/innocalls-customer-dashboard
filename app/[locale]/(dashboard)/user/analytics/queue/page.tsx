@@ -3,7 +3,6 @@
 
 import React, { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import AnalyticsTabs from "@/components/Analytics/AnalyticsTabs";
 import DateRangeSearch from "@/components/Analytics/DateRangeSearch";
 import { ListChecks, AlertTriangle } from "lucide-react";
 import AbandonedCallsChart from "@/components/Analytics/AbandonedCallsChart";
@@ -55,13 +54,17 @@ const queueUnansweredData = {
 };
 
 const tabs = [
-  { id: "unanswered", label: "Unanswered Calls", icon: <AlertTriangle className="w-4 h-4" /> },
+  {
+    id: "unanswered",
+    label: "Unanswered Calls",
+    icon: <AlertTriangle className="w-4 h-4" />,
+  },
 ];
 
 const QueueAnalyticsPage = () => {
   const [selectedQueue, setSelectedQueue] = useState(queueList[0].id);
 
-  const handleDateRangeChange = (fromDate:Date, toDate:Date) => {
+  const handleDateRangeChange = (fromDate: Date, toDate: Date) => {
     // TODO: Fetch/filter data by date
   };
 
@@ -70,51 +73,54 @@ const QueueAnalyticsPage = () => {
       <div className="flex flex-col md:flex-row md:items-center gap-4 mb-6">
         <DateRangeSearch onDateRangeChange={handleDateRangeChange} />
         <div>
-          <label htmlFor="queue-select" className="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            htmlFor="queue-select"
+            className="block text-sm font-medium text-gray-700 mb-1"
+          >
             Queue Name
           </label>
           <select
             id="queue-select"
             value={selectedQueue}
-            onChange={e => setSelectedQueue(e.target.value)}
+            onChange={(e) => setSelectedQueue(e.target.value)}
             className="border rounded px-3 py-2 text-sm"
           >
-            {queueList.map(q => (
-              <option key={q.id} value={q.id}>{q.name}</option>
+            {queueList.map((q) => (
+              <option key={q.id} value={q.id}>
+                {q.name}
+              </option>
             ))}
           </select>
         </div>
       </div>
-      <AnalyticsTabs tabs={tabs} defaultTab="unanswered">
-        {[
-          <div className="space-y-6" key="unanswered">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-red-600" />
-                  Queue Unanswered Calls Analysis
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <AbandonedCallsChart data={queueUnansweredData.abandonedCalls} />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <AlertTriangle className="w-5 h-5 text-purple-600" />
-                  Queue Exit Timeout Analysis
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ExitTimeoutChart data={queueUnansweredData.exitTimeout} />
-              </CardContent>
-            </Card>
-          </div>
-        ]}
-      </AnalyticsTabs>
+      {[
+        <div className="space-y-6" key="unanswered">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-red-600" />
+                Queue Unanswered Calls Analysis
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <AbandonedCallsChart data={queueUnansweredData.abandonedCalls} />
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-purple-600" />
+                Queue Exit Timeout Analysis
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ExitTimeoutChart data={queueUnansweredData.exitTimeout} />
+            </CardContent>
+          </Card>
+        </div>,
+      ]}
     </div>
   );
 };
 
-export default QueueAnalyticsPage; 
+export default QueueAnalyticsPage;
