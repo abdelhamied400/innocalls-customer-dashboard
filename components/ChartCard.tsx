@@ -71,31 +71,31 @@ export const chartCardVariants = cva(
         variant: "compound",
         color: "primary",
         className:
-          "from-primary-100/0 to-primary-100/50 hover:from-primary-100/20 hover:to-primary-100/70",
+          "from-primary-100/0 to-primary-100/50 hover:from-primary-100/20 hover:to-primary-100/70 hover:border-primary-500",
       },
       {
         variant: "compound",
         color: "warning",
         className:
-          "from-amber-100/0 to-amber-100/50 hover:from-amber-100/20 hover:to-amber-100/70",
+          "from-amber-100/0 to-amber-100/50 hover:from-amber-100/20 hover:to-amber-100/70 hover:border-amber-500",
       },
       {
         variant: "compound",
         color: "destructive",
         className:
-          "from-destructive-100/0 to-destructive-100/50 hover:from-destructive-100/20 hover:to-destructive-100/70",
+          "from-destructive-100/0 to-destructive-100/50 hover:from-destructive-100/20 hover:to-destructive-100/70 hover:border-destructive-500",
       },
       {
         variant: "compound",
         color: "info",
         className:
-          "from-indigo-100/0 to-indigo-100/50 hover:from-indigo-100/20 hover:to-indigo-100/70",
+          "from-indigo-100/0 to-indigo-100/50 hover:from-indigo-100/20 hover:to-indigo-100/70 hover:border-indigo-500",
       },
       {
         variant: "compound",
         color: "success",
         className:
-          "from-success-100/0 to-success-100/50 hover:from-success-100/20 hover:to-success-100/70",
+          "from-success-100/0 to-success-100/50 hover:from-success-100/20 hover:to-success-100/70 hover:border-success-500",
       },
     ],
     defaultVariants: {

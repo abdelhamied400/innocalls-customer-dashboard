@@ -2,7 +2,12 @@
 
 import React, { useState } from "react";
 import { Clock, BarChart3, Timer, Users } from "lucide-react";
-import { AccessTime, CalendarMonth, Insights } from "@mui/icons-material";
+import {
+  AccessTime,
+  BarChart,
+  CalendarMonth,
+  Insights,
+} from "@mui/icons-material";
 import StatsDetailedCard from "@/components/StatsDetailedCard";
 import Field from "@/components/ui/field";
 import DatePicker from "@/components/ui/date-picker";
@@ -50,7 +55,7 @@ const OutboundAnalytics = () => {
         <div className="filters">
           <StatsDetailedCard
             title="Date Range Search"
-            icon={<BarChart3 />}
+            icon={<BarChart />}
             value=""
             color="primary"
           >

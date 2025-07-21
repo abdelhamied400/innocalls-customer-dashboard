@@ -57,7 +57,7 @@ const columns = [
   {
     header: "Answer Rate",
     accessorKey: "answerRate",
-    cell: (value: any) => `${value}%`,
+    cell: (row: any) => `${row.getValue("answerRate")}%`,
   },
   {
     header: "Total Duration",

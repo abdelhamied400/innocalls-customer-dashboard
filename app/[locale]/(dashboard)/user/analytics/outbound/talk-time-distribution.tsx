@@ -8,6 +8,7 @@ import {
   Tooltip as RechartsTooltip,
   Legend as RechartsLegend,
   ResponsiveContainer,
+  CartesianGrid,
 } from "recharts";
 import { useQuery } from "@tanstack/react-query";
 import ChartCard, { ChartCardSkeleton } from "@/components/ChartCard";
@@ -52,9 +53,11 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
         title="Talk Time Distribution"
         icon={<Timer />}
         color="success"
+        variant="compound"
       >
         <ResponsiveContainer width="100%" height={320}>
           <PieChart>
+            <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
             <Pie
               data={data}
               dataKey="totalCalls"

@@ -35,40 +35,6 @@ type AgentStatsAnalyticsProps = {
   filters: OutboundAnalyticsFilters;
 };
 
-function AgentStatsBarChart({ data }: { data: any[] }) {
-  if (!data || data.length === 0) {
-    return <NoData />;
-  }
-
-  return (
-    <ResponsiveContainer width="100%" height={400}>
-      <BarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-        <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-        <XAxis
-          dataKey="name"
-          fontSize={12}
-          tickLine={false}
-          axisLine={false}
-          angle={-45}
-          textAnchor="end"
-          height={80}
-        />
-        <YAxis
-          fontSize={12}
-          tickLine={false}
-          axisLine={false}
-          allowDecimals={false}
-        />
-        <RechartsTooltip />
-        <RechartsLegend />
-        <Bar dataKey="totalCalls" fill="#3B82F6" name="Total Calls" />
-        <Bar dataKey="answeredCalls" fill="#10B981" name="Answered" />
-        <Bar dataKey="unansweredCalls" fill="#EF4444" name="Unanswered" />
-      </BarChart>
-    </ResponsiveContainer>
-  );
-}
-
 const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
   const {
     data: agentStats,
@@ -147,43 +113,64 @@ const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
   }
 
   return (
-    <ChartCard
-      title="Agent Statistics"
-      icon={<PeopleIcon />}
-      className="h-[500px]"
-    >
-      <Tabs defaultValue="chart" className="w-full">
-        <TabsList className="grid w-fit grid-cols-2">
-          <TabsTrigger value="chart" className="flex items-center gap-2">
-            <ShowChartIcon fontSize="small" />
-            Chart
-          </TabsTrigger>
-          <TabsTrigger value="table" className="flex items-center gap-2">
-            <TableViewIcon fontSize="small" />
-            Table
-          </TabsTrigger>
-        </TabsList>
+    <Tabs defaultValue="chart" className="w-full">
+      <TabsList className="flex justify-end">
+        <TabsTrigger value="chart" className="flex items-center gap-2">
+          <ShowChartIcon fontSize="small" />
+        </TabsTrigger>
+        <TabsTrigger value="table" className="flex items-center gap-2">
+          <TableViewIcon fontSize="small" />
+        </TabsTrigger>
+      </TabsList>
 
-        <TabsContent value="chart" className="mt-4">
-          <AgentStatsBarChart data={agentStats || []} />
-        </TabsContent>
+      <TabsContent value="chart" className="mt-4">
+        <ChartCard
+          title="Agent Statistics"
+          icon={<PeopleIcon />}
+          variant="compound"
+          color="info"
+        >
+          {agentStats && agentStats.length === 0 ? (
+            <NoData />
+          ) : (
+            <ResponsiveContainer width="100%" height={400}>
+              <BarChart
+                data={agentStats || []}
+                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                <XAxis dataKey="name" />
+                <YAxis fontSize={12} />
+                <RechartsTooltip />
+                <RechartsLegend />
+                <Bar dataKey="totalCalls" fill="#3B82F6" name="Total Calls" />
+                <Bar dataKey="answeredCalls" fill="#10B981" name="Answered" />
+                <Bar
+                  dataKey="unansweredCalls"
+                  fill="#EF4444"
+                  name="Unanswered"
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          )}
+        </ChartCard>
+      </TabsContent>
 
-        <TabsContent value="table" className="mt-4">
-          <PaginatedTable
-            data={agentStats || []}
-            columns={columns}
-            manualPagination={false}
-          >
-            <PaginatedTableContent>
-              <PaginatedTableHead />
-              {isLoading && <PaginatedTableSkeleton />}
-              {!isLoading && <PaginatedTableBody />}
-            </PaginatedTableContent>
-            {!isLoading && <PaginatedTablePagination />}
-          </PaginatedTable>
-        </TabsContent>
-      </Tabs>
-    </ChartCard>
+      <TabsContent value="table" className="mt-4">
+        <PaginatedTable
+          data={agentStats || []}
+          columns={columns}
+          manualPagination={false}
+        >
+          <PaginatedTableContent>
+            <PaginatedTableHead />
+            {isLoading && <PaginatedTableSkeleton />}
+            {!isLoading && <PaginatedTableBody />}
+          </PaginatedTableContent>
+          {!isLoading && <PaginatedTablePagination />}
+        </PaginatedTable>
+      </TabsContent>
+    </Tabs>
   );
 };
 
