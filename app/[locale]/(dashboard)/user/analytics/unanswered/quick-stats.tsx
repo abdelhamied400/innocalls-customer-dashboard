@@ -44,7 +44,7 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
     <div className="quick-stats grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <StatsCard
         title="Total Unanswered Calls"
-        value={data?.totalExternalUnansweredIncomingCalls || 0}
+        value={data?.totalUnansweredCalls || 0}
         icon={<PhoneDisabledIcon fontSize="small" />}
         color="destructive"
         isRefetching={isRefetching}
