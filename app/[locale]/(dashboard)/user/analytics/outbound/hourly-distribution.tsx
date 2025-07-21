@@ -85,7 +85,7 @@ const HourlyDistributionAnalytics = ({
               title="Hourly Distribution"
               icon={<ShowChart />}
               color="primary"
-              className="shadow-none hover:shadow-none border bg-gradient-to-b from-primary-100/0 to-primary-100/50 hover:from-primary-100/20 hover:to-primary-100/70"
+              variant="compound"
             >
               <ResponsiveContainer width="100%" height={320}>
                 <LineChart data={data}>

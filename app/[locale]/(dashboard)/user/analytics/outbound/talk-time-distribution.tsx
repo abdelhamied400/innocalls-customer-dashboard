@@ -14,6 +14,7 @@ import ChartCard, { ChartCardSkeleton } from "@/components/ChartCard";
 import { OutboundAnalyticsFilters } from "./page";
 import NoData from "./NoData";
 import outboundAnalyticsService from "@/services/outbound-analytics.service";
+import { Timer, TimeToLeave } from "@mui/icons-material";
 
 type TalkTimeDistributionProps = {
   filters: OutboundAnalyticsFilters;
@@ -47,25 +48,31 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
 
   return (
     <div className="space-y-6">
-      <ResponsiveContainer width="100%" height={320}>
-        <PieChart>
-          <Pie
-            data={data}
-            dataKey="totalCalls"
-            nameKey="timeBucket"
-            cx="50%"
-            cy="50%"
-            outerRadius={100}
-            label
-          >
-            {data.map((entry, idx) => (
-              <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
-            ))}
-          </Pie>
-          <RechartsTooltip />
-          <RechartsLegend />
-        </PieChart>
-      </ResponsiveContainer>
+      <ChartCard
+        title="Talk Time Distribution"
+        icon={<Timer />}
+        color="success"
+      >
+        <ResponsiveContainer width="100%" height={320}>
+          <PieChart>
+            <Pie
+              data={data}
+              dataKey="totalCalls"
+              nameKey="timeBucket"
+              cx="50%"
+              cy="50%"
+              outerRadius={100}
+              label
+            >
+              {data.map((entry, idx) => (
+                <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
+              ))}
+            </Pie>
+            <RechartsTooltip />
+            <RechartsLegend />
+          </PieChart>
+        </ResponsiveContainer>
+      </ChartCard>
     </div>
   );
 };

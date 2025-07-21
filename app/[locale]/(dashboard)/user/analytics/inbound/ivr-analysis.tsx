@@ -121,7 +121,7 @@ const InboundAnalyticsIVRAnalysis = () => {
           }`,
           color: colors[option.optionNumber - 1],
         }))}
-        className="shadow-none hover:shadow-none border bg-gradient-to-b from-primary-100/0 to-primary-100/50 hover:from-primary-100/20 hover:to-primary-100/70"
+        variant="compound"
       >
         <div className="w-full h-80">
           <ResponsiveContainer width="100%" height="100%">

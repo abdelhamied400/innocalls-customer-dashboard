@@ -35,7 +35,17 @@ type FetchDateDistributionResponse = Array<{
   shortestCall: string;
   longestCall: string;
 }>;
-type FetchAgentStatsResponse = {};
+type FetchAgentStatsResponse = Array<{
+  ext: string;
+  name: string;
+  totalCalls: number;
+  answeredCalls: number;
+  unansweredCalls: number;
+  internalCalls: number;
+  externalCalls: number;
+  totalDuration: number;
+  avgDuration: number;
+}>;
 
 export default {
   async fetchQuickStats(

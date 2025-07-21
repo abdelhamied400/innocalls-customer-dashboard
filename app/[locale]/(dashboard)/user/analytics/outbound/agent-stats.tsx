@@ -27,7 +27,7 @@ import NoData from "./NoData";
 type OutboundAnalyticsFilters = {
   fromDate: Date;
   toDate: Date;
-  agents: Array<{ value: string; label: string; }>;
+  agents: Array<{ value: string; label: string }>;
   slaCompliance: number;
 };
 
@@ -35,19 +35,7 @@ type AgentStatsAnalyticsProps = {
   filters: OutboundAnalyticsFilters;
 };
 
-type AgentStatsData = {
-  ext: string;
-  name: string;
-  totalCalls: number;
-  answeredCalls: number;
-  unansweredCalls: number;
-  internalCalls: number;
-  externalCalls: number;
-  totalDuration: number;
-  avgDuration: number;
-};
-
-function AgentStatsBarChart({ data }: { data: AgentStatsData[] }) {
+function AgentStatsBarChart({ data }: { data: any[] }) {
   if (!data || data.length === 0) {
     return <NoData />;
   }
@@ -82,7 +70,11 @@ function AgentStatsBarChart({ data }: { data: AgentStatsData[] }) {
 }
 
 const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
-  const { data: agentStats, isLoading, error } = useQuery({
+  const {
+    data: agentStats,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["outbound-agent-stats", filters],
     queryFn: () => outboundAnalyticsService.fetchAgentStatsAnalytics(filters),
   });
@@ -128,7 +120,11 @@ const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
 
   if (isLoading) {
     return (
-      <ChartCard title="Agent Statistics" icon={<PeopleIcon />} className="h-[500px]">
+      <ChartCard
+        title="Agent Statistics"
+        icon={<PeopleIcon />}
+        className="h-[500px]"
+      >
         <div className="flex items-center justify-center h-96">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
         </div>
@@ -138,7 +134,11 @@ const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
 
   if (error) {
     return (
-      <ChartCard title="Agent Statistics" icon={<PeopleIcon />} className="h-[500px]">
+      <ChartCard
+        title="Agent Statistics"
+        icon={<PeopleIcon />}
+        className="h-[500px]"
+      >
         <div className="flex items-center justify-center h-96">
           <div className="text-red-500">Error loading agent statistics</div>
         </div>
@@ -147,7 +147,11 @@ const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
   }
 
   return (
-    <ChartCard title="Agent Statistics" icon={<PeopleIcon />} className="h-[500px]">
+    <ChartCard
+      title="Agent Statistics"
+      icon={<PeopleIcon />}
+      className="h-[500px]"
+    >
       <Tabs defaultValue="chart" className="w-full">
         <TabsList className="grid w-fit grid-cols-2">
           <TabsTrigger value="chart" className="flex items-center gap-2">
@@ -159,11 +163,11 @@ const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
             Table
           </TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="chart" className="mt-4">
           <AgentStatsBarChart data={agentStats || []} />
         </TabsContent>
-        
+
         <TabsContent value="table" className="mt-4">
           <PaginatedTable
             data={agentStats || []}

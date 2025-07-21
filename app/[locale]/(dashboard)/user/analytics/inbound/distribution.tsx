@@ -59,7 +59,7 @@ const InboundAnalyticsDistribution = () => {
         title="Wait Time Distribution"
         color="primary"
         legends={[{ label: "Total Calls", color: "#3B82F6" }]}
-        className="shadow-none hover:shadow-none border bg-gradient-to-b from-primary-100/0 to-primary-100/50 hover:from-primary-100/20 hover:to-primary-100/70"
+        variant="compound"
       >
         <div className="w-full h-72">
           <ResponsiveContainer width="100%" height="100%">
@@ -89,7 +89,7 @@ const InboundAnalyticsDistribution = () => {
         title="Talk Time Distribution"
         color="success"
         legends={[{ label: "Total Calls", color: "#10B981" }]}
-        className="shadow-none hover:shadow-none border bg-gradient-to-b from-success-100/0 to-success-100/50 hover:from-success-100/20 hover:to-success-100/70"
+        variant="compound"
       >
         <div className="w-full h-72">
           <ResponsiveContainer width="100%" height="100%">

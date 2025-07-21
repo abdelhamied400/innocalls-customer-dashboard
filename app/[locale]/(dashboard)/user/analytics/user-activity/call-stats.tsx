@@ -72,7 +72,7 @@ const CallStatsAnalytics = ({ filters }: CallStatsAnalyticsProps) => {
                 { label: "Total Calls", color: "#6366F1" },
                 { label: "Answered Calls", color: "#10B981" },
               ]}
-              className="shadow-none hover:shadow-none border bg-gradient-to-b from-success-100/0 to-success-100/50 hover:from-success-100/20 hover:to-success-100/70"
+              variant="compound"
             >
               <div className="w-full h-80">
                 {data && data.length > 0 ? (

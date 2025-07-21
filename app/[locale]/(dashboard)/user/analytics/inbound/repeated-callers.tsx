@@ -79,7 +79,7 @@ const InboundAnalyticsRepeatedCallers = () => {
           { label: "Abandoned Calls", color: "#F59E42" },
           { label: "Timeout Calls", color: "#EF4444" },
         ]}
-        className="shadow-none hover:shadow-none border bg-gradient-to-b from-success-100/0 to-success-100/50 hover:from-success-100/20 hover:to-success-100/70"
+        variant="compound"
       >
         <div className="w-full h-80 mb-8">
           <ResponsiveContainer width="100%" height="100%">

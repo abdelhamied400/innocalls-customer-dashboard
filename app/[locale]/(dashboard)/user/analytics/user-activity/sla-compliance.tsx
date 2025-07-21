@@ -80,7 +80,7 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
                 { label: "Poor (30%-49%)", color: "#ef4444" },
                 { label: "Very Poor (<30%)", color: "#991b1b" },
               ]}
-              className="shadow-none hover:shadow-none border bg-gradient-to-b from-warning-100/0 to-warning-100/50 hover:from-warning-100/20 hover:to-warning-100/70"
+              variant="compound"
             >
               {data && data.length > 0 ? (
                 <ResponsiveContainer width="100%" height={300}>
