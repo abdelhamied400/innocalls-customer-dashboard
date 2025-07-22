@@ -41,14 +41,12 @@ const InboundAnalyticsIVRAnalysis = ({
     queryFn: () => inboundAnalyticsService.fetchIVRAnalysis(filters),
   });
 
-  const {
-    data: chartData,
-    isLoading: isChartDataLoading,
-    error: chartDataError,
-    isError: isChartDataError,
-  } = useQuery({
-    queryKey: ["inbound-analytics-ivr-analysis-chart", filters],
-    queryFn: () => inboundAnalyticsService.fetchIVRAnalysisChartData(filters),
+  const chartData = ivrAnalysisData?.map((ivr: any) => {
+    const optionData: any = { ivrName: ivr.name };
+    ivr.options.forEach((option: any) => {
+      optionData[`option${option.option}`] = option.count;
+    });
+    return optionData;
   });
 
   // Get all unique options from the IVR data for legends
@@ -78,9 +76,9 @@ const InboundAnalyticsIVRAnalysis = ({
           color: colors[index % colors.length],
         }))}
         variant="compound"
-        isLoading={isChartDataLoading}
-        error={chartDataError}
-        isError={isChartDataError}
+        isLoading={isLoading}
+        error={error}
+        isError={isError}
       >
         <div className="w-full h-80">
           <ResponsiveContainer width="100%" height="100%">

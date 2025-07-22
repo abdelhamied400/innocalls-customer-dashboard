@@ -14,6 +14,7 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
     setTags,
     setAccounts,
     setPackages,
+    setErgs,
   } = useVocabStore();
   const { data: user, status } = useSession();
   const didFetch = useRef(false);
@@ -42,6 +43,10 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
     const packages = await vocabService.getAllPackages();
     setPackages(packages);
   };
+  const fetchErgs = async () => {
+    const ergs = await vocabService.getAllErgs();
+    setErgs(ergs);
+  };
 
   const fetchUserVocab = async () => {
     const promises = [
@@ -51,6 +56,7 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
       fetchTags(),
       fetchAccounts(),
       fetchPackages(),
+      fetchErgs(),
     ];
     try {
       setLoading(true);

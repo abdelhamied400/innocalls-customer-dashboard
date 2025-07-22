@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import { InboundAnalyticsFilters } from "./page";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
+import NoData from "@/components/Analytics/NoData";
 
 type InboundAnalyticsDistributionProps = {
   filters: InboundAnalyticsFilters;
@@ -51,25 +52,28 @@ const InboundAnalyticsDistribution = ({
         error={waitTimeError}
         isError={isWaitTimeError}
       >
-        <ResponsiveContainer width="100%" height={288}>
-          <BarChart data={waitTimeData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-            <XAxis
-              dataKey="timeBucket"
-              fontSize={12}
-              tickLine={false}
-              axisLine={false}
-            />
-            <YAxis
-              fontSize={12}
-              tickLine={false}
-              axisLine={false}
-              allowDecimals={false}
-            />
-            <Tooltip />
-            <Bar dataKey="totalCalls" fill="#3B82F6" radius={[6, 6, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+        {waitTimeData?.length === 0 && <NoData />}
+        {(waitTimeData?.length ?? 0) > 0 && (
+          <ResponsiveContainer width="100%" height={288}>
+            <BarChart data={waitTimeData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+              <XAxis
+                dataKey="timeBucket"
+                fontSize={12}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis
+                fontSize={12}
+                tickLine={false}
+                axisLine={false}
+                allowDecimals={false}
+              />
+              <Tooltip />
+              <Bar dataKey="totalCalls" fill="#3B82F6" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
       </ChartCard>
 
       <ChartCard
@@ -82,25 +86,28 @@ const InboundAnalyticsDistribution = ({
         error={talkTimeError}
         isError={isTalkTimeError}
       >
-        <ResponsiveContainer width="100%" height={288}>
-          <BarChart data={talkTimeData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-            <XAxis
-              dataKey="timeBucket"
-              fontSize={12}
-              tickLine={false}
-              axisLine={false}
-            />
-            <YAxis
-              fontSize={12}
-              tickLine={false}
-              axisLine={false}
-              allowDecimals={false}
-            />
-            <Tooltip />
-            <Bar dataKey="totalCalls" fill="#10B981" radius={[6, 6, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+        {talkTimeData?.length === 0 && <NoData />}
+        {(talkTimeData?.length ?? 0) > 0 && (
+          <ResponsiveContainer width="100%" height={288}>
+            <BarChart data={talkTimeData}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+              <XAxis
+                dataKey="timeBucket"
+                fontSize={12}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis
+                fontSize={12}
+                tickLine={false}
+                axisLine={false}
+                allowDecimals={false}
+              />
+              <Tooltip />
+              <Bar dataKey="totalCalls" fill="#10B981" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        )}
       </ChartCard>
     </div>
   );

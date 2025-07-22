@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import api from "./api";
 import { InboundAnalyticsFilters } from "@/app/[locale]/(dashboard)/user/analytics/inbound/page";
-
+import { durationToSeconds } from "@/lib/date";
 type FetchAnalyticsStatsResponse = {
   answerRate: number;
   answeredCalls: number;
@@ -25,15 +25,17 @@ type FetchTimeDistributionResponse = Array<{
   totalCalls: number;
 }>;
 
-type FetchAnalyticsAgentPerformanceResponse = {
-  agents: Array<{
-    agentId: string;
-    totalCalls: number;
-    answeredCalls: number;
-    unansweredCalls: number;
-    avgDuration: string;
-  }>;
-};
+type FetchAnalyticsAgentPerformanceResponse = Array<{
+  avgTalkTime: string;
+  avgWaitTime: string;
+  callsHandled: number;
+  ext: number;
+  maxCustomerQueuePosition: number;
+  minCustomerQueuePosition: number;
+  name: string;
+  totalTalkTime: string;
+  totalWaitTime: string;
+}>;
 
 type FetchAnalyticsIVRAnalysisResponse = Array<{
   name: string;
@@ -48,121 +50,125 @@ export type IVRAnalysisChartData = Array<{
   [key: string]: string | number; // Dynamic keys for option1, option2, etc.
 }>;
 
-type FetchAnalyticsRepeatedCallersResponse = {
-  repeatedCallers: Array<{
-    callerId: string;
-    totalCalls: number;
-    lastCallDate: string;
-  }>;
-};
+type FetchAnalyticsRepeatedCallersResponse = Array<{
+  callerId: string;
+  totalCalls: number;
+  lastCallDate: string;
+}>;
+
+type FetchAnalyticsDateDistributionResponse = Array<{
+  date: string;
+  totalCalls: number;
+  internalCalls: number;
+  externalCalls: number;
+  totalAnsweredCalls: number;
+  totalUnAnsweredCalls: number;
+  answerRate: number;
+  totalDuration: string;
+  avgDuration: string;
+  shortestCall: string;
+}>;
+
+const formatParams = (filters: InboundAnalyticsFilters) => ({
+  fromDate: format(filters.fromDate, "yyyy-MM-dd"),
+  toDate: format(filters.toDate, "yyyy-MM-dd"),
+  exts: filters.agents?.length ? filters.agents.join(",") : undefined,
+  queue: filters.queue,
+});
 
 export default {
-  fetchQuickStats: async (
+  async fetchQuickStats(
     filters: InboundAnalyticsFilters
-  ): Promise<FetchAnalyticsStatsResponse> => {
-    const res = await api.get(`/inbound-reports/summary`, {
-      params: {
-        fromDate: format(filters.fromDate, "yyyy-MM-dd"),
-        toDate: format(filters.toDate, "yyyy-MM-dd"),
-        exts: filters.agents?.length ? filters.agents.join(",") : undefined,
-      },
+  ): Promise<FetchAnalyticsStatsResponse> {
+    const baseUrl =
+      filters.filterBy === "team" ? `inbound-queue-reports` : `inbound-reports`;
+    const res = await api.get(`/${baseUrl}/summary`, {
+      params: formatParams(filters),
     });
     return res.data.summary;
   },
-  fetchOverview: async (
+
+  async fetchOverview(
     filters: InboundAnalyticsFilters
-  ): Promise<FetchAnalyticsOverviewResponse> => {
-    const res = await api.get(`/inbound-reports/hourly-call-distribution`, {
-      params: {
-        fromDate: format(filters.fromDate, "yyyy-MM-dd"),
-        toDate: format(filters.toDate, "yyyy-MM-dd"),
-        exts: filters.agents?.length ? filters.agents.join(",") : undefined,
-      },
+  ): Promise<FetchAnalyticsOverviewResponse> {
+    const baseUrl =
+      filters.filterBy === "team" ? `inbound-queue-reports` : `inbound-reports`;
+    const res = await api.get(`/${baseUrl}/hourly-call-distribution`, {
+      params: formatParams(filters),
     });
     return res.data.hourlyDistribution;
   },
-  fetchWaitTimeDistribution: async (
+
+  async fetchWaitTimeDistribution(
     filters: InboundAnalyticsFilters
-  ): Promise<FetchTimeDistributionResponse> => {
-    const res = await api.get(`/inbound-reports/wait-time-distribution`, {
-      params: {
-        fromDate: format(filters.fromDate, "yyyy-MM-dd"),
-        toDate: format(filters.toDate, "yyyy-MM-dd"),
-        exts: filters.agents?.length ? filters.agents.join(",") : undefined,
-      },
+  ): Promise<FetchTimeDistributionResponse> {
+    const baseUrl =
+      filters.filterBy === "team" ? `inbound-queue-reports` : `inbound-reports`;
+    const res = await api.get(`/${baseUrl}/wait-time-distribution`, {
+      params: formatParams(filters),
     });
     return res.data.waitTimeDistribution;
   },
-  fetchTalkTimeDistribution: async (
+
+  async fetchTalkTimeDistribution(
     filters: InboundAnalyticsFilters
-  ): Promise<FetchTimeDistributionResponse> => {
-    const res = await api.get(`/inbound-reports/talk-time-distribution`, {
-      params: {
-        fromDate: format(filters.fromDate, "yyyy-MM-dd"),
-        toDate: format(filters.toDate, "yyyy-MM-dd"),
-        exts: filters.agents?.length ? filters.agents.join(",") : undefined,
-      },
+  ): Promise<FetchTimeDistributionResponse> {
+    const baseUrl =
+      filters.filterBy === "team" ? `inbound-queue-reports` : `inbound-reports`;
+    const res = await api.get(`/${baseUrl}/talk-time-distribution`, {
+      params: formatParams(filters),
     });
     return res.data.talkTimeDistribution;
   },
-  fetchIVRAnalysis: async (
+
+  async fetchIVRAnalysis(
     filters: InboundAnalyticsFilters
-  ): Promise<FetchAnalyticsIVRAnalysisResponse> => {
+  ): Promise<FetchAnalyticsIVRAnalysisResponse> {
     const res = await api.get(`/inbound-reports/ivr-options`, {
-      params: {
-        fromDate: format(filters.fromDate, "yyyy-MM-dd"),
-        toDate: format(filters.toDate, "yyyy-MM-dd"),
-        exts: filters.agents?.length ? filters.agents.join(",") : undefined,
-      },
+      params: formatParams(filters),
     });
     return res.data.data;
   },
-  fetchIVRAnalysisChartData: async (
+
+  async fetchDateDistributionAnalytics(
     filters: InboundAnalyticsFilters
-  ): Promise<IVRAnalysisChartData> => {
-    const res = await api.get(`/inbound-reports/ivr-options`, {
-      params: {
-        fromDate: format(filters.fromDate, "yyyy-MM-dd"),
-        toDate: format(filters.toDate, "yyyy-MM-dd"),
-        exts: filters.agents?.length ? filters.agents.join(",") : undefined,
-      },
+  ): Promise<FetchAnalyticsDateDistributionResponse> {
+    const baseUrl =
+      filters.filterBy === "team" ? `inbound-queue-reports` : `inbound-reports`;
+    const res = await api.get(`/${baseUrl}/call-distribution`, {
+      params: formatParams(filters),
     });
-
-    const rawData: FetchAnalyticsIVRAnalysisResponse = res.data.data;
-
-    // Transform the data for chart consumption
-    const chartData = rawData?.map((ivr) => {
-      const optionData: any = { ivrName: ivr.name };
-      ivr.options.forEach((option) => {
-        optionData[`option${option.option}`] = option.count;
-      });
-      return optionData;
-    });
-
-    return chartData || [];
+    return res.data.callsDistribution;
   },
-  fetchAgentPerformance: async (
+
+  async fetchAgentPerformance(
     filters: InboundAnalyticsFilters
-  ): Promise<FetchAnalyticsAgentPerformanceResponse> => {
-    const res = await api.get(`/inbound-reports/agent-performance`, {
-      params: {
-        fromDate: format(filters.fromDate, "yyyy-MM-dd"),
-        toDate: format(filters.toDate, "yyyy-MM-dd"),
-        exts: filters.agents?.length ? filters.agents.join(",") : undefined,
-      },
-    });
-    return res.data;
+  ): Promise<FetchAnalyticsAgentPerformanceResponse> {
+    const res = await api.get(
+      `/inbound-queue-reports/agent-answered-calls-performance`,
+      {
+        params: formatParams(filters),
+      }
+    );
+    return res.data.agents.map((agent: any) => ({
+      ...agent,
+      avgTalkTime: durationToSeconds(agent.avgTalkTime),
+      avgWaitTime: durationToSeconds(agent.avgWaitTime),
+      totalTalkTime: durationToSeconds(agent.totalTalkTime),
+      totalWaitTime: durationToSeconds(agent.totalWaitTime),
+    }));
   },
-  fetchRepeatedCallers: async (
+
+  async fetchRepeatedCallers(
     filters: InboundAnalyticsFilters
-  ): Promise<FetchAnalyticsRepeatedCallersResponse> => {
-    const res = await api.get(`/inbound-reports/repeated-callers`, {
-      params: {
-        fromDate: format(filters.fromDate, "yyyy-MM-dd"),
-        toDate: format(filters.toDate, "yyyy-MM-dd"),
-        exts: filters.agents?.length ? filters.agents.join(",") : undefined,
-      },
+  ): Promise<FetchAnalyticsRepeatedCallersResponse> {
+    const res = await api.get(`/inbound-queue-reports/repeated-callers`, {
+      params: formatParams(filters),
     });
-    return res.data;
+    return res.data.callers.map((caller: any) => ({
+      ...caller,
+      firstCallTime: format(caller.firstCallTime * 1000, "yyyy-MM-dd HH:mm:ss"),
+      lastCallTime: format(caller.lastCallTime * 1000, "yyyy-MM-dd HH:mm:ss"),
+    }));
   },
 };

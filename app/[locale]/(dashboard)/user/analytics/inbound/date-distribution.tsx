@@ -1,0 +1,175 @@
+"use client";
+
+import React from "react";
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip as RechartsTooltip,
+  Legend as RechartsLegend,
+} from "recharts";
+import { useQuery } from "@tanstack/react-query";
+import inboundAnalyticsService from "@/services/inbound-analytics.service";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import ChartCard, { ChartCardSkeleton } from "@/components/ChartCard";
+import PaginatedTable from "@/components/Table/PaginatedTable";
+import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
+import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
+import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
+import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
+import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
+import { ShowChart, TableView } from "@mui/icons-material";
+import { InboundAnalyticsFilters } from "./page";
+import NoData from "../../../../../../components/Analytics/NoData";
+
+type InboundAnalyticsDateDistributionProps = {
+  filters: InboundAnalyticsFilters;
+};
+
+const columns = [
+  {
+    header: "Date",
+    accessorKey: "date",
+  },
+  {
+    header: "Total",
+    accessorKey: "totalCalls",
+  },
+  {
+    header: "Internal",
+    accessorKey: "internalCalls",
+  },
+  {
+    header: "External",
+    accessorKey: "externalCalls",
+  },
+  {
+    header: "Answered",
+    accessorKey: "totalAnsweredCalls",
+  },
+  {
+    header: "Unanswered",
+    accessorKey: "totalUnAnsweredCalls",
+  },
+  {
+    header: "Answer Rate",
+    accessorKey: "answerRate",
+    cell: (row: any) => `${row.getValue("answerRate")}%`,
+  },
+  {
+    header: "Total Duration",
+    accessorKey: "totalDuration",
+  },
+  {
+    header: "Avg Duration",
+    accessorKey: "avgDuration",
+  },
+  {
+    header: "Shortest",
+    accessorKey: "shortestCall",
+  },
+  {
+    header: "Longest",
+    accessorKey: "longestCall",
+  },
+];
+
+const InboundAnalyticsDateDistribution = ({
+  filters,
+}: InboundAnalyticsDateDistributionProps) => {
+  const { data, isLoading } = useQuery({
+    queryKey: ["dateDistribution", filters],
+    queryFn: () =>
+      inboundAnalyticsService.fetchDateDistributionAnalytics(filters),
+  });
+
+  return (
+    <div className="date-distribution-analytics">
+      <Tabs defaultValue="chart" className="w-full">
+        <TabsList className="w-full flex justify-end">
+          <TabsTrigger value="chart" className="flex items-center gap-1">
+            <ShowChart />
+          </TabsTrigger>
+          <TabsTrigger value="table" className="flex items-center gap-1">
+            <TableView />
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="chart">
+          {isLoading && <ChartCardSkeleton />}
+          {!isLoading && data && data.length > 0 && (
+            <ChartCard
+              title="Date Distribution"
+              icon={<ShowChart />}
+              color="primary"
+              variant="compound"
+            >
+              <ResponsiveContainer width="100%" height={320}>
+                <LineChart data={data}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                  <XAxis
+                    dataKey="date"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    allowDecimals={false}
+                  />
+                  <RechartsTooltip />
+                  <RechartsLegend />
+                  <Line
+                    type="monotone"
+                    dataKey="totalCalls"
+                    stroke="#3B82F6"
+                    strokeWidth={2}
+                    dot={false}
+                    name="Total"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="totalAnsweredCalls"
+                    stroke="#10B981"
+                    strokeWidth={2}
+                    dot={false}
+                    name="Answered"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="totalUnAnsweredCalls"
+                    stroke="#EF4444"
+                    strokeWidth={2}
+                    dot={false}
+                    name="Unanswered"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </ChartCard>
+          )}
+          {!isLoading && (!data || data.length === 0) && <NoData />}
+        </TabsContent>
+        <TabsContent value="table">
+          <PaginatedTable
+            data={data || []}
+            columns={columns}
+            manualPagination={false}
+          >
+            <PaginatedTableContent>
+              <PaginatedTableHead />
+              {isLoading && <PaginatedTableSkeleton />}
+              {!isLoading && <PaginatedTableBody />}
+            </PaginatedTableContent>
+            {!isLoading && <PaginatedTablePagination />}
+          </PaginatedTable>
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+};
+
+export default InboundAnalyticsDateDistribution;

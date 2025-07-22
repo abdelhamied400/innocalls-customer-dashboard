@@ -2,6 +2,7 @@ import { Country } from "@/types/api/country";
 import api from "./api";
 import { Tag } from "@/types/api/tag";
 import { Extension } from "@/types/api/extension";
+import { ERG } from "@/types/api/erg";
 
 export default {
   getAllCountries: async () => {
@@ -26,6 +27,10 @@ export default {
   },
   getAllPackages: async () => {
     const res = await api.get("/jera/packages");
+    return res.data;
+  },
+  getAllErgs: async (): Promise<ERG[]> => {
+    const res = await api.get("/ergs");
     return res.data;
   },
 };
