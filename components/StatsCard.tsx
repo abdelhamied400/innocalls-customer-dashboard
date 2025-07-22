@@ -31,6 +31,9 @@ type StatsCardProps = StatsCardVariants & {
   value: string | number;
   className?: string;
   isRefetching?: boolean;
+  isLoading?: boolean;
+  isError?: boolean;
+  error?: unknown;
   info?: React.ReactNode;
   canRefetch?: boolean;
   refetchInterval?: number | false;
@@ -46,6 +49,9 @@ const StatsCard = ({
   value,
   className = "",
   isRefetching = false,
+  isLoading = false,
+  isError = false,
+  error,
   info,
   canRefetch = false,
   refetchInterval,
@@ -55,6 +61,14 @@ const StatsCard = ({
   color = "default",
 }: StatsCardProps) => {
   const t = useTranslations("components.statsCard");
+
+  if (isLoading) {
+    return <StatsCardSkeleton />;
+  }
+
+  if (isError) {
+    return <StatsCardError error={error} />;
+  }
 
   return (
     <div

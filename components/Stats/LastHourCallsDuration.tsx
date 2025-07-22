@@ -47,14 +47,6 @@ const LastHourCallsDuration = () => {
 
   // Remove handleRefetchIntervalChange and useEffect for refetchInterval
 
-  if (isLoading) {
-    return <StatsCardSkeleton />;
-  }
-
-  if (isError) {
-    return <StatsCardError error={error} />;
-  }
-
   return (
     <StatsCard
       icon={
@@ -83,6 +75,9 @@ const LastHourCallsDuration = () => {
         </p>
       }
       isRefetching={isRefetching}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
       canRefetch
       refetchInterval={refetchInterval}
       setRefetchInterval={setRefetchInterval}

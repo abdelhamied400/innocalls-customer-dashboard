@@ -44,14 +44,6 @@ const TodayCallsDuration = () => {
       .join(" ");
   };
 
-  if (isLoading) {
-    return <StatsCardSkeleton />;
-  }
-
-  if (isError) {
-    return <StatsCardError error={error} />;
-  }
-
   return (
     <StatsCard
       icon={
@@ -80,6 +72,9 @@ const TodayCallsDuration = () => {
         </p>
       }
       isRefetching={isRefetching}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
       canRefetch
       refetchInterval={refetchInterval}
       setRefetchInterval={setRefetchInterval}

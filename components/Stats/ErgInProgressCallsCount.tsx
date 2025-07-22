@@ -31,20 +31,15 @@ const ErgInProgressCallsCount = () => {
     retry: false,
   });
 
-  if (isLoading) {
-    return <StatsCardSkeleton />;
-  }
-
-  if (isError) {
-    return <StatsCardError error={error} />;
-  }
-
   return (
     <StatsCard
       icon={<img src="/assets/icons/stats/phone.svg" alt="Live Calls Icon" />}
       title={t("title")}
       value={ergStats.inProgressCallsCount}
       isRefetching={isRefetching}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
       canRefetch
       refetchInterval={refetchInterval}
       setRefetchInterval={setRefetchInterval}

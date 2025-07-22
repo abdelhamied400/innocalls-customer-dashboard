@@ -21,24 +21,19 @@ const TotalIncomingCalls = () => {
     queryFn: statsService.getTotalIncomingCalls,
   });
 
-  if (isLoading) {
-    return <StatsCardSkeleton />;
-  }
-
-  if (isError || !totalIncomingCalls) {
-    return <StatsCardError error={error} />;
-  }
-
   return (
     <StatsCard
       title="Total Incoming"
-      value={totalIncomingCalls.totalCalls}
+      value={totalIncomingCalls?.totalCalls || "0"}
       info={`${Math.round(
-        totalIncomingCalls.totalCallsChangePercentage
+        totalIncomingCalls?.totalCallsChangePercentage || 0
       )}% vs last month`}
       icon={<CallReceived />}
       color="primary"
       isRefetching={isRefetching}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
     />
   );
 };

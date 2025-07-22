@@ -21,25 +21,6 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
     queryFn: () => unansweredAnalyticsService.fetchQuickStats(filters),
   });
 
-  if (isLoading) {
-    return (
-      <div className="quick-stats grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <StatsCardSkeleton />
-        <StatsCardSkeleton />
-        <StatsCardSkeleton />
-        <StatsCardSkeleton />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="quick-stats grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <StatsCardError error={error} />
-      </div>
-    );
-  }
-
   return (
     <div className="quick-stats grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <StatsCard
@@ -48,6 +29,9 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
         icon={<PhoneDisabledIcon fontSize="small" />}
         color="destructive"
         isRefetching={isRefetching}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
       />
       <StatsCard
         title="External Unanswered Incoming"
@@ -55,6 +39,9 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
         icon={<ArrowDownwardIcon fontSize="small" />}
         color="primary"
         isRefetching={isRefetching}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
       />
       <StatsCard
         title="External Unanswered Outgoing"
@@ -62,6 +49,9 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
         icon={<ArrowUpwardIcon fontSize="small" />}
         color="warning"
         isRefetching={isRefetching}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
       />
       <StatsCard
         title="Internal Unanswered Calls"
@@ -69,6 +59,9 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
         icon={<GroupIcon fontSize="small" />}
         color="info"
         isRefetching={isRefetching}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
       />
     </div>
   );

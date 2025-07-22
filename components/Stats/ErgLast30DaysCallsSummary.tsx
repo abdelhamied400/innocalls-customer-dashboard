@@ -25,14 +25,6 @@ const ErgLast30DaysCallsSummary = () => {
     retry: false,
   });
 
-  if (isLoading) {
-    return <StatsCardSkeleton />;
-  }
-
-  if (isError) {
-    return <StatsCardError error={error} />;
-  }
-
   return (
     <StatsCard
       icon={
@@ -42,6 +34,9 @@ const ErgLast30DaysCallsSummary = () => {
         />
       }
       isRefetching={isRefetching}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
       title={t("title")}
       value={ergStats.total}
       info={

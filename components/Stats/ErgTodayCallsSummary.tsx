@@ -32,14 +32,6 @@ const ErgTodayCallsSummary = () => {
     retry: false,
   });
 
-  if (isLoading) {
-    return <StatsCardSkeleton />;
-  }
-
-  if (isError) {
-    return <StatsCardError error={error} />;
-  }
-
   return (
     <StatsCard
       icon={
@@ -73,6 +65,9 @@ const ErgTodayCallsSummary = () => {
         </div>
       }
       isRefetching={isRefetching}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
       canRefetch
       refetchInterval={refetchInterval}
       setRefetchInterval={setRefetchInterval}

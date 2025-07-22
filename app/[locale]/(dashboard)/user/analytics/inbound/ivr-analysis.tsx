@@ -1,5 +1,7 @@
 import ChartCard from "@/components/ChartCard";
+import inboundAnalyticsService from "@/services/inbound-analytics.service";
 import { Call } from "@mui/icons-material";
+import { useQuery } from "@tanstack/react-query";
 import {
   ResponsiveContainer,
   BarChart,
@@ -10,94 +12,14 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import { InboundAnalyticsFilters } from "./page";
 
-const InboundAnalyticsIVRAnalysis = () => {
-  const data = [
-    {
-      ivrName: "Main Menu",
-      options: [
-        {
-          optionNumber: 1,
-          clickCount: 45,
-          optionName: "Sales",
-        },
-        {
-          optionNumber: 2,
-          clickCount: 38,
-          optionName: "Support",
-        },
-        {
-          optionNumber: 3,
-          clickCount: 22,
-          optionName: "Billing",
-        },
-        {
-          optionNumber: 4,
-          clickCount: 15,
-          optionName: "General",
-        },
-      ],
-    },
-    {
-      ivrName: "Support Menu",
-      options: [
-        {
-          optionNumber: 1,
-          clickCount: 28,
-          optionName: "Technical",
-        },
-        {
-          optionNumber: 2,
-          clickCount: 32,
-          optionName: "Account",
-        },
-        {
-          optionNumber: 3,
-          clickCount: 18,
-          optionName: "Product",
-        },
-        {
-          optionNumber: 4,
-          clickCount: 12,
-          optionName: "Other",
-        },
-      ],
-    },
-    {
-      ivrName: "Sales Menu",
-      options: [
-        {
-          optionNumber: 1,
-          clickCount: 35,
-          optionName: "New Sales",
-        },
-        {
-          optionNumber: 2,
-          clickCount: 25,
-          optionName: "Upgrades",
-        },
-        {
-          optionNumber: 3,
-          clickCount: 20,
-          optionName: "Pricing",
-        },
-        {
-          optionNumber: 4,
-          clickCount: 15,
-          optionName: "Demo",
-        },
-      ],
-    },
-  ];
-
-  const chartData = data.map((ivr) => {
-    const optionData: any = { ivrName: ivr.ivrName };
-    ivr.options.forEach((option) => {
-      optionData[`option${option.optionNumber}`] = option.clickCount;
-    });
-    return optionData;
-  });
-
+type InboundAnalyticsIVRAnalysisProps = {
+  filters: InboundAnalyticsFilters;
+};
+const InboundAnalyticsIVRAnalysis = ({
+  filters,
+}: InboundAnalyticsIVRAnalysisProps) => {
   const colors = [
     "#3B82F6",
     "#10B981",
@@ -109,19 +31,56 @@ const InboundAnalyticsIVRAnalysis = () => {
     "#F97316",
   ];
 
+  const {
+    data: ivrAnalysisData,
+    isLoading,
+    error,
+    isError,
+  } = useQuery({
+    queryKey: ["inbound-analytics-ivr-analysis", filters],
+    queryFn: () => inboundAnalyticsService.fetchIVRAnalysis(filters),
+  });
+
+  const {
+    data: chartData,
+    isLoading: isChartDataLoading,
+    error: chartDataError,
+    isError: isChartDataError,
+  } = useQuery({
+    queryKey: ["inbound-analytics-ivr-analysis-chart", filters],
+    queryFn: () => inboundAnalyticsService.fetchIVRAnalysisChartData(filters),
+  });
+
+  // Get all unique options from the IVR data for legends
+  const getAllOptions = () => {
+    if (!ivrAnalysisData || ivrAnalysisData.length === 0) return [];
+
+    const allOptions = new Set<string>();
+    ivrAnalysisData.forEach((ivr) => {
+      ivr.options.forEach((option) => {
+        allOptions.add(option.option);
+      });
+    });
+
+    return Array.from(allOptions).sort();
+  };
+
+  const allOptions = getAllOptions();
+
   return (
     <div className="flex flex-col gap-4">
       <ChartCard
         title="IVR Analysis"
         icon={<Call />}
         color="primary"
-        legends={data[0]?.options.map((option) => ({
-          label: `Option ${option.optionNumber}${
-            option.optionName ? ` - ${option.optionName}` : ""
-          }`,
-          color: colors[option.optionNumber - 1],
+        legends={allOptions.map((option, index) => ({
+          label: `Option ${option}`,
+          color: colors[index % colors.length],
         }))}
         variant="compound"
+        isLoading={isChartDataLoading}
+        error={chartDataError}
+        isError={isChartDataError}
       >
         <div className="w-full h-80">
           <ResponsiveContainer width="100%" height="100%">
@@ -132,11 +91,6 @@ const InboundAnalyticsIVRAnalysis = () => {
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
-                label={{
-                  value: "IVR Name",
-                  position: "insideBottomRight",
-                  offset: -5,
-                }}
               />
               <YAxis
                 fontSize={12}
@@ -146,15 +100,13 @@ const InboundAnalyticsIVRAnalysis = () => {
               />
               <Tooltip />
               <Legend />
-              {data[0]?.options.map((option, index) => (
+              {allOptions.map((option, index) => (
                 <Bar
-                  key={option.optionNumber}
-                  dataKey={`option${option.optionNumber}`}
+                  key={option}
+                  dataKey={`option${option}`}
                   fill={colors[index % colors.length]}
                   radius={[4, 4, 0, 0]}
-                  name={`Option ${option.optionNumber}${
-                    option.optionName ? ` - ${option.optionName}` : ""
-                  }`}
+                  name={`Option ${option}`}
                 />
               ))}
             </BarChart>

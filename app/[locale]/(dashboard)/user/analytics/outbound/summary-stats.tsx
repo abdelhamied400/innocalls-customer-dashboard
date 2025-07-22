@@ -31,32 +31,6 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
     queryFn: () => outboundAnalyticsService.fetchQuickStats(filters),
   });
 
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mb-8">
-        <StatsCardSkeleton />
-        <StatsCardSkeleton />
-        <StatsCardSkeleton />
-        <StatsCardSkeleton />
-        <StatsCardSkeleton />
-        <StatsCardSkeleton />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mb-8">
-        <StatsCardError error={error} />
-        <StatsCardError error={error} />
-        <StatsCardError error={error} />
-        <StatsCardError error={error} />
-        <StatsCardError error={error} />
-        <StatsCardError error={error} />
-      </div>
-    );
-  }
-
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mb-8">
       <StatsCard
@@ -66,6 +40,9 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         value={quickStatsData?.totalCalls || 0}
         color="default"
         isRefetching={isRefetching}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
       />
       <StatsCard
         key="Unanswered Calls"
@@ -74,6 +51,9 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         value={quickStatsData?.unansweredCalls || 0}
         color="destructive"
         isRefetching={isRefetching}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
       />
       <StatsCard
         key="Answered Calls"
@@ -82,6 +62,9 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         value={quickStatsData?.answeredCalls || 0}
         color="success"
         isRefetching={isRefetching}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
       />
       <StatsCard
         key="Answer Rate"
@@ -90,6 +73,9 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         value={`${quickStatsData?.answerRate || 0}%`}
         color="info"
         isRefetching={isRefetching}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
       />
       <StatsCard
         key="External Calls"
@@ -98,6 +84,9 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         value={quickStatsData?.externalCalls || 0}
         color="primary"
         isRefetching={isRefetching}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
       />
       <StatsCard
         key="Avg Duration"
@@ -106,6 +95,9 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         value={quickStatsData?.avgDuration || "00:00:00"}
         color="warning"
         isRefetching={isRefetching}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
       />
     </div>
   );

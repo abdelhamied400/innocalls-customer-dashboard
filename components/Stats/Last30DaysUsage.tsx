@@ -21,20 +21,15 @@ const Last30DaysUsage = () => {
     retry: false,
   });
 
-  if (isLoading) {
-    return <StatsCardSkeleton />;
-  }
-
-  if (isError) {
-    return <StatsCardError error={error} />;
-  }
-
   return (
     <StatsCard
       icon={<ViewCarousel />}
       title={t("title")}
       value={`${usage?.amount} ${usage?.currency}`}
       isRefetching={isRefetching}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
       color="primary"
     ></StatsCard>
   );

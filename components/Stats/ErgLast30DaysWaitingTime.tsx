@@ -26,19 +26,11 @@ const ErgLast30DaysWaitingTime = () => {
     retry: false,
   });
 
-  if (isLoading) {
-    return <StatsCardSkeleton />;
-  }
-
-  if (isError) {
-    return <StatsCardError error={error} />;
-  }
-
   return (
     <StatsCard
       icon={
         <img
-          src="/assets/icons/stats/erg/date_range.png"
+          src="/assets/icons/stats/erg/last30.png"
           alt="Last 30 Days Waiting Time Icon"
         />
       }
@@ -85,6 +77,9 @@ const ErgLast30DaysWaitingTime = () => {
         </div>
       }
       isRefetching={isRefetching}
+      isLoading={isLoading}
+      isError={isError}
+      error={error}
     ></StatsCard>
   );
 };

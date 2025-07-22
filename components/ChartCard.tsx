@@ -134,6 +134,9 @@ type ChartCardProps = PropsWithChildren<
     title: string;
     className?: string;
     isRefetching?: boolean;
+    isLoading?: boolean;
+    error?: unknown;
+    isError?: boolean;
     canRefetch?: boolean;
     refetchInterval?: number | false;
     legends?: Legend[];
@@ -149,6 +152,9 @@ const ChartCard = ({
   title,
   className = "",
   isRefetching = false,
+  isLoading = false,
+  error,
+  isError,
   children,
   canRefetch = false,
   refetchInterval,
@@ -159,6 +165,14 @@ const ChartCard = ({
   legends,
 }: ChartCardProps) => {
   const t = useTranslations("components.statsCard");
+
+  if (isLoading) {
+    return <ChartCardSkeleton />;
+  }
+
+  if (isError) {
+    return <ChartCardError error={error} />;
+  }
 
   return (
     <div

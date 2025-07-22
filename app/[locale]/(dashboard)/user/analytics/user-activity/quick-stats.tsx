@@ -28,26 +28,6 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
     queryFn: () => analyticsService.fetchQuickStats(filters),
   });
 
-  if (isLoading) {
-    return (
-      <div className="quick-stats grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        <StatsCardSkeleton />
-        <StatsCardSkeleton />
-        <StatsCardSkeleton />
-      </div>
-    );
-  }
-
-  if (isError) {
-    return (
-      <div className="quick-stats grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        <StatsCardError error={error} />
-        <StatsCardError error={error} />
-        <StatsCardError error={error} />
-      </div>
-    );
-  }
-
   return (
     <div className="quick-stats grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
       <StatsCard
@@ -60,6 +40,9 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         }
         color="success"
         isRefetching={isRefetching}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
       />
       <StatsCard
         icon={<MilitaryTech className="w-6 h-6" />}
@@ -71,6 +54,9 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         }
         color="info"
         isRefetching={isRefetching}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
       />
       <StatsCard
         icon={<EmojiEvents className="w-6 h-6" />}
@@ -82,6 +68,9 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         }
         color="warning"
         isRefetching={isRefetching}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
       />
     </div>
   );
