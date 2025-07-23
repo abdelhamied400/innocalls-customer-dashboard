@@ -14,6 +14,8 @@ import {
   BarChart,
   Search,
 } from "@mui/icons-material";
+import { useFilterManager } from "@/hooks/useFilterManager";
+import { inboundFiltersSchema } from "@/validation/inboundFilters";
 import StatsDetailedCard from "@/components/StatsDetailedCard";
 import InboundAnalyticsOverview from "./overview";
 import InboundAnalyticsDistribution from "./distribution";
@@ -26,10 +28,12 @@ import useVocabStore from "@/store/vocab.slice";
 import InboundAnalyticsDateDistribution from "./date-distribution";
 
 export type InboundAnalyticsFilterBy = "all" | "team";
+
 type Option<T> = {
   value: T;
   label: string;
 };
+
 export type InboundAnalyticsFilters = {
   fromDate: Date;
   toDate: Date;
@@ -43,26 +47,36 @@ const filterByOptions = [
   { value: "team", label: "Team" },
 ];
 
+const today = new Date();
+const lastMonth = new Date();
+lastMonth.setDate(today.getDate() - 30);
+
+const inboundFilterConfig = {
+  defaultValues: {
+    fromDate: lastMonth,
+    toDate: today,
+    agents: [],
+    queue: undefined,
+    filterBy: "all" as InboundAnalyticsFilterBy,
+  } as InboundAnalyticsFilters,
+  schema: inboundFiltersSchema,
+};
+
 const InboundAnalytics = () => {
   const { extensions, ergs } = useVocabStore();
 
   const [currentTab, setCurrentTab] = useState<string>("overview");
 
-  const [fromDate, setFromDate] = useState<Date>(new Date());
-  const [toDate, setToDate] = useState<Date>(new Date());
-  const [agents, setAgents] = useState<string[]>([]);
-  const [queue, setQueue] = useState<Option<string>>();
-  const [filterBy, setFilterBy] = useState<Option<InboundAnalyticsFilterBy>>({
+  const { values, appliedValues, errors, setValue, reset, apply } =
+    useFilterManager<InboundAnalyticsFilters>(inboundFilterConfig);
+
+  // Helper states for UI components that need Option objects
+  const [queueOption, setQueueOption] = useState<Option<string>>();
+  const [filterByOption, setFilterByOption] = useState<
+    Option<InboundAnalyticsFilterBy>
+  >({
     value: "all",
     label: "All",
-  });
-
-  const [filters, setFilters] = useState<InboundAnalyticsFilters>({
-    fromDate,
-    toDate,
-    agents,
-    queue: queue?.value,
-    filterBy: filterBy.value,
   });
 
   return (
@@ -79,83 +93,96 @@ const InboundAnalytics = () => {
               <Field
                 label="From"
                 postIcon={<CalendarIcon className="text-gray-400" />}
+                error={errors.fromDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
                   placeholder="Enter from date"
-                  value={fromDate}
-                  onChange={(date) => setFromDate(date || new Date())}
+                  value={values.fromDate}
+                  onChange={(date) => setValue("fromDate", date || new Date())}
                 />
               </Field>
               <Field
                 label="To"
                 postIcon={<CalendarIcon className="text-gray-400" />}
+                error={errors.toDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
                   placeholder="Enter to date"
-                  value={toDate}
-                  onChange={(date) => setToDate(date || new Date())}
+                  value={values.toDate}
+                  onChange={(date) => setValue("toDate", date || new Date())}
                 />
               </Field>
               {/* filter by */}
               <Select
                 className="w-full"
                 placeholder="Filter By"
-                value={filterBy}
-                onChange={setFilterBy}
+                value={filterByOption}
+                onChange={(option) => {
+                  setFilterByOption(option);
+                  setValue("filterBy", option?.value || "all");
+                }}
                 options={filterByOptions}
                 label="Filter By"
                 showSelectedTags={false}
+                error={errors.filterBy}
               />
               {/* queue */}
-              <div className="col-span-1 sm:col-span-2 lg:col-span-3">
-                <Select
-                  className="w-full"
-                  placeholder="Select queue"
-                  value={queue}
-                  onChange={setQueue}
-                  options={
-                    ergs?.map((erg) => ({
-                      value: erg.name,
-                      label: erg.name,
-                    })) || []
-                  }
-                  label="Select Queue"
-                  showSelectedTags={false}
-                />
-              </div>
+              {filterByOption?.value === "team" && (
+                <div className="col-span-1 sm:col-span-2 lg:col-span-3">
+                  <Select
+                    className="w-full"
+                    placeholder="Select queue"
+                    value={queueOption}
+                    onChange={(option) => {
+                      setQueueOption(option);
+                      setValue("queue", option?.value);
+                    }}
+                    options={
+                      ergs?.map((erg) => ({
+                        value: erg.name,
+                        label: erg.name,
+                      })) || []
+                    }
+                    label="Select Queue"
+                    showSelectedTags={false}
+                    error={errors.queue}
+                  />
+                </div>
+              )}
+
               {/* agents */}
-              <div className="col-span-1 sm:col-span-2 lg:col-span-3">
-                <Select
-                  className="w-full"
-                  placeholder="Select agents"
-                  value={agents}
-                  onChange={setAgents}
-                  options={extensions.map((ext) => ({
-                    value: ext.ext,
-                    label: `${ext.name} (${ext.ext})`,
-                  }))}
-                  isMulti
-                  label="Select Agents"
-                  showSelectedTags={false}
-                />
-              </div>
+              {filterByOption?.value === "all" && (
+                <div className="col-span-1 sm:col-span-2 lg:col-span-3">
+                  <Select
+                    className="w-full"
+                    placeholder="Select agents"
+                    value={values.agents}
+                    onChange={(value) => setValue("agents", value || [])}
+                    options={extensions.map((ext) => ({
+                      value: ext.ext,
+                      label: `${ext.name} (${ext.ext})`,
+                    }))}
+                    isMulti
+                    label="Select Agents"
+                    showSelectedTags={false}
+                    error={errors.agents}
+                  />
+                </div>
+              )}
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={reset}>
+                Clear Filters
+              </Button>
               <Button
                 onClick={() => {
                   // resets to overview tab if filterBy changes
-                  if (filterBy.value !== filters.filterBy) {
+                  if (values.filterBy !== appliedValues.filterBy) {
                     setCurrentTab("overview");
                   }
-                  setFilters({
-                    fromDate,
-                    toDate,
-                    agents,
-                    queue: queue?.value,
-                    filterBy: filterBy.value,
-                  });
+                  apply();
                 }}
               >
                 <Search />
@@ -165,7 +192,7 @@ const InboundAnalytics = () => {
           </StatsDetailedCard>
         </div>
 
-        <QuickStats filters={filters} />
+        <QuickStats filters={appliedValues} />
 
         <StatsDetailedCard
           title="Detailed Call Statistics"
@@ -182,61 +209,61 @@ const InboundAnalytics = () => {
             <TabsList>
               <TabsTrigger value="overview" className="flex items-center gap-1">
                 <BarChartIcon />
-                Overview
+                Summary
               </TabsTrigger>
               <TabsTrigger
                 value="distribution"
                 className="flex items-center gap-1"
               >
                 <PieChart />
-                Distribution
+                Call Distribution
               </TabsTrigger>
-              {filters.filterBy === "team" && (
+              {appliedValues.filterBy === "team" && (
                 <TabsTrigger value="agents" className="flex items-center gap-1">
-                  <Group />
-                  Agent Performance
+                  <PeopleAlt />
+                  Team Performance
                 </TabsTrigger>
               )}
               <TabsTrigger value="ivr" className="flex items-center gap-1">
                 <Call />
-                IVR Analysis
+                IVR Insights
               </TabsTrigger>
-              {filters.filterBy === "team" && (
+              {appliedValues.filterBy === "team" && (
                 <TabsTrigger
                   value="repeated"
                   className="flex items-center gap-1"
                 >
-                  <PeopleAlt />
-                  Repeated Callers
+                  <Group />
+                  Frequent Callers
                 </TabsTrigger>
               )}
-              {filters.filterBy === "all" && (
+              {appliedValues.filterBy === "all" && (
                 <TabsTrigger
                   value="date-distribution"
                   className="flex items-center gap-1"
                 >
-                  <PieChart />
-                  Date Distribution
+                  <CalendarIcon />
+                  Date Trends
                 </TabsTrigger>
               )}
             </TabsList>
             <TabsContent value="overview">
-              <InboundAnalyticsOverview filters={filters} />
+              <InboundAnalyticsOverview filters={appliedValues} />
             </TabsContent>
             <TabsContent value="distribution">
-              <InboundAnalyticsDistribution filters={filters} />
+              <InboundAnalyticsDistribution filters={appliedValues} />
             </TabsContent>
             <TabsContent value="ivr">
-              <InboundAnalyticsIVRAnalysis filters={filters} />
+              <InboundAnalyticsIVRAnalysis filters={appliedValues} />
             </TabsContent>
             <TabsContent value="date-distribution">
-              <InboundAnalyticsDateDistribution filters={filters} />
+              <InboundAnalyticsDateDistribution filters={appliedValues} />
             </TabsContent>
             <TabsContent value="agents">
-              <InboundAnalyticsAgentPerformance filters={filters} />
+              <InboundAnalyticsAgentPerformance filters={appliedValues} />
             </TabsContent>
             <TabsContent value="repeated">
-              <InboundAnalyticsRepeatedCallers filters={filters} />
+              <InboundAnalyticsRepeatedCallers filters={appliedValues} />
             </TabsContent>
           </Tabs>
         </StatsDetailedCard>

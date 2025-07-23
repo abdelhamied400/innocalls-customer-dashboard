@@ -180,7 +180,7 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
         icon: <RingVolume />,
         isNew: false,
         isComingSoon: true,
-        disabled: false,
+        disabled: true,
       },
       {
         title: "Survey Campaigns",

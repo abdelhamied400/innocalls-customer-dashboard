@@ -9,6 +9,10 @@ type FetchAnalyticsStatsResponse = {
   externalCalls: number;
   totalCalls: number;
   unansweredCalls: number;
+  abandonedCalls?: number;
+  averageWaitTime?: string;
+  averageTalkTime?: string;
+  timeoutCalls?: number;
 };
 
 type FetchAnalyticsOverviewResponse = Array<{
