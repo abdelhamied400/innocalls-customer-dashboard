@@ -34,7 +34,7 @@ export type UserActivityFilters = {
   fromDate: Date;
   toDate: Date;
   agents: Option[];
-  slaCompliance: number;
+  sla: number;
 };
 
 const today = new Date();
@@ -46,7 +46,7 @@ const userActivityFilterConfig = {
     fromDate: lastMonth,
     toDate: today,
     agents: [],
-    slaCompliance: 10,
+    sla: 10,
   } as UserActivityFilters,
   schema: userActivityFiltersSchema,
 };
@@ -95,17 +95,15 @@ const UserActivityAnalytics = () => {
               <Field
                 label="SLA"
                 postIcon={<AccessTime className="text-gray-400" />}
-                error={errors.slaCompliance}
+                error={errors.sla}
               >
                 <Input
                   type="number"
                   variant="field"
                   className=""
                   placeholder="Enter SLA compliance percentage"
-                  value={values.slaCompliance}
-                  onChange={(e) =>
-                    setValue("slaCompliance", Number(e.target.value))
-                  }
+                  value={values.sla}
+                  onChange={(e) => setValue("sla", Number(e.target.value))}
                 />
               </Field>
               <div className="col-span-1 sm:col-span-2 lg:col-span-3">

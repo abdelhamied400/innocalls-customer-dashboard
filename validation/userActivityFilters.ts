@@ -5,7 +5,7 @@ export const userActivityFiltersSchema = z
     fromDate: z.date(),
     toDate: z.date(),
     agents: z.array(z.object({ value: z.string(), label: z.string() })),
-    slaCompliance: z.number().min(0).max(100),
+    sla: z.number().min(1).max(100),
   })
   .refine(
     (data) => {
