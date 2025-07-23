@@ -109,6 +109,31 @@ const InboundAnalyticsOverview = ({
                 strokeWidth={3}
                 dot={false}
               />
+              {/* team */}
+              <Line
+                type="monotone"
+                dataKey="abandonedCalls"
+                label="Total Calls"
+                stroke="#F54002"
+                strokeWidth={3}
+                dot={false}
+              />
+              <Line
+                type="monotone"
+                dataKey="completedCalls"
+                label="Total Calls"
+                stroke="#10B981"
+                strokeWidth={3}
+                dot={false}
+              />
+              <Line
+                type="monotone"
+                dataKey="timeoutCalls"
+                label="Total Calls"
+                stroke="#F59E42"
+                strokeWidth={3}
+                dot={false}
+              />
             </LineChart>
           </ResponsiveContainer>
         </div>

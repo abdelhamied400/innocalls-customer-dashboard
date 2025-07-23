@@ -13,6 +13,7 @@ import {
   PeopleAlt,
   BarChart,
   Search,
+  Queue,
 } from "@mui/icons-material";
 import { useFilterManager } from "@/hooks/useFilterManager";
 import { inboundFiltersSchema } from "@/validation/inboundFilters";
@@ -26,6 +27,7 @@ import QuickStats from "./quick-stats";
 import Select from "@/components/select";
 import useVocabStore from "@/store/vocab.slice";
 import InboundAnalyticsDateDistribution from "./date-distribution";
+import InboundAnalyticsQueueAnalysis from "./queue-analysis";
 
 export type InboundAnalyticsFilterBy = "all" | "team";
 
@@ -246,6 +248,12 @@ const InboundAnalytics = () => {
                   Date Trends
                 </TabsTrigger>
               )}
+              {appliedValues.filterBy === "team" && (
+                <TabsTrigger value="queue" className="flex items-center gap-1">
+                  <Queue />
+                  Queue Analysis
+                </TabsTrigger>
+              )}
             </TabsList>
             <TabsContent value="overview">
               <InboundAnalyticsOverview filters={appliedValues} />
@@ -264,6 +272,9 @@ const InboundAnalytics = () => {
             </TabsContent>
             <TabsContent value="repeated">
               <InboundAnalyticsRepeatedCallers filters={appliedValues} />
+            </TabsContent>
+            <TabsContent value="queue">
+              <InboundAnalyticsQueueAnalysis filters={appliedValues} />
             </TabsContent>
           </Tabs>
         </StatsDetailedCard>
