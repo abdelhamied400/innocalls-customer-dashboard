@@ -99,7 +99,7 @@ const OutboundAnalytics = () => {
                   onChange={(value) => setValue("agents", value || [])}
                   options={extensions.map((ext) => ({
                     value: ext.ext,
-                    label: ext.name,
+                    label: `${ext.name} (${ext.ext})`,
                   }))}
                   isMulti
                   label="Select Agents"
