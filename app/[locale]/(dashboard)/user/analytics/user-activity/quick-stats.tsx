@@ -10,10 +10,10 @@ import {
   StackedLineChart,
 } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
-import { UserActivityAnalyticsFilters } from "./page";
+import { UserActivityFilters } from "./page";
 
 type QuickStatsProps = {
-  filters: UserActivityAnalyticsFilters;
+  filters: UserActivityFilters;
 };
 
 const QuickStats = ({ filters }: QuickStatsProps) => {

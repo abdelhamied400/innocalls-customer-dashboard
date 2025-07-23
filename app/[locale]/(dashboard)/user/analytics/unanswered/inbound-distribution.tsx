@@ -9,7 +9,6 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { UnAnsweredAnalyticsFilters } from "./page";
 import unansweredAnalyticsService from "@/services/unanswered-analytics.service";
 import ChartCard, {
   ChartCardError,
@@ -18,9 +17,10 @@ import ChartCard, {
 // Material Icons
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import NoData from "@/components/Analytics/NoData";
+import { UnansweredAnalyticsFilters } from "./page";
 
 type InboundDistributionProps = {
-  filters: UnAnsweredAnalyticsFilters;
+  filters: UnansweredAnalyticsFilters;
 };
 
 const InboundDistribution = ({ filters }: InboundDistributionProps) => {

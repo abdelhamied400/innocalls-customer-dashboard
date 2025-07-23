@@ -19,8 +19,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { UserActivityAnalyticsFilters } from "./page";
 import NoData from "./NoData";
+import { UserActivityFilters } from "./page";
 
 const columns = [
   {
@@ -50,7 +50,7 @@ const columns = [
 ];
 
 type CallDistributionAnalyticsProps = {
-  filters: UserActivityAnalyticsFilters;
+  filters: UserActivityFilters;
 };
 
 const CallDistributionAnalytics = ({

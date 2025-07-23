@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import api from "./api";
-import { UserActivityAnalyticsFilters } from "@/app/[locale]/(dashboard)/user/analytics/user-activity/page";
+import { UserActivityFilters } from "@/app/[locale]/(dashboard)/user/analytics/user-activity/page";
 
 type FetchQuickStatsResponse = {
   topAnsweredIncomingAgent: {
@@ -56,7 +56,7 @@ type FetchSlaComplianceResponse = Array<{
 
 export default {
   async fetchQuickStats(
-    filters: UserActivityAnalyticsFilters
+    filters: UserActivityFilters
   ): Promise<FetchQuickStatsResponse> {
     const response = await api.get("/agent-reports/summary", {
       params: {
@@ -72,7 +72,7 @@ export default {
     return response.data.summary;
   },
   async fetchCallDistributionAnalytics(
-    filters: UserActivityAnalyticsFilters
+    filters: UserActivityFilters
   ): Promise<FetchCallDistributionResponse> {
     const response = await api.get("/agent-reports/call-distribution", {
       params: {
@@ -88,7 +88,7 @@ export default {
     return response.data.callsDistribution;
   },
   async fetchCallStatsAnalytics(
-    filters: UserActivityAnalyticsFilters
+    filters: UserActivityFilters
   ): Promise<FetchCallStatsResponse> {
     const response = await api.get("/agent-reports/performance", {
       params: {
@@ -104,7 +104,7 @@ export default {
     return response.data.agentPerformance;
   },
   async fetchSlaComplianceAnalytics(
-    filters: UserActivityAnalyticsFilters
+    filters: UserActivityFilters
   ): Promise<FetchSlaComplianceResponse> {
     const response = await api.get("/agent-reports/response-time-analysis", {
       params: {

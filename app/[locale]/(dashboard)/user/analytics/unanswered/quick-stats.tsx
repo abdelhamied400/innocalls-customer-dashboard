@@ -1,8 +1,4 @@
-import StatsCard, {
-  StatsCardError,
-  StatsCardSkeleton,
-} from "@/components/StatsCard";
-import { UnAnsweredAnalyticsFilters } from "./page";
+import StatsCard from "@/components/StatsCard";
 import { useQuery } from "@tanstack/react-query";
 import unansweredAnalyticsService from "@/services/unanswered-analytics.service";
 
@@ -11,9 +7,10 @@ import PhoneDisabledIcon from "@mui/icons-material/PhoneDisabled";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import GroupIcon from "@mui/icons-material/Group";
+import { UnansweredAnalyticsFilters } from "./page";
 
 type QuickStatsFilters = {
-  filters: UnAnsweredAnalyticsFilters;
+  filters: UnansweredAnalyticsFilters;
 };
 const QuickStats = ({ filters }: QuickStatsFilters) => {
   const { data, isLoading, isRefetching, error, isError } = useQuery({

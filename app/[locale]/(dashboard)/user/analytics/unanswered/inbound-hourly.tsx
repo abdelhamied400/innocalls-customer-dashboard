@@ -9,7 +9,6 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { UnAnsweredAnalyticsFilters } from "./page";
 import unansweredAnalyticsService from "@/services/unanswered-analytics.service";
 import ChartCard, {
   ChartCardError,
@@ -17,9 +16,10 @@ import ChartCard, {
 } from "@/components/ChartCard";
 import { GroupIcon } from "lucide-react";
 import NoData from "@/components/Analytics/NoData";
+import { UnansweredAnalyticsFilters } from "./page";
 
 type InboundUnansweredHourlyProps = {
-  filters: UnAnsweredAnalyticsFilters;
+  filters: UnansweredAnalyticsFilters;
 };
 const InboundUnansweredHourly = ({ filters }: InboundUnansweredHourlyProps) => {
   const { data, isLoading, isError, error } = useQuery({

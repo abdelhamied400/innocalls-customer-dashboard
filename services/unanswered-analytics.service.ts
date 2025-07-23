@@ -1,4 +1,4 @@
-import { UnAnsweredAnalyticsFilters } from "@/app/[locale]/(dashboard)/user/analytics/unanswered/page";
+import { UnansweredAnalyticsFilters } from "@/app/[locale]/(dashboard)/user/analytics/unanswered/page";
 import api from "./api";
 import { format } from "date-fns";
 
@@ -45,7 +45,7 @@ type FetchInboundUnansweredHourlyResponse = Array<{
 
 export default {
   fetchQuickStats: async (
-    filters: UnAnsweredAnalyticsFilters
+    filters: UnansweredAnalyticsFilters
   ): Promise<FetchQuickStatsResponse> => {
     const response = await api.get("/unanswered-reports/summary", {
       params: {
@@ -60,7 +60,7 @@ export default {
     return response.data.summary;
   },
   fetchOutboundDistribution: async (
-    filters: UnAnsweredAnalyticsFilters
+    filters: UnansweredAnalyticsFilters
   ): Promise<FetchOutboundDistributionResponse> => {
     const response = await api.get(
       "/unanswered-outbound-reports/call-distribution",
@@ -78,7 +78,7 @@ export default {
     return response.data.callsDistribution;
   },
   fetchOutboundUnansweredHourly: async (
-    filters: UnAnsweredAnalyticsFilters
+    filters: UnansweredAnalyticsFilters
   ): Promise<FetchOutboundUnansweredHourlyResponse> => {
     const response = await api.get(
       "/unanswered-outbound-reports/hourly-call-distribution",
@@ -96,7 +96,7 @@ export default {
     return response.data.hourlyDistribution;
   },
   fetchInboundDistribution: async (
-    filters: UnAnsweredAnalyticsFilters
+    filters: UnansweredAnalyticsFilters
   ): Promise<FetchInboundDistributionResponse> => {
     const response = await api.get(
       "/unanswered-inbound-reports/call-distribution",
@@ -114,7 +114,7 @@ export default {
     return response.data.callsDistribution;
   },
   fetchInboundUnansweredHourly: async (
-    filters: UnAnsweredAnalyticsFilters
+    filters: UnansweredAnalyticsFilters
   ): Promise<FetchInboundUnansweredHourlyResponse> => {
     const response = await api.get(
       "/unanswered-inbound-reports/hourly-call-distribution",

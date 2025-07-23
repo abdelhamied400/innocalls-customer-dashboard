@@ -22,7 +22,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { UserActivityAnalyticsFilters } from "./page";
+import { UserActivityFilters } from "./page";
 import NoData from "./NoData";
 
 const columns = [
@@ -38,7 +38,7 @@ const columns = [
 ];
 
 type CallStatsAnalyticsProps = {
-  filters: UserActivityAnalyticsFilters;
+  filters: UserActivityFilters;
 };
 
 const CallStatsAnalytics = ({ filters }: CallStatsAnalyticsProps) => {

@@ -10,16 +10,16 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { UnAnsweredAnalyticsFilters } from "./page";
 import ChartCard, {
   ChartCardError,
   ChartCardSkeleton,
 } from "@/components/ChartCard";
 import NoData from "@/components/Analytics/NoData";
 import GroupOutlined from "@mui/icons-material/GroupOutlined";
+import { UnansweredAnalyticsFilters } from "./page";
 
 type OutboundDistributionProps = {
-  filters: UnAnsweredAnalyticsFilters;
+  filters: UnansweredAnalyticsFilters;
 };
 
 const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {

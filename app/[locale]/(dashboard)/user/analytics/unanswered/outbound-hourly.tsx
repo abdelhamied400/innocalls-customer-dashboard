@@ -8,7 +8,6 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { UnAnsweredAnalyticsFilters } from "./page";
 import { useQuery } from "@tanstack/react-query";
 import unansweredAnalyticsService from "@/services/unanswered-analytics.service";
 import ChartCard, {
@@ -17,9 +16,10 @@ import ChartCard, {
 } from "@/components/ChartCard";
 import { GroupOutlined } from "@mui/icons-material";
 import NoData from "@/components/Analytics/NoData";
+import { UnansweredAnalyticsFilters } from "./page";
 
 type OutboundUnansweredHourlyProps = {
-  filters: UnAnsweredAnalyticsFilters;
+  filters: UnansweredAnalyticsFilters;
 };
 
 const OutboundUnansweredHourly = ({

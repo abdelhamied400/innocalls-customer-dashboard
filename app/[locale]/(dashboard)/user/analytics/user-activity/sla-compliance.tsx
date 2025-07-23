@@ -18,7 +18,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
-import { UserActivityAnalyticsFilters } from "./page";
+import { UserActivityFilters } from "./page";
 import NoData from "./NoData";
 
 const columns = [
@@ -35,7 +35,7 @@ const columns = [
 ];
 
 type SlaComplianceAnalyticsProps = {
-  filters: UserActivityAnalyticsFilters;
+  filters: UserActivityFilters;
 };
 
 const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {

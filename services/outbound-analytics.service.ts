@@ -59,7 +59,6 @@ export default {
           filters.agents.length > 0
             ? filters.agents.map((agent) => agent.value).join(",")
             : undefined,
-        slaCompliance: filters.slaCompliance,
       },
     });
     return response.data.summary;
@@ -75,7 +74,6 @@ export default {
           filters.agents.length > 0
             ? filters.agents.map((agent) => agent.value).join(",")
             : undefined,
-        slaCompliance: filters.slaCompliance,
       },
     });
     return response.data.talkTimeDistribution;
@@ -93,7 +91,6 @@ export default {
             filters.agents.length > 0
               ? filters.agents.map((agent) => agent.value).join(",")
               : undefined,
-          slaCompliance: filters.slaCompliance,
         },
       }
     );
@@ -110,7 +107,6 @@ export default {
           filters.agents.length > 0
             ? filters.agents.map((agent) => agent.value).join(",")
             : undefined,
-        slaCompliance: filters.slaCompliance,
       },
     });
     return response.data.callsDistribution;
@@ -126,7 +122,6 @@ export default {
           filters.agents.length > 0
             ? filters.agents.map((agent) => agent.value).join(",")
             : undefined,
-        slaCompliance: filters.slaCompliance,
       },
     });
     return response.data.agentStats;
