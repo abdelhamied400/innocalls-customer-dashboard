@@ -22,6 +22,7 @@ import Select from "@/components/select";
 import { Input } from "@/components/ui/input";
 import useVocabStore from "@/store/vocab.slice";
 import { Button } from "@/components/ui/button";
+import { z } from "zod";
 
 type Option = {
   value: string;
@@ -35,12 +36,25 @@ export type UserActivityAnalyticsFilters = {
   slaCompliance: number;
 };
 
+const today = new Date();
+const lastMonth = new Date();
+lastMonth.setDate(today.getDate() - 30);
+
+const defaultFilters: UserActivityAnalyticsFilters = {
+  fromDate: lastMonth,
+  toDate: today,
+  agents: [],
+  slaCompliance: 10,
+};
+
 const UserActivityAnalytics = () => {
   const { extensions } = useVocabStore();
-  const [fromDate, setFromDate] = useState<Date>(new Date());
-  const [toDate, setToDate] = useState<Date>(new Date());
-  const [agents, setAgents] = useState<Option[]>([]);
-  const [slaCompliance, setSlaCompliance] = useState<number>(10);
+  const [fromDate, setFromDate] = useState<Date>(defaultFilters.fromDate);
+  const [toDate, setToDate] = useState<Date>(defaultFilters.toDate);
+  const [agents, setAgents] = useState<Option[]>(defaultFilters.agents);
+  const [slaCompliance, setSlaCompliance] = useState<number>(
+    defaultFilters.slaCompliance
+  );
 
   const [filters, setFilters] = useState({
     fromDate,
@@ -48,6 +62,77 @@ const UserActivityAnalytics = () => {
     agents,
     slaCompliance,
   });
+
+  const [filtersErrors, setFiltersErrors] = useState<
+    Record<keyof UserActivityAnalyticsFilters, string>
+  >({
+    fromDate: "",
+    toDate: "",
+    agents: "",
+    slaCompliance: "",
+  });
+
+  const handleClearFilters = () => {
+    setFilters(defaultFilters);
+    setFromDate(defaultFilters.fromDate);
+    setToDate(defaultFilters.toDate);
+    setAgents(defaultFilters.agents);
+    setSlaCompliance(defaultFilters.slaCompliance);
+    setFiltersErrors({
+      fromDate: "",
+      toDate: "",
+      agents: "",
+      slaCompliance: "",
+    });
+  };
+  const handleApplyFilters = () => {
+    setFiltersErrors({
+      fromDate: "",
+      toDate: "",
+      agents: "",
+      slaCompliance: "",
+    });
+
+    const filtersSchema = z
+      .object({
+        fromDate: z.date(),
+        toDate: z.date(),
+        agents: z.array(z.object({ value: z.string(), label: z.string() })),
+        slaCompliance: z.number().min(0).max(100),
+      })
+      .refine(
+        (data) => {
+          const diff =
+            (data.toDate.getTime() - data.fromDate.getTime()) /
+            (1000 * 60 * 60 * 24);
+          return diff >= 0 && diff <= 30;
+        },
+        {
+          message: "Date range must be between 0 and 30 days.",
+          path: ["toDate"],
+        }
+      );
+
+    const result = filtersSchema.safeParse({
+      fromDate,
+      toDate,
+      agents,
+      slaCompliance,
+    });
+    if (!result.success) {
+      const zodIssuesToObject = (issues: z.ZodIssue[]) =>
+        issues.reduce((acc, issue) => {
+          acc[issue.path.join(".")] = issue.message;
+          return acc;
+        }, {} as Record<string, string>);
+      const errors = zodIssuesToObject(result.error.issues);
+      setFiltersErrors(errors);
+      return;
+    }
+
+    // Apply filters
+    setFilters(result.data);
+  };
 
   return (
     <div className="page" id="user-activity-analytics">
@@ -63,6 +148,7 @@ const UserActivityAnalytics = () => {
               <Field
                 label="From"
                 postIcon={<CalendarMonth className="text-gray-400" />}
+                error={filtersErrors.fromDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
@@ -74,6 +160,7 @@ const UserActivityAnalytics = () => {
               <Field
                 label="To"
                 postIcon={<CalendarMonth className="text-gray-400" />}
+                error={filtersErrors.toDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
@@ -83,8 +170,9 @@ const UserActivityAnalytics = () => {
                 />
               </Field>
               <Field
-                label="SLA Compliance"
+                label="SLA"
                 postIcon={<AccessTime className="text-gray-400" />}
+                error={filtersErrors.slaCompliance}
               >
                 <Input
                   type="number"
@@ -108,22 +196,16 @@ const UserActivityAnalytics = () => {
                   isMulti
                   label="Select Agents"
                   showSelectedTags={false}
+                  error={filtersErrors.agents}
+                  isClearable
                 />
               </div>
             </div>
-            <div className="flex justify-end">
-              <Button
-                onClick={() =>
-                  setFilters({
-                    fromDate,
-                    toDate,
-                    agents,
-                    slaCompliance,
-                  })
-                }
-              >
-                Apply Filters
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={handleClearFilters}>
+                Clear Filters
               </Button>
+              <Button onClick={handleApplyFilters}>Apply Filters</Button>
             </div>
           </StatsDetailedCard>
         </div>
