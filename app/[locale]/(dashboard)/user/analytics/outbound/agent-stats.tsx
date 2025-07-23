@@ -23,13 +23,7 @@ import TableViewIcon from "@mui/icons-material/TableView";
 import PeopleIcon from "@mui/icons-material/People";
 import outboundAnalyticsService from "@/services/outbound-analytics.service";
 import NoData from "../../../../../../components/Analytics/NoData";
-
-type OutboundAnalyticsFilters = {
-  fromDate: Date;
-  toDate: Date;
-  agents: Array<{ value: string; label: string }>;
-  slaCompliance: number;
-};
+import { OutboundAnalyticsFilters } from "./page";
 
 type AgentStatsAnalyticsProps = {
   filters: OutboundAnalyticsFilters;

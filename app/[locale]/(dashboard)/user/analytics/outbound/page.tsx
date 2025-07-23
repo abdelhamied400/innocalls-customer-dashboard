@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Clock, BarChart3, Timer, Users } from "lucide-react";
 import {
   AccessTime,
@@ -14,6 +14,8 @@ import DatePicker from "@/components/ui/date-picker";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
+import { useFilterManager } from "@/hooks/useFilterManager";
+import { outboundFiltersSchema } from "@/validation/outboundFilters";
 import SummaryStats from "./summary-stats";
 import TalkTimeDistribution from "./talk-time-distribution";
 import HourlyDistributionAnalytics from "./hourly-distribution";
@@ -27,27 +29,32 @@ type Option = {
   value: string;
   label: string;
 };
+
 export type OutboundAnalyticsFilters = {
   fromDate: Date;
   toDate: Date;
   agents: Option[];
-  slaCompliance: number;
+};
+
+const today = new Date();
+const lastMonth = new Date();
+lastMonth.setDate(today.getDate() - 30);
+
+const outboundFilterConfig = {
+  defaultValues: {
+    fromDate: lastMonth,
+    toDate: today,
+    agents: [],
+  } as OutboundAnalyticsFilters,
+  schema: outboundFiltersSchema,
 };
 
 // --- Main Component ---
 const OutboundAnalytics = () => {
   const { extensions } = useVocabStore();
-  const [fromDate, setFromDate] = useState<Date>(new Date());
-  const [toDate, setToDate] = useState<Date>(new Date());
-  const [agents, setAgents] = useState<Option[]>([]);
-  const [slaCompliance, setSlaCompliance] = useState<number>(10);
 
-  const [filters, setFilters] = useState<OutboundAnalyticsFilters>({
-    fromDate,
-    toDate,
-    agents,
-    slaCompliance,
-  });
+  const { values, appliedValues, errors, setValue, reset, apply } =
+    useFilterManager<OutboundAnalyticsFilters>(outboundFilterConfig);
 
   return (
     <div className="page" id="outbound-analytics">
@@ -63,44 +70,33 @@ const OutboundAnalytics = () => {
               <Field
                 label="From"
                 postIcon={<CalendarMonth className="text-gray-400" />}
+                error={errors.fromDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
                   placeholder="Enter from date"
-                  value={fromDate}
-                  onChange={(date) => setFromDate(date || new Date())}
+                  value={values.fromDate}
+                  onChange={(date) => setValue("fromDate", date || new Date())}
                 />
               </Field>
               <Field
                 label="To"
                 postIcon={<CalendarMonth className="text-gray-400" />}
+                error={errors.toDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
                   placeholder="Enter to date"
-                  value={toDate}
-                  onChange={(date) => setToDate(date || new Date())}
-                />
-              </Field>
-              <Field
-                label="SLA Compliance"
-                postIcon={<AccessTime className="text-gray-400" />}
-              >
-                <Input
-                  type="number"
-                  variant="field"
-                  className=""
-                  placeholder="Enter SLA compliance percentage"
-                  value={slaCompliance}
-                  onChange={(e) => setSlaCompliance(Number(e.target.value))}
+                  value={values.toDate}
+                  onChange={(date) => setValue("toDate", date || new Date())}
                 />
               </Field>
               <div className="col-span-1 sm:col-span-2 lg:col-span-3">
                 <Select
                   className="w-full"
                   placeholder="Select agents"
-                  value={agents}
-                  onChange={(value) => setAgents(value || [])}
+                  value={values.agents}
+                  onChange={(value) => setValue("agents", value || [])}
                   options={extensions.map((ext) => ({
                     value: ext.ext,
                     label: ext.name,
@@ -108,27 +104,21 @@ const OutboundAnalytics = () => {
                   isMulti
                   label="Select Agents"
                   showSelectedTags={false}
+                  error={errors.agents}
+                  isClearable
                 />
               </div>
             </div>
-            <div className="flex justify-end">
-              <Button
-                onClick={() =>
-                  setFilters({
-                    fromDate,
-                    toDate,
-                    agents,
-                    slaCompliance,
-                  })
-                }
-              >
-                Apply Filters
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={reset}>
+                Clear Filters
               </Button>
+              <Button onClick={apply}>Apply Filters</Button>
             </div>
           </StatsDetailedCard>
         </div>
 
-        <SummaryStats filters={filters} />
+        <SummaryStats filters={appliedValues} />
 
         <StatsDetailedCard
           title="Outbound Analytics"
@@ -169,16 +159,16 @@ const OutboundAnalytics = () => {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="talk-time-distribution">
-              <TalkTimeDistribution filters={filters} />
+              <TalkTimeDistribution filters={appliedValues} />
             </TabsContent>
             <TabsContent value="hourly-distribution">
-              <HourlyDistributionAnalytics filters={filters} />
+              <HourlyDistributionAnalytics filters={appliedValues} />
             </TabsContent>
             <TabsContent value="date-distribution">
-              <DateDistributionAnalytics filters={filters} />
+              <DateDistributionAnalytics filters={appliedValues} />
             </TabsContent>
             <TabsContent value="agent-stats">
-              <AgentStatsAnalytics filters={filters} />
+              <AgentStatsAnalytics filters={appliedValues} />
             </TabsContent>
           </Tabs>
         </StatsDetailedCard>

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   AccessTime,
   BarChart,
@@ -16,6 +16,8 @@ import { TabsContent } from "@radix-ui/react-tabs";
 import Select from "@/components/select";
 import { Input } from "@/components/ui/input";
 import useVocabStore from "@/store/vocab.slice";
+import { useFilterManager } from "@/hooks/useFilterManager";
+import { unansweredFiltersSchema } from "@/validation/unansweredFilters";
 import InboundDistribution from "./inbound-distribution";
 import InboundUnansweredHourly from "./inbound-hourly";
 import OutboundDistribution from "./outbound-distribution";
@@ -26,26 +28,31 @@ type Option = {
   value: string;
   label: string;
 };
-export type UnAnsweredAnalyticsFilters = {
+
+export type UnansweredAnalyticsFilters = {
   fromDate: Date;
   toDate: Date;
   agents: Option[];
-  slaCompliance: number;
+};
+
+const today = new Date();
+const lastMonth = new Date();
+lastMonth.setDate(today.getDate() - 30);
+
+const unansweredFilterConfig = {
+  defaultValues: {
+    fromDate: lastMonth,
+    toDate: today,
+    agents: [],
+  } as UnansweredAnalyticsFilters,
+  schema: unansweredFiltersSchema,
 };
 
 const UnansweredAnalytics = () => {
   const { extensions } = useVocabStore();
-  const [fromDate, setFromDate] = useState<Date>(new Date());
-  const [toDate, setToDate] = useState<Date>(new Date());
-  const [agents, setAgents] = useState<Option[]>([]);
-  const [slaCompliance, setSlaCompliance] = useState<number>(10);
 
-  const [filters, setFilters] = useState<UnAnsweredAnalyticsFilters>({
-    fromDate,
-    toDate,
-    agents,
-    slaCompliance,
-  });
+  const { values, appliedValues, errors, setValue, reset, apply } =
+    useFilterManager<UnansweredAnalyticsFilters>(unansweredFilterConfig);
 
   return (
     <div className="page" id="unanswered-analytics">
@@ -61,44 +68,33 @@ const UnansweredAnalytics = () => {
               <Field
                 label="From"
                 postIcon={<CalendarMonth className="text-gray-400" />}
+                error={errors.fromDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
                   placeholder="Enter from date"
-                  value={fromDate}
-                  onChange={(date) => setFromDate(date || new Date())}
+                  value={values.fromDate}
+                  onChange={(date) => setValue("fromDate", date || new Date())}
                 />
               </Field>
               <Field
                 label="To"
                 postIcon={<CalendarMonth className="text-gray-400" />}
+                error={errors.toDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
                   placeholder="Enter to date"
-                  value={toDate}
-                  onChange={(date) => setToDate(date || new Date())}
-                />
-              </Field>
-              <Field
-                label="SLA Compliance"
-                postIcon={<AccessTime className="text-gray-400" />}
-              >
-                <Input
-                  type="number"
-                  variant="field"
-                  className=""
-                  placeholder="Enter SLA compliance percentage"
-                  value={slaCompliance}
-                  onChange={(e) => setSlaCompliance(Number(e.target.value))}
+                  value={values.toDate}
+                  onChange={(date) => setValue("toDate", date || new Date())}
                 />
               </Field>
               <div className="col-span-1 sm:col-span-2 lg:col-span-3">
                 <Select
                   className="w-full"
                   placeholder="Select agents"
-                  value={agents}
-                  onChange={(value) => setAgents(value || [])}
+                  value={values.agents}
+                  onChange={(value) => setValue("agents", value || [])}
                   options={extensions.map((ext) => ({
                     value: ext.ext,
                     label: ext.name,
@@ -106,27 +102,21 @@ const UnansweredAnalytics = () => {
                   isMulti
                   label="Select Agents"
                   showSelectedTags={false}
+                  error={errors.agents}
+                  isClearable
                 />
               </div>
             </div>
-            <div className="flex justify-end">
-              <Button
-                onClick={() =>
-                  setFilters({
-                    fromDate,
-                    toDate,
-                    agents,
-                    slaCompliance,
-                  })
-                }
-              >
-                Apply Filters
+            <div className="flex justify-end gap-2">
+              <Button variant="outline" onClick={reset}>
+                Clear Filters
               </Button>
+              <Button onClick={apply}>Apply Filters</Button>
             </div>
           </StatsDetailedCard>
         </div>
 
-        <QuickStats filters={filters} />
+        <QuickStats filters={appliedValues} />
 
         <div className="analytics-tabs">
           <StatsDetailedCard
@@ -143,13 +133,13 @@ const UnansweredAnalytics = () => {
               </TabsList>
 
               <TabsContent value="inbound" className="flex flex-col gap-4">
-                <InboundDistribution filters={filters} />
-                <InboundUnansweredHourly filters={filters} />
+                <InboundDistribution filters={appliedValues} />
+                <InboundUnansweredHourly filters={appliedValues} />
               </TabsContent>
 
               <TabsContent value="outbound" className="flex flex-col gap-4">
-                <OutboundDistribution filters={filters} />
-                <OutboundUnansweredHourly filters={filters} />
+                <OutboundDistribution filters={appliedValues} />
+                <OutboundUnansweredHourly filters={appliedValues} />
               </TabsContent>
             </Tabs>
           </StatsDetailedCard>
