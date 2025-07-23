@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   Bar,
   BarChart,
+  Brush,
   CartesianGrid,
   Label,
   ResponsiveContainer,
@@ -146,11 +147,12 @@ const CallDistributionAnalytics = ({
                         fill="#10B981"
                         name="Outgoing External"
                       />
+                      <Brush dataKey="name" height={30} stroke="#8884d8" />
                     </BarChart>
                   </ResponsiveContainer>
                 ) : (
                   <NoData />
-                )}{" "}
+                )}
               </div>
             </ChartCard>
           )}

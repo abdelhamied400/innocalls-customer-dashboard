@@ -17,6 +17,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
+  Brush,
 } from "recharts";
 import { UserActivityFilters } from "./page";
 import NoData from "./NoData";
@@ -96,6 +97,7 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
                         />
                       ))}
                     </Bar>
+                    <Brush dataKey="name" height={30} stroke="#8884d8" />
                   </BarChart>
                 </ResponsiveContainer>
               ) : (

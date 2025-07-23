@@ -17,6 +17,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
   Tooltip,
+  Brush,
 } from "recharts";
 import { InboundAnalyticsFilters } from "./page";
 import NoData from "@/components/Analytics/NoData";
@@ -118,6 +119,7 @@ const InboundAnalyticsAgentPerformance = ({
                   radius={[4, 4, 0, 0]}
                   name="Avg Talk Time"
                 />
+                <Brush dataKey="name" height={30} stroke="#8884d8" />
               </BarChart>
             </ResponsiveContainer>
           </div>

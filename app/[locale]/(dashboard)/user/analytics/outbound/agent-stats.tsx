@@ -9,6 +9,7 @@ import {
   CartesianGrid,
   Tooltip as RechartsTooltip,
   Legend as RechartsLegend,
+  Brush,
 } from "recharts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChartCard from "@/components/ChartCard";
@@ -144,6 +145,7 @@ const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
                   fill="#EF4444"
                   name="Unanswered"
                 />
+                <Brush dataKey="name" height={30} stroke="#8884d8" />
               </BarChart>
             </ResponsiveContainer>
           )}
