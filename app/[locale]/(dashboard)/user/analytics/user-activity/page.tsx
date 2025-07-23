@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 
 import Field from "@/components/ui/field";
 import DatePicker from "@/components/ui/date-picker";
@@ -22,14 +22,15 @@ import Select from "@/components/select";
 import { Input } from "@/components/ui/input";
 import useVocabStore from "@/store/vocab.slice";
 import { Button } from "@/components/ui/button";
-import { z } from "zod";
+import { useFilterManager } from "@/hooks/useFilterManager";
+import { userActivityFiltersSchema } from "@/validation/userActivityFilters";
 
 type Option = {
   value: string;
   label: string;
 };
 
-export type UserActivityAnalyticsFilters = {
+export type UserActivityFilters = {
   fromDate: Date;
   toDate: Date;
   agents: Option[];
@@ -40,99 +41,21 @@ const today = new Date();
 const lastMonth = new Date();
 lastMonth.setDate(today.getDate() - 30);
 
-const defaultFilters: UserActivityAnalyticsFilters = {
-  fromDate: lastMonth,
-  toDate: today,
-  agents: [],
-  slaCompliance: 10,
+const userActivityFilterConfig = {
+  defaultValues: {
+    fromDate: lastMonth,
+    toDate: today,
+    agents: [],
+    slaCompliance: 10,
+  } as UserActivityFilters,
+  schema: userActivityFiltersSchema,
 };
 
 const UserActivityAnalytics = () => {
   const { extensions } = useVocabStore();
-  const [fromDate, setFromDate] = useState<Date>(defaultFilters.fromDate);
-  const [toDate, setToDate] = useState<Date>(defaultFilters.toDate);
-  const [agents, setAgents] = useState<Option[]>(defaultFilters.agents);
-  const [slaCompliance, setSlaCompliance] = useState<number>(
-    defaultFilters.slaCompliance
-  );
 
-  const [filters, setFilters] = useState({
-    fromDate,
-    toDate,
-    agents,
-    slaCompliance,
-  });
-
-  const [filtersErrors, setFiltersErrors] = useState<
-    Record<keyof UserActivityAnalyticsFilters, string>
-  >({
-    fromDate: "",
-    toDate: "",
-    agents: "",
-    slaCompliance: "",
-  });
-
-  const handleClearFilters = () => {
-    setFilters(defaultFilters);
-    setFromDate(defaultFilters.fromDate);
-    setToDate(defaultFilters.toDate);
-    setAgents(defaultFilters.agents);
-    setSlaCompliance(defaultFilters.slaCompliance);
-    setFiltersErrors({
-      fromDate: "",
-      toDate: "",
-      agents: "",
-      slaCompliance: "",
-    });
-  };
-  const handleApplyFilters = () => {
-    setFiltersErrors({
-      fromDate: "",
-      toDate: "",
-      agents: "",
-      slaCompliance: "",
-    });
-
-    const filtersSchema = z
-      .object({
-        fromDate: z.date(),
-        toDate: z.date(),
-        agents: z.array(z.object({ value: z.string(), label: z.string() })),
-        slaCompliance: z.number().min(0).max(100),
-      })
-      .refine(
-        (data) => {
-          const diff =
-            (data.toDate.getTime() - data.fromDate.getTime()) /
-            (1000 * 60 * 60 * 24);
-          return diff >= 0 && diff <= 30;
-        },
-        {
-          message: "Date range must be between 0 and 30 days.",
-          path: ["toDate"],
-        }
-      );
-
-    const result = filtersSchema.safeParse({
-      fromDate,
-      toDate,
-      agents,
-      slaCompliance,
-    });
-    if (!result.success) {
-      const zodIssuesToObject = (issues: z.ZodIssue[]) =>
-        issues.reduce((acc, issue) => {
-          acc[issue.path.join(".")] = issue.message;
-          return acc;
-        }, {} as Record<string, string>);
-      const errors = zodIssuesToObject(result.error.issues);
-      setFiltersErrors(errors);
-      return;
-    }
-
-    // Apply filters
-    setFilters(result.data);
-  };
+  const { values, appliedValues, errors, setValue, reset, apply } =
+    useFilterManager<UserActivityFilters>(userActivityFilterConfig);
 
   return (
     <div className="page" id="user-activity-analytics">
@@ -148,47 +71,49 @@ const UserActivityAnalytics = () => {
               <Field
                 label="From"
                 postIcon={<CalendarMonth className="text-gray-400" />}
-                error={filtersErrors.fromDate}
+                error={errors.fromDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
                   placeholder="Enter from date"
-                  value={fromDate}
-                  onChange={(date) => setFromDate(date || new Date())}
+                  value={values.fromDate}
+                  onChange={(date) => setValue("fromDate", date || new Date())}
                 />
               </Field>
               <Field
                 label="To"
                 postIcon={<CalendarMonth className="text-gray-400" />}
-                error={filtersErrors.toDate}
+                error={errors.toDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
                   placeholder="Enter to date"
-                  value={toDate}
-                  onChange={(date) => setToDate(date || new Date())}
+                  value={values.toDate}
+                  onChange={(date) => setValue("toDate", date || new Date())}
                 />
               </Field>
               <Field
                 label="SLA"
                 postIcon={<AccessTime className="text-gray-400" />}
-                error={filtersErrors.slaCompliance}
+                error={errors.slaCompliance}
               >
                 <Input
                   type="number"
                   variant="field"
                   className=""
                   placeholder="Enter SLA compliance percentage"
-                  value={slaCompliance}
-                  onChange={(e) => setSlaCompliance(Number(e.target.value))}
+                  value={values.slaCompliance}
+                  onChange={(e) =>
+                    setValue("slaCompliance", Number(e.target.value))
+                  }
                 />
               </Field>
               <div className="col-span-1 sm:col-span-2 lg:col-span-3">
                 <Select
                   className="w-full"
                   placeholder="Select agents"
-                  value={agents}
-                  onChange={(value) => setAgents(value || [])}
+                  value={values.agents}
+                  onChange={(value) => setValue("agents", value || [])}
                   options={extensions.map((ext) => ({
                     value: ext.ext,
                     label: ext.name,
@@ -196,20 +121,20 @@ const UserActivityAnalytics = () => {
                   isMulti
                   label="Select Agents"
                   showSelectedTags={false}
-                  error={filtersErrors.agents}
+                  error={errors.agents}
                   isClearable
                 />
               </div>
             </div>
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={handleClearFilters}>
+              <Button variant="outline" onClick={reset}>
                 Clear Filters
               </Button>
-              <Button onClick={handleApplyFilters}>Apply Filters</Button>
+              <Button onClick={apply}>Apply Filters</Button>
             </div>
           </StatsDetailedCard>
         </div>
-        <QuickStats filters={filters} />
+        <QuickStats filters={appliedValues} />
         <StatsDetailedCard
           title="User Activity Analytics"
           subtitle="View detailed analytics for user activity"
@@ -242,13 +167,13 @@ const UserActivityAnalytics = () => {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="call-distribution">
-              <CallDistributionAnalytics filters={filters} />
+              <CallDistributionAnalytics filters={appliedValues} />
             </TabsContent>
             <TabsContent value="call-stats">
-              <CallStats filters={filters} />
+              <CallStats filters={appliedValues} />
             </TabsContent>
             <TabsContent value="sla-compliance">
-              <SlaComplianceAnalytics filters={filters} />
+              <SlaComplianceAnalytics filters={appliedValues} />
             </TabsContent>
           </Tabs>
         </StatsDetailedCard>
