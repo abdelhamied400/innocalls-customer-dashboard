@@ -96,7 +96,7 @@ const SidebarCollapsibleItem = ({
           </button>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <div className="pl-4">{children}</div>
+          <div className="pt-2 pl-4 border-s border-dashed">{children}</div>
         </CollapsibleContent>
       </Collapsible>
     </div>
