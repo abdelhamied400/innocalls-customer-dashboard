@@ -72,15 +72,6 @@ const InboundAnalytics = () => {
   const { values, appliedValues, errors, setValue, reset, apply } =
     useFilterManager<InboundAnalyticsFilters>(inboundFilterConfig);
 
-  // Helper states for UI components that need Option objects
-  const [queueOption, setQueueOption] = useState<Option<string>>();
-  const [filterByOption, setFilterByOption] = useState<
-    Option<InboundAnalyticsFilterBy>
-  >({
-    value: "all",
-    label: "All",
-  });
-
   return (
     <div className="page" id="inbound-analytics">
       <div className="flex flex-col gap-2">
@@ -120,9 +111,10 @@ const InboundAnalytics = () => {
               <Select
                 className="w-full"
                 placeholder="Filter By"
-                value={filterByOption}
+                value={filterByOptions.find(
+                  (option) => option.value === values.filterBy
+                )}
                 onChange={(option) => {
-                  setFilterByOption(option);
                   setValue("filterBy", option?.value || "all");
                 }}
                 options={filterByOptions}
@@ -131,14 +123,18 @@ const InboundAnalytics = () => {
                 error={errors.filterBy}
               />
               {/* queue */}
-              {filterByOption?.value === "team" && (
+              {values.filterBy === "team" && (
                 <div className="col-span-1 sm:col-span-2 lg:col-span-3">
                   <Select
                     className="w-full"
                     placeholder="Select queue"
-                    value={queueOption}
+                    value={ergs
+                      ?.map((erg) => ({
+                        value: erg.name,
+                        label: erg.name,
+                      }))
+                      .find((erg) => erg.value === values.queue)}
                     onChange={(option) => {
-                      setQueueOption(option);
                       setValue("queue", option?.value);
                     }}
                     options={
@@ -155,13 +151,23 @@ const InboundAnalytics = () => {
               )}
 
               {/* agents */}
-              {filterByOption?.value === "all" && (
+              {values.filterBy === "all" && (
                 <div className="col-span-1 sm:col-span-2 lg:col-span-3">
                   <Select
                     className="w-full"
                     placeholder="Select agents"
-                    value={values.agents}
-                    onChange={(value) => setValue("agents", value || [])}
+                    value={extensions
+                      .map((ext) => ({
+                        value: ext.ext,
+                        label: `${ext.name} (${ext.ext})`,
+                      }))
+                      .filter((agent) => values.agents?.includes(agent.value))}
+                    onChange={(agents) =>
+                      setValue(
+                        "agents",
+                        agents.map((a: any) => a.value)
+                      )
+                    }
                     options={extensions.map((ext) => ({
                       value: ext.ext,
                       label: `${ext.name} (${ext.ext})`,
@@ -169,7 +175,7 @@ const InboundAnalytics = () => {
                     isMulti
                     label="Select Agents"
                     showSelectedTags={false}
-                    error={errors.agents}
+                    error={errors.agents[0]}
                   />
                 </div>
               )}
@@ -226,10 +232,12 @@ const InboundAnalytics = () => {
                   Team Performance
                 </TabsTrigger>
               )}
-              <TabsTrigger value="ivr" className="flex items-center gap-1">
-                <Call />
-                IVR Insights
-              </TabsTrigger>
+              {appliedValues.filterBy === "all" && (
+                <TabsTrigger value="ivr" className="flex items-center gap-1">
+                  <Call />
+                  IVR Insights
+                </TabsTrigger>
+              )}
               {appliedValues.filterBy === "team" && (
                 <TabsTrigger
                   value="repeated"
@@ -239,15 +247,13 @@ const InboundAnalytics = () => {
                   Frequent Callers
                 </TabsTrigger>
               )}
-              {appliedValues.filterBy === "all" && (
-                <TabsTrigger
-                  value="date-distribution"
-                  className="flex items-center gap-1"
-                >
-                  <CalendarIcon />
-                  Date Trends
-                </TabsTrigger>
-              )}
+              <TabsTrigger
+                value="date-distribution"
+                className="flex items-center gap-1"
+              >
+                <CalendarIcon />
+                Date Distribution
+              </TabsTrigger>
               {appliedValues.filterBy === "team" && (
                 <TabsTrigger value="queue" className="flex items-center gap-1">
                   <Queue />

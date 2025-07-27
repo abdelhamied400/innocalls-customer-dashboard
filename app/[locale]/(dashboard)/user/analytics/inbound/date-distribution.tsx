@@ -105,6 +105,14 @@ const InboundAnalyticsDateDistribution = ({
               icon={<ShowChart />}
               color="primary"
               variant="compound"
+              legends={[
+                { label: "Total Calls", color: "#3B82F6" },
+                { label: "Answered Calls", color: "#10B981" },
+                { label: "Unanswered Calls", color: "#EF4444" },
+                { label: "Abandoned Calls", color: "#A855F7" },
+                { label: "Answered Calls", color: "#F59E42" },
+                { label: "Timeout Calls", color: "#F97316" },
+              ]}
             >
               <ResponsiveContainer width="100%" height={320}>
                 <LineChart data={data}>
@@ -122,7 +130,6 @@ const InboundAnalyticsDateDistribution = ({
                     allowDecimals={false}
                   />
                   <RechartsTooltip />
-                  <RechartsLegend />
                   <Line
                     type="monotone"
                     dataKey="totalCalls"
@@ -146,6 +153,30 @@ const InboundAnalyticsDateDistribution = ({
                     strokeWidth={2}
                     dot={false}
                     name="Unanswered"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="abandonedCalls"
+                    stroke="#A855F7"
+                    strokeWidth={2}
+                    dot={false}
+                    name="Abandoned"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="answeredCalls"
+                    stroke="#F59E42"
+                    strokeWidth={2}
+                    dot={false}
+                    name="Answered Calls"
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="timeoutCalls"
+                    stroke="#F97316"
+                    strokeWidth={2}
+                    dot={false}
+                    name="Timeout Calls"
                   />
                 </LineChart>
               </ResponsiveContainer>

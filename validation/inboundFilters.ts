@@ -19,4 +19,16 @@ export const inboundFiltersSchema = z
       message: "Date range must be between 0 and 30 days.",
       path: ["toDate"],
     }
+  )
+  .refine(
+    (data) => {
+      if (data.filterBy === "team") {
+        return !!data.queue && data.queue.trim() !== "";
+      }
+      return true;
+    },
+    {
+      message: "Queue is required when filtering by team.",
+      path: ["queue"],
+    }
   );

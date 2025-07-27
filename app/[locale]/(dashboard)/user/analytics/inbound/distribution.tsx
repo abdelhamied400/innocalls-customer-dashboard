@@ -71,7 +71,6 @@ const InboundAnalyticsDistribution = ({
               />
               <Tooltip />
               <Bar dataKey="totalCalls" fill="#3B82F6" radius={[6, 6, 0, 0]} />
-              <Bar dataKey="callCount" fill="#3B82F6" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         )}
@@ -106,7 +105,6 @@ const InboundAnalyticsDistribution = ({
               />
               <Tooltip />
               <Bar dataKey="totalCalls" fill="#10B981" radius={[6, 6, 0, 0]} />
-              <Bar dataKey="callCount" fill="#10B981" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         )}

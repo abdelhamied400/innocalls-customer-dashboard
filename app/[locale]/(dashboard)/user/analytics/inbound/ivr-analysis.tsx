@@ -13,6 +13,7 @@ import {
   Legend,
 } from "recharts";
 import { InboundAnalyticsFilters } from "./page";
+import NoData from "@/components/Analytics/NoData";
 
 type InboundAnalyticsIVRAnalysisProps = {
   filters: InboundAnalyticsFilters;
@@ -81,6 +82,7 @@ const InboundAnalyticsIVRAnalysis = ({
         isError={isError}
       >
         <div className="w-full h-80">
+          {ivrAnalysisData?.length === 0 && <NoData />}
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />

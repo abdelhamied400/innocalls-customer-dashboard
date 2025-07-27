@@ -49,10 +49,25 @@ export const useFilterManager = <T extends Record<string, any>>(
     if (!result.success) {
       const zodIssuesToObject = (issues: z.ZodIssue[]) =>
         issues.reduce((acc, issue) => {
-          const path = issue.path.join(".") as keyof T;
-          acc[path] = issue.message;
+          if (issue.path.length === 1) {
+            // Simple field
+            const path = issue.path[0] as keyof T;
+            acc[path] = issue.message;
+          } else if (
+            issue.path.length === 2 &&
+            typeof issue.path[1] === "number"
+          ) {
+            // Array field, e.g., agents.0
+            const arrayKey = issue.path[0] as keyof T;
+            if (!Array.isArray(acc[arrayKey])) {
+              acc[arrayKey] = [] as any;
+            }
+            (acc[arrayKey] as string[])[issue.path[1] as number] =
+              issue.message;
+          }
+          // For deeper nesting, extend as needed
           return acc;
-        }, {} as Record<keyof T, string>);
+        }, {} as Record<keyof T, any>);
 
       const validationErrors = zodIssuesToObject(result.error.issues);
       setErrors(validationErrors);

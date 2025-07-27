@@ -6,6 +6,7 @@ export const statsCardVariants = cva(
     variants: {
       variant: {
         default: "bg-white border-t-4 border-transparent",
+        compound: "shadow-none hover:shadow-none border bg-gradient-to-b",
       },
       color: {
         default: "",
@@ -46,6 +47,36 @@ export const statsCardVariants = cva(
         variant: "default",
         color: "info",
         className: "border-indigo-100 hover:border-indigo-500",
+      },
+      {
+        variant: "compound",
+        color: "primary",
+        className:
+          "from-primary-100/0 to-primary-100/50 hover:from-primary-100/20 hover:to-primary-100/70 hover:border-primary-500",
+      },
+      {
+        variant: "compound",
+        color: "warning",
+        className:
+          "from-amber-100/0 to-amber-100/50 hover:from-amber-100/20 hover:to-amber-100/70 hover:border-amber-500",
+      },
+      {
+        variant: "compound",
+        color: "destructive",
+        className:
+          "from-destructive-100/0 to-destructive-100/50 hover:from-destructive-100/20 hover:to-destructive-100/70 hover:border-destructive-500",
+      },
+      {
+        variant: "compound",
+        color: "info",
+        className:
+          "from-indigo-100/0 to-indigo-100/50 hover:from-indigo-100/20 hover:to-indigo-100/70 hover:border-indigo-500",
+      },
+      {
+        variant: "compound",
+        color: "success",
+        className:
+          "from-success-100/0 to-success-100/50 hover:from-success-100/20 hover:to-success-100/70 hover:border-success-500",
       },
     ],
     defaultVariants: {

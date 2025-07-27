@@ -73,6 +73,31 @@ type FetchAnalyticsDateDistributionResponse = Array<{
   shortestCall: string;
 }>;
 
+type FetchQueueAbandonedAnalysisResponse = {
+  avgInitialQueuePosition: number;
+  avgWaitTime: number;
+  maxInitialQueuePosition: number;
+  maxWaitTime: number;
+  minInitialQueuePosition: number;
+  minWaitTime: number;
+  peakHour: number;
+  stats: Array<{ timeBucket: string; count: number }>;
+  total: number;
+  uniqueCallers: number;
+};
+type FetchQueueTimeoutAnalysisResponse = {
+  avgInitialQueuePosition: number;
+  avgWaitTime: number;
+  maxInitialQueuePosition: number;
+  maxWaitTime: number;
+  minInitialQueuePosition: number;
+  minWaitTime: number;
+  peakHour: string;
+  stats: Array<{ timeBucket: string; count: number }>;
+  total: number;
+  uniqueCallers: number;
+};
+
 const formatParams = (filters: InboundAnalyticsFilters) => ({
   fromDate: format(filters.fromDate, "yyyy-MM-dd"),
   toDate: format(filters.toDate, "yyyy-MM-dd"),
@@ -174,5 +199,27 @@ export default {
       firstCallTime: format(caller.firstCallTime * 1000, "yyyy-MM-dd HH:mm:ss"),
       lastCallTime: format(caller.lastCallTime * 1000, "yyyy-MM-dd HH:mm:ss"),
     }));
+  },
+  async fetchQueueAbandonedAnalysis(
+    filters: InboundAnalyticsFilters
+  ): Promise<FetchQueueAbandonedAnalysisResponse> {
+    const res = await api.get(`/inbound-queue-reports/abandoned-calls`, {
+      params: formatParams(filters),
+    });
+    return {
+      ...res.data,
+      avgWaitTime: res.data.avgWaitTime.toFixed(2),
+    };
+  },
+  async fetchQueueTimeoutAnalysis(
+    filters: InboundAnalyticsFilters
+  ): Promise<FetchQueueTimeoutAnalysisResponse> {
+    const res = await api.get(`/inbound-queue-reports/timeout-calls`, {
+      params: formatParams(filters),
+    });
+    return {
+      ...res.data,
+      avgWaitTime: res.data.avgWaitTime.toFixed(2),
+    };
   },
 };
