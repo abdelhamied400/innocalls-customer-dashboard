@@ -203,7 +203,7 @@ const InboundAnalyticsQueueAnalysis = ({
                 cx="50%"
                 cy="50%"
                 outerRadius={80}
-                dataKey="value"
+                dataKey="count"
                 label={({ name, value }) => `${name}: ${value}`}
               >
                 {timeoutAnalysis.stats.map((entry, index) => (
