@@ -64,14 +64,12 @@ type QueueCardProps = VariantProps<typeof queueCardVariants> & {
   activeCalls?: Array<{
     phoneNumber: string;
     agentName: string;
-    status: "active" | "waiting";
-    callDuration: string;
+    callDuration: number;
   }>;
   waitingCalls?: Array<{
     phoneNumber: string;
     agentName: string;
-    status: "active" | "waiting";
-    callDuration: string;
+    callDuration: number;
   }>;
 };
 
@@ -149,7 +147,7 @@ const QueueCard = ({
                     key={idx}
                     phoneNumber={call.phoneNumber}
                     agentName={call.agentName}
-                    status={call.status}
+                    status="active"
                     callDuration={call.callDuration}
                   />
                 ))
@@ -183,7 +181,7 @@ const QueueCard = ({
                     key={idx}
                     phoneNumber={call.phoneNumber}
                     agentName={call.agentName}
-                    status={call.status}
+                    status="waiting"
                     callDuration={call.callDuration}
                     variant="warning"
                   />

@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
 import React from "react";
+import Timer from "../ui/timer";
 
 const queueCallCardVariants = cva(
   "p-3 rounded-lg border hover:border-500 transition-all duration-200 group",
@@ -35,7 +36,7 @@ type QueueCallCardProps = {
   phoneNumber: string;
   agentName: string;
   status: "active" | "waiting";
-  callDuration: string;
+  callDuration: number;
   live?: boolean;
   variant?: VariantProps<typeof queueCallCardVariants>["variant"];
 };
@@ -103,7 +104,7 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
               statusClasses
             )}
           >
-            {callDuration}
+            <Timer startingTime={callDuration} />
           </span>
         </div>
       </div>

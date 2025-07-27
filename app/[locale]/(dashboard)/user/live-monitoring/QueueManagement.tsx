@@ -1,8 +1,18 @@
 import QueueCard from "@/components/LiveMonitoring/QueueCard";
 import StatsDetailedCard from "@/components/StatsDetailedCard";
+import Timer from "@/components/ui/timer";
+import liveMonitoringService from "@/services/live-monitoring.service";
 import { People, Queue } from "@mui/icons-material";
+import { useQuery } from "@tanstack/react-query";
 
 const QueueManagement = () => {
+  const { data: queueManagementData, isLoading } = useQuery({
+    queryKey: ["queueManagementData"],
+    queryFn: () => liveMonitoringService.fetchQueueData(),
+  });
+
+  console.log("QueueManagementData", queueManagementData);
+
   return (
     <div className="queue-management">
       <StatsDetailedCard
@@ -14,117 +24,39 @@ const QueueManagement = () => {
         color="info"
       >
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-4">
-          <QueueCard
-            title={"Support Queue"}
-            subtitle={"Total Calls: 10"}
-            color="primary"
-            variant="default"
-            activeCount={3}
-            waitingCount={2}
-            activeCalls={[
-              {
-                phoneNumber: "+1 (555) 234-5678",
-                agentName: "John Doe",
-                status: "active",
-                callDuration: "8:45",
-              },
-              {
-                phoneNumber: "+1 (555) 234-5678",
-                agentName: "Jane Smith",
-                status: "waiting",
-                callDuration: "5:30",
-              },
-            ]}
-            waitingCalls={[
-              {
-                phoneNumber: "+1 (555) 234-5678",
-                agentName: "Alice Johnson",
-                status: "waiting",
-                callDuration: "3:15",
-              },
-              {
-                phoneNumber: "+1 (555) 234-5678",
-                agentName: "Bob Brown",
-                status: "waiting",
-                callDuration: "2:45",
-              },
-            ]}
-            sla="2:00"
-          />
-          <QueueCard
-            title={"Support Queue"}
-            subtitle={"Total Calls: 10"}
-            color="primary"
-            variant="default"
-            activeCount={3}
-            waitingCount={2}
-            activeCalls={[
-              {
-                phoneNumber: "+1 (555) 234-5678",
-                agentName: "John Doe",
-                status: "active",
-                callDuration: "8:45",
-              },
-              {
-                phoneNumber: "+1 (555) 234-5678",
-                agentName: "Jane Smith",
-                status: "waiting",
-                callDuration: "5:30",
-              },
-            ]}
-            waitingCalls={[
-              {
-                phoneNumber: "+1 (555) 234-5678",
-                agentName: "Alice Johnson",
-                status: "waiting",
-                callDuration: "3:15",
-              },
-              {
-                phoneNumber: "+1 (555) 234-5678",
-                agentName: "Bob Brown",
-                status: "waiting",
-                callDuration: "2:45",
-              },
-            ]}
-            sla="2:00"
-          />
-          <QueueCard
-            title={"Support Queue"}
-            subtitle={"Total Calls: 10"}
-            color="primary"
-            variant="default"
-            activeCount={3}
-            waitingCount={2}
-            activeCalls={[
-              {
-                phoneNumber: "+1 (555) 234-5678",
-                agentName: "John Doe",
-                status: "active",
-                callDuration: "8:45",
-              },
-              {
-                phoneNumber: "+1 (555) 234-5678",
-                agentName: "Jane Smith",
-                status: "waiting",
-                callDuration: "5:30",
-              },
-            ]}
-            waitingCalls={[
-              {
-                phoneNumber: "+1 (555) 234-5678",
-                agentName: "Alice Johnson",
-                status: "waiting",
-                callDuration: "3:15",
-              },
-              {
-                phoneNumber: "+1 (555) 234-5678",
-                agentName: "Bob Brown",
-                status: "waiting",
-                callDuration: "2:45",
-              },
-            ]}
-            sla="2:00"
-          />
+          {queueManagementData?.map((queue) => (
+            <QueueCard
+              key={queue.queue}
+              title={queue.queue}
+              subtitle={`Total Calls: ${queue.stats.totalCalls}`}
+              color="primary"
+              variant="default"
+              activeCount={queue.activeCalls.length}
+              waitingCount={queue.waitingCalls.length}
+              activeCalls={queue.activeCalls.map((call) => ({
+                phoneNumber: call.caller,
+                agentName: call.name,
+                callDuration: call.connectedAt
+                  ? Math.floor(
+                      (Date.now() -
+                        new Date(call.connectedAt * 1000).getTime()) /
+                        1000
+                    )
+                  : 0,
+              }))}
+              waitingCalls={queue.waitingCalls.map((call) => ({
+                phoneNumber: call.caller,
+                agentName: "Waiting",
+                callDuration: call.enteredAt
+                  ? Math.floor(
+                      (Date.now() - new Date(call.enteredAt * 1000).getTime()) /
+                        1000
+                    )
+                  : 0,
+              }))}
+              sla={`${queue.stats.slaCompliance}%`}
+            />
+          ))}
         </div>
       </StatsDetailedCard>
     </div>
