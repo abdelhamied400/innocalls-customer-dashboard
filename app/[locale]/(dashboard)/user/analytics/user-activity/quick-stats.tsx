@@ -11,12 +11,15 @@ import {
 } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import { UserActivityFilters } from "./page";
+import { useTranslations } from "next-intl";
 
 type QuickStatsProps = {
   filters: UserActivityFilters;
 };
 
 const QuickStats = ({ filters }: QuickStatsProps) => {
+  const t = useTranslations("analytics.userActivity");
+
   const {
     data: quickStatsData,
     isLoading,
@@ -32,11 +35,11 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
     <div className="quick-stats grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
       <StatsCard
         icon={<StackedLineChart className="w-6 h-6" />}
-        title="Top Answered Incoming"
+        title={t("quickStats.topAnsweredIncoming")}
         value={
           quickStatsData?.topAnsweredIncomingAgent
             ? `${quickStatsData.topAnsweredIncomingAgent.name} (${quickStatsData.topAnsweredIncomingAgent.answeredIncomingCount})`
-            : "No data available"
+            : t("quickStats.noDataAvailable")
         }
         color="success"
         isRefetching={isRefetching}
@@ -46,11 +49,11 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       />
       <StatsCard
         icon={<MilitaryTech className="w-6 h-6" />}
-        title="Top Connected Outbound"
+        title={t("quickStats.topConnectedOutbound")}
         value={
           quickStatsData?.topConnectedOutboundAgent
             ? `${quickStatsData.topConnectedOutboundAgent.name} (${quickStatsData.topConnectedOutboundAgent.connectedOutboundCount})`
-            : "No data available"
+            : t("quickStats.noDataAvailable")
         }
         color="info"
         isRefetching={isRefetching}
@@ -60,11 +63,11 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       />
       <StatsCard
         icon={<EmojiEvents className="w-6 h-6" />}
-        title="Best SLA Agent"
+        title={t("quickStats.bestSlaAgent")}
         value={
           quickStatsData?.topSlaComplianceAgent
             ? `${quickStatsData.topSlaComplianceAgent.name} (${quickStatsData.topSlaComplianceAgent.slaPercentage}%)`
-            : "No data available"
+            : t("quickStats.noDataAvailable")
         }
         color="warning"
         isRefetching={isRefetching}

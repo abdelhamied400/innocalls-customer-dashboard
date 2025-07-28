@@ -22,33 +22,7 @@ import {
 } from "recharts";
 import NoData from "./NoData";
 import { UserActivityFilters } from "./page";
-
-const columns = [
-  {
-    header: "Agent",
-    accessorKey: "name",
-  },
-  {
-    header: "Total Calls",
-    accessorKey: "totalCalls",
-  },
-  {
-    header: "Incoming Internal",
-    accessorKey: "totalIncomingInternalCalls",
-  },
-  {
-    header: "Incoming External",
-    accessorKey: "totalIncomingExternalCalls",
-  },
-  {
-    header: "Outgoing Internal",
-    accessorKey: "totalOutgoingInternalCalls",
-  },
-  {
-    header: "Outgoing External",
-    accessorKey: "totalOutgoingExternalCalls",
-  },
-];
+import { useTranslations } from "next-intl";
 
 type CallDistributionAnalyticsProps = {
   filters: UserActivityFilters;
@@ -57,6 +31,55 @@ type CallDistributionAnalyticsProps = {
 const CallDistributionAnalytics = ({
   filters,
 }: CallDistributionAnalyticsProps) => {
+  const t = useTranslations("analytics.userActivity.callDistribution");
+
+  const columns = [
+    {
+      header: t("table.columns.name"),
+      accessorKey: "name",
+    },
+    {
+      header: t("table.columns.ext"),
+      accessorKey: "ext",
+    },
+    {
+      header: t("table.columns.totalCalls"),
+      accessorKey: "totalCalls",
+    },
+    {
+      header: t("table.columns.incomingInternal"),
+      accessorKey: "totalIncomingInternalCalls",
+    },
+    {
+      header: t("table.columns.incomingExternal"),
+      accessorKey: "totalIncomingExternalCalls",
+    },
+    {
+      header: t("table.columns.outgoingInternal"),
+      accessorKey: "totalOutgoingInternalCalls",
+    },
+    {
+      header: t("table.columns.outgoingExternal"),
+      accessorKey: "totalOutgoingExternalCalls",
+    },
+    {
+      header: t("table.columns.answeredInternalIncoming"),
+      accessorKey: "totalAnsweredIncomingInternalCalls",
+    },
+    {
+      header: t("table.columns.answeredExternalIncoming"),
+      accessorKey: "totalAnsweredIncomingExternalCalls",
+    },
+    {
+      header: t("table.columns.connectedInternalOutgoing"),
+      accessorKey: "totalAnsweredOutgoingInternalCalls",
+    },
+    {
+      header: t("table.columns.connectedExternalOutgoing"),
+      accessorKey: "totalAnsweredOutgoingExternalCalls",
+    },
+  ];
+
   const { data, isLoading } = useQuery({
     queryKey: ["callDistribution", filters],
     queryFn: () => analyticsService.fetchCallDistributionAnalytics(filters),
@@ -77,14 +100,26 @@ const CallDistributionAnalytics = ({
           {isLoading && <ChartCardSkeleton />}
           {!isLoading && data && (
             <ChartCard
-              title="Call Distribution"
+              title={t("title")}
               icon={<ShowChart />}
               color="primary"
               legends={[
-                { label: "Incoming Internal", color: "#8B5CF6" },
-                { label: "Incoming External", color: "#3B82F6" },
-                { label: "Outgoing Internal", color: "#F59E42" },
-                { label: "Outgoing External", color: "#10B981" },
+                {
+                  label: t("chart.legends.incomingInternal"),
+                  color: "#8B5CF6",
+                },
+                {
+                  label: t("chart.legends.incomingExternal"),
+                  color: "#3B82F6",
+                },
+                {
+                  label: t("chart.legends.outgoingInternal"),
+                  color: "#F59E42",
+                },
+                {
+                  label: t("chart.legends.outgoingExternal"),
+                  color: "#10B981",
+                },
               ]}
               variant="compound"
             >
@@ -100,7 +135,7 @@ const CallDistributionAnalytics = ({
                       <XAxis dataKey="name" type="category" width={120}></XAxis>
                       <YAxis type="number">
                         <Label
-                          value="Number of Calls"
+                          value={t("chart.yAxisLabel")}
                           angle={-90}
                           position="insideLeft"
                           style={{ textAnchor: "middle" }}
@@ -110,42 +145,56 @@ const CallDistributionAnalytics = ({
                         formatter={(value, name) => {
                           switch (name) {
                             case "totalIncomingInternalCalls":
-                              return [value, "Incoming Internal"];
+                              return [
+                                value,
+                                t("chart.legends.incomingInternal"),
+                              ];
                             case "totalIncomingExternalCalls":
-                              return [value, "Incoming External"];
+                              return [
+                                value,
+                                t("chart.legends.incomingExternal"),
+                              ];
                             case "totalOutgoingInternalCalls":
-                              return [value, "Outgoing Internal"];
+                              return [
+                                value,
+                                t("chart.legends.outgoingInternal"),
+                              ];
                             case "totalOutgoingExternalCalls":
-                              return [value, "Outgoing External"];
+                              return [
+                                value,
+                                t("chart.legends.outgoingExternal"),
+                              ];
                             default:
                               return [value, name];
                           }
                         }}
-                        labelFormatter={(label) => `Agent: ${label}`}
+                        labelFormatter={(label) =>
+                          `${t("chart.tooltipAgent")}: ${label}`
+                        }
                       />
                       <Bar
                         dataKey="totalIncomingInternalCalls"
                         stackId="a"
                         fill="#8B5CF6"
-                        name="Incoming Internal"
+                        name={t("chart.legends.incomingInternal")}
                       />
                       <Bar
                         dataKey="totalIncomingExternalCalls"
                         stackId="a"
                         fill="#3B82F6"
-                        name="Incoming External"
+                        name={t("chart.legends.incomingExternal")}
                       />
                       <Bar
                         dataKey="totalOutgoingInternalCalls"
                         stackId="b"
                         fill="#F59E42"
-                        name="Outgoing Internal"
+                        name={t("chart.legends.outgoingInternal")}
                       />
                       <Bar
                         dataKey="totalOutgoingExternalCalls"
                         stackId="b"
                         fill="#10B981"
-                        name="Outgoing External"
+                        name={t("chart.legends.outgoingExternal")}
                       />
                       <Brush dataKey="name" height={30} stroke="#8884d8" />
                     </BarChart>

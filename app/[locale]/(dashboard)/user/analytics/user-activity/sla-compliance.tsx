@@ -21,25 +21,37 @@ import {
 } from "recharts";
 import { UserActivityFilters } from "./page";
 import NoData from "./NoData";
-
-const columns = [
-  { header: "Extension", accessorKey: "ext" },
-  { header: "Name", accessorKey: "name" },
-  { header: "Total Incoming Calls", accessorKey: "totalIncomingCalls" },
-  { header: "Answered Incoming Calls", accessorKey: "answeredIncomingCalls" },
-  { header: "Avg Response Time", accessorKey: "avgResponseTime" },
-  {
-    header: "Calls Answered Within SLA",
-    accessorKey: "callsAnsweredWithinSLA",
-  },
-  { header: "SLA Compliance (%)", accessorKey: "slaCompliance" },
-];
+import { useTranslations } from "next-intl";
 
 type SlaComplianceAnalyticsProps = {
   filters: UserActivityFilters;
 };
 
 const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
+  const t = useTranslations("analytics.userActivity.slaCompliance");
+
+  const columns = [
+    { header: t("table.columns.name"), accessorKey: "name" },
+    { header: t("table.columns.ext"), accessorKey: "ext" },
+    {
+      header: t("table.columns.totalIncomingCalls"),
+      accessorKey: "totalIncomingCalls",
+    },
+    {
+      header: t("table.columns.answeredIncomingCalls"),
+      accessorKey: "answeredIncomingCalls",
+    },
+    {
+      header: t("table.columns.avgResponseTime"),
+      accessorKey: "avgResponseTime",
+    },
+    {
+      header: t("table.columns.callsAnsweredWithinSLA"),
+      accessorKey: "callsAnsweredWithinSLA",
+    },
+    { header: t("table.columns.slaCompliance"), accessorKey: "slaCompliance" },
+  ];
+
   const { data, isLoading } = useQuery({
     queryKey: ["slaCompliance", filters],
     queryFn: () => analyticsService.fetchSlaComplianceAnalytics(filters),
@@ -71,15 +83,15 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
           {isLoading && <ChartCardSkeleton />}
           {!isLoading && data && (
             <ChartCard
-              title="SLA Compliance Overview"
+              title={t("title")}
               icon={<ShowChart />}
               color="warning"
               legends={[
-                { label: "Excellent (90%+)", color: "#22c55e" },
-                { label: "Good (70%-89%)", color: "#eab308" },
-                { label: "Average (50%-69%)", color: "#f59e42" },
-                { label: "Poor (30%-49%)", color: "#ef4444" },
-                { label: "Very Poor (<30%)", color: "#991b1b" },
+                { label: t("chart.legends.excellent"), color: "#22c55e" },
+                { label: t("chart.legends.good"), color: "#eab308" },
+                { label: t("chart.legends.average"), color: "#f59e42" },
+                { label: t("chart.legends.poor"), color: "#ef4444" },
+                { label: t("chart.legends.veryPoor"), color: "#991b1b" },
               ]}
               variant="compound"
             >
@@ -89,7 +101,10 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
                     <XAxis dataKey="name" />
                     <YAxis domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
                     <Tooltip formatter={(value) => `${value}%`} />
-                    <Bar dataKey="slaCompliance">
+                    <Bar
+                      dataKey="slaCompliance"
+                      name={t("chart.tooltipLabels.slaCompliance")}
+                    >
                       {data.map((entry, index) => (
                         <Cell
                           key={`cell-${entry.ext}`}

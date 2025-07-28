@@ -24,6 +24,7 @@ import useVocabStore from "@/store/vocab.slice";
 import { Button } from "@/components/ui/button";
 import { useFilterManager } from "@/hooks/useFilterManager";
 import { userActivityFiltersSchema } from "@/validation/userActivityFilters";
+import { useTranslations } from "next-intl";
 
 type Option = {
   value: string;
@@ -41,18 +42,21 @@ const today = new Date();
 const lastMonth = new Date();
 lastMonth.setDate(today.getDate() - 30);
 
-const userActivityFilterConfig = {
-  defaultValues: {
-    fromDate: lastMonth,
-    toDate: today,
-    agents: [],
-    sla: 10,
-  } as UserActivityFilters,
-  schema: userActivityFiltersSchema,
-};
-
 const UserActivityAnalytics = () => {
   const { extensions } = useVocabStore();
+
+  const t = useTranslations("analytics.userActivity");
+  const tCommon = useTranslations("analytics.common");
+
+  const userActivityFilterConfig = {
+    defaultValues: {
+      fromDate: lastMonth,
+      toDate: today,
+      agents: [],
+      sla: 10,
+    } as UserActivityFilters,
+    schema: userActivityFiltersSchema(t, tCommon),
+  };
 
   const { values, appliedValues, errors, setValue, reset, apply } =
     useFilterManager<UserActivityFilters>(userActivityFilterConfig);
@@ -62,38 +66,38 @@ const UserActivityAnalytics = () => {
       <div className="flex flex-col gap-2">
         <div className="filters">
           <StatsDetailedCard
-            title="Date Range Search"
+            title={tCommon("form.fields.date.label")}
             icon={<BarChart />}
             value=""
             color="primary"
           >
             <div className="py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <Field
-                label="From"
+                label={tCommon("form.fields.fromDate.label")}
                 postIcon={<CalendarMonth className="text-gray-400" />}
                 error={errors.fromDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
-                  placeholder="Enter from date"
+                  placeholder={tCommon("form.fields.fromDate.placeholder")}
                   value={values.fromDate}
                   onChange={(date) => setValue("fromDate", date || new Date())}
                 />
               </Field>
               <Field
-                label="To"
+                label={tCommon("form.fields.toDate.label")}
                 postIcon={<CalendarMonth className="text-gray-400" />}
                 error={errors.toDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
-                  placeholder="Enter to date"
+                  placeholder={tCommon("form.fields.toDate.placeholder")}
                   value={values.toDate}
                   onChange={(date) => setValue("toDate", date || new Date())}
                 />
               </Field>
               <Field
-                label="SLA"
+                label={t("form.fields.sla.label")}
                 postIcon={<AccessTime className="text-gray-400" />}
                 error={errors.sla}
               >
@@ -101,7 +105,7 @@ const UserActivityAnalytics = () => {
                   type="number"
                   variant="field"
                   className=""
-                  placeholder="Enter SLA compliance percentage"
+                  placeholder={t("form.fields.sla.placeholder")}
                   value={values.sla}
                   onChange={(e) => setValue("sla", Number(e.target.value))}
                 />
@@ -109,7 +113,7 @@ const UserActivityAnalytics = () => {
               <div className="col-span-1 sm:col-span-2 lg:col-span-3">
                 <Select
                   className="w-full"
-                  placeholder="Select agents"
+                  placeholder={tCommon("form.fields.agents.placeholder")}
                   value={values.agents}
                   onChange={(value) => setValue("agents", value || [])}
                   options={extensions.map((ext) => ({
@@ -117,7 +121,7 @@ const UserActivityAnalytics = () => {
                     label: `${ext.name} (${ext.ext})`,
                   }))}
                   isMulti
-                  label="Select Agents"
+                  label={tCommon("form.fields.agents.label")}
                   showSelectedTags={false}
                   error={errors.agents}
                   isClearable
@@ -126,16 +130,16 @@ const UserActivityAnalytics = () => {
             </div>
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={reset}>
-                Clear Filters
+                {tCommon("actions.resetFilter")}
               </Button>
-              <Button onClick={apply}>Apply Filters</Button>
+              <Button onClick={apply}>{tCommon("actions.applyFilters")}</Button>
             </div>
           </StatsDetailedCard>
         </div>
         <QuickStats filters={appliedValues} />
         <StatsDetailedCard
-          title="User Activity Analytics"
-          subtitle="View detailed analytics for user activity"
+          title={t("title")}
+          subtitle={t("subtitle")}
           icon={<Insights />}
           value=""
           color="primary"
@@ -147,21 +151,21 @@ const UserActivityAnalytics = () => {
                 className="flex items-center gap-1"
               >
                 <BarChart />
-                Call Distribution
+                {t("tabs.callDistribution")}
               </TabsTrigger>
               <TabsTrigger
                 value="call-stats"
                 className="flex items-center gap-1"
               >
                 <TrendingUpOutlined />
-                Call Stats
+                {t("tabs.callStats")}
               </TabsTrigger>
               <TabsTrigger
                 value="sla-compliance"
                 className="flex items-center gap-1"
               >
                 <AccessTime />
-                Sla Compliance
+                {t("tabs.slaCompliance")}
               </TabsTrigger>
             </TabsList>
             <TabsContent value="call-distribution">

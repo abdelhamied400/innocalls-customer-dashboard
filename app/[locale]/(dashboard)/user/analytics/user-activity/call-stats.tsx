@@ -24,24 +24,34 @@ import {
 } from "recharts";
 import { UserActivityFilters } from "./page";
 import NoData from "./NoData";
-
-const columns = [
-  { header: "Agent Ext", accessorKey: "ext" },
-  { header: "Name", accessorKey: "name" },
-  { header: "Total Calls", accessorKey: "totalCalls" },
-  { header: "Avg Call Duration", accessorKey: "avgCallDuration" },
-  { header: "Total Talk Time", accessorKey: "totalTalkTime" },
-  { header: "Answered Count", accessorKey: "answeredCount" },
-  { header: "Answer Rate (%)", accessorKey: "answerRate" },
-  { header: "Longest Call", accessorKey: "longestCall" },
-  { header: "Shortest Call", accessorKey: "shortestCall" },
-];
+import { useTranslations } from "next-intl";
 
 type CallStatsAnalyticsProps = {
   filters: UserActivityFilters;
 };
 
 const CallStatsAnalytics = ({ filters }: CallStatsAnalyticsProps) => {
+  const t = useTranslations("analytics.userActivity.callStats");
+  const tCommon = useTranslations("analytics.userActivity.common");
+
+  const columns = [
+    { header: t("table.columns.name"), accessorKey: "name" },
+    { header: t("table.columns.ext"), accessorKey: "ext" },
+    { header: t("table.columns.totalCalls"), accessorKey: "totalCalls" },
+    {
+      header: t("table.columns.avgCallDuration"),
+      accessorKey: "avgCallDuration",
+    },
+    {
+      header: t("table.columns.totalTalkTime"),
+      accessorKey: "totalTalkTime",
+    },
+    { header: t("table.columns.answeredCount"), accessorKey: "answeredCount" },
+    { header: t("table.columns.answerRate"), accessorKey: "answerRate" },
+    { header: t("table.columns.longestCall"), accessorKey: "longestCall" },
+    { header: t("table.columns.shortestCall"), accessorKey: "shortestCall" },
+  ];
+
   const { data, isLoading } = useQuery({
     queryKey: ["callStats", filters],
     queryFn: () => analyticsService.fetchCallStatsAnalytics(filters),
@@ -61,16 +71,18 @@ const CallStatsAnalytics = ({ filters }: CallStatsAnalyticsProps) => {
         <TabsContent value="chart">
           {isLoading && <ChartCardSkeleton />}
           {data?.length === 0 && !isLoading && (
-            <div className="text-center text-muted">No data available</div>
+            <div className="text-center text-muted">
+              {tCommon("noDataAvailable")}
+            </div>
           )}
           {!isLoading && data && (
             <ChartCard
-              title="Call Statistics Overview"
+              title={t("title")}
               icon={<ShowChart />}
               color="success"
               legends={[
-                { label: "Total Calls", color: "#6366F1" },
-                { label: "Answered Calls", color: "#10B981" },
+                { label: t("chart.legends.totalCalls"), color: "#6366F1" },
+                { label: t("chart.legends.answeredCalls"), color: "#10B981" },
               ]}
               variant="compound"
             >
@@ -87,7 +99,7 @@ const CallStatsAnalytics = ({ filters }: CallStatsAnalyticsProps) => {
                       <XAxis dataKey="name" type="category" width={120}></XAxis>
                       <YAxis type="number">
                         <Label
-                          value="Number of Calls"
+                          value={t("chart.yAxisLabel")}
                           angle={-90}
                           position="insideLeft"
                         />
@@ -96,19 +108,24 @@ const CallStatsAnalytics = ({ filters }: CallStatsAnalyticsProps) => {
                         formatter={(value, name) => {
                           switch (name) {
                             case "totalCalls":
-                              return [value, "Total Calls"];
+                              return [
+                                value,
+                                t("chart.tooltipLabels.totalCalls"),
+                              ];
                             case "answeredCount":
-                              return [value, "Answered"];
+                              return [value, t("chart.tooltipLabels.answered")];
                             default:
                               return [value, name];
                           }
                         }}
-                        labelFormatter={(label) => `Agent: ${label}`}
+                        labelFormatter={(label) =>
+                          `${t("chart.tooltipAgent")}: ${label}`
+                        }
                       />
                       <Bar
                         dataKey="totalCalls"
                         fill="#6366F1"
-                        name="Total Calls"
+                        name={t("chart.tooltipLabels.totalCalls")}
                       />
                       <Line
                         type="monotone"
@@ -116,7 +133,7 @@ const CallStatsAnalytics = ({ filters }: CallStatsAnalyticsProps) => {
                         stroke="#10B981"
                         strokeWidth={2}
                         dot={{ r: 3 }}
-                        name="Answered"
+                        name={t("chart.tooltipLabels.answered")}
                       />
                       <Brush
                         dataKey="answeredCount"

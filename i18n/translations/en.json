@@ -996,6 +996,122 @@
         "inboundHourlyUnanswered": "Inbound Hourly Unanswered Calls"
       }
     },
+    "userActivity": {
+      "title": "User Activity Analytics",
+      "subtitle": "View detailed analytics for user activity",
+      "dateRangeSearch": "Date Range Search",
+      "quickStats": {
+        "topAnsweredIncoming": "Top Answered Incoming",
+        "topConnectedOutbound": "Top Connected Outbound",
+        "bestSlaAgent": "Best SLA User",
+        "noDataAvailable": "No data available"
+      },
+      "tabs": {
+        "callDistribution": "Call Distribution",
+        "callStats": "Call Stats",
+        "slaCompliance": "SLA Compliance"
+      },
+      "callDistribution": {
+        "title": "Call Distribution",
+        "table": {
+          "columns": {
+            "name": "Name",
+            "ext": "Ext",
+            "totalCalls": "Total Calls",
+            "incomingInternal": "Incoming Internal",
+            "incomingExternal": "Incoming External",
+            "outgoingInternal": "Outgoing Internal",
+            "outgoingExternal": "Outgoing External",
+            "answeredInternalIncoming": "Answered Internal Incoming",
+            "answeredExternalIncoming": "Answered External Incoming",
+            "connectedInternalOutgoing": "Connected Internal Outgoing",
+            "connectedExternalOutgoing": "Connected External Outgoing"
+          }
+        },
+        "chart": {
+          "title": "Call Distribution",
+          "legends": {
+            "incomingInternal": "Incoming Internal",
+            "incomingExternal": "Incoming External",
+            "outgoingInternal": "Outgoing Internal",
+            "outgoingExternal": "Outgoing External"
+          },
+          "yAxisLabel": "Number of Calls",
+          "tooltipAgent": "Agent"
+        }
+      },
+      "callStats": {
+        "title": "Call Statistics Overview",
+        "table": {
+          "columns": {
+            "ext": "Ext",
+            "name": "Name",
+            "totalCalls": "Total Calls",
+            "avgCallDuration": "Avg Call Duration",
+            "totalTalkTime": "Total Talk Time",
+            "answeredCount": "Answered Count",
+            "answerRate": "Answer Rate (%)",
+            "longestCall": "Longest Call",
+            "shortestCall": "Shortest Call"
+          }
+        },
+        "chart": {
+          "legends": {
+            "totalCalls": "Total Calls",
+            "answeredCalls": "Answered Calls"
+          },
+          "yAxisLabel": "Number of Calls",
+          "tooltipAgent": "Agent",
+          "tooltipLabels": {
+            "totalCalls": "Total Calls",
+            "answered": "Answered"
+          }
+        }
+      },
+      "slaCompliance": {
+        "title": "SLA Compliance Overview",
+        "table": {
+          "columns": {
+            "ext": "Ext",
+            "name": "Name",
+            "totalIncomingCalls": "Total Incoming Calls",
+            "answeredIncomingCalls": "Answered Incoming Calls",
+            "avgResponseTime": "Avg Response Time",
+            "callsAnsweredWithinSLA": "Calls Answered Within SLA",
+            "slaCompliance": "SLA Compliance (%)"
+          }
+        },
+        "chart": {
+          "legends": {
+            "excellent": "Excellent (90%+)",
+            "good": "Good (70%-89%)",
+            "average": "Average (50%-69%)",
+            "poor": "Poor (30%-49%)",
+            "veryPoor": "Very Poor (<30%)"
+          },
+          "tooltipLabels": {
+            "slaCompliance": "SLA Compliance (%)"
+          }
+        }
+      },
+      "form": {
+        "fields": {
+          "sla": {
+            "label": "SLA Time",
+            "placeholder": "Enter SLA compliance percentage"
+          }
+        },
+        "validation": {
+          "sla": {
+            "int": "SLA should be an integer",
+            "min": "SLA must be at least {min}"
+          }
+        }
+      },
+      "common": {
+        "noDataAvailable": "No data available"
+      }
+    },
     "common": {
       "form": {
         "fields": {

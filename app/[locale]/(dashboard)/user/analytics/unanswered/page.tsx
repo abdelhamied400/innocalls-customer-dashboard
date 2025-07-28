@@ -115,10 +115,7 @@ const UnansweredAnalytics = () => {
               <Button variant="outline" onClick={reset}>
                 {tCommon("actions.resetFilter")}
               </Button>
-              <Button onClick={apply}>
-                {" "}
-                {tCommon("actions.applyFilters")}
-              </Button>
+              <Button onClick={apply}>{tCommon("actions.applyFilters")}</Button>
             </div>
           </StatsDetailedCard>
         </div>
