@@ -577,7 +577,22 @@
       "developersTab": "إعدادات المطورين",
       "settings": "الإعدادات",
       "callBridge": "جسر المكالمات",
-      "postCallSurvey": "استطلاع ما بعد المكالمة"
+      "postCallSurvey": "استطلاع ما بعد المكالمة",
+      "aiVoiceAgents": "وكلاء الصوت الذكي",
+      "analytics": "إحصائيات المكالمات",
+      "inbound": "الواردة",
+      "outbound": "الصادرة",
+      "unanswered": "غير المجابة",
+      "userActivity": "أداء المستخدمين ",
+      "callHistory": "تاريخ المكالمات",
+      "apps": "التطبيقات",
+      "surveyCampaigns": "حملات الاستطلاع",
+      "inCallSurvey": "استطلاع أثناء المكالمة",
+      "callCampaign": "حملة المكالمات",
+      "webcall": "مكالمة الويب",
+      "zendeskCredentials": "بيانات اعتماد زين ديسك",
+      "webrtcCredentials": "بيانات اعتماد WebRTC",
+      "apiCredentials": "بيانات اعتماد API"
     },
     "support": {
       "innoSupport": "دعم سوبرسيل"

@@ -75,7 +75,7 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
   },
   {
     icon: <SmartToy />,
-    title: "AI Voice Agents",
+    title:t("navigation.aiVoiceAgents"),
     href: `/${role}/ai-voice-agents`,
     roles: ["user"],
     isNew: false,
@@ -84,48 +84,42 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
   },
   {
     icon: <Timeline />,
-    title: "Analytics",
+    title:t("navigation.analytics"),
+
     isNew: true,
     isComingSoon: false,
     href: `/${role}/analytics`,
     children: [
       {
-        title: "Inbound",
+        title:t("navigation.inbound"),
         href: `/${role}/analytics/inbound`,
         icon: <ArrowDownward />,
         isNew: true,
         isComingSoon: false,
       },
       {
-        title: "Outbound",
+        title:t("navigation.outbound"),
         href: `/${role}/analytics/outbound`,
         icon: <ArrowUpward />,
         isNew: true,
         isComingSoon: false,
       },
       {
-        title: "Unanswered",
+        title:t("navigation.unanswered"),
         href: `/${role}/analytics/unanswered`,
         icon: <CallMissedOutgoing />,
         isNew: true,
         isComingSoon: false,
       },
-      // {
-      //   title: "Queue Analytics",
-      //   href: `/${role}/analytics/queue`,
-      //   icon: <Layers />,
-      //   isNew: true,
-      //   isComingSoon: false,
-      // },
       {
-        title: "User Activity",
+        title:t("navigation.userActivity"),
         href: `/${role}/analytics/user-activity`,
         icon: <PersonSearch />,
         isNew: true,
         isComingSoon: false,
       },
       {
-        title: "Call History",
+        title:t("navigation.callHistory"),
         href: `/${role}/call-reporting`,
         icon: <History />,
         isNew: true,
@@ -168,7 +162,7 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
 
   {
     icon: <Apps />,
-    title: "Apps",
+    title:t("navigation.apps"),
     isNew: false,
     isComingSoon: true,
     roles: ["user"],
@@ -183,7 +177,7 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
         disabled: true,
       },
       {
-        title: "Survey Campaigns",
+        title: t("navigation.surveyCampaigns"),
         href: `/${role}/survey`,
         icon: <Quiz />,
         isNew: false,
@@ -191,7 +185,7 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
         disabled: true,
       },
       {
-        title: "In Call Survey",
+        title: t("navigation.inCallSurvey"),
         href: `/${role}/analytics/in-call-survey`,
         icon: <Assessment />,
         isNew: false,
@@ -199,7 +193,7 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
         disabled: true,
       },
       {
-        title: "Call Bridge",
+        title: t("navigation.callBridge"),
         href: `/${role}/analytics/call-bridge`,
         icon: <Hub />,
         isNew: false,
@@ -207,7 +201,7 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
         disabled: true,
       },
       {
-        title: "Order Confirmation",
+        title: t("navigation.orderConfirmation"),
         href: `/${role}/apps/order-confirmation`,
         icon: <ShoppingCart />,
         isNew: false,
@@ -215,7 +209,7 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
         disabled: true,
       },
       {
-        title: "Call Campaign",
+        title: t("navigation.callCampaign"),
         href: `/${role}/apps/call-campaign`,
         icon: <Campaign />,
         isNew: false,
@@ -233,7 +227,7 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
     href: `/${role}/developers`,
     children: [
       {
-        title: "Webcall",
+        title: t("navigation.webcall"),
         href: `/${role}/developers/webcall`,
         icon: <Phone />,
         isNew: false,
@@ -241,7 +235,7 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
         disabled: true,
       },
       {
-        title: "Zendesk Credentials",
+        title: t("navigation.zendeskCredentials"),
         href: `/${role}/developers/zendesk-credentials`,
         icon: <Support />,
         isNew: false,
@@ -249,7 +243,7 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
         disabled: true,
       },
       {
-        title: "WebRTC Credentials",
+        title: t("navigation.webrtcCredentials"),
         href: `/${role}/developers/webrtc-credentials`,
         icon: <Key />,
         isNew: false,
@@ -257,7 +251,7 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
         disabled: true,
       },
       {
-        title: "API Credentials",
+        title: t("navigation.apiCredentials"),
         href: `/${role}/developers/api-credentials`,
         icon: <Api />,
         isNew: false,

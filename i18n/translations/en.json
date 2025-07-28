@@ -569,7 +569,22 @@
       "developersTab": "Developers Tab",
       "settings": "Settings",
       "callBridge": "Call Bridge",
-      "postCallSurvey": "Post Call Survey"
+      "postCallSurvey": "Post Call Survey",
+      "aiVoiceAgents": "AI Voice Agents",
+      "analytics": "Analytics",
+      "inbound": "Inbound",
+      "outbound": "Outbound",
+      "unanswered": "Unanswered",
+      "userActivity": "Users Activity",
+      "callHistory": "Call History",
+      "apps": "Apps",
+      "surveyCampaigns": "Survey Campaigns",
+      "inCallSurvey": "In Call Survey",
+      "callCampaign": "Call Campaign",
+      "webcall": "Webcall",
+      "zendeskCredentials": "Zendesk Credentials",
+      "webrtcCredentials": "WebRTC Credentials",
+      "apiCredentials": "API Credentials"
     },
     "support": {
       "innoSupport": "Innocalls Support"
