@@ -24,41 +24,44 @@ import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import { ShowChart, TableView } from "@mui/icons-material";
 import { OutboundAnalyticsFilters } from "./page";
 import NoData from "../../../../../../components/Analytics/NoData";
+import { useTranslations } from "next-intl";
 
 type HourlyDistributionAnalyticsProps = {
   filters: OutboundAnalyticsFilters;
 };
 
-const columns = [
-  {
-    header: "Hour",
-    accessorKey: "hourOfDay",
-  },
-  {
-    header: "Total Calls",
-    accessorKey: "totalCalls",
-  },
-  {
-    header: "Answered",
-    accessorKey: "answeredCalls",
-  },
-  {
-    header: "Unanswered",
-    accessorKey: "unansweredCalls",
-  },
-  {
-    header: "Internal",
-    accessorKey: "internalCalls",
-  },
-  {
-    header: "External",
-    accessorKey: "externalCalls",
-  },
-];
-
 const HourlyDistributionAnalytics = ({
   filters,
 }: HourlyDistributionAnalyticsProps) => {
+  const t = useTranslations("analytics.outbound.hourlyDistribution");
+
+  const columns = [
+    {
+      header: t("table.columns.hour"),
+      accessorKey: "hourOfDay",
+    },
+    {
+      header: t("table.columns.totalCalls"),
+      accessorKey: "totalCalls",
+    },
+    {
+      header: t("table.columns.answered"),
+      accessorKey: "answeredCalls",
+    },
+    {
+      header: t("table.columns.unanswered"),
+      accessorKey: "unansweredCalls",
+    },
+    {
+      header: t("table.columns.internal"),
+      accessorKey: "internalCalls",
+    },
+    {
+      header: t("table.columns.external"),
+      accessorKey: "externalCalls",
+    },
+  ];
+
   const { data, isLoading } = useQuery({
     queryKey: ["hourlyDistribution", filters],
     queryFn: () =>
@@ -82,7 +85,7 @@ const HourlyDistributionAnalytics = ({
           {isLoading && <ChartCardSkeleton />}
           {!isLoading && data && data.length > 0 && (
             <ChartCard
-              title="Hourly Distribution"
+              title={t("title")}
               icon={<ShowChart />}
               color="primary"
               variant="compound"
@@ -110,7 +113,7 @@ const HourlyDistributionAnalytics = ({
                     stroke="#3B82F6"
                     strokeWidth={2}
                     dot={false}
-                    name="Total"
+                    name={t("chart.legends.total")}
                   />
                   <Line
                     type="monotone"
@@ -118,7 +121,7 @@ const HourlyDistributionAnalytics = ({
                     stroke="#10B981"
                     strokeWidth={2}
                     dot={false}
-                    name="Answered"
+                    name={t("chart.legends.answered")}
                   />
                   <Line
                     type="monotone"
@@ -126,7 +129,7 @@ const HourlyDistributionAnalytics = ({
                     stroke="#EF4444"
                     strokeWidth={2}
                     dot={false}
-                    name="Unanswered"
+                    name={t("chart.legends.unanswered")}
                   />
                 </LineChart>
               </ResponsiveContainer>

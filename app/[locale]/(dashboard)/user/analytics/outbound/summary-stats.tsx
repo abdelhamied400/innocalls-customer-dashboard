@@ -14,12 +14,15 @@ import StatsCard, {
 import outboundAnalyticsService from "@/services/outbound-analytics.service";
 import { useQuery } from "@tanstack/react-query";
 import { OutboundAnalyticsFilters } from "./page";
+import { useTranslations } from "next-intl";
 
 type QuickStatsProps = {
   filters: OutboundAnalyticsFilters;
 };
 
 const QuickStats = ({ filters }: QuickStatsProps) => {
+  const t = useTranslations("analytics.outbound.quickStats");
+
   const {
     data: quickStatsData,
     isLoading,
@@ -36,7 +39,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       <StatsCard
         key="Total Calls"
         icon={<BarChartIcon fontSize="medium" />}
-        title="Total Calls"
+        title={t("totalCalls")}
         value={quickStatsData?.totalCalls || 0}
         color="default"
         isRefetching={isRefetching}
@@ -47,7 +50,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       <StatsCard
         key="Unanswered Calls"
         icon={<PhoneDisabledIcon fontSize="medium" />}
-        title="Unanswered Calls"
+        title={t("unansweredCalls")}
         value={quickStatsData?.unansweredCalls || 0}
         color="destructive"
         isRefetching={isRefetching}
@@ -58,7 +61,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       <StatsCard
         key="Answered Calls"
         icon={<PhoneIcon fontSize="medium" />}
-        title="Answered Calls"
+        title={t("answeredCalls")}
         value={quickStatsData?.answeredCalls || 0}
         color="success"
         isRefetching={isRefetching}
@@ -69,7 +72,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       <StatsCard
         key="Answer Rate"
         icon={<PercentIcon fontSize="medium" />}
-        title="Answer Rate"
+        title={t("answerRate")}
         value={`${quickStatsData?.answerRate || 0}%`}
         color="info"
         isRefetching={isRefetching}
@@ -80,7 +83,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       <StatsCard
         key="External Calls"
         icon={<PublicIcon fontSize="medium" />}
-        title="External Calls"
+        title={t("externalCalls")}
         value={quickStatsData?.externalCalls || 0}
         color="primary"
         isRefetching={isRefetching}
@@ -91,7 +94,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       <StatsCard
         key="Avg Duration"
         icon={<TimerIcon fontSize="medium" />}
-        title="Avg Duration"
+        title={t("avgDuration")}
         value={quickStatsData?.avgDuration || "00:00:00"}
         color="warning"
         isRefetching={isRefetching}

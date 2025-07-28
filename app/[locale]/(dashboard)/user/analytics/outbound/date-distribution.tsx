@@ -24,62 +24,66 @@ import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import { ShowChart, TableView } from "@mui/icons-material";
 import { OutboundAnalyticsFilters } from "./page";
 import NoData from "../../../../../../components/Analytics/NoData";
+import { useTranslations } from "next-intl";
 
 type DateDistributionAnalyticsProps = {
   filters: OutboundAnalyticsFilters;
 };
 
-const columns = [
-  {
-    header: "Date",
-    accessorKey: "date",
-  },
-  {
-    header: "Total",
-    accessorKey: "totalCalls",
-  },
-  {
-    header: "Internal",
-    accessorKey: "internalCalls",
-  },
-  {
-    header: "External",
-    accessorKey: "externalCalls",
-  },
-  {
-    header: "Answered",
-    accessorKey: "totalAnsweredCalls",
-  },
-  {
-    header: "Unanswered",
-    accessorKey: "totalUnAnsweredCalls",
-  },
-  {
-    header: "Answer Rate",
-    accessorKey: "answerRate",
-    cell: (row: any) => `${row.getValue("answerRate")}%`,
-  },
-  {
-    header: "Total Duration",
-    accessorKey: "totalDuration",
-  },
-  {
-    header: "Avg Duration",
-    accessorKey: "avgDuration",
-  },
-  {
-    header: "Shortest",
-    accessorKey: "shortestCall",
-  },
-  {
-    header: "Longest",
-    accessorKey: "longestCall",
-  },
-];
-
 const DateDistributionAnalytics = ({
   filters,
 }: DateDistributionAnalyticsProps) => {
+  const t = useTranslations("analytics.outbound.dateDistribution");
+
+  const columns = [
+    {
+      header: t("table.columns.date"),
+
+      accessorKey: "date",
+    },
+    {
+      header: t("table.columns.total"),
+      accessorKey: "totalCalls",
+    },
+    {
+      header: t("table.columns.internal"),
+      accessorKey: "internalCalls",
+    },
+    {
+      header: t("table.columns.external"),
+      accessorKey: "externalCalls",
+    },
+    {
+      header: t("table.columns.answered"),
+      accessorKey: "totalAnsweredCalls",
+    },
+    {
+      header: t("table.columns.unanswered"),
+      accessorKey: "totalUnAnsweredCalls",
+    },
+    {
+      header: t("table.columns.answerRate"),
+      accessorKey: "answerRate",
+      cell: (row: any) => `${row.getValue("answerRate")}%`,
+    },
+    {
+      header: t("table.columns.totalDuration"),
+      accessorKey: "totalDuration",
+    },
+    {
+      header: t("table.columns.avgDuration"),
+      accessorKey: "avgDuration",
+    },
+    {
+      header: t("table.columns.shortest"),
+      accessorKey: "shortestCall",
+    },
+    {
+      header: t("table.columns.longest"),
+      accessorKey: "longestCall",
+    },
+  ];
+
   const { data, isLoading } = useQuery({
     queryKey: ["dateDistribution", filters],
     queryFn: () =>
@@ -103,7 +107,7 @@ const DateDistributionAnalytics = ({
           {isLoading && <ChartCardSkeleton />}
           {!isLoading && data && data.length > 0 && (
             <ChartCard
-              title="Date Distribution"
+              title={t("title")}
               icon={<ShowChart />}
               color="primary"
               variant="compound"
@@ -131,7 +135,7 @@ const DateDistributionAnalytics = ({
                     stroke="#3B82F6"
                     strokeWidth={2}
                     dot={false}
-                    name="Total"
+                    name={t("chart.legends.total")}
                   />
                   <Line
                     type="monotone"
@@ -139,7 +143,7 @@ const DateDistributionAnalytics = ({
                     stroke="#10B981"
                     strokeWidth={2}
                     dot={false}
-                    name="Answered"
+                    name={t("chart.legends.answered")}
                   />
                   <Line
                     type="monotone"
@@ -147,7 +151,7 @@ const DateDistributionAnalytics = ({
                     stroke="#EF4444"
                     strokeWidth={2}
                     dot={false}
-                    name="Unanswered"
+                    name={t("chart.legends.unanswered")}
                   />
                 </LineChart>
               </ResponsiveContainer>

@@ -14,7 +14,7 @@ type QuickStatsFilters = {
   filters: UnansweredAnalyticsFilters;
 };
 const QuickStats = ({ filters }: QuickStatsFilters) => {
-  const t = useTranslations("analytics.unansweredAnalytics.quickStats");
+  const t = useTranslations("analytics.unanswered.quickStats");
 
   const { data, isLoading, isRefetching, error, isError } = useQuery({
     queryKey: ["unanswered-quick-stats", filters],

@@ -43,7 +43,7 @@ lastMonth.setDate(today.getDate() - 30);
 const UnansweredAnalytics = () => {
   const { extensions } = useVocabStore();
 
-  const t = useTranslations("analytics.unansweredAnalytics");
+  const t = useTranslations("analytics.unanswered");
   const tCommon = useTranslations("analytics.common");
 
   const unansweredFilterConfig = {

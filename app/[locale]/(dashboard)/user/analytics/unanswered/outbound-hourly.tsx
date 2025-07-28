@@ -26,7 +26,7 @@ type OutboundUnansweredHourlyProps = {
 const OutboundUnansweredHourly = ({
   filters,
 }: OutboundUnansweredHourlyProps) => {
-  const t = useTranslations("analytics.unansweredAnalytics");
+  const t = useTranslations("analytics.unanswered");
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["outboundUnansweredHourly", filters],

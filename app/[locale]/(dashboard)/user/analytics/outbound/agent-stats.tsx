@@ -25,12 +25,15 @@ import PeopleIcon from "@mui/icons-material/People";
 import outboundAnalyticsService from "@/services/outbound-analytics.service";
 import NoData from "../../../../../../components/Analytics/NoData";
 import { OutboundAnalyticsFilters } from "./page";
+import { useTranslations } from "next-intl";
 
 type AgentStatsAnalyticsProps = {
   filters: OutboundAnalyticsFilters;
 };
 
 const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
+  const t = useTranslations("analytics.outbound.agentStats");
+
   const {
     data: agentStats,
     isLoading,
@@ -42,50 +45,46 @@ const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
 
   const columns = [
     {
-      accessorKey: "ext",
-      header: "Ext",
+      accessorKey: "name",
+      header: t("table.columns.name"),
     },
     {
-      accessorKey: "name",
-      header: "Name",
+      accessorKey: "ext",
+      header: t("table.columns.ext"),
     },
     {
       accessorKey: "totalCalls",
-      header: "Total Calls",
+      header: t("table.columns.totalCalls"),
     },
     {
       accessorKey: "answeredCalls",
-      header: "Answered",
+      header: t("table.columns.answered"),
     },
     {
       accessorKey: "unansweredCalls",
-      header: "Unanswered",
+      header: t("table.columns.unanswered"),
     },
     {
       accessorKey: "internalCalls",
-      header: "Internal",
+      header: t("table.columns.internal"),
     },
     {
       accessorKey: "externalCalls",
-      header: "External",
+      header: t("table.columns.external"),
     },
     {
       accessorKey: "totalDuration",
-      header: "Total Duration",
+      header: t("table.columns.totalDuration"),
     },
     {
       accessorKey: "avgDuration",
-      header: "Avg Duration",
+      header: t("table.columns.avgDuration"),
     },
   ];
 
   if (isLoading) {
     return (
-      <ChartCard
-        title="Agent Statistics"
-        icon={<PeopleIcon />}
-        className="h-[500px]"
-      >
+      <ChartCard title={t("title")} icon={<PeopleIcon />} className="h-[500px]">
         <div className="flex items-center justify-center h-96">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
         </div>
@@ -95,13 +94,9 @@ const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
 
   if (error) {
     return (
-      <ChartCard
-        title="Agent Statistics"
-        icon={<PeopleIcon />}
-        className="h-[500px]"
-      >
+      <ChartCard title={t("title")} icon={<PeopleIcon />} className="h-[500px]">
         <div className="flex items-center justify-center h-96">
-          <div className="text-red-500">Error loading agent statistics</div>
+          <div className="text-red-500">{t("errors.loading")}</div>
         </div>
       </ChartCard>
     );
@@ -120,7 +115,7 @@ const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
 
       <TabsContent value="chart" className="mt-4">
         <ChartCard
-          title="Agent Statistics"
+          title={t("title")}
           icon={<PeopleIcon />}
           variant="compound"
           color="info"
@@ -138,12 +133,20 @@ const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
                 <YAxis fontSize={12} />
                 <RechartsTooltip />
                 <RechartsLegend />
-                <Bar dataKey="totalCalls" fill="#3B82F6" name="Total Calls" />
-                <Bar dataKey="answeredCalls" fill="#10B981" name="Answered" />
+                <Bar
+                  dataKey="totalCalls"
+                  fill="#3B82F6"
+                  name={t("chart.legends.totalCalls")}
+                />
+                <Bar
+                  dataKey="answeredCalls"
+                  fill="#10B981"
+                  name={t("chart.legends.answered")}
+                />
                 <Bar
                   dataKey="unansweredCalls"
                   fill="#EF4444"
-                  name="Unanswered"
+                  name={t("chart.legends.unanswered")}
                 />
                 <Brush dataKey="name" height={30} stroke="#8884d8" />
               </BarChart>

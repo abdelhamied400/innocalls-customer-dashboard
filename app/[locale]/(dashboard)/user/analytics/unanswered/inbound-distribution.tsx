@@ -25,7 +25,7 @@ type InboundDistributionProps = {
 };
 
 const InboundDistribution = ({ filters }: InboundDistributionProps) => {
-  const t = useTranslations("analytics.unansweredAnalytics");
+  const t = useTranslations("analytics.unanswered");
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["inboundDistribution", filters],

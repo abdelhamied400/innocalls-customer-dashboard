@@ -584,7 +584,7 @@
       "outbound": "الصادرة",
       "unanswered": "غير المجابة",
       "userActivity": "أداء المستخدمين ",
-      "callHistory": "تاريخ المكالمات",
+      "callHistory": "سجل المكالمات",
       "apps": "التطبيقات",
       "surveyCampaigns": "حملات الاستطلاع",
       "inCallSurvey": "استطلاع أثناء المكالمة",
@@ -595,7 +595,7 @@
       "apiCredentials": "بيانات اعتماد API"
     },
     "support": {
-      "innoSupport": "دعم سوبرسيل"
+      "innoSupport": "دعم اينو"
     }
   },
   "callReporting": {
@@ -951,7 +951,7 @@
     }
   },
   "analytics": {
-    "unansweredAnalytics": {
+    "unanswered": {
       "title": "تحليلات المكالمات غير المجابة",
       "subtitle": "عرض تحليلات تفصيلية للمكالمات غير المجابة",
       "quickStats": {
@@ -1122,6 +1122,110 @@
       },
       "common": {
         "noDataAvailable": "لا توجد بيانات متاحة"
+      }
+    },
+    "outbound": {
+      "title": "تحليلات المكالمات الصادرة",
+      "subtitle": "عرض تحليلات مفصلة للمكالمات الصادرة",
+      "quickStats": {
+        "totalCalls": "إجمالي المكالمات",
+        "unansweredCalls": "المكالمات غير المجابة",
+        "answeredCalls": "المكالمات المجابة",
+        "answerRate": "معدل الإجابة",
+        "externalCalls": "المكالمات الخارجية",
+        "avgDuration": "متوسط المدة"
+      },
+      "tabs": {
+        "talkTimeDistribution": "توزيع وقت المحادثة",
+        "hourlyDistribution": "التوزيع بالساعة",
+        "dateDistribution": "التوزيع بالتاريخ",
+        "agentStats": "إحصائيات المستخدمين"
+      },
+      "talkTimeDistribution": {
+        "title": "توزيع وقت المحادثة",
+        "chart": {
+          "title": "توزيع وقت المحادثة"
+        }
+      },
+      "hourlyDistribution": {
+        "title": "التوزيع بالساعة ",
+        "chart": {
+          "title": "التوزيع بالساعة",
+          "legends": {
+            "total": "الإجمالي",
+            "answered": "مجابة",
+            "unanswered": "غير مجابة"
+          }
+        },
+        "table": {
+          "columns": {
+            "hour": "الساعة",
+            "totalCalls": "إجمالي المكالمات",
+            "answered": "مجابة",
+            "unanswered": "غير مجابة",
+            "internal": "داخلية",
+            "external": "خارجية"
+          }
+        }
+      },
+      "dateDistribution": {
+        "title": "التوزيع بالتاريخ",
+        "chart": {
+          "title": "التوزيع بالتاريخ",
+          "legends": {
+            "total": "الإجمالي",
+            "answered": "مجابة",
+            "unanswered": "غير مجابة"
+          }
+        },
+        "table": {
+          "columns": {
+            "date": "التاريخ",
+            "total": "الإجمالي",
+            "internal": "داخلية",
+            "external": "خارجية",
+            "answered": "مجابة",
+            "unanswered": "غير مجابة",
+            "answerRate": "معدل الإجابة",
+            "totalDuration": "إجمالي المدة",
+            "avgDuration": "متوسط المدة",
+            "shortest": "الأقصر",
+            "longest": "الأطول"
+          }
+        }
+      },
+      "agentStats": {
+        "title": "إحصائيات المستخدمين",
+        "chart": {
+          "title": "إحصائيات المستخدمين",
+          "legends": {
+            "totalCalls": "إجمالي المكالمات",
+            "answered": "مجابة",
+            "unanswered": "غير مجابة"
+          }
+        },
+        "table": {
+          "columns": {
+            "ext": "الرقم",
+            "name": "الاسم",
+            "totalCalls": "إجمالي المكالمات",
+            "answered": "مجابة",
+            "unanswered": "غير مجابة",
+            "internal": "داخلية",
+            "external": "خارجية",
+            "totalDuration": "إجمالي المدة",
+            "avgDuration": "متوسط مدة الحديث"
+          }
+        },
+        "errors": {
+          "loading": "خطأ في تحميل إحصائيات المستخدمين"
+        }
+      },
+      "common": {
+        "noDataAvailable": "لا توجد بيانات متاحة",
+        "loading": "جاري التحميل...",
+        "chart": "مخطط",
+        "table": "جدول"
       }
     },
     "common": {
