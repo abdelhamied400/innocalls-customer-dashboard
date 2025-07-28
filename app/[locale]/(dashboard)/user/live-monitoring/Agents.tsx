@@ -1,20 +1,70 @@
+import NoData from "@/components/Analytics/NoData";
 import AgentCard from "@/components/LiveMonitoring/AgentCard";
-import StatsDetailedCard from "@/components/StatsDetailedCard";
+import StatsDetailedCard, {
+  StatsDetailedCardError,
+  StatsDetailedCardSkeleton,
+} from "@/components/StatsDetailedCard";
 import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import liveMonitoringService from "@/services/live-monitoring.service";
 import { Group } from "@mui/icons-material";
+import { useQuery } from "@tanstack/react-query";
 
 const Agents = () => {
+  const {
+    data: agents,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["agentsData"],
+    queryFn: () => liveMonitoringService.fetchAgents(),
+  });
+
+  if (isLoading) {
+    return (
+      <div className="agents sticky top-0">
+        <StatsDetailedCardSkeleton />
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="agents sticky top-0">
+        <StatsDetailedCardError error={error} />
+      </div>
+    );
+  }
+  if (!agents) {
+    return (
+      <div className="agents sticky top-0">
+        <StatsDetailedCard
+          title="Agents"
+          subtitle="Live status & performance"
+          value={0}
+          valueSubtitle="Total"
+          icon={<Group />}
+          color="primary"
+        >
+          <NoData />
+        </StatsDetailedCard>
+      </div>
+    );
+  }
+
   return (
     <div className="agents sticky top-0">
       <StatsDetailedCard
         title="Agents"
         subtitle="Live status & performance"
-        value="10"
+        value={
+          agents?.online.length + agents?.onCall.length + agents?.offline.length
+        }
         valueSubtitle="Total"
         icon={<Group />}
         color="primary"
@@ -24,116 +74,58 @@ const Agents = () => {
             type="multiple"
             defaultValue={["idle", "onCall", "onBreak"]}
           >
-            <AccordionItem value="idle">
-              <AccordionTrigger className="flex items-center justify-between">
-                <span className="text-lg font-semibold">Idle Agents</span>
-                <span className="text-sm text-gray-500">1</span>
-              </AccordionTrigger>
-              <AccordionContent className="p-2 flex flex-col gap-2 max-h-[150px] overflow-y-auto">
-                <AgentCard
-                  name="John Doe"
-                  status="idle"
-                  avgTime="5:30"
-                  calls={12}
-                  extension={"1234"}
-                  initials="JD"
-                />
-                <AgentCard
-                  name="John Doe"
-                  status="idle"
-                  avgTime="5:30"
-                  calls={12}
-                  extension={"1234"}
-                  initials="JD"
-                />
-                <AgentCard
-                  name="John Doe"
-                  status="idle"
-                  avgTime="5:30"
-                  calls={12}
-                  extension={"1234"}
-                  initials="JD"
-                />
-                <AgentCard
-                  name="John Doe"
-                  status="idle"
-                  avgTime="5:30"
-                  calls={12}
-                  extension={"1234"}
-                  initials="JD"
-                />
-                <AgentCard
-                  name="John Doe"
-                  status="idle"
-                  avgTime="5:30"
-                  calls={12}
-                  extension={"1234"}
-                  initials="JD"
-                />
-              </AccordionContent>
-            </AccordionItem>
             <AccordionItem value="onCall">
               <AccordionTrigger className="flex items-center justify-between">
                 <span className="text-lg font-semibold">On Call Agents</span>
-                <span className="text-sm text-gray-500">1</span>
+                <span className="text-sm text-gray-500">
+                  {agents?.onCall.length || 0}
+                </span>
               </AccordionTrigger>
               <AccordionContent className="p-2 flex flex-col gap-2 max-h-[150px] overflow-y-auto">
-                <AgentCard
-                  name="Jane Smith"
-                  status="onCall"
-                  avgTime="8:15"
-                  calls={8}
-                  extension={"5678"}
-                  initials="JS"
-                />
-                <AgentCard
-                  name="Jane Smith"
-                  status="onCall"
-                  avgTime="8:15"
-                  calls={8}
-                  extension={"5678"}
-                  initials="JS"
-                />
-                <AgentCard
-                  name="Jane Smith"
-                  status="onCall"
-                  avgTime="8:15"
-                  calls={8}
-                  extension={"5678"}
-                  initials="JS"
-                />
+                {agents?.onCall.map((agent) => (
+                  <AgentCard
+                    key={agent.ext}
+                    name={agent.name}
+                    status="onCall"
+                    extension={agent.ext}
+                  />
+                ))}
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="idle">
+              <AccordionTrigger className="flex items-center justify-between">
+                <span className="text-lg font-semibold">Idle Agents</span>
+                <span className="text-sm text-gray-500">
+                  {agents?.online.length || 0}
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="p-2 flex flex-col gap-2 max-h-[150px] overflow-y-auto">
+                {agents?.online.map((agent) => (
+                  <AgentCard
+                    key={agent.ext}
+                    name={agent.name}
+                    status="idle"
+                    extension={agent.ext}
+                  />
+                ))}
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="onBreak">
               <AccordionTrigger className="flex items-center justify-between">
-                <span className="text-lg font-semibold">On Break Agents</span>
-                <span className="text-sm text-gray-500">1</span>
+                <span className="text-lg font-semibold">Offline Agents</span>
+                <span className="text-sm text-gray-500">
+                  {agents?.offline.length || 0}
+                </span>
               </AccordionTrigger>
               <AccordionContent className="p-2 flex flex-col gap-2 max-h-[150px] overflow-y-auto">
-                <AgentCard
-                  name="Alice Johnson"
-                  status="onBreak"
-                  avgTime="3:45"
-                  calls={5}
-                  extension={"9101"}
-                  initials="AJ"
-                />
-                <AgentCard
-                  name="Alice Johnson"
-                  status="onBreak"
-                  avgTime="3:45"
-                  calls={5}
-                  extension={"9101"}
-                  initials="AJ"
-                />
-                <AgentCard
-                  name="Alice Johnson"
-                  status="onBreak"
-                  avgTime="3:45"
-                  calls={5}
-                  extension={"9101"}
-                  initials="AJ"
-                />
+                {agents?.offline.map((agent) => (
+                  <AgentCard
+                    key={agent.ext}
+                    name={agent.name}
+                    status="onBreak"
+                    extension={agent.ext}
+                  />
+                ))}
               </AccordionContent>
             </AccordionItem>
           </Accordion>

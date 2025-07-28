@@ -3,12 +3,22 @@ import { EditUserSchema } from "@/validation/EditUser";
 import api from "./api";
 import CryptoJS from "crypto-js";
 
+export type Agent = {
+  dnd: string;
+  ext: string;
+  ip: string;
+  name: string;
+  on_call: boolean;
+  status: "online" | "offline";
+  ua: string;
+};
+
 export default {
   getUsers: async () => {
     const res = await api.get("/extension/list");
     return res.data;
   },
-  getUsersMonitor: async () => {
+  getUsersMonitor: async (): Promise<Agent[]> => {
     const res = await api.get("/extension/monitor");
     return res.data;
   },

@@ -147,11 +147,13 @@ export const useUaEvents = ({
         session.on("ended", (event) => {
           console.log("Call ended:", event);
           navigate("/dialpad");
+          setCurrentSession?.(null);
         });
         session.on("failed", (event) => {
           console.log("Call failed:", event);
           navigate("/dialpad");
 
+          setCurrentSession?.(null);
           // Log as rejected if call was actively rejected
           if (
             event.cause === JsSIP.C.causes.REJECTED ||

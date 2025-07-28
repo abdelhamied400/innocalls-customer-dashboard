@@ -11,6 +11,7 @@ import { useUaEvents } from "./SipProvider/useUaEvents";
 import { RTCSession } from "jssip/lib/RTCSession";
 import { defaultCountry } from "@/constants/countries";
 import { replaceCountryCode } from "@/lib/webrtc";
+import { useToast } from "@/hooks/use-toast";
 
 const SipContext = createContext<SipContextType | null>(null);
 
@@ -22,6 +23,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     null
   );
   const [currentSession, setCurrentSession] = useState<RTCSession | null>(null);
+  const { toast } = useToast();
 
   const [number, setNumber] = useState<string>("");
   const [countryCode, setCountryCode] = useState<string>(defaultCountry.code);
@@ -92,9 +94,24 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
   const spy = (extension: string) => {
     if (!ua) {
-      console.error("User agent is not initialized");
+      toast({
+        title: "Error",
+        description: "WebRTC is not initialized",
+        variant: "destructive",
+      });
       return;
     }
+
+    // check if already on call
+    if (!!currentSession) {
+      toast({
+        title: "Error",
+        description: "You are already on a call.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     return call(`*199${extension}`);
   };
 

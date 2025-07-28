@@ -11,8 +11,6 @@ import {
   Storefront,
   Support,
   SupportAgent,
-  ExpandMore,
-  ExpandLess,
 } from "@mui/icons-material";
 import { cva, VariantProps } from "class-variance-authority";
 import QueueSummaryStatsCard from "./QueueSummaryStatsCard";
@@ -24,6 +22,7 @@ import {
 } from "../ui/accordion";
 import QueueCallCard from "./QueueCallCard";
 import StatsRowCard from "../StatsRowCard";
+import StackedStatsRowCard from "../StackedStatsRowCard";
 import { FetchQueueDataResponse } from "@/services/live-monitoring.service";
 
 // Variants using cva
@@ -129,53 +128,6 @@ const getIcon = (name?: string) => {
   return icons[matchedKey ?? "default"];
 };
 
-// Stacked Stats Row Card Component
-const StackedStatsRowCard = ({
-  title,
-  children,
-  defaultExpanded = false,
-}: {
-  title: string;
-  children: React.ReactNode;
-  defaultExpanded?: boolean;
-}) => {
-  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
-  const childrenArray = React.Children.toArray(children);
-  const firstChild = childrenArray[0];
-  const remainingChildren = childrenArray.slice(1);
-
-  return (
-    <div className="stacked-stats-container">
-      <div className="flex items-center justify-between mb-2">
-        <h4 className="text-sm font-medium text-gray-700">{title}</h4>
-        {remainingChildren.length > 0 && (
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-700 transition-colors"
-          >
-            <span>
-              {isExpanded ? "Collapse" : `+${remainingChildren.length} more`}
-            </span>
-            {isExpanded ? (
-              <ExpandLess fontSize="small" />
-            ) : (
-              <ExpandMore fontSize="small" />
-            )}
-          </button>
-        )}
-      </div>
-
-      <div className="flex flex-col gap-2">
-        {firstChild}
-        {isExpanded &&
-          remainingChildren.map((child, index) => (
-            <div key={index}>{child}</div>
-          ))}
-      </div>
-    </div>
-  );
-};
-
 const QueueCard = ({
   variant = "default",
   color,
@@ -219,7 +171,7 @@ const QueueCard = ({
               color: colorVariant,
             })}
           >
-            {sla ?? "99%"}
+            {Math.round(parseFloat(sla || "99"))}%
           </h3>
           <p>SLA</p>
         </div>
@@ -242,7 +194,7 @@ const QueueCard = ({
 
       <div className="stats flex flex-col gap-4 mt-2">
         {/* Calls Stats */}
-        <StackedStatsRowCard title="Call Statistics">
+        <StackedStatsRowCard>
           <StatsRowCard
             label="Total Calls"
             value={stats.totalCalls}
@@ -264,13 +216,13 @@ const QueueCard = ({
             color="warning"
           />
         </StackedStatsRowCard>
-
+        <hr />
         {/* Wait Time Stats */}
-        <StackedStatsRowCard title="Wait Time">
+        <StackedStatsRowCard>
           <StatsRowCard
             label="Average Wait Time"
             value={stats.averageWaitTime}
-            color="info"
+            color="primary"
           />
           <StatsRowCard
             label="Max Wait Time"
@@ -282,29 +234,14 @@ const QueueCard = ({
             value={stats.minWaitTime}
             color="success"
           />
-          <StatsRowCard
-            label="Average Wait Time (Sec)"
-            value={stats.averageWaitTimeSec}
-            color="info"
-          />
-          <StatsRowCard
-            label="Max Wait Time (Sec)"
-            value={stats.maxWaitTimeSec}
-            color="warning"
-          />
-          <StatsRowCard
-            label="Min Wait Time (Sec)"
-            value={stats.minWaitTimeSec}
-            color="success"
-          />
         </StackedStatsRowCard>
-
+        <hr />
         {/* Talk Time Stats */}
-        <StackedStatsRowCard title="Talk Time">
+        <StackedStatsRowCard>
           <StatsRowCard
             label="Average Talk Time"
             value={stats.averageTalkTime}
-            color="info"
+            color="success"
           />
           <StatsRowCard
             label="Max Talk Time"
@@ -314,22 +251,7 @@ const QueueCard = ({
           <StatsRowCard
             label="Min Talk Time"
             value={stats.minTalkTime}
-            color="success"
-          />
-          <StatsRowCard
-            label="Average Talk Time (Sec)"
-            value={stats.averageTalkTimeSec}
-            color="info"
-          />
-          <StatsRowCard
-            label="Max Talk Time (Sec)"
-            value={stats.maxTalkTimeSec}
-            color="warning"
-          />
-          <StatsRowCard
-            label="Min Talk Time (Sec)"
-            value={stats.minTalkTimeSec}
-            color="success"
+            color="primary"
           />
         </StackedStatsRowCard>
       </div>
