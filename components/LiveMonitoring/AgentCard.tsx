@@ -1,4 +1,8 @@
 import { cva, VariantProps } from "class-variance-authority";
+import { Button } from "../ui/button";
+import { useSip } from "@/providers/webrtc/SipProvider";
+import { useToast } from "@/hooks/use-toast";
+import useAppStore from "@/store/app.slice";
 
 const agentCardVariants = cva(
   "rounded-lg border p-2 hover:shadow-md transition-all duration-200 group",
@@ -49,21 +53,37 @@ const agentNameVariants = cva("text-sm font-medium truncate", {
 
 type AgentCardProps = {
   name: string;
-  initials: string;
   extension: string | number;
-  calls: number;
-  avgTime: string;
   status?: VariantProps<typeof agentCardVariants>["status"];
 };
 
 const AgentCard: React.FC<AgentCardProps> = ({
   name,
-  initials,
   extension,
-  calls,
-  avgTime,
   status = "idle",
 }) => {
+  const { extensionState, spy } = useSip();
+  const { setWebrtcOpen } = useAppStore();
+  const { toast } = useToast();
+
+  const initials = name
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase())
+    .join("");
+
+  const handleSpy = () => {
+    setWebrtcOpen(true);
+    if (extensionState !== "connected") {
+      toast({
+        title: "Error",
+        description: "Please connect your extension first.",
+        variant: "destructive",
+      });
+      return;
+    }
+    spy(extension.toString());
+  };
+
   return (
     <div className={agentCardVariants({ status })}>
       <div className="flex items-center gap-2 mb-1">
@@ -75,15 +95,17 @@ const AgentCard: React.FC<AgentCardProps> = ({
           <p className="text-[10px] text-gray-600">Ext: {extension}</p>
         </div>
       </div>
-      <div className="grid grid-cols-2 gap-1 text-[10px]">
-        <div className="flex items-center justify-between">
-          <span className="text-gray-600">Calls</span>
-          <span className="font-semibold text-gray-900">{calls}</span>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-gray-600">Avg Time</span>
-          <span className="font-semibold text-gray-900">{avgTime}</span>
-        </div>
+      <div className="flex justify-end">
+        {status === "onCall" && (
+          <Button
+            className="h-auto px-2 py-1 text-xs"
+            size="sm"
+            variant="ghost-primary"
+            onClick={handleSpy}
+          >
+            Spy
+          </Button>
+        )}
       </div>
     </div>
   );

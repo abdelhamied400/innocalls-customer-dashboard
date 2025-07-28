@@ -1,5 +1,6 @@
 import { PerformanceStatsFiltersType } from "@/app/[locale]/(dashboard)/user/live-monitoring/PerformanceStats";
 import api from "./api";
+import usersService, { Agent } from "./users.service";
 
 export type FetchQueueDataResponse = Array<{
   queue: string;
@@ -51,6 +52,12 @@ type FetchQueueStatsResponse = {
   previous: FetchQueueStats;
 };
 
+type FetchAgentsResponse = {
+  online: Agent[];
+  onCall: Agent[];
+  offline: Agent[];
+};
+
 export default {
   fetchQueueData: async (): Promise<FetchQueueDataResponse> => {
     const res = await api.get("/queue-live-monitor");
@@ -64,5 +71,13 @@ export default {
       params: { filterType, sla },
     });
     return res.data;
+  },
+  fetchAgents: async (): Promise<FetchAgentsResponse> => {
+    const users = await usersService.getUsersMonitor();
+    return {
+      online: users.filter((agent) => agent.status === "online"),
+      onCall: users.filter((agent) => agent.on_call),
+      offline: users.filter((agent) => agent.status === "offline"),
+    };
   },
 };
