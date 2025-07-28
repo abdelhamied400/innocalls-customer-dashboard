@@ -24,6 +24,22 @@ const statsRowCardVariants = cva(
   }
 );
 
+const statsRowCardValueVariants = cva("font-semibold", {
+  variants: {
+    color: {
+      default: "text-gray-900",
+      primary: "text-primary-900",
+      success: "text-success-900",
+      destructive: "text-destructive-900",
+      info: "text-indigo-900",
+      warning: "text-orange-900",
+    },
+  },
+  defaultVariants: {
+    color: "default",
+  },
+});
+
 type StatsRowCardProps = {
   label: React.ReactNode;
   value: React.ReactNode;
@@ -33,7 +49,7 @@ const StatsRowCard = ({ label, value, color }: StatsRowCardProps) => {
   return (
     <div className={statsRowCardVariants({ color })}>
       <p>{label}</p>
-      <p>{value}</p>
+      <p className={statsRowCardValueVariants({ color })}>{value}</p>
     </div>
   );
 };
