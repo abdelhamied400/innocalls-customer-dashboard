@@ -17,11 +17,14 @@ import ChartCard, {
 import { GroupIcon } from "lucide-react";
 import NoData from "@/components/Analytics/NoData";
 import { UnansweredAnalyticsFilters } from "./page";
+import { useTranslations } from "next-intl";
 
 type InboundUnansweredHourlyProps = {
   filters: UnansweredAnalyticsFilters;
 };
 const InboundUnansweredHourly = ({ filters }: InboundUnansweredHourlyProps) => {
+  const t = useTranslations("analytics.unansweredAnalytics");
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["inboundUnansweredHourly", filters],
     queryFn: () =>
@@ -38,7 +41,7 @@ const InboundUnansweredHourly = ({ filters }: InboundUnansweredHourlyProps) => {
 
   return (
     <ChartCard
-      title="Inbound Distribution"
+      title={t("charts.inboundHourlyUnanswered")}
       icon={<GroupIcon size={20} />}
       variant="compound"
       color="success"
@@ -54,13 +57,13 @@ const InboundUnansweredHourly = ({ filters }: InboundUnansweredHourlyProps) => {
               dataKey="internalUnansweredCalls"
               stackId="a"
               fill="#10b981"
-              name="Internal Unanswered"
+              name={t("common.hourDistribution.internalUnanswered")}
             />
             <Bar
               dataKey="externalUnansweredCalls"
               stackId="a"
               fill="#f59e42"
-              name="External Unanswered"
+              name={t("common.hourDistribution.externalUnanswered")}
             />
           </BarChart>
         </ResponsiveContainer>

@@ -23,6 +23,7 @@ import InboundUnansweredHourly from "./inbound-hourly";
 import OutboundDistribution from "./outbound-distribution";
 import OutboundUnansweredHourly from "./outbound-hourly";
 import QuickStats from "./quick-stats";
+import { useTranslations } from "next-intl";
 
 type Option = {
   value: string;
@@ -39,17 +40,20 @@ const today = new Date();
 const lastMonth = new Date();
 lastMonth.setDate(today.getDate() - 30);
 
-const unansweredFilterConfig = {
-  defaultValues: {
-    fromDate: lastMonth,
-    toDate: today,
-    agents: [],
-  } as UnansweredAnalyticsFilters,
-  schema: unansweredFiltersSchema,
-};
-
 const UnansweredAnalytics = () => {
   const { extensions } = useVocabStore();
+
+  const t = useTranslations("analytics.unansweredAnalytics");
+  const tCommon = useTranslations("analytics.common");
+
+  const unansweredFilterConfig = {
+    defaultValues: {
+      fromDate: lastMonth,
+      toDate: today,
+      agents: [],
+    } as UnansweredAnalyticsFilters,
+    schema: unansweredFiltersSchema(tCommon),
+  };
 
   const { values, appliedValues, errors, setValue, reset, apply } =
     useFilterManager<UnansweredAnalyticsFilters>(unansweredFilterConfig);
@@ -59,32 +63,32 @@ const UnansweredAnalytics = () => {
       <div className="flex flex-col gap-2">
         <div className="filters">
           <StatsDetailedCard
-            title="Date Range Search"
+            title={tCommon("form.fields.date.label")}
             icon={<BarChart />}
             value=""
             color="primary"
           >
             <div className="py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <Field
-                label="From"
+                label={tCommon("form.fields.fromDate.label")}
                 postIcon={<CalendarMonth className="text-gray-400" />}
                 error={errors.fromDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
-                  placeholder="Enter from date"
+                  placeholder={tCommon("form.fields.fromDate.placeholder")}
                   value={values.fromDate}
                   onChange={(date) => setValue("fromDate", date || new Date())}
                 />
               </Field>
               <Field
-                label="To"
+                label={tCommon("form.fields.toDate.label")}
                 postIcon={<CalendarMonth className="text-gray-400" />}
                 error={errors.toDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
-                  placeholder="Enter to date"
+                  placeholder={tCommon("form.fields.toDate.placeholder")}
                   value={values.toDate}
                   onChange={(date) => setValue("toDate", date || new Date())}
                 />
@@ -92,7 +96,7 @@ const UnansweredAnalytics = () => {
               <div className="col-span-1 sm:col-span-2 lg:col-span-3">
                 <Select
                   className="w-full"
-                  placeholder="Select agents"
+                  placeholder={tCommon("form.fields.agents.placeholder")}
                   value={values.agents}
                   onChange={(value) => setValue("agents", value || [])}
                   options={extensions.map((ext) => ({
@@ -100,7 +104,7 @@ const UnansweredAnalytics = () => {
                     label: `${ext.name} (${ext.ext})`,
                   }))}
                   isMulti
-                  label="Select Agents"
+                  label={tCommon("form.fields.agents.label")}
                   showSelectedTags={false}
                   error={errors.agents}
                   isClearable
@@ -109,9 +113,12 @@ const UnansweredAnalytics = () => {
             </div>
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={reset}>
-                Clear Filters
+                {tCommon("actions.resetFilter")}
               </Button>
-              <Button onClick={apply}>Apply Filters</Button>
+              <Button onClick={apply}>
+                {" "}
+                {tCommon("actions.applyFilters")}
+              </Button>
             </div>
           </StatsDetailedCard>
         </div>
@@ -120,16 +127,16 @@ const UnansweredAnalytics = () => {
 
         <div className="analytics-tabs">
           <StatsDetailedCard
-            title="Unanswered Analytics"
-            subtitle="View detailed analytics for unanswered calls"
+            title={t("title")}
+            subtitle={t("subtitle")}
             icon={<Insights />}
             value=""
             color="primary"
           >
             <Tabs defaultValue="inbound" className="w-full">
               <TabsList>
-                <TabsTrigger value="inbound">Inbound Unanswered</TabsTrigger>
-                <TabsTrigger value="outbound">Outbound Unanswered</TabsTrigger>
+                <TabsTrigger value="inbound">{t("tabs.inbound")}</TabsTrigger>
+                <TabsTrigger value="outbound">{t("tabs.outbound")}</TabsTrigger>
               </TabsList>
 
               <TabsContent value="inbound" className="flex flex-col gap-4">

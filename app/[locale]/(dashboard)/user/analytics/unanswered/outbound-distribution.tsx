@@ -17,12 +17,15 @@ import ChartCard, {
 import NoData from "@/components/Analytics/NoData";
 import GroupOutlined from "@mui/icons-material/GroupOutlined";
 import { UnansweredAnalyticsFilters } from "./page";
+import { useTranslations } from "next-intl";
 
 type OutboundDistributionProps = {
   filters: UnansweredAnalyticsFilters;
 };
 
 const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
+  const t = useTranslations("analytics.unansweredAnalytics");
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["outboundDistribution", filters],
     queryFn: () =>
@@ -39,7 +42,7 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
 
   return (
     <ChartCard
-      title="Outbound Distribution"
+      title={t("charts.outboundDistribution")}
       icon={<GroupOutlined />}
       variant="compound"
       color="primary"
@@ -69,7 +72,7 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
               stroke="#3B82F6"
               strokeWidth={2}
               dot={false}
-              name="Total Out"
+              name={t("outbound.callDistribution.lineLabels.totalCalls")}
             />
             <Line
               type="monotone"
@@ -77,7 +80,7 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
               stroke="#9CA3AF"
               strokeWidth={2}
               dot={false}
-              name="Unans. Total"
+              name={t("outbound.callDistribution.lineLabels.unansweredTotal")}
             />
             <Line
               type="monotone"
@@ -85,7 +88,7 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
               stroke="#10B981"
               strokeWidth={2}
               dot={false}
-              name="Int. Outbound"
+              name={t("outbound.callDistribution.lineLabels.outboundInternal")}
             />
             <Line
               type="monotone"
@@ -93,7 +96,7 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
               stroke="#6366F1"
               strokeWidth={2}
               dot={false}
-              name="Ext. Outbound"
+              name={t("outbound.callDistribution.lineLabels.outboundExternal")}
             />
             <Line
               type="monotone"
@@ -101,7 +104,9 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
               stroke="#F59E0B"
               strokeWidth={2}
               dot={false}
-              name="Int. Unans."
+              name={t(
+                "outbound.callDistribution.lineLabels.unansweredInternal"
+              )}
             />
             <Line
               type="monotone"
@@ -109,7 +114,9 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
               stroke="#EF4444"
               strokeWidth={2}
               dot={false}
-              name="Ext. Unans."
+              name={t(
+                "outbound.callDistribution.lineLabels.unansweredExternal"
+              )}
             />
           </LineChart>
         </ResponsiveContainer>

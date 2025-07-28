@@ -8,11 +8,14 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import GroupIcon from "@mui/icons-material/Group";
 import { UnansweredAnalyticsFilters } from "./page";
+import { useTranslations } from "next-intl";
 
 type QuickStatsFilters = {
   filters: UnansweredAnalyticsFilters;
 };
 const QuickStats = ({ filters }: QuickStatsFilters) => {
+  const t = useTranslations("analytics.unansweredAnalytics.quickStats");
+
   const { data, isLoading, isRefetching, error, isError } = useQuery({
     queryKey: ["unanswered-quick-stats", filters],
     queryFn: () => unansweredAnalyticsService.fetchQuickStats(filters),
@@ -21,7 +24,7 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
   return (
     <div className="quick-stats grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <StatsCard
-        title="Total Unanswered Calls"
+        title={t("totalUnansweredCalls")}
         value={data?.totalUnansweredCalls || 0}
         icon={<PhoneDisabledIcon fontSize="small" />}
         color="destructive"
@@ -31,7 +34,7 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
         error={error}
       />
       <StatsCard
-        title="External Unanswered Incoming"
+        title={t("externalUnansweredIncoming")}
         value={data?.totalExternalUnansweredIncomingCalls || 0}
         icon={<ArrowDownwardIcon fontSize="small" />}
         color="primary"
@@ -41,7 +44,7 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
         error={error}
       />
       <StatsCard
-        title="External Unanswered Outgoing"
+        title={t("externalUnansweredOutgoing")}
         value={data?.totalExternalUnansweredOutgoingCalls || 0}
         icon={<ArrowUpwardIcon fontSize="small" />}
         color="warning"
@@ -51,7 +54,7 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
         error={error}
       />
       <StatsCard
-        title="Internal Unanswered Calls"
+        title={t("internalUnansweredCalls")}
         value={data?.totalInternalUnansweredCalls || 0}
         icon={<GroupIcon fontSize="small" />}
         color="info"

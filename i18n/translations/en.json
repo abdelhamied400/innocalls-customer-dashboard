@@ -922,5 +922,110 @@
       },
       "unknownError": "An unknown error occurred."
     }
+  },
+  "analytics": {
+    "unansweredAnalytics": {
+      "title": "Unanswered Analytics",
+      "subtitle": "View detailed analytics for unanswered calls",
+      "dateRangeSearch": "Date Range Search",
+      "quickStats": {
+        "totalUnansweredCalls": "Total Unanswered Calls",
+        "externalUnansweredIncoming": "External Unanswered Incoming",
+        "externalUnansweredOutgoing": "External Unanswered Outgoing",
+        "internalUnansweredCalls": "Internal Unanswered Calls"
+      },
+      "tabs": {
+        "inbound": "Inbound Unanswered",
+        "outbound": "Outbound Unanswered"
+      },
+      "inbound": {
+        "callDistribution": {
+          "lineLabels": {
+            "totalCalls": "Total Calls",
+            "missedTotal": "Missed (Total)",
+            "inboundInternal": "Inbound (Int.)",
+            "inboundExternal": "Inbound (Ext.)",
+            "missedInternal": "Missed (Int.)",
+            "missedExternal": "Missed (Ext.)",
+            "outboundInternal": "Outbound (Int.)",
+            "outboundExternal": "Outbound (Ext.)",
+            "unansweredTotal": "Unanswered (Total)",
+            "unansweredInternal": "Unans. (Int.)",
+            "unansweredExternal": "Unans. (Ext.)",
+            "internalUnanswered": "Internal Unanswered",
+            "externalUnanswered": "External Unanswered"
+          }
+        }
+      },
+      "outbound": {
+        "lineLabels": {
+          "totalCalls": "Total Calls",
+          "unansweredTotal": "Unanswered (Total)",
+          "outboundInternal": "Outbound (Int.)",
+          "outboundExternal": "Outbound (Ext.)",
+          "unansweredInternal": "Unans. (Int.)",
+          "unansweredExternal": "Unans. (Ext.)"
+        }
+      },
+      "common": {
+        "hourDistribution": {
+          "internalUnanswered": "Internal Unanswered",
+          "externalUnanswered": "External Unanswered",
+          "hour": "Hour"
+        }
+      },
+      "charts": {
+        "inboundDistribution": "Inbound Distribution",
+        "outboundDistribution": "Outbound Distribution",
+        "outboundHourlyUnanswered": "Outbound Hourly Unanswered Calls",
+        "inboundHourlyUnanswered": "Inbound Hourly Unanswered Calls"
+      }
+    },
+    "common": {
+      "form": {
+        "fields": {
+          "fromDate": {
+            "label": "From",
+            "placeholder": "Enter from date"
+          },
+          "toDate": {
+            "label": "To",
+            "placeholder": "Enter to date"
+          },
+          "date": {
+            "label": "Date Range Search"
+          },
+          "agents": {
+            "label": "Select Agents",
+            "placeholder": "Select agents"
+          }
+        },
+        "validation": {
+          "fromDate": {
+            "required": "From date is required",
+            "invalid": "Please enter a valid from date",
+            "futureDate": "From date cannot be in the future"
+          },
+          "toDate": {
+            "required": "To date is required",
+            "invalid": "Please enter a valid to date",
+            "beforeFromDate": "To date must be after from date",
+            "futureDate": "To date cannot be in the future"
+          },
+          "agents": {
+            "invalid": "Please select valid agents",
+            "maxSelection": "Maximum {max} agents can be selected"
+          },
+          "dateRange": {
+            "maxDays": "Date range cannot exceed {max} days",
+            "invalid": "Please select a valid date range"
+          }
+        }
+      },
+      "actions": {
+        "resetFilter": "Reset Filters",
+        "applyFilters": "Apply Filters"
+      }
+    }
   }
 }

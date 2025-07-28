@@ -18,12 +18,15 @@ import ChartCard, {
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import NoData from "@/components/Analytics/NoData";
 import { UnansweredAnalyticsFilters } from "./page";
+import { useTranslations } from "next-intl";
 
 type InboundDistributionProps = {
   filters: UnansweredAnalyticsFilters;
 };
 
 const InboundDistribution = ({ filters }: InboundDistributionProps) => {
+  const t = useTranslations("analytics.unansweredAnalytics");
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["inboundDistribution", filters],
     queryFn: () => unansweredAnalyticsService.fetchInboundDistribution(filters),
@@ -39,7 +42,7 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
 
   return (
     <ChartCard
-      title="Inbound Distribution"
+      title={t("charts.inboundDistribution")}
       icon={<GroupOutlinedIcon />}
       variant="compound"
       color="primary"
@@ -69,7 +72,7 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
               stroke="#1976D2"
               strokeWidth={2}
               dot={false}
-              name="Total In"
+              name={t("inbound.callDistribution.lineLabels.totalCalls")}
             />
             <Line
               type="monotone"
@@ -77,7 +80,7 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
               stroke="#757575"
               strokeWidth={2}
               dot={false}
-              name="Unans. Total"
+              name={t("inbound.callDistribution.lineLabels.missedTotal")}
             />
             <Line
               type="monotone"
@@ -85,7 +88,7 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
               stroke="#43A047"
               strokeWidth={2}
               dot={false}
-              name="Int. Inbound"
+              name={t("inbound.callDistribution.lineLabels.inboundInternal")}
             />
             <Line
               type="monotone"
@@ -93,7 +96,7 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
               stroke="#7C3AED"
               strokeWidth={2}
               dot={false}
-              name="Ext. Inbound"
+              name={t("inbound.callDistribution.lineLabels.inboundExternal")}
             />
             <Line
               type="monotone"
@@ -101,7 +104,7 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
               stroke="#FBC02D"
               strokeWidth={2}
               dot={false}
-              name="Int. Unans."
+              name={t("inbound.callDistribution.lineLabels.missedInternal")}
             />
             <Line
               type="monotone"
@@ -109,7 +112,7 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
               stroke="#E53935"
               strokeWidth={2}
               dot={false}
-              name="Ext. Unans."
+              name={t("inbound.callDistribution.lineLabels.missedExternal")}
             />
           </LineChart>
         </ResponsiveContainer>

@@ -934,5 +934,111 @@
       },
       "unknownError": "حدث خطأ غير معروف."
     }
+  },
+  "analytics": {
+    "unansweredAnalytics": {
+      "title": "تحليلات المكالمات غير المجابة",
+      "subtitle": "عرض تحليلات تفصيلية للمكالمات غير المجابة",
+      "quickStats": {
+        "totalUnansweredCalls": "إجمالي المكالمات غير المجابة",
+        "externalUnansweredIncoming": "المكالمات الخارجية الواردة غير المجابة",
+        "externalUnansweredOutgoing": "المكالمات الخارجية الصادرة غير المجابة",
+        "internalUnansweredCalls": "المكالمات الداخلية غير المجابة"
+      },
+      "tabs": {
+        "inbound": "الواردة غير المجابة",
+        "outbound": "الصادرة غير المجابة"
+      },
+      "inbound": {
+        "callDistribution": {
+          "lineLabels": {
+            "totalCalls": "إجمالي المكالمات",
+            "missedTotal": "غير مُجابة (الإجمالي)",
+            "inboundInternal": "الواردة (داخلية)",
+            "inboundExternal": "الواردة (خارجية)",
+            "missedInternal": "غير مُجابة (داخلية)",
+            "missedExternal": "غير مُجابة (خارجية)",
+            "outboundInternal": "الصادرة (داخلية)",
+            "outboundExternal": "الصادرة (خارجية)",
+            "unansweredTotal": "غير المجابة (الإجمالي)",
+            "unansweredInternal": "غير مجابة (داخلية)",
+            "unansweredExternal": "غير مجابة (خارجية)",
+            "internalUnanswered": "داخلية غير مجابة",
+            "externalUnanswered": "خارجية غير مجابة"
+          }
+        }
+      },
+      "outbound": {
+        "callDistribution": {
+          "lineLabels": {
+            "totalCalls": "إجمالي المكالمات",
+            "unansweredTotal": "غير المجابة (الإجمالي)",
+            "outboundInternal": "الصادرة (داخلية)",
+            "outboundExternal": "الصادرة (خارجية)",
+            "unansweredInternal": "غير مجابة (داخلية)",
+            "unansweredExternal": "غير مجابة (خارجية)"
+          }
+        }
+      },
+      "common": {
+        "hourDistribution": {
+          "internalUnanswered": "داخلية غير مجابة",
+          "externalUnanswered": "خارجية غير مجابة",
+          "hour": "الساعة"
+        }
+      },
+      "charts": {
+        "inboundDistribution": "توزيع المكالمات الواردة",
+        "outboundDistribution": "توزيع المكالمات الصادرة",
+        "outboundHourlyUnanswered": "المكالمات الصادرة غير المجابة بالساعة",
+        "inboundHourlyUnanswered": "المكالمات الواردة غير المجابة بالساعة"
+      }
+    },
+    "common": {
+      "form": {
+        "fields": {
+          "fromDate": {
+            "label": "من",
+            "placeholder": "أدخل التاريخ الابتدائي"
+          },
+          "toDate": {
+            "label": "إلى",
+            "placeholder": "أدخل التاريخ النهائي"
+          },
+          "date": {
+            "label": "البحث بنطاق التاريخ"
+          },
+          "agents": {
+            "label": "اختر المستخدمين",
+            "placeholder": "اختر المستخدمين"
+          }
+        },
+        "validation": {
+          "fromDate": {
+            "required": "التاريخ الابتدائي مطلوب",
+            "invalid": "يرجى إدخال تاريخ ابتدائي صحيح",
+            "futureDate": "لا يمكن أن يكون التاريخ الابتدائي في المستقبل"
+          },
+          "toDate": {
+            "required": "التاريخ النهائي مطلوب",
+            "invalid": "يرجى إدخال تاريخ نهائي صحيح",
+            "beforeFromDate": "يجب أن يكون التاريخ النهائي بعد التاريخ الابتدائي",
+            "futureDate": "لا يمكن أن يكون التاريخ النهائي في المستقبل"
+          },
+          "agents": {
+            "invalid": "يرجى اختيار مستخدمين صحيحين",
+            "maxSelection": "يمكن اختيار {max} مستخدمين كحد أقصى"
+          },
+          "dateRange": {
+            "maxDays": "لا يمكن أن يتجاوز نطاق التاريخ {max} يوماً",
+            "invalid": "يرجى اختيار نطاق تاريخ صحيح"
+          }
+        }
+      },
+      "actions": {
+        "resetFilter": "إعادة تعيين",
+        "applyFilters": "تطبيق"
+      }
+    }
   }
 }

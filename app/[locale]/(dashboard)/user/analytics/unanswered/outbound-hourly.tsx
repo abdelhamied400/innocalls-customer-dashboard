@@ -17,6 +17,7 @@ import ChartCard, {
 import { GroupOutlined } from "@mui/icons-material";
 import NoData from "@/components/Analytics/NoData";
 import { UnansweredAnalyticsFilters } from "./page";
+import { useTranslations } from "next-intl";
 
 type OutboundUnansweredHourlyProps = {
   filters: UnansweredAnalyticsFilters;
@@ -25,6 +26,8 @@ type OutboundUnansweredHourlyProps = {
 const OutboundUnansweredHourly = ({
   filters,
 }: OutboundUnansweredHourlyProps) => {
+  const t = useTranslations("analytics.unansweredAnalytics");
+
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["outboundUnansweredHourly", filters],
     queryFn: () =>
@@ -41,7 +44,7 @@ const OutboundUnansweredHourly = ({
 
   return (
     <ChartCard
-      title="Outbound Hourly Unanswered Calls"
+      title={t("charts.outboundHourlyUnanswered")}
       icon={<GroupOutlined />}
       variant="compound"
       color="success"
@@ -57,13 +60,13 @@ const OutboundUnansweredHourly = ({
               dataKey="internalUnansweredCalls"
               stackId="a"
               fill={"#3b82f6"}
-              name="Internal Unanswered"
+              name={t("common.hourDistribution.internalUnanswered")}
             />
             <Bar
               dataKey="externalUnansweredCalls"
               stackId="a"
               fill={"#9CA3AF"}
-              name="External Unanswered"
+              name={t("common.hourDistribution.externalUnanswered")}
             />
           </BarChart>
         </ResponsiveContainer>
