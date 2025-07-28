@@ -2,12 +2,16 @@ import { cn } from "@/lib/utils";
 import { cva, VariantProps } from "class-variance-authority";
 import React from "react";
 import Timer from "../ui/timer";
+import { Button } from "../ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { useSip } from "@/providers/webrtc/SipProvider";
+import useAppStore from "@/store/app.slice";
 
 const queueCallCardVariants = cva(
   "p-3 rounded-lg border hover:border-500 transition-all duration-200 group",
   {
     variants: {
-      variant: {
+      color: {
         success:
           "bg-gradient-to-r from-success-100/20 to-success-100/70 border-success-200 hover:border-success-500",
         warning:
@@ -15,44 +19,59 @@ const queueCallCardVariants = cva(
       },
     },
     defaultVariants: {
-      variant: "success",
+      color: "success",
     },
   }
 );
 
 const statusColorVariants = cva("text-white", {
   variants: {
-    variant: {
+    color: {
       success: "bg-success-500 border-success-200",
       warning: "bg-warning-500 border-warning-200",
     },
   },
   defaultVariants: {
-    variant: "success",
+    color: "success",
   },
 });
 
 type QueueCallCardProps = {
   phoneNumber: string;
-  agentName: string;
+  agent: { name: string; ext: string };
   status: "active" | "waiting";
   callDuration: number;
-  live?: boolean;
-  variant?: VariantProps<typeof queueCallCardVariants>["variant"];
+  color?: VariantProps<typeof queueCallCardVariants>["color"];
 };
 
 const QueueCallCard: React.FC<QueueCallCardProps> = ({
   phoneNumber,
-  agentName,
+  agent,
   status,
   callDuration,
-  live = true,
-  variant = "success",
+  color = "success",
 }) => {
-  const statusClasses = statusColorVariants({ variant });
+  const statusClasses = statusColorVariants({ color });
+  const { toast } = useToast();
+  const { extensionState, spy } = useSip();
+  const { setWebrtcOpen } = useAppStore();
+
+  const handleSpy = () => {
+    setWebrtcOpen(true);
+    if (extensionState !== "connected") {
+      toast({
+        title: "Error",
+        description: "You must be connected to the SIP server to spy on calls.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    spy(agent.ext);
+  };
 
   return (
-    <div className={queueCallCardVariants({ variant })}>
+    <div className={queueCallCardVariants({ color })}>
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <div
@@ -62,42 +81,34 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
             {phoneNumber}
           </p>
         </div>
-        {live && (
-          <div className="flex items-center gap-1">
-            <div
-              className={cn(
-                "w-2 h-2 rounded-full animate-pulse",
-                statusClasses
-              )}
-            ></div>
-            <span
-              className={cn(
-                "text-xs font-medium",
-                statusClasses.replace("bg-", "text-")
-              )}
-            >
-              {status}
-            </span>
-          </div>
+        {status === "active" && (
+          <Button
+            size="sm"
+            variant="success"
+            className="text-xs py-1 px-2 h-auto"
+            onClick={handleSpy}
+          >
+            Spy
+          </Button>
         )}
       </div>
       <div className="grid grid-cols-2 gap-2 text-xs">
         <div className="flex items-center gap-1">
           <span className="text-gray-600">Agent:</span>
-          <span className="font-medium text-gray-900">{agentName}</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <span className="text-gray-600">Status:</span>
-          <span
-            className={cn("font-medium", statusClasses.replace("bg-", "text-"))}
-          >
-            {status}
-          </span>
+          <span className="font-medium text-gray-900">{agent.name}</span>
         </div>
       </div>
       <div className={cn("mt-2 pt-2 border-t")}>
         <div className="flex items-center justify-between">
-          <span className="text-xs text-gray-600">Call Duration</span>
+          {status === "active" ? (
+            <span className="text-success-500 text-xs font-semibold">
+              Call Duration
+            </span>
+          ) : (
+            <span className="text-warning-500 text-xs font-semibold">
+              Waiting Duration
+            </span>
+          )}
           <span
             className={cn(
               "text-xs px-2 py-1 rounded-full font-medium",

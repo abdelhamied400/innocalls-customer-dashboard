@@ -18,4 +18,5 @@ export type SipContextType = {
   call: (number?: string) => RTCSession | undefined;
   setNumber: React.Dispatch<React.SetStateAction<string>>;
   setCountryCode: React.Dispatch<React.SetStateAction<string>>;
+  spy: (extension: string) => void;
 };

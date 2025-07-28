@@ -1,6 +1,6 @@
 import api from "./api";
 
-type FetchQueueDataResponse = Array<{
+export type FetchQueueDataResponse = Array<{
   queue: string;
   stats: {
     totalCalls: number;
