@@ -65,9 +65,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         <div className="overflow-auto p-4">{children}</div>
 
         <div className="row-span-2 col-start-3 overflow-y-auto border-s">
-          <WebrtcProvider>
-            <Innortc />
-          </WebrtcProvider>
+          <Innortc />
         </div>
       </div>
     </div>

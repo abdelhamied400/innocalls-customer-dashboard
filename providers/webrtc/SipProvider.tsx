@@ -90,6 +90,14 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     });
   };
 
+  const spy = (extension: string) => {
+    if (!ua) {
+      console.error("User agent is not initialized");
+      return;
+    }
+    return call(`*199${extension}`);
+  };
+
   return (
     <SipContext.Provider
       value={{
@@ -105,6 +113,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         call,
         setNumber,
         setCountryCode,
+        spy,
       }}
     >
       {children}
