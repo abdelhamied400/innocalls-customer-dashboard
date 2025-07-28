@@ -14,7 +14,7 @@ export type MonitorUser = {
   ext: string;
   ip: string;
   name: string;
-  on_call: true | "";
+  on_call: boolean;
   status: string;
   ua: string;
 };
