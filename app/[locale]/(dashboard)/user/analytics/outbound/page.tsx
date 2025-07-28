@@ -65,7 +65,7 @@ const OutboundAnalytics = () => {
       <div className="flex flex-col gap-2">
         <div className="filters">
           <StatsDetailedCard
-            title={tCommon("form.fields.date.label")}
+            title={t('title')}
             icon={<BarChart />}
             value=""
             color="primary"
