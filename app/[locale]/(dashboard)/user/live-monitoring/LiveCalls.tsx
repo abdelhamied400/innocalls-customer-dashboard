@@ -1,22 +1,59 @@
+import NoData from "@/components/Analytics/NoData";
 import LiveCall from "@/components/LiveMonitoring/LiveCall";
-import StatsDetailedCard from "@/components/StatsDetailedCard";
+import StatsDetailedCard, {
+  StatsDetailedCardError,
+  StatsDetailedCardSkeleton,
+} from "@/components/StatsDetailedCard";
+import liveMonitoringService from "@/services/live-monitoring.service";
 import { Call } from "@mui/icons-material";
+import { useQuery } from "@tanstack/react-query";
 
 const LiveCalls = () => {
+  const {
+    data: liveCallsData,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["liveCalls"],
+    queryFn: () => liveMonitoringService.fetchLiveCalls(),
+  });
+
+  if (isLoading) {
+    return <StatsDetailedCardSkeleton />;
+  }
+
+  if (isError) {
+    return <StatsDetailedCardError error={error} />;
+  }
+
+  if (!liveCallsData || liveCallsData.length === 0) {
+    return (
+      <StatsDetailedCard
+        value=""
+        title="Live Calls"
+        subtitle="Real-time call monitoring and management"
+        icon={<Call />}
+        color="primary"
+      >
+        <NoData />
+      </StatsDetailedCard>
+    );
+  }
+
   return (
     <div className="live-calls">
       <StatsDetailedCard
         title="Live Calls"
         subtitle="Real-time call monitoring and management"
-        value="5"
+        value={liveCallsData.length.toString()}
         renderValue={
           <div className="value flex items-center gap-2">
             <div className="flex flex-col items-center text-center">
               <p className="font-bold text-2xl text-primary-500 transition-colors">
-                5
+                {liveCallsData.length}
               </p>
               <p className="text-sm">Active Calls</p>
-              <p className="text-xs text-primary-500">+22.2% vs previous</p>
             </div>
             <div className="live flex items-center gap-1">
               <span className="block w-4 h-4 bg-green-500 rounded-full animate-pulse"></span>
@@ -28,31 +65,14 @@ const LiveCalls = () => {
         color="primary"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <LiveCall
-            from="+1 (555) 234-5678"
-            to="+1 (800) 123-4567"
-            duration="8:45"
-          />
-          <LiveCall
-            from="+1 (555) 234-5678"
-            to="+1 (800) 123-4567"
-            duration="8:45"
-          />
-          <LiveCall
-            from="+1 (555) 234-5678"
-            to="+1 (800) 123-4567"
-            duration="8:45"
-          />
-          <LiveCall
-            from="+1 (555) 234-5678"
-            to="+1 (800) 123-4567"
-            duration="8:45"
-          />
-          <LiveCall
-            from="+1 (555) 234-5678"
-            to="+1 (800) 123-4567"
-            duration="8:45"
-          />
+          {liveCallsData.map((call, index) => (
+            <LiveCall
+              key={index}
+              from={call.from}
+              to={call.to}
+              timestamp={call.timestamp}
+            />
+          ))}
         </div>
       </StatsDetailedCard>
     </div>

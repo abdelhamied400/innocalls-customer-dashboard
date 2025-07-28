@@ -58,6 +58,14 @@ type FetchAgentsResponse = {
   offline: Agent[];
 };
 
+type LiveCall = {
+  from: string;
+  to: string;
+  timestamp: number;
+};
+
+type FetchLiveCallsResponse = Array<LiveCall>;
+
 export default {
   fetchQueueData: async (): Promise<FetchQueueDataResponse> => {
     const res = await api.get("/queue-live-monitor");
@@ -79,5 +87,9 @@ export default {
       onCall: users.filter((agent) => agent.on_call),
       offline: users.filter((agent) => agent.status === "offline"),
     };
+  },
+  fetchLiveCalls: async (): Promise<FetchLiveCallsResponse> => {
+    const res = await api.get("/extension/live-calls");
+    return res.data;
   },
 };
