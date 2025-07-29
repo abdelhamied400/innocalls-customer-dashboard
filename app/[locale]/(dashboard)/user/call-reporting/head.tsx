@@ -2,7 +2,7 @@
 
 import callReportingService from "@/services/call-reporting.service";
 import { CallReportingFilters, Option } from "@/types/api/call-reporting";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Field from "@/components/ui/field";
 import { FilterAltOutlined } from "@mui/icons-material";
 import MultiSelect from "@/components/select";
@@ -26,6 +26,7 @@ import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
 import { useTranslations } from "next-intl";
+import useAppStore from "@/store/app.slice";
 
 type CallReportingHeadProps = {
   filters: CallReportingFilters;
@@ -33,8 +34,17 @@ type CallReportingHeadProps = {
 };
 const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
   const { toast } = useToast();
+  const { setPageTitle } = useAppStore();
+
   const t = useTranslations("callReporting");
   const tCommon = useTranslations("common");
+
+  useEffect(() => {
+    setPageTitle(t("title"));
+
+    // Cleanup when component unmounts
+    return () => setPageTitle(null);
+  }, [setPageTitle, t]);
 
   const { table } = usePaginatedTable();
   const [isExporting, setIsExporting] = useState(false);

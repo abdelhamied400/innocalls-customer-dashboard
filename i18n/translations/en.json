@@ -198,6 +198,7 @@
     }
   },
   "users": {
+    "title": "Users",
     "list": {
       "title": "Users List",
       "columns": {
@@ -384,6 +385,7 @@
     }
   },
   "billing": {
+    "title": "Billing",
     "layout": {
       "tabs": {
         "charges": "Charges",
@@ -823,6 +825,7 @@
     }
   },
   "usage": {
+    "title": "Usage",
     "layout": {
       "tabs": {
         "summary": "Summary",

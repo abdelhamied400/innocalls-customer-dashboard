@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 import Field from "@/components/ui/field";
 import DatePicker from "@/components/ui/date-picker";
@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { useFilterManager } from "@/hooks/useFilterManager";
 import { userActivityFiltersSchema } from "@/validation/userActivityFilters";
 import { useTranslations } from "next-intl";
+import useAppStore from "@/store/app.slice";
 
 type Option = {
   value: string;
@@ -44,9 +45,17 @@ lastMonth.setDate(today.getDate() - 30);
 
 const UserActivityAnalytics = () => {
   const { extensions } = useVocabStore();
+  const { setPageTitle } = useAppStore();
 
   const t = useTranslations("analytics.userActivity");
   const tCommon = useTranslations("analytics.common");
+
+  useEffect(() => {
+    setPageTitle(t("title"));
+
+    // Cleanup when component unmounts
+    return () => setPageTitle(null);
+  }, [setPageTitle, t]);
 
   const userActivityFilterConfig = {
     defaultValues: {
@@ -66,7 +75,7 @@ const UserActivityAnalytics = () => {
       <div className="flex flex-col gap-2">
         <div className="filters">
           <StatsDetailedCard
-            title={t('title')}
+            title={t("title")}
             icon={<BarChart />}
             value=""
             color="primary"
