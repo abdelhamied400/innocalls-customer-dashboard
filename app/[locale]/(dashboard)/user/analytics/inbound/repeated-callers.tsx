@@ -57,7 +57,7 @@ const InboundAnalyticsRepeatedCallers = ({
   return (
     <div className="flex flex-col gap-4">
       <ChartCard
-        title="IVR Analysis"
+        title="Frequent Callers"
         icon={<Call />}
         color="success"
         legends={[

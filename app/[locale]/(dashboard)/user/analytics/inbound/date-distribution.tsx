@@ -29,7 +29,55 @@ type InboundAnalyticsDateDistributionProps = {
   filters: InboundAnalyticsFilters;
 };
 
-const columns = [
+const allColumns = [
+  {
+    header: "Date",
+    accessorKey: "date",
+  },
+  {
+    header: "Total",
+    accessorKey: "totalCalls",
+  },
+  {
+    header: "Internal",
+    accessorKey: "internalCalls",
+  },
+  {
+    header: "External",
+    accessorKey: "externalCalls",
+  },
+  {
+    header: "Answered",
+    accessorKey: "totalAnsweredCalls",
+  },
+  {
+    header: "Unanswered",
+    accessorKey: "totalUnAnsweredCalls",
+  },
+  {
+    header: "Answer Rate",
+    accessorKey: "answerRate",
+    cell: (row: any) => `${row.getValue("answerRate")}%`,
+  },
+  {
+    header: "Total Duration",
+    accessorKey: "totalDuration",
+  },
+  {
+    header: "Avg Duration",
+    accessorKey: "avgDuration",
+  },
+  {
+    header: "Shortest",
+    accessorKey: "shortestCall",
+  },
+  {
+    header: "Longest",
+    accessorKey: "longestCall",
+  },
+];
+
+const teamColumns = [
   {
     header: "Date",
     accessorKey: "date",
@@ -162,7 +210,7 @@ const InboundAnalyticsDateDistribution = ({
         <TabsContent value="table">
           <PaginatedTable
             data={data || []}
-            columns={columns}
+            columns={filters.filterBy === "team" ? teamColumns : allColumns}
             manualPagination={false}
           >
             <PaginatedTableContent>

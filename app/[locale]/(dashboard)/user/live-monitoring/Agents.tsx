@@ -75,11 +75,13 @@ const Agents = () => {
             defaultValue={["idle", "onCall", "onBreak"]}
           >
             <AccordionItem value="onCall">
-              <AccordionTrigger className="flex items-center justify-between">
-                <span className="text-lg font-semibold">On Call Agents</span>
-                <span className="text-sm text-gray-500">
-                  {agents?.onCall.length || 0}
-                </span>
+              <AccordionTrigger>
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-semibold">On Call Agents</span>
+                  <span className="text-sm text-gray-500">
+                    ({agents?.onCall.length || 0})
+                  </span>
+                </div>
               </AccordionTrigger>
               <AccordionContent className="p-2 flex flex-col gap-2 max-h-[150px] overflow-y-auto">
                 {agents?.onCall.map((agent) => (
@@ -94,10 +96,12 @@ const Agents = () => {
             </AccordionItem>
             <AccordionItem value="idle">
               <AccordionTrigger className="flex items-center justify-between">
-                <span className="text-lg font-semibold">Idle Agents</span>
-                <span className="text-sm text-gray-500">
-                  {agents?.online.length || 0}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-semibold">Idle Agents</span>
+                  <span className="text-sm text-gray-500">
+                    ({agents?.online.length || 0})
+                  </span>
+                </div>
               </AccordionTrigger>
               <AccordionContent className="p-2 flex flex-col gap-2 max-h-[150px] overflow-y-auto">
                 {agents?.online.map((agent) => (
@@ -112,10 +116,12 @@ const Agents = () => {
             </AccordionItem>
             <AccordionItem value="onBreak">
               <AccordionTrigger className="flex items-center justify-between">
-                <span className="text-lg font-semibold">Offline Agents</span>
-                <span className="text-sm text-gray-500">
-                  {agents?.offline.length || 0}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-lg font-semibold">Offline Agents</span>
+                  <span className="text-sm text-gray-500">
+                    ({agents?.offline.length || 0})
+                  </span>
+                </div>
               </AccordionTrigger>
               <AccordionContent className="p-2 flex flex-col gap-2 max-h-[150px] overflow-y-auto">
                 {agents?.offline.map((agent) => (
