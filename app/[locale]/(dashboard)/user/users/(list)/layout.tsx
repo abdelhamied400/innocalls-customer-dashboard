@@ -1,25 +1,35 @@
 "use client";
 import LinkTabs, { LinkTab } from "@/components/LinkTabs";
 import { usePathname } from "next/navigation";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import useAppStore from "@/store/app.slice";
 
 type UsersLayoutProps = PropsWithChildren<{}>;
 const UsersLayout = ({ children }: UsersLayoutProps) => {
   const pathname = usePathname();
-  const t = useTranslations("users.tabs");
+  const { setPageTitle } = useAppStore();
+
+  const t = useTranslations("users");
+
+  useEffect(() => {
+    setPageTitle(t("title"));
+
+    // Cleanup when component unmounts
+    return () => setPageTitle(null);
+  }, [setPageTitle, t]);
 
   return (
     <>
       <LinkTabs>
         <LinkTab href="/users" active={pathname === "/user/users"}>
-          {t("usersList")}
+          {t("tabs.usersList")}
         </LinkTab>
         <LinkTab
           href="/users/monitor"
           active={pathname === "/user/users/monitor"}
         >
-          {t("monitorUsers")}
+          {t("tabs.monitorUsers")}
         </LinkTab>
       </LinkTabs>
       <div className="flex-1 h-[calc(100%-3rem)]">

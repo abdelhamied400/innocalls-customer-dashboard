@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   AccessTime,
   BarChart,
@@ -24,6 +24,7 @@ import OutboundDistribution from "./outbound-distribution";
 import OutboundUnansweredHourly from "./outbound-hourly";
 import QuickStats from "./quick-stats";
 import { useTranslations } from "next-intl";
+import useAppStore from "@/store/app.slice";
 
 type Option = {
   value: string;
@@ -42,9 +43,17 @@ lastMonth.setDate(today.getDate() - 30);
 
 const UnansweredAnalytics = () => {
   const { extensions } = useVocabStore();
+  const { setPageTitle } = useAppStore();
 
   const t = useTranslations("analytics.unanswered");
   const tCommon = useTranslations("analytics.common");
+
+  useEffect(() => {
+    setPageTitle(t("title"));
+
+    // Cleanup when component unmounts
+    return () => setPageTitle(null);
+  }, [setPageTitle, t]);
 
   const unansweredFilterConfig = {
     defaultValues: {
@@ -63,7 +72,7 @@ const UnansweredAnalytics = () => {
       <div className="flex flex-col gap-2">
         <div className="filters">
           <StatsDetailedCard
-            title={t('title')}
+            title={t("title")}
             icon={<BarChart />}
             value=""
             color="primary"

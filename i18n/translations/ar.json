@@ -198,6 +198,7 @@
     }
   },
   "users": {
+    "title": "المستخدمين",
     "list": {
       "title": "قائمة المستخدمين",
       "columns": {
@@ -384,6 +385,7 @@
     }
   },
   "billing": {
+    "title": "الفواتير",
     "layout": {
       "tabs": {
         "charges": "الرسوم",
@@ -831,6 +833,7 @@
     }
   },
   "usage": {
+    "title": "الاستخدام",
     "layout": {
       "tabs": {
         "summary": "الملخص",

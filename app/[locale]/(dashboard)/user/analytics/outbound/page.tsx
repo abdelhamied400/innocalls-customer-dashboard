@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Clock, BarChart3, Timer, Users } from "lucide-react";
 import {
   AccessTime,
@@ -25,6 +25,7 @@ import Select from "@/components/select";
 import { Input } from "@/components/ui/input";
 import useVocabStore from "@/store/vocab.slice";
 import { useTranslations } from "next-intl";
+import useAppStore from "@/store/app.slice";
 
 type Option = {
   value: string;
@@ -43,10 +44,18 @@ lastMonth.setDate(today.getDate() - 30);
 
 // --- Main Component ---
 const OutboundAnalytics = () => {
+  const { extensions } = useVocabStore();
+  const { setPageTitle } = useAppStore();
+
   const tCommon = useTranslations("analytics.common");
   const t = useTranslations("analytics.outbound");
 
-  const { extensions } = useVocabStore();
+  useEffect(() => {
+    setPageTitle(t("title"));
+
+    // Cleanup when component unmounts
+    return () => setPageTitle(null);
+  }, [setPageTitle, t]);
 
   const outboundFilterConfig = {
     defaultValues: {
@@ -65,7 +74,7 @@ const OutboundAnalytics = () => {
       <div className="flex flex-col gap-2">
         <div className="filters">
           <StatsDetailedCard
-            title={t('title')}
+            title={t("title")}
             icon={<BarChart />}
             value=""
             color="primary"
