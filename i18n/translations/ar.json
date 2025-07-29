@@ -1060,7 +1060,7 @@
             "name": "الاسم",
             "totalCalls": "إجمالي المكالمات",
             "avgCallDuration": "متوسط مدة المكالمة",
-            "totalTalkTime": "إجمالي وقت المحادثة",
+            "totalTalkTime": "إجمالي وقت المكالمات",
             "answeredCount": "عدد المجابة",
             "answerRate": "معدل الإجابة (%)",
             "longestCall": "أطول مكالمة",
