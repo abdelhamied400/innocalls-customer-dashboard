@@ -13,8 +13,8 @@ const CallDistributionStats = () => {
         </div>
 
         {/* Total Answered Calls Chart */}
-        <div className="h-full relative overflow-hidden">
-          <div className="h-full">
+        <div className="relative overflow-hidden">
+          <div className="h-80">
             <TotalAnsweredCalls />
           </div>
         </div>

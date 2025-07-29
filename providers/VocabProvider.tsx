@@ -1,5 +1,6 @@
 "use client";
 import vocabService from "@/services/vocab.service";
+import useAuthStore from "@/store/auth.slice";
 import useVocabStore from "@/store/vocab.slice";
 import { useSession } from "next-auth/react";
 import { PropsWithChildren, useEffect, useRef, useState } from "react";
@@ -17,6 +18,7 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
     setErgs,
   } = useVocabStore();
   const { data: user, status } = useSession();
+  const { Organization } = useAuthStore();
   const didFetch = useRef(false);
 
   const fetchCountries = async () => {
@@ -86,12 +88,14 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
 
     didFetch.current = true;
 
-    if (user?.user?.role === "agent") {
-      fetchAgentVocab();
-    } else {
-      fetchUserVocab();
+    if (!!Organization) {
+      if (user?.user?.role === "agent") {
+        fetchAgentVocab();
+      } else {
+        fetchUserVocab();
+      }
     }
-  }, [status]);
+  }, [status, Organization]);
 
   if (status === "loading") {
     return (

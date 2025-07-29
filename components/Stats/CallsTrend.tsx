@@ -15,7 +15,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import ChartCard from "../ChartCard";
-import { CallMerge } from "@mui/icons-material";
+import { CallMerge, Insights } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import statsService from "@/services/stats.service";
 import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
@@ -58,7 +58,7 @@ const CallsTrend = () => {
   return (
     <ChartCard
       title={"Calls Trend"}
-      icon={<CallMerge />}
+      icon={<Insights />}
       color="success"
       className="h-full"
       legends={Object.values(chartConfig).map((config) => ({
