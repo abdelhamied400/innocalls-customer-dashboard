@@ -41,6 +41,19 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
       header: t("table.columns.answeredIncomingCalls"),
       accessorKey: "answeredIncomingCalls",
     },
+   {
+      header: t("table.columns.answeredIncomingInternalCalls"),
+      accessorKey: "answeredIncomingInternalCalls",
+    },
+       {
+      header: t("table.columns.answeredIncomingExternalCalls"),
+      accessorKey: "answeredIncomingExternalCalls",
+    },
+
+
+
+
+
     {
       header: t("table.columns.avgResponseTime"),
       accessorKey: "avgResponseTime",

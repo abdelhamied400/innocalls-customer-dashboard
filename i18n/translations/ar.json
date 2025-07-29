@@ -1089,8 +1089,10 @@
             "totalIncomingCalls": "إجمالي المكالمات الواردة",
             "answeredIncomingCalls": "المكالمات الواردة المجابة",
             "avgResponseTime": "متوسط وقت الاستجابة",
-            "callsAnsweredWithinSLA": "المكالمات المجابة ضمن الوقت المحدد",
-            "slaCompliance": "نسبة الالتزام بالرد السريع (%)"
+            "callsAnsweredWithinSLA": "المكالمات الخارجية المجابة ضمن الوقت المحدد",
+            "slaCompliance": "نسبة الالتزام بالرد السريع (%)",
+            "answeredIncomingInternalCalls": "المكالمات الواردة الداخلية المجابة",
+            "answeredIncomingExternalCalls": "المكالمات الواردة الخارجية المجابة"
           }
         },
         "chart": {

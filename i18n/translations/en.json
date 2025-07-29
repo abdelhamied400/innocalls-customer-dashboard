@@ -1079,8 +1079,10 @@
             "totalIncomingCalls": "Total Incoming Calls",
             "answeredIncomingCalls": "Answered Incoming Calls",
             "avgResponseTime": "Avg Response Time",
-            "callsAnsweredWithinSLA": "Calls Answered Within SLA",
-            "slaCompliance": "SLA Compliance (%)"
+            "callsAnsweredWithinSLA": "External Calls Answered Within SLA",
+            "slaCompliance": "SLA Compliance (%)",
+            "answeredIncomingInternalCalls": "Answered Incoming Internal Calls",
+            "answeredIncomingExternalCalls": "Answered Incoming External Calls"
           }
         },
         "chart": {
