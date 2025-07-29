@@ -16,6 +16,7 @@ import { OutboundAnalyticsFilters } from "./page";
 import NoData from "../../../../../../components/Analytics/NoData";
 import outboundAnalyticsService from "@/services/outbound-analytics.service";
 import { Timer, TimeToLeave } from "@mui/icons-material";
+import { useTranslations } from "next-intl";
 
 type TalkTimeDistributionProps = {
   filters: OutboundAnalyticsFilters;
@@ -31,6 +32,8 @@ const COLORS = [
 ];
 
 const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
+  const t = useTranslations("analytics.outbound.talkTimeDistribution");
+
   const { data, isLoading } = useQuery({
     queryKey: ["talkTimeDistribution", filters],
     queryFn: () =>
@@ -50,7 +53,7 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
   return (
     <div className="space-y-6">
       <ChartCard
-        title="Talk Time Distribution"
+        title={t("title")}
         icon={<Timer />}
         color="success"
         variant="compound"

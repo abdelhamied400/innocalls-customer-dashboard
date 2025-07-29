@@ -14,7 +14,7 @@ export const unansweredFiltersSchema = (
       }),
       agents: z.array(z.object({ value: z.string(), label: z.string() })),
     })
-    .refine((data) => data.fromDate < data.toDate, {
+    .refine((data) => data.fromDate <= data.toDate, {
       message: t("form.validation.toDate.beforeFromDate"),
       path: ["fromDate"],
     })

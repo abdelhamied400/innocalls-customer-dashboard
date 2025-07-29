@@ -939,7 +939,7 @@
     }
   },
   "analytics": {
-    "unansweredAnalytics": {
+    "unanswered": {
       "title": "Unanswered Analytics",
       "subtitle": "View detailed analytics for unanswered calls",
       "dateRangeSearch": "Date Range Search",
@@ -973,13 +973,15 @@
         }
       },
       "outbound": {
-        "lineLabels": {
-          "totalCalls": "Total Calls",
-          "unansweredTotal": "Unanswered (Total)",
-          "outboundInternal": "Outbound (Int.)",
-          "outboundExternal": "Outbound (Ext.)",
-          "unansweredInternal": "Unans. (Int.)",
-          "unansweredExternal": "Unans. (Ext.)"
+        "callDistribution": {
+          "lineLabels": {
+            "totalCalls": "Total Calls",
+            "unansweredTotal": "Unanswered (Total)",
+            "outboundInternal": "Outbound (Int.)",
+            "outboundExternal": "Outbound (Ext.)",
+            "unansweredInternal": "Unans. (Int.)",
+            "unansweredExternal": "Unans. (Ext.)"
+          }
         }
       },
       "common": {
@@ -1110,6 +1112,110 @@
       },
       "common": {
         "noDataAvailable": "No data available"
+      }
+    },
+    "outbound": {
+      "title": "Outbound Analytics",
+      "subtitle": "View detailed analytics for outbound calls",
+      "quickStats": {
+        "totalCalls": "Total Calls",
+        "unansweredCalls": "Unanswered Calls",
+        "answeredCalls": "Answered Calls",
+        "answerRate": "Answer Rate",
+        "externalCalls": "External Calls",
+        "avgDuration": "Avg Talk Duration"
+      },
+      "tabs": {
+        "talkTimeDistribution": "Talk Time Distribution",
+        "hourlyDistribution": "Hourly Distribution",
+        "dateDistribution": "Date Distribution",
+        "agentStats": "Agent Stats"
+      },
+      "talkTimeDistribution": {
+        "title": "Talk Time Distribution",
+        "chart": {
+          "title": "Talk Time Distribution"
+        }
+      },
+      "hourlyDistribution": {
+        "title": "Hourly Distribution",
+        "chart": {
+          "title": "Hourly Distribution",
+          "legends": {
+            "total": "Total",
+            "answered": "Answered",
+            "unanswered": "Unanswered"
+          }
+        },
+        "table": {
+          "columns": {
+            "hour": "Hour",
+            "totalCalls": "Total Calls",
+            "answered": "Answered",
+            "unanswered": "Unanswered",
+            "internal": "Internal",
+            "external": "External"
+          }
+        }
+      },
+      "dateDistribution": {
+        "title": "Date Distribution",
+        "chart": {
+          "title": "Date Distribution",
+          "legends": {
+            "total": "Total",
+            "answered": "Answered",
+            "unanswered": "Unanswered"
+          }
+        },
+        "table": {
+          "columns": {
+            "date": "Date",
+            "total": "Total",
+            "internal": "Internal",
+            "external": "External",
+            "answered": "Answered",
+            "unanswered": "Unanswered",
+            "answerRate": "Answer Rate",
+            "totalDuration": "Total Duration",
+            "avgDuration": "Avg Duration",
+            "shortest": "Shortest",
+            "longest": "Longest"
+          }
+        }
+      },
+      "agentStats": {
+        "title": "Agent Statistics",
+        "chart": {
+          "title": "Agent Statistics",
+          "legends": {
+            "totalCalls": "Total Calls",
+            "answered": "Answered",
+            "unanswered": "Unanswered"
+          }
+        },
+        "table": {
+          "columns": {
+            "ext": "Ext",
+            "name": "Name",
+            "totalCalls": "Total Calls",
+            "answered": "Answered",
+            "unanswered": "Unanswered",
+            "internal": "Internal",
+            "external": "External",
+            "totalDuration": "Total Duration",
+            "avgDuration": "Avg Duration"
+          }
+        },
+        "errors": {
+          "loading": "Error loading agent statistics"
+        }
+      },
+      "common": {
+        "noDataAvailable": "No data available",
+        "loading": "Loading...",
+        "chart": "Chart",
+        "table": "Table"
       }
     },
     "common": {
