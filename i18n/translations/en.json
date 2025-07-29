@@ -973,13 +973,15 @@
         }
       },
       "outbound": {
-        "lineLabels": {
-          "totalCalls": "Total Calls",
-          "unansweredTotal": "Unanswered (Total)",
-          "outboundInternal": "Outbound (Int.)",
-          "outboundExternal": "Outbound (Ext.)",
-          "unansweredInternal": "Unans. (Int.)",
-          "unansweredExternal": "Unans. (Ext.)"
+        "callDistribution": {
+          "lineLabels": {
+            "totalCalls": "Total Calls",
+            "unansweredTotal": "Unanswered (Total)",
+            "outboundInternal": "Outbound (Int.)",
+            "outboundExternal": "Outbound (Ext.)",
+            "unansweredInternal": "Unans. (Int.)",
+            "unansweredExternal": "Unans. (Ext.)"
+          }
         }
       },
       "common": {
