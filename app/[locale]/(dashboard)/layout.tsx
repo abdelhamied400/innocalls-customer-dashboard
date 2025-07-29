@@ -8,14 +8,22 @@ import useAppStore from "@/store/app.slice";
 import { cn } from "@/lib/utils";
 import { getCookie } from "cookies-next/client";
 import { WebrtcProvider } from "@/providers/webrtc/WebrtcProvider";
+import { useSession } from "next-auth/react";
 
 type DashboardLayoutProps = PropsWithChildren<object>;
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+  const { data: session } = useSession();
   const { Organization } = useAuthStore();
   const { isSidebarOpen, isWebrtcOpen } = useAppStore();
   const [defaultOrganizationId, setDefaultOrganizationId] = useState<
     string | null
   >(null);
+
+  const hasWebrtcAccess =
+    (Organization?.hasTenant &&
+      session?.user?.userType === "user" &&
+      session?.user.webrtcAccess) ||
+    session?.user?.userType === "agent";
 
   const getLayoutClassName = () => {
     const bothOpen = "grid-cols-[360px_1fr_280px]";
@@ -64,7 +72,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
         <div className="overflow-auto p-4">{children}</div>
 
-        {Organization?.hasTenant && (
+        {hasWebrtcAccess && (
           <div className="row-span-2 col-start-3 overflow-y-auto border-s">
             <Innortc />
           </div>

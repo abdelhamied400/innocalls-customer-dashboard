@@ -27,7 +27,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Spinner from "@/components/ui/spinner";
-import { X } from "lucide-react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 

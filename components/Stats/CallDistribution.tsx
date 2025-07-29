@@ -13,6 +13,7 @@ import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 import { useTranslations } from "next-intl";
 import ChartCard from "../ChartCard";
 import { StackedBarChart } from "@mui/icons-material";
+import NoData from "../Analytics/NoData";
 
 const CallDistribution = () => {
   const t = useTranslations("dashboard.stats.callDistribution");
@@ -62,44 +63,48 @@ const CallDistribution = () => {
         color: config.color,
       }))}
     >
-      <ChartContainer
-        config={chartConfig}
-        className="w-full h-full min-h-[120px]"
-      >
-        <BarChart accessibilityLayer data={callDistributionData} barGap={0}>
-          <CartesianGrid vertical={false} />
+      {callDistributionData.length === 0 && <NoData />}
 
-          <XAxis
-            dataKey="day"
-            tickLine={false}
-            tickMargin={10}
-            axisLine={false}
-          />
-          <YAxis
-            tickLine={false}
-            tickMargin={10}
-            axisLine={false}
-            tickFormatter={(value) => {
-              if (value >= 1000) {
-                return `${(value / 1000).toFixed(1)}k`;
-              }
-              return value;
-            }}
-          />
-          <ChartTooltip content={<ChartTooltipContent />} />
+      {callDistributionData.length > 0 && (
+        <ChartContainer
+          config={chartConfig}
+          className="w-full h-full min-h-[120px]"
+        >
+          <BarChart accessibilityLayer data={callDistributionData} barGap={0}>
+            <CartesianGrid vertical={false} />
 
-          <Bar
-            dataKey="incomingCalls"
-            fill="var(--color-incomingCalls)"
-            radius={4}
-          />
-          <Bar
-            dataKey="outgoingCalls"
-            fill="var(--color-outgoingCalls)"
-            radius={4}
-          />
-        </BarChart>
-      </ChartContainer>
+            <XAxis
+              dataKey="day"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+            />
+            <YAxis
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) => {
+                if (value >= 1000) {
+                  return `${(value / 1000).toFixed(1)}k`;
+                }
+                return value;
+              }}
+            />
+            <ChartTooltip content={<ChartTooltipContent />} />
+
+            <Bar
+              dataKey="incomingCalls"
+              fill="var(--color-incomingCalls)"
+              radius={4}
+            />
+            <Bar
+              dataKey="outgoingCalls"
+              fill="var(--color-outgoingCalls)"
+              radius={4}
+            />
+          </BarChart>
+        </ChartContainer>
+      )}
     </ChartCard>
   );
 };

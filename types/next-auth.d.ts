@@ -20,18 +20,19 @@ declare module "next-auth" {
     phone: string;
     isDeleted: boolean;
     isActive: boolean;
-    role: "user" | "agent";
+    userType: "user" | "agent";
+    role: "Admin" | "Supervisor";
     assignedExtensions: Array<any>;
-    fullAccessNumbers: boolean;
-    completeControlBilling: boolean;
-    fullAccessUsageAnalytics: boolean;
+    fullAccessNumbers: boolean; // numbers tab
+    completeControlBilling: boolean; // billing tab
+    fullAccessUsageAnalytics: boolean; // usage tab
     fullAccessOrderConfirmationCampaigns: boolean;
     fullAccessCallCampaigns: boolean;
     completeControlDeveloperTools: boolean;
     completeControlTicketing: boolean;
     fullAccessAutoDialerCampaigns: boolean;
-    webrtcAccess: boolean;
-    agentsAccessControl: boolean;
+    webrtcAccess: boolean; // webrtc
+    agentsAccessControl: boolean; // users tab
     fullAccessSurvey: boolean;
     fullAccessConferenceBridge: boolean;
     organizations: Organization[];

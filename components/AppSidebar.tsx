@@ -32,306 +32,240 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { useTranslations } from "next-intl";
 import { useSession } from "next-auth/react";
-import { IntlT } from "@/types/next-intl";
-import { ReactElement } from "react";
-import { Layers } from "lucide-react";
 import useAuthStore from "@/store/auth.slice";
-
-// TypeScript interfaces for sidebar items
-interface SidebarChildItem {
-  title: string;
-  href?: string;
-  icon: ReactElement;
-  isNew: boolean;
-  isComingSoon: boolean;
-  disabled?: boolean;
-  roles?: string[];
-  needToHaveTenant?: boolean;
-}
-
-interface SidebarItem {
-  icon: ReactElement;
-  title: string;
-  href: string;
-  isNew: boolean;
-  isComingSoon: boolean;
-  disabled?: boolean;
-  roles?: string[];
-  children?: SidebarChildItem[];
-  needToHaveTenant?: boolean;
-}
-
-const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
-  {
-    icon: <DashboardCustomize />,
-    title: t("navigation.dashboard"),
-    href: `/${role}`,
-    isNew: true,
-    isComingSoon: false,
-  },
-  {
-    icon: <Monitor />,
-    title: t("navigation.liveMonitoring"),
-    href: `/${role}/live-monitoring`,
-    isNew: true,
-    isComingSoon: false,
-  },
-  {
-    icon: <SmartToy />,
-    title: t("navigation.aiVoiceAgents"),
-    href: `/${role}/ai-voice-agents`,
-    roles: ["user"],
-    isNew: false,
-    isComingSoon: true,
-    disabled: true,
-  },
-  {
-    icon: <Timeline />,
-    title: t("navigation.analytics"),
-    needToHaveTenant: true,
-    isNew: true,
-    isComingSoon: false,
-    href: `/${role}/analytics`,
-    children: [
-      {
-        title: t("navigation.inbound"),
-        href: `/${role}/analytics/inbound`,
-        icon: <ArrowDownward />,
-        isNew: true,
-        isComingSoon: false,
-      },
-      {
-        title: t("navigation.outbound"),
-        href: `/${role}/analytics/outbound`,
-        icon: <ArrowUpward />,
-        isNew: true,
-        isComingSoon: false,
-      },
-      {
-        title: t("navigation.unanswered"),
-        href: `/${role}/analytics/unanswered`,
-        icon: <CallMissedOutgoing />,
-        isNew: true,
-        isComingSoon: false,
-      },
-      {
-        title: t("navigation.userActivity"),
-        href: `/${role}/analytics/user-activity`,
-        icon: <PersonSearch />,
-        isNew: true,
-        isComingSoon: false,
-      },
-      {
-        title: t("navigation.callHistory"),
-        href: `/${role}/call-reporting`,
-        icon: <History />,
-        isNew: true,
-        isComingSoon: false,
-      },
-    ],
-  },
-  {
-    icon: <Phone />,
-    title: t("navigation.numbers"),
-    href: `/${role}/numbers`,
-    roles: ["user"],
-    isNew: true,
-    isComingSoon: false,
-  },
-  {
-    icon: <Users />,
-    title: t("navigation.users"),
-    href: `/${role}/users`,
-    roles: ["user"],
-    isNew: true,
-    isComingSoon: false,
-  },
-  {
-    icon: <MonetizationOn />,
-    title: t("navigation.billing"),
-    href: `/${role}/billing`,
-    roles: ["user"],
-    isNew: true,
-    isComingSoon: false,
-  },
-  {
-    icon: <DataUsage />,
-    title: t("navigation.usage"),
-    href: `/${role}/usage`,
-    roles: ["user"],
-    isNew: true,
-    isComingSoon: false,
-  },
-
-  {
-    icon: <Apps />,
-    title: t("navigation.apps"),
-    isNew: false,
-    isComingSoon: true,
-    roles: ["user"],
-    href: `/${role}/apps`,
-    children: [
-      {
-        title: t("navigation.autoDialer"),
-        href: `/${role}/auto-dialer`,
-        icon: <RingVolume />,
-        isNew: false,
-        isComingSoon: true,
-        disabled: true,
-      },
-      {
-        title: t("navigation.surveyCampaigns"),
-        href: `/${role}/survey`,
-        icon: <Quiz />,
-        isNew: false,
-        isComingSoon: true,
-        disabled: true,
-      },
-      {
-        title: t("navigation.inCallSurvey"),
-        href: `/${role}/analytics/in-call-survey`,
-        icon: <Assessment />,
-        isNew: false,
-        isComingSoon: true,
-        disabled: true,
-      },
-      {
-        title: t("navigation.callBridge"),
-        href: `/${role}/analytics/call-bridge`,
-        icon: <Hub />,
-        isNew: false,
-        isComingSoon: true,
-        disabled: true,
-      },
-      {
-        title: t("navigation.orderConfirmation"),
-        href: `/${role}/apps/order-confirmation`,
-        icon: <ShoppingCart />,
-        isNew: false,
-        isComingSoon: true,
-        disabled: true,
-      },
-      {
-        title: t("navigation.callCampaign"),
-        href: `/${role}/apps/call-campaign`,
-        icon: <Campaign />,
-        isNew: false,
-        isComingSoon: true,
-        disabled: true,
-      },
-    ],
-  },
-  {
-    icon: <Code />,
-    title: t("navigation.developersTab"),
-    isNew: false,
-    isComingSoon: true,
-    roles: ["user"],
-    href: `/${role}/developers`,
-    children: [
-      {
-        title: t("navigation.webcall"),
-        href: `/${role}/developers/webcall`,
-        icon: <Phone />,
-        isNew: false,
-        isComingSoon: true,
-        disabled: true,
-      },
-      {
-        title: t("navigation.zendeskCredentials"),
-        href: `/${role}/developers/zendesk-credentials`,
-        icon: <Support />,
-        isNew: false,
-        isComingSoon: true,
-        disabled: true,
-      },
-      {
-        title: t("navigation.webrtcCredentials"),
-        href: `/${role}/developers/webrtc-credentials`,
-        icon: <Key />,
-        isNew: false,
-        isComingSoon: true,
-        disabled: true,
-      },
-      {
-        title: t("navigation.apiCredentials"),
-        href: `/${role}/developers/api-credentials`,
-        icon: <Api />,
-        isNew: false,
-        isComingSoon: true,
-        disabled: true,
-      },
-    ],
-  },
-  {
-    icon: <Settings />,
-    title: t("navigation.settings"),
-    href: `/${role}/settings`,
-    disabled: true,
-    roles: ["user"],
-    isNew: false,
-    isComingSoon: true,
-  },
-];
-
-const getVisibleItems = (role: "user" | "agent" = "user"): SidebarItem[] => {
-  const t = useTranslations("sidebar");
-  return sidebarItems(t, role).filter((item) => {
-    if (!item.roles) return true; // Public or shared item
-    return item.roles.includes(role as string);
-  });
-};
 
 const AppSidebar = () => {
   const t = useTranslations("sidebar");
   const { data: session } = useSession();
   const { Organization } = useAuthStore();
-  const role = session?.user?.role;
-
-  const visibleItems = getVisibleItems(role);
-
-  const renderItems = (
-    items: (SidebarItem | SidebarChildItem)[] = visibleItems,
-    parentKey = ""
-  ) => {
-    return items.map((item) => {
-      if (item.needToHaveTenant && Organization?.hasTenant === false) {
-        return null;
-      }
-
-      if ("children" in item && item.children && item.children.length > 0) {
-        return (
-          <SidebarCollapsibleItem
-            key={parentKey + item.title}
-            icon={item.icon}
-            title={item.title}
-            isNew={item.isNew}
-            isComingSoon={item.isComingSoon}
-            href={item.href}
-          >
-            {renderItems(item.children, parentKey + item.title + "-")}
-          </SidebarCollapsibleItem>
-        );
-      }
-      return (
-        <SidebarItem
-          key={parentKey + (item.href || item.title)}
-          icon={item.icon}
-          title={item.title}
-          href={item.href ?? "#"}
-          disabled={item.disabled}
-          isNew={item.isNew}
-          isComingSoon={item.isComingSoon}
-        />
-      );
-    });
-  };
 
   return (
     <Sidebar>
       <SidebarHeader />
       <div className="flex flex-col gap-2 p-4 overflow-y-auto">
-        {renderItems()}
+        <SidebarItem
+          icon={<DashboardCustomize />}
+          title={t("navigation.dashboard")}
+          href={`/${session?.user.userType}`}
+          disabled={false}
+          isNew={true}
+          isComingSoon={false}
+        />
+        {Organization?.hasTenant && (
+          <SidebarItem
+            icon={<Monitor />}
+            title={t("navigation.liveMonitoring")}
+            href={`/${session?.user.userType}/live-monitoring`}
+            disabled={false}
+            isNew={true}
+            isComingSoon={false}
+          />
+        )}
+        <SidebarItem
+          icon={<SmartToy />}
+          title={t("navigation.aiVoiceAgents")}
+          href={`/${session?.user.userType}/ai-voice-agents`}
+          disabled={true}
+          isNew={false}
+          isComingSoon={true}
+        />
+
+        {Organization?.hasTenant && (
+          <SidebarCollapsibleItem
+            icon={<Timeline />}
+            title={t("navigation.analytics")}
+            href={`/${session?.user.userType}/analytics`}
+            isNew={true}
+            isComingSoon={false}
+          >
+            <SidebarItem
+              icon={<ArrowDownward />}
+              title={t("navigation.inbound")}
+              href={`/${session?.user.userType}/analytics/inbound`}
+              isNew={true}
+              isComingSoon={false}
+            />
+            <SidebarItem
+              icon={<ArrowUpward />}
+              title={t("navigation.outbound")}
+              href={`/${session?.user.userType}/analytics/outbound`}
+              isNew={true}
+              isComingSoon={false}
+            />
+            <SidebarItem
+              icon={<CallMissedOutgoing />}
+              title={t("navigation.unanswered")}
+              href={`/${session?.user.userType}/analytics/unanswered`}
+              isNew={true}
+              isComingSoon={false}
+            />
+            <SidebarItem
+              icon={<PersonSearch />}
+              title={t("navigation.userActivity")}
+              href={`/${session?.user.userType}/analytics/user-activity`}
+              isNew={true}
+              isComingSoon={false}
+            />
+            <SidebarItem
+              icon={<History />}
+              title={t("navigation.callHistory")}
+              href={`/${session?.user.userType}/call-reporting`}
+              isNew={true}
+              isComingSoon={false}
+            />
+          </SidebarCollapsibleItem>
+        )}
+
+        {session?.user.fullAccessNumbers && (
+          <SidebarItem
+            icon={<Phone />}
+            title={t("navigation.numbers")}
+            href={`/${session?.user.userType}/numbers`}
+            disabled={false}
+            isNew={true}
+            isComingSoon={false}
+          />
+        )}
+
+        {Organization?.hasTenant && session?.user.agentsAccessControl && (
+          <SidebarItem
+            icon={<Users />}
+            title={t("navigation.users")}
+            href={`/${session?.user.userType}/users`}
+            disabled={false}
+            isNew={true}
+            isComingSoon={false}
+          />
+        )}
+
+        {session?.user.completeControlBilling && (
+          <SidebarItem
+            icon={<MonetizationOn />}
+            title={t("navigation.billing")}
+            href={`/${session?.user.userType}/billing`}
+            disabled={false}
+            isNew={true}
+            isComingSoon={false}
+          />
+        )}
+
+        {session?.user.fullAccessUsageAnalytics && (
+          <SidebarItem
+            icon={<DataUsage />}
+            title={t("navigation.usage")}
+            href={`/${session?.user.userType}/usage`}
+            disabled={false}
+            isNew={true}
+            isComingSoon={false}
+          />
+        )}
+
+        <SidebarCollapsibleItem
+          icon={<Apps />}
+          title={t("navigation.apps")}
+          isNew={false}
+          isComingSoon={true}
+          href={`/${session?.user.userType}/apps`}
+        >
+          <SidebarItem
+            icon={<RingVolume />}
+            title={t("navigation.autoDialer")}
+            href={`/${session?.user.userType}/auto-dialer`}
+            disabled={true}
+            isNew={false}
+            isComingSoon={true}
+          />
+          <SidebarItem
+            icon={<Quiz />}
+            title={t("navigation.surveyCampaigns")}
+            href={`/${session?.user.userType}/survey`}
+            disabled={true}
+            isNew={false}
+            isComingSoon={true}
+          />
+          <SidebarItem
+            icon={<Assessment />}
+            title={t("navigation.inCallSurvey")}
+            href={`/${session?.user.userType}/analytics/in-call-survey`}
+            disabled={true}
+            isNew={false}
+            isComingSoon={true}
+          />
+          <SidebarItem
+            icon={<Hub />}
+            title={t("navigation.callBridge")}
+            href={`/${session?.user.userType}/analytics/call-bridge`}
+            disabled={true}
+            isNew={false}
+            isComingSoon={true}
+          />
+          <SidebarItem
+            icon={<ShoppingCart />}
+            title={t("navigation.orderConfirmation")}
+            href={`/${session?.user.userType}/apps/order-confirmation`}
+            disabled={true}
+            isNew={false}
+            isComingSoon={true}
+          />
+          <SidebarItem
+            icon={<Campaign />}
+            title={t("navigation.callCampaign")}
+            href={`/${session?.user.userType}/apps/call-campaign`}
+            disabled={true}
+            isNew={false}
+            isComingSoon={true}
+          />
+        </SidebarCollapsibleItem>
+
+        <SidebarCollapsibleItem
+          icon={<Code />}
+          title={t("navigation.developersTab")}
+          isNew={false}
+          isComingSoon={true}
+          href={`/${session?.user.userType}/developers`}
+        >
+          <SidebarItem
+            icon={<Phone />}
+            title={t("navigation.webcall")}
+            href={`/${session?.user.userType}/developers/webcall`}
+            disabled={true}
+            isNew={false}
+            isComingSoon={true}
+          />
+          <SidebarItem
+            icon={<Support />}
+            title={t("navigation.zendeskCredentials")}
+            href={`/${session?.user.userType}/developers/zendesk-credentials`}
+            disabled={true}
+            isNew={false}
+            isComingSoon={true}
+          />
+          <SidebarItem
+            icon={<Key />}
+            title={t("navigation.webrtcCredentials")}
+            href={`/${session?.user.userType}/developers/webrtc-credentials`}
+            disabled={true}
+            isNew={false}
+            isComingSoon={true}
+          />
+          <SidebarItem
+            icon={<Api />}
+            title={t("navigation.apiCredentials")}
+            href={`/${session?.user.userType}/developers/api-credentials`}
+            disabled={true}
+            isNew={false}
+            isComingSoon={true}
+          />
+        </SidebarCollapsibleItem>
+
+        <SidebarItem
+          icon={<Settings />}
+          title={t("navigation.settings")}
+          href={`/${session?.user.userType}/settings`}
+          disabled={true}
+          isNew={false}
+          isComingSoon={true}
+        />
 
         <hr />
         <div className="py-2 flex flex-col gap-2">

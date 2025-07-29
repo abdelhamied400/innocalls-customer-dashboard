@@ -13,6 +13,7 @@ import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 import { useTranslations } from "next-intl";
 import ChartCard from "../ChartCard";
 import { BarChart as BarChartIcon } from "@mui/icons-material";
+import NoData from "../Analytics/NoData";
 
 const TotalAnsweredCalls = () => {
   const t = useTranslations("dashboard.stats.totalAnsweredCalls");
@@ -58,35 +59,42 @@ const TotalAnsweredCalls = () => {
         color: config.color,
       }))}
     >
-      <ChartContainer
-        config={chartConfig}
-        className="w-full min-h-[200px] h-full"
-      >
-        <BarChart accessibilityLayer data={totalAnsweredCalls}>
-          <CartesianGrid vertical={false} />
-          <XAxis
-            dataKey="day"
-            tickLine={false}
-            tickMargin={10}
-            axisLine={false}
-          />
-          <YAxis
-            dataKey="totalCalls"
-            tickLine={false}
-            tickMargin={10}
-            axisLine={false}
-            tickFormatter={(value) => {
-              if (value >= 1000) {
-                return `${(value / 1000).toFixed(1)}k`;
-              }
-              return value;
-            }}
-          />
-          <ChartTooltip content={<ChartTooltipContent />} />
+      {totalAnsweredCalls.length === 0 && <NoData />}
+      {totalAnsweredCalls.length > 0 && (
+        <ChartContainer
+          config={chartConfig}
+          className="w-full min-h-[200px] h-full"
+        >
+          <BarChart accessibilityLayer data={totalAnsweredCalls}>
+            <CartesianGrid vertical={false} />
+            <XAxis
+              dataKey="day"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+            />
+            <YAxis
+              dataKey="totalCalls"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) => {
+                if (value >= 1000) {
+                  return `${(value / 1000).toFixed(1)}k`;
+                }
+                return value;
+              }}
+            />
+            <ChartTooltip content={<ChartTooltipContent />} />
 
-          <Bar dataKey="totalCalls" fill="var(--color-totalCalls)" radius={4} />
-        </BarChart>
-      </ChartContainer>
+            <Bar
+              dataKey="totalCalls"
+              fill="var(--color-totalCalls)"
+              radius={4}
+            />
+          </BarChart>
+        </ChartContainer>
+      )}
     </ChartCard>
   );
 };

@@ -36,13 +36,13 @@ const SidebarCollapsibleItem = ({
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  const role = session?.user?.role;
+  const userType = session?.user?.userType;
 
   const isActive = useMemo(() => {
-    if (href === `/${role}`) return pathname === `/${role}`;
+    if (href === `/${userType}`) return pathname === `/${userType}`;
     else return pathname.includes(href);
     //
-  }, [pathname, href, role]);
+  }, [pathname, href, userType]);
 
   useEffect(() => {
     // Automatically open the collapsible if the current path matches the href

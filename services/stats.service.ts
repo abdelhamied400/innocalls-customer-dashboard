@@ -1,10 +1,37 @@
 import { format } from "date-fns";
 import api from "./api";
 
-type GetTotalIncomingCallsResponse = {
-  previousTotalCalls: number;
-  totalCalls: number;
-  totalCallsChangePercentage: number;
+type FetchCallSummaryStatsResponse = {
+  inbound: {
+    current: number;
+    previous: number;
+    change: number;
+  };
+  outbound: {
+    current: number;
+    previous: number;
+    change: number;
+  };
+  internal: {
+    current: number;
+    previous: number;
+    change: number;
+  };
+  answerRate: {
+    current: number;
+    previous: number;
+    change: number;
+  };
+  talkTime: {
+    current: number;
+    previous: number;
+    change: number;
+  };
+  waitTime: {
+    current: number;
+    previous: number;
+    change: number;
+  };
 };
 
 type GetTotalCallsStatsResponse = {
@@ -181,10 +208,6 @@ export default {
     return res.data;
   },
   // new stats
-  getTotalIncomingCalls: async (): Promise<GetTotalIncomingCallsResponse> => {
-    const res = await api.get("/inbound-statistics/total-calls");
-    return res.data;
-  },
   getTotalCallsStats: async (): Promise<GetTotalCallsStatsResponse> => {
     const res = await api.get("/inbound-statistics/call-completion-stats");
     return res.data;
@@ -199,9 +222,12 @@ export default {
   },
   getQuickStats: async (): Promise<QuickStatsResponse> => {
     const res = await api.get("/inbound-statistics/last-7-days-metrics");
+
     return {
       ...res.data,
-      peakDay: format(new Date(res.data.peakDay), "EEEE"),
+      peakDay: res.data.peakDay
+        ? format(new Date(res.data.peakDay), "EEEE")
+        : "N/A",
       averageDailyCalls: Math.round(res.data.averageDailyCalls * 100) / 100,
     };
   },
@@ -211,6 +237,10 @@ export default {
   },
   getPerformanceOverview: async (): Promise<PerformanceOverviewResponse> => {
     const res = await api.get("/inbound-statistics/daily-time-metric");
+    return res.data;
+  },
+  fetchCallSummaryStats: async (): Promise<FetchCallSummaryStatsResponse> => {
+    const res = await api.get("/call-report/monthly-summary");
     return res.data;
   },
 };

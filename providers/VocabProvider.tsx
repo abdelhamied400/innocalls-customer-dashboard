@@ -1,5 +1,5 @@
 "use client";
-import Spinner from "@/components/ui/spinner";
+import AppSpinner from "@/components/ui/AppSpinner";
 import vocabService from "@/services/vocab.service";
 import useAuthStore from "@/store/auth.slice";
 import useVocabStore from "@/store/vocab.slice";
@@ -18,7 +18,7 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
     setPackages,
     setErgs,
   } = useVocabStore();
-  const { data: user, status } = useSession();
+  const { data: session, status } = useSession();
   const { Organization } = useAuthStore();
   const didFetch = useRef(false);
 
@@ -90,7 +90,7 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
     didFetch.current = true;
 
     if (!!Organization) {
-      if (user?.user?.role === "agent") {
+      if (session?.user?.userType === "agent") {
         fetchAgentVocab();
       } else {
         fetchUserVocab();
@@ -101,7 +101,7 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
   if (status === "loading") {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
-        <Spinner />
+        <AppSpinner />
         <span className="text-gray-500">Authenticating...</span>
       </div>
     );
@@ -110,7 +110,7 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
-        <Spinner />
+        <AppSpinner />
         <span className="text-gray-500">Loading vocab...</span>
       </div>
     );

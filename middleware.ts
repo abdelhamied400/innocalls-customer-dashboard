@@ -28,7 +28,7 @@ export default auth((request) => {
   const maybeLocale = localeSlugs.includes(segments[0]) ? segments[0] : null;
   const maybeRole = maybeLocale ? segments[1] : segments[0];
 
-  const userRole = request.auth?.user?.role;
+  const userType = request.auth?.user?.userType;
 
   const isPublicPage = publicPages.includes(pathname);
 
@@ -40,12 +40,12 @@ export default auth((request) => {
   // If logged in but URL doesn't include the role correctly
   if (
     request.auth &&
-    userRole &&
+    userType &&
     !isPublicPage &&
-    (!maybeRole || maybeRole !== userRole)
+    (!maybeRole || maybeRole !== userType)
   ) {
     const remainingPath = segments.slice(maybeLocale ? 1 : 0).join("/");
-    const correctedPath = `/${maybeLocale ?? ""}/${userRole}/${remainingPath}`
+    const correctedPath = `/${maybeLocale ?? ""}/${userType}/${remainingPath}`
       .replace(/\/+/g, "/")
       .replace(/\/$/, "");
 

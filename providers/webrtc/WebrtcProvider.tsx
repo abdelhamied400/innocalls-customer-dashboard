@@ -14,11 +14,11 @@ export const WebrtcProvider = ({ children }: WebrtcProviderProps) => {
     return <div>Loading...</div>;
   }
 
-  const role = session?.user?.role;
+  const userType = session?.user?.userType;
 
-  if (role === "agent") {
+  if (userType === "agent") {
     initialRoute = "/dialpad";
-  } else if (role === "user") {
+  } else if (userType === "user") {
     initialRoute = "/extensions";
   }
 

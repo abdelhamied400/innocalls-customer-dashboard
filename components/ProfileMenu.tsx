@@ -26,14 +26,14 @@ const ProfileMenu = () => {
   const t = useTranslations("components.profileMenu");
   const tActions = useTranslations("common.actions");
 
-  const handleLogout = async() => {
-    // TODO: FIND ANOTHER WAY TP LOGOUT ... 
+  const handleLogout = async () => {
+    // TODO: FIND ANOTHER WAY TP LOGOUT ...
     // Get the current base URL
-    const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-    
+    const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+
     // Sign out without redirect first
     await signOut({ redirect: false });
-    
+
     // Then manually redirect to the login page using the correct base URL
     window.location.href = `${baseUrl}/login`;
   };
@@ -94,7 +94,7 @@ const ProfileMenu = () => {
           <div className="flex flex-col items-start">
             <p className="font-semibold text-lg">{session?.user.name}</p>
             <p className="text-neutral-400 text-sm">{Organization?.name}</p>
-            <p className="text-neutral-400 text-sm">{session?.user.role}</p>
+            <p className="text-neutral-400 text-sm">{session?.user.userType}</p>
           </div>
 
           <ExpandCircleDownOutlinedIcon className="text-neutral-300" />
