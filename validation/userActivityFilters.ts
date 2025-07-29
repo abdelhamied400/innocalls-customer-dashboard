@@ -19,9 +19,17 @@ export const userActivityFiltersSchema = (
         .int(t("form.validation.sla.int"))
         .min(1, t("form.validation.sla.min", { min: 1 })),
     })
-    .refine((data) => data.fromDate <= data.toDate, {
+    .refine((data) => {
+      const from = new Date(data.fromDate);
+      const to = new Date(data.toDate);
+    
+      from.setHours(0, 0, 0, 0);
+      to.setHours(0, 0, 0, 0);
+    
+      return from <= to;
+    }, {
       message: tCommon("form.validation.toDate.beforeFromDate"),
-      path: ["fromDate"],
+      path: ["toDate"],
     })
     .refine(
       (data) => {

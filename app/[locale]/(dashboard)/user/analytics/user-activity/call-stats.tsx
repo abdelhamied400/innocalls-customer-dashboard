@@ -39,10 +39,6 @@ const CallStatsAnalytics = ({ filters }: CallStatsAnalyticsProps) => {
     { header: t("table.columns.ext"), accessorKey: "ext" },
     { header: t("table.columns.totalCalls"), accessorKey: "totalCalls" },
     {
-      header: t("table.columns.avgCallDuration"),
-      accessorKey: "avgCallDuration",
-    },
-    {
       header: t("table.columns.totalTalkTime"),
       accessorKey: "totalTalkTime",
     },
