@@ -43,6 +43,18 @@ const InboundAnalyticsAgentPerformance = ({
       cell: (info: any) => formatDuration(Number(info.getValue("avgTalkTime"))),
     },
     {
+      header: "Total Talk Time",
+      accessorKey: "totalTalkTime",
+      cell: (info: any) =>
+        formatDuration(Number(info.getValue("totalWaitTime"))),
+    },
+    {
+      header: "Total Wait Time",
+      accessorKey: "totalWaitTime",
+      cell: (info: any) =>
+        formatDuration(Number(info.getValue("totalWaitTime"))),
+    },
+    {
       header: "Queue Position",
       accessorKey: "minCustomerQueuePosition",
       cell: (info: any) =>

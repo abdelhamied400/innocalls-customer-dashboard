@@ -179,13 +179,7 @@ export default {
         params: formatParams(filters),
       }
     );
-    return res.data.agents.map((agent: any) => ({
-      ...agent,
-      avgTalkTime: durationToSeconds(agent.avgTalkTime),
-      avgWaitTime: durationToSeconds(agent.avgWaitTime),
-      totalTalkTime: durationToSeconds(agent.totalTalkTime),
-      totalWaitTime: durationToSeconds(agent.totalWaitTime),
-    }));
+    return res.data.agents;
   },
 
   async fetchRepeatedCallers(

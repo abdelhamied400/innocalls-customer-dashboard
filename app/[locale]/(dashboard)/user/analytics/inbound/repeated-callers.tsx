@@ -21,6 +21,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
 import { InboundAnalyticsFilters } from "./page";
+import NoData from "@/components/Analytics/NoData";
 
 type InboundAnalyticsRepeatedCallersProps = {
   filters: InboundAnalyticsFilters;
@@ -69,45 +70,49 @@ const InboundAnalyticsRepeatedCallers = ({
         isError={isError}
         error={error}
       >
-        <div className="w-full h-80 mb-8">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={repeatedCallersData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-              <XAxis
-                dataKey="caller"
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-              />
-              <YAxis
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-                allowDecimals={false}
-              />
-              <Tooltip />
-              <Legend />
-              <Bar
-                dataKey="completedCalls"
-                stackId="a"
-                fill="#10B981"
-                name="Completed"
-              />
-              <Bar
-                dataKey="abandonedCalls"
-                stackId="a"
-                fill="#F59E42"
-                name="Abandoned"
-              />
-              <Bar
-                dataKey="timeoutCalls"
-                stackId="a"
-                fill="#EF4444"
-                name="Timeout"
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        {!repeatedCallersData ||
+          (repeatedCallersData.length === 0 && <NoData />)}
+        {repeatedCallersData && repeatedCallersData.length > 0 && (
+          <div className="w-full h-80 mb-8">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={repeatedCallersData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                <XAxis
+                  dataKey="caller"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                  allowDecimals={false}
+                />
+                <Tooltip />
+                <Legend />
+                <Bar
+                  dataKey="completedCalls"
+                  stackId="a"
+                  fill="#10B981"
+                  name="Completed"
+                />
+                <Bar
+                  dataKey="abandonedCalls"
+                  stackId="a"
+                  fill="#F59E42"
+                  name="Abandoned"
+                />
+                <Bar
+                  dataKey="timeoutCalls"
+                  stackId="a"
+                  fill="#EF4444"
+                  name="Timeout"
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        )}
       </ChartCard>
 
       <div className="overflow-x-auto border bg-white rounded-lg mt-6">

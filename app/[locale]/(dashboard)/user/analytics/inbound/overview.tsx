@@ -18,6 +18,22 @@ type InboundAnalyticsOverviewProps = { filters: InboundAnalyticsFilters };
 const InboundAnalyticsOverview = ({
   filters,
 }: InboundAnalyticsOverviewProps) => {
+  const legends = {
+    team: [
+      { label: "Total Calls", color: "#3B82F6" },
+      { label: "Completed Calls", color: "#10B981" },
+      { label: "Timeout Calls", color: "#F59E42" },
+      { label: "Abandoned Calls", color: "#EF4444" },
+    ],
+    all: [
+      { label: "Total Calls", color: "#3B82F6" },
+      { label: "Answered Calls", color: "#10B981" },
+      { label: "External Calls", color: "#F59E42" },
+      { label: "Internal Calls", color: "#A855F7" },
+      { label: "Unanswered Calls", color: "#EF4444" },
+    ],
+  };
+
   const {
     data: overviewData,
     isLoading,
@@ -33,13 +49,7 @@ const InboundAnalyticsOverview = ({
       icon={<LineAxis />}
       title="Inbound Call Overview"
       color="primary"
-      legends={[
-        { label: "Total Calls", color: "#3B82F6" },
-        { label: "Answered Calls", color: "#10B981" },
-        { label: "External Calls", color: "#F59E42" },
-        { label: "Internal Calls", color: "#A855F7" },
-        { label: "Unanswered Calls", color: "#EF4444" },
-      ]}
+      legends={legends[filters.filterBy]}
       variant="compound"
       isLoading={isLoading}
       isError={isError}
@@ -68,7 +78,22 @@ const InboundAnalyticsOverview = ({
                 axisLine={false}
                 allowDecimals={false}
               />
-              <Tooltip />
+              <Tooltip
+                formatter={(_, name) => {
+                  // Map dataKey to label
+                  const keyToLabel: Record<string, string> = {
+                    totalCalls: "Total Calls",
+                    answeredCalls: "Answered Calls",
+                    externalCalls: "External Calls",
+                    internalCalls: "Internal Calls",
+                    unansweredCalls: "Unanswered Calls",
+                    abandonedCalls: "Abandoned Calls",
+                    completedCalls: "Completed Calls",
+                    timeoutCalls: "Timeout Calls",
+                  };
+                  return [_, keyToLabel[name as string] || name];
+                }}
+              />
               <Line
                 type="monotone"
                 dataKey="totalCalls"
@@ -113,7 +138,7 @@ const InboundAnalyticsOverview = ({
               <Line
                 type="monotone"
                 dataKey="abandonedCalls"
-                label="Total Calls"
+                label="Abandoned Calls"
                 stroke="#F54002"
                 strokeWidth={3}
                 dot={false}
@@ -121,7 +146,7 @@ const InboundAnalyticsOverview = ({
               <Line
                 type="monotone"
                 dataKey="completedCalls"
-                label="Total Calls"
+                label="Completed Calls"
                 stroke="#10B981"
                 strokeWidth={3}
                 dot={false}
@@ -129,7 +154,7 @@ const InboundAnalyticsOverview = ({
               <Line
                 type="monotone"
                 dataKey="timeoutCalls"
-                label="Total Calls"
+                label="Timeout Calls"
                 stroke="#F59E42"
                 strokeWidth={3}
                 dot={false}

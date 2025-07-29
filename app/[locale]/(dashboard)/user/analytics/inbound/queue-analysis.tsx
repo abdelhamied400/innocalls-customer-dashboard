@@ -1,4 +1,4 @@
-import ChartCard from "@/components/ChartCard";
+import ChartCard, { ChartCardSkeleton } from "@/components/ChartCard";
 import { InboundAnalyticsFilters } from "./page";
 import {
   Alarm,
@@ -9,7 +9,6 @@ import {
   Group,
   Queue,
   Timer,
-  Warning,
 } from "@mui/icons-material";
 import {
   CartesianGrid,
@@ -19,12 +18,10 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import StatsCard from "@/components/StatsCard";
+import StatsCard, { StatsCardSkeleton } from "@/components/StatsCard";
 import StatsRowCard from "@/components/StatsRowCard";
-import StatsDetailedCard from "@/components/StatsDetailedCard";
 import { useQuery } from "@tanstack/react-query";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
-import Spinner from "@/components/ui/spinner";
 import NoData from "@/components/Analytics/NoData";
 
 const colors = [
@@ -63,7 +60,45 @@ const InboundAnalyticsQueueAnalysis = ({
   });
 
   if (isLoadingAbandonedAnalysis || isLoadingTimeoutAnalysis) {
-    return <Spinner />;
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="header flex items-center gap-2">
+          <h4>Abandoned Call Analysis</h4>
+          <hr className="flex-1" />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+          <StatsCardSkeleton />
+          <StatsCardSkeleton />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+          <ChartCardSkeleton />
+
+          <ChartCardSkeleton />
+        </div>
+
+        <div className="header flex items-center gap-2">
+          <h4>Wait time distribution</h4>
+          <hr className="flex-1" />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+          <StatsCardSkeleton />
+          <StatsCardSkeleton />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+          <ChartCardSkeleton />
+
+          <ChartCardSkeleton />
+        </div>
+        <div className="header flex items-center gap-2">
+          <h4>Inbound unanswered comparison</h4>
+          <hr className="flex-1" />
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+          <ChartCardSkeleton />
+          <ChartCardSkeleton />
+        </div>
+      </div>
+    );
   }
 
   if (abandonedError || timeoutError) {
@@ -276,24 +311,24 @@ const InboundAnalyticsQueueAnalysis = ({
           />
         </ChartCard>
         <ChartCard
-          title="Wait Time Comparison"
+          title="Comparison"
           icon={<Timer />}
           color="info"
           variant="compound"
         >
           <StatsRowCard
             label="Total Abandon wait"
-            value={abandonedAnalysis.avgWaitTime}
+            value={`${abandonedAnalysis.total} | ${timeoutAnalysis.total}`}
             color="destructive"
           />
           <StatsRowCard
             label="Total Timeout wait"
-            value={timeoutAnalysis.avgWaitTime}
+            value={`${abandonedAnalysis.avgWaitTime} | ${timeoutAnalysis.avgWaitTime}`}
             color="warning"
           />
           <StatsRowCard
             label="Peak hours"
-            value={timeoutAnalysis.peakHour}
+            value={`${abandonedAnalysis.peakHour} | ${timeoutAnalysis.peakHour}`}
             color="info"
           />
         </ChartCard>

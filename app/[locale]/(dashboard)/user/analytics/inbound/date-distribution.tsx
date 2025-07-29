@@ -39,41 +39,16 @@ const columns = [
     accessorKey: "totalCalls",
   },
   {
-    header: "Internal",
-    accessorKey: "internalCalls",
+    header: "Timeout Calls",
+    accessorKey: "timeoutCalls",
   },
   {
-    header: "External",
-    accessorKey: "externalCalls",
+    header: "Answered Calls",
+    accessorKey: "answeredCalls",
   },
   {
-    header: "Answered",
-    accessorKey: "totalAnsweredCalls",
-  },
-  {
-    header: "Unanswered",
-    accessorKey: "totalUnAnsweredCalls",
-  },
-  {
-    header: "Answer Rate",
-    accessorKey: "answerRate",
-    cell: (row: any) => `${row.getValue("answerRate")}%`,
-  },
-  {
-    header: "Total Duration",
-    accessorKey: "totalDuration",
-  },
-  {
-    header: "Avg Duration",
-    accessorKey: "avgDuration",
-  },
-  {
-    header: "Shortest",
-    accessorKey: "shortestCall",
-  },
-  {
-    header: "Longest",
-    accessorKey: "longestCall",
+    header: "Abandoned Calls",
+    accessorKey: "abandonedCalls",
   },
 ];
 
