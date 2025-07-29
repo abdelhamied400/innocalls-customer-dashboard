@@ -15,7 +15,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import ChartCard from "../ChartCard";
-import { CallMerge } from "@mui/icons-material";
+import { RocketLaunch } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 import statsService from "@/services/stats.service";
 import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
@@ -54,7 +54,7 @@ const PerformanceOverview = () => {
   return (
     <ChartCard
       title={"Performance Overview"}
-      icon={<CallMerge />}
+      icon={<RocketLaunch />}
       color="info"
       className="h-full"
       legends={Object.values(chartConfig).map((config) => ({

@@ -14,11 +14,7 @@ export const WebrtcProvider = ({ children }: WebrtcProviderProps) => {
     return <div>Loading...</div>;
   }
 
-  if (status === "unauthenticated" || !session) {
-    return <div>Please log in to access this feature.</div>;
-  }
-
-  const role = session.user?.role;
+  const role = session?.user?.role;
 
   if (role === "agent") {
     initialRoute = "/dialpad";
