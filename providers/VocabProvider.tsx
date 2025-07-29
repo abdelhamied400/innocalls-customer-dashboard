@@ -1,4 +1,5 @@
 "use client";
+import Spinner from "@/components/ui/spinner";
 import vocabService from "@/services/vocab.service";
 import useAuthStore from "@/store/auth.slice";
 import useVocabStore from "@/store/vocab.slice";
@@ -99,7 +100,8 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
 
   if (status === "loading") {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex flex-col items-center justify-center h-screen">
+        <Spinner />
         <span className="text-gray-500">Authenticating...</span>
       </div>
     );
@@ -107,7 +109,8 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex flex-col items-center justify-center h-screen">
+        <Spinner />
         <span className="text-gray-500">Loading vocab...</span>
       </div>
     );

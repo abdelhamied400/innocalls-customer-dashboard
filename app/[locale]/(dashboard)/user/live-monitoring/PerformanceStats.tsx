@@ -131,11 +131,11 @@ const PerformanceStats = () => {
             info={`+${performanceStats.previous.totalWaitTime} seconds vs previous`}
           />
           <StatsCard
-            title="Avg Talk Time"
-            value={`${performanceStats.current.totalWaitTime} seconds`}
+            title="Total Talk Time"
+            value={`${performanceStats.current.totalTalkTime} seconds`}
             icon={<AvTimer />}
             color="info"
-            info={`+${performanceStats.previous.totalWaitTime} seconds vs previous`}
+            info={`+${performanceStats.previous.totalTalkTime} seconds vs previous`}
           />
           <StatsCard
             title="SLA Compliance"

@@ -7,6 +7,7 @@ import { Toggle } from "@/components/ui/toggle";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
+import useAuthStore from "@/store/auth.slice";
 
 interface UsersTableHeaderProps {
   searchValue: string;
@@ -19,6 +20,7 @@ const UsersTableHeader = ({
 }: UsersTableHeaderProps) => {
   const t = useTranslations("users.list");
   const commonT = useTranslations("common.search");
+  const { Organization } = useAuthStore();
 
   return (
     <div className="users-table-head flex items-center justify-between p-4">
@@ -38,9 +40,11 @@ const UsersTableHeader = ({
             <FilterAltIcon />
           </Toggle>
         </CollapsibleTrigger>
-        <Link href="/users/create">
-          <Button>{t("actions.create")}</Button>
-        </Link>
+        {Organization?.hasTenant && (
+          <Link href="/users/create">
+            <Button>{t("actions.create")}</Button>
+          </Link>
+        )}
       </div>
     </div>
   );

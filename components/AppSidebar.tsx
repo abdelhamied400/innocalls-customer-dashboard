@@ -35,6 +35,7 @@ import { useSession } from "next-auth/react";
 import { IntlT } from "@/types/next-intl";
 import { ReactElement } from "react";
 import { Layers } from "lucide-react";
+import useAuthStore from "@/store/auth.slice";
 
 // TypeScript interfaces for sidebar items
 interface SidebarChildItem {
@@ -45,6 +46,7 @@ interface SidebarChildItem {
   isComingSoon: boolean;
   disabled?: boolean;
   roles?: string[];
+  needToHaveTenant?: boolean;
 }
 
 interface SidebarItem {
@@ -56,6 +58,7 @@ interface SidebarItem {
   disabled?: boolean;
   roles?: string[];
   children?: SidebarChildItem[];
+  needToHaveTenant?: boolean;
 }
 
 const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
@@ -75,7 +78,7 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
   },
   {
     icon: <SmartToy />,
-    title:t("navigation.aiVoiceAgents"),
+    title: t("navigation.aiVoiceAgents"),
     href: `/${role}/ai-voice-agents`,
     roles: ["user"],
     isNew: false,
@@ -84,42 +87,42 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
   },
   {
     icon: <Timeline />,
-    title:t("navigation.analytics"),
-
+    title: t("navigation.analytics"),
+    needToHaveTenant: true,
     isNew: true,
     isComingSoon: false,
     href: `/${role}/analytics`,
     children: [
       {
-        title:t("navigation.inbound"),
+        title: t("navigation.inbound"),
         href: `/${role}/analytics/inbound`,
         icon: <ArrowDownward />,
         isNew: true,
         isComingSoon: false,
       },
       {
-        title:t("navigation.outbound"),
+        title: t("navigation.outbound"),
         href: `/${role}/analytics/outbound`,
         icon: <ArrowUpward />,
         isNew: true,
         isComingSoon: false,
       },
       {
-        title:t("navigation.unanswered"),
+        title: t("navigation.unanswered"),
         href: `/${role}/analytics/unanswered`,
         icon: <CallMissedOutgoing />,
         isNew: true,
         isComingSoon: false,
       },
       {
-        title:t("navigation.userActivity"),
+        title: t("navigation.userActivity"),
         href: `/${role}/analytics/user-activity`,
         icon: <PersonSearch />,
         isNew: true,
         isComingSoon: false,
       },
       {
-        title:t("navigation.callHistory"),
+        title: t("navigation.callHistory"),
         href: `/${role}/call-reporting`,
         icon: <History />,
         isNew: true,
@@ -162,7 +165,7 @@ const sidebarItems = (t: IntlT, role: "user" | "agent"): SidebarItem[] => [
 
   {
     icon: <Apps />,
-    title:t("navigation.apps"),
+    title: t("navigation.apps"),
     isNew: false,
     isComingSoon: true,
     roles: ["user"],
@@ -282,6 +285,7 @@ const getVisibleItems = (role: "user" | "agent" = "user"): SidebarItem[] => {
 const AppSidebar = () => {
   const t = useTranslations("sidebar");
   const { data: session } = useSession();
+  const { Organization } = useAuthStore();
   const role = session?.user?.role;
 
   const visibleItems = getVisibleItems(role);
@@ -291,6 +295,10 @@ const AppSidebar = () => {
     parentKey = ""
   ) => {
     return items.map((item) => {
+      if (item.needToHaveTenant && Organization?.hasTenant === false) {
+        return null;
+      }
+
       if ("children" in item && item.children && item.children.length > 0) {
         return (
           <SidebarCollapsibleItem

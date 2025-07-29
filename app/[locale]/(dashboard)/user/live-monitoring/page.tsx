@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import useAuthStore from "@/store/auth.slice";
 import useAppStore from "@/store/app.slice";
-import LiveMonitoringStats from "@/containers/user/LiveMonitoringStats";
 import { useTranslations } from "next-intl";
 import LiveCalls from "./LiveCalls";
 import Agents from "./Agents";
@@ -29,8 +28,8 @@ const LiveMonitoring = () => {
           {/* Main Content */}
           <div className="lg:col-span-7 space-y-6">
             <LiveCalls />
-            <PerformanceStats />
-            <QueueManagement />
+            {Organization?.hasTenant && <PerformanceStats />}
+            {Organization?.hasTenant && <QueueManagement />}
           </div>
           {/* Sidebar */}
           <div className="lg:col-span-3">

@@ -45,6 +45,7 @@ type FetchQueueStats = {
   totalAnsweredCalls: number;
   totalCalls: number;
   totalWaitTime: number; // in seconds
+  totalTalkTime: number; // in seconds
 };
 
 type FetchQueueStatsResponse = {

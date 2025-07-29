@@ -2,7 +2,6 @@
 
 import useAuthStore from "@/store/auth.slice";
 import CallDistributionStats from "@/containers/user/CallDistributionStats";
-import ErgHistoricalStats from "@/containers/user/ErgHistoricalStats";
 import BillingStats from "@/containers/user/BillingStats";
 import CallSummaryStats from "@/containers/user/CallSummaryStats";
 import HistoricalStats from "@/containers/user/HistoricalStats";
@@ -15,10 +14,10 @@ const Dashboard = () => {
     <div className="page" id="dashboard">
       <div className="flex flex-col gap-4">
         {Organization?.hasTenant && <CallDistributionStats />}
-        <CallSummaryStats />
-        <HistoricalStats />
-        <QuickStats />
-        <PerformanceStats />
+        {Organization?.hasTenant && <CallSummaryStats />}
+        {Organization?.hasTenant && <HistoricalStats />}
+        {Organization?.hasTenant && <QuickStats />}
+        {Organization?.hasTenant && <PerformanceStats />}
 
         <BillingStats />
       </div>
