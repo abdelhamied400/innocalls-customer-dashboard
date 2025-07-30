@@ -7,6 +7,7 @@ import { RTCSession } from "jssip/lib/RTCSession";
 import { ExtensionWithCredentials } from "@/types/api/extension";
 
 import { addCallToLog } from "@/lib/call-log";
+import { webrtcLogger } from "@/lib/logger";
 
 export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
@@ -20,7 +21,7 @@ export const useUaEvents = ({
 
   const handleIncomingCall = useCallback(
     (e: RTCSessionEvent, extension: ExtensionWithCredentials) => {
-      console.log("Incoming call:", e.session);
+      webrtcLogger.info("Incoming call received", { session: e.session });
       const session = e.session;
       const ringtone = document.createElement("audio");
       ringtone.src = "/assets/sound/ringtone.mp3";
@@ -30,16 +31,16 @@ export const useUaEvents = ({
       const calleeName = session.remote_identity?.display_name || "Unknown";
 
       session.on("progress", () => {
-        console.log("Call is in progress");
+        webrtcLogger.info("Call is in progress");
         ringtone
           .play()
-          .catch((err) => console.error("Error playing ringtone:", err));
+          .catch((err) => webrtcLogger.error("Error playing ringtone", err));
       });
 
       session.on("confirmed", () => {
         ringtone.pause();
         ringtone.currentTime = 0;
-        console.log("Call confirmed");
+        webrtcLogger.info("Call confirmed");
 
         // Log incoming call as answered
         addCallToLog(
@@ -61,14 +62,14 @@ export const useUaEvents = ({
         });
 
         connection.addEventListener("addstream", (event: any) => {
-          console.log("addstream", event);
+          webrtcLogger.debug("Stream added", event);
         });
       });
 
       session.on("ended", (event) => {
         ringtone.pause();
         ringtone.currentTime = 0;
-        console.log("Call ended:", event);
+        webrtcLogger.info("Call ended", event);
 
         // Check if call was never answered (missed call)
         if (session.start_time === null) {
@@ -120,14 +121,14 @@ export const useUaEvents = ({
 
   const handleOutgoingCall = useCallback(
     (e: RTCSessionEvent, extension: ExtensionWithCredentials) => {
-      console.log("Outgoing call:", e.session);
+      webrtcLogger.info("Outgoing call initiated", { session: e.session });
       const session = e.session;
       const connection = session.connection;
 
       const calledNumber = session.remote_identity?.uri?.user || "Unknown";
 
       session.on("confirmed", () => {
-        console.log("Call confirmed");
+        webrtcLogger.info("Outgoing call confirmed");
         // Log outgoing call when call is initiated
         addCallToLog(
           {
@@ -145,7 +146,7 @@ export const useUaEvents = ({
       });
 
       connection.addEventListener("addstream", (event: any) => {
-        console.log(event);
+        webrtcLogger.debug("Stream added for outgoing call", event);
       });
 
       navigate("/call");
@@ -159,7 +160,7 @@ export const useUaEvents = ({
       userAgent.on("connected", () => setExtensionState("connected"));
       userAgent.on("disconnected", () => setExtensionState("disconnected"));
       userAgent.on("registrationFailed", (e) => {
-        console.error("Registration failed:", e);
+        webrtcLogger.error("Registration failed", e);
         setExtensionState("disconnected");
       });
       userAgent.on("newRTCSession", (e: RTCSessionEvent) => {
@@ -168,12 +169,12 @@ export const useUaEvents = ({
         setCurrentSession?.(session);
 
         session.on("ended", (event) => {
-          console.log("Call ended:", event);
+          webrtcLogger.info("Call ended", event);
           navigate("/dialpad");
           setCurrentSession?.(null);
         });
         session.on("failed", (event) => {
-          console.log("Call failed:", event);
+          webrtcLogger.warn("Call failed", event);
           navigate("/dialpad");
 
           setCurrentSession?.(null);
