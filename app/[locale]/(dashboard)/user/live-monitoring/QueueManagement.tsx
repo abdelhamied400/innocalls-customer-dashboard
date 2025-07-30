@@ -1,14 +1,27 @@
 import NoData from "@/components/Analytics/NoData";
 import QueueCard from "@/components/LiveMonitoring/QueueCard";
 import StatsDetailedCard from "@/components/StatsDetailedCard";
+import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 import liveMonitoringService from "@/services/live-monitoring.service";
 import { Queue } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 
 const QueueManagement = () => {
-  const { data: queueManagementData, isLoading } = useQuery({
+  const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
+    "live_monitoring_queue_management_interval"
+  );
+  const {
+    data: queueManagementData,
+    isLoading,
+    isRefetching,
+    refetch,
+  } = useQuery({
     queryKey: ["queueManagementData"],
     queryFn: () => liveMonitoringService.fetchQueueData(),
+    refetchOnWindowFocus: false,
+    refetchInterval,
+    refetchOnMount: "always",
+    retry: false,
   });
 
   return (
@@ -20,6 +33,11 @@ const QueueManagement = () => {
         valueSubtitle="Total Calls in Queue"
         icon={<Queue />}
         color="info"
+        refetch={refetch}
+        canRefetch
+        isRefetching={isRefetching}
+        refetchInterval={refetchInterval}
+        setRefetchInterval={setRefetchInterval}
       >
         {!isLoading && !queueManagementData?.length && <NoData />}
 

@@ -5,6 +5,7 @@ import StatsDetailedCard from "@/components/StatsDetailedCard";
 import { Button } from "@/components/ui/button";
 import Field from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 import liveMonitoringService from "@/services/live-monitoring.service";
 import {
   AvTimer,
@@ -41,12 +42,7 @@ const PerformanceStatsFilters = ({
   const [sla, setSla] = useState<number>(10);
 
   return (
-    <StatsDetailedCard
-      title="Performance Stats Filters"
-      icon={<AvTimer />}
-      color="info"
-      value=""
-    >
+    <div className="filters">
       <div className="flex items-center gap-2">
         <div className="min-w-[200px]">
           <Select
@@ -75,11 +71,14 @@ const PerformanceStatsFilters = ({
           Apply Filters
         </Button>
       </div>
-    </StatsDetailedCard>
+    </div>
   );
 };
 
 const PerformanceStats = () => {
+  const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
+    "live_monitoring_live_calls_interval"
+  );
   const [filters, setFilters] = useState<PerformanceStatsFiltersType>({
     filterType: "day",
     sla: 10,
@@ -89,63 +88,81 @@ const PerformanceStats = () => {
     isLoading,
     isError,
     error,
+    isRefetching,
+    refetch,
   } = useQuery({
     queryKey: ["performanceStats", filters],
     queryFn: () => liveMonitoringService.fetchQueueStats(filters),
+    refetchOnWindowFocus: false,
+    refetchInterval,
+    refetchOnMount: "always",
+    retry: false,
   });
 
   return (
     <div className="flex flex-col gap-4">
-      <PerformanceStatsFilters onFiltersChange={setFilters} />
-      {isLoading && (
-        <div className="performance-stats grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-4 gap-6">
-          <StatsCardSkeleton />
-          <StatsCardSkeleton />
-          <StatsCardSkeleton />
-          <StatsCardSkeleton />
-        </div>
-      )}
-      {!isLoading && !performanceStats && <NoData />}
+      <StatsDetailedCard
+        title="Performance Stats Filters"
+        icon={<AvTimer />}
+        color="info"
+        value=""
+        refetch={refetch}
+        canRefetch
+        isRefetching={isRefetching}
+        refetchInterval={refetchInterval}
+        setRefetchInterval={setRefetchInterval}
+      >
+        <PerformanceStatsFilters onFiltersChange={setFilters} />
+        {isLoading && (
+          <div className="performance-stats grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-4 gap-6">
+            <StatsCardSkeleton />
+            <StatsCardSkeleton />
+            <StatsCardSkeleton />
+            <StatsCardSkeleton />
+          </div>
+        )}
+        {!isLoading && !performanceStats && <NoData />}
 
-      {!isLoading && isError && (
-        <div className="text-red-500">
-          Error loading performance stats:{" "}
-          {error instanceof Error ? error.message : "Unknown error"}
-        </div>
-      )}
+        {!isLoading && isError && (
+          <div className="text-red-500">
+            Error loading performance stats:{" "}
+            {error instanceof Error ? error.message : "Unknown error"}
+          </div>
+        )}
 
-      {!isLoading && !!performanceStats && (
-        <div className="performance-stats grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-4 gap-6">
-          <StatsCard
-            title="Answer Rate"
-            value={`${performanceStats.current.answerRate}%`}
-            icon={<TrendingUp />}
-            color="primary"
-            info={`+${performanceStats.previous.answerRate}% vs previous`}
-          />
-          <StatsCard
-            title="Total Wait Time"
-            value={`${performanceStats.current.totalWaitTime} seconds`}
-            icon={<HourglassBottom />}
-            color="warning"
-            info={`+${performanceStats.previous.totalWaitTime} seconds vs previous`}
-          />
-          <StatsCard
-            title="Total Talk Time"
-            value={`${performanceStats.current.totalTalkTime} seconds`}
-            icon={<AvTimer />}
-            color="info"
-            info={`+${performanceStats.previous.totalTalkTime} seconds vs previous`}
-          />
-          <StatsCard
-            title="SLA Compliance"
-            value={`${performanceStats.current.slaPercent}%`}
-            icon={<GppGood />}
-            color="default"
-            info={`+${performanceStats.previous.slaPercent}% vs previous`}
-          />
-        </div>
-      )}
+        {!isLoading && !!performanceStats && (
+          <div className="performance-stats grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-4 gap-6">
+            <StatsCard
+              title="Answer Rate"
+              value={`${performanceStats.current.answerRate}%`}
+              icon={<TrendingUp />}
+              color="primary"
+              info={`+${performanceStats.previous.answerRate}% vs previous`}
+            />
+            <StatsCard
+              title="Total Wait Time"
+              value={`${performanceStats.current.totalWaitTime} seconds`}
+              icon={<HourglassBottom />}
+              color="warning"
+              info={`+${performanceStats.previous.totalWaitTime} seconds vs previous`}
+            />
+            <StatsCard
+              title="Total Talk Time"
+              value={`${performanceStats.current.totalTalkTime} seconds`}
+              icon={<AvTimer />}
+              color="info"
+              info={`+${performanceStats.previous.totalTalkTime} seconds vs previous`}
+            />
+            <StatsCard
+              title="SLA Compliance"
+              value={`${performanceStats.current.slaPercent}%`}
+              icon={<GppGood />}
+              color="default"
+              info={`+${performanceStats.previous.slaPercent}% vs previous`}
+            />
+          </div>
+        )}
+      </StatsDetailedCard>
     </div>
   );
 };
