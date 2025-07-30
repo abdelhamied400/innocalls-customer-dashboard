@@ -20,9 +20,12 @@ import {
 import CallLog from "../CallLog";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import { Contacts, ContactsProviders } from "../Contacts";
+import { useSession } from "next-auth/react";
 
 const WebrtcActions = () => {
   const { logout } = useSip();
+  const { data: session } = useSession();
+
   const handleLogout = () => {
     // Implement logout functionality here
     logout();
@@ -68,13 +71,15 @@ const WebrtcActions = () => {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
 
-            <DropdownMenuItem
-              onClick={handleLogout}
-              className="flex items-center gap-2 p-2 text-sm [&_svg]:size-5 hover:bg-gray-100"
-            >
-              <SubdirectoryArrowLeft />
-              Logout
-            </DropdownMenuItem>
+            {session?.user.userType === "user" && (
+              <DropdownMenuItem
+                onClick={handleLogout}
+                className="flex items-center gap-2 p-2 text-sm [&_svg]:size-5 hover:bg-gray-100"
+              >
+                <SubdirectoryArrowLeft />
+                Logout
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
