@@ -86,6 +86,31 @@ export const useUaEvents = ({
       session.on("failed", (event) => {
         ringtone.pause();
         ringtone.currentTime = 0;
+
+        // Log as rejected if call was actively rejected
+        if (
+          event.cause === JsSIP.C.causes.REJECTED ||
+          event.cause === JsSIP.C.causes.BUSY
+        ) {
+          addCallToLog(
+            {
+              type: "rejected",
+              number: calleeNumber,
+              name: calleeName,
+            },
+            extension.ext
+          );
+        } else {
+          // Otherwise log as missed
+          addCallToLog(
+            {
+              type: "missed",
+              number: calleeNumber,
+              name: calleeName,
+            },
+            extension.ext
+          );
+        }
       });
 
       navigate("/incoming-call");
@@ -139,8 +164,6 @@ export const useUaEvents = ({
       });
       userAgent.on("newRTCSession", (e: RTCSessionEvent) => {
         const session = e.session;
-        const calleeNumber = session.remote_identity?.uri?.user || "Unknown";
-        const calleeName = session.remote_identity?.display_name || "Unknown";
 
         setCurrentSession?.(session);
 
@@ -154,30 +177,6 @@ export const useUaEvents = ({
           navigate("/dialpad");
 
           setCurrentSession?.(null);
-          // Log as rejected if call was actively rejected
-          if (
-            event.cause === JsSIP.C.causes.REJECTED ||
-            event.cause === JsSIP.C.causes.BUSY
-          ) {
-            addCallToLog(
-              {
-                type: "rejected",
-                number: calleeNumber,
-                name: calleeName,
-              },
-              extension.ext
-            );
-          } else {
-            // Otherwise log as missed
-            addCallToLog(
-              {
-                type: "missed",
-                number: calleeNumber,
-                name: calleeName,
-              },
-              extension.ext
-            );
-          }
         });
 
         if (e.session.direction === "incoming") {
