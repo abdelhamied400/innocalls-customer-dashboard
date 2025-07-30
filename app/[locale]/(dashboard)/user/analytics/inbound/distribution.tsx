@@ -13,6 +13,7 @@ import {
 import { InboundAnalyticsFilters } from "./page";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
 import NoData from "@/components/Analytics/NoData";
+import { useTranslations } from "next-intl";
 
 type InboundAnalyticsDistributionProps = {
   filters: InboundAnalyticsFilters;
@@ -20,6 +21,8 @@ type InboundAnalyticsDistributionProps = {
 const InboundAnalyticsDistribution = ({
   filters,
 }: InboundAnalyticsDistributionProps) => {
+  const t = useTranslations("analytics.inbound.distribution");
+
   const {
     data: waitTimeData,
     isLoading: isWaitTimeLoading,
@@ -44,9 +47,11 @@ const InboundAnalyticsDistribution = ({
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <ChartCard
         icon={<TimerOutlined />}
-        title="Wait Time Distribution"
+        title={t("waitTime.title")}
         color="primary"
-        legends={[{ label: "Total Calls", color: "#3B82F6" }]}
+        legends={[
+          { label: t("waitTime.legends.totalCalls"), color: "#3B82F6" },
+        ]}
         variant="compound"
         isLoading={isWaitTimeLoading}
         error={waitTimeError}
@@ -70,7 +75,12 @@ const InboundAnalyticsDistribution = ({
                 allowDecimals={false}
               />
               <Tooltip />
-              <Bar dataKey="totalCalls" fill="#3B82F6" radius={[6, 6, 0, 0]} />
+              <Bar
+                name={t("waitTime.legends.totalCalls")}
+                dataKey="totalCalls"
+                fill="#3B82F6"
+                radius={[6, 6, 0, 0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         )}
@@ -78,9 +88,11 @@ const InboundAnalyticsDistribution = ({
 
       <ChartCard
         icon={<TimerOutlined />}
-        title="Talk Time Distribution"
+        title={t("talkTime.title")}
         color="success"
-        legends={[{ label: "Total Calls", color: "#10B981" }]}
+        legends={[
+          { label: t("talkTime.legends.totalCalls"), color: "#10B981" },
+        ]}
         variant="compound"
         isLoading={isTalkTimeLoading}
         error={talkTimeError}
@@ -104,7 +116,12 @@ const InboundAnalyticsDistribution = ({
                 allowDecimals={false}
               />
               <Tooltip />
-              <Bar dataKey="totalCalls" fill="#10B981" radius={[6, 6, 0, 0]} />
+              <Bar
+                name={t("talkTime.legends.totalCalls")}
+                dataKey="totalCalls"
+                fill="#10B981"
+                radius={[6, 6, 0, 0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         )}

@@ -1,6 +1,6 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { PieChart, CalendarIcon } from "lucide-react";
 import DatePicker from "@/components/ui/date-picker";
 import Field from "@/components/ui/field";
@@ -28,6 +28,8 @@ import Select from "@/components/select";
 import useVocabStore from "@/store/vocab.slice";
 import InboundAnalyticsDateDistribution from "./date-distribution";
 import InboundAnalyticsQueueAnalysis from "./queue-analysis";
+import { useTranslations } from "next-intl";
+import useAppStore from "@/store/app.slice";
 
 export type InboundAnalyticsFilterBy = "all" | "team";
 
@@ -44,30 +46,41 @@ export type InboundAnalyticsFilters = {
   filterBy: InboundAnalyticsFilterBy;
 };
 
-const filterByOptions = [
-  { value: "all", label: "All" },
-  { value: "team", label: "Team" },
-];
-
-const today = new Date();
-const lastMonth = new Date();
-lastMonth.setDate(today.getDate() - 30);
-
-const inboundFilterConfig = {
-  defaultValues: {
-    fromDate: lastMonth,
-    toDate: today,
-    agents: [],
-    queue: undefined,
-    filterBy: "all" as InboundAnalyticsFilterBy,
-  } as InboundAnalyticsFilters,
-  schema: inboundFiltersSchema,
-};
-
 const InboundAnalytics = () => {
   const { extensions, ergs } = useVocabStore();
+  const { setPageTitle } = useAppStore();
 
   const [currentTab, setCurrentTab] = useState<string>("overview");
+
+  const t = useTranslations("analytics.inbound");
+  const tCommon = useTranslations("analytics.common");
+
+  useEffect(() => {
+    setPageTitle(t("title"));
+
+    // Cleanup when component unmounts
+    return () => setPageTitle(null);
+  }, [setPageTitle, t]);
+
+  const filterByOptions = [
+    { value: "all", label: t("filters.filterBy.options.all") },
+    { value: "team", label: t("filters.filterBy.options.team") },
+  ];
+
+  const today = new Date();
+  const lastMonth = new Date();
+  lastMonth.setDate(today.getDate() - 30);
+
+  const inboundFilterConfig = {
+    defaultValues: {
+      fromDate: lastMonth,
+      toDate: today,
+      agents: [],
+      queue: undefined,
+      filterBy: "all" as InboundAnalyticsFilterBy,
+    } as InboundAnalyticsFilters,
+    schema: inboundFiltersSchema(t, tCommon),
+  };
 
   const { values, appliedValues, errors, setValue, reset, apply } =
     useFilterManager<InboundAnalyticsFilters>(inboundFilterConfig);
@@ -77,32 +90,32 @@ const InboundAnalytics = () => {
       <div className="flex flex-col gap-2">
         <div className="filters">
           <StatsDetailedCard
-            title="Date Range Search"
+            title={t("title")}
             icon={<BarChart />}
             value=""
             color="primary"
           >
             <div className="py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <Field
-                label="From"
+                label={tCommon("form.fields.fromDate.label")}
                 postIcon={<CalendarIcon className="text-gray-400" />}
                 error={errors.fromDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
-                  placeholder="Enter from date"
+                  placeholder={tCommon("form.fields.fromDate.placeholder")}
                   value={values.fromDate}
                   onChange={(date) => setValue("fromDate", date || new Date())}
                 />
               </Field>
               <Field
-                label="To"
+                label={tCommon("form.fields.toDate.label")}
                 postIcon={<CalendarIcon className="text-gray-400" />}
                 error={errors.toDate}
               >
                 <DatePicker
                   className="min-w-36 flex-1"
-                  placeholder="Enter to date"
+                  placeholder={tCommon("form.fields.toDate.placeholder")}
                   value={values.toDate}
                   onChange={(date) => setValue("toDate", date || new Date())}
                 />
@@ -110,7 +123,7 @@ const InboundAnalytics = () => {
               {/* filter by */}
               <Select
                 className="w-full"
-                placeholder="Filter By"
+                placeholder={t("filters.filterBy.placeholder")}
                 value={filterByOptions.find(
                   (option) => option.value === values.filterBy
                 )}
@@ -118,7 +131,7 @@ const InboundAnalytics = () => {
                   setValue("filterBy", option?.value || "all");
                 }}
                 options={filterByOptions}
-                label="Filter By"
+                label={t("filters.filterBy.label")}
                 showSelectedTags={false}
                 error={errors.filterBy}
               />
@@ -127,7 +140,7 @@ const InboundAnalytics = () => {
                 <div className="col-span-1 sm:col-span-2 lg:col-span-3">
                   <Select
                     className="w-full"
-                    placeholder="Select queue"
+                    placeholder={t("filters.team.placeholder")}
                     value={ergs
                       ?.map((erg) => ({
                         value: erg.name,
@@ -143,7 +156,7 @@ const InboundAnalytics = () => {
                         label: erg.name,
                       })) || []
                     }
-                    label="Select Queue"
+                    label={t("filters.team.label")}
                     showSelectedTags={false}
                     error={errors.queue}
                   />
@@ -155,7 +168,7 @@ const InboundAnalytics = () => {
                 <div className="col-span-1 sm:col-span-2 lg:col-span-3">
                   <Select
                     className="w-full"
-                    placeholder="Select agents"
+                    placeholder={tCommon("form.fields.agents.placeholder")}
                     value={extensions
                       .map((ext) => ({
                         value: ext.ext,
@@ -173,7 +186,7 @@ const InboundAnalytics = () => {
                       label: `${ext.name} (${ext.ext})`,
                     }))}
                     isMulti
-                    label="Select Agents"
+                    label={tCommon("form.fields.agents.label")}
                     showSelectedTags={false}
                     error={errors.agents[0]}
                   />
@@ -182,7 +195,7 @@ const InboundAnalytics = () => {
             </div>
             <div className="flex justify-end gap-2">
               <Button variant="outline" onClick={reset}>
-                Clear Filters
+                {tCommon("actions.resetFilter")}
               </Button>
               <Button
                 onClick={() => {
@@ -194,7 +207,7 @@ const InboundAnalytics = () => {
                 }}
               >
                 <Search />
-                Search
+                {tCommon("actions.applyFilters")}
               </Button>
             </div>
           </StatsDetailedCard>
@@ -203,8 +216,8 @@ const InboundAnalytics = () => {
         <QuickStats filters={appliedValues} />
 
         <StatsDetailedCard
-          title="Detailed Call Statistics"
-          subtitle="View detailed statistics for inbound calls"
+          title={t("detailedStats.title")}
+          subtitle={t("detailedStats.subtitle")}
           icon={<Insights />}
           value=""
           color="primary"
@@ -217,25 +230,25 @@ const InboundAnalytics = () => {
             <TabsList>
               <TabsTrigger value="overview" className="flex items-center gap-1">
                 <BarChartIcon />
-                Summary
+                {t("tabs.summary")}
               </TabsTrigger>
               <TabsTrigger
                 value="distribution"
                 className="flex items-center gap-1"
               >
                 <PieChart />
-                Call Distribution
+                {t("tabs.callDistribution")}
               </TabsTrigger>
               {appliedValues.filterBy === "team" && (
                 <TabsTrigger value="agents" className="flex items-center gap-1">
                   <PeopleAlt />
-                  Team Performance
+                  {t("tabs.teamPerformance")}
                 </TabsTrigger>
               )}
               {appliedValues.filterBy === "all" && (
                 <TabsTrigger value="ivr" className="flex items-center gap-1">
                   <Call />
-                  IVR Insights
+                  {t("tabs.ivrInsights")}
                 </TabsTrigger>
               )}
               {appliedValues.filterBy === "team" && (
@@ -244,7 +257,7 @@ const InboundAnalytics = () => {
                   className="flex items-center gap-1"
                 >
                   <Group />
-                  Frequent Callers
+                  {t("tabs.frequentCallers")}
                 </TabsTrigger>
               )}
               <TabsTrigger
@@ -252,12 +265,12 @@ const InboundAnalytics = () => {
                 className="flex items-center gap-1"
               >
                 <CalendarIcon />
-                Date Distribution
+                {t("tabs.dateDistribution")}
               </TabsTrigger>
               {appliedValues.filterBy === "team" && (
                 <TabsTrigger value="queue" className="flex items-center gap-1">
                   <Queue />
-                  Queue Analysis
+                  {t("tabs.queueAnalysis")}
                 </TabsTrigger>
               )}
             </TabsList>

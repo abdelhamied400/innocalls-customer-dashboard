@@ -10,11 +10,14 @@ import { Clock } from "lucide-react";
 import { InboundAnalyticsFilters } from "./page";
 import { useQuery } from "@tanstack/react-query";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
+import { useTranslations } from "next-intl";
 
 type QuickStatsProps = {
   filters: InboundAnalyticsFilters;
 };
 const QuickStats = ({ filters }: QuickStatsProps) => {
+  const t = useTranslations("analytics.inbound.quickStats");
+
   const { data, isRefetching, isLoading, isError, error } = useQuery({
     queryKey: ["inbound-analytics-quick-stats", filters],
     queryFn: () => inboundAnalyticsService.fetchQuickStats(filters),
@@ -25,7 +28,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       <div className="stats grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
         <StatsCard
           icon={<AddIcCall className="w-6 h-6" />}
-          title="Total Calls"
+          title={t("totalCalls")}
           value={data?.totalCalls || "0"}
           isRefetching={isRefetching}
           isLoading={isLoading}
@@ -34,7 +37,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         />
         <StatsCard
           icon={<Clock className="w-6 h-6" />}
-          title="Avg Wait Time"
+          title={t("avgWaitTime")}
           value={data?.averageWaitTime || "00:00:00"}
           color="info"
           isRefetching={isRefetching}
@@ -44,7 +47,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         />
         <StatsCard
           icon={<AvTimer className="w-6 h-6" />}
-          title="Avg Talk Time"
+          title={t("avgTalkTime")}
           value={data?.averageTalkTime || "00:00:00"}
           color="primary"
           isRefetching={isRefetching}
@@ -54,7 +57,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         />
         <StatsCard
           icon={<AssignmentTurnedIn className="w-6 h-6" />}
-          title="Completed Calls"
+          title={t("completedCalls")}
           value={data?.answeredCalls || "0"}
           color="success"
           isRefetching={isRefetching}
@@ -64,7 +67,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         />
         <StatsCard
           icon={<HourglassBottom className="w-6 h-6" />}
-          title="Timeout Calls"
+          title={t("timeoutCalls")}
           value={data?.timeoutCalls || "0"}
           color="warning"
           isRefetching={isRefetching}
@@ -75,7 +78,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
 
         <StatsCard
           icon={<RingVolume className="w-6 h-6" />}
-          title="Abandoned Calls"
+          title={t("abandonedCalls")}
           value={data?.abandonedCalls || "0"}
           color="destructive"
           isRefetching={isRefetching}
@@ -91,7 +94,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
     <div className="stats grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
       <StatsCard
         icon={<AddIcCall className="w-6 h-6" />}
-        title="Total Calls"
+        title={t("totalCalls")}
         value={data?.totalCalls || "0"}
         isRefetching={isRefetching}
         isLoading={isLoading}
@@ -100,7 +103,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       />
       <StatsCard
         icon={<Clock className="w-6 h-6" />}
-        title="Answer Rate"
+        title={t("answerRate")}
         value={data?.answerRate || "0%"}
         color="info"
         isRefetching={isRefetching}
@@ -110,7 +113,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       />
       <StatsCard
         icon={<AvTimer className="w-6 h-6" />}
-        title="Avg Talk Time"
+        title={t("avgTalkTime")}
         value={data?.avgDuration || "00:00:00"}
         color="primary"
         isRefetching={isRefetching}
@@ -120,7 +123,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       />
       <StatsCard
         icon={<AssignmentTurnedIn className="w-6 h-6" />}
-        title="Completed Calls"
+        title={t("completedCalls")}
         value={data?.answeredCalls || "0"}
         color="success"
         isRefetching={isRefetching}
@@ -130,7 +133,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       />
       <StatsCard
         icon={<HourglassBottom className="w-6 h-6" />}
-        title="External Calls"
+        title={t("externalCalls")}
         value={data?.externalCalls || "0"}
         color="warning"
         isRefetching={isRefetching}
@@ -141,7 +144,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
 
       <StatsCard
         icon={<RingVolume className="w-6 h-6" />}
-        title="Unanswered Calls"
+        title={t("unansweredCalls")}
         value={data?.unansweredCalls || "0"}
         color="destructive"
         isRefetching={isRefetching}

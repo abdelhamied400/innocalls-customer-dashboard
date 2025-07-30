@@ -1223,6 +1223,209 @@
         "table": "Table"
       }
     },
+    "inbound": {
+      "title": "Inbound Analytics",
+      "subtitle": "View detailed analytics for inbound calls",
+      "quickStats": {
+        "totalCalls": "Total Calls",
+        "avgWaitTime": "Avg Wait Time",
+        "avgTalkTime": "Avg Talk Time",
+        "completedCalls": "Completed Calls",
+        "timeoutCalls": "Timeout Calls",
+        "abandonedCalls": "Abandoned Calls",
+        "answerRate": "Answer Rate",
+        "externalCalls": "External Calls",
+        "unansweredCalls": "Unanswered Calls"
+      },
+      "filters": {
+        "filterBy": {
+          "label": "Filter By",
+          "placeholder": "Filter By",
+          "options": {
+            "all": "All",
+            "team": "Team"
+          }
+        },
+        "team": {
+          "label": "Select Team",
+          "placeholder": "Select team"
+        },
+        "validation": {
+          "team": {
+            "required": "Team selection is required when filtering by team"
+          }
+        }
+      },
+      "tabs": {
+        "summary": "Summary",
+        "callDistribution": "Call Distribution",
+        "teamPerformance": "Team Performance",
+        "ivrInsights": "IVR Insights",
+        "frequentCallers": "Frequent Callers",
+        "dateDistribution": "Date Distribution",
+        "queueAnalysis": "Missed Call"
+      },
+      "overview": {
+        "title": "Inbound Call Overview",
+        "legends": {
+          "totalCalls": "Total Calls",
+          "answeredCalls": "Answered Calls",
+          "externalCalls": "External Calls",
+          "internalCalls": "Internal Calls",
+          "unansweredCalls": "Unanswered Calls",
+          "abandonedCalls": "Abandoned Calls",
+          "completedCalls": "Completed Calls",
+          "timeoutCalls": "Timeout Calls"
+        },
+        "xAxisLabel": "Hour"
+      },
+      "distribution": {
+        "waitTime": {
+          "title": "Wait Time Distribution",
+          "legends": {
+            "totalCalls": "Total Calls"
+          }
+        },
+        "talkTime": {
+          "title": "Talk Time Distribution",
+          "legends": {
+            "totalCalls": "Total Calls"
+          }
+        }
+      },
+      "agentPerformance": {
+        "title": "Team Performance Overview",
+        "legends": {
+          "callsHandled": "Calls Handled",
+          "avgWaitTime": "Avg Wait Time",
+          "avgTalkTime": "Avg Talk Time"
+        },
+        "table": {
+          "columns": {
+            "name": "Name",
+            "ext": "Ext",
+            "callsHandled": "Calls Handled",
+            "avgWaitTime": "Avg Wait Time",
+            "avgTalkTime": "Avg Talk Time",
+            "totalTalkTime": "Total Talk Time",
+            "totalWaitTime": "Total Wait Time",
+            "queuePosition": "Queue Position"
+          }
+        }
+      },
+      "ivrAnalysis": {
+        "title": "IVR Analysis",
+        "optionLabel": "Option"
+      },
+      "repeatedCallers": {
+        "title": "Frequent Callers",
+        "legends": {
+          "completedCalls": "Completed Calls",
+          "abandonedCalls": "Abandoned Calls",
+          "timeoutCalls": "Timeout Calls"
+        },
+        "table": {
+          "columns": {
+            "caller": "Caller",
+            "totalCalls": "Total Calls",
+            "abandonedCalls": "Abandoned Calls",
+            "timeoutCalls": "Timeout Calls",
+            "completedCalls": "Completed Calls",
+            "abandonRate": "Abandon Rate (%)",
+            "timeoutRate": "Timeout Rate (%)",
+            "completionRate": "Completion Rate (%)",
+            "avgWaitTime": "Avg Wait Time",
+            "avgTalkTime": "Avg Talk Time",
+            "firstCallTime": "First Call Time",
+            "lastCallTime": "Last Call Time"
+          }
+        },
+        "chartLabels": {
+          "completed": "Completed",
+          "abandoned": "Abandoned",
+          "timeout": "Timeout"
+        }
+      },
+      "dateDistribution": {
+        "title": "Date Distribution",
+        "legends": {
+          "totalCalls": "Total Calls",
+          "answeredCalls": "Answered Calls",
+          "unansweredCalls": "Unanswered Calls",
+          "abandonedCalls": "Abandoned Calls",
+          "timeoutCalls": "Timeout Calls"
+        },
+        "table": {
+          "allColumns": {
+            "date": "Date",
+            "total": "Total",
+            "internal": "Internal",
+            "external": "External",
+            "answered": "Answered",
+            "unanswered": "Unanswered",
+            "answerRate": "Answer Rate",
+            "totalDuration": "Total Duration",
+            "avgDuration": "Avg Duration",
+            "shortest": "Shortest",
+            "longest": "Longest"
+          },
+          "teamColumns": {
+            "date": "Date",
+            "total": "Total",
+            "timeoutCalls": "Timeout Calls",
+            "answeredCalls": "Answered Calls",
+            "abandonedCalls": "Abandoned Calls"
+          }
+        },
+        "tabs": {
+          "chart": "Chart",
+          "table": "Table"
+        }
+      },
+      "queueAnalysis": {
+        "abandonedAnalysis": {
+          "title": "Abandoned Call Analysis",
+          "totalAbandoned": "Total Abandoned Calls",
+          "uniqueCallers": "Unique Callers",
+          "chartTitle": "Queue Unanswered Calls Analysis",
+          "statsTitle": "Queue Statistics",
+          "avgWaitTime": "Avg Wait Time",
+          "minWaitTime": "Min Wait Time",
+          "maxWaitTime": "Max Wait Time",
+          "peakTimeoutHour": "Peak Timeout Hour"
+        },
+        "timeoutAnalysis": {
+          "title": "Wait time distribution",
+          "totalTimeout": "Total Timeout Calls",
+          "uniqueCallers": "Unique Callers",
+          "chartTitle": "Queue Exit Timeout Analysis",
+          "statsTitle": "Queue Statistics",
+          "avgWaitTime": "Avg Wait Time",
+          "minWaitTime": "Min Wait Time",
+          "maxWaitTime": "Max Wait Time",
+          "peakTimeoutHour": "Peak Timeout Hour"
+        },
+        "comparison": {
+          "title": "Inbound unanswered comparison",
+          "abandonedVsTimeout": "Abandoned vs Timeout Calls",
+          "comparisonTitle": "Comparison",
+          "totalAbandoned": "Total Abandoned Calls",
+          "totalTimeout": "Total Timeout Calls",
+          "totalUnanswered": "Total inbound unanswered",
+          "totalAbandonWait": "Total Abandon wait",
+          "totalTimeoutWait": "Total Timeout wait",
+          "peakHours": "Peak hours"
+        }
+      },
+      "detailedStats": {
+        "title": "Detailed Call Statistics",
+        "subtitle": "View detailed statistics for inbound calls"
+      },
+      "common": {
+        "noDataAvailable": "No data available",
+        "loading": "Loading..."
+      }
+    },
     "common": {
       "form": {
         "fields": {

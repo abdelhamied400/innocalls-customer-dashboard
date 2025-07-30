@@ -21,7 +21,8 @@ import {
 } from "recharts";
 import { InboundAnalyticsFilters } from "./page";
 import NoData from "@/components/Analytics/NoData";
-import { formatDuration } from "@/lib/date";
+import { durationToSeconds, formatDuration } from "@/lib/date";
+import { useTranslations } from "next-intl";
 
 type InboundAnalyticsAgentPerformanceProps = {
   filters: InboundAnalyticsFilters;
@@ -29,33 +30,33 @@ type InboundAnalyticsAgentPerformanceProps = {
 const InboundAnalyticsAgentPerformance = ({
   filters,
 }: InboundAnalyticsAgentPerformanceProps) => {
+  const t = useTranslations("analytics.inbound.agentPerformance");
+
   const columns = [
-    { header: "Agent Ext", accessorKey: "ext" },
-    { header: "Calls Handled", accessorKey: "callsHandled" },
+    { header: t("table.columns.name"), accessorKey: "name" },
+    { header: t("table.columns.ext"), accessorKey: "ext" },
     {
-      header: "Avg Wait Time",
+      header: t("table.columns.callsHandled"),
+      accessorKey: "callsHandled",
+    },
+    {
+      header: t("table.columns.avgWaitTime"),
       accessorKey: "avgWaitTime",
-      cell: (info: any) => formatDuration(Number(info.getValue("avgWaitTime"))),
     },
     {
-      header: "Avg Talk Time",
+      header: t("table.columns.avgTalkTime"),
       accessorKey: "avgTalkTime",
-      cell: (info: any) => formatDuration(Number(info.getValue("avgTalkTime"))),
     },
     {
-      header: "Total Talk Time",
+      header: t("table.columns.totalTalkTime"),
       accessorKey: "totalTalkTime",
-      cell: (info: any) =>
-        formatDuration(Number(info.getValue("totalWaitTime"))),
     },
     {
-      header: "Total Wait Time",
+      header: t("table.columns.totalWaitTime"),
       accessorKey: "totalWaitTime",
-      cell: (info: any) =>
-        formatDuration(Number(info.getValue("totalWaitTime"))),
     },
     {
-      header: "Queue Position",
+      header: t("table.columns.queuePosition"),
       accessorKey: "minCustomerQueuePosition",
       cell: (info: any) =>
         `${info.row.original.minCustomerQueuePosition}-${info.row.original.maxCustomerQueuePosition}`,
@@ -76,12 +77,12 @@ const InboundAnalyticsAgentPerformance = ({
     <div className="inbound-analytics-agent-performance">
       <ChartCard
         icon={<Engineering />}
-        title="Agent Performance Overview"
+        title={t("title")}
         color="primary"
         legends={[
-          { label: "Calls Handled", color: "#3B82F6" },
-          { label: "Avg Wait Time", color: "#F59E42" },
-          { label: "Avg Talk Time", color: "#10B981" },
+          { label: t("legends.callsHandled"), color: "#3B82F6" },
+          { label: t("legends.avgWaitTime"), color: "#F59E42" },
+          { label: t("legends.avgTalkTime"), color: "#10B981" },
         ]}
         variant="compound"
         isLoading={isLoading}
@@ -112,9 +113,15 @@ const InboundAnalyticsAgentPerformance = ({
                 <Tooltip
                   formatter={(value, name, item) => {
                     if (item.dataKey === "avgWaitTime")
-                      return [formatDuration(Number(value)), "Avg Wait Time"];
+                      return [
+                        durationToSeconds(`${value}`),
+                        t("legends.avgWaitTime"),
+                      ];
                     if (item.dataKey === "avgTalkTime")
-                      return [formatDuration(Number(value)), "Avg Talk Time"];
+                      return [
+                        durationToSeconds(`${value}`),
+                        t("legends.avgTalkTime"),
+                      ];
                     return [value, name];
                   }}
                 />
@@ -123,13 +130,13 @@ const InboundAnalyticsAgentPerformance = ({
                   dataKey="avgWaitTime"
                   fill="#F59E42"
                   radius={[4, 4, 0, 0]}
-                  name="Avg Wait Time"
+                  name={t("legends.avgWaitTime")}
                 />
                 <Bar
                   dataKey="avgTalkTime"
                   fill="#10B981"
                   radius={[4, 4, 0, 0]}
-                  name="Avg Talk Time"
+                  name={t("legends.avgTalkTime")}
                 />
                 <Brush dataKey="name" height={30} stroke="#8884d8" />
               </BarChart>

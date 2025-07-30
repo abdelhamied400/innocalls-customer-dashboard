@@ -14,6 +14,7 @@ import {
 } from "recharts";
 import { InboundAnalyticsFilters } from "./page";
 import NoData from "@/components/Analytics/NoData";
+import { useTranslations } from "next-intl";
 
 type InboundAnalyticsIVRAnalysisProps = {
   filters: InboundAnalyticsFilters;
@@ -21,6 +22,8 @@ type InboundAnalyticsIVRAnalysisProps = {
 const InboundAnalyticsIVRAnalysis = ({
   filters,
 }: InboundAnalyticsIVRAnalysisProps) => {
+  const t = useTranslations("analytics.inbound.ivrAnalysis");
+
   const colors = [
     "#3B82F6",
     "#10B981",
@@ -69,11 +72,11 @@ const InboundAnalyticsIVRAnalysis = ({
   return (
     <div className="flex flex-col gap-4">
       <ChartCard
-        title="IVR Analysis"
+        title={t("title")}
         icon={<Call />}
         color="primary"
         legends={allOptions.map((option, index) => ({
-          label: `Option ${option}`,
+          label: `${t("optionLabel")} ${option}`,
           color: colors[index % colors.length],
         }))}
         variant="compound"
@@ -106,7 +109,7 @@ const InboundAnalyticsIVRAnalysis = ({
                   dataKey={`option${option}`}
                   fill={colors[index % colors.length]}
                   radius={[4, 4, 0, 0]}
-                  name={`Option ${option}`}
+                  name={`${t("optionLabel")} ${option}`}
                 />
               ))}
             </BarChart>

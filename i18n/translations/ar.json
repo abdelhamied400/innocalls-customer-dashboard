@@ -1233,6 +1233,210 @@
         "table": "جدول"
       }
     },
+    "inbound": {
+      "title": "إحصائيات المكالمات الواردة",
+      "subtitle": "عرض إحصائيات مفصلة للمكالمات الواردة",
+      "dateRangeSearch": "البحث بالفترة الزمنية",
+      "quickStats": {
+        "totalCalls": "إجمالي المكالمات",
+        "avgWaitTime": "متوسط وقت الانتظار",
+        "avgTalkTime": "متوسط وقت المحادثة",
+        "completedCalls": "المكالمات المكتملة",
+        "timeoutCalls":"المكالمات المنتهية بمهلة الانتظار",
+        "abandonedCalls": "مكالمات أُغلِقت قبل الرد",
+        "answerRate": "معدل الإجابة",
+        "externalCalls": "المكالمات الخارجية",
+        "unansweredCalls": "المكالمات غير المجابة"
+      },
+      "filters": {
+        "filterBy": {
+          "label": "تصفية حسب",
+          "placeholder": "تصفية حسب",
+          "options": {
+            "all": "الكل",
+            "team": "الفريق"
+          }
+        },
+        "team": {
+          "label": "اختيار الفريق",
+          "placeholder": "اختر فريق"
+        },
+        "validation": {
+          "team": {
+            "required": "يجب اختيار الفريق عند التصفية حسب الفريق"
+          }
+        }
+      },
+      "tabs": {
+        "summary": "ملخص",
+        "callDistribution": "توزيع المكالمات",
+        "teamPerformance": "أداء الفريق",
+        "ivrInsights": "رؤى النظام التفاعلي",
+        "frequentCallers": "المتصلين المتكررين",
+        "dateDistribution": "التوزيع التاريخي",
+        "queueAnalysis": " المكالمات الفائتة"
+      },
+      "overview": {
+        "title": "نظرة عامة على المكالمات الواردة",
+        "legends": {
+          "totalCalls": "إجمالي المكالمات",
+          "answeredCalls": "المكالمات المجابة",
+          "externalCalls": "المكالمات الخارجية",
+          "internalCalls": "المكالمات الداخلية",
+          "unansweredCalls": "المكالمات غير المجابة",
+          "abandonedCalls": "المكالمات المهجورة",
+          "completedCalls": "المكالمات المكتملة",
+          "timeoutCalls": "المكالمات المنتهية الصلاحية"
+        },
+        "xAxisLabel": "الساعة"
+      },
+      "distribution": {
+        "waitTime": {
+          "title": "توزيع وقت الانتظار",
+          "legends": {
+            "totalCalls": "إجمالي المكالمات"
+          }
+        },
+        "talkTime": {
+          "title": "توزيع وقت المحادثة",
+          "legends": {
+            "totalCalls": "إجمالي المكالمات"
+          }
+        }
+      },
+      "agentPerformance": {
+        "title": "نظرة عامة على أداء الفريق",
+        "legends": {
+          "callsHandled": "المكالمات المدارة",
+          "avgWaitTime": "متوسط وقت الانتظار",
+          "avgTalkTime": "متوسط وقت المحادثة"
+        },
+        "table": {
+          "columns": {
+            "name":"Name",
+            "ext": "الرقم",
+            "callsHandled": "المكالمات المدارة",
+            "avgWaitTime": "متوسط وقت الانتظار",
+            "avgTalkTime": "متوسط وقت المحادثة",
+            "totalTalkTime": "إجمالي وقت المحادثة",
+            "totalWaitTime": "إجمالي وقت الانتظار",
+            "queuePosition": "موضع المتصل في الطابور"
+          }
+        }
+      },
+      "ivrAnalysis": {
+        "title": "تحليل النظام التفاعلي",
+        "optionLabel": "خيار"
+      },
+      "repeatedCallers": {
+        "title": "المتصلين المتكررين",
+        "legends": {
+          "completedCalls": "المكالمات المكتملة",
+          "abandonedCalls": "المكالمات المهجورة",
+          "timeoutCalls": "المكالمات المنتهية الصلاحية"
+        },
+        "table": {
+          "columns": {
+            "caller": "المتصل",
+            "totalCalls": "إجمالي المكالمات",
+            "abandonedCalls": "المكالمات المهجورة",
+            "timeoutCalls": "المكالمات المنتهية الصلاحية",
+            "completedCalls": "المكالمات المكتملة",
+            "abandonRate": "معدل الهجر (%)",
+            "timeoutRate": "معدل انتهاء الصلاحية (%)",
+            "completionRate": "معدل الإكمال (%)",
+            "avgWaitTime": "متوسط وقت الانتظار",
+            "avgTalkTime": "متوسط وقت المحادثة",
+            "firstCallTime": "وقت أول مكالمة",
+            "lastCallTime": "وقت آخر مكالمة"
+          }
+        },
+        "chartLabels": {
+          "completed": "مكتملة",
+          "abandoned": "مهجورة",
+          "timeout": "منتهية الصلاحية"
+        }
+      },
+      "dateDistribution": {
+        "title": "التوزيع التاريخي",
+        "legends": {
+          "totalCalls": "إجمالي المكالمات",
+          "answeredCalls": "المكالمات المجابة",
+          "unansweredCalls": "المكالمات غير المجابة",
+          "abandonedCalls": "المكالمات المهجورة",
+          "timeoutCalls": "المكالمات المنتهية الصلاحية"
+        },
+        "table": {
+          "allColumns": {
+            "date": "التاريخ",
+            "total": "الإجمالي",
+            "internal": "داخلية",
+            "external": "خارجية",
+            "answered": "مجابة",
+            "unanswered": "غير مجابة",
+            "answerRate": "معدل الإجابة",
+            "totalDuration": "إجمالي المدة",
+            "avgDuration": "متوسط المدة",
+            "shortest": "الأقصر",
+            "longest": "الأطول"
+          },
+          "teamColumns": {
+            "date": "التاريخ",
+            "total": "الإجمالي",
+            "timeoutCalls": "المكالمات المنتهية الصلاحية",
+            "answeredCalls": "المكالمات المجابة",
+            "abandonedCalls": "المكالمات المهجورة"
+          }
+        },
+        "tabs": {
+          "chart": "رسم بياني",
+          "table": "جدول"
+        }
+      },
+      "queueAnalysis": {
+        "abandonedAnalysis": {
+          "title": "تحليل المكالمات المهجورة",
+          "totalAbandoned": "إجمالي المكالمات المهجورة",
+          "uniqueCallers": "المتصلين الفريدين",
+          "chartTitle": "تحليل المكالمات غير المجابة في الطابور",
+          "statsTitle": "إحصائيات الطابور",
+          "avgWaitTime": "متوسط وقت الانتظار",
+          "minWaitTime": "أقل وقت انتظار",
+          "maxWaitTime": "أقصى وقت انتظار",
+          "peakTimeoutHour": "ساعة الذروة لانتهاء الصلاحية"
+        },
+        "timeoutAnalysis": {
+          "title": "توزيع وقت الانتظار",
+          "totalTimeout": "إجمالي المكالمات المنتهية الصلاحية",
+          "uniqueCallers": "المتصلين الفريدين",
+          "chartTitle": "تحليل انتهاء صلاحية الخروج من الطابور",
+          "statsTitle": "إحصائيات الطابور",
+          "avgWaitTime": "متوسط وقت الانتظار",
+          "minWaitTime": "أقل وقت انتظار",
+          "maxWaitTime": "أقصى وقت انتظار",
+          "peakTimeoutHour": "ساعة الذروة لانتهاء الصلاحية"
+        },
+        "comparison": {
+          "title": "مقارنة المكالمات الواردة غير المجابة",
+          "abandonedVsTimeout": "المكالمات المهجورة مقابل المنتهية الصلاحية",
+          "comparisonTitle": "مقارنة",
+          "totalAbandoned": "إجمالي المكالمات المهجورة",
+          "totalTimeout": "إجمالي المكالمات المنتهية الصلاحية",
+          "totalUnanswered": "إجمالي المكالمات الواردة غير المجابة",
+          "totalAbandonWait": "إجمالي انتظار الهجر",
+          "totalTimeoutWait": "إجمالي انتظار انتهاء الصلاحية",
+          "peakHours": "ساعات الذروة"
+        }
+      },
+      "detailedStats": {
+        "title": "إحصائيات المكالمات المفصلة",
+        "subtitle": "عرض إحصائيات مفصلة للمكالمات الواردة"
+      },
+      "common": {
+        "noDataAvailable": "لا توجد بيانات متاحة",
+        "loading": "جارٍ التحميل..."
+      }
+    },
     "common": {
       "form": {
         "fields": {
