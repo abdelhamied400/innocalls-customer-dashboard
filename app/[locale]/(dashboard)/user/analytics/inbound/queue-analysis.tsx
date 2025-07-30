@@ -23,6 +23,7 @@ import StatsRowCard from "@/components/StatsRowCard";
 import { useQuery } from "@tanstack/react-query";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
 import NoData from "@/components/Analytics/NoData";
+import { useTranslations } from "next-intl";
 
 const colors = [
   "#3B82F6",
@@ -41,6 +42,8 @@ type InboundAnalyticsQueueAnalysisProps = {
 const InboundAnalyticsQueueAnalysis = ({
   filters,
 }: InboundAnalyticsQueueAnalysisProps) => {
+  const t = useTranslations("analytics.inbound.queueAnalysis");
+
   const {
     data: abandonedAnalysis,
     isLoading: isLoadingAbandonedAnalysis,
@@ -63,7 +66,7 @@ const InboundAnalyticsQueueAnalysis = ({
     return (
       <div className="flex flex-col gap-4">
         <div className="header flex items-center gap-2">
-          <h4>Abandoned Call Analysis</h4>
+          <h4>{t("abandonedAnalysis.title")}</h4>
           <hr className="flex-1" />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
@@ -77,7 +80,7 @@ const InboundAnalyticsQueueAnalysis = ({
         </div>
 
         <div className="header flex items-center gap-2">
-          <h4>Wait time distribution</h4>
+          <h4>{t("timeoutAnalysis.title")}</h4>
           <hr className="flex-1" />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
@@ -90,7 +93,7 @@ const InboundAnalyticsQueueAnalysis = ({
           <ChartCardSkeleton />
         </div>
         <div className="header flex items-center gap-2">
-          <h4>Inbound unanswered comparison</h4>
+          <h4>{t("comparison.title")}</h4>
           <hr className="flex-1" />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
@@ -120,18 +123,18 @@ const InboundAnalyticsQueueAnalysis = ({
   return (
     <div className="flex flex-col gap-4">
       <div className="header flex items-center gap-2">
-        <h4>Abandoned Call Analysis</h4>
+        <h4>{t("abandonedAnalysis.title")}</h4>
         <hr className="flex-1" />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
         <StatsCard
-          title="Total Abandoned Calls"
+          title={t("abandonedAnalysis.totalAbandoned")}
           value={abandonedAnalysis.total}
           icon={<Call />}
           color="destructive"
         />
         <StatsCard
-          title="Unique Callers"
+          title={t("abandonedAnalysis.uniqueCallers")}
           value={abandonedAnalysis.uniqueCallers}
           icon={<Group />}
           color="warning"
@@ -139,7 +142,7 @@ const InboundAnalyticsQueueAnalysis = ({
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
         <ChartCard
-          title="Queue Unanswered Calls Analysis"
+          title={t("abandonedAnalysis.chartTitle")}
           icon={<Alarm />}
           color="destructive"
           legends={abandonedAnalysis.stats.map((stat, index) => ({
@@ -172,29 +175,29 @@ const InboundAnalyticsQueueAnalysis = ({
         </ChartCard>
 
         <ChartCard
-          title="Queue Statistics"
+          title={t("abandonedAnalysis.statsTitle")}
           icon={<BarChart />}
           color="destructive"
           variant="compound"
         >
           <div className="flex flex-col gap-2">
             <StatsRowCard
-              label="Avg Wait Time"
+              label={t("abandonedAnalysis.avgWaitTime")}
               value={abandonedAnalysis.avgWaitTime}
               color="primary"
             />
             <StatsRowCard
-              label="Min Wait Time"
+              label={t("abandonedAnalysis.minWaitTime")}
               value={abandonedAnalysis.minWaitTime}
               color="warning"
             />
             <StatsRowCard
-              label="Max Wait Time"
+              label={t("abandonedAnalysis.maxWaitTime")}
               value={abandonedAnalysis.maxWaitTime}
               color="success"
             />
             <StatsRowCard
-              label="Peak Timeout Hour"
+              label={t("abandonedAnalysis.peakTimeoutHour")}
               value={abandonedAnalysis.peakHour}
               color="info"
             />
@@ -203,18 +206,18 @@ const InboundAnalyticsQueueAnalysis = ({
       </div>
 
       <div className="header flex items-center gap-2">
-        <h4>Wait time distribution</h4>
+        <h4>{t("timeoutAnalysis.title")}</h4>
         <hr className="flex-1" />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
         <StatsCard
-          title="Total Timeout Calls"
+          title={t("timeoutAnalysis.totalTimeout")}
           value={timeoutAnalysis.total}
           icon={<Call />}
           color="destructive"
         />
         <StatsCard
-          title="Unique Callers"
+          title={t("timeoutAnalysis.uniqueCallers")}
           value={timeoutAnalysis.uniqueCallers}
           icon={<Group />}
           color="warning"
@@ -222,7 +225,7 @@ const InboundAnalyticsQueueAnalysis = ({
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
         <ChartCard
-          title="Queue Exit Timeout Analysis"
+          title={t("timeoutAnalysis.chartTitle")}
           icon={<ExitToApp />}
           color="warning"
           legends={timeoutAnalysis.stats.map((stat, index) => ({
@@ -254,29 +257,29 @@ const InboundAnalyticsQueueAnalysis = ({
         </ChartCard>
 
         <ChartCard
-          title="Queue Statistics"
+          title={t("timeoutAnalysis.statsTitle")}
           icon={<Queue />}
           color="warning"
           variant="compound"
         >
           <div className="flex flex-col gap-2">
             <StatsRowCard
-              label="Avg Wait Time"
+              label={t("timeoutAnalysis.avgWaitTime")}
               value={timeoutAnalysis.avgWaitTime}
               color="primary"
             />
             <StatsRowCard
-              label="Min Wait Time"
+              label={t("timeoutAnalysis.minWaitTime")}
               value={timeoutAnalysis.minWaitTime}
               color="warning"
             />
             <StatsRowCard
-              label="Max Wait Time"
+              label={t("timeoutAnalysis.maxWaitTime")}
               value={timeoutAnalysis.maxWaitTime}
               color="success"
             />
             <StatsRowCard
-              label="Peak Timeout Hour"
+              label={t("timeoutAnalysis.peakTimeoutHour")}
               value={timeoutAnalysis.peakHour}
               color="info"
             />
@@ -284,50 +287,50 @@ const InboundAnalyticsQueueAnalysis = ({
         </ChartCard>
       </div>
       <div className="header flex items-center gap-2">
-        <h4>Inbound unanswered comparison</h4>
+        <h4>{t("comparison.title")}</h4>
         <hr className="flex-1" />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
         <ChartCard
-          title="Abandoned vs Timeout Calls"
+          title={t("comparison.abandonedVsTimeout")}
           icon={<CompareArrows />}
           color="info"
           variant="compound"
         >
           <StatsRowCard
-            label="Total Abandoned Calls"
+            label={t("comparison.totalAbandoned")}
             value={abandonedAnalysis.total}
             color="destructive"
           />
           <StatsRowCard
-            label="Total Timeout Calls"
+            label={t("comparison.totalTimeout")}
             value={timeoutAnalysis.total}
             color="warning"
           />
           <StatsRowCard
-            label="Total inbound unanswered"
+            label={t("comparison.totalUnanswered")}
             value={abandonedAnalysis.total + timeoutAnalysis.total}
             color="info"
           />
         </ChartCard>
         <ChartCard
-          title="Comparison"
+          title={t("comparison.comparisonTitle")}
           icon={<Timer />}
           color="info"
           variant="compound"
         >
           <StatsRowCard
-            label="Total Abandon wait"
-            value={`${abandonedAnalysis.total} | ${timeoutAnalysis.total}`}
+            label={t("comparison.avgAbandonWait")}
+            value={`${abandonedAnalysis.avgWaitTime}`}
             color="destructive"
           />
           <StatsRowCard
-            label="Total Timeout wait"
-            value={`${abandonedAnalysis.avgWaitTime} | ${timeoutAnalysis.avgWaitTime}`}
+            label={t("comparison.avgTimeoutWait")}
+            value={`${timeoutAnalysis.avgWaitTime}`}
             color="warning"
           />
           <StatsRowCard
-            label="Peak hours"
+            label={t("comparison.peakHours")}
             value={`${abandonedAnalysis.peakHour} | ${timeoutAnalysis.peakHour}`}
             color="info"
           />

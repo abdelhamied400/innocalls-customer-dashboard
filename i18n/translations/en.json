@@ -1387,33 +1387,33 @@
           "title": "Abandoned Call Analysis",
           "totalAbandoned": "Total Abandoned Calls",
           "uniqueCallers": "Unique Callers",
-          "chartTitle": "Queue Unanswered Calls Analysis",
+          "chartTitle": "Unanswered Calls Analysis",
           "statsTitle": "Queue Statistics",
           "avgWaitTime": "Avg Wait Time",
           "minWaitTime": "Min Wait Time",
           "maxWaitTime": "Max Wait Time",
-          "peakTimeoutHour": "Peak Timeout Hour"
+          "peakTimeoutHour": "Peak Hour"
         },
         "timeoutAnalysis": {
-          "title": "Wait time distribution",
+          "title": "Timeout Call Analysis",
           "totalTimeout": "Total Timeout Calls",
           "uniqueCallers": "Unique Callers",
-          "chartTitle": "Queue Exit Timeout Analysis",
+          "chartTitle": "Unanswered Calls Analysis",
           "statsTitle": "Queue Statistics",
           "avgWaitTime": "Avg Wait Time",
           "minWaitTime": "Min Wait Time",
           "maxWaitTime": "Max Wait Time",
-          "peakTimeoutHour": "Peak Timeout Hour"
+          "peakTimeoutHour": "Peak Hour"
         },
         "comparison": {
           "title": "Inbound unanswered comparison",
           "abandonedVsTimeout": "Abandoned vs Timeout Calls",
-          "comparisonTitle": "Comparison",
+          "comparisonTitle": "Time Comparison",
           "totalAbandoned": "Total Abandoned Calls",
           "totalTimeout": "Total Timeout Calls",
           "totalUnanswered": "Total inbound unanswered",
-          "totalAbandonWait": "Total Abandon wait",
-          "totalTimeoutWait": "Total Timeout wait",
+          "avgAbandonWait": "Avg Abandon wait",
+          "avgTimeoutWait": "Avg Timeout wait",
           "peakHours": "Peak hours"
         }
       },

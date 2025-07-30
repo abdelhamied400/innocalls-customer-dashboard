@@ -1342,8 +1342,8 @@
             "abandonedCalls": "مكالمات أُغلِقت قبل الرد",
             "timeoutCalls": "المكالمات المنتهية بمهلة الانتظار",
             "completedCalls": "المكالمات المكتملة",
-            "abandonRate": "معدل الهجر (%)",
-            "timeoutRate": "معدل انتهاء الصلاحية (%)",
+            "abandonRate": "معدل المتروكة (%)",
+            "timeoutRate": "معدل المنتهية بالمهلة (%)",
             "completionRate": "معدل الإكمال (%)",
             "avgWaitTime": "متوسط وقت الانتظار",
             "avgTalkTime": "متوسط وقت المحادثة",
@@ -1353,8 +1353,8 @@
         },
         "chartLabels": {
           "completed": "مكتملة",
-          "abandoned": "مهجورة",
-          "timeout": "منتهية الصلاحية"
+          "abandoned": "متروكة",
+          "timeout": "منتهية بمهلة"
         }
       },
       "dateDistribution": {
@@ -1386,7 +1386,6 @@
             "timeoutCalls": "المكالمات المنتهية بمهلة الانتظار",
             "answeredCalls": "المكالمات المجابة",
             "abandonedCalls": "مكالمات أُغلِقت قبل الرد"
-
           }
         },
         "tabs": {
@@ -1396,36 +1395,36 @@
       },
       "queueAnalysis": {
         "abandonedAnalysis": {
-          "title": "تحليل المكالمات المهجورة",
-          "totalAbandoned": "إجمالي المكالمات المهجورة",
+          "title": "تحليل المكالمات التي أُغلِقت قبل الرد",
+          "totalAbandoned": "إجمالي المكالمات المتروكة",
           "uniqueCallers": "المتصلين الفريدين",
-          "chartTitle": "تحليل المكالمات غير المجابة في الطابور",
+          "chartTitle": "تحليل المكالمات الغير مجابة  ",
           "statsTitle": "إحصائيات الطابور",
           "avgWaitTime": "متوسط وقت الانتظار",
           "minWaitTime": "أقل وقت انتظار",
           "maxWaitTime": "أقصى وقت انتظار",
-          "peakTimeoutHour": "ساعة الذروة لانتهاء الصلاحية"
+          "peakTimeoutHour": "ساعة الذروة"
         },
         "timeoutAnalysis": {
-          "title": "توزيع وقت الانتظار",
-          "totalTimeout": "إجمالي المكالمات المنتهية الصلاحية",
+          "title": "تحليل المكالمات المنتهية بمهلة الانتظار",
+          "totalTimeout": "إجمالي المكالمات المنتهية بمهلة الانتظار",
           "uniqueCallers": "المتصلين الفريدين",
-          "chartTitle": "تحليل انتهاء صلاحية الخروج من الطابور",
+          "chartTitle": " تحليل المكالمات الغير مجابة ",
           "statsTitle": "إحصائيات الطابور",
           "avgWaitTime": "متوسط وقت الانتظار",
           "minWaitTime": "أقل وقت انتظار",
           "maxWaitTime": "أقصى وقت انتظار",
-          "peakTimeoutHour": "ساعة الذروة لانتهاء الصلاحية"
+          "peakTimeoutHour": "ساعة الذروة "
         },
         "comparison": {
           "title": "مقارنة المكالمات الواردة غير المجابة",
-          "abandonedVsTimeout": "المكالمات المهجورة مقابل المنتهية الصلاحية",
-          "comparisonTitle": "مقارنة",
-          "totalAbandoned": "إجمالي المكالمات المهجورة",
+          "abandonedVsTimeout": "المكالمات المتروكة مقابل المنتهية الصلاحية",
+          "comparisonTitle": "مقارنة الأوقات",
+          "totalAbandoned": "إجمالي المكالمات المتروكة",
           "totalTimeout": "إجمالي المكالمات المنتهية الصلاحية",
           "totalUnanswered": "إجمالي المكالمات الواردة غير المجابة",
-          "totalAbandonWait": "إجمالي انتظار الهجر",
-          "totalTimeoutWait": "إجمالي انتظار انتهاء الصلاحية",
+          "avgAbandonWait": "متوسط وقت الانتظار للمكالمات المتروكة",
+          "avgTimeoutWait": "متوسط وقت الانتظار للمكالمات المنتهية بالمهلة",
           "peakHours": "ساعات الذروة"
         }
       },

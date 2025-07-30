@@ -13,24 +13,27 @@ import {
 } from "recharts";
 import { InboundAnalyticsFilters } from "./page";
 import NoData from "@/components/Analytics/NoData";
+import { useTranslations } from "next-intl";
 
 type InboundAnalyticsOverviewProps = { filters: InboundAnalyticsFilters };
 const InboundAnalyticsOverview = ({
   filters,
 }: InboundAnalyticsOverviewProps) => {
+  const t = useTranslations("analytics.inbound.overview");
+
   const legends = {
     team: [
-      { label: "Total Calls", color: "#3B82F6" },
-      { label: "Completed Calls", color: "#10B981" },
-      { label: "Timeout Calls", color: "#F59E42" },
-      { label: "Abandoned Calls", color: "#EF4444" },
+      { label: t("legends.totalCalls"), color: "#3B82F6" },
+      { label: t("legends.completedCalls"), color: "#10B981" },
+      { label: t("legends.timeoutCalls"), color: "#F59E42" },
+      { label: t("legends.abandonedCalls"), color: "#EF4444" },
     ],
     all: [
-      { label: "Total Calls", color: "#3B82F6" },
-      { label: "Answered Calls", color: "#10B981" },
-      { label: "External Calls", color: "#F59E42" },
-      { label: "Internal Calls", color: "#A855F7" },
-      { label: "Unanswered Calls", color: "#EF4444" },
+      { label: t("legends.totalCalls"), color: "#3B82F6" },
+      { label: t("legends.answeredCalls"), color: "#10B981" },
+      { label: t("legends.externalCalls"), color: "#F59E42" },
+      { label: t("legends.internalCalls"), color: "#A855F7" },
+      { label: t("legends.unansweredCalls"), color: "#EF4444" },
     ],
   };
 
@@ -47,7 +50,7 @@ const InboundAnalyticsOverview = ({
   return (
     <ChartCard
       icon={<LineAxis />}
-      title="Inbound Call Overview"
+      title={t("title")}
       color="primary"
       legends={legends[filters.filterBy]}
       variant="compound"
@@ -67,7 +70,7 @@ const InboundAnalyticsOverview = ({
                 tickLine={false}
                 axisLine={false}
                 label={{
-                  value: "Hour",
+                  value: t("xAxisLabel"),
                   position: "insideBottomRight",
                   offset: -5,
                 }}
@@ -81,23 +84,25 @@ const InboundAnalyticsOverview = ({
               <Tooltip
                 formatter={(_, name) => {
                   // Map dataKey to label
+
                   const keyToLabel: Record<string, string> = {
-                    totalCalls: "Total Calls",
-                    answeredCalls: "Answered Calls",
-                    externalCalls: "External Calls",
-                    internalCalls: "Internal Calls",
-                    unansweredCalls: "Unanswered Calls",
-                    abandonedCalls: "Abandoned Calls",
-                    completedCalls: "Completed Calls",
-                    timeoutCalls: "Timeout Calls",
+                    totalCalls: t("legends.totalCalls"),
+                    answeredCalls: t("legends.answeredCalls"),
+                    externalCalls: t("legends.externalCalls"),
+                    internalCalls: t("legends.internalCalls"),
+                    unansweredCalls: t("legends.unansweredCalls"),
+                    abandonedCalls: t("legends.abandonedCalls"),
+                    completedCalls: t("legends.completedCalls"),
+                    timeoutCalls: t("legends.timeoutCalls"),
                   };
+
                   return [_, keyToLabel[name as string] || name];
                 }}
               />
               <Line
                 type="monotone"
                 dataKey="totalCalls"
-                label="Total Calls"
+                label={t("legends.totalCalls")}
                 stroke="#3B82F6"
                 strokeWidth={3}
                 dot={false}
@@ -105,7 +110,7 @@ const InboundAnalyticsOverview = ({
               <Line
                 type="monotone"
                 dataKey="answeredCalls"
-                label="Answered Calls"
+                label={t("legends.answeredCalls")}
                 stroke="#10B981"
                 strokeWidth={3}
                 dot={false}
@@ -113,7 +118,7 @@ const InboundAnalyticsOverview = ({
               <Line
                 type="monotone"
                 dataKey="externalCalls"
-                label="External Calls"
+                label={t("legends.externalCalls")}
                 stroke="#F59E42"
                 strokeWidth={3}
                 dot={false}
@@ -121,7 +126,7 @@ const InboundAnalyticsOverview = ({
               <Line
                 type="monotone"
                 dataKey="internalCalls"
-                label="Internal Calls"
+                label={t("legends.internalCalls")}
                 stroke="#A855F7"
                 strokeWidth={3}
                 dot={false}
@@ -129,7 +134,7 @@ const InboundAnalyticsOverview = ({
               <Line
                 type="monotone"
                 dataKey="unansweredCalls"
-                label="Unanswered Calls"
+                label={t("legends.unansweredCalls")}
                 stroke="#EF4444"
                 strokeWidth={3}
                 dot={false}
@@ -138,7 +143,7 @@ const InboundAnalyticsOverview = ({
               <Line
                 type="monotone"
                 dataKey="abandonedCalls"
-                label="Abandoned Calls"
+                label={t("legends.abandonedCalls")}
                 stroke="#F54002"
                 strokeWidth={3}
                 dot={false}
@@ -146,7 +151,7 @@ const InboundAnalyticsOverview = ({
               <Line
                 type="monotone"
                 dataKey="completedCalls"
-                label="Completed Calls"
+                label={t("legends.completedCalls")}
                 stroke="#10B981"
                 strokeWidth={3}
                 dot={false}
@@ -154,7 +159,7 @@ const InboundAnalyticsOverview = ({
               <Line
                 type="monotone"
                 dataKey="timeoutCalls"
-                label="Timeout Calls"
+                label={t("legends.timeoutCalls")}
                 stroke="#F59E42"
                 strokeWidth={3}
                 dot={false}

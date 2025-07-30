@@ -22,6 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
 import { InboundAnalyticsFilters } from "./page";
 import NoData from "@/components/Analytics/NoData";
+import { useTranslations } from "next-intl";
 
 type InboundAnalyticsRepeatedCallersProps = {
   filters: InboundAnalyticsFilters;
@@ -29,19 +30,30 @@ type InboundAnalyticsRepeatedCallersProps = {
 const InboundAnalyticsRepeatedCallers = ({
   filters,
 }: InboundAnalyticsRepeatedCallersProps) => {
+  const t = useTranslations("analytics.inbound.repeatedCallers");
+
   const columns = [
-    { header: "Caller", accessorKey: "caller" },
-    { header: "Total Calls", accessorKey: "totalCalls" },
-    { header: "Abandoned Calls", accessorKey: "abandonedCalls" },
-    { header: "Timeout Calls", accessorKey: "timeoutCalls" },
-    { header: "Completed Calls", accessorKey: "completedCalls" },
-    { header: "Abandon Rate (%)", accessorKey: "abandonRate" },
-    { header: "Timeout Rate (%)", accessorKey: "timeoutRate" },
-    { header: "Completion Rate (%)", accessorKey: "completionRate" },
-    { header: "Avg Wait Time", accessorKey: "avgWaitTime" },
-    { header: "Avg Talk Time", accessorKey: "avgTalkTime" },
-    { header: "First Call Time", accessorKey: "firstCallTime" },
-    { header: "Last Call Time", accessorKey: "lastCallTime" },
+    { header: t("table.columns.caller"), accessorKey: "caller" },
+    { header: t("table.columns.totalCalls"), accessorKey: "totalCalls" },
+    {
+      header: t("table.columns.abandonedCalls"),
+      accessorKey: "abandonedCalls",
+    },
+    { header: t("table.columns.timeoutCalls"), accessorKey: "timeoutCalls" },
+    {
+      header: t("table.columns.completedCalls"),
+      accessorKey: "completedCalls",
+    },
+    { header: t("table.columns.abandonRate"), accessorKey: "abandonRate" },
+    { header: t("table.columns.timeoutRate"), accessorKey: "timeoutRate" },
+    {
+      header: t("table.columns.completionRate"),
+      accessorKey: "completionRate",
+    },
+    { header: t("table.columns.avgWaitTime"), accessorKey: "avgWaitTime" },
+    { header: t("table.columns.avgTalkTime"), accessorKey: "avgTalkTime" },
+    { header: t("table.columns.firstCallTime"), accessorKey: "firstCallTime" },
+    { header: t("table.columns.lastCallTime"), accessorKey: "lastCallTime" },
   ];
 
   const {
@@ -57,13 +69,13 @@ const InboundAnalyticsRepeatedCallers = ({
   return (
     <div className="flex flex-col gap-4">
       <ChartCard
-        title="Frequent Callers"
+        title={t("title")}
         icon={<Call />}
         color="success"
         legends={[
-          { label: "Completed Calls", color: "#10B981" },
-          { label: "Abandoned Calls", color: "#F59E42" },
-          { label: "Timeout Calls", color: "#EF4444" },
+          { label: t("legends.completedCalls"), color: "#10B981" },
+          { label: t("legends.abandonedCalls"), color: "#F59E42" },
+          { label: t("legends.timeoutCalls"), color: "#EF4444" },
         ]}
         variant="compound"
         isLoading={isLoading}
@@ -95,19 +107,19 @@ const InboundAnalyticsRepeatedCallers = ({
                   dataKey="completedCalls"
                   stackId="a"
                   fill="#10B981"
-                  name="Completed"
+                  name={t("chartLabels.completed")}
                 />
                 <Bar
                   dataKey="abandonedCalls"
                   stackId="a"
                   fill="#F59E42"
-                  name="Abandoned"
+                  name={t("chartLabels.abandoned")}
                 />
                 <Bar
                   dataKey="timeoutCalls"
                   stackId="a"
                   fill="#EF4444"
-                  name="Timeout"
+                  name={t("chartLabels.timeout")}
                 />
               </BarChart>
             </ResponsiveContainer>
