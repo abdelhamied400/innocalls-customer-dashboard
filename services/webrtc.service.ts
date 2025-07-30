@@ -21,4 +21,8 @@ export default {
     const res = await api.delete(`/v2/contacts/${id}`);
     return res.data;
   },
+  getAgentExtension: async () => {
+    const res = await api.get("/extension/agent-info");
+    return res.data.agent;
+  },
 };
