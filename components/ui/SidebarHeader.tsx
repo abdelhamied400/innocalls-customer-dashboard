@@ -11,9 +11,9 @@ const SidebarHeader = () => {
       <div className="flex justify-between items-center gap-8 px-4 border-b-2 h-24">
         <div className="flex items-center">
           <Image
-            src="/assets/images/logo-wbg.png"
+            src="/assets/images/logo-hb.svg"
             alt="Innocalls"
-            width={120}
+            width={210}
             height={40}
             className="object-contain"
           />
