@@ -1242,7 +1242,7 @@
         "avgWaitTime": "متوسط وقت الانتظار",
         "avgTalkTime": "متوسط وقت المحادثة",
         "completedCalls": "المكالمات المكتملة",
-        "timeoutCalls":"المكالمات المنتهية بمهلة الانتظار",
+        "timeoutCalls": "المكالمات المنتهية بمهلة الانتظار",
         "abandonedCalls": "مكالمات أُغلِقت قبل الرد",
         "answerRate": "معدل الإجابة",
         "externalCalls": "المكالمات الخارجية",
@@ -1284,9 +1284,9 @@
           "externalCalls": "المكالمات الخارجية",
           "internalCalls": "المكالمات الداخلية",
           "unansweredCalls": "المكالمات غير المجابة",
-          "abandonedCalls": "المكالمات المهجورة",
+          "abandonedCalls": "مكالمات أُغلِقت قبل الرد",
           "completedCalls": "المكالمات المكتملة",
-          "timeoutCalls": "المكالمات المنتهية الصلاحية"
+          "timeoutCalls": "المكالمات المنتهية بمهلة الانتظار"
         },
         "xAxisLabel": "الساعة"
       },
@@ -1313,7 +1313,7 @@
         },
         "table": {
           "columns": {
-            "name":"Name",
+            "name": "لاسم",
             "ext": "الرقم",
             "callsHandled": "المكالمات المدارة",
             "avgWaitTime": "متوسط وقت الانتظار",
@@ -1332,15 +1332,15 @@
         "title": "المتصلين المتكررين",
         "legends": {
           "completedCalls": "المكالمات المكتملة",
-          "abandonedCalls": "المكالمات المهجورة",
-          "timeoutCalls": "المكالمات المنتهية الصلاحية"
+          "abandonedCalls": "مكالمات أُغلِقت قبل الرد",
+          "timeoutCalls": "المكالمات المنتهية بمهلة الانتظار"
         },
         "table": {
           "columns": {
             "caller": "المتصل",
             "totalCalls": "إجمالي المكالمات",
-            "abandonedCalls": "المكالمات المهجورة",
-            "timeoutCalls": "المكالمات المنتهية الصلاحية",
+            "abandonedCalls": "مكالمات أُغلِقت قبل الرد",
+            "timeoutCalls": "المكالمات المنتهية بمهلة الانتظار",
             "completedCalls": "المكالمات المكتملة",
             "abandonRate": "معدل الهجر (%)",
             "timeoutRate": "معدل انتهاء الصلاحية (%)",
@@ -1363,8 +1363,8 @@
           "totalCalls": "إجمالي المكالمات",
           "answeredCalls": "المكالمات المجابة",
           "unansweredCalls": "المكالمات غير المجابة",
-          "abandonedCalls": "المكالمات المهجورة",
-          "timeoutCalls": "المكالمات المنتهية الصلاحية"
+          "abandonedCalls": "مكالمات أُغلِقت قبل الرد",
+          "timeoutCalls": "المكالمات المنتهية بمهلة الانتظار"
         },
         "table": {
           "allColumns": {
@@ -1383,9 +1383,10 @@
           "teamColumns": {
             "date": "التاريخ",
             "total": "الإجمالي",
-            "timeoutCalls": "المكالمات المنتهية الصلاحية",
+            "timeoutCalls": "المكالمات المنتهية بمهلة الانتظار",
             "answeredCalls": "المكالمات المجابة",
-            "abandonedCalls": "المكالمات المهجورة"
+            "abandonedCalls": "مكالمات أُغلِقت قبل الرد"
+
           }
         },
         "tabs": {
