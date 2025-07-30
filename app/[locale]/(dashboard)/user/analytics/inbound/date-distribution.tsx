@@ -106,6 +106,20 @@ const InboundAnalyticsDateDistribution = ({
     },
   ];
 
+  const legends = {
+    team: [
+      { label: t("legends.totalCalls"), color: "#3B82F6" },
+      { label: t("legends.abandonedCalls"), color: "#A855F7" },
+      { label: t("legends.answeredCalls"), color: "#F59E42" },
+      { label: t("legends.timeoutCalls"), color: "#F97316" },
+    ],
+    all: [
+      { label: t("legends.totalCalls"), color: "#3B82F6" },
+      { label: t("legends.answeredCalls"), color: "#10B981" },
+      { label: t("legends.unansweredCalls"), color: "#EF4444" },
+    ],
+  };
+
   const { data, isLoading } = useQuery({
     queryKey: ["dateDistribution", filters],
     queryFn: () =>
@@ -125,98 +139,82 @@ const InboundAnalyticsDateDistribution = ({
         </TabsList>
         <TabsContent value="chart">
           {isLoading && <ChartCardSkeleton />}
-          {!isLoading &&
-            data &&
-            data.length > 0 &&
-            filters.filterBy === "team" && (
-              <ChartCard
-                title={t("title")}
-                icon={<ShowChart />}
-                color="primary"
-                variant="compound"
-                legends={[
-                  { label: t("legends.totalCalls"), color: "#3B82F6" },
-                  { label: t("legends.answeredCalls"), color: "#10B981" },
-                  { label: t("legends.unansweredCalls"), color: "#EF4444" },
-                  { label: t("legends.abandonedCalls"), color: "#A855F7" },
-                  { label: t("legends.answeredCalls"), color: "#F59E42" },
-                  { label: t("legends.timeoutCalls"), color: "#F97316" },
-                ]}
-              >
-                <ResponsiveContainer width="100%" height={320}>
-                  <LineChart data={data}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                    <XAxis
-                      dataKey="date"
-                      fontSize={12}
-                      tickLine={false}
-                      axisLine={false}
-                    />
-                    <YAxis
-                      fontSize={12}
-                      tickLine={false}
-                      axisLine={false}
-                      allowDecimals={false}
-                    />
-                    <RechartsTooltip />
-                    <Line
-                      type="monotone"
-                      dataKey="totalCalls"
-                      stroke="#3B82F6"
-                      strokeWidth={2}
-                      dot={false}
-                      name={t("table.allColumns.total")}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="totalAnsweredCalls"
-                      stroke="#10B981"
-                      strokeWidth={2}
-                      dot={false}
-                      name={t("table.allColumns.answered")}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="totalUnAnsweredCalls"
-                      stroke="#EF4444"
-                      strokeWidth={2}
-                      dot={false}
-                      name={t("table.allColumns.unanswered")}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="abandonedCalls"
-                      stroke="#A855F7"
-                      strokeWidth={2}
-                      dot={false}
-                      name={t(
-                        "table.teamColumns.abandonedCalls"
-                      )}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="answeredCalls"
-                      stroke="#F59E42"
-                      strokeWidth={2}
-                      dot={false}
-                      name={t(
-                        "table.teamColumns.answeredCalls"
-                      )}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="timeoutCalls"
-                      stroke="#F97316"
-                      strokeWidth={2}
-                      dot={false}
-                      name={t(
-                        "table.teamColumns.timeoutCalls"
-                      )}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </ChartCard>
-            )}
+          {!isLoading && data && data.length > 0 && (
+            <ChartCard
+              title={t("title")}
+              icon={<ShowChart />}
+              color="primary"
+              variant="compound"
+              legends={legends[filters.filterBy]}
+            >
+              <ResponsiveContainer width="100%" height={320}>
+                <LineChart data={data}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                  <XAxis
+                    dataKey="date"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    allowDecimals={false}
+                  />
+                  <RechartsTooltip />
+                  <Line
+                    type="monotone"
+                    dataKey="totalCalls"
+                    stroke="#3B82F6"
+                    strokeWidth={2}
+                    dot={false}
+                    name={t("table.allColumns.total")}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="totalAnsweredCalls"
+                    stroke="#10B981"
+                    strokeWidth={2}
+                    dot={false}
+                    name={t("table.allColumns.answered")}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="totalUnAnsweredCalls"
+                    stroke="#EF4444"
+                    strokeWidth={2}
+                    dot={false}
+                    name={t("table.allColumns.unanswered")}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="abandonedCalls"
+                    stroke="#A855F7"
+                    strokeWidth={2}
+                    dot={false}
+                    name={t("table.teamColumns.abandonedCalls")}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="answeredCalls"
+                    stroke="#F59E42"
+                    strokeWidth={2}
+                    dot={false}
+                    name={t("table.teamColumns.answeredCalls")}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="timeoutCalls"
+                    stroke="#F97316"
+                    strokeWidth={2}
+                    dot={false}
+                    name={t("table.teamColumns.timeoutCalls")}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </ChartCard>
+          )}
           {!isLoading && (!data || data.length === 0) && <NoData />}
         </TabsContent>
         <TabsContent value="table">
