@@ -114,12 +114,12 @@ const InboundAnalyticsAgentPerformance = ({
                   formatter={(value, name, item) => {
                     if (item.dataKey === "avgWaitTime")
                       return [
-                        durationToSeconds(`${value}`),
+                        formatDuration(Number(value)),
                         t("legends.avgWaitTime"),
                       ];
                     if (item.dataKey === "avgTalkTime")
                       return [
-                        durationToSeconds(`${value}`),
+                        formatDuration(Number(value)),
                         t("legends.avgTalkTime"),
                       ];
                     return [value, name];

@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import api from "./api";
 import { InboundAnalyticsFilters } from "@/app/[locale]/(dashboard)/user/analytics/inbound/page";
-import { durationToSeconds } from "@/lib/date";
+import { durationToSeconds, formatDuration } from "@/lib/date";
 type FetchAnalyticsStatsResponse = {
   answerRate: number;
   answeredCalls: number;
@@ -179,7 +179,11 @@ export default {
         params: formatParams(filters),
       }
     );
-    return res.data.agents;
+    return res.data.agents.map((agent: any) => ({
+      ...agent,
+      avgTalkTime: durationToSeconds(agent.avgTalkTime),
+      avgWaitTime: durationToSeconds(agent.avgWaitTime),
+    }));
   },
 
   async fetchRepeatedCallers(
