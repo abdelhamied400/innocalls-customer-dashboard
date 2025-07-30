@@ -54,12 +54,15 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
   const fetchUserVocab = async () => {
     const promises = [
       fetchCountries(),
-      fetchDids(),
-      fetchExtensions(),
       fetchTags(),
       fetchAccounts(),
       fetchPackages(),
       fetchErgs(),
+
+      session?.user?.fullAccessNumbers ? fetchDids() : Promise.resolve(),
+      session?.user?.agentsAccessControl
+        ? fetchExtensions()
+        : Promise.resolve(),
     ];
     try {
       setLoading(true);

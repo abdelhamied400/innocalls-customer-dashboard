@@ -30,6 +30,7 @@ import InboundAnalyticsDateDistribution from "./date-distribution";
 import InboundAnalyticsQueueAnalysis from "./queue-analysis";
 import { useTranslations } from "next-intl";
 import useAppStore from "@/store/app.slice";
+import { useSession } from "next-auth/react";
 
 export type InboundAnalyticsFilterBy = "all" | "team";
 
@@ -49,6 +50,7 @@ export type InboundAnalyticsFilters = {
 const InboundAnalytics = () => {
   const { extensions, ergs } = useVocabStore();
   const { setPageTitle } = useAppStore();
+  const { data: session } = useSession();
 
   const [currentTab, setCurrentTab] = useState<string>("overview");
 
@@ -245,12 +247,13 @@ const InboundAnalytics = () => {
                   {t("tabs.teamPerformance")}
                 </TabsTrigger>
               )}
-              {appliedValues.filterBy === "all" && (
-                <TabsTrigger value="ivr" className="flex items-center gap-1">
-                  <Call />
-                  {t("tabs.ivrInsights")}
-                </TabsTrigger>
-              )}
+              {appliedValues.filterBy === "all" &&
+                session?.user.role === "Admin" && (
+                  <TabsTrigger value="ivr" className="flex items-center gap-1">
+                    <Call />
+                    {t("tabs.ivrInsights")}
+                  </TabsTrigger>
+                )}
               {appliedValues.filterBy === "team" && (
                 <TabsTrigger
                   value="repeated"

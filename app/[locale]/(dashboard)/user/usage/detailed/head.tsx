@@ -1,34 +1,7 @@
 "use client";
 
-import {
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  PaginationState,
-  SortingState,
-  useReactTable,
-} from "@tanstack/react-table";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import {
-  Pagination,
-  PaginationButton,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
 import {
   Select,
   SelectContent,
@@ -38,8 +11,6 @@ import {
 } from "@/components/ui/select";
 import Field from "@/components/ui/field";
 import { CalendarIcon, SearchIcon } from "lucide-react";
-import { createColumns } from "./columns";
-import { useQuery } from "@tanstack/react-query";
 import usageService, { UsageDetailedFilters } from "@/services/usage.service";
 import {
   Collapsible,
@@ -49,7 +20,6 @@ import {
 import { Toggle } from "@/components/ui/toggle";
 import { Download, FilterAltOutlined } from "@mui/icons-material";
 import DatePicker from "@/components/ui/date-picker";
-import TableSkeleton from "@/components/ui/table-skeleton";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { isValidDateRange } from "@/lib/date";
@@ -57,16 +27,14 @@ import { useToast } from "@/hooks/use-toast";
 import useVocabStore from "@/store/vocab.slice";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { useFilters } from "@/hooks/use-filters";
-import { format } from "date-fns";
 import { isAxiosError } from "axios";
 import { Button } from "@/components/ui/button";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
 import { useTranslations } from "next-intl";
+import { defaultFilters } from "./table";
 
 // 30 days ago
 const defaultFromDate = new Date();
-defaultFromDate.setDate(defaultFromDate.getDate() - 30);
 // today
 const defaultToDate = new Date();
 
@@ -86,6 +54,7 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
     filters.fromDate || defaultFromDate
   );
   const [toDate, setToDate] = useState<Date>(filters.toDate || defaultToDate);
+  const [search, setSearch] = useState<string>("");
 
   const [isExporting, setIsExporting] = useState(false);
 
@@ -94,10 +63,21 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
   const tCommon = useTranslations("common");
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
     setFilters((prev) => ({
       ...prev,
       codeName: e.target.value,
     }));
+  };
+
+  const handleClearFilters = () => {
+    setFilters(defaultFilters);
+    setAccountId("");
+    setOrigin("");
+    setPackageId("");
+    setFromDate(defaultFromDate);
+    setToDate(defaultToDate);
+    setSearch("");
   };
 
   const applyFilters = () => {
@@ -162,7 +142,7 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
             <Input
               variant="field"
               placeholder={t("actions.search")}
-              value={filters.codeName}
+              value={search}
               onChange={handleSearchChange}
               type="search"
             />
@@ -183,19 +163,7 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
         </div>
       </div>
       <CollapsibleContent>
-        <FilterBar
-          onClear={() => {
-            setFilters({
-              fromDate: defaultFromDate,
-              toDate: defaultToDate,
-            });
-            setAccountId("");
-            setOrigin("");
-            setPackageId("");
-            setFromDate(defaultFromDate);
-            setToDate(defaultToDate);
-          }}
-        >
+        <FilterBar onClear={handleClearFilters}>
           <FilterBox
             triggerLabel={t("filters.account.triggerLabel")}
             label={t("filters.account.label")}
