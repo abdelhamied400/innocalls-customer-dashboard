@@ -92,12 +92,14 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
           </Button>
         )}
       </div>
-      <div className="grid grid-cols-2 gap-2 text-xs">
-        <div className="flex items-center gap-1">
-          <span className="text-gray-600">Agent:</span>
-          <span className="font-medium text-gray-900">{agent.name}</span>
+      {status === "active" && (
+        <div className="grid grid-cols-2 gap-2 text-xs">
+          <div className="flex items-center gap-1">
+            <span className="text-gray-600">Agent:</span>
+            <span className="font-medium text-gray-900">{agent.name}</span>
+          </div>
         </div>
-      </div>
+      )}
       <div className={cn("mt-2 pt-2 border-t")}>
         <div className="flex items-center justify-between">
           {status === "active" ? (
