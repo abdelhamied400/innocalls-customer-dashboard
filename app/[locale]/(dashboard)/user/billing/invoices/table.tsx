@@ -1,60 +1,11 @@
 "use client";
 
-import {
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  PaginationState,
-  SortingState,
-  useReactTable,
-} from "@tanstack/react-table";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { PaginationState, SortingState } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
-import {
-  Pagination,
-  PaginationButton,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import Field from "@/components/ui/field";
 import { columns } from "./columns";
 import { useQuery } from "@tanstack/react-query";
 import billingService from "@/services/billing.service";
-import { CalendarMonth, FilterAltOutlined, Search } from "@mui/icons-material";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { Toggle } from "@/components/ui/toggle";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { FilterBar } from "@/components/FilterBar";
-import { FilterBox } from "@/components/FilterBox";
-import { isValidDateRange } from "@/lib/date";
-import DatePicker from "@/components/ui/date-picker";
-import { format } from "date-fns";
 import { useTranslations } from "next-intl";
 import PaginatedTable from "@/components/Table/PaginatedTable";
 import InvoicesHead from "./head";
@@ -66,12 +17,19 @@ import PaginatedTablePagination from "@/components/Table/PaginatedTablePaginatio
 import { isAxiosError } from "axios";
 
 type InvoicesFilters = {
-  search: string;
-  fromDate?: Date | undefined;
-  toDate?: Date | undefined;
-  fromTotal?: string;
-  toTotal?: string;
+  fromDate?: Date;
+  toDate?: Date;
+  fromTotal?: string | undefined;
+  toTotal?: string | undefined;
   status?: "draft" | "overdue" | "paid" | "partially_paid" | null;
+};
+
+export const defaultFilters: InvoicesFilters = {
+  fromDate: undefined,
+  toDate: undefined,
+  fromTotal: undefined,
+  toTotal: undefined,
+  status: null,
 };
 
 const BillingTable = () => {
@@ -79,14 +37,7 @@ const BillingTable = () => {
   const t = useTranslations("billing.invoices");
 
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [filters, setFilters] = useState<InvoicesFilters>({
-    search: "",
-    fromDate: undefined,
-    toDate: undefined,
-    fromTotal: "",
-    toTotal: "",
-    status: null,
-  });
+  const [filters, setFilters] = useState<InvoicesFilters>(defaultFilters);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,

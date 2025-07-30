@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import Field from "@/components/ui/field";
-import { CalendarMonth, FilterAltOutlined, Search } from "@mui/icons-material";
+import { CalendarMonth, FilterAltOutlined } from "@mui/icons-material";
 import {
   Collapsible,
   CollapsibleContent,
@@ -16,16 +16,15 @@ import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { isValidDateRange } from "@/lib/date";
 import DatePicker from "@/components/ui/date-picker";
-import { format, set } from "date-fns";
 import { useTranslations } from "next-intl";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
+import { defaultFilters } from "./table";
 
 type InvoicesFilters = {
-  search: string;
   fromDate?: Date | undefined;
   toDate?: Date | undefined;
-  fromTotal?: string;
-  toTotal?: string;
+  fromTotal?: string | undefined;
+  toTotal?: string | undefined;
   status?: "draft" | "overdue" | "paid" | "partially_paid" | null;
 };
 
@@ -35,11 +34,10 @@ type InvoiceHeadProps = {
 };
 const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
   const { toast } = useToast();
-  const [search, setSearch] = useState("");
   const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
   const [toDate, setToDate] = useState<Date | undefined>(undefined);
-  const [fromTotal, setFromTotal] = useState<string>("");
-  const [toTotal, setToTotal] = useState<string>("");
+  const [fromTotal, setFromTotal] = useState<string | undefined>();
+  const [toTotal, setToTotal] = useState<string | undefined>();
   const [status, setStatus] = useState<InvoicesFilters["status"]>(null);
 
   const t = useTranslations("billing.invoices");
@@ -48,12 +46,15 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
 
   const { table } = usePaginatedTable();
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters((prev) => ({
-      ...prev,
-      search: e.target.value,
-    }));
-    table.setPageIndex(0); // Reset to first page on search change
+  const handleClearFilters = () => {
+    setFromDate(new Date());
+    setToDate(new Date());
+    setFromTotal(undefined);
+    setToTotal(undefined);
+    setStatus(null);
+    setFilters(defaultFilters);
+
+    table.setPageIndex(0); // Reset to first page on clear filters
   };
 
   const applyFilters = () => {
@@ -69,15 +70,48 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
       },
       -1
     );
-    if (!isValid) return;
+
+    let hasValidTotalRange = true;
+
+    if (fromTotal) {
+      const fromTotalNum = parseFloat(fromTotal);
+      if (isNaN(fromTotalNum) || fromTotalNum < 0) {
+        toast({
+          title: tBillingCommon("messages.invalidFromTotal"),
+          description: tBillingCommon("messages.invalidFromTotalHint"),
+          variant: "destructive",
+        });
+        hasValidTotalRange = false;
+      }
+    }
+    if (toTotal) {
+      const toTotalNum = parseFloat(toTotal);
+      if (isNaN(toTotalNum) || toTotalNum < 0) {
+        toast({
+          title: tBillingCommon("messages.invalidToTotal"),
+          description: tBillingCommon("messages.invalidToTotalHint"),
+          variant: "destructive",
+        });
+        hasValidTotalRange = false;
+      }
+    }
+    if (fromTotal && toTotal && parseFloat(fromTotal) > parseFloat(toTotal)) {
+      toast({
+        title: tBillingCommon("messages.invalidTotalRange"),
+        description: tBillingCommon("messages.invalidTotalRangeHint"),
+        variant: "destructive",
+      });
+      hasValidTotalRange = false;
+    }
+
+    if (!isValid || !hasValidTotalRange) return;
 
     setFilters((prev) => ({
       ...prev,
-      search: search.trim(),
       fromDate: fromDate,
       toDate: toDate,
-      fromTotal: fromTotal.trim(),
-      toTotal: toTotal.trim(),
+      fromTotal: fromTotal?.trim(),
+      toTotal: toTotal?.trim(),
       status: status || null,
     }));
   };
@@ -87,16 +121,6 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
       <div className="table-head flex items-center justify-between p-4">
         <h2>{t("title")}</h2>
         <div className="actions flex items-center gap-2">
-          <Field preIcon={<Search />}>
-            <Input
-              variant="field"
-              placeholder={tCommon("search.placeholder")}
-              value={filters.search}
-              onChange={handleSearchChange}
-              type="search"
-            />
-          </Field>
-
           <CollapsibleTrigger asChild>
             <Toggle pressed={true} className="rounded-full">
               <FilterAltOutlined />
@@ -105,24 +129,7 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
         </div>
       </div>
       <CollapsibleContent>
-        <FilterBar
-          onClear={() => {
-            setSearch("");
-            setFromDate(undefined);
-            setToDate(undefined);
-            setFromTotal("");
-            setToTotal("");
-            setStatus(null);
-            setFilters({
-              search: "",
-              fromDate: undefined,
-              toDate: undefined,
-              fromTotal: "",
-              toTotal: "",
-              status: null,
-            });
-          }}
-        >
+        <FilterBar onClear={handleClearFilters}>
           <FilterBox
             triggerLabel={tBillingCommon("filters.creationDate.label")}
             label={tBillingCommon("filters.creationDate.placeholder")}
@@ -166,12 +173,12 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
             triggerLabel={t("filters.amount.triggerLabel")}
             label={t("filters.amount.label")}
             onReset={() => {
-              setFromTotal("");
-              setToTotal("");
+              setFromTotal(undefined);
+              setToTotal(undefined);
               setFilters((prev) => ({
                 ...prev,
-                fromTotal: "",
-                toTotal: "",
+                fromTotal: undefined,
+                toTotal: undefined,
               }));
             }}
             onApply={applyFilters}
@@ -181,7 +188,7 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
                 variant="field"
                 type="number"
                 placeholder={t("filters.amount.from.placeholder")}
-                value={fromTotal}
+                value={fromTotal || ""}
                 onChange={(e) => setFromTotal(e.target.value)}
               />
             </Field>
@@ -190,7 +197,7 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
                 variant="field"
                 type="number"
                 placeholder={t("filters.amount.to.placeholder")}
-                value={toTotal}
+                value={toTotal || ""}
                 onChange={(e) => setToTotal(e.target.value)}
               />
             </Field>
@@ -208,7 +215,7 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
               onValueChange={(status) =>
                 setStatus(status as InvoicesFilters["status"])
               }
-              value={filters.status}
+              value={status}
             >
               <div className="flex items-center space-x-2">
                 <RadioGroupItem value="draft" id="draft" />
