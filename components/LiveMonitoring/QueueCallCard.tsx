@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import useAppStore from "@/store/app.slice";
+import Image from "next/image";
 
 const queueCallCardVariants = cva(
   "p-3 rounded-lg border hover:border-500 transition-all duration-200 group",
@@ -82,22 +83,24 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
           </p>
         </div>
         {status === "active" && (
-          <Button
-            size="sm"
-            variant="success"
-            className="text-xs py-1 px-2 h-auto"
-            onClick={handleSpy}
-          >
-            Spy
+          <Button size="icon" variant="ghost" onClick={handleSpy}>
+            <Image
+              src="/assets/icons/incognito.svg"
+              alt="Incognito"
+              width={24}
+              height={24}
+            />
           </Button>
         )}
       </div>
-      <div className="grid grid-cols-2 gap-2 text-xs">
-        <div className="flex items-center gap-1">
-          <span className="text-gray-600">Agent:</span>
-          <span className="font-medium text-gray-900">{agent.name}</span>
+      {status === "active" && (
+        <div className="grid grid-cols-2 gap-2 text-xs">
+          <div className="flex items-center gap-1">
+            <span className="text-gray-600">Agent:</span>
+            <span className="font-medium text-gray-900">{agent.name}</span>
+          </div>
         </div>
-      </div>
+      )}
       <div className={cn("mt-2 pt-2 border-t")}>
         <div className="flex items-center justify-between">
           {status === "active" ? (

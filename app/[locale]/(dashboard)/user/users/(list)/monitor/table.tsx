@@ -54,6 +54,8 @@ import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import { isAxiosError } from "axios";
 import { useToast } from "@/hooks/use-toast";
+import { useSip } from "@/providers/webrtc/SipProvider";
+import useAppStore from "@/store/app.slice";
 
 type UsersMonitorFilters = {};
 
@@ -64,6 +66,8 @@ const defaultFilters: UsersMonitorFilters = {
 const UsersMonitorTable = ({}) => {
   const { toast } = useToast();
   const t = useTranslations("users.monitor");
+  const { extensionState, spy } = useSip();
+  const { setWebrtcOpen } = useAppStore();
 
   const [filters, setFilters] = useState<UsersMonitorFilters>(defaultFilters);
 
@@ -78,6 +82,19 @@ const UsersMonitorTable = ({}) => {
     queryFn: async () => usersService.getUsersMonitor(),
     refetchInterval: 30000,
   });
+
+  const onSpy = (ext: string) => {
+    setWebrtcOpen(true);
+    if (extensionState !== "connected") {
+      toast({
+        title: "Error",
+        description: "Please connect your extension first.",
+        variant: "destructive",
+      });
+      return;
+    }
+    spy(ext);
+  };
 
   useEffect(() => {
     if (isError) {
@@ -105,6 +122,9 @@ const UsersMonitorTable = ({}) => {
         data={data || []}
         columns={columns(t)}
         manualPagination={false}
+        meta={{
+          onSpy,
+        }}
       >
         <MonitorUsersHead filters={filters} setFilters={setFilters} />
 

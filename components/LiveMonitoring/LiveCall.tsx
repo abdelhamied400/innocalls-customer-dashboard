@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import useAppStore from "@/store/app.slice";
+import Image from "next/image";
 
 interface LiveCallProps {
   from: string;
@@ -51,12 +52,16 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
         {getExtensionNumber(from) && (
           <div className="flex justify-end">
             <Button
-              variant="outline"
-              size="sm"
-              className="text-xs px-2 py-1 h-auto"
+              size="icon"
+              variant="ghost"
               onClick={() => handleSpy(getExtensionNumber(from))}
             >
-              Spy
+              <Image
+                src="/assets/icons/incognito.svg"
+                alt="Incognito"
+                width={24}
+                height={24}
+              />
             </Button>
           </div>
         )}
