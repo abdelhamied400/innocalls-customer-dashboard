@@ -1,4 +1,5 @@
 "use client";
+import { TableMeta } from "@tanstack/react-table";
 import {
   Table as TanstackTable,
   ColumnDef,
@@ -34,6 +35,7 @@ type PaginatedTableProps<TData, TValue> = PropsWithChildren<{
   onPaginationChange?: (pagination: PaginationState) => void;
   onSortingChange?: (sorting: SortingState) => void;
   manualPagination?: boolean;
+  meta?: TableMeta<TData>;
 }>;
 const PaginatedTable = <TData, TValue>({
   data,
@@ -43,6 +45,7 @@ const PaginatedTable = <TData, TValue>({
   onSortingChange,
   manualPagination = true,
   children,
+  meta,
 }: PaginatedTableProps<TData, TValue>) => {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -75,6 +78,7 @@ const PaginatedTable = <TData, TValue>({
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
+    meta,
   });
 
   //* watch pagination change

@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import useAppStore from "@/store/app.slice";
+import Image from "next/image";
 
 const queueCallCardVariants = cva(
   "p-3 rounded-lg border hover:border-500 transition-all duration-200 group",
@@ -82,13 +83,13 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
           </p>
         </div>
         {status === "active" && (
-          <Button
-            size="sm"
-            variant="success"
-            className="text-xs py-1 px-2 h-auto"
-            onClick={handleSpy}
-          >
-            Spy
+          <Button size="icon" variant="ghost" onClick={handleSpy}>
+            <Image
+              src="/assets/icons/incognito.svg"
+              alt="Incognito"
+              width={24}
+              height={24}
+            />
           </Button>
         )}
       </div>

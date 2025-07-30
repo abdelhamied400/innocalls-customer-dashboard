@@ -3,9 +3,16 @@
 import SortingHead from "@/components/SortingHead";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, RowData } from "@tanstack/react-table";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
+
+// Extend TableMeta to include onSpy
+declare module "@tanstack/react-table" {
+  interface TableMeta<TData extends RowData> {
+    onSpy?: (ext: string) => void;
+  }
+}
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -52,7 +59,7 @@ export const columns = (
   {
     accessorKey: "on_call",
     header: t("columns.onCall"),
-    cell: ({ row }) => (
+    cell: ({ row, table }) => (
       <div className="on-call flex items-center gap-2">
         <Badge
           variant={row.getValue("on_call") ? "default" : "muted"}
@@ -61,7 +68,11 @@ export const columns = (
           {row.getValue("on_call") ? t("onCall.yes") : t("onCall.no")}
         </Badge>
         {!!row.getValue("on_call") && (
-          <Button size="icon" variant="ghost">
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => table.options.meta?.onSpy?.(row.original.ext)}
+          >
             <Image
               src="/assets/icons/incognito.svg"
               alt="Incognito"

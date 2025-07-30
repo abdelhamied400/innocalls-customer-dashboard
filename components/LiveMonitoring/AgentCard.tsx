@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import { useToast } from "@/hooks/use-toast";
 import useAppStore from "@/store/app.slice";
+import Image from "next/image";
 
 const agentCardVariants = cva(
   "rounded-lg border p-2 hover:shadow-md transition-all duration-200 group",
@@ -97,13 +98,13 @@ const AgentCard: React.FC<AgentCardProps> = ({
       </div>
       <div className="flex justify-end">
         {status === "onCall" && (
-          <Button
-            className="h-auto px-2 py-1 text-xs"
-            size="sm"
-            variant="ghost-primary"
-            onClick={handleSpy}
-          >
-            Spy
+          <Button size="icon" variant="ghost" onClick={handleSpy}>
+            <Image
+              src="/assets/icons/incognito.svg"
+              alt="Incognito"
+              width={24}
+              height={24}
+            />
           </Button>
         )}
       </div>
