@@ -22,7 +22,7 @@ const CallSummaryStats = () => {
   });
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6 mt-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-6">
       {/* Call Summary Stats */}
       <StatsCard
         title="Total Incoming"
@@ -66,7 +66,7 @@ const CallSummaryStats = () => {
         value={`${Math.round(summaryStats?.talkTime.current || 0)}s`}
         info={`${Math.round(
           summaryStats?.talkTime.change || 0
-        )}s vs last month`}
+        )}% vs last month`}
         icon={<TimerOutlined />}
         color="warning"
         isRefetching={isRefetching}
@@ -79,7 +79,7 @@ const CallSummaryStats = () => {
         value={`${Math.round(summaryStats?.waitTime.current || 0)}s`}
         info={`${Math.round(
           summaryStats?.waitTime.change || 0
-        )}s vs last month`}
+        )}% vs last month`}
         icon={<TimerOutlined />}
         color="destructive"
         isRefetching={isRefetching}

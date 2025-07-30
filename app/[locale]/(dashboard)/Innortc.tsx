@@ -21,7 +21,7 @@ const Innortc = () => {
   const { login, ua, extensionState } = useSip();
 
   useEffect(() => {
-    // if agent and ua is not initialized, login
+    // if agent and ua is not initialized, login automatically
     const tryLogin = async () => {
       if (
         session?.user?.userType === "agent" &&

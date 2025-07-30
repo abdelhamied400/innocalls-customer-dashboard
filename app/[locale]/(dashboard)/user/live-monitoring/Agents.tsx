@@ -10,19 +10,29 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
+import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 import liveMonitoringService from "@/services/live-monitoring.service";
 import { Group } from "@mui/icons-material";
 import { useQuery } from "@tanstack/react-query";
 
 const Agents = () => {
+  const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
+    "live_monitoring_agents_interval"
+  );
   const {
     data: agents,
     isLoading,
     isError,
     error,
+    isRefetching,
+    refetch,
   } = useQuery({
     queryKey: ["agentsData"],
     queryFn: () => liveMonitoringService.fetchAgents(),
+    refetchOnWindowFocus: false,
+    refetchInterval,
+    refetchOnMount: "always",
+    retry: false,
   });
 
   if (isLoading) {
@@ -50,6 +60,11 @@ const Agents = () => {
           valueSubtitle="Total"
           icon={<Group />}
           color="primary"
+          refetch={refetch}
+          canRefetch
+          isRefetching={isRefetching}
+          refetchInterval={refetchInterval}
+          setRefetchInterval={setRefetchInterval}
         >
           <NoData />
         </StatsDetailedCard>
@@ -68,6 +83,11 @@ const Agents = () => {
         valueSubtitle="Total"
         icon={<Group />}
         color="primary"
+        refetch={refetch}
+        canRefetch
+        isRefetching={isRefetching}
+        refetchInterval={refetchInterval}
+        setRefetchInterval={setRefetchInterval}
       >
         <div className="max-h-[calc(100vh-280px)] overflow-y-auto pe-1">
           <Accordion
