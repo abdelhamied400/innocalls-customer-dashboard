@@ -102,7 +102,7 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <AppSpinner />
-        <span className="text-gray-500">Authenticating...</span>
+        <span className="text-gray-500">Loading...</span>
       </div>
     );
   }
@@ -111,7 +111,7 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <AppSpinner />
-        <span className="text-gray-500">Loading vocab...</span>
+        <span className="text-gray-500">Loading ...</span>
       </div>
     );
   }

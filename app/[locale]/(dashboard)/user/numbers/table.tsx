@@ -44,7 +44,7 @@ import { columns, PhoneNumber } from "./columns";
 import { useQuery } from "@tanstack/react-query";
 import numbersService from "@/services/numbers.service";
 import { useTranslations } from "next-intl";
-
+import useAppStore from "@/store/app.slice";
 
 interface DataTableProps {
   initialData: PhoneNumber[];
@@ -63,9 +63,19 @@ const DataTable = ({
   initialPagination,
 }: DataTableProps) => {
   const router = useRouter();
-  const t = useTranslations('numbers');
-  const tCommonSearch = useTranslations('common.search');
-  const tCommonPagination = useTranslations('common.pagination');
+  const { setPageTitle } = useAppStore();
+
+  const t = useTranslations("numbers");
+  const tCommonSearch = useTranslations("common.search");
+  const tCommonPagination = useTranslations("common.pagination");
+
+  useEffect(() => {
+    setPageTitle(t("title"));
+
+    // Cleanup when component unmounts
+    return () => setPageTitle(null);
+  }, [setPageTitle, t]);
+
   // sorting, filters, and pagination state
   const [sorting, setSorting] = useState<SortingState>(initialSorting);
   const [columnFilters, setColumnFilters] =
@@ -85,7 +95,7 @@ const DataTable = ({
   // use data and initials to set up the table
   const table = useReactTable({
     data,
-    columns:columns(),
+    columns: columns(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
@@ -142,12 +152,12 @@ const DataTable = ({
   return (
     <div className="h-full flex flex-col">
       <div className="number-table-head flex items-center justify-between p-4">
-        <h2>{t('title')}</h2>
+        <h2>{t("title")}</h2>
         <div className="searchbar">
           <Field preIcon={<SearchIcon />}>
             <Input
               variant="field"
-              placeholder={tCommonSearch('placeholder')}
+              placeholder={tCommonSearch("placeholder")}
               value={
                 (table.getColumn("number")?.getFilterValue() as string) ?? ""
               }
@@ -201,7 +211,7 @@ const DataTable = ({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                 {tCommonSearch('noResults')}
+                  {tCommonSearch("noResults")}
                 </TableCell>
               </TableRow>
             )}
@@ -246,7 +256,7 @@ const DataTable = ({
         </div>
 
         <div className="flex items-center gap-2 per-page">
-          <label className="text-sm">{tCommonPagination('rowsPerPage')}:</label>
+          <label className="text-sm">{tCommonPagination("rowsPerPage")}:</label>
           <Select
             onValueChange={(value) => table.setPageSize(Number(value))}
             defaultValue={table.getState().pagination.pageSize.toString()}
@@ -262,7 +272,7 @@ const DataTable = ({
           </Select>
           <p className="text-sm">
             {startRowIndex}-{endRowIndex}
-            {totalItems ? ` ${tCommonPagination('of')} ${totalItems}`: ""}
+            {totalItems ? ` ${tCommonPagination("of")} ${totalItems}` : ""}
           </p>
         </div>
       </div>
