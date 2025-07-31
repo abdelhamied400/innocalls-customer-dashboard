@@ -41,7 +41,7 @@ const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
         card,
         billing_details: {
           address: {
-            country: selectedCountry?.value,
+            country: selectedCountry?.code,
           },
         },
       },

@@ -75,12 +75,16 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
         {getExtensionNumber(to) && (
           <div className="flex justify-end">
             <Button
-              variant="outline"
-              size="sm"
-              className="text-xs px-2 py-1 h-auto"
+              size="icon"
+              variant="ghost"
               onClick={() => handleSpy(getExtensionNumber(to))}
             >
-              Spy
+              <Image
+                src="/assets/icons/incognito.svg"
+                alt="Incognito"
+                width={24}
+                height={24}
+              />
             </Button>
           </div>
         )}
