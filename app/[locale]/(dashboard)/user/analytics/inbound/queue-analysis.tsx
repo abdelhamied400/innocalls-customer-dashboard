@@ -155,7 +155,8 @@ const InboundAnalyticsQueueAnalysis = ({
                     cy="50%"
                     outerRadius={80}
                     dataKey="count"
-                    label={({ timeBucket }) => timeBucket}
+                    nameKey="timeBucket"
+                    label
                   >
                     {abandonedAnalysis.stats.map((entry, index) => (
                       <Cell
@@ -242,7 +243,8 @@ const InboundAnalyticsQueueAnalysis = ({
                     cy="50%"
                     outerRadius={80}
                     dataKey="count"
-                    label={({ timeBucket }) => timeBucket}
+                    nameKey="timeBucket"
+                    label
                   >
                     {timeoutAnalysis.stats.map((entry, index) => (
                       <Cell
