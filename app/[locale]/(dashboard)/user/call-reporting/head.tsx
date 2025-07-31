@@ -253,8 +253,8 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
               getLabel={(option) => option?.label || ""}
               getValue={(option) => option?.value || ""}
               onCreateOption={(newOption) => {
-                // accept only numbers
-                if (/^\d+$/.test(newOption)) {
+                // accept only numbers and plus sign
+                if (/^\+?\d+$/.test(newOption)) {
                   const newExt = { label: newOption, value: newOption };
                   setSourceExtensions((prev) => [...prev, newExt]);
                   return newExt;
@@ -294,10 +294,10 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
               getLabel={(option) => option?.label || ""}
               getValue={(option) => option?.value || ""}
               onCreateOption={(newOption) => {
-                // accept only numbers
-                if (/^\d+$/.test(newOption)) {
+                // accept only numbers and plus sign
+                if (/^\+?\d+$/.test(newOption)) {
                   const newExt = { label: newOption, value: newOption };
-                  setDestinationExtensions((prev) => [...prev, newExt]);
+                  setSourceExtensions((prev) => [...prev, newExt]);
                   return newExt;
                 }
                 toast({
