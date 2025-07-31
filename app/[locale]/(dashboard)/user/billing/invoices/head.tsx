@@ -77,28 +77,30 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
       const fromTotalNum = parseFloat(fromTotal);
       if (isNaN(fromTotalNum) || fromTotalNum < 0) {
         toast({
-          title: tBillingCommon("messages.invalidFromTotal"),
-          description: tBillingCommon("messages.invalidFromTotalHint"),
+          title: t("messages.invalidAmountRange"),
+          description: t("filters.validation.fromTotal.invalid"),
           variant: "destructive",
         });
         hasValidTotalRange = false;
       }
     }
+
     if (toTotal) {
       const toTotalNum = parseFloat(toTotal);
       if (isNaN(toTotalNum) || toTotalNum < 0) {
         toast({
-          title: tBillingCommon("messages.invalidToTotal"),
-          description: tBillingCommon("messages.invalidToTotalHint"),
+          title: t("messages.invalidAmountRange"),
+          description: t("filters.validation.toTotal.invalid"),
           variant: "destructive",
         });
         hasValidTotalRange = false;
       }
     }
+
     if (fromTotal && toTotal && parseFloat(fromTotal) > parseFloat(toTotal)) {
       toast({
-        title: tBillingCommon("messages.invalidTotalRange"),
-        description: tBillingCommon("messages.invalidTotalRangeHint"),
+        title: t("messages.invalidAmountRange"),
+        description:  t("filters.validation.toTotal.isGreaterThanFrom"),
         variant: "destructive",
       });
       hasValidTotalRange = false;

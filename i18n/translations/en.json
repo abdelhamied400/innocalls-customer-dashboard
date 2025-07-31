@@ -465,14 +465,22 @@
         "status": {
           "triggerLabel": "Status",
           "label": "Select invoice status"
+        },
+        "validation": {
+          "fromTotal": {
+            "invalid": "Please enter a valid from total, that is a number and greater than or equal to zero"
+          },
+          "toTotal": {
+            "invalid": "Please enter a valid to total, that is a number and greater than or equal to zero",
+            "isGreaterThanFrom": "To total must be greater than or equal to from total"
+          }
         }
       },
       "messages": {
         "error": "Error fetching invoice URL",
         "downloadError": "Error downloading invoice",
         "unknownError": "An unknown error occurred.",
-        "invalidAmountRange": "Invalid Amount Range",
-        "invalidAmountRangeDesc": "From amount must be less than to amount."
+        "invalidAmountRange": "Invalid Amount Range"
       }
     },
     "charges": {
