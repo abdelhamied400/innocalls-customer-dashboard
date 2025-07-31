@@ -1,6 +1,5 @@
 import { differenceInDays, isAfter } from "date-fns";
 import { useTranslations } from "next-intl";
-import type { Duration } from "date-fns";
 
 export const isValidDateRange = (
   fromDate?: Date,
@@ -11,7 +10,19 @@ export const isValidDateRange = (
 ): boolean => {
   if (!fromDate || !toDate) return true;
 
-  if (isAfter(fromDate, toDate)) {
+  // Compare only the date part (ignore time)
+  const from = new Date(
+    fromDate.getFullYear(),
+    fromDate.getMonth(),
+    fromDate.getDate()
+  );
+  const to = new Date(
+    toDate.getFullYear(),
+    toDate.getMonth(),
+    toDate.getDate()
+  );
+
+  if (isAfter(from, to)) {
     onInvalid?.(
       t?.("form.validation.date.from.isBeforeTo") ||
         "From date cannot be after to date"
@@ -19,7 +30,7 @@ export const isValidDateRange = (
     return false;
   }
 
-  if (maxRange !== -1 && differenceInDays(toDate, fromDate) > maxRange) {
+  if (maxRange !== -1 && differenceInDays(to, from) > maxRange) {
     onInvalid?.(
       t?.("form.validation.date.maxRangeExceeded", { maxRange }) ||
         `Maximum date range is ${maxRange} days`

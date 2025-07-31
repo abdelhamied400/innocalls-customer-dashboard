@@ -17,15 +17,6 @@ import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import { useTranslations } from "next-intl";
 
-type CallReportingTableProps = {
-  initialPagination?: {
-    pageIndex: number;
-    pageSize: number;
-  };
-  initialFilters?: CallReportingFilters;
-  initialSorting?: SortingState;
-};
-
 const defaultFilters: CallReportingFilters = {
   fromDate: new Date(),
   toDate: new Date(),
@@ -36,26 +27,18 @@ const defaultFilters: CallReportingFilters = {
   search: "",
 };
 
-const CallReportingTable = ({
-  initialFilters = {},
-  initialSorting = [],
-  initialPagination = {
-    pageIndex: 0,
-    pageSize: 10,
-  },
-}: CallReportingTableProps) => {
+const CallReportingTable = () => {
   const { toast } = useToast();
 
   const t = useTranslations("callReporting.messages");
 
   const [filters, setFilters] = useState<CallReportingFilters>({
     ...defaultFilters,
-    ...initialFilters,
   });
 
   const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: initialPagination?.pageIndex || 0,
-    pageSize: initialPagination?.pageSize || 10,
+    pageIndex: 0,
+    pageSize: 10,
   });
 
   // Initialize the query to fetch call reporting data
