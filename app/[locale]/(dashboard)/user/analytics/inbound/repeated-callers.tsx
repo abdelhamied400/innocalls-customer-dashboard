@@ -9,6 +9,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
+  Brush,
 } from "recharts";
 import StatsDetailedCard from "@/components/StatsDetailedCard";
 import PaginatedTable from "@/components/Table/PaginatedTable";
@@ -102,7 +103,7 @@ const InboundAnalyticsRepeatedCallers = ({
                   allowDecimals={false}
                 />
                 <Tooltip />
-                <Legend />
+                <Brush dataKey="caller" height={30} stroke="#8884d8" />
                 <Bar
                   dataKey="completedCalls"
                   stackId="a"
