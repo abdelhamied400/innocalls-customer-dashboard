@@ -137,28 +137,28 @@ const PerformanceStats = () => {
               value={`${performanceStats.current.answerRate}%`}
               icon={<TrendingUp />}
               color="primary"
-              info={`+${performanceStats.previous.answerRate}% vs previous`}
+              info={`${performanceStats.change.answerRate}% vs previous`}
             />
             <StatsCard
               title="Total Wait Time"
               value={`${performanceStats.current.totalWaitTime} seconds`}
               icon={<HourglassBottom />}
               color="warning"
-              info={`+${performanceStats.previous.totalWaitTime} seconds vs previous`}
+              info={`${performanceStats.change.totalWaitTime} seconds vs previous`}
             />
             <StatsCard
               title="Total Talk Time"
               value={`${performanceStats.current.totalTalkTime} seconds`}
               icon={<AvTimer />}
               color="info"
-              info={`+${performanceStats.previous.totalTalkTime} seconds vs previous`}
+              info={`${performanceStats.change.totalTalkTime} seconds vs previous`}
             />
             <StatsCard
               title="SLA Compliance"
               value={`${performanceStats.current.slaPercent}%`}
               icon={<GppGood />}
               color="default"
-              info={`+${performanceStats.previous.slaPercent}% vs previous`}
+              info={`${performanceStats.change.slaPercent}% vs previous`}
             />
           </div>
         )}
