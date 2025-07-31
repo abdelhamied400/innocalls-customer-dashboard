@@ -22,7 +22,7 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
   });
 
   return (
-    <div className="quick-stats grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="quick-stats grid grid-cols-1 sm:grid-cols-2 gap-4">
       <StatsCard
         title={t("totalUnansweredCalls")}
         value={data?.totalUnansweredCalls || 0}

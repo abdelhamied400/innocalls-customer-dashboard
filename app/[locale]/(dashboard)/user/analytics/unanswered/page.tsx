@@ -1,12 +1,7 @@
 "use client";
 
 import React, { useEffect } from "react";
-import {
-  AccessTime,
-  BarChart,
-  CalendarMonth,
-  Insights,
-} from "@mui/icons-material";
+import { BarChart, CalendarMonth, Insights } from "@mui/icons-material";
 import StatsDetailedCard from "@/components/StatsDetailedCard";
 import Field from "@/components/ui/field";
 import DatePicker from "@/components/ui/date-picker";
@@ -14,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
 import Select from "@/components/select";
-import { Input } from "@/components/ui/input";
 import useVocabStore from "@/store/vocab.slice";
 import { useFilterManager } from "@/hooks/useFilterManager";
 import { unansweredFiltersSchema } from "@/validation/unansweredFilters";
