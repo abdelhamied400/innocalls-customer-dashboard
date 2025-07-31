@@ -22,15 +22,18 @@ const Dashboard = () => {
           <CallDistributionStats />
         )}
         {Organization?.hasTenant && <CallSummaryStats />}
-        {Organization?.hasTenant && Array.isArray(ergs) && ergs.length > 0 && (
-          <HistoricalStats />
-        )}
-        {Organization?.hasTenant && Array.isArray(ergs) && ergs.length > 0 && (
-          <QuickStats />
-        )}
-        {Organization?.hasTenant && Array.isArray(ergs) && ergs.length > 0 && (
-          <PerformanceStats />
-        )}
+        {Organization?.hasTenant &&
+          session?.user?.role === "Admin" &&
+          Array.isArray(ergs) &&
+          ergs.length > 0 && <HistoricalStats />}
+        {Organization?.hasTenant &&
+          session?.user?.role === "Admin" &&
+          Array.isArray(ergs) &&
+          ergs.length > 0 && <QuickStats />}
+        {Organization?.hasTenant &&
+          session?.user?.role === "Admin" &&
+          Array.isArray(ergs) &&
+          ergs.length > 0 && <PerformanceStats />}
 
         <BillingStats />
       </div>
