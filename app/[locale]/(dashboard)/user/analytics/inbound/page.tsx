@@ -189,7 +189,7 @@ const InboundAnalytics = () => {
                     isMulti
                     label={tCommon("form.fields.agents.label")}
                     showSelectedTags={false}
-                    error={errors.agents[0]}
+                    error={errors.agents}
                   />
                 </div>
               )}

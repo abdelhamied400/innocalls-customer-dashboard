@@ -1,14 +1,20 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PropsWithChildren } from "react";
+import { usePathname } from "@/i18n/routing";
+import { useSession } from "next-auth/react";
 
 interface LinkTabProps {
   href?: string;
-  active?: boolean;
   children: React.ReactNode;
 }
 
-export const LinkTab = ({ href, active, children }: LinkTabProps) => {
+export const LinkTab = ({ href, children }: LinkTabProps) => {
+  const pathname = usePathname();
+  const { data: session } = useSession();
+  const userType = session?.user?.userType || "guest";
+  const active = href ? `/${userType}${href}` === pathname : false;
+
   if (href) {
     return (
       <Link href={href}>

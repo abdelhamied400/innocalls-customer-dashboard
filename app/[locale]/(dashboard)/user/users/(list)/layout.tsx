@@ -7,7 +7,6 @@ import useAppStore from "@/store/app.slice";
 
 type UsersLayoutProps = PropsWithChildren<{}>;
 const UsersLayout = ({ children }: UsersLayoutProps) => {
-  const pathname = usePathname();
   const { setPageTitle } = useAppStore();
 
   const t = useTranslations("users");
@@ -22,15 +21,8 @@ const UsersLayout = ({ children }: UsersLayoutProps) => {
   return (
     <>
       <LinkTabs>
-        <LinkTab href="/users" active={pathname === "/user/users"}>
-          {t("tabs.usersList")}
-        </LinkTab>
-        <LinkTab
-          href="/users/monitor"
-          active={pathname === "/user/users/monitor"}
-        >
-          {t("tabs.monitorUsers")}
-        </LinkTab>
+        <LinkTab href="/users">{t("tabs.usersList")}</LinkTab>
+        <LinkTab href="/users/monitor">{t("tabs.monitorUsers")}</LinkTab>
       </LinkTabs>
       <div className="flex-1 h-[calc(100%-3rem)]">
         <div className="h-full w-full">{children}</div>

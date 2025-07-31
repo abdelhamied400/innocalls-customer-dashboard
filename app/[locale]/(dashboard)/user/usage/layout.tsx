@@ -1,13 +1,13 @@
 "use client";
 import LinkTabs, { LinkTab } from "@/components/LinkTabs";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren, useEffect } from "react";
 import useAppStore from "@/store/app.slice";
+import { LocaleSlug } from "@/i18n/config";
 
 type UsageLayoutProps = PropsWithChildren<{}>;
 const UsageLayout = ({ children }: UsageLayoutProps) => {
-  const pathname = usePathname();
   const { setPageTitle } = useAppStore();
 
   const t = useTranslations("usage");
@@ -23,18 +23,8 @@ const UsageLayout = ({ children }: UsageLayoutProps) => {
     <div className="bg-white rounded-xl p-4 h-auto sm:h-full flex flex-col gap-2">
       <div className="flex justify-between items-center">
         <LinkTabs>
-          <LinkTab
-            href="/usage/summary"
-            active={pathname === "/user/usage/summary"}
-          >
-            {t("layout.tabs.summary")}
-          </LinkTab>
-          <LinkTab
-            href="/usage/detailed"
-            active={pathname === "/user/usage/detailed"}
-          >
-            {t("layout.tabs.detailed")}
-          </LinkTab>
+          <LinkTab href="/usage/summary">{t("layout.tabs.summary")}</LinkTab>
+          <LinkTab href="/usage/detailed">{t("layout.tabs.detailed")}</LinkTab>
         </LinkTabs>
       </div>
       <div className="h-[calc(100%-3rem)]">{children}</div>
