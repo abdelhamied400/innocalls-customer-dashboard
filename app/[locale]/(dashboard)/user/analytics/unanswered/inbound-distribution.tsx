@@ -64,7 +64,6 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
               allowDecimals={false}
             />
             <Tooltip />
-            <Legend />
 
             <Line
               type="monotone"

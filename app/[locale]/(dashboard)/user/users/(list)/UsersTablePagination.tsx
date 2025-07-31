@@ -33,7 +33,7 @@ const UsersTablePagination = ({
   const t = useTranslations("common.pagination");
 
   return (
-    <div className="flex justify-between items-center gap-2 p-4">
+    <div className="flex flex-wrap justify-between items-center gap-2 p-4">
       <div className="pagination">
         <Pagination className="justify-normal">
           <PaginationContent>
@@ -62,7 +62,7 @@ const UsersTablePagination = ({
           </PaginationContent>
         </Pagination>
       </div>
-      <div className="flex items-center gap-2 per-page">
+      <div className="flex flex-wrap items-center gap-2 per-page">
         <label className="text-sm">{t("rowsPerPage")}:</label>
         <Select
           onValueChange={(value) => table.setPageSize(Number(value))}

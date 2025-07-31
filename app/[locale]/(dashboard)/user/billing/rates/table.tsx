@@ -55,7 +55,7 @@ const BillingTable = () => {
   });
 
   return (
-    <div className="h-full flex flex-col border rounded-xl">
+    <div className="h-auto sm:h-full flex flex-col border rounded-xl">
       <PaginatedTable
         data={rates.data || []}
         columns={columns()}

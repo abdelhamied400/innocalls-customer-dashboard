@@ -97,7 +97,7 @@ const InboundAnalytics = () => {
             value=""
             color="primary"
           >
-            <div className="py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="py-4 grid grid-cols-1 lg:grid-cols-3 gap-4">
               <Field
                 label={tCommon("form.fields.fromDate.label")}
                 postIcon={<CalendarIcon className="text-gray-400" />}
@@ -124,7 +124,6 @@ const InboundAnalytics = () => {
               </Field>
               {/* filter by */}
               <Select
-                className="w-full"
                 placeholder={t("filters.filterBy.placeholder")}
                 value={filterByOptions.find(
                   (option) => option.value === values.filterBy
@@ -167,7 +166,7 @@ const InboundAnalytics = () => {
 
               {/* agents */}
               {values.filterBy === "all" && (
-                <div className="col-span-1 sm:col-span-2 lg:col-span-3">
+                <div className="col-span-1 lg:col-span-3">
                   <Select
                     className="w-full"
                     placeholder={tCommon("form.fields.agents.placeholder")}
@@ -195,7 +194,7 @@ const InboundAnalytics = () => {
                 </div>
               )}
             </div>
-            <div className="flex justify-end gap-2">
+            <div className="flex flex-wrap justify-end gap-2">
               <Button variant="outline" onClick={reset}>
                 {tCommon("actions.resetFilter")}
               </Button>

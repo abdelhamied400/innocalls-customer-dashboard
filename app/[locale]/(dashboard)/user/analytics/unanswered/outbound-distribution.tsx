@@ -64,7 +64,6 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
               allowDecimals={false}
             />
             <Tooltip />
-            <Legend />
 
             <Line
               type="monotone"

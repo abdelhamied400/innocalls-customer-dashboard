@@ -55,7 +55,7 @@ const OutboundUnansweredHourly = ({
             <XAxis dataKey="hourOfDay" tickFormatter={(h) => `${h}:00`} />
             <YAxis />
             <Tooltip />
-            <Legend />
+
             <Bar
               dataKey="internalUnansweredCalls"
               stackId="a"

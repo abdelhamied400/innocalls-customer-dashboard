@@ -1,6 +1,14 @@
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from "recharts";
+import {
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 interface OutboundUnansweredHourlyChartProps {
   data: any;
@@ -10,7 +18,9 @@ interface OutboundUnansweredHourlyChartProps {
   };
 }
 
-const OutboundUnansweredHourlyChart: React.FC<OutboundUnansweredHourlyChartProps> = ({ data, barColors }) => (
+const OutboundUnansweredHourlyChart: React.FC<
+  OutboundUnansweredHourlyChartProps
+> = ({ data, barColors }) => (
   <Card>
     <CardHeader>
       <CardTitle>Hourly Internal vs External Unanswered</CardTitle>
@@ -19,10 +29,10 @@ const OutboundUnansweredHourlyChart: React.FC<OutboundUnansweredHourlyChartProps
       <div style={{ width: "100%", height: 300 }}>
         <ResponsiveContainer>
           <BarChart data={data}>
-            <XAxis dataKey="hour" tickFormatter={h => `${h}:00`} />
+            <XAxis dataKey="hour" tickFormatter={(h) => `${h}:00`} />
             <YAxis />
             <Tooltip />
-            <Legend />
+
             <Bar
               dataKey="internal"
               stackId="a"
@@ -42,4 +52,4 @@ const OutboundUnansweredHourlyChart: React.FC<OutboundUnansweredHourlyChartProps
   </Card>
 );
 
-export default OutboundUnansweredHourlyChart; 
+export default OutboundUnansweredHourlyChart;

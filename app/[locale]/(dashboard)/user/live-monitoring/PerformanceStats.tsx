@@ -42,8 +42,8 @@ const PerformanceStatsFilters = ({
   const [sla, setSla] = useState<number>(10);
 
   return (
-    <div className="filters">
-      <div className="flex items-center gap-2">
+    <div className="filters flex flex-col gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <div className="min-w-[200px]">
           <Select
             value={filterType}

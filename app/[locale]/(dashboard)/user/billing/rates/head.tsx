@@ -53,9 +53,9 @@ const RatesHead = ({ filters, setFilters }: RatesHeadProps) => {
 
   return (
     <Collapsible>
-      <div className="users-table-head flex items-center justify-between p-4">
+      <div className="users-table-head flex flex-wrap items-center justify-between p-4">
         <h2>{t("title")}</h2>
-        <div className="actions flex items-center gap-2">
+        <div className="actions flex flex-wrap items-center gap-2">
           <Field preIcon={<Search />}>
             <Input
               variant="field"

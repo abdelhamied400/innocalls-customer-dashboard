@@ -12,7 +12,7 @@ export const FilterBar = ({ children, onClear }: FilterBarProps) => {
 
   return (
     <div className="border-t px-4 py-3">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between">
         <div className="filters flex flex-wrap items-center gap-2">
           {children}
         </div>

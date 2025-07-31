@@ -72,7 +72,7 @@ const ProfileMenu = () => {
     return (
       <div className="flex items-center gap-2">
         <Skeleton className="w-14 h-14 rounded-full" />
-        <div className="flex flex-col items-start gap-1">
+        <div className="flex-col items-start gap-1 hidden md:flex">
           <Skeleton className="w-24 h-4 rounded" />
           <Skeleton className="w-16 h-4 rounded" />
         </div>
@@ -91,7 +91,7 @@ const ProfileMenu = () => {
               className="rounded-full"
             />
           </span>
-          <div className="flex flex-col items-start">
+          <div className="flex-col items-start gap-1 hidden md:flex">
             <p className="font-semibold text-lg">{session?.user.name}</p>
             <p className="text-neutral-400 text-sm">{Organization?.name}</p>
             <p className="text-neutral-400 text-sm">{session?.user.userType}</p>

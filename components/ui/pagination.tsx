@@ -1,8 +1,10 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button, ButtonProps, buttonVariants } from "@/components/ui/button";
-import { EllipsisIcon, SkipBackIcon, SkipForwardIcon } from "lucide-react";
+import { EllipsisIcon } from "lucide-react";
 import { FirstPage, LastPage } from "@mui/icons-material";
+import { useLocale } from "next-intl";
+import { locales, LocaleSlug } from "@/i18n/config";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
@@ -20,7 +22,7 @@ const PaginationContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ul
     ref={ref}
-    className={cn("flex flex-row items-center gap-1", className)}
+    className={cn("flex flex-row flex-wrap items-center gap-1", className)}
     {...props}
   />
 ));
@@ -82,31 +84,49 @@ PaginationLink.displayName = "PaginationButton";
 const PaginationPrevious = ({
   className,
   ...props
-}: React.ComponentProps<typeof PaginationButton>) => (
-  <PaginationButton
-    aria-label="Go to previous page"
-    size="default"
-    className={cn("gap-1 pl-2.5", className)}
-    {...props}
-  >
-    <FirstPage className="w-4 h-4" />
-  </PaginationButton>
-);
+}: React.ComponentProps<typeof PaginationButton>) => {
+  const locale = useLocale() as LocaleSlug;
+  const { dir } = locales[locale];
+
+  return (
+    <PaginationButton
+      aria-label="Go to previous page"
+      size="default"
+      className={cn("gap-1 pl-2.5", className)}
+      {...props}
+    >
+      {dir === "rtl" ? (
+        <LastPage className="w-4 h-4" />
+      ) : (
+        <FirstPage className="w-4 h-4" />
+      )}
+    </PaginationButton>
+  );
+};
 PaginationPrevious.displayName = "PaginationPrevious";
 
 const PaginationNext = ({
   className,
   ...props
-}: React.ComponentProps<typeof PaginationButton>) => (
-  <PaginationButton
-    aria-label="Go to next page"
-    size="default"
-    className={cn("gap-1 pr-2.5", className)}
-    {...props}
-  >
-    <LastPage className="w-4 h-4" />
-  </PaginationButton>
-);
+}: React.ComponentProps<typeof PaginationButton>) => {
+  const locale = useLocale() as LocaleSlug;
+  const { dir } = locales[locale];
+
+  return (
+    <PaginationButton
+      aria-label="Go to next page"
+      size="default"
+      className={cn("gap-1 pr-2.5", className)}
+      {...props}
+    >
+      {dir === "rtl" ? (
+        <FirstPage className="w-4 h-4" />
+      ) : (
+        <LastPage className="w-4 h-4" />
+      )}
+    </PaginationButton>
+  );
+};
 PaginationNext.displayName = "PaginationNext";
 
 const PaginationEllipsis = ({

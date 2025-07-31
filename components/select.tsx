@@ -152,7 +152,7 @@ const Select = ({
               control: () => "control",
               valueContainer: () => "value-container",
               indicatorsContainer: () =>
-                "absolute right-2 top-1/2 -translate-y-1/2 pointer-events-auto",
+                "absolute -end-2 top-1/2 -translate-y-1/2 pointer-events-auto",
               menu: () =>
                 "bg-popover border rounded-md mt-1 text-sm shadow-md text-gray-700",
               option: ({ isFocused, isSelected }) =>

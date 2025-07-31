@@ -31,7 +31,7 @@ const LocaleSwitcher = () => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <div className="flex items-center gap-2">
-          <span className="">{currentLocale?.name}</span>
+          <span className="hidden md:block">{currentLocale?.name}</span>
           <LanguageIcon className="" />
         </div>
       </DropdownMenuTrigger>

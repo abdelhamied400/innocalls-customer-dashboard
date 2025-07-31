@@ -4,8 +4,26 @@ import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 
 import { cn } from "@/lib/utils";
+import { useLocale } from "next-intl";
+import { locales, LocaleSlug } from "@/i18n/config";
 
-const Tabs = TabsPrimitive.Root;
+const Tabs = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
+>(({ className, ...props }, ref) => {
+  const locale = useLocale() as LocaleSlug;
+  const { dir } = locales[locale];
+
+  return (
+    <TabsPrimitive.Root
+      ref={ref}
+      className={cn("flex flex-col", className)}
+      dir={dir}
+      {...props}
+    />
+  );
+});
+Tabs.displayName = TabsPrimitive.Root.displayName;
 
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,

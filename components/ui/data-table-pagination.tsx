@@ -39,7 +39,7 @@ const DataTablePagination = () => {
   };
 
   return (
-    <div className="flex justify-between items-center gap-2 p-4">
+    <div className="flex flex-wrap justify-between items-center gap-2 p-4">
       <div className="pagination">
         <Pagination className="justify-normal">
           <PaginationContent>
@@ -75,7 +75,7 @@ const DataTablePagination = () => {
         </Pagination>
       </div>
 
-      <div className="flex items-center gap-2 per-page">
+      <div className="flex flex-wrap items-center gap-2 per-page">
         <label className="text-sm">Rows per page:</label>
         <Select
           onValueChange={handleperPageChange}

@@ -102,7 +102,7 @@ const InboundAnalyticsIVRAnalysis = ({
                 allowDecimals={false}
               />
               <Tooltip />
-              <Legend />
+
               {allOptions.map((option, index) => (
                 <Bar
                   key={option}

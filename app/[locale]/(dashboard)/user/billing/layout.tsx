@@ -24,8 +24,8 @@ const BillingLayout = ({ children, refillSheet }: BillingLayoutProps) => {
   }, [setPageTitle, t]);
 
   return (
-    <div className="bg-white rounded-xl p-4 h-full flex flex-col gap-2">
-      <div className="flex justify-between items-center">
+    <div className="bg-white rounded-xl p-4 h-auto sm:h-full flex flex-col gap-2">
+      <div className="flex flex-wrap justify-between items-center">
         <LinkTabs>
           <LinkTab
             href="/billing"

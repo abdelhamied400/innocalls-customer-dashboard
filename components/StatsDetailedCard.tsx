@@ -72,7 +72,7 @@ const StatsDetailedCard = ({
       )}
     >
       <div className="flex justify-between items-center gap-1 mb-2">
-        <div className="flex justify-between items-center gap-2 flex-1">
+        <div className="flex justify-between flex-col sm:flex-row sm:items-center gap-2 flex-1">
           <div className="flex items-center gap-2">
             <div className={cn(statsCardIconVariants({ color }))}>
               {isRefetching ? <Spinner className="size-6" /> : icon}
@@ -82,7 +82,7 @@ const StatsDetailedCard = ({
               <p className="text-sm text-gray-500">{subtitle}</p>
             </div>
           </div>
-          <div className="head-value text-end">
+          <div className="head-value text-end flex-1 flex flex-col justify-end">
             {renderValue || (
               <>
                 <p className={cn(statsCardValueVariants({ color }))}>{value}</p>

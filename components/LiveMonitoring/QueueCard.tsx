@@ -154,7 +154,7 @@ const QueueCard = ({
 
   return (
     <div className={queueCardVariants({ variant, color: colorVariant })}>
-      <div className="head flex justify-between items-center gap-1">
+      <div className="head flex justify-between flex-wrap items-center gap-1">
         <div className="flex items-center gap-2">
           <div className={queueCardIconVariants({ color: colorVariant })}>
             {getIcon(title)}
@@ -165,7 +165,7 @@ const QueueCard = ({
             {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
           </div>
         </div>
-        <div className="sla">
+        <div className="sla flex-1 text-end">
           <h3
             className={queueCardValueVariants({
               color: colorVariant,
@@ -177,7 +177,7 @@ const QueueCard = ({
         </div>
       </div>
 
-      <div className="queue-stats grid grid-cols-2 gap-1">
+      <div className="queue-stats grid grid-cols-1 lg:grid-cols-2 gap-1">
         <QueueSummaryStatsCard
           label="In Progress"
           count={activeCalls.length}

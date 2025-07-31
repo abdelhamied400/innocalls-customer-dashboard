@@ -1,7 +1,16 @@
 "use client";
 
 import React from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend } from "recharts";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 interface DailyData {
   date: string;
@@ -17,7 +26,9 @@ interface OutboundDailyVolumeChartProps {
   data: DailyData[];
 }
 
-const OutboundDailyVolumeChart: React.FC<OutboundDailyVolumeChartProps> = ({ data }) => {
+const OutboundDailyVolumeChart: React.FC<OutboundDailyVolumeChartProps> = ({
+  data,
+}) => {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const dayData = payload[0].payload;
@@ -38,37 +49,40 @@ const OutboundDailyVolumeChart: React.FC<OutboundDailyVolumeChartProps> = ({ dat
   return (
     <div className="h-80">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+        <LineChart
+          data={data}
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
           <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-          <XAxis 
-            dataKey="date" 
-            fontSize={12} 
-            tickLine={false} 
+          <XAxis
+            dataKey="date"
+            fontSize={12}
+            tickLine={false}
             axisLine={false}
-            tick={{ fill: '#6B7280' }}
+            tick={{ fill: "#6B7280" }}
           />
-          <YAxis 
-            fontSize={12} 
-            tickLine={false} 
+          <YAxis
+            fontSize={12}
+            tickLine={false}
             axisLine={false}
             allowDecimals={false}
-            tick={{ fill: '#6B7280' }}
+            tick={{ fill: "#6B7280" }}
           />
           <Tooltip content={<CustomTooltip />} />
-          <Legend />
-          <Line 
-            type="monotone" 
-            dataKey="totalCalls" 
-            stroke="#3B82F6" 
-            strokeWidth={3} 
+
+          <Line
+            type="monotone"
+            dataKey="totalCalls"
+            stroke="#3B82F6"
+            strokeWidth={3}
             dot={{ fill: "#3B82F6", r: 4 }}
             name="Total Calls"
           />
-          <Line 
-            type="monotone" 
-            dataKey="answeredCalls" 
-            stroke="#10B981" 
-            strokeWidth={3} 
+          <Line
+            type="monotone"
+            dataKey="answeredCalls"
+            stroke="#10B981"
+            strokeWidth={3}
             dot={{ fill: "#10B981", r: 4 }}
             name="Answered Calls"
           />
@@ -78,4 +92,4 @@ const OutboundDailyVolumeChart: React.FC<OutboundDailyVolumeChartProps> = ({ dat
   );
 };
 
-export default OutboundDailyVolumeChart; 
+export default OutboundDailyVolumeChart;

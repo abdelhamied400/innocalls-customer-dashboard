@@ -1,7 +1,16 @@
 "use client";
 
 import React from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend } from "recharts";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 interface ActivityTimelineData {
   date: string;
@@ -15,11 +24,15 @@ interface UserActivityTimelineChartProps {
   data: ActivityTimelineData[];
 }
 
-const UserActivityTimelineChart: React.FC<UserActivityTimelineChartProps> = ({ data }) => {
+const UserActivityTimelineChart: React.FC<UserActivityTimelineChartProps> = ({
+  data,
+}) => {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const dayData = payload[0].payload;
-      const sessionTimeFormatted = `${Math.floor(dayData.avgSessionTime / 60)}:${(dayData.avgSessionTime % 60).toString().padStart(2, '0')}`;
+      const sessionTimeFormatted = `${Math.floor(
+        dayData.avgSessionTime / 60
+      )}:${(dayData.avgSessionTime % 60).toString().padStart(2, "0")}`;
       return (
         <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
           <p className="font-semibold text-gray-800">{`Date: ${label}`}</p>
@@ -36,37 +49,40 @@ const UserActivityTimelineChart: React.FC<UserActivityTimelineChartProps> = ({ d
   return (
     <div className="h-80">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+        <LineChart
+          data={data}
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
           <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-          <XAxis 
-            dataKey="date" 
-            fontSize={12} 
-            tickLine={false} 
+          <XAxis
+            dataKey="date"
+            fontSize={12}
+            tickLine={false}
             axisLine={false}
-            tick={{ fill: '#6B7280' }}
+            tick={{ fill: "#6B7280" }}
           />
-          <YAxis 
-            fontSize={12} 
-            tickLine={false} 
+          <YAxis
+            fontSize={12}
+            tickLine={false}
             axisLine={false}
             allowDecimals={false}
-            tick={{ fill: '#6B7280' }}
+            tick={{ fill: "#6B7280" }}
           />
           <Tooltip content={<CustomTooltip />} />
-          <Legend />
-          <Line 
-            type="monotone" 
-            dataKey="activeUsers" 
-            stroke="#3B82F6" 
-            strokeWidth={3} 
+
+          <Line
+            type="monotone"
+            dataKey="activeUsers"
+            stroke="#3B82F6"
+            strokeWidth={3}
             dot={{ fill: "#3B82F6", r: 4 }}
             name="Active Users"
           />
-          <Line 
-            type="monotone" 
-            dataKey="totalLogins" 
-            stroke="#10B981" 
-            strokeWidth={3} 
+          <Line
+            type="monotone"
+            dataKey="totalLogins"
+            stroke="#10B981"
+            strokeWidth={3}
             dot={{ fill: "#10B981", r: 4 }}
             name="Total Logins"
           />
@@ -76,4 +92,4 @@ const UserActivityTimelineChart: React.FC<UserActivityTimelineChartProps> = ({ d
   );
 };
 
-export default UserActivityTimelineChart; 
+export default UserActivityTimelineChart;

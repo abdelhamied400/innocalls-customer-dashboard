@@ -1,7 +1,16 @@
 "use client";
 
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 interface AgentPerformanceData {
   agentExt: number;
@@ -16,7 +25,9 @@ interface OutboundAgentPerformanceChartProps {
   data: AgentPerformanceData[];
 }
 
-const OutboundAgentPerformanceChart: React.FC<OutboundAgentPerformanceChartProps> = ({ data }) => {
+const OutboundAgentPerformanceChart: React.FC<
+  OutboundAgentPerformanceChartProps
+> = ({ data }) => {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const agent = payload[0].payload;
@@ -36,33 +47,36 @@ const OutboundAgentPerformanceChart: React.FC<OutboundAgentPerformanceChartProps
   return (
     <div className="h-80">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+        <BarChart
+          data={data}
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
           <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-          <XAxis 
-            dataKey="agentExt" 
-            fontSize={12} 
-            tickLine={false} 
+          <XAxis
+            dataKey="agentExt"
+            fontSize={12}
+            tickLine={false}
             axisLine={false}
-            tick={{ fill: '#6B7280' }}
+            tick={{ fill: "#6B7280" }}
           />
-          <YAxis 
-            fontSize={12} 
-            tickLine={false} 
+          <YAxis
+            fontSize={12}
+            tickLine={false}
             axisLine={false}
             allowDecimals={false}
-            tick={{ fill: '#6B7280' }}
+            tick={{ fill: "#6B7280" }}
           />
           <Tooltip content={<CustomTooltip />} />
-          <Legend />
-          <Bar 
-            dataKey="callsMade" 
-            fill="#3B82F6" 
+
+          <Bar
+            dataKey="callsMade"
+            fill="#3B82F6"
             radius={[4, 4, 0, 0]}
             name="Calls Made"
           />
-          <Bar 
-            dataKey="answeredCalls" 
-            fill="#10B981" 
+          <Bar
+            dataKey="answeredCalls"
+            fill="#10B981"
             radius={[4, 4, 0, 0]}
             name="Answered Calls"
           />
@@ -72,4 +86,4 @@ const OutboundAgentPerformanceChart: React.FC<OutboundAgentPerformanceChartProps
   );
 };
 
-export default OutboundAgentPerformanceChart; 
+export default OutboundAgentPerformanceChart;

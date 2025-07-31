@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown } from "lucide-react";
 import ActionsCell from "./cells/ActionsCell";
 import { useTranslations } from "next-intl";
+import { ColumnDef } from "@tanstack/react-table";
 
 // User type definition
 export type User = {
@@ -19,10 +20,9 @@ export type User = {
 // Table columns definition
 export const columns = (
   t: ReturnType<typeof useTranslations>
-): import("@tanstack/react-table").ColumnDef<User, any>[] => [
+): ColumnDef<User, any>[] => [
   {
     accessorKey: "ext",
-    enablePinning: true,
     header: ({ column }: { column: any }) => (
       <Button
         variant="ghost"

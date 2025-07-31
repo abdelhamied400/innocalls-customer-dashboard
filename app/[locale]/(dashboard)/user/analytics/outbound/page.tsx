@@ -2,12 +2,7 @@
 
 import React, { useEffect } from "react";
 import { Clock, BarChart3, Timer, Users } from "lucide-react";
-import {
-  AccessTime,
-  BarChart,
-  CalendarMonth,
-  Insights,
-} from "@mui/icons-material";
+import { BarChart, CalendarMonth, Insights } from "@mui/icons-material";
 import StatsDetailedCard from "@/components/StatsDetailedCard";
 import Field from "@/components/ui/field";
 import DatePicker from "@/components/ui/date-picker";
@@ -22,7 +17,6 @@ import HourlyDistributionAnalytics from "./hourly-distribution";
 import DateDistributionAnalytics from "./date-distribution";
 import AgentStatsAnalytics from "./agent-stats";
 import Select from "@/components/select";
-import { Input } from "@/components/ui/input";
 import useVocabStore from "@/store/vocab.slice";
 import { useTranslations } from "next-intl";
 import useAppStore from "@/store/app.slice";
@@ -122,7 +116,7 @@ const OutboundAnalytics = () => {
                 />
               </div>
             </div>
-            <div className="flex justify-end gap-2">
+            <div className="flex flex-wrap justify-end gap-2">
               <Button variant="outline" onClick={reset}>
                 {tCommon("actions.resetFilter")}
               </Button>

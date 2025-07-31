@@ -20,7 +20,9 @@ const AppNavbar = () => {
             </Button>
           )}
 
-          <h1>{pageTitle || t("navigation.dashboard")}</h1>
+          <h1 className="hidden sm:block">
+            {pageTitle || t("navigation.dashboard")}
+          </h1>
         </div>
         <div className="flex items-center gap-4 actions">
           <LocaleSwitcher />

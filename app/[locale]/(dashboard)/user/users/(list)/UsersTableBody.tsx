@@ -25,15 +25,7 @@ const UsersTableBody = ({ table }: UsersTableBodyProps) => {
           {table.getHeaderGroups().map((headerGroup: any) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header: any) => (
-                <TableHead
-                  key={header.id}
-                  style={
-                    header.id === "ext"
-                      ? getPinningLeftStyles(header.column)
-                      : {}
-                  }
-                  className="bg-gray-100"
-                >
+                <TableHead key={header.id} className="bg-gray-100">
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -53,15 +45,7 @@ const UsersTableBody = ({ table }: UsersTableBodyProps) => {
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell: any) => (
-                  <TableCell
-                    key={cell.id}
-                    style={
-                      cell.column.id === "ext"
-                        ? getPinningLeftStyles(cell.column)
-                        : {}
-                    }
-                    className={"bg-white"}
-                  >
+                  <TableCell key={cell.id} className={"bg-white"}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

@@ -1,7 +1,16 @@
 "use client";
 
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
 
 interface UserCallMetricsData {
   userId: string;
@@ -19,12 +28,20 @@ interface UserCallMetricsChartProps {
   data: UserCallMetricsData[];
 }
 
-const UserCallMetricsChart: React.FC<UserCallMetricsChartProps> = ({ data }) => {
+const UserCallMetricsChart: React.FC<UserCallMetricsChartProps> = ({
+  data,
+}) => {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const user = payload[0].payload;
-      const answerRate = Math.round((user.answeredCalls / user.totalCalls) * 100);
-      const avgDurationFormatted = `${Math.floor(user.avgCallDuration / 60)}:${(user.avgCallDuration % 60).toString().padStart(2, '0')}`;
+      const answerRate = Math.round(
+        (user.answeredCalls / user.totalCalls) * 100
+      );
+      const avgDurationFormatted = `${Math.floor(user.avgCallDuration / 60)}:${(
+        user.avgCallDuration % 60
+      )
+        .toString()
+        .padStart(2, "0")}`;
       return (
         <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
           <p className="font-semibold text-gray-800">{`User: ${label}`}</p>
@@ -42,42 +59,45 @@ const UserCallMetricsChart: React.FC<UserCallMetricsChartProps> = ({ data }) => 
   return (
     <div className="h-80">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+        <BarChart
+          data={data}
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+        >
           <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-          <XAxis 
-            dataKey="name" 
-            fontSize={12} 
-            tickLine={false} 
+          <XAxis
+            dataKey="name"
+            fontSize={12}
+            tickLine={false}
             axisLine={false}
-            tick={{ fill: '#6B7280' }}
+            tick={{ fill: "#6B7280" }}
             angle={-45}
             textAnchor="end"
             height={80}
           />
-          <YAxis 
-            fontSize={12} 
-            tickLine={false} 
+          <YAxis
+            fontSize={12}
+            tickLine={false}
             axisLine={false}
             allowDecimals={false}
-            tick={{ fill: '#6B7280' }}
+            tick={{ fill: "#6B7280" }}
           />
           <Tooltip content={<CustomTooltip />} />
-          <Legend />
-          <Bar 
-            dataKey="totalCalls" 
-            fill="#3B82F6" 
+
+          <Bar
+            dataKey="totalCalls"
+            fill="#3B82F6"
             radius={[4, 4, 0, 0]}
             name="Total Calls"
           />
-          <Bar 
-            dataKey="answeredCalls" 
-            fill="#10B981" 
+          <Bar
+            dataKey="answeredCalls"
+            fill="#10B981"
             radius={[4, 4, 0, 0]}
             name="Answered Calls"
           />
-          <Bar 
-            dataKey="missedCalls" 
-            fill="#EF4444" 
+          <Bar
+            dataKey="missedCalls"
+            fill="#EF4444"
             radius={[4, 4, 0, 0]}
             name="Missed Calls"
           />
@@ -87,4 +107,4 @@ const UserCallMetricsChart: React.FC<UserCallMetricsChartProps> = ({ data }) => 
   );
 };
 
-export default UserCallMetricsChart; 
+export default UserCallMetricsChart;

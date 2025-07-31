@@ -156,9 +156,9 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
 
   return (
     <Collapsible>
-      <div className="call-reporting-table-head flex items-center justify-between p-4">
+      <div className="call-reporting-table-head flex flex-wrap items-center justify-between p-4">
         <h2>{t("title")}</h2>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <div className="actions flex items-center gap-2">
             <CollapsibleTrigger asChild>
               <Toggle pressed={true} className="rounded-full">

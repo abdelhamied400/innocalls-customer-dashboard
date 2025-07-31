@@ -48,7 +48,6 @@ const OutboundCallDistributionLineChart: React.FC<
               allowDecimals={false}
             />
             <Tooltip />
-            <Legend />
 
             <Line
               type="monotone"

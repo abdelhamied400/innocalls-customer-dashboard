@@ -133,9 +133,9 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
 
   return (
     <Collapsible>
-      <div className="usage-summary-table-head flex items-center justify-between p-4">
+      <div className="usage-summary-table-head flex flex-wrap items-center justify-between p-4">
         <h2>{t("title")}</h2>
-        <div className="actions flex items-center gap-2">
+        <div className="actions flex flex-wrap items-center gap-2">
           <CollapsibleTrigger asChild>
             <Toggle pressed={true} className="rounded-full">
               <FilterAltOutlined />
