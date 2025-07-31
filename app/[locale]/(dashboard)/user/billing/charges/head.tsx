@@ -40,8 +40,8 @@ const ChargesHead = ({ filters, setFilters }: ChargesHeadProps) => {
   const tCommon = useTranslations("common");
   const { toast } = useToast();
 
-  const [fromDate, setFromDate] = useState<Date | undefined>(defaultFromDate);
-  const [toDate, setToDate] = useState<Date | undefined>(defaultToDate);
+  const [fromDate, setFromDate] = useState<Date>(defaultFromDate);
+  const [toDate, setToDate] = useState<Date>(defaultToDate);
 
   const applyFilters = () => {
     const isValid = isValidDateRange(
@@ -114,7 +114,7 @@ const ChargesHead = ({ filters, setFilters }: ChargesHeadProps) => {
                 className="flex-1"
                 placeholder={tBillingCommon("filters.fromDate.placeholder")}
                 value={fromDate}
-                onChange={setFromDate}
+                onChange={(date) => setFromDate(date || new Date())}
               />
             </Field>
             <Field
@@ -126,7 +126,7 @@ const ChargesHead = ({ filters, setFilters }: ChargesHeadProps) => {
                 className="flex-1"
                 placeholder={tBillingCommon("filters.toDate.placeholder")}
                 value={toDate}
-                onChange={setToDate}
+                onChange={(date) => setToDate(date || new Date())}
               />
             </Field>
           </FilterBox>
