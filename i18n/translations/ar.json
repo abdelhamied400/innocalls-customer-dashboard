@@ -63,6 +63,14 @@
     "audio": {
       "duration": "المدة",
       "unknownError": "حدث خطأ غير معروف"
+    },
+    "date": {
+      "h": "س",
+      "m": "د",
+      "s": "ث",
+      "day": "يوم",
+      "month": "شهر",
+      "year": "سنة"
     }
   },
   "numbers": {

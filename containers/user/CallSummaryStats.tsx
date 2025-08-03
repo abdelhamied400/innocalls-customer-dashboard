@@ -30,7 +30,7 @@ const CallSummaryStats = () => {
       <StatsCard
         title={t("totalIncoming.title")}
         value={summaryStats?.inbound?.current || "0"}
-        info={`${Math.round(summaryStats?.inbound?.change || 0)} % ${t(
+        info={`${Math.round(summaryStats?.inbound?.change || 0)}% ${t(
           "totalIncoming.info"
         )}`}
         icon={<CallReceived />}

@@ -63,6 +63,14 @@
     "audio": {
       "duration": "Duration",
       "unknownError": "An unknown error occurred"
+    },
+    "date": {
+      "h": "H",
+      "m": "M",
+      "s": "S",
+      "day": "Day",
+      "month": "Month",
+      "year": "Year"
     }
   },
   "numbers": {
