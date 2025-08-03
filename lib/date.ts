@@ -66,20 +66,23 @@ export const durationToSeconds = (duration: string) => {
 };
 
 // 2m 30s format
-export const formatDurationShort = (seconds: number): string => {
+export const formatDurationShort = (
+  seconds: number,
+  { t = (key: string) => key }
+): string => {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60) % 60;
   const secs = Math.round(seconds % 60);
 
   const parts: string[] = [];
   if (hours > 0) {
-    parts.push(`${hours}h`);
+    parts.push(`${hours}${t("date.h")}`);
   }
   if (minutes > 0) {
-    parts.push(`${minutes}m`);
+    parts.push(`${minutes}${t("date.m")}`);
   }
   if (secs > 0 || parts.length === 0) {
-    parts.push(`${secs}s`);
+    parts.push(`${secs}${t("date.s")}`);
   }
 
   return parts.join(" ");

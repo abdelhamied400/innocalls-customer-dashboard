@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import api from "./api";
+import { arEG, enUS } from "date-fns/locale";
 
 type FetchCallSummaryStatsResponse = {
   inbound: {
@@ -220,13 +221,15 @@ export default {
     const res = await api.get("/inbound-statistics/wait-time-metrics");
     return res.data;
   },
-  getQuickStats: async (): Promise<QuickStatsResponse> => {
+  getQuickStats: async (locale: string): Promise<QuickStatsResponse> => {
     const res = await api.get("/inbound-statistics/last-7-days-metrics");
 
     return {
       ...res.data,
       peakDay: res.data.peakDay
-        ? format(new Date(res.data.peakDay), "EEEE")
+        ? format(new Date(res.data.peakDay), "EEEE", {
+            locale: locale === "ar" ? arEG : enUS,
+          })
         : "N/A",
       averageDailyCalls: Math.round(res.data.averageDailyCalls * 100) / 100,
     };

@@ -9,10 +9,11 @@ import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-int
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import statsService from "@/services/stats.service";
 import { formatDurationShort } from "@/lib/date";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 const TalkTimeStats = () => {
   const t = useTranslations("dashboard.stats.talkTimeStats");
+  const tCommon = useTranslations("common");
 
   const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
     "talk_time_stats_refetch_interval"
@@ -54,7 +55,9 @@ const TalkTimeStats = () => {
       <div className="space-y-4">
         <StatsMetricCard
           label={t("averagePerCall")}
-          value={formatDurationShort(talkTimeStats?.averageTalkTime)}
+          value={formatDurationShort(talkTimeStats?.averageTalkTime, {
+            t: tCommon,
+          })}
           color="success"
           performanceChange={`${
             talkTimeStats?.averageTalkTimeChangePercentage

@@ -12,6 +12,7 @@ import { useTranslations } from "next-intl";
 
 const WaitTimeStats = () => {
   const t = useTranslations("dashboard.stats.waitTimeStats");
+  const tCommon = useTranslations("common");
 
   const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
     "wait_time_stats_refetch_interval"
@@ -52,7 +53,9 @@ const WaitTimeStats = () => {
       <div className="space-y-4">
         <StatsMetricCard
           label={t("averageWait")}
-          value={formatDurationShort(waitTimeStats?.averageWaitTime)}
+          value={formatDurationShort(waitTimeStats?.averageWaitTime, {
+            t: tCommon,
+          })}
           color="info"
           performanceChange={`${Math.round(
             waitTimeStats?.averageWaitTimeChange
@@ -63,7 +66,8 @@ const WaitTimeStats = () => {
             <span className="text-gray-600">{t("completedCalls")}</span>
             <span className="font-medium text-gray-800">
               {formatDurationShort(
-                waitTimeStats?.completedCalls?.averageWaitTime
+                waitTimeStats?.completedCalls?.averageWaitTime,
+                { t: tCommon }
               )}{" "}
               {t("avg")}
             </span>
@@ -72,7 +76,8 @@ const WaitTimeStats = () => {
             <span className="text-gray-600">{t("abandonedCalls")}</span>
             <span className="font-medium text-gray-800">
               {formatDurationShort(
-                waitTimeStats?.abandonedCalls?.averageWaitTime
+                waitTimeStats?.abandonedCalls?.averageWaitTime,
+                { t: tCommon }
               )}{" "}
               {t("avg")}
             </span>
@@ -81,7 +86,8 @@ const WaitTimeStats = () => {
             <span className="text-gray-600">{t("timeoutCalls")}</span>
             <span className="font-medium text-gray-800">
               {formatDurationShort(
-                waitTimeStats?.timeoutCalls?.averageWaitTime
+                waitTimeStats?.timeoutCalls?.averageWaitTime,
+                { t: tCommon }
               )}{" "}
               {t("avg")}
             </span>

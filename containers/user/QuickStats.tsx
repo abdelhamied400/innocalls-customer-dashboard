@@ -10,7 +10,7 @@ import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-int
 import statsService from "@/services/stats.service";
 import { BarChart, Bolt, ShowChart } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 const QuickStats = () => {
   const t = useTranslations("dashboard.stats.quickStats");
@@ -18,6 +18,7 @@ const QuickStats = () => {
   const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
     "quick_stats_refetch_interval"
   );
+  const locale = useLocale();
 
   const {
     data: quickStats,
@@ -28,7 +29,7 @@ const QuickStats = () => {
     refetch,
   } = useLocalizedQuery({
     queryKey: ["quick-stats"],
-    queryFn: statsService.getQuickStats,
+    queryFn: () => statsService.getQuickStats(locale),
   });
 
   if (isLoading) {
