@@ -1687,7 +1687,14 @@
       "noDataMessage": "No active calls at the moment",
       "refreshing": "Refreshing...",
       "error": "Failed to load live calls",
-      "retry": "Retry"
+      "retry": "Retry",
+      "callCard": {
+        "error": "Error",
+        "sipConnectionError": "You must be connected to a WebRTC/softphone client to monitor calls",
+        "from": "From",
+        "to": "To",
+        "duration": "Duration"
+      }
     }
   }
 }

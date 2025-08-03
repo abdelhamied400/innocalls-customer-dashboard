@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import useAppStore from "@/store/app.slice";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 interface LiveCallProps {
   from: string;
@@ -19,6 +20,8 @@ const getExtensionNumber = (phoneNumber: string): string => {
 };
 
 const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
+  const t = useTranslations("liveMonitor.liveCalls.callCard");
+
   const { toast } = useToast();
   const { spy, extensionState } = useSip();
   const { setWebrtcOpen } = useAppStore();
@@ -32,8 +35,8 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
     setWebrtcOpen(true);
     if (extensionState !== "connected") {
       toast({
-        title: "Error",
-        description: "Please connect your extension first.",
+        title: t("error"),
+        description: t("sipConnectionError"),
         variant: "destructive",
       });
       return;
@@ -46,7 +49,7 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
       <div className="from bg-white border p-2 rounded-lg">
         <div className="flex items-center gap-2">
           <CallMade className="text-success-500 !text-lg" />
-          <span className="text-xs font-medium">From</span>
+          <span className="text-xs font-medium">{t("from")}</span>
         </div>
         <div className="text-sm font-semibold text-gray-800">{from}</div>
         {getExtensionNumber(from) && (
@@ -69,7 +72,7 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
       <div className="from bg-white border p-2 rounded-lg">
         <div className="flex items-center gap-2">
           <CallReceived className="text-primary-500 !text-lg" />
-          <span className="text-xs font-medium">To</span>
+          <span className="text-xs font-medium">{t("to")}</span>
         </div>
         <div className="text-sm font-semibold text-gray-800">{to}</div>
         {getExtensionNumber(to) && (
@@ -91,7 +94,7 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
       </div>
       <hr />
       <div className="flex justify-between gap-1">
-        <p className="text-xs text-gray-500">Duration</p>
+        <p className="text-xs text-gray-500">{t("duration")}</p>
         <div className="duration flex items-center gap-1">
           <span className="block w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
           <p className="text-xs text-green-500">
