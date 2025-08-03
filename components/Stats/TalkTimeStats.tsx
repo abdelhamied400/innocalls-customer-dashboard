@@ -9,8 +9,11 @@ import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-int
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import statsService from "@/services/stats.service";
 import { formatDurationShort } from "@/lib/date";
+import { useTranslations } from "next-intl";
 
 const TalkTimeStats = () => {
+  const t = useTranslations("dashboard.stats.talkTimeStats");
+
   const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
     "talk_time_stats_refetch_interval"
   );
@@ -37,10 +40,12 @@ const TalkTimeStats = () => {
 
   return (
     <StatsDetailedCard
-      title="Talk Time"
-      value={`${talkTimeStats.totalTalkTimeHours}h`}
-      subtitle="Last 30 Days"
-      valueSubtitle={`${talkTimeStats.totalTalkTimeChangePercentage}% vs last month`}
+      title={t("title")}
+      value={`${talkTimeStats?.totalTalkTimeHours}${t("h")}`}
+      subtitle={t("subtitle")}
+      valueSubtitle={`${talkTimeStats?.totalTalkTimeChangePercentage}% ${t(
+        "valueSubtitle"
+      )}`}
       icon={<AvTimer />}
       color="success"
       isRefetching={isRefetching}
@@ -48,22 +53,24 @@ const TalkTimeStats = () => {
       {/* Talk Time Metrics */}
       <div className="space-y-4">
         <StatsMetricCard
-          label="Average per Call"
-          value={formatDurationShort(talkTimeStats.averageTalkTime)}
+          label={t("averagePerCall")}
+          value={formatDurationShort(talkTimeStats?.averageTalkTime)}
           color="success"
-          performanceChange={`${talkTimeStats.averageTalkTimeChangePercentage}% vs last month`}
+          performanceChange={`${
+            talkTimeStats?.averageTalkTimeChangePercentage
+          }% ${t("valueSubtitle")}`}
         />
 
         <div className="grid grid-cols-2 gap-3">
           <StatsSubCard
             color="success"
-            value={`${talkTimeStats.dailyAverageHours}h`}
-            label="Daily Average"
+            value={`${talkTimeStats?.dailyAverageHours}${t("h")}`}
+            label={t("dailyAverage")}
           />
           <StatsSubCard
             color="success"
-            value={`${talkTimeStats.peakHourTalkTimeHours}h`}
-            label="Peak Hour"
+            value={`${talkTimeStats?.peakHourTalkTimeHours}${t("h")}`}
+            label={t("peakHour")}
           />
         </div>
       </div>

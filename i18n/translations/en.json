@@ -772,6 +772,103 @@
       "totalAnsweredCalls": {
         "title": "Total Answered Calls/Day",
         "totalCalls": "Total Calls"
+      },
+      "callSummaryStats": {
+        "totalIncoming": {
+          "title": "Total Incoming",
+          "info": "vs last month"
+        },
+        "totalOutgoing": {
+          "title": "Total Outgoing",
+          "info": "vs last month"
+        },
+        "answerRate": {
+          "title": "Answer Rate",
+          "info": "vs last month"
+        },
+        "talkTime": {
+          "title": "Talk Time",
+          "info": "vs last month"
+        },
+        "waitTime": {
+          "title": "Wait Time",
+          "info": "vs last month"
+        },
+        "internalCalls": {
+          "title": "Internal Calls",
+          "info": "vs last month"
+        }
+      },
+      "quickStats": {
+        "peakDay": {
+          "title": "Peak Day"
+        },
+        "avgDailyCalls": {
+          "title": "Avg Daily Calls"
+        },
+        "bestResponse": {
+          "title": "Best Response"
+        }
+      },
+      "performanceOverview": {
+        "title": "Performance Overview",
+        "chart": {
+          "talkTime": {
+            "label": "Talk Time (min)"
+          },
+          "waitTime": {
+            "label": "Wait Time (sec)"
+          },
+          "tooltip": {
+            "talkTime": "Talk Time",
+            "waitTime": "Wait Time"
+          },
+          "time": {
+            "s": "s",
+            "m": "m"
+          }
+        }
+      },
+      "callTrend": {
+        "title": "Call Overview",
+        "chart": {
+          "total": {
+            "label": "Total Calls "
+          },
+          "answered": {
+            "label": "Answered"
+          },
+          "missed": {
+            "label": "Missed"
+          }
+        }
+      },
+      "totalCallsStats": {
+        "title": "Total Calls ",
+        "subtitle": "Last 30 Days",
+        "valueSubtitle": "vs last month",
+        "completedCalls": "Completed Calls",
+        "abandonedCalls": "Abandoned Calls",
+        "timeoutCalls": "Timeout Calls"
+      },
+      "waitTimeStats": {
+        "title": "Wait Time",
+        "subtitle": "Last 30 Days",
+        "valueSubtitle": "vs last month",
+        "averageWait": "Average Wait",
+        "completedCalls": "Completed Calls",
+        "abandonedCalls": "Abandoned Calls",
+        "timeoutCalls": "Timeout Calls",
+        "avg": "avg"
+      },
+      "talkTimeStats": {
+        "title": "Talk Time",
+        "subtitle": "Last 30 Days",
+        "valueSubtitle": "vs last month",
+        "averagePerCall": "Average per Call",
+        "dailyAverage": "Daily Average",
+        "peakHour": "Peak Hour",
+        "h": "h"
       }
     },
     "containers": {

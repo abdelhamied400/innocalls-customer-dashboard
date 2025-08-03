@@ -7,8 +7,11 @@ import { Call } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 import statsService from "@/services/stats.service";
+import { useTranslations } from "next-intl";
 
 const TotalCallsStats = () => {
+  const t = useTranslations("dashboard.stats.totalCallsStats");
+
   const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
     "total_calls_stats_refetch_interval"
   );
@@ -35,32 +38,34 @@ const TotalCallsStats = () => {
 
   return (
     <StatsDetailedCard
-      title="Total Calls"
-      value={totalCallsStats.totalCalls}
-      subtitle="Last 30 Days"
-      valueSubtitle={`${totalCallsStats.previousTotalCalls}% vs last month`}
+      title={t("title")}
+      value={totalCallsStats?.totalCalls}
+      subtitle={t("subtitle")}
+      valueSubtitle={`${totalCallsStats?.previousTotalCalls}% ${t(
+        "valueSubtitle"
+      )}`}
       icon={<Call />}
       color="primary"
       isRefetching={isRefetching}
     >
       <PercentBarStat
-        label="Completed Calls"
-        value={totalCallsStats.completed.count}
-        percentage={totalCallsStats.completed.percentage}
+        label={t("completedCalls")}
+        value={totalCallsStats?.completed?.count}
+        percentage={totalCallsStats?.completed?.percentage}
         color="green"
         showPercentage
       />
       <PercentBarStat
-        label="Abandoned Calls"
-        value={totalCallsStats.abandoned.count}
-        percentage={totalCallsStats.abandoned.percentage}
+        label={t("abandonedCalls")}
+        value={totalCallsStats?.abandoned?.count}
+        percentage={totalCallsStats?.abandoned?.percentage}
         color="orange"
         showPercentage
       />
       <PercentBarStat
-        label="Timeout Calls"
-        value={totalCallsStats.timeout.count}
-        percentage={totalCallsStats.timeout.percentage}
+        label={t("timeoutCalls")}
+        value={totalCallsStats?.timeout?.count}
+        percentage={totalCallsStats?.timeout?.percentage}
         color="red"
         showPercentage
       />

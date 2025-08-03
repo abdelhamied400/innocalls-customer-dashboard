@@ -19,15 +19,18 @@ import { RocketLaunch } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import statsService from "@/services/stats.service";
 import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
+import { useTranslations } from "next-intl";
 
 const PerformanceOverview = () => {
+  const t = useTranslations("dashboard.stats.performanceOverview");
+
   const chartConfig: ChartConfig = {
     talkTime: {
-      label: "Talk Time (min)",
+      label: t("chart.talkTime.label"),
       color: "#10B981",
     },
     waitTime: {
-      label: "Wait Time (sec)",
+      label: t("chart.waitTime.label"),
       color: "#F59E0B",
     },
   };
@@ -53,7 +56,7 @@ const PerformanceOverview = () => {
 
   return (
     <ChartCard
-      title={"Performance Overview"}
+      title={t("title")}
       icon={<RocketLaunch />}
       color="info"
       className="h-full"
@@ -80,9 +83,9 @@ const PerformanceOverview = () => {
               fontSize={12}
               tickFormatter={(value) => {
                 if (value >= 60) {
-                  return `${Math.round(value / 60)}m`;
+                  return `${Math.round(value / 60)}${t("chart.time.m")} `;
                 }
-                return `${value}s`;
+                return `${value}${t("chart.time.s")} `;
               }}
             />
             <ChartTooltip
@@ -90,11 +93,16 @@ const PerformanceOverview = () => {
               formatter={(value: number, name: string) => {
                 if (name === "talkTime") {
                   return [
-                    `${Math.round(value / 60)}m ${value % 60}s`,
-                    "Talk Time",
+                    `${Math.round(value / 60)}${t("chart.time.m")} ${
+                      value % 60
+                    }${t("chart.time.s")} `,
+                    t("chart.tooltip.talkTime"),
                   ];
                 }
-                return [`${value}s`, "Wait Time"];
+                return [
+                  `${value}${t("chart.time.s")} `,
+                  t("chart.tooltip.waitTime"),
+                ];
               }}
             />
 
