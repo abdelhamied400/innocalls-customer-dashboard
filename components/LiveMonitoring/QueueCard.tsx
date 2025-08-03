@@ -176,7 +176,7 @@ const QueueCard = ({
               color: colorVariant,
             })}
           >
-            {Math.round(parseFloat(sla || "99"))}%
+            {Math.round(parseFloat(sla || "0"))}%
           </h3>
           <p>{t("sla")}</p>
         </div>
