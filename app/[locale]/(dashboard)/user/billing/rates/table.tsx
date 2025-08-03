@@ -3,7 +3,7 @@
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { useState } from "react";
 import { columns } from "./columns";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import billingService from "@/services/billing.service";
 import RatesHead from "./head";
 import PaginatedTable from "@/components/Table/PaginatedTable";
@@ -41,7 +41,7 @@ const BillingTable = () => {
       total: 0,
     },
     isLoading,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["rates", pagination, filters],
     queryFn: async () =>
       await billingService.getRatesList(

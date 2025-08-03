@@ -41,7 +41,7 @@ import Field from "@/components/ui/field";
 import { SearchIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { columns, PhoneNumber } from "./columns";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import numbersService from "@/services/numbers.service";
 import { useTranslations } from "next-intl";
 import useAppStore from "@/store/app.slice";
@@ -86,7 +86,7 @@ const DataTable = ({
   });
 
   // client-side data fetching
-  const { data } = useQuery({
+  const { data } = useLocalizedQuery({
     queryKey: ["numbers"],
     queryFn: numbersService.fetchNumbers,
     initialData,

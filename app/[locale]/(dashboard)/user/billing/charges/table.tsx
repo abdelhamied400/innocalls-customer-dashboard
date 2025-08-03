@@ -1,60 +1,13 @@
 "use client";
 
-import {
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  PaginationState,
-  SortingState,
-  useReactTable,
-} from "@tanstack/react-table";
+import { PaginationState, SortingState } from "@tanstack/react-table";
 
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import {
-  Pagination,
-  PaginationButton,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import Field from "@/components/ui/field";
-import { CalendarIcon } from "lucide-react";
 import { columns } from "./columns";
-import { useQuery } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import billingService from "@/services/billing.service";
-import { FilterAltOutlined } from "@mui/icons-material";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { Toggle } from "@/components/ui/toggle";
-import DatePicker from "@/components/ui/date-picker";
-import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { AxiosError } from "axios";
-import { isValidDateRange } from "@/lib/date";
-import { FilterBar } from "@/components/FilterBar";
-import { FilterBox } from "@/components/FilterBox";
 import { useTranslations } from "next-intl";
 import ChargesHead from "./head";
 import PaginatedTable from "@/components/Table/PaginatedTable";
@@ -104,7 +57,7 @@ const BillingTable = () => {
     isError,
     error,
     isLoading,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["charges", pagination, filters, sorting],
     queryFn: async () =>
       await billingService.getChargesList(

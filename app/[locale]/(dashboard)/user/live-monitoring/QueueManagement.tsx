@@ -4,7 +4,7 @@ import StatsDetailedCard from "@/components/StatsDetailedCard";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 import liveMonitoringService from "@/services/live-monitoring.service";
 import { Queue } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 
 const QueueManagement = () => {
   const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
@@ -15,7 +15,7 @@ const QueueManagement = () => {
     isLoading,
     isRefetching,
     refetch,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["queueManagementData"],
     queryFn: () => liveMonitoringService.fetchQueueData(),
     refetchOnWindowFocus: false,

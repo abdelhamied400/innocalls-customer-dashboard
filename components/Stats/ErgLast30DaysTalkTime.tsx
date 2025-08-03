@@ -4,7 +4,7 @@ import StatsCard, {
   StatsCardSkeleton,
 } from "@/components/StatsCard";
 import statsService from "@/services/stats.service";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import MiniStatsCard from "../MiniStatsCard";
 import { useTranslations } from "next-intl";
 
@@ -17,7 +17,7 @@ const ErgLast30DaysTalkTime = () => {
     isLoading,
     isError,
     error,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["ErgLast30DaysTalkTime"],
     queryFn: statsService.getErgLast30DaysTalkTime,
     refetchOnWindowFocus: false,

@@ -11,7 +11,7 @@ import {
   Tooltip as RechartsTooltip,
   Legend as RechartsLegend,
 } from "recharts";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChartCard, { ChartCardSkeleton } from "@/components/ChartCard";
@@ -120,7 +120,7 @@ const InboundAnalyticsDateDistribution = ({
     ],
   };
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useLocalizedQuery({
     queryKey: ["dateDistribution", filters],
     queryFn: () =>
       inboundAnalyticsService.fetchDateDistributionAnalytics(filters),

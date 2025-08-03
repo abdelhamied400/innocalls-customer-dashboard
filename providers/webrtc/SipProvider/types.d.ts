@@ -5,6 +5,14 @@ import React from "react";
 
 export type ExtensionState = "connecting" | "connected" | "disconnected";
 
+export type SessionState =
+  | "trying"
+  | "ringing"
+  | "answered"
+  | "ended"
+  | "failed"
+  | undefined;
+
 export type SipContextType = {
   extension: ExtensionWithCredentials | null;
   ua: JsSIP.UA | null;
@@ -12,6 +20,7 @@ export type SipContextType = {
   number: string;
   countryCode: string;
   currentSession: RTCSession | null;
+  sessionState?: SessionState;
   login: (extension: ExtensionWithCredentials) => void;
   logout: () => void;
   reconnect: () => void;

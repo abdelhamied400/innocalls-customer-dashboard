@@ -4,7 +4,7 @@ import StatsCard, {
 } from "@/components/StatsCard";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 import statsService from "@/services/stats.service";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useTranslations } from "next-intl";
 
 const TodayCallsDuration = () => {
@@ -20,7 +20,7 @@ const TodayCallsDuration = () => {
     isError,
     error,
     refetch,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["today-calls-duration"],
     queryFn: statsService.getTodayCallsDuration,
     refetchOnWindowFocus: false,

@@ -1,5 +1,5 @@
 "use client";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { columns } from "./columns";
 import AutoDialerService from "@/services/auto-dialer.service";
 import PaginatedTable from "@/components/Table/PaginatedTable";
@@ -21,7 +21,7 @@ const ArchivedCampaignsTable = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error } = useLocalizedQuery({
     queryKey: ["auto-dialer-archived-campaigns", filters, pagination],
     queryFn: async () =>
       await AutoDialerService.fetchArchivedCampaigns({

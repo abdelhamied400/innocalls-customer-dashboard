@@ -107,14 +107,6 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
   };
 
   const applyFilters = () => {
-    console.log("Applying filters", {
-      fromDate,
-      toDate,
-      sourceExtensions,
-      destinationExtensions,
-      selectedTags,
-      selectedStatuses,
-    });
     const isValid = isValidDateRange(
       fromDate,
       toDate,
@@ -297,7 +289,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
                 // accept only numbers and plus sign
                 if (/^\+?\d+$/.test(newOption)) {
                   const newExt = { label: newOption, value: newOption };
-                  setSourceExtensions((prev) => [...prev, newExt]);
+                  setDestinationExtensions((prev) => [...prev, newExt]);
                   return newExt;
                 }
                 toast({

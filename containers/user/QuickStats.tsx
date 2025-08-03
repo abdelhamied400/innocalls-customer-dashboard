@@ -9,7 +9,7 @@ import {
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 import statsService from "@/services/stats.service";
 import { BarChart, Bolt, ShowChart } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 
 const QuickStats = () => {
   const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
@@ -23,7 +23,7 @@ const QuickStats = () => {
     isError,
     error,
     refetch,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["quick-stats"],
     queryFn: statsService.getQuickStats,
   });

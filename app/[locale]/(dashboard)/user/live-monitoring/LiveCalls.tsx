@@ -7,7 +7,7 @@ import StatsDetailedCard, {
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 import liveMonitoringService from "@/services/live-monitoring.service";
 import { Call } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 
 const LiveCalls = () => {
   const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
@@ -20,7 +20,7 @@ const LiveCalls = () => {
     error,
     isRefetching,
     refetch,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["liveCalls"],
     queryFn: () => liveMonitoringService.fetchLiveCalls(),
     refetchOnWindowFocus: false,

@@ -9,7 +9,7 @@ import {
   MilitaryTech,
   StackedLineChart,
 } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { UserActivityFilters } from "./page";
 import { useTranslations } from "next-intl";
 
@@ -26,7 +26,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
     isRefetching,
     isError,
     error,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["quickStats", filters],
     queryFn: () => analyticsService.fetchQuickStats(filters),
   });

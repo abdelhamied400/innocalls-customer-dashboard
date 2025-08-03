@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import React from "react";
 import {
   ResponsiveContainer,
@@ -25,7 +25,7 @@ type InboundUnansweredHourlyProps = {
 const InboundUnansweredHourly = ({ filters }: InboundUnansweredHourlyProps) => {
   const t = useTranslations("analytics.unanswered");
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error } = useLocalizedQuery({
     queryKey: ["inboundUnansweredHourly", filters],
     queryFn: () =>
       unansweredAnalyticsService.fetchInboundUnansweredHourly(filters),

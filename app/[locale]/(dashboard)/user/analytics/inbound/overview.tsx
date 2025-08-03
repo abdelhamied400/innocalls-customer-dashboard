@@ -1,7 +1,7 @@
 import ChartCard from "@/components/ChartCard";
 import AllInboundAnalytics from "@/services/inbound-analytics.service";
 import { LineAxis } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import {
   CartesianGrid,
   Line,
@@ -42,7 +42,7 @@ const InboundAnalyticsOverview = ({
     isLoading,
     error,
     isError,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["inbound-analytics-overview", filters],
     queryFn: () => AllInboundAnalytics.fetchOverview(filters),
   });

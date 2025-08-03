@@ -17,7 +17,7 @@ import Select from "@/components/select";
 import { SOUND_SIZE_LIMIT } from "@/constants/file";
 import queryExtensions from "@/queries/queryExtensions";
 import { AutoDialerCreateStep2 } from "@/validation/AutoDialerCreateCampaign";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useFormContext } from "react-hook-form";
 
 type CallDetailsFormProps = {
@@ -25,7 +25,7 @@ type CallDetailsFormProps = {
 };
 const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
   const form = useFormContext<AutoDialerCreateStep2>();
-  const { data: extensions, isLoading } = useQuery(queryExtensions({}));
+  const { data: extensions, isLoading } = useLocalizedQuery(queryExtensions({}));
 
   const {
     trigger,

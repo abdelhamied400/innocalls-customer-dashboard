@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Field from "@/components/ui/field";
 import { CountryOption } from "@/constants/countries";
 import { useToast } from "@/hooks/use-toast";
+import { paymentLogger } from "@/lib/logger";
 import {
   CardNumberElement,
   CardExpiryElement,
@@ -48,7 +49,7 @@ const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
     });
 
     if (result.error) {
-      console.log("[Payment error]", result.error.message);
+      paymentLogger.error("[Payment error]", result.error.message);
       toast({
         variant: "destructive",
         title: t("messages.paymentFailed"),
@@ -57,7 +58,7 @@ const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
       // Show error to customer
     } else {
       if (result.paymentIntent.status === "succeeded") {
-        console.log("[Payment succeeded]", result.paymentIntent);
+        paymentLogger.info("[Payment succeeded]", result.paymentIntent);
         toast({
           title: t("messages.paymentSuccess"),
           description: t("messages.paymentSuccessDescription"),
@@ -99,17 +100,6 @@ const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
       </Field>
 
       <CountrySelect value={selectedCountry} onChange={setSelectedCountry} />
-
-      {/* <Select
-        options={countries}
-        value={selectedCountry}
-        onChange={setSelectedCountry}
-        label={t("form.fields.country.label")}
-        placeholder={t("form.fields.country.placeholder")}
-        isVirtualized
-        getLabel={(opt) => opt.name[locale]}
-        getValue={(opt) => opt.code}
-      /> */}
 
       <Button
         onClick={handleSubmit}

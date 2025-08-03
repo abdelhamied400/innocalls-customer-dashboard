@@ -13,6 +13,7 @@ import webrtcService from "@/services/webrtc.service";
 import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useEffect, useState } from "react";
 
 type Contact = {

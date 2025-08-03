@@ -13,7 +13,7 @@ import {
   HourglassBottom,
   TrendingUp,
 } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useState } from "react";
 
 export type PerformanceStatsFiltersType = {
@@ -90,7 +90,7 @@ const PerformanceStats = () => {
     error,
     isRefetching,
     refetch,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["performanceStats", filters],
     queryFn: () => liveMonitoringService.fetchQueueStats(filters),
     refetchOnWindowFocus: false,

@@ -19,7 +19,7 @@ import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
 import { InboundAnalyticsFilters } from "./page";
 import NoData from "@/components/Analytics/NoData";
@@ -62,7 +62,7 @@ const InboundAnalyticsRepeatedCallers = ({
     isLoading,
     error,
     isError,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["inbound-analytics-repeated-callers", filters],
     queryFn: () => inboundAnalyticsService.fetchRepeatedCallers(filters),
   });

@@ -8,7 +8,7 @@ import {
 } from "@mui/icons-material";
 import { Clock } from "lucide-react";
 import { InboundAnalyticsFilters } from "./page";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
 import { useTranslations } from "next-intl";
 
@@ -18,7 +18,7 @@ type QuickStatsProps = {
 const QuickStats = ({ filters }: QuickStatsProps) => {
   const t = useTranslations("analytics.inbound.quickStats");
 
-  const { data, isRefetching, isLoading, isError, error } = useQuery({
+  const { data, isRefetching, isLoading, isError, error } = useLocalizedQuery({
     queryKey: ["inbound-analytics-quick-stats", filters],
     queryFn: () => inboundAnalyticsService.fetchQuickStats(filters),
   });

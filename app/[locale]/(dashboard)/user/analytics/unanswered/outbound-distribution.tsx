@@ -1,5 +1,5 @@
 import unansweredAnalyticsService from "@/services/unanswered-analytics.service";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import {
   ResponsiveContainer,
   LineChart,
@@ -26,7 +26,7 @@ type OutboundDistributionProps = {
 const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
   const t = useTranslations("analytics.unanswered");
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error } = useLocalizedQuery({
     queryKey: ["outboundDistribution", filters],
     queryFn: () =>
       unansweredAnalyticsService.fetchOutboundDistribution(filters),

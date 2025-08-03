@@ -2,7 +2,7 @@
 
 import callReportingService from "@/services/call-reporting.service";
 import { CallReportingFilters } from "@/types/api/call-reporting";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { columns } from "./columns";
@@ -65,7 +65,7 @@ const CallReportingTable = ({
     refetch,
     isError,
     error,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["call-reporting", pagination, filters],
     queryFn: async () =>
       await callReportingService.getCallReporting(

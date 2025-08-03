@@ -4,7 +4,7 @@ import StatsCard, {
   StatsCardSkeleton,
 } from "@/components/StatsCard";
 import statsService from "@/services/stats.service";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import MiniStatsCard from "../MiniStatsCard";
 import { useTranslations } from "next-intl";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
@@ -22,7 +22,7 @@ const ErgTodayWaitingTime = () => {
     isError,
     error,
     refetch,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["ErgTodayWaitingTime"],
     queryFn: statsService.getErgTodayWaitingTime,
     refetchOnWindowFocus: false,

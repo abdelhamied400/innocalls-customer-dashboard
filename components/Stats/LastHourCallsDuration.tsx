@@ -4,7 +4,7 @@ import StatsCard, {
   StatsCardSkeleton,
 } from "@/components/StatsCard";
 import statsService from "@/services/stats.service";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useTranslations } from "next-intl";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 
@@ -21,7 +21,7 @@ const LastHourCallsDuration = () => {
     isError,
     error,
     refetch,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["last-hour-calls-duration"],
     queryFn: statsService.getLastHourCallsDuration,
     refetchOnWindowFocus: false,

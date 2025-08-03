@@ -1,10 +1,5 @@
 import { AutoDialerCampaignCols } from "../columns";
-import {
-  MoreVert as EllipsisVerticalIcon,
-  Visibility as EyeIcon,
-  Download,
-  Archive,
-} from "@mui/icons-material";
+import { Visibility as EyeIcon, Download, Archive } from "@mui/icons-material";
 import { Cell } from "@/types/cell";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";

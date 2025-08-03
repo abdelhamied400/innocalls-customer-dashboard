@@ -6,7 +6,7 @@ import { AvTimer } from "@mui/icons-material";
 import StatsSubCard from "@/components/StatsSubCard";
 import StatsMetricCard from "@/components/StatsMetricCard";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import statsService from "@/services/stats.service";
 import { formatDurationShort } from "@/lib/date";
 
@@ -22,7 +22,7 @@ const TalkTimeStats = () => {
     isError,
     error,
     refetch,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["talk-time-stats"],
     queryFn: statsService.getTalkTimeStats,
   });

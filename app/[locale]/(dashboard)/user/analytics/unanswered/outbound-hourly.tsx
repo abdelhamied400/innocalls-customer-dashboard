@@ -8,7 +8,7 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import unansweredAnalyticsService from "@/services/unanswered-analytics.service";
 import ChartCard, {
   ChartCardError,
@@ -28,7 +28,7 @@ const OutboundUnansweredHourly = ({
 }: OutboundUnansweredHourlyProps) => {
   const t = useTranslations("analytics.unanswered");
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError, error } = useLocalizedQuery({
     queryKey: ["outboundUnansweredHourly", filters],
     queryFn: () =>
       unansweredAnalyticsService.fetchOutboundUnansweredHourly(filters),

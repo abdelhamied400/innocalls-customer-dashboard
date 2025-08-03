@@ -7,7 +7,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import statsService from "@/services/stats.service";
 import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 import { useTranslations } from "next-intl";
@@ -35,7 +35,7 @@ const CallDistribution = () => {
     isLoading,
     isError,
     error,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["call-distribution"],
     queryFn: statsService.getCallDistribution,
     refetchOnWindowFocus: false,

@@ -7,7 +7,7 @@ import {
   South,
   TimerOutlined,
 } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 
 const CallSummaryStats = () => {
   const {
@@ -16,7 +16,7 @@ const CallSummaryStats = () => {
     isLoading,
     isError,
     error,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["callSummaryStats"],
     queryFn: statsService.fetchCallSummaryStats,
   });

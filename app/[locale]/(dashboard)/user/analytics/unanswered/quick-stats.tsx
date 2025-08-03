@@ -1,5 +1,5 @@
 import StatsCard from "@/components/StatsCard";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import unansweredAnalyticsService from "@/services/unanswered-analytics.service";
 
 // Import MUI icons
@@ -16,7 +16,7 @@ type QuickStatsFilters = {
 const QuickStats = ({ filters }: QuickStatsFilters) => {
   const t = useTranslations("analytics.unanswered.quickStats");
 
-  const { data, isLoading, isRefetching, error, isError } = useQuery({
+  const { data, isLoading, isRefetching, error, isError } = useLocalizedQuery({
     queryKey: ["unanswered-quick-stats", filters],
     queryFn: () => unansweredAnalyticsService.fetchQuickStats(filters),
   });

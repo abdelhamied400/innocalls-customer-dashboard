@@ -12,7 +12,7 @@ import StatsCard, {
   StatsCardSkeleton,
 } from "@/components/StatsCard";
 import outboundAnalyticsService from "@/services/outbound-analytics.service";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { OutboundAnalyticsFilters } from "./page";
 import { useTranslations } from "next-intl";
 
@@ -29,7 +29,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
     isRefetching,
     isError,
     error,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["outboundQuickStats", filters],
     queryFn: () => outboundAnalyticsService.fetchQuickStats(filters),
   });

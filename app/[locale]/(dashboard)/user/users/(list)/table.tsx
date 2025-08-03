@@ -14,7 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import { columns, User } from "./columns";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import usersService from "@/services/users.service";
 import { useRouter } from "next/navigation";
 import UsersTableHeader from "./UsersTableHeader";
@@ -62,7 +62,7 @@ const UsersTable = ({
   );
 
   // client-side data fetching
-  const { data } = useQuery<User[]>({
+  const { data = [] } = useLocalizedQuery<User[]>({
     queryKey: ["users"],
     queryFn: usersService.getUsers,
     initialData,

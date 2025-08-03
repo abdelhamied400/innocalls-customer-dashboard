@@ -13,17 +13,6 @@ import Link from "next/link";
 import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 type ActionsCellProps = Cell<AutoDialerCampaignCols>;
 const ActionsCell = ({ row }: ActionsCellProps) => {

@@ -8,7 +8,7 @@ import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import analyticsService from "@/services/analytics.service";
 import { ShowChart, TableView } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import {
   BarChart,
   Bar,
@@ -65,7 +65,7 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
     { header: t("table.columns.slaCompliance"), accessorKey: "slaCompliance" },
   ];
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useLocalizedQuery({
     queryKey: ["slaCompliance", filters],
     queryFn: () => analyticsService.fetchSlaComplianceAnalytics(filters),
   });

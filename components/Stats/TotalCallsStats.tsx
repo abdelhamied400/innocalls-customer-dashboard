@@ -4,7 +4,7 @@ import StatsDetailedCard, {
 } from "@/components/StatsDetailedCard";
 import PercentBarStat from "@/components/PercentBarStat";
 import { Call } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 import statsService from "@/services/stats.service";
 
@@ -20,7 +20,7 @@ const TotalCallsStats = () => {
     isError,
     error,
     refetch,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["total-calls-stats"],
     queryFn: statsService.getTotalCallsStats,
   });

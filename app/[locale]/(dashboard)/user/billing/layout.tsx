@@ -12,10 +12,6 @@ type BillingLayoutProps = PropsWithChildren<{
 }>;
 const BillingLayout = ({ children, refillSheet }: BillingLayoutProps) => {
   const { setPageTitle } = useAppStore();
-  const route = useRouteWithLocale();
-  const locale = useLocale();
-
-  console.log(route, `/${locale}/user/billing/charges`);
 
   const t = useTranslations("billing");
 

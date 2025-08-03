@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import ChartCard, { ChartCardSkeleton } from "@/components/ChartCard";
 import { OutboundAnalyticsFilters } from "./page";
 import NoData from "../../../../../../components/Analytics/NoData";
@@ -34,13 +34,11 @@ const COLORS = [
 const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
   const t = useTranslations("analytics.outbound.talkTimeDistribution");
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useLocalizedQuery({
     queryKey: ["talkTimeDistribution", filters],
     queryFn: () =>
       outboundAnalyticsService.fetchTalkTimeDistributionAnalytics(filters),
   });
-
-  console.log(filters, data);
 
   if (isLoading) {
     return <ChartCardSkeleton />;

@@ -1,7 +1,7 @@
 import ChartCard from "@/components/ChartCard";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
 import { Call } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import {
   ResponsiveContainer,
   BarChart,
@@ -40,7 +40,7 @@ const InboundAnalyticsIVRAnalysis = ({
     isLoading,
     error,
     isError,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["inbound-analytics-ivr-analysis", filters],
     queryFn: () => inboundAnalyticsService.fetchIVRAnalysis(filters),
   });

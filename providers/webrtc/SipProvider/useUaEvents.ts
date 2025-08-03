@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useRouting } from "@/providers/RoutingProvider";
-import { ExtensionState } from "./types";
+import { ExtensionState, SessionState } from "./types";
 import JsSIP from "jssip";
 import { RTCSessionEvent } from "jssip/lib/UA";
 import { RTCSession } from "jssip/lib/RTCSession";
@@ -12,12 +12,24 @@ import { webrtcLogger } from "@/lib/logger";
 export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
   setCurrentSession?: React.Dispatch<React.SetStateAction<RTCSession | null>>;
+  setSessionState?: React.Dispatch<
+    React.SetStateAction<SessionState | undefined>
+  >;
 };
 export const useUaEvents = ({
   setExtensionState,
   setCurrentSession,
+  setSessionState,
 }: useUAEventsDeps) => {
   const { navigate } = useRouting();
+
+  // Helper to update session state if setter is provided
+  const updateSessionState = useCallback(
+    (state: SessionState | undefined) => {
+      setSessionState?.(state);
+    },
+    [setSessionState]
+  );
 
   const handleIncomingCall = useCallback(
     (e: RTCSessionEvent, extension: ExtensionWithCredentials) => {
@@ -35,6 +47,7 @@ export const useUaEvents = ({
         ringtone
           .play()
           .catch((err) => webrtcLogger.error("Error playing ringtone", err));
+        updateSessionState("ringing");
       });
 
       session.on("confirmed", () => {
@@ -64,6 +77,8 @@ export const useUaEvents = ({
         connection.addEventListener("addstream", (event: any) => {
           webrtcLogger.debug("Stream added", event);
         });
+
+        updateSessionState("answered");
       });
 
       session.on("ended", (event) => {
@@ -82,6 +97,7 @@ export const useUaEvents = ({
             extension.ext
           );
         }
+        updateSessionState("ended");
       });
 
       session.on("failed", (event) => {
@@ -112,11 +128,12 @@ export const useUaEvents = ({
             extension.ext
           );
         }
+        updateSessionState("failed");
       });
 
       navigate("/incoming-call");
     },
-    []
+    [navigate, updateSessionState]
   );
 
   const handleOutgoingCall = useCallback(
@@ -127,16 +144,24 @@ export const useUaEvents = ({
 
       const calledNumber = session.remote_identity?.uri?.user || "Unknown";
 
+      addCallToLog(
+        {
+          type: "outgoing",
+          number: calledNumber,
+        },
+        extension.ext
+      );
+
+      updateSessionState("trying");
+
+      session.on("progress", () => {
+        webrtcLogger.info("Call is in progress");
+        updateSessionState("ringing");
+      });
       session.on("confirmed", () => {
         webrtcLogger.info("Outgoing call confirmed");
         // Log outgoing call when call is initiated
-        addCallToLog(
-          {
-            type: "outgoing",
-            number: calledNumber,
-          },
-          extension.ext
-        );
+        updateSessionState("answered");
       });
 
       connection.addEventListener("track", (event) => {
@@ -150,8 +175,9 @@ export const useUaEvents = ({
       });
 
       navigate("/call");
+      updateSessionState("trying");
     },
-    []
+    [navigate, updateSessionState]
   );
 
   const bindEvents = useCallback(
@@ -172,12 +198,13 @@ export const useUaEvents = ({
           webrtcLogger.info("Call ended", event);
           navigate("/dialpad");
           setCurrentSession?.(null);
+          updateSessionState("ended");
         });
         session.on("failed", (event) => {
           webrtcLogger.warn("Call failed", event);
           navigate("/dialpad");
-
           setCurrentSession?.(null);
+          updateSessionState("failed");
         });
 
         if (e.session.direction === "incoming") {
@@ -187,13 +214,24 @@ export const useUaEvents = ({
         }
       });
     },
-    [setExtensionState, handleIncomingCall, handleOutgoingCall]
+    [
+      setExtensionState,
+      handleIncomingCall,
+      handleOutgoingCall,
+      setCurrentSession,
+      navigate,
+      updateSessionState,
+    ]
   );
 
-  const unbindEvents = useCallback((userAgent: JsSIP.UA) => {
-    userAgent.removeAllListeners(); // or remove specific if needed
-    setExtensionState("disconnected");
-  }, []);
+  const unbindEvents = useCallback(
+    (userAgent: JsSIP.UA) => {
+      userAgent.removeAllListeners(); // or remove specific if needed
+      setExtensionState("disconnected");
+      updateSessionState(undefined);
+    },
+    [setExtensionState, updateSessionState]
+  );
 
   return { bindEvents, unbindEvents };
 };

@@ -1,49 +1,9 @@
 "use client";
 
-import {
-  ColumnFiltersState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  PaginationState,
-  SortingState,
-  useReactTable,
-} from "@tanstack/react-table";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
-import {
-  Pagination,
-  PaginationButton,
-  PaginationContent,
-  PaginationItem,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import Field from "@/components/ui/field";
-import { SearchIcon } from "lucide-react";
-import { columns, MonitorUser } from "./columns";
-import { useQuery } from "@tanstack/react-query";
+import { columns } from "./columns";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import usersService from "@/services/users.service";
-import UsersLoading from "./loading";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import MonitorUsersHead from "./head";
 import PaginatedTable from "@/components/Table/PaginatedTable";
@@ -77,7 +37,7 @@ const UsersMonitorTable = ({}) => {
     isError,
     error,
     refetch,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["monitor-users", filters],
     queryFn: async () => usersService.getUsersMonitor(),
     refetchInterval: 30000,

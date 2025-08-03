@@ -5,7 +5,7 @@ import StatsDetailedCard, {
 import { HourglassEmpty } from "@mui/icons-material";
 import StatsMetricCard from "@/components/StatsMetricCard";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import statsService from "@/services/stats.service";
 import { formatDurationShort } from "@/lib/date";
 
@@ -21,7 +21,7 @@ const WaitTimeStats = () => {
     isError,
     error,
     refetch,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["wait-time-stats"],
     queryFn: statsService.getWaitingTimeStats,
   });

@@ -8,7 +8,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import statsService from "@/services/stats.service";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 import { useTranslations } from "next-intl";
 import ChartCard from "../ChartCard";
@@ -31,7 +31,7 @@ const TotalAnsweredCalls = () => {
     isLoading,
     isError,
     error,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["total-answered-calls"],
     queryFn: statsService.getTotalAnsweredCalls,
     refetchOnWindowFocus: false,

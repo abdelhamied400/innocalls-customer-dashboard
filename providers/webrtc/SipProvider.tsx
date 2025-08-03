@@ -4,7 +4,11 @@ import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { useRouting } from "@/providers/RoutingProvider";
 import { ExtensionWithCredentials } from "@/types/api/extension";
 import { createUserAgent } from "./SipProvider/userAgent";
-import type { SipContextType, ExtensionState } from "./SipProvider/types";
+import type {
+  SipContextType,
+  ExtensionState,
+  SessionState,
+} from "./SipProvider/types";
 
 import JsSIP from "jssip";
 import { useUaEvents } from "./SipProvider/useUaEvents";
@@ -23,6 +27,8 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     null
   );
   const [currentSession, setCurrentSession] = useState<RTCSession | null>(null);
+  const [sessionState, setSessionState] = useState<SessionState>();
+
   const { toast } = useToast();
 
   const [number, setNumber] = useState<string>("");
@@ -34,6 +40,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   const { bindEvents, unbindEvents } = useUaEvents({
     setExtensionState,
     setCurrentSession,
+    setSessionState,
   });
 
   const login = (extension: ExtensionWithCredentials) => {
@@ -124,6 +131,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         number,
         countryCode,
         currentSession,
+        sessionState,
         login,
         logout,
         reconnect,

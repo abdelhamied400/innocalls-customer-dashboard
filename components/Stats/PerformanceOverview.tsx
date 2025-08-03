@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/chart";
 import ChartCard from "../ChartCard";
 import { RocketLaunch } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import statsService from "@/services/stats.service";
 import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 
@@ -38,7 +38,7 @@ const PerformanceOverview = () => {
     isLoading,
     isError,
     error,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["performance-overview"],
     queryFn: statsService.getPerformanceOverview,
   });

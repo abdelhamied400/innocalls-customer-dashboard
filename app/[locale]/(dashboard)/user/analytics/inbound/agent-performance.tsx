@@ -7,7 +7,7 @@ import PaginatedTablePagination from "@/components/Table/PaginatedTablePaginatio
 import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
 import { Engineering } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import React, { useState } from "react";
 import {
   BarChart,
@@ -68,7 +68,7 @@ const InboundAnalyticsAgentPerformance = ({
     isLoading,
     error,
     isError,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["inbound-analytics-agent-performance", filters],
     queryFn: () => inboundAnalyticsService.fetchAgentPerformance(filters),
   });

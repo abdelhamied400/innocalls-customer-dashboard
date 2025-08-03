@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import StatsCard, { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 import statsService from "@/services/stats.service";
 import { useTranslations } from "next-intl";
@@ -13,7 +13,7 @@ const Last30DaysUsage = () => {
     isLoading,
     isError,
     error,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["last-30-days-usage"],
     queryFn: statsService.getLast30DaysUsage,
     refetchOnWindowFocus: false,

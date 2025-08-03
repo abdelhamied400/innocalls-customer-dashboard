@@ -20,7 +20,7 @@ import {
 } from "recharts";
 import StatsCard, { StatsCardSkeleton } from "@/components/StatsCard";
 import StatsRowCard from "@/components/StatsRowCard";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
 import NoData from "@/components/Analytics/NoData";
 import { useTranslations } from "next-intl";
@@ -48,7 +48,7 @@ const InboundAnalyticsQueueAnalysis = ({
     data: abandonedAnalysis,
     isLoading: isLoadingAbandonedAnalysis,
     error: abandonedError,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["inbound-analytics-queue-abandoned-analysis", filters],
     queryFn: () => inboundAnalyticsService.fetchQueueAbandonedAnalysis(filters),
   });
@@ -57,7 +57,7 @@ const InboundAnalyticsQueueAnalysis = ({
     data: timeoutAnalysis,
     isLoading: isLoadingTimeoutAnalysis,
     error: timeoutError,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["inbound-analytics-queue-timeout-analysis", filters],
     queryFn: () => inboundAnalyticsService.fetchQueueTimeoutAnalysis(filters),
   });

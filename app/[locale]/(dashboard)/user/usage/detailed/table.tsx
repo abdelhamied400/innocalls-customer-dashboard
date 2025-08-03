@@ -4,7 +4,7 @@ import { PaginationState, SortingState } from "@tanstack/react-table";
 
 import { useEffect, useState } from "react";
 import { createColumns } from "./columns";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import usageService, { UsageDetailedFilters } from "@/services/usage.service";
 import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
@@ -48,7 +48,7 @@ const UsageDetailedTable = () => {
     isFetching,
     error,
     isError,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["usage-detailed", filters, pagination],
     queryFn: async () =>
       usageService.fetchUsageDetailed(

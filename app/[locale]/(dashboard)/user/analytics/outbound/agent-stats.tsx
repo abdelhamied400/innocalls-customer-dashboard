@@ -1,5 +1,5 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import {
   ResponsiveContainer,
   BarChart,
@@ -38,7 +38,7 @@ const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
     data: agentStats,
     isLoading,
     error,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["outbound-agent-stats", filters],
     queryFn: () => outboundAnalyticsService.fetchAgentStatsAnalytics(filters),
   });

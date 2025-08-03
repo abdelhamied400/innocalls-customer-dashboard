@@ -204,7 +204,7 @@ class Logger {
   }
 }
 
-// Create webrtc logger instance only when imported
 export const webrtcLogger = Logger.create("WebRTC");
+export const paymentLogger = Logger.create("Payment");
 
 export default Logger;

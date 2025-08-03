@@ -19,6 +19,7 @@ import {
   MoreVert,
 } from "@mui/icons-material";
 import { useQueryClient } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { isAxiosError } from "axios";
 
 type ContactRowProps = {

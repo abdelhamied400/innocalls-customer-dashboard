@@ -10,14 +10,26 @@ import {
 } from "@mui/icons-material";
 import { useState } from "react";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import Digit from "../Shared/Digit";
+import { digits } from "@/constants/digits";
+import { Input } from "@/components/ui/input";
+import { webrtcLogger } from "@/lib/logger";
+
 const CallActions = () => {
-  const { currentSession } = useSip();
+  const { currentSession, sessionState } = useSip();
   const [muted, setIsMuted] = useState(false);
   const [hold, setIsHold] = useState(false);
+  const [dtmfValue, setDtmfValue] = useState("");
 
   const handleToggleMute = () => {
     // Handle mute logic here
-    console.log("Mute action triggered");
+    webrtcLogger.info("Toggle mute action triggered");
     if (currentSession) {
       if (currentSession.isMuted().audio) {
         currentSession.unmute({ audio: true });
@@ -31,7 +43,7 @@ const CallActions = () => {
 
   const handleToggleHold = () => {
     // Handle hold logic here
-    console.log("Hold action triggered");
+    webrtcLogger.info("Toggle hold action triggered");
     if (currentSession) {
       if (currentSession.isOnHold().local) {
         currentSession.unhold();
@@ -45,12 +57,15 @@ const CallActions = () => {
 
   const handleOpenContacts = () => {
     // Handle opening contacts logic here
-    console.log("Open contacts action triggered");
+    webrtcLogger.info("Open contacts action triggered");
   };
 
-  const handleOpenDialpad = () => {
-    // Handle opening dialpad logic here
-    console.log("Open dialpad action triggered");
+  const handleDTMFClick = (value: string) => {
+    setDtmfValue((prev) => prev + value);
+    if (currentSession) {
+      currentSession.sendDTMF(value);
+      webrtcLogger.info("DTMF sent", { value });
+    }
   };
 
   return (
@@ -60,6 +75,7 @@ const CallActions = () => {
         className="[&_svg]:size-6 h-auto w-full p-4 flex-col font-normal"
         onClick={handleToggleMute}
         size="icon"
+        disabled={!currentSession || sessionState !== "answered"}
       >
         {muted ? <MicOff /> : <Mic />}
         {muted ? <p>Unmute</p> : <p>Mute</p>}
@@ -69,6 +85,7 @@ const CallActions = () => {
         className="[&_svg]:size-6 h-auto w-full p-4 flex-col font-normal"
         onClick={handleToggleHold}
         size="icon"
+        disabled={!currentSession || sessionState !== "answered"}
       >
         {hold ? <PauseCircleOutline /> : <PlayCircleOutline />}
         {hold ? <p>Resume</p> : <p>Hold</p>}
@@ -77,19 +94,44 @@ const CallActions = () => {
         variant="ghost"
         className="[&_svg]:size-6 h-auto w-full p-4 flex-col font-normal"
         onClick={handleOpenContacts}
+        size="icon"
+        disabled={!currentSession || sessionState !== "answered"}
       >
         <PermContactCalendar />
         <p>Contacts</p>
       </Button>
-      <Button
-        variant="ghost"
-        className="[&_svg]:size-6 h-auto w-full p-4 flex-col font-normal"
-        onClick={handleOpenDialpad}
-        size="icon"
-      >
-        <Dialpad />
-        <p>Dialpad</p>
-      </Button>
+
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            variant="ghost"
+            className="[&_svg]:size-6 h-auto w-full p-4 flex-col font-normal"
+            size="icon"
+            disabled={!currentSession || sessionState !== "answered"}
+          >
+            <Dialpad />
+            <p>Dialpad</p>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <div className="dtmf flex flex-col gap-2 p-4">
+            <Input
+              value={dtmfValue}
+              readOnly
+              placeholder="Press any digit..."
+            />
+            <div className="digits grid grid-cols-3 gap-5 place-items-center p-4">
+              {digits.map((digit) => (
+                <Digit
+                  key={digit.number}
+                  digit={digit}
+                  onClick={() => handleDTMFClick(digit.value)}
+                />
+              ))}
+            </div>
+          </div>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };

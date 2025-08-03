@@ -5,7 +5,7 @@ import StatsCard, {
 } from "@/components/StatsCard";
 import { Badge } from "@/components/ui/badge";
 import statsService from "@/services/stats.service";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import MiniStatsCard from "../MiniStatsCard";
 import { useTranslations } from "next-intl";
 
@@ -18,7 +18,7 @@ const ErgLast30DaysWaitingTime = () => {
     isLoading,
     isError,
     error,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["ErgLast30DaysWaitingTime"],
     queryFn: statsService.getErgLast30DaysWaitingTime,
     refetchOnWindowFocus: false,

@@ -1,6 +1,6 @@
 import ChartCard from "@/components/ChartCard";
 import { TimerOutlined } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import {
   BarChart,
   Bar,
@@ -28,7 +28,7 @@ const InboundAnalyticsDistribution = ({
     isLoading: isWaitTimeLoading,
     error: waitTimeError,
     isError: isWaitTimeError,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["inbound-analytics-wait-time-distribution", filters],
     queryFn: () => inboundAnalyticsService.fetchWaitTimeDistribution(filters),
   });
@@ -38,7 +38,7 @@ const InboundAnalyticsDistribution = ({
     isLoading: isTalkTimeLoading,
     error: talkTimeError,
     isError: isTalkTimeError,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["inbound-analytics-talk-time-distribution", filters],
     queryFn: () => inboundAnalyticsService.fetchTalkTimeDistribution(filters),
   });

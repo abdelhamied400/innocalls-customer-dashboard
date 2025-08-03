@@ -8,7 +8,7 @@ import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import analyticsService from "@/services/analytics.service";
 import { ShowChart, TableView } from "@mui/icons-material";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import {
   Bar,
   BarChart,
@@ -48,7 +48,7 @@ const CallStatsAnalytics = ({ filters }: CallStatsAnalyticsProps) => {
     { header: t("table.columns.shortestCall"), accessorKey: "shortestCall" },
   ];
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading } = useLocalizedQuery({
     queryKey: ["callStats", filters],
     queryFn: () => analyticsService.fetchCallStatsAnalytics(filters),
   });

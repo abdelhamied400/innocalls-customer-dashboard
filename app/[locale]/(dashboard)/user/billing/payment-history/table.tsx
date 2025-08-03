@@ -3,7 +3,7 @@
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { columns } from "./columns";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import billingService from "@/services/billing.service";
 import { useToast } from "@/hooks/use-toast";
 import { AxiosError } from "axios";
@@ -56,7 +56,7 @@ const BillingTable = () => {
     isLoading,
     isError,
     error,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["payment-history", pagination, filters, sorting],
     queryFn: async () =>
       await billingService.getPaymentsList(
