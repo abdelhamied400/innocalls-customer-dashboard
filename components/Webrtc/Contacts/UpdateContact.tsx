@@ -13,8 +13,9 @@ import webrtcService from "@/services/webrtc.service";
 import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
-import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useEffect, useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { editContactSchema } from "@/validation/Webrtc";
 
 type Contact = {
   id: string;
@@ -36,6 +37,7 @@ const UpdateContact = () => {
       name: "",
       phone: "",
     },
+    resolver: zodResolver(editContactSchema),
   });
 
   // Load contact data when component mounts
@@ -230,7 +232,11 @@ const UpdateContact = () => {
                 </Button>
               </form>
             </Form>
-            <Button variant="link" onClick={handleCancel}>
+            <Button
+              variant="link"
+              onClick={handleCancel}
+              disabled={form.formState.isSubmitting}
+            >
               Cancel
             </Button>
           </div>

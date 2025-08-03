@@ -136,7 +136,9 @@ export default {
   fetchAgents: async (): Promise<FetchAgentsResponse> => {
     const users = await usersService.getUsersMonitor();
     return {
-      online: users.filter((agent) => agent.status === "online"),
+      online: users.filter(
+        (agent) => agent.status === "online" && !agent.on_call
+      ),
       onCall: users.filter((agent) => agent.on_call),
       offline: users.filter((agent) => agent.status === "offline"),
     };

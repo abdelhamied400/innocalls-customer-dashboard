@@ -13,7 +13,8 @@ import webrtcService from "@/services/webrtc.service";
 import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
-import { useLocalizedQuery } from "@/hooks/use-localized-query";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createContactSchema } from "@/validation/Webrtc";
 
 const CreateContact = () => {
   const { navigate } = useRouting();
@@ -24,6 +25,7 @@ const CreateContact = () => {
       name: "",
       phone: "",
     },
+    resolver: zodResolver(createContactSchema),
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
@@ -37,6 +39,7 @@ const CreateContact = () => {
         description: "The contact has been created successfully.",
         variant: "success",
       });
+      navigate("/contacts/list");
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
@@ -123,7 +126,11 @@ const CreateContact = () => {
                 </Button>
               </form>
             </Form>
-            <Button variant="link" onClick={handleCancel}>
+            <Button
+              variant="link"
+              onClick={handleCancel}
+              disabled={form.formState.isSubmitting}
+            >
               Cancel
             </Button>
           </div>

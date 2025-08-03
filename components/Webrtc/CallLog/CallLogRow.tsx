@@ -50,7 +50,7 @@ const CallLogRow = ({ number, time, stats, name, onCall }: CallLogRowProps) => {
             <Tooltip>
               <TooltipTrigger>
                 <div className="stat flex items-center gap-2">
-                  <CallReceived className="text-primary" />
+                  <CallMade className="text-success" />
                   <p>{stats.outgoing}</p>
                 </div>
               </TooltipTrigger>
@@ -61,7 +61,7 @@ const CallLogRow = ({ number, time, stats, name, onCall }: CallLogRowProps) => {
             <Tooltip>
               <TooltipTrigger>
                 <div className="stat flex items-center gap-2">
-                  <CallMade className="text-success" />
+                  <CallReceived className="text-primary" />
                   <p>{stats.incoming}</p>
                 </div>
               </TooltipTrigger>

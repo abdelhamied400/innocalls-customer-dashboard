@@ -86,34 +86,36 @@ const InboundAnalyticsIVRAnalysis = ({
       >
         <div className="w-full h-80">
           {ivrAnalysisData?.length === 0 && <NoData />}
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-              <XAxis
-                dataKey="ivrName"
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-              />
-              <YAxis
-                fontSize={12}
-                tickLine={false}
-                axisLine={false}
-                allowDecimals={false}
-              />
-              <Tooltip />
-
-              {allOptions.map((option, index) => (
-                <Bar
-                  key={option}
-                  dataKey={`option${option}`}
-                  fill={colors[index % colors.length]}
-                  radius={[4, 4, 0, 0]}
-                  name={`${t("optionLabel")} ${option}`}
+          {ivrAnalysisData && ivrAnalysisData.length > 0 && (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                <XAxis
+                  dataKey="ivrName"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
                 />
-              ))}
-            </BarChart>
-          </ResponsiveContainer>
+                <YAxis
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                  allowDecimals={false}
+                />
+                <Tooltip />
+
+                {allOptions.map((option, index) => (
+                  <Bar
+                    key={option}
+                    dataKey={`option${option}`}
+                    fill={colors[index % colors.length]}
+                    radius={[4, 4, 0, 0]}
+                    name={`${t("optionLabel")} ${option}`}
+                  />
+                ))}
+              </BarChart>
+            </ResponsiveContainer>
+          )}
         </div>
       </ChartCard>
     </div>
