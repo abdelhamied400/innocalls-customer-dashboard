@@ -15,6 +15,7 @@ import {
 } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export type PerformanceStatsFiltersType = {
   filterType: "day" | "hour";
@@ -26,16 +27,18 @@ type Option<T> = {
   label: string;
 };
 
-const filterTypesOptions: Option<"day" | "hour">[] = [
-  { value: "day", label: "Per day" },
-  { value: "hour", label: "Per hour" },
-];
-
 const PerformanceStatsFilters = ({
   onFiltersChange,
 }: {
   onFiltersChange: (filters: PerformanceStatsFiltersType) => void;
 }) => {
+  const t = useTranslations("liveMonitor.performanceStats");
+
+  const filterTypesOptions: Option<"day" | "hour">[] = [
+    { value: "day", label: t("form.filter.type.options.day") },
+    { value: "hour", label: t("form.filter.type.options.hour") },
+  ];
+
   const [filterType, setFilterType] = useState<Option<"day" | "hour">>(
     filterTypesOptions[0]
   );
@@ -49,16 +52,16 @@ const PerformanceStatsFilters = ({
             value={filterType}
             onChange={(value) => setFilterType(value as Option<"day" | "hour">)}
             options={filterTypesOptions}
-            placeholder="Time Period"
+            placeholder={t("form.fields.timePeriod.placeholder")}
           />
         </div>
         <div className="min-w-[200px]">
-          <Field label="sla">
+          <Field label={t("form.fields.sla.label")}>
             <Input
               type="number"
               value={sla}
               onChange={(e) => setSla(parseInt(e.target.value, 10))}
-              placeholder="SLA (seconds)"
+              placeholder={t("form.fields.sla.placeholder")}
               variant="field"
             />
           </Field>
@@ -68,7 +71,7 @@ const PerformanceStatsFilters = ({
         <Button
           onClick={() => onFiltersChange({ filterType: filterType.value, sla })}
         >
-          Apply Filters
+          {t("form.actions.apply")}
         </Button>
       </div>
     </div>
@@ -76,6 +79,8 @@ const PerformanceStatsFilters = ({
 };
 
 const PerformanceStats = () => {
+  const t = useTranslations("liveMonitor.performanceStats");
+
   const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
     "live_monitoring_live_calls_interval"
   );
@@ -102,7 +107,7 @@ const PerformanceStats = () => {
   return (
     <div className="flex flex-col gap-4">
       <StatsDetailedCard
-        title="Performance Stats Filters"
+        title={t("title")}
         icon={<AvTimer />}
         color="info"
         value=""
@@ -125,40 +130,52 @@ const PerformanceStats = () => {
 
         {!isLoading && isError && (
           <div className="text-red-500">
-            Error loading performance stats:{" "}
-            {error instanceof Error ? error.message : "Unknown error"}
+            {t("errorLoading")}:{" "}
+            {error instanceof Error ? error.message : t("unknownError")}
           </div>
         )}
 
         {!isLoading && !!performanceStats && (
           <div className="performance-stats grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-4 gap-6">
             <StatsCard
-              title="Answer Rate"
-              value={`${performanceStats.current.answerRate}%`}
+              title={t("statsCards.answerRate.title")}
+              value={`${performanceStats?.current?.answerRate}%`}
               icon={<TrendingUp />}
               color="primary"
-              info={`${performanceStats.change.answerRate}% vs previous`}
+              info={`${performanceStats.change.answerRate} ${t(
+                "statsCards.answerRate.comparison"
+              )}`}
             />
             <StatsCard
-              title="Total Wait Time"
-              value={`${performanceStats.current.totalWaitTime} seconds`}
+              title={t("statsCards.totalWaitTime.title")}
+              value={`${performanceStats.current.totalWaitTime} ${t(
+                "statsCards.totalWaitTime.unit"
+              )}`}
               icon={<HourglassBottom />}
               color="warning"
-              info={`${performanceStats.change.totalWaitTime} % vs previous`}
+              info={`${performanceStats.change.totalWaitTime} ${t(
+                "statsCards.totalWaitTime.comparison"
+              )}`}
             />
             <StatsCard
-              title="Total Talk Time"
-              value={`${performanceStats.current.totalTalkTime} seconds`}
+              title={t("statsCards.totalTalkTime.title")}
+              value={`${performanceStats.current.totalTalkTime} ${t(
+                "statsCards.totalTalkTime.unit"
+              )}`}
               icon={<AvTimer />}
               color="info"
-              info={`${performanceStats.change.totalTalkTime} % vs previous`}
+              info={`${performanceStats.change.totalTalkTime} ${t(
+                "statsCards.totalTalkTime.comparison"
+              )}`}
             />
             <StatsCard
-              title="SLA Compliance"
+              title={t("statsCards.slaCompliance.title")}
               value={`${performanceStats.current.slaPercent}%`}
               icon={<GppGood />}
               color="default"
-              info={`${performanceStats.change.slaPercent}% vs previous`}
+              info={`${performanceStats.change.slaPercent} ${t(
+                "statsCards.slaCompliance.comparison"
+              )}`}
             />
           </div>
         )}

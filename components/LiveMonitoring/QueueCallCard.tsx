@@ -7,6 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import useAppStore from "@/store/app.slice";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 const queueCallCardVariants = cva(
   "p-3 rounded-lg border hover:border-500 transition-all duration-200 group",
@@ -52,6 +53,10 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
   callDuration,
   color = "success",
 }) => {
+  const t = useTranslations(
+    "liveMonitor.queueManagement.queueCard.queueCardCall"
+  );
+
   const statusClasses = statusColorVariants({ color });
   const { toast } = useToast();
   const { extensionState, spy } = useSip();
@@ -61,8 +66,8 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
     setWebrtcOpen(true);
     if (extensionState !== "connected") {
       toast({
-        title: "Error",
-        description: "You must be connected to the SIP server to spy on calls.",
+        title: t("error"),
+        description: t("sipConnectionError"),
         variant: "destructive",
       });
       return;
@@ -96,7 +101,7 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
       {status === "active" && (
         <div className="grid grid-cols-2 gap-2 text-xs">
           <div className="flex items-center gap-1">
-            <span className="text-gray-600">Agent:</span>
+            <span className="text-gray-600">{t("agent")}:</span>
             <span className="font-medium text-gray-900">{agent.name}</span>
           </div>
         </div>
@@ -105,11 +110,11 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
         <div className="flex items-center justify-between">
           {status === "active" ? (
             <span className="text-success-500 text-xs font-semibold">
-              Call Duration
+              {t("callDuration")}
             </span>
           ) : (
             <span className="text-warning-500 text-xs font-semibold">
-              Waiting Duration
+              {t("waitingDuration")}
             </span>
           )}
           <span

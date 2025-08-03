@@ -1577,5 +1577,109 @@
         "applyFilters": "Apply Filters"
       }
     }
+  },
+  "liveMonitor": {
+    "agents": {
+      "title": "Users",
+      "subtitle": "Live status & performance",
+      "total": "Total",
+      "status": {
+        "onCall": "On Call",
+        "idle": "Idle",
+        "offline": "Offline"
+      }
+    },
+    "queueManagement": {
+      "title": "Queue Management",
+      "subtitle": "Real-time queue monitoring and management",
+      "valueSubtitle": "Today's Active Queues",
+      "queueCard": {
+        "activeCalls": "active calls",
+        "sla": "SLA",
+        "inProgress": "In Progress",
+        "waiting": "Waiting",
+        "calls": "calls",
+        "totalCalls": "Total Calls",
+        "answeredCalls": "Answered Calls",
+        "abandonedCalls": "Abandoned Calls",
+        "timeoutCalls": "Timeout Calls",
+        "averageWaitTime": "Average Wait Time",
+        "maxWaitTime": "Max Wait Time",
+        "minWaitTime": "Min Wait Time",
+        "averageTalkTime": "Average Talk Time",
+        "maxTalkTime": "Max Talk Time",
+        "minTalkTime": "Min Talk Time",
+        "activeCallsTitle": "Active Calls",
+        "waitingCallsTitle": "Waiting Calls",
+        "noActiveCalls": "No active calls",
+        "noWaitingCalls": "No waiting calls",
+        "unknownAgent": "Unknown User",
+        "active": "Active",
+        "totalCallsSubtitle": "Total Calls",
+        "queueCardCall": {
+          "agent": "User",
+          "callDuration": "Call Duration",
+          "waitingDuration": "Waiting Duration",
+          "error": "Error",
+          "sipConnectionError": "You must be connected to a WebRTC/softphone client to monitor calls",
+          "incognito": "Incognito"
+        }
+      }
+    },
+    "performanceStats": {
+      "title": "Statistics",
+      "errorLoading": "Error loading performance stats:",
+      "unknownError": "Unknown error",
+      "statsCards": {
+        "answerRate": {
+          "title": "Answer Rate",
+          "comparison": "% vs previous"
+        },
+        "totalWaitTime": {
+          "title": "Total Wait Time",
+          "unit": "seconds",
+          "comparison": "% vs previous"
+        },
+        "totalTalkTime": {
+          "title": "Total Talk Time",
+          "unit": "seconds",
+          "comparison": "% vs previous"
+        },
+        "slaCompliance": {
+          "title": "SLA Compliance",
+          "comparison": "% vs previous"
+        }
+      },
+      "form": {
+        "filter": {
+          "type": {
+            "options": {
+              "day": "Compare: Day",
+              "hour": "Compare: Hour"
+            }
+          }
+        },
+        "actions": { "apply": "Apply Filters" },
+        "fields": {
+          "sla": {
+            "label": "SLA",
+            "placeholder": "SLA (seconds)"
+          },
+          "timePeriod": {
+            "placeholder": "Time Period"
+          }
+        }
+      }
+    },
+    "liveCalls": {
+      "title": "Live Calls",
+      "subtitle": "Real-time call monitoring and management",
+      "activeCalls": "Active Calls",
+      "live": "Live",
+      "noDataMessage": "No active calls at the moment",
+      "refreshing": "Refreshing...",
+      "error": "Failed to load live calls",
+      "retry": "Retry"
+    }
   }
 }

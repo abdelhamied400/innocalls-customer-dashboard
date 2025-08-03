@@ -24,6 +24,7 @@ import QueueCallCard from "./QueueCallCard";
 import StatsRowCard from "../StatsRowCard";
 import StackedStatsRowCard from "../StackedStatsRowCard";
 import { FetchQueueDataResponse } from "@/services/live-monitoring.service";
+import { useTranslations } from "next-intl";
 
 // Variants using cva
 const queueCardVariants = cva(
@@ -138,6 +139,8 @@ const QueueCard = ({
   activeCalls = [],
   waitingCalls = [],
 }: QueueCardProps) => {
+  const t = useTranslations("liveMonitor.queueManagement.queueCard");
+
   const getRandomColor = () => {
     const colors: any = [
       "primary",
@@ -161,7 +164,9 @@ const QueueCard = ({
           </div>
           <div className="details">
             <h3 className="font-semibold">{title ?? "Support"}</h3>
-            <p className="text-sm">{activeCalls.length} active calls</p>
+            <p className="text-sm">
+              {activeCalls.length} {t("activeCalls")}
+            </p>
             {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
           </div>
         </div>
@@ -173,21 +178,21 @@ const QueueCard = ({
           >
             {Math.round(parseFloat(sla || "99"))}%
           </h3>
-          <p>SLA</p>
+          <p>{t("sla")}</p>
         </div>
       </div>
 
       <div className="queue-stats grid grid-cols-1 lg:grid-cols-2 gap-1">
         <QueueSummaryStatsCard
-          label="In Progress"
+          label={t("inProgress")}
           count={activeCalls.length}
-          unit="calls"
+          unit={t("calls")}
           color="success"
         />
         <QueueSummaryStatsCard
-          label="Waiting"
+          label={t("waiting")}
           count={waitingCalls.length}
-          unit="calls"
+          unit={t("calls")}
           color="warning"
         />
       </div>
@@ -196,22 +201,22 @@ const QueueCard = ({
         {/* Calls Stats */}
         <StackedStatsRowCard>
           <StatsRowCard
-            label="Total Calls"
+            label={t("totalCalls")}
             value={stats.totalCalls}
             color="info"
           />
           <StatsRowCard
-            label="Answered Calls"
+            label={t("answeredCalls")}
             value={stats.answeredCalls}
             color="success"
           />
           <StatsRowCard
-            label="Abandoned Calls"
+            label={t("abandonedCalls")}
             value={stats.abandonedCalls}
             color="destructive"
           />
           <StatsRowCard
-            label="Timeout Calls"
+            label={t("timeoutCalls")}
             value={stats.timeoutCalls}
             color="warning"
           />
@@ -220,17 +225,17 @@ const QueueCard = ({
         {/* Wait Time Stats */}
         <StackedStatsRowCard>
           <StatsRowCard
-            label="Average Wait Time"
+            label={t("averageWaitTime")}
             value={stats.averageWaitTime}
             color="primary"
           />
           <StatsRowCard
-            label="Max Wait Time"
+            label={t("maxWaitTime")}
             value={stats.maxWaitTime}
             color="warning"
           />
           <StatsRowCard
-            label="Min Wait Time"
+            label={t("minWaitTime")}
             value={stats.minWaitTime}
             color="success"
           />
@@ -239,17 +244,17 @@ const QueueCard = ({
         {/* Talk Time Stats */}
         <StackedStatsRowCard>
           <StatsRowCard
-            label="Average Talk Time"
+            label={t("averageTalkTime")}
             value={stats.averageTalkTime}
             color="success"
           />
           <StatsRowCard
-            label="Max Talk Time"
+            label={t("maxTalkTime")}
             value={stats.maxTalkTime}
             color="warning"
           />
           <StatsRowCard
-            label="Min Talk Time"
+            label={t("minTalkTime")}
             value={stats.minTalkTime}
             color="primary"
           />
@@ -265,7 +270,9 @@ const QueueCard = ({
             <AccordionTrigger className="flex items-center">
               <div className="flex gap-2 items-center">
                 <span className="block w-4 h-4 bg-green-500 rounded-full animate-pulse"></span>
-                <span>Active Calls ({activeCalls.length})</span>
+                <span>
+                  {t("activeCallsTitle")} ({activeCalls.length})
+                </span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="p-2 flex flex-col gap-2 max-h-60 overflow-y-auto">
@@ -275,7 +282,7 @@ const QueueCard = ({
                     key={idx}
                     phoneNumber={call.phoneNumber}
                     agent={{
-                      name: call.name || "Unknown Agent",
+                      name: call.name || t("unknownAgent"),
                       ext: call.ext || "",
                     }}
                     status="active"
@@ -288,7 +295,7 @@ const QueueCard = ({
                   <div className="p-2 bg-gray-200 rounded-full">
                     <Call />
                   </div>
-                  <span>No active calls</span>
+                  <span>{t("noActiveCalls")}</span>
                 </p>
               )}
             </AccordionContent>
@@ -297,7 +304,9 @@ const QueueCard = ({
             <AccordionTrigger className="flex items-center">
               <div className="flex gap-2 items-center">
                 <span className="block w-4 h-4 bg-warning-500 rounded-full animate-pulse"></span>
-                <span>Waiting Calls ({waitingCalls.length})</span>
+                <span>
+                  {t("waitingCallsTitle")} ({waitingCalls.length})
+                </span>
               </div>
             </AccordionTrigger>
             <AccordionContent className="p-2 flex flex-col gap-2 max-h-60 overflow-y-auto">
@@ -307,7 +316,7 @@ const QueueCard = ({
                     key={idx}
                     phoneNumber={call.phoneNumber}
                     agent={{
-                      name: call.name || "Unknown Agent",
+                      name: call.name || t("unknownAgent"),
                       ext: call.ext || "",
                     }}
                     status="waiting"
@@ -320,7 +329,7 @@ const QueueCard = ({
                   <div className="p-2 bg-gray-200 rounded-full">
                     <HourglassBottom />
                   </div>
-                  <span>No waiting calls</span>
+                  <span>{t("noWaitingCalls")}</span>
                 </p>
               )}
             </AccordionContent>

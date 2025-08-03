@@ -1588,5 +1588,111 @@
         "applyFilters": "تطبيق"
       }
     }
+  },
+  "liveMonitor": {
+    "agents": {
+      "title": "المستخدمين",
+      "subtitle": "الحالة المباشرة والأداء",
+      "total": "المجموع",
+      "status": {
+        "onCall": "في مكالمة",
+        "idle": " المتاحون",
+        "offline": "الغير متصلين"
+      }
+    },
+    "queueManagement": {
+      "title": "إدارة الفرق",
+      "subtitle": "مراقبة الفرق وإدارتها بشكل لحظي",
+      "valueSubtitle": "إجمالي الفرق النشطة لهذا اليوم",
+      "queueCard": {
+        "activeCalls": "مكالمة نشطة",
+        "sla": "اتفاقية مستوى الخدمة",
+        "inProgress": "قيد التنفيذ",
+        "waiting": "في الانتظار",
+        "calls": "مكالمات",
+        "totalCalls": "إجمالي المكالمات",
+        "answeredCalls": "المكالمات المُجابة",
+        "abandonedCalls": "المكالمات المُغلقة قبل الرد",
+        "timeoutCalls": "المكالمات المنتهية بمهلة الانتظار",
+        "averageWaitTime": "متوسط وقت الانتظار",
+        "maxWaitTime": "أقصى وقت انتظار",
+        "minWaitTime": "أقل وقت انتظار",
+        "averageTalkTime": "متوسط وقت المحادثة",
+        "maxTalkTime": "أقصى وقت محادثة",
+        "minTalkTime": "أقل وقت محادثة",
+        "activeCallsTitle": "المكالمات النشطة",
+        "waitingCallsTitle": "المكالمات في الانتظار",
+        "noActiveCalls": "لا توجد مكالمات نشطة",
+        "noWaitingCalls": "لا توجد مكالمات في الانتظار",
+        "unknownAgent": "المستخدم غير معروف",
+        "active": "نشط",
+        "totalCallsSubtitle": "إجمالي المكالمات",
+        "queueCardCall": {
+          "agent": "المستخدم",
+          "callDuration": "مدة المكالمة",
+          "waitingDuration": "مدة الانتظار",
+          "error": "خطأ",
+          "sipConnectionError": "يجب أن تكون متصلاً ببرنامج الاتصال لمراقبة المكالمات.",
+          "incognito": "متخفي"
+        }
+      }
+    },
+    "performanceStats": {
+      "title": "الإحصائيات",
+      "errorLoading": "خطأ في تحميل إحصائيات الأداء:",
+      "unknownError": "خطأ غير معروف",
+      "statsCards": {
+        "answerRate": {
+          "title": "معدل الإجابة",
+          "unit": "%",
+          "comparison": "% مقارنة بالسابق"
+        },
+        "totalWaitTime": {
+          "title": "إجمالي وقت الانتظار",
+          "unit": "ثانية",
+          "comparison": "% مقارنة بالسابق"
+        },
+        "totalTalkTime": {
+          "title": "إجمالي وقت المحادثة",
+          "unit": "ثانية",
+          "comparison": "% مقارنة بالسابق"
+        },
+        "slaCompliance": {
+          "title": "الامتثال لاتفاقية مستوى الخدمة",
+          "unit": "%",
+          "comparison": "% مقارنة بالسابق"
+        }
+      },
+      "form": {
+        "filter": {
+          "type": {
+            "options": {
+              "day": "مقارنة: يوم",
+              "hour": "مقارنة: ساعة"
+            }
+          }
+        },
+        "actions": { "apply": "تطبيق" },
+        "fields": {
+          "sla": {
+            "label": "اتفاقية مستوى الخدمة",
+            "placeholder": "اتفاقية مستوى الخدمة (بالثواني)"
+          },
+          "timePeriod": {
+            "placeholder": "الفترة الزمنية"
+          }
+        }
+      }
+    },
+    "liveCalls": {
+      "title": "المكالمات المباشرة",
+      "subtitle": "مراقبة وإدارة المكالمات في الوقت الحالي",
+      "activeCalls": "المكالمات النشطة",
+      "live": "مباشر",
+      "noDataMessage": "لا توجد مكالمات نشطة في الوقت الحالي",
+      "refreshing": "جاري التحديث...",
+      "error": "فشل في تحميل المكالمات المباشرة",
+      "retry": "إعادة المحاولة"
+    }
   }
 }

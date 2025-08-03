@@ -14,8 +14,11 @@ import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-int
 import liveMonitoringService from "@/services/live-monitoring.service";
 import { Group } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
+import { useTranslations } from "next-intl";
 
 const Agents = () => {
+  const t = useTranslations("liveMonitor.agents");
+
   const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
     "live_monitoring_agents_interval"
   );
@@ -54,10 +57,10 @@ const Agents = () => {
     return (
       <div className="agents sticky top-0">
         <StatsDetailedCard
-          title="Agents"
-          subtitle="Live status & performance"
+          title={t("title")}
+          subtitle={t("subtitle")}
           value={0}
-          valueSubtitle="Total"
+          valueSubtitle={t("total")}
           icon={<Group />}
           color="primary"
           refetch={refetch}
@@ -75,12 +78,12 @@ const Agents = () => {
   return (
     <div className="agents sticky top-0">
       <StatsDetailedCard
-        title="Agents"
-        subtitle="Live status & performance"
+        title={t("title")}
+        subtitle={t("subtitle")}
         value={
           agents?.online.length + agents?.onCall.length + agents?.offline.length
         }
-        valueSubtitle="Total"
+        valueSubtitle={t("total")}
         icon={<Group />}
         color="primary"
         refetch={refetch}
@@ -97,7 +100,9 @@ const Agents = () => {
             <AccordionItem value="onCall">
               <AccordionTrigger>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-semibold">On Call Agents</span>
+                  <span className="text-lg font-semibold">
+                    {t("status.onCall")}
+                  </span>
                   <span className="text-sm text-gray-500">
                     ({agents?.onCall.length || 0})
                   </span>
@@ -117,7 +122,9 @@ const Agents = () => {
             <AccordionItem value="idle">
               <AccordionTrigger className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-semibold">Idle Agents</span>
+                  <span className="text-lg font-semibold">
+                    {t("status.idle")}
+                  </span>
                   <span className="text-sm text-gray-500">
                     ({agents?.online.length || 0})
                   </span>
@@ -137,7 +144,9 @@ const Agents = () => {
             <AccordionItem value="onBreak">
               <AccordionTrigger className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-lg font-semibold">Offline Agents</span>
+                  <span className="text-lg font-semibold">
+                    {t("status.offline")}
+                  </span>
                   <span className="text-sm text-gray-500">
                     ({agents?.offline.length || 0})
                   </span>

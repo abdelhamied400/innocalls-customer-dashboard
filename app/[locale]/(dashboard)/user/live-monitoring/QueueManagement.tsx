@@ -5,8 +5,11 @@ import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-int
 import liveMonitoringService from "@/services/live-monitoring.service";
 import { Queue } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
+import { useTranslations } from "next-intl";
 
 const QueueManagement = () => {
+  const t = useTranslations("liveMonitor.queueManagement");
+
   const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
     "live_monitoring_queue_management_interval"
   );
@@ -27,10 +30,10 @@ const QueueManagement = () => {
   return (
     <div className="queue-management">
       <StatsDetailedCard
-        title="Queue Management"
-        subtitle="Real-time queue monitoring and management"
+        title={t("title")}
+        subtitle={t("subtitle")}
         value={queueManagementData?.length || 0}
-        valueSubtitle="Total Calls in Queue"
+        valueSubtitle={t("valueSubtitle")}
         icon={<Queue />}
         color="info"
         refetch={refetch}
@@ -46,7 +49,9 @@ const QueueManagement = () => {
             <QueueCard
               key={queue.queue}
               title={queue.queue}
-              subtitle={`Total Calls: ${queue.stats.totalCalls}`}
+              subtitle={`${t("queueCard.totalCalls")}: ${
+                queue.stats.totalCalls
+              }`}
               stats={queue.stats}
               activeCalls={queue.activeCalls.map((call) => ({
                 ...call,
