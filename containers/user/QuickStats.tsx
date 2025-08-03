@@ -10,8 +10,11 @@ import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-int
 import statsService from "@/services/stats.service";
 import { BarChart, Bolt, ShowChart } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
+import { useTranslations } from "next-intl";
 
 const QuickStats = () => {
+  const t = useTranslations("dashboard.stats.quickStats");
+
   const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
     "quick_stats_refetch_interval"
   );
@@ -46,7 +49,7 @@ const QuickStats = () => {
     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-6">
       {/* Peak Day */}
       <StatsCard
-        title="Peak Day"
+        title={t("peakDay.title")}
         value={quickStats.peakDay}
         icon={<ShowChart />}
         color="info"
@@ -54,7 +57,7 @@ const QuickStats = () => {
 
       {/* Avg Daily Calls */}
       <StatsCard
-        title="Avg Daily Calls"
+        title={t("avgDailyCalls.title")}
         value={quickStats.averageDailyCalls}
         icon={<BarChart />}
         color="success"
@@ -62,7 +65,7 @@ const QuickStats = () => {
 
       {/* Best Response */}
       <StatsCard
-        title="Best Response"
+        title={t("bestResponse.title")}
         value={quickStats.bestResponseTime}
         icon={<Bolt />}
         color="warning"

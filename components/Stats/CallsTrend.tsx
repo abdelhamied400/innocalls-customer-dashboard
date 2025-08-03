@@ -19,19 +19,22 @@ import { CallMerge, Insights } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import statsService from "@/services/stats.service";
 import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
+import { useTranslations } from "next-intl";
 
 const CallsTrend = () => {
+  const t = useTranslations("dashboard.stats.callTrend");
+
   const chartConfig: ChartConfig = {
     total: {
-      label: "Total Calls",
+      label: t("chart.total.label"),
       color: "#3B82F6",
     },
     answered: {
-      label: "Answered",
+      label: t("chart.answered.label"),
       color: "#10B981",
     },
     missed: {
-      label: "Missed",
+      label: t("chart.missed.label"),
       color: "#EF4444",
     },
   };
@@ -57,7 +60,7 @@ const CallsTrend = () => {
 
   return (
     <ChartCard
-      title={"Calls Trend"}
+      title={t("title")}
       icon={<Insights />}
       color="success"
       className="h-full"
