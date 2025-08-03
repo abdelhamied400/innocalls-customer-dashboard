@@ -93,15 +93,17 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
         )}
       </div>
       <hr />
-      <div className="flex justify-between gap-1">
-        <p className="text-xs text-gray-500">{t("duration")}</p>
-        <div className="duration flex items-center gap-1">
-          <span className="block w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
-          <p className="text-xs text-green-500">
-            <Timer startingTime={startTime} />
-          </p>
+      {(getExtensionNumber(from) || getExtensionNumber(to)) && (
+        <div className="flex justify-between gap-1">
+          <p className="text-xs text-gray-500">{t("duration")}</p>
+          <div className="duration flex items-center gap-1">
+            <span className="block w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
+            <p className="text-xs text-green-500">
+              <Timer startingTime={startTime} />
+            </p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
