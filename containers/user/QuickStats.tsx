@@ -2,10 +2,6 @@ import StatsCard, {
   StatsCardError,
   StatsCardSkeleton,
 } from "@/components/StatsCard";
-import {
-  StatsDetailedCardError,
-  StatsDetailedCardSkeleton,
-} from "@/components/StatsDetailedCard";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 import statsService from "@/services/stats.service";
 import { BarChart, Bolt, ShowChart } from "@mui/icons-material";

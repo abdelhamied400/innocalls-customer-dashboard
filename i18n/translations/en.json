@@ -65,9 +65,9 @@
       "unknownError": "An unknown error occurred"
     },
     "date": {
-      "h": "H",
-      "m": "M",
-      "s": "S",
+      "h": "h",
+      "m": "m",
+      "s": "s",
       "day": "Day",
       "month": "Month",
       "year": "Year"
@@ -451,7 +451,10 @@
         "paid": "Paid",
         "overdue": "Overdue",
         "draft": "Draft",
-        "partially_paid": "Partially Paid"
+        "partially_paid": "Partially Paid",
+        "sent": "Sent",
+        "void": "Void",
+        "unpaid": "Unpaid"
       },
       "actions": {
         "pay": "Pay Invoice",
@@ -784,27 +787,29 @@
       "callSummaryStats": {
         "totalIncoming": {
           "title": "Total Incoming",
-          "info": "vs last month"
+          "info": "{percentage}% vs last month"
         },
         "totalOutgoing": {
           "title": "Total Outgoing",
-          "info": "vs last month"
+          "info": "{percentage}% vs last month"
         },
         "answerRate": {
           "title": "Answer Rate",
-          "info": "vs last month"
+          "info": "{percentage}% vs last month"
         },
         "talkTime": {
           "title": "Talk Time",
-          "info": "vs last month"
+          "info": "{percentage}% vs last month",
+          "s": "s"
         },
         "waitTime": {
           "title": "Wait Time",
-          "info": "vs last month"
+          "info": "{percentage}% vs last month",
+          "s": "s"
         },
         "internalCalls": {
           "title": "Internal Calls",
-          "info": "vs last month"
+          "info": "{percentage}% vs last month"
         }
       },
       "quickStats": {
@@ -854,7 +859,7 @@
       "totalCallsStats": {
         "title": "Total Calls ",
         "subtitle": "Last 30 Days",
-        "valueSubtitle": "vs last month",
+        "valueSubtitle": "{percentage}% vs last month",
         "completedCalls": "Completed Calls",
         "abandonedCalls": "Abandoned Calls",
         "timeoutCalls": "Timeout Calls"
@@ -862,7 +867,7 @@
       "waitTimeStats": {
         "title": "Wait Time",
         "subtitle": "Last 30 Days",
-        "valueSubtitle": "vs last month",
+        "valueSubtitle": "{percentage}% vs last month",
         "averageWait": "Average Wait",
         "completedCalls": "Completed Calls",
         "abandonedCalls": "Abandoned Calls",
@@ -872,8 +877,8 @@
       "talkTimeStats": {
         "title": "Talk Time",
         "subtitle": "Last 30 Days",
-        "valueSubtitle": "vs last month",
-        "averagePerCall": "Average per Call",
+        "valueSubtitle": "{percentage}% vs last month",
+        "averagePerCall": "Average Per Call",
         "dailyAverage": "Daily Average",
         "peakHour": "Peak Hour",
         "h": "h"
@@ -1641,21 +1646,21 @@
       "statsCards": {
         "answerRate": {
           "title": "Answer Rate",
-          "comparison": "% vs previous"
+          "comparison": "{percentage}% vs previous"
         },
         "totalWaitTime": {
           "title": "Total Wait Time",
-          "unit": "seconds",
-          "comparison": "% vs previous"
+          "unit": "s",
+          "comparison": "{percentage}% vs previous"
         },
         "totalTalkTime": {
           "title": "Total Talk Time",
-          "unit": "seconds",
-          "comparison": "% vs previous"
+          "unit": "s",
+          "comparison": "{percentage}% vs previous"
         },
         "slaCompliance": {
           "title": "SLA Compliance",
-          "comparison": "% vs previous"
+          "comparison": "{percentage}% vs previous"
         }
       },
       "form": {
@@ -1675,6 +1680,11 @@
           },
           "timePeriod": {
             "placeholder": "Time Period"
+          }
+        },
+        "validation": {
+          "sla": {
+            "invalid": "SLA must be an integer greater than or equal to 1"
           }
         }
       }

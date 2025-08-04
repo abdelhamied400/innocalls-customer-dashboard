@@ -451,7 +451,10 @@
         "paid": "مدفوعة",
         "overdue": "متأخرة",
         "draft": "مسودة",
-        "partially_paid": "مدفوعة جزئياً"
+        "partially_paid": "مدفوعة جزئياً",
+        "sent": "مُرْسَل",
+        "void": "لَاغٍ",
+        "unpaid": "غَيْرُ مَدْفُوعَة"
       },
       "actions": {
         "pay": "دفع الفاتورة",
@@ -792,27 +795,29 @@
       "callSummaryStats": {
         "totalIncoming": {
           "title": "إجمالي المكالمات الواردة",
-          "info": "مقارنة بالشهر الماضي"
+          "info": "{percentage}% مقارنة بالشهر الماضي"
         },
         "totalOutgoing": {
           "title": "إجمالي المكالمات الصادرة",
-          "info": "مقارنة بالشهر الماضي"
+          "info": "{percentage}% مقارنة بالشهر الماضي"
         },
         "answerRate": {
           "title": "معدل الإجابة",
-          "info": "مقارنة بالشهر الماضي"
+          "info": "{percentage}% مقارنة بالشهر الماضي"
         },
         "talkTime": {
           "title": "وقت المحادثة",
-          "info": "مقارنة بالشهر الماضي"
+          "info": "{percentage}% مقارنة بالشهر الماضي",
+          "s": "ث"
         },
         "waitTime": {
           "title": "وقت الانتظار",
-          "info": "مقارنة بالشهر الماضي"
+          "info": "{percentage}% مقارنة بالشهر الماضي",
+          "s": "ث"
         },
         "internalCalls": {
           "title": "المكالمات الداخلية",
-          "info": "مقارنة بالشهر الماضي"
+          "info": "{percentage}% مقارنة بالشهر الماضي"
         }
       },
       "quickStats": {
@@ -862,7 +867,7 @@
       "totalCallsStats": {
         "title": "إجمالي المكالمات",
         "subtitle": "آخر 30 يوماً",
-        "valueSubtitle": "مقارنة بالشهر الماضي",
+        "valueSubtitle": "{percentage}% مقارنة بالشهر الماضي",
         "completedCalls": "المكالمات المكتملة",
         "abandonedCalls": "المكالمات المُغلقة قبل الرد",
         "timeoutCalls": "المكالمات المنتهية بمهلة الانتظار"
@@ -870,7 +875,7 @@
       "waitTimeStats": {
         "title": "وقت الانتظار",
         "subtitle": "آخر 30 يوماً",
-        "valueSubtitle": "مقارنة بالشهر الماضي",
+        "valueSubtitle": "{percentage}% مقارنة بالشهر الماضي",
         "averageWait": "متوسط الانتظار",
         "completedCalls": "المكالمات المكتملة",
         "abandonedCalls": "المكالمات المُغلقة قبل الرد",
@@ -880,7 +885,8 @@
       "talkTimeStats": {
         "title": "وقت المحادثة",
         "subtitle": "آخر 30 يوماً",
-        "valueSubtitle": "مقارنة بالشهر الماضي",
+        "valueSubtitle1": "مقارنة بالشهر الماضي",
+        "valueSubtitle": "{percentage}% مقارنة بالشهر الماضي",
         "averagePerCall": "متوسط كل مكالمة",
         "dailyAverage": "المتوسط اليومي",
         "peakHour": "ساعة الذروة",
@@ -1653,22 +1659,22 @@
         "answerRate": {
           "title": "معدل الإجابة",
           "unit": "%",
-          "comparison": "% مقارنة بالسابق"
+          "comparison": "{percentage}% مقارنة بالسابق"
         },
         "totalWaitTime": {
           "title": "إجمالي وقت الانتظار",
-          "unit": "ثانية",
-          "comparison": "% مقارنة بالسابق"
+          "unit": "ث",
+          "comparison": "{percentage}% مقارنة بالسابق"
         },
         "totalTalkTime": {
           "title": "إجمالي وقت المحادثة",
-          "unit": "ثانية",
-          "comparison": "% مقارنة بالسابق"
+          "unit": "ث",
+          "comparison": "{percentage}% مقارنة بالسابق"
         },
         "slaCompliance": {
           "title": "الامتثال لاتفاقية مستوى الخدمة",
           "unit": "%",
-          "comparison": "% مقارنة بالسابق"
+          "comparison": "{percentage}% مقارنة بالسابق"
         }
       },
       "form": {
@@ -1688,6 +1694,11 @@
           },
           "timePeriod": {
             "placeholder": "الفترة الزمنية"
+          }
+        },
+        "validation": {
+          "sla": {
+            "int": " أكبر من الصفر ,  يجب أن يكون استجابة المكالمات الواردة رقماً صحيحاً"
           }
         }
       }

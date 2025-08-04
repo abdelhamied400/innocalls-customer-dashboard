@@ -31,3 +31,11 @@ export const objToQueryString = (obj: Record<string, any>) => {
   }
   return params.toString();
 };
+
+export const formatNumbers = (value: number) => {
+  if (Number.isInteger(value)) {
+    return `${Math.round(value)}`;
+  } else {
+    return `${value.toFixed(2)}`;
+  }
+};
