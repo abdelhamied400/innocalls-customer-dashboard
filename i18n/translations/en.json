@@ -1706,5 +1706,65 @@
         "duration": "Duration"
       }
     }
+  },
+  "webrtc": {
+    "contacts": {
+      "title": "Contacts",
+      "actions": {
+        "create": "Create Contact",
+        "update": "Update Contact",
+        "list": "Contacts",
+        "delete": "Delete",
+        "call": "Call",
+        "loading": "Loading Contacts",
+        "return": "Back To Contacts",
+        "loadingContact": "Loading Contact",
+        "edit": "Edit",
+        "calling": "Calling"
+      },
+      "form": {
+        "fields": {
+          "name": {
+            "label": "Name",
+            "placeholder": "Enter contact name"
+          },
+          "phone": {
+            "label": "Phone",
+            "placeholder": "Enter phone number"
+          }
+        },
+        "validation": {
+          "name": {
+            "required": "Name is required",
+            "minLength": "Name must be at least {min} characters",
+            "maxLength": "Name must be at most {max} characters"
+          },
+          "phone": {
+            "required": "Phone number is required",
+            "invalid": "Please enter a valid phone number",
+            "minLength": "Phone number must be at least {min} characters",
+            "maxLength": "Phone must be at most {max} characters"
+          }
+        }
+      },
+      "messages": {
+        "error": "Error",
+        "contactIdMissing": "Contact ID is missing.",
+        "failedToLoadContact": "Failed to load contact.",
+        "failedToCreateContact": "Failed to create contact",
+        "failedToUpdateContact": "Failed to update contact",
+        "failedToDeleteContact": "Failed to delete contact.",
+        "unexpectedError": "An unexpected error occurred.",
+        "contactNotFound": "Contact not found.",
+        "errorLoadingContacts": "Failed to load contacts",
+        "contactCreated": "Contact Created",
+        "contactCreatedDescription": "The contact has been created successfully.",
+        "contactUpdated": "Contact Updated",
+        "contactUpdatedDescription": "The contact has been updated successfully.",
+        "contactDeleted": "Contact Deleted",
+        "contactDeletedDescription": "{name} has been deleted successfully.",
+        "callingDescription": "Calling {name} at {phone}"
+      }
+    }
   }
 }

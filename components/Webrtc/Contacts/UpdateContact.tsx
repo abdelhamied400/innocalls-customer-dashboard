@@ -16,6 +16,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { editContactSchema } from "@/validation/Webrtc";
+import { useTranslations } from "next-intl";
 
 type Contact = {
   id: string;
@@ -24,6 +25,8 @@ type Contact = {
 };
 
 const UpdateContact = () => {
+  const t = useTranslations("webrtc.contacts");
+
   const { navigate, getParams } = useRouting();
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -37,7 +40,7 @@ const UpdateContact = () => {
       name: "",
       phone: "",
     },
-    resolver: zodResolver(editContactSchema),
+    resolver: zodResolver(editContactSchema(t)),
   });
 
   // Load contact data when component mounts
@@ -45,8 +48,8 @@ const UpdateContact = () => {
     const loadContact = async () => {
       if (!contactId) {
         toast({
-          title: "Error",
-          description: "Contact ID is missing.",
+          title: t("messages.error"),
+          description: t("error.contactIdMissing"),
           variant: "destructive",
         });
         navigate("/contacts/list");
@@ -74,8 +77,8 @@ const UpdateContact = () => {
         }
       } catch (error) {
         toast({
-          title: "Error",
-          description: "Failed to load contact.",
+          title: t("messages.error"),
+          description: t("messages.failedToLoadContact"),
           variant: "destructive",
         });
         navigate("/contacts/list");
@@ -90,8 +93,8 @@ const UpdateContact = () => {
   const onSubmit = form.handleSubmit(async (data) => {
     if (!contactId) {
       toast({
-        title: "Error",
-        description: "Contact ID is missing.",
+        title: t("messages.error"),
+        description: t("error.contactIdMissing"),
         variant: "destructive",
       });
       return;
@@ -103,23 +106,24 @@ const UpdateContact = () => {
         queryKey: ["contacts-list"],
       });
       toast({
-        title: "Contact Updated",
-        description: "The contact has been updated successfully.",
+        title: t("messages.contactUpdated"),
+        description: t("messages.contactUpdatedDescription"),
         variant: "success",
       });
       navigate("/contacts/list");
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
-          title: "Error",
+          title: t("messages.error"),
           description:
-            error.response?.data?.message || "Failed to update contact.",
+            error.response?.data?.message ||
+            t("messages.failedToUpdateContact"),
           variant: "destructive",
         });
       } else {
         toast({
-          title: "Error",
-          description: "An unexpected error occurred.",
+          title: t("messages.error"),
+          description: t("messages.unexpectedError"),
           variant: "destructive",
         });
       }
@@ -135,11 +139,11 @@ const UpdateContact = () => {
       <div className="update-contact">
         <PopoverCard>
           <PopoverCardHeader>
-            <h3>Update Contact</h3>
+            <h3>{t("actions.update")}</h3>
           </PopoverCardHeader>
           <PopoverCardContent>
             <div className="flex items-center justify-center p-4">
-              <p>Loading contact...</p>
+              <p>{t("actions.loadingContact")}</p>
             </div>
           </PopoverCardContent>
         </PopoverCard>
@@ -152,13 +156,13 @@ const UpdateContact = () => {
       <div className="update-contact">
         <PopoverCard>
           <PopoverCardHeader>
-            <h3>Update Contact</h3>
+            <h3>{t("actions.update")}</h3>
           </PopoverCardHeader>
           <PopoverCardContent>
             <div className="flex flex-col gap-2 items-center">
-              <p>Contact not found.</p>
+              <p>{t("messages.contactNotFound")}</p>
               <Button variant="link" onClick={handleCancel}>
-                Back to Contacts
+                {t("actions.return")}
               </Button>
             </div>
           </PopoverCardContent>
@@ -171,7 +175,7 @@ const UpdateContact = () => {
     <div className="update-contact">
       <PopoverCard>
         <PopoverCardHeader>
-          <h3>Update Contact</h3>
+          <h3>{t("actions.update")}</h3>
         </PopoverCardHeader>
         <PopoverCardContent>
           <div className="flex flex-col gap-2-items-center">
@@ -184,7 +188,7 @@ const UpdateContact = () => {
                     <FormItem>
                       <FormControl>
                         <Field
-                          label={"Contact Name"}
+                          label={t("form.fields.name.label")}
                           error={
                             form.formState.errors.name?.message?.toString() ||
                             ""
@@ -194,7 +198,7 @@ const UpdateContact = () => {
                           <Input
                             id="name"
                             variant="field"
-                            placeholder={"Contact Name"}
+                            placeholder={t("form.fields.name.placeholder")}
                             {...field}
                           />
                         </Field>
@@ -209,7 +213,7 @@ const UpdateContact = () => {
                     <FormItem>
                       <FormControl>
                         <Field
-                          label={"Phone Number"}
+                          label={t("form.fields.phone.label")}
                           error={
                             form.formState.errors.phone?.message?.toString() ||
                             ""
@@ -219,7 +223,7 @@ const UpdateContact = () => {
                           <Input
                             id="phone"
                             variant="field"
-                            placeholder={"Phone Number"}
+                            placeholder={t("form.fields.phone.placeholder")}
                             {...field}
                           />
                         </Field>
@@ -228,7 +232,7 @@ const UpdateContact = () => {
                   )}
                 />
                 <Button type="submit" className="w-full mt-4">
-                  Update Contact
+                  {t("actions.update")}
                 </Button>
               </form>
             </Form>
@@ -237,7 +241,7 @@ const UpdateContact = () => {
               onClick={handleCancel}
               disabled={form.formState.isSubmitting}
             >
-              Cancel
+              {t("actions.return")}
             </Button>
           </div>
         </PopoverCardContent>

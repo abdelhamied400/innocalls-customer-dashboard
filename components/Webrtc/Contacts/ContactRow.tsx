@@ -10,17 +10,10 @@ import { useToast } from "@/hooks/use-toast";
 import { useRouting } from "@/providers/RoutingProvider";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import webrtcService from "@/services/webrtc.service";
-import {
-  Call,
-  Delete,
-  DeleteForever,
-  Edit,
-  MoreHoriz,
-  MoreVert,
-} from "@mui/icons-material";
+import { Call, DeleteForever, Edit, MoreVert } from "@mui/icons-material";
 import { useQueryClient } from "@tanstack/react-query";
-import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { isAxiosError } from "axios";
+import { useTranslations } from "next-intl";
 
 type ContactRowProps = {
   contact: {
@@ -31,6 +24,8 @@ type ContactRowProps = {
 };
 
 const ContactRow = ({ contact }: ContactRowProps) => {
+  const t = useTranslations("webrtc.contacts");
+
   const { toast } = useToast();
   const { navigate } = useRouting();
   const { call } = useSip();
@@ -39,16 +34,19 @@ const ContactRow = ({ contact }: ContactRowProps) => {
   const handleStartCall = () => {
     if (!contact.phone) {
       toast({
-        title: "Error",
-        description: "Contact phone number is missing.",
+        title: t("messages.error"),
+        description: t("form.validation.phone.required"),
         variant: "destructive",
       });
       return;
     }
     call(contact.phone);
     toast({
-      title: "Calling",
-      description: `Calling ${contact.name} at ${contact.phone}`,
+      title: t("actions.calling"),
+      description: t("messages.callingDescription", {
+        name: contact.name,
+        phone: contact.phone,
+      }),
       variant: "success",
     });
   };
@@ -65,22 +63,25 @@ const ContactRow = ({ contact }: ContactRowProps) => {
         queryKey: ["contacts-list"],
       });
       toast({
-        title: "Contact Deleted",
-        description: `${contact.name} has been deleted successfully.`,
+        title: t("messages.contactDeleted"),
+        description: t("messages.contactDeletedDescription", {
+          name: contact.name,
+        }),
         variant: "success",
       });
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
-          title: "Error",
+          title: t("messages.error"),
           description:
-            error.response?.data?.message || "Failed to delete contact.",
+            error.response?.data?.message ||
+            t("messages.failedToDeleteContact"),
           variant: "destructive",
         });
       } else {
         toast({
-          title: "Error",
-          description: "An unexpected error occurred.",
+          title: t("messages.error"),
+          description: t("messages.unexpectedError"),
           variant: "destructive",
         });
       }
@@ -119,10 +120,10 @@ const ContactRow = ({ contact }: ContactRowProps) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-48">
               <DropdownMenuItem onClick={handleEditContact}>
-                <Edit /> Edit
+                <Edit /> {t("actions.edit")}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleDeleteContact}>
-                <DeleteForever /> Delete
+                <DeleteForever /> {t("actions.delete")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -1720,5 +1720,65 @@
         "duration": "المدة"
       }
     }
+  },
+  "webrtc": {
+    "contacts": {
+      "title": "جهات الاتصال",
+      "actions": {
+        "create": "إنشاء جهة اتصال",
+        "update": "تحديث جهة الاتصال",
+        "list": "جهات الاتصال",
+        "delete": "حذف",
+        "call": "اتصال",
+        "loading": "جاري تحميل جهات الاتصال",
+        "return": "العودة إلى قائمة جهات الاتصال",
+        "loadingContact": "جاري تحميل جهة الاتصال",
+        "edit": "تعديل",
+        "calling": "جاري الاتصال"
+      },
+      "form": {
+        "fields": {
+          "name": {
+            "label": "الاسم",
+            "placeholder": "أدخل اسم جهة الاتصال"
+          },
+          "phone": {
+            "label": "رقم الهاتف",
+            "placeholder": "أدخل رقم الهاتف"
+          }
+        },
+        "validation": {
+          "name": {
+            "required": "الاسم مطلوب",
+            "minLength": "يجب أن يكون الاسم {min} أحرف على الأقل",
+            "maxLength": "يجب أن يكون الاسم {max} حرف على الأكثر"
+          },
+          "phone": {
+            "required": "رقم الهاتف مطلوب",
+            "invalid": "يرجى إدخال رقم هاتف صحيح",
+            "minLength": "يجب أن يكون رقم الهاتف {min} أرقام على الأقل",
+            "maxLength": "يجب أن يكون رقم الهاتف {max} حرف على الأكثر"
+          }
+        }
+      },
+      "messages": {
+        "error": "خطأ",
+        "contactIdMissing": "معرف جهة الاتصال مفقود.",
+        "failedToLoadContact": "فشل في تحميل جهة الاتصال.",
+        "failedToCreateContact": "فشل في إنشاء جهة الاتصال.",
+        "failedToUpdateContact": "فشل في تحديث جهة الاتصال.",
+        "failedToDeleteContact": "فشل في حذف جهة الاتصال.",
+        "unexpectedError": "حدث خطأ غير متوقع.",
+        "contactNotFound": "جهة الاتصال غير موجودة.",
+        "errorLoadingContacts": "فشل في تحميل جهات الاتصال",
+        "contactCreated": "تم إنشاء جهة الاتصال",
+        "contactCreatedDescription": "تم إنشاء جهة الاتصال بنجاح.",
+        "contactUpdated": "تم تحديث جهة الاتصال",
+        "contactUpdatedDescription": "تم تحديث جهة الاتصال بنجاح.",
+        "contactDeleted": "تم حذف جهة الاتصال",
+        "contactDeletedDescription": "تم حذف {name} بنجاح.",
+        "callingDescription": "جاري الاتصال بـ {name} على الرقم {phone}"
+      }
+    }
   }
 }

@@ -10,8 +10,11 @@ import ContactRow from "./ContactRow";
 import { useRouting } from "@/providers/RoutingProvider";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useEffect } from "react";
+import { useTranslations } from "next-intl";
 
 const ContactsList = () => {
+  const t = useTranslations("webrtc.contacts");
+
   const { navigate } = useRouting();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery({
@@ -49,17 +52,17 @@ const ContactsList = () => {
     <div className="contacts-list">
       <PopoverCard>
         <PopoverCardHeader>
-          <h3>Contacts</h3>
+          <h3>{t("title")}</h3>
           <Button size="sm" onClick={handleAddContact}>
-            Add Contact
+            {t("actions.create")}
           </Button>
         </PopoverCardHeader>
         <PopoverCardContent>
           <div className="contacts-list-content flex flex-col gap-2">
             {status === "pending" ? (
-              <p>Loading contacts...</p>
+              <p>{t("actions.loading")}</p>
             ) : status === "error" ? (
-              <p>Error loading contacts</p>
+              <p> {t("messages.errorLoadingContacts")}</p>
             ) : (
               contacts.map((contact) => (
                 <ContactRow key={contact.id} contact={contact} />
@@ -70,9 +73,7 @@ const ContactsList = () => {
             {/* Loading indicator */}
             {isFetchingNextPage && (
               <div className="flex justify-center items-center py-2">
-                <p className="text-sm text-gray-500">
-                  Loading more contacts...
-                </p>
+                <p className="text-sm text-gray-500">{t("actions.loading")}</p>
               </div>
             )}
           </div>

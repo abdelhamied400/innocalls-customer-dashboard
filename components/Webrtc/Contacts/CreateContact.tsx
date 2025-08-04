@@ -15,8 +15,11 @@ import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createContactSchema } from "@/validation/Webrtc";
+import { useTranslations } from "next-intl";
 
 const CreateContact = () => {
+  const t = useTranslations("webrtc.contacts");
+
   const { navigate } = useRouting();
   const queryClient = useQueryClient();
   const { toast } = useToast();
@@ -25,7 +28,7 @@ const CreateContact = () => {
       name: "",
       phone: "",
     },
-    resolver: zodResolver(createContactSchema),
+    resolver: zodResolver(createContactSchema(t)),
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
@@ -34,24 +37,27 @@ const CreateContact = () => {
       await queryClient.invalidateQueries({
         queryKey: ["contacts-list"],
       });
+
       toast({
-        title: "Contact Created",
-        description: "The contact has been created successfully.",
+        title: t("messages.contactCreated"),
+        description: t("messages.contactCreatedDescription"),
         variant: "success",
       });
+
       navigate("/contacts/list");
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
-          title: "Error",
+          title: t("messages.error"),
           description:
-            error.response?.data?.message || "Failed to create contact.",
+            error.response?.data?.message ||
+            t("messages.failedToCreateContact"),
           variant: "destructive",
         });
       } else {
         toast({
-          title: "Error",
-          description: "An unexpected error occurred.",
+          title: t("messages.error"),
+          description: t("messages.unexpectedError"),
           variant: "destructive",
         });
       }
@@ -61,11 +67,12 @@ const CreateContact = () => {
   const handleCancel = () => {
     navigate("/contacts/list");
   };
+
   return (
     <div className="create-contact">
       <PopoverCard>
         <PopoverCardHeader>
-          <h3>Create Contact</h3>
+          <h3>{t("actions.create")}</h3>
         </PopoverCardHeader>
         <PopoverCardContent>
           <div className="flex flex-col gap-2-items-center">
@@ -78,7 +85,7 @@ const CreateContact = () => {
                     <FormItem>
                       <FormControl>
                         <Field
-                          label={"Contact Name"}
+                          label={t("form.fields.name.label")}
                           error={
                             form.formState.errors.name?.message?.toString() ||
                             ""
@@ -88,7 +95,7 @@ const CreateContact = () => {
                           <Input
                             id="name"
                             variant="field"
-                            placeholder={"Contact Name"}
+                            placeholder={t("form.fields.name.placeholder")}
                             {...field}
                           />
                         </Field>
@@ -103,7 +110,7 @@ const CreateContact = () => {
                     <FormItem>
                       <FormControl>
                         <Field
-                          label={"Phone Number"}
+                          label={t("form.fields.phone.label")}
                           error={
                             form.formState.errors.phone?.message?.toString() ||
                             ""
@@ -113,7 +120,7 @@ const CreateContact = () => {
                           <Input
                             id="phone"
                             variant="field"
-                            placeholder={"Phone Number"}
+                            placeholder={t("form.fields.phone.placeholder")}
                             {...field}
                           />
                         </Field>
@@ -122,7 +129,7 @@ const CreateContact = () => {
                   )}
                 />
                 <Button type="submit" className="w-full mt-4">
-                  Create Contact
+                  {t("actions.create")}
                 </Button>
               </form>
             </Form>
@@ -131,7 +138,7 @@ const CreateContact = () => {
               onClick={handleCancel}
               disabled={form.formState.isSubmitting}
             >
-              Cancel
+              {t("actions.return")}
             </Button>
           </div>
         </PopoverCardContent>
