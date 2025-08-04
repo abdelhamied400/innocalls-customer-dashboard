@@ -4,6 +4,7 @@ import vocabService from "@/services/vocab.service";
 import useAuthStore from "@/store/auth.slice";
 import useVocabStore from "@/store/vocab.slice";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import { PropsWithChildren, useEffect, useRef, useState } from "react";
 
 type VocabProviderProps = PropsWithChildren<{}>;
@@ -101,11 +102,13 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
     }
   }, [status, Organization]);
 
+  const t = useTranslations("common.states");
+
   if (status === "loading") {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <AppSpinner />
-        <span className="text-gray-500">Loading...</span>
+        <span className="text-gray-500">{t("loading")}</span>
       </div>
     );
   }
@@ -114,7 +117,7 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <AppSpinner />
-        <span className="text-gray-500">Loading ...</span>
+        <span className="text-gray-500">{t("loading")}</span>
       </div>
     );
   }
