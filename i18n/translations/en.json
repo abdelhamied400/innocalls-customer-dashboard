@@ -1765,6 +1765,10 @@
         "contactDeletedDescription": "{name} has been deleted successfully.",
         "callingDescription": "Calling {name} at {phone}"
       }
+    },
+    "actions":{
+      "logout":"Logout",
+      "callLog":"Call Log"
     }
   }
 }

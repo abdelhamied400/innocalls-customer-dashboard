@@ -1779,6 +1779,10 @@
         "contactDeletedDescription": "تم حذف {name} بنجاح.",
         "callingDescription": "جاري الاتصال بـ {name} على الرقم {phone}"
       }
+    },
+    "actions":{
+      "logout": "تسجيل الخروج",
+      "callLog":"سجل المكالمات"
     }
   }
 }
