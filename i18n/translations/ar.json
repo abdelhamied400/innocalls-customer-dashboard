@@ -1780,9 +1780,15 @@
         "callingDescription": "جاري الاتصال بـ {name} على الرقم {phone}"
       }
     },
-    "actions":{
+    "actions": {
       "logout": "تسجيل الخروج",
-      "callLog":"سجل المكالمات"
+      "callLog": "سجل المكالمات",
+      "reconnect": "إعادة الاتصال"
+    },
+    "status": {
+      "connected": "متصل",
+      "connecting": "جارٍ الاتصال",
+      "disconnected": "غير متصل"
     }
   }
 }

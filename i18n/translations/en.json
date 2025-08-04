@@ -1766,9 +1766,15 @@
         "callingDescription": "Calling {name} at {phone}"
       }
     },
-    "actions":{
-      "logout":"Logout",
-      "callLog":"Call Log"
+    "actions": {
+      "logout": "Logout",
+      "callLog": "Call Log",
+      "reconnect": "Reconnect?"
+    },
+    "status": {
+      "connected": "Connected",
+      "connecting": "Connecting",
+      "disconnected": "Disconnected"
     }
   }
 }
