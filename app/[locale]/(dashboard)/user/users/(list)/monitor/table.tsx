@@ -48,7 +48,7 @@ const UsersMonitorTable = ({}) => {
     if (extensionState !== "connected") {
       toast({
         title: "Error",
-        description: "Please connect your extension first.",
+        description: t("sipConnectionError"),
         variant: "destructive",
       });
       return;

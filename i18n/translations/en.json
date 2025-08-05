@@ -274,7 +274,8 @@
       "onCall": {
         "yes": "yes",
         "no": "no"
-      }
+      },
+      "sipConnectionError": "You must be connected to a WebRTC/softphone client to monitor calls"
     },
     "tabs": {
       "usersList": "Users List",
