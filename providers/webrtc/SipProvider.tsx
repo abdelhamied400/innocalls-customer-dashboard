@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, PropsWithChildren, useContext, useState } from "react";
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useRouting } from "@/providers/RoutingProvider";
 import { ExtensionWithCredentials } from "@/types/api/extension";
 import { createUserAgent } from "./SipProvider/userAgent";
@@ -121,6 +127,15 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
     return call(`*199${extension}`);
   };
+
+  useEffect(() => {
+    if (window) {
+      window.onbeforeunload = (event) => {
+        currentSession?.terminate();
+        return null;
+      };
+    }
+  }, [currentSession]);
 
   return (
     <SipContext.Provider

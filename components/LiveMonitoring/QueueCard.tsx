@@ -177,7 +177,7 @@ const QueueCard = ({
               color: colorVariant,
             })}
           >
-            {formatNumbers(parseFloat(sla || "00"))}
+            {formatNumbers(parseFloat(sla || "0"))}
             {String.fromCharCode(8206)}%
           </h3>
           <p>{t("sla")}</p>
