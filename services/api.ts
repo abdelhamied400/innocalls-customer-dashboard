@@ -1,7 +1,7 @@
 import axios from "axios";
-import { getSession } from "next-auth/react";
+import { getSession, signOut as clientSignout } from "next-auth/react";
 import { getCookie } from "cookies-next";
-import { auth } from "@/auth";
+import { auth, signOut } from "@/auth";
 
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
@@ -60,13 +60,19 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    const isServer = typeof window === "undefined";
     if (error.response) {
       // Handle specific error responses
       if (error.response.status === 401) {
         // Handle unauthorized access, e.g., redirect to login
         console.error("Unauthorized access - redirecting to login");
-        if (typeof window !== "undefined") {
-          window.location.href = "/login"; // Redirect to login page
+
+        if (isServer) {
+          // Server-side sign out
+          signOut();
+        } else {
+          // Client-side sign out
+          return clientSignout({ redirect: false });
         }
       } else if (error.response.status === 403) {
         // Handle forbidden access

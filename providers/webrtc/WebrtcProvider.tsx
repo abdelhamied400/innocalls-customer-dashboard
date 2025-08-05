@@ -1,6 +1,6 @@
 "use client";
 
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import { RoutingProvider } from "../RoutingProvider";
 import { SipProvider } from "./SipProvider";
 import { useSession } from "next-auth/react";
