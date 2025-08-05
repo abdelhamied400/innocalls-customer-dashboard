@@ -9,8 +9,11 @@ import { useSip } from "@/providers/webrtc/SipProvider";
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import CallLogCallRow from "./CallLog/CallLogCallRow";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 const CallLog = () => {
+  const t = useTranslations("webrtc.callLog");
+
   const { extension, call } = useSip();
   const [openLogs, setOpenLogs] = useState<Record<string, boolean>>({});
 
@@ -35,7 +38,7 @@ const CallLog = () => {
     <div className="call-log">
       <PopoverCard>
         <PopoverCardHeader>
-          <h3>Call Log</h3>
+          <h3>{t("title")}</h3>
         </PopoverCardHeader>
         <PopoverCardContent>
           {callLogs.length > 0 ? (
@@ -75,9 +78,7 @@ const CallLog = () => {
             </div>
           ) : (
             <div className="call-log-content">
-              <p className="text-sm text-gray-500">
-                No calls logged yet. Make a call to see it here.
-              </p>
+              <p className="text-sm text-gray-500">{t("noCalls")}</p>
             </div>
           )}
         </PopoverCardContent>

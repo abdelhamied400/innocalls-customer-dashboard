@@ -21,7 +21,7 @@ const Call = () => {
     <div className="screen" id="call-screen">
       <div className="flex flex-col gap-2">
         <CallDirection direction={currentSession?.direction} />
-        {number && <h4 className="text-center">{number}</h4>}
+        {number && <h4 className="text-center"> {"\u200E" + number}</h4>}
         {name && <h2 className="text-center">{name}</h2>}
         {/* if session status is confirmed */}
         <CallState state={sessionState} />

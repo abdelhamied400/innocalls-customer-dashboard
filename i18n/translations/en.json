@@ -1775,6 +1775,52 @@
       "connected": "Connected",
       "connecting": "Connecting",
       "disconnected": "Disconnected"
+    },
+    "callLog": {
+      "title": "Call Log",
+      "noCalls": " No calls logged yet. Make a call to see it here.",
+      "status": {
+        "incoming": "Incoming Calls ",
+        "outgoing": "Outgoing Calls",
+        "missed": "Missed Calls",
+        "rejected": "Rejected Calls"
+      },
+      "type": {
+        "incoming": "Incoming",
+        "outgoing": "Outgoing",
+        "missed": "Missed",
+        "rejected": "Rejected"
+      }
+    },
+    "fields": {
+      "phone": {
+        "label": "Phone",
+        "placeholder": "Enter phone number"
+      },
+      "country": {
+        "placeholder": "Select a country"
+      }
+    },
+    "callActions": {
+      "hold": "Hold",
+      "resume": "Resume",
+      "mute": "Mute",
+      "unMute": "Unmute",
+      "dialpad": "Dialpad",
+      "phone": {
+        "placeholder": "Press any digit"
+      }
+    },
+    "direction": {
+      "outgoing": "Outgoing Call",
+      "incoming": "Incoming Call"
+    },
+    "state": {
+      "answered": "Answered",
+      "ringing": "Ringing",
+      "trying": "Trying",
+      "ended": "Ended",
+      "failed": "Failed"
     }
   }
 }

@@ -16,32 +16,49 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useTranslations, useLocale } from "next-intl";
+import { ar, enUS } from "date-fns/locale";
 
 type CallLogRowProps = Omit<CallLog, "calls"> & {
   onCall?: () => void;
 };
 
 const CallLogRow = ({ number, time, stats, name, onCall }: CallLogRowProps) => {
+  const t = useTranslations("webrtc.callLog");
+  const locale = useLocale();
+
   const dateTime = parse(
     time.replace(/ (AM|PM)/, ""),
     "yyyy-MM-dd HH:mm",
     new Date()
   );
 
+  const getCurrentLocale = (locale: string) => {
+    return locale === "ar" ? ar : enUS;
+  };
+
+  const dateFnsLocale = getCurrentLocale(locale);
+
   return (
     <div className="call-log-row bg-gray-100 flex justify-between items-center p-2 rounded-lg hover:bg-gray-200 transition-colors text-sm [&_svg]:size-5">
       <div className="details flex flex-col gap-2">
         <h4 className="text-start">
-          {number} {name ? `- (${name})` : ""}
+          {"\u200E" + number} {name ? `- (${name})` : ""}
         </h4>
         <div className="date-time flex items-center gap-2">
           <div className="date flex items-center">
             <CalendarMonth />
-            <p>{format(new Date(dateTime), "dd/MM/yyyy")}</p>
+            <p>
+              {format(new Date(dateTime), "dd/MM/yyyy", {
+                locale: dateFnsLocale,
+              })}
+            </p>
           </div>
           <div className="date flex items-center">
             <Timer />
-            <p>{format(new Date(dateTime), "hh:mm a")}</p>
+            <p>
+              {format(new Date(dateTime), "hh:mm a", { locale: dateFnsLocale })}
+            </p>
           </div>
         </div>
 
@@ -55,7 +72,7 @@ const CallLogRow = ({ number, time, stats, name, onCall }: CallLogRowProps) => {
                 </div>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Outgoing Calls</p>
+                <p>{t("status.outgoing")}</p>
               </TooltipContent>
             </Tooltip>
             <Tooltip>
@@ -66,7 +83,7 @@ const CallLogRow = ({ number, time, stats, name, onCall }: CallLogRowProps) => {
                 </div>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Incoming Calls</p>
+                <p>{t("status.incoming")}</p>
               </TooltipContent>
             </Tooltip>
             <Tooltip>
@@ -77,7 +94,7 @@ const CallLogRow = ({ number, time, stats, name, onCall }: CallLogRowProps) => {
                 </div>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Missed Calls</p>
+                <p>{t("status.missed")}</p>
               </TooltipContent>
             </Tooltip>
             <Tooltip>
@@ -88,7 +105,7 @@ const CallLogRow = ({ number, time, stats, name, onCall }: CallLogRowProps) => {
                 </div>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Rejected Calls</p>
+                <p>{t("status.rejected")}</p>
               </TooltipContent>
             </Tooltip>
           </div>

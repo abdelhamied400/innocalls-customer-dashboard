@@ -1789,6 +1789,53 @@
       "connected": "متصل",
       "connecting": "جارٍ الاتصال",
       "disconnected": "غير متصل"
+    },
+    "callLog": {
+      "title": "سجل المكالمات",
+      "noCalls": "لم يتم تسجيل أي مكالمات بعد. قم بإجراء مكالمة لرؤيتها هنا.",
+      "calls": "مكالمات",
+      "status": {
+        "incoming": "المكالمات الواردة",
+        "outgoing": "المكالمات الصادرة",
+        "missed": "المكالمات الفائتة",
+        "rejected": "المكالمات المرفوضة"
+      },
+      "type": {
+        "incoming": "واردة",
+        "outgoing": "صادرة",
+        "missed": "فائتة",
+        "rejected": "مرفوضة"
+      }
+    },
+    "fields": {
+      "phone": {
+        "label": "رقم الهاتف",
+        "placeholder": "أدخل رقم الهاتف"
+      },
+      "country": {
+        "placeholder": "اختر البلد"
+      }
+    },
+    "callActions": {
+      "hold": "تعليق",
+      "resume": "استئناف",
+      "mute": "كتم الصوت",
+      "unMute": "إلغاء كتم الصوت",
+      "dialpad": "لوحة الاتصال",
+      "phone": {
+        "placeholder": "اضغط أي رقم"
+      }
+    },
+    "direction": {
+      "outgoing": "مكالمة صادرة",
+      "incoming": "مكالمة واردة"
+    },
+    "state": {
+      "answered": "مُجاب",
+      "ringing": "يَرِنّ",
+      "trying": "يُحاوِل",
+      "ended": "انْتَهَت",
+      "failed": "فَشِلَت"
     }
   }
 }
