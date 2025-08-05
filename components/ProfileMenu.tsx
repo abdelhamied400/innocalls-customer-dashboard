@@ -56,12 +56,12 @@ const ProfileMenu = () => {
         provider: "",
       });
     }
-    const org = session?.user.organizations?.find((org) => org.id === orgId);
+    const org = session?.user?.organizations?.find((org) => org.id === orgId);
     if (org) {
       setOrganization(org);
       return;
     }
-    const defaultOrg = session?.user.organizations?.[0];
+    const defaultOrg = session?.user?.organizations?.[0];
     if (defaultOrg) {
       setCookie("OrganizationId", defaultOrg.id);
       setOrganization(defaultOrg);
@@ -92,9 +92,9 @@ const ProfileMenu = () => {
             />
           </span>
           <div className="flex-col items-start gap-1 hidden md:flex">
-            <p className="font-semibold text-lg">{session?.user.name}</p>
+            <p className="font-semibold text-lg">{session?.user?.name}</p>
             <p className="text-neutral-400 text-sm">{Organization?.name}</p>
-            <p className="text-neutral-400 text-sm">{session?.user.userType}</p>
+            {/* <p className="text-neutral-400 text-sm">{session?.user.userType}</p> */}
           </div>
 
           <ExpandCircleDownOutlinedIcon className="text-neutral-300" />
@@ -103,7 +103,7 @@ const ProfileMenu = () => {
       <DropdownMenuContent>
         <DropdownMenuLabel>{t("organizations")}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {session?.user.organizations?.map((org) => (
+        {session?.user?.organizations?.map((org) => (
           <DropdownMenuItem
             key={org.name}
             className="flex flex-col items-start gap-0"

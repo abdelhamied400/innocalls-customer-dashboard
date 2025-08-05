@@ -135,7 +135,7 @@ export const useUaEvents = ({
     },
     [navigate, updateSessionState]
   );
-
+ 
   const handleOutgoingCall = useCallback(
     (e: RTCSessionEvent, extension: ExtensionWithCredentials) => {
       webrtcLogger.info("Outgoing call initiated", { session: e.session });

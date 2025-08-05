@@ -8,9 +8,10 @@ const IncomingCall = () => {
   const t = useTranslations("webrtc");
 
   const { currentSession } = useSip();
-  const number = currentSession?.remote_identity?.uri?.user || "Unknown Number";
+  const number =
+    currentSession?.remote_identity?.uri?.user || t("ua.unknownName");
   const name =
-    currentSession?.remote_identity?.display_name || "Unknown Caller";
+    currentSession?.remote_identity?.display_name || t("ua.unknownNumber");
   const direction = currentSession?.direction;
 
   const handleHangup = () => {
