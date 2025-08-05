@@ -4,8 +4,11 @@ import { digits } from "@/constants/digits";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import React from "react";
 import { CountrySelect } from "./DialpadCountrySelect";
+import { useTranslations } from "next-intl";
 
 const DialpadInput = () => {
+  const t = useTranslations("webrtc.fields");
+
   const { number, setNumber, countryCode, setCountryCode, call } = useSip();
 
   const onNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,18 +41,19 @@ const DialpadInput = () => {
   };
 
   return (
-    <Field label="Number">
+    <Field label={t("phone.label")}>
       <CountrySelect
         value={countryCode}
         onChange={setCountryCode}
-        placeholder="Select country"
+        placeholder={t("country.placeholder")}
       />
       <Input
         value={number}
         variant="field"
-        placeholder="Enter number..."
+        placeholder={t("phone.placeholder")}
         onChange={onNumberChange}
         onKeyDown={onKeyDown}
+        style={{ direction: "ltr", textAlign: "left" }}
       />
     </Field>
   );

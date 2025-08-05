@@ -9,6 +9,7 @@ import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import statsService from "@/services/stats.service";
 import { formatDurationShort } from "@/lib/date";
 import { useTranslations } from "next-intl";
+import { formatNumbers } from "@/lib/utils";
 
 const WaitTimeStats = () => {
   const t = useTranslations("dashboard.stats.waitTimeStats");
@@ -43,9 +44,11 @@ const WaitTimeStats = () => {
       title={t("title")}
       value={`${waitTimeStats?.totalWaitTime}`}
       subtitle={t("subtitle")}
-      valueSubtitle={`${Math.round(
-        waitTimeStats?.totalWaitTimeChangePercentage
-      )}% ${t("valueSubtitle")}`}
+      valueSubtitle={t("valueSubtitle", {
+        percentage: `${formatNumbers(
+          waitTimeStats?.totalWaitTimeChangePercentage
+        )}\u200E`,
+      })}
       icon={<HourglassEmpty />}
       color="info"
     >
@@ -57,9 +60,11 @@ const WaitTimeStats = () => {
             t: tCommon,
           })}
           color="info"
-          performanceChange={`${Math.round(
-            waitTimeStats?.averageWaitTimeChange
-          )}% ${t("valueSubtitle")}`}
+          performanceChange={t("valueSubtitle", {
+            percentage: `${Math.round(
+              waitTimeStats?.averageWaitTimeChange
+            )}\u200E`,
+          })}
         />
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">

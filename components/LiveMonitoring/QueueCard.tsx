@@ -25,6 +25,7 @@ import StatsRowCard from "../StatsRowCard";
 import StackedStatsRowCard from "../StackedStatsRowCard";
 import { FetchQueueDataResponse } from "@/services/live-monitoring.service";
 import { useTranslations } from "next-intl";
+import { formatNumbers } from "@/lib/utils";
 
 // Variants using cva
 const queueCardVariants = cva(
@@ -176,7 +177,8 @@ const QueueCard = ({
               color: colorVariant,
             })}
           >
-            {Math.round(parseFloat(sla || "0"))}%
+            {formatNumbers(parseFloat(sla || "0"))}
+            {String.fromCharCode(8206)}%
           </h3>
           <p>{t("sla")}</p>
         </div>

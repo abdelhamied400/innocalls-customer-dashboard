@@ -35,7 +35,7 @@ const Extensions = () => {
 
   return (
     <div className="extensions flex flex-col gap-2">
-      {extensions.map((extension) => (
+      {extensions?.map((extension) => (
         <ExtensionRow
           key={extension.id}
           extension={extension}

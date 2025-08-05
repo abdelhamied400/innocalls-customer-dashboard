@@ -1,11 +1,14 @@
 import Timer from "@/components/ui/timer";
 import { cn } from "@/lib/utils";
 import { SessionState } from "@/providers/webrtc/SipProvider/types";
+import { useTranslations } from "next-intl";
 
 type CallStateProps = {
   state?: SessionState;
 };
 const CallState = ({ state }: CallStateProps) => {
+  const t = useTranslations("webrtc.state");
+
   return (
     <div className="flex flex-col gap-2">
       <div className="session-status flex items-center justify-center gap-2">
@@ -28,7 +31,7 @@ const CallState = ({ state }: CallStateProps) => {
             state === "failed" && "text-destructive-500"
           )}
         >
-          {state}
+          {t(`${state}`)}
         </p>
       </div>
       <div className="flex items-center justify-center gap-2">

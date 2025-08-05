@@ -4,6 +4,7 @@ import { useSip } from "@/providers/webrtc/SipProvider";
 import { useToast } from "@/hooks/use-toast";
 import useAppStore from "@/store/app.slice";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 const agentCardVariants = cva(
   "rounded-lg border p-2 hover:shadow-md transition-all duration-200 group",
@@ -67,6 +68,8 @@ const AgentCard: React.FC<AgentCardProps> = ({
   const { setWebrtcOpen } = useAppStore();
   const { toast } = useToast();
 
+  const t = useTranslations("liveMonitor.liveCalls.callCard");
+
   const initials = name
     .split(" ")
     .map((word) => word.charAt(0).toUpperCase())
@@ -77,7 +80,7 @@ const AgentCard: React.FC<AgentCardProps> = ({
     if (extensionState !== "connected") {
       toast({
         title: "Error",
-        description: "Please connect your extension first.",
+        description: t("sipConnectionError"),
         variant: "destructive",
       });
       return;

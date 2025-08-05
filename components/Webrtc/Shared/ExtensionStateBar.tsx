@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useSip } from "@/providers/webrtc/SipProvider";
+import { useTranslations } from "next-intl";
 
 const ExtensionStateBar = () => {
+  const t = useTranslations("webrtc");
+
   const { extension, extensionState, reconnect } = useSip();
 
   if (!extension) return null;
@@ -17,11 +20,11 @@ const ExtensionStateBar = () => {
       )}
     >
       <p className="">
-        {extension?.ext} {extensionState}
+        {extension?.ext} {t("status." + extensionState)}
       </p>
       {extensionState === "disconnected" && (
         <Button onClick={reconnect} size="sm" variant="link">
-          Reconnect?
+          {t("actions.reconnect")}
         </Button>
       )}
     </div>

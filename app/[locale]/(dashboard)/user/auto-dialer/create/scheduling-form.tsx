@@ -49,7 +49,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
       }
     ).safeParseAsync(getValues());
 
-    console.log(res);
+    // console.log(res);
 
     if (!res.success) {
       setTimeout(() => {

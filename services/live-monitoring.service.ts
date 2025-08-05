@@ -52,6 +52,26 @@ type FetchQueueStatsResponse = {
   current: FetchQueueStats;
   change: FetchQueueStats;
   previous: FetchQueueStats;
+  answerRate: {
+    current: number;
+    change: number;
+    previous: number;
+  };
+  totalWaitTime: {
+    current: number;
+    change: number;
+    previous: number;
+  };
+  totalTalkTime: {
+    current: number;
+    change: number;
+    previous: number;
+  };
+  slaPercent: {
+    current: number;
+    change: number;
+    previous: number;
+  };
 };
 
 type FetchAgentsResponse = {
@@ -81,56 +101,8 @@ export default {
       params: { filterType, sla },
     });
 
-    // TODO: Calculate change percentages for each stat until backend supports it
-    const calculateChange = (current: number, previous: number): string => {
-      return previous > 0
-        ? (((current - previous) / previous) * 100).toFixed(2)
-        : "0.00";
-    };
     return {
       ...res.data,
-      change: {
-        answerRate: calculateChange(
-          res.data.current.answerRate,
-          res.data.previous.answerRate
-        ),
-        callsAnsweredWithinSLA: calculateChange(
-          res.data.current.callsAnsweredWithinSLA,
-          res.data.previous.callsAnsweredWithinSLA
-        ),
-        inboundAnswered: calculateChange(
-          res.data.current.inboundAnswered,
-          res.data.previous.inboundAnswered
-        ),
-        inboundCalls: calculateChange(
-          res.data.current.inboundCalls,
-          res.data.previous.inboundCalls
-        ),
-        outboundCalls: calculateChange(
-          res.data.current.outboundCalls,
-          res.data.previous.outboundCalls
-        ),
-        slaPercent: calculateChange(
-          res.data.current.slaPercent,
-          res.data.previous.slaPercent
-        ),
-        totalAnsweredCalls: calculateChange(
-          res.data.current.totalAnsweredCalls,
-          res.data.previous.totalAnsweredCalls
-        ),
-        totalCalls: calculateChange(
-          res.data.current.totalCalls,
-          res.data.previous.totalCalls
-        ),
-        totalWaitTime: calculateChange(
-          res.data.current.totalWaitTime,
-          res.data.previous.totalWaitTime
-        ),
-        totalTalkTime: calculateChange(
-          res.data.current.totalTalkTime,
-          res.data.previous.totalTalkTime
-        ),
-      },
     };
   },
   fetchAgents: async (): Promise<FetchAgentsResponse> => {

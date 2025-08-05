@@ -42,7 +42,7 @@ const CredentialsProvider = Credentials({
         userType,
       };
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       if (error instanceof AxiosError) {
         throw new AuthError(error.response?.data.message);
       }

@@ -95,7 +95,11 @@ const PercentBarStat = ({
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium text-gray-800">{value}</span>
           {showPercentage && (
-            <span className="text-xs text-gray-500">({percentage}%)</span>
+            <span className="text-xs text-gray-500">
+              {" "}
+              ({percentage}
+              {String.fromCharCode(8206)}%)
+            </span>
           )}
         </div>
       </div>

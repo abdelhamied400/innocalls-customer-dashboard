@@ -21,8 +21,11 @@ import CallLog from "../CallLog";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import { Contacts, ContactsProviders } from "../Contacts";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 const WebrtcActions = () => {
+  const t = useTranslations("webrtc.actions");
+
   const { logout } = useSip();
   const { data: session } = useSession();
 
@@ -61,7 +64,7 @@ const WebrtcActions = () => {
             <DropdownMenuItem asChild>
               <Popover>
                 <PopoverTrigger className="flex items-center gap-2 p-2 text-sm [&_svg]:size-5 hover:bg-gray-100 w-full">
-                  <FormatListNumbered /> Call Log
+                  <FormatListNumbered /> {t("callLog")}
                 </PopoverTrigger>
                 <PopoverContent className="p-0">
                   <CallLog />
@@ -76,7 +79,7 @@ const WebrtcActions = () => {
                 className="flex items-center gap-2 p-2 text-sm [&_svg]:size-5 hover:bg-gray-100"
               >
                 <SubdirectoryArrowLeft />
-                Logout
+                {t("logout")}
               </DropdownMenuItem>
             )}
           </DropdownMenuContent>

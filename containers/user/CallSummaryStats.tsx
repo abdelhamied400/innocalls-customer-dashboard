@@ -9,6 +9,7 @@ import {
 } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useTranslations } from "next-intl";
+import { formatNumbers } from "@/lib/utils";
 
 const CallSummaryStats = () => {
   const t = useTranslations("dashboard.stats.callSummaryStats");
@@ -30,9 +31,9 @@ const CallSummaryStats = () => {
       <StatsCard
         title={t("totalIncoming.title")}
         value={summaryStats?.inbound?.current || "0"}
-        info={`${Math.round(summaryStats?.inbound?.change || 0)}% ${t(
-          "totalIncoming.info"
-        )}`}
+        info={t("totalIncoming.info", {
+          percentage: `${Math.round(summaryStats?.inbound?.change || 0)}\u200E`,
+        })}
         icon={<CallReceived />}
         color="primary"
         isRefetching={isRefetching}
@@ -42,10 +43,12 @@ const CallSummaryStats = () => {
       />
       <StatsCard
         title={t("totalOutgoing.title")}
-        value={summaryStats?.outbound.current || "0"}
-        info={`${Math.round(summaryStats?.outbound.change || 0)}% ${t(
-          "totalOutgoing.info"
-        )}`}
+        value={summaryStats?.outbound?.current || "0"}
+        info={t("totalOutgoing.info", {
+          percentage: `${formatNumbers(
+            summaryStats?.outbound?.change || 0
+          )}\u200E`,
+        })}
         icon={<CallMade />}
         color="success"
         isRefetching={isRefetching}
@@ -55,10 +58,14 @@ const CallSummaryStats = () => {
       />
       <StatsCard
         title={t("answerRate.title")}
-        value={`${Math.round(summaryStats?.answerRate.current || 0)}%`}
-        info={`${Math.round(summaryStats?.answerRate.change || 0)}% ${t(
-          "answerRate.info"
-        )}`}
+        value={`${formatNumbers(
+          summaryStats?.answerRate?.current || 0
+        )}\u200E%`}
+        info={t("answerRate.info", {
+          percentage: `${formatNumbers(
+            summaryStats?.answerRate.change || 0
+          )}\u200E`,
+        })}
         icon={<Call />}
         color="info"
         isRefetching={isRefetching}
@@ -68,10 +75,14 @@ const CallSummaryStats = () => {
       />
       <StatsCard
         title={t("talkTime.title")}
-        value={`${Math.round(summaryStats?.talkTime.current || 0)}s`}
-        info={`${Math.round(summaryStats?.talkTime.change || 0)}% ${t(
-          "talkTime.info"
+        value={`${formatNumbers(summaryStats?.talkTime?.current || 0)}${t(
+          "talkTime.s"
         )}`}
+        info={t("talkTime.info", {
+          percentage: `${formatNumbers(
+            summaryStats?.talkTime?.change || 0
+          )}\u200E`,
+        })}
         icon={<TimerOutlined />}
         color="warning"
         isRefetching={isRefetching}
@@ -81,10 +92,14 @@ const CallSummaryStats = () => {
       />
       <StatsCard
         title={t("waitTime.title")}
-        value={`${Math.round(summaryStats?.waitTime.current || 0)}s`}
-        info={`${Math.round(summaryStats?.waitTime.change || 0)}% ${t(
-          "waitTime.info"
+        value={`${formatNumbers(summaryStats?.waitTime?.current || 0)}${t(
+          "waitTime.s"
         )}`}
+        info={t("waitTime.info", {
+          percentage: `${formatNumbers(
+            summaryStats?.waitTime?.change || 0
+          )}\u200E`,
+        })}
         icon={<TimerOutlined />}
         color="destructive"
         isRefetching={isRefetching}
@@ -94,10 +109,12 @@ const CallSummaryStats = () => {
       />
       <StatsCard
         title={t("internalCalls.title")}
-        value={summaryStats?.internal.current || "0"}
-        info={`${Math.round(summaryStats?.internal.change || 0)}% ${t(
-          "internalCalls.title"
-        )}`}
+        value={summaryStats?.internal?.current || "0"}
+        info={t("internalCalls.info", {
+          percentage: `${formatNumbers(
+            summaryStats?.internal?.change || 0
+          )}\u200E`,
+        })}
         icon={<South />}
         color="default"
         isRefetching={isRefetching}

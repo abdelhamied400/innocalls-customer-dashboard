@@ -8,6 +8,7 @@ import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 import statsService from "@/services/stats.service";
 import { useTranslations } from "next-intl";
+import { formatNumbers } from "@/lib/utils";
 
 const TotalCallsStats = () => {
   const t = useTranslations("dashboard.stats.totalCallsStats");
@@ -41,9 +42,11 @@ const TotalCallsStats = () => {
       title={t("title")}
       value={totalCallsStats?.totalCalls}
       subtitle={t("subtitle")}
-      valueSubtitle={`${totalCallsStats?.previousTotalCalls}% ${t(
-        "valueSubtitle"
-      )}`}
+      valueSubtitle={t("valueSubtitle", {
+        percentage: `${formatNumbers(
+          totalCallsStats?.totalCallsChangePercentage || 0
+        )}\u200E`,
+      })}
       icon={<Call />}
       color="primary"
       isRefetching={isRefetching}

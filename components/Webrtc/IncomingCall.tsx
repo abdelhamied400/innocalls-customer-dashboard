@@ -2,12 +2,16 @@ import { useSip } from "@/providers/webrtc/SipProvider";
 import { Button } from "../ui/button";
 import { CallEnd, Phone } from "@mui/icons-material";
 import { SessionDirection } from "jssip/lib/RTCSession";
+import { useTranslations } from "next-intl";
 
 const IncomingCall = () => {
+  const t = useTranslations("webrtc");
+
   const { currentSession } = useSip();
-  const number = currentSession?.remote_identity?.uri?.user || "Unknown Number";
+  const number =
+    currentSession?.remote_identity?.uri?.user || t("ua.unknownName");
   const name =
-    currentSession?.remote_identity?.display_name || "Unknown Caller";
+    currentSession?.remote_identity?.display_name || t("ua.unknownNumber");
   const direction = currentSession?.direction;
 
   const handleHangup = () => {
@@ -26,8 +30,10 @@ const IncomingCall = () => {
     <div className="screen" id="incoming-call-screen">
       <div className="flex flex-col gap-2">
         <h4 className="text-center">
-          {direction === ("incoming" as SessionDirection) && "Incoming Call"}
-          {direction === ("outgoing" as SessionDirection) && "Outgoing Call"}
+          {direction === ("incoming" as SessionDirection) &&
+            t("direction.incoming")}
+          {direction === ("outgoing" as SessionDirection) &&
+            t("direction.incoming")}
         </h4>
         {number && <h4 className="text-center">{number}</h4>}
         {name && <h2 className="text-center">{name}</h2>}

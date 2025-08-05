@@ -51,7 +51,10 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
           <CallMade className="text-success-500 !text-lg" />
           <span className="text-xs font-medium">{t("from")}</span>
         </div>
-        <div className="text-sm font-semibold text-gray-800">{from}</div>
+        <div className="text-sm font-semibold text-gray-800">
+          {" "}
+          {"\u200E" + from}
+        </div>
         {getExtensionNumber(from) && (
           <div className="flex justify-end">
             <Button
@@ -74,7 +77,10 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
           <CallReceived className="text-primary-500 !text-lg" />
           <span className="text-xs font-medium">{t("to")}</span>
         </div>
-        <div className="text-sm font-semibold text-gray-800">{to}</div>
+        <div className="text-sm font-semibold text-gray-800">
+          {" "}
+          {"\u200E" + to}
+        </div>
         {getExtensionNumber(to) && (
           <div className="flex justify-end">
             <Button

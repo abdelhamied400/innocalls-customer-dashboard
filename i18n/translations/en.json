@@ -65,9 +65,9 @@
       "unknownError": "An unknown error occurred"
     },
     "date": {
-      "h": "H",
-      "m": "M",
-      "s": "S",
+      "h": "h",
+      "m": "m",
+      "s": "s",
       "day": "Day",
       "month": "Month",
       "year": "Year"
@@ -274,7 +274,8 @@
       "onCall": {
         "yes": "yes",
         "no": "no"
-      }
+      },
+      "sipConnectionError": "You must be connected to a WebRTC/softphone client to monitor calls"
     },
     "tabs": {
       "usersList": "Users List",
@@ -451,7 +452,10 @@
         "paid": "Paid",
         "overdue": "Overdue",
         "draft": "Draft",
-        "partially_paid": "Partially Paid"
+        "partially_paid": "Partially Paid",
+        "sent": "Sent",
+        "void": "Void",
+        "unpaid": "Unpaid"
       },
       "actions": {
         "pay": "Pay Invoice",
@@ -784,27 +788,29 @@
       "callSummaryStats": {
         "totalIncoming": {
           "title": "Total Incoming",
-          "info": "vs last month"
+          "info": "{percentage}% vs last month"
         },
         "totalOutgoing": {
           "title": "Total Outgoing",
-          "info": "vs last month"
+          "info": "{percentage}% vs last month"
         },
         "answerRate": {
           "title": "Answer Rate",
-          "info": "vs last month"
+          "info": "{percentage}% vs last month"
         },
         "talkTime": {
           "title": "Talk Time",
-          "info": "vs last month"
+          "info": "{percentage}% vs last month",
+          "s": "s"
         },
         "waitTime": {
           "title": "Wait Time",
-          "info": "vs last month"
+          "info": "{percentage}% vs last month",
+          "s": "s"
         },
         "internalCalls": {
           "title": "Internal Calls",
-          "info": "vs last month"
+          "info": "{percentage}% vs last month"
         }
       },
       "quickStats": {
@@ -854,7 +860,7 @@
       "totalCallsStats": {
         "title": "Total Calls ",
         "subtitle": "Last 30 Days",
-        "valueSubtitle": "vs last month",
+        "valueSubtitle": "{percentage}% vs last month",
         "completedCalls": "Completed Calls",
         "abandonedCalls": "Abandoned Calls",
         "timeoutCalls": "Timeout Calls"
@@ -862,7 +868,7 @@
       "waitTimeStats": {
         "title": "Wait Time",
         "subtitle": "Last 30 Days",
-        "valueSubtitle": "vs last month",
+        "valueSubtitle": "{percentage}% vs last month",
         "averageWait": "Average Wait",
         "completedCalls": "Completed Calls",
         "abandonedCalls": "Abandoned Calls",
@@ -872,8 +878,8 @@
       "talkTimeStats": {
         "title": "Talk Time",
         "subtitle": "Last 30 Days",
-        "valueSubtitle": "vs last month",
-        "averagePerCall": "Average per Call",
+        "valueSubtitle": "{percentage}% vs last month",
+        "averagePerCall": "Average Per Call",
         "dailyAverage": "Daily Average",
         "peakHour": "Peak Hour",
         "h": "h"
@@ -1641,21 +1647,21 @@
       "statsCards": {
         "answerRate": {
           "title": "Answer Rate",
-          "comparison": "% vs previous"
+          "comparison": "{percentage}% vs previous"
         },
         "totalWaitTime": {
           "title": "Total Wait Time",
-          "unit": "seconds",
-          "comparison": "% vs previous"
+          "unit": "s",
+          "comparison": "{percentage}% vs previous"
         },
         "totalTalkTime": {
           "title": "Total Talk Time",
-          "unit": "seconds",
-          "comparison": "% vs previous"
+          "unit": "s",
+          "comparison": "{percentage}% vs previous"
         },
         "slaCompliance": {
           "title": "SLA Compliance",
-          "comparison": "% vs previous"
+          "comparison": "{percentage}% vs previous"
         }
       },
       "form": {
@@ -1676,6 +1682,11 @@
           "timePeriod": {
             "placeholder": "Time Period"
           }
+        },
+        "validation": {
+          "sla": {
+            "invalid": "SLA must be an integer greater than or equal to 1"
+          }
         }
       }
     },
@@ -1695,6 +1706,126 @@
         "to": "To",
         "duration": "Duration"
       }
+    }
+  },
+  "webrtc": {
+    "contacts": {
+      "title": "Contacts",
+      "actions": {
+        "create": "Create Contact",
+        "update": "Update Contact",
+        "list": "Contacts",
+        "delete": "Delete",
+        "call": "Call",
+        "loading": "Loading Contacts",
+        "return": "Back To Contacts",
+        "loadingContact": "Loading Contact",
+        "edit": "Edit",
+        "calling": "Calling"
+      },
+      "form": {
+        "fields": {
+          "name": {
+            "label": "Name",
+            "placeholder": "Enter contact name"
+          },
+          "phone": {
+            "label": "Phone",
+            "placeholder": "Enter phone number"
+          }
+        },
+        "validation": {
+          "name": {
+            "required": "Name is required",
+            "minLength": "Name must be at least {min} characters",
+            "maxLength": "Name must be at most {max} characters"
+          },
+          "phone": {
+            "required": "Phone number is required",
+            "invalid": "Please enter a valid phone number",
+            "minLength": "Phone number must be at least {min} characters",
+            "maxLength": "Phone must be at most {max} characters"
+          }
+        }
+      },
+      "messages": {
+        "error": "Error",
+        "contactIdMissing": "Contact ID is missing.",
+        "failedToLoadContact": "Failed to load contact.",
+        "failedToCreateContact": "Failed to create contact",
+        "failedToUpdateContact": "Failed to update contact",
+        "failedToDeleteContact": "Failed to delete contact.",
+        "unexpectedError": "An unexpected error occurred.",
+        "contactNotFound": "Contact not found.",
+        "errorLoadingContacts": "Failed to load contacts",
+        "contactCreated": "Contact Created",
+        "contactCreatedDescription": "The contact has been created successfully.",
+        "contactUpdated": "Contact Updated",
+        "contactUpdatedDescription": "The contact has been updated successfully.",
+        "contactDeleted": "Contact Deleted",
+        "contactDeletedDescription": "{name} has been deleted successfully.",
+        "callingDescription": "Calling {name} at {phone}"
+      }
+    },
+    "actions": {
+      "logout": "Logout",
+      "callLog": "Call Log",
+      "reconnect": "Reconnect?"
+    },
+    "status": {
+      "connected": "Connected",
+      "connecting": "Connecting",
+      "disconnected": "Disconnected"
+    },
+    "callLog": {
+      "title": "Call Log",
+      "noCalls": " No calls logged yet. Make a call to see it here.",
+      "status": {
+        "incoming": "Incoming Calls ",
+        "outgoing": "Outgoing Calls",
+        "missed": "Missed Calls",
+        "rejected": "Rejected Calls"
+      },
+      "type": {
+        "incoming": "Incoming",
+        "outgoing": "Outgoing",
+        "missed": "Missed",
+        "rejected": "Rejected"
+      }
+    },
+    "fields": {
+      "phone": {
+        "label": "Phone",
+        "placeholder": "Enter phone number"
+      },
+      "country": {
+        "placeholder": "Select a country"
+      }
+    },
+    "callActions": {
+      "hold": "Hold",
+      "resume": "Resume",
+      "mute": "Mute",
+      "unMute": "Unmute",
+      "dialpad": "Dialpad",
+      "phone": {
+        "placeholder": "Press any digit"
+      }
+    },
+    "direction": {
+      "outgoing": "Outgoing Call",
+      "incoming": "Incoming Call"
+    },
+    "state": {
+      "answered": "Answered",
+      "ringing": "Ringing",
+      "trying": "Trying",
+      "ended": "Ended",
+      "failed": "Failed"
+    },
+    "ua": {
+      "unknownName": "Unknown",
+      "unknownNumber": "Unknown"
     }
   }
 }

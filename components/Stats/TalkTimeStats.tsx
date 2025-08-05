@@ -10,6 +10,7 @@ import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import statsService from "@/services/stats.service";
 import { formatDurationShort } from "@/lib/date";
 import { useLocale, useTranslations } from "next-intl";
+import { formatNumbers } from "@/lib/utils";
 
 const TalkTimeStats = () => {
   const t = useTranslations("dashboard.stats.talkTimeStats");
@@ -44,9 +45,11 @@ const TalkTimeStats = () => {
       title={t("title")}
       value={`${talkTimeStats?.totalTalkTimeHours}${t("h")}`}
       subtitle={t("subtitle")}
-      valueSubtitle={`${talkTimeStats?.totalTalkTimeChangePercentage}% ${t(
-        "valueSubtitle"
-      )}`}
+      valueSubtitle={t("valueSubtitle", {
+        percentage: `${formatNumbers(
+          talkTimeStats?.totalTalkTimeChangePercentage || 0
+        )}\u200E`,
+      })}
       icon={<AvTimer />}
       color="success"
       isRefetching={isRefetching}
@@ -59,20 +62,26 @@ const TalkTimeStats = () => {
             t: tCommon,
           })}
           color="success"
-          performanceChange={`${
-            talkTimeStats?.averageTalkTimeChangePercentage
-          }% ${t("valueSubtitle")}`}
+          performanceChange={t("valueSubtitle", {
+            percentage: `${formatNumbers(
+              talkTimeStats?.averageTalkTimeChangePercentage || 0
+            )}\u200E`,
+          })}
         />
 
         <div className="grid grid-cols-2 gap-3">
           <StatsSubCard
             color="success"
-            value={`${talkTimeStats?.dailyAverageHours}${t("h")}`}
+            value={`${formatNumbers(talkTimeStats?.dailyAverageHours || 0)}${t(
+              "h"
+            )}`}
             label={t("dailyAverage")}
           />
           <StatsSubCard
             color="success"
-            value={`${talkTimeStats?.peakHourTalkTimeHours}${t("h")}`}
+            value={`${formatNumbers(
+              talkTimeStats?.peakHourTalkTimeHours || 0
+            )}${t("h")}`}
             label={t("peakHour")}
           />
         </div>
