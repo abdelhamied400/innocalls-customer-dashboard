@@ -182,7 +182,7 @@ const InboundAnalytics = () => {
                         agents.map((a: any) => a.value)
                       )
                     }
-                    options={extensions.map((ext) => ({
+                    options={extensions?.map((ext) => ({
                       value: ext.ext,
                       label: `${ext.name} (${ext.ext})`,
                     }))}

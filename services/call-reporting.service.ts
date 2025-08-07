@@ -49,4 +49,10 @@ export default {
     const res = await api.get(`/v2/cdrs/download-record/${callId}`);
     return res.data;
   },
+  getPhoneHistory: async (phoneNumber: string) => {
+    const res = await api.get(
+      `/call-report/phone-call-history?phoneNumber=${phoneNumber}`
+    );
+    return res.data;
+  },
 };

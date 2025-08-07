@@ -50,7 +50,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
   const [isExporting, setIsExporting] = useState(false);
   const { data: session } = useSession();
   const { extensions, tags } = useVocabStore();
-  const extensionsOptions = extensions.map((ext) => ({
+  const extensionsOptions = extensions?.map((ext) => ({
     label: `${ext.name} (${ext.ext})`,
     value: ext.ext,
   }));
