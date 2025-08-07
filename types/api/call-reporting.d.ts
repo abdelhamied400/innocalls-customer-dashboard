@@ -43,3 +43,35 @@ export type CallReportingFilters = {
 export type ExportCallReportingFilters = CallReportingFilters & {
   userEmail: string;
 };
+
+export type PhoneHistoryCall = {
+  direction: string;
+  answered: boolean;
+  duration: string;
+  holdTime: string;
+  dateTime: {
+    date: string;
+    time: string;
+  };
+  ext: {
+    ext: string;
+    name: string;
+  };
+};
+
+export type PhoneHistoryItem = {
+  id: string;
+  isAnswered: boolean;
+  duration: string;
+  totalHoldTime: string;
+  latestTime: {
+    date: string;
+    time: string;
+  };
+  direction: string;
+  calls: PhoneHistoryCall[];
+};
+
+export type PhoneHistoryResponse = {
+  callsHistory: PhoneHistoryItem[];
+};
