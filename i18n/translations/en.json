@@ -17,7 +17,8 @@
           "lowercase": "Password must contain at least one lowercase letter",
           "uppercase": "Password must contain at least one uppercase letter",
           "number": "Password must contain at least one number",
-          "special": "Password must contain at least one special character"
+          "special": "Password must contain at least one special character",
+          "required":"Password is required"
         },
         "date": {
           "from": {
