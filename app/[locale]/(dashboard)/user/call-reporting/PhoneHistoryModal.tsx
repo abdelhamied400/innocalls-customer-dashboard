@@ -1,45 +1,79 @@
+import React, { useEffect, useState, useContext } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Table,
-  TableHeader,
-  TableBody,
-  TableRow,
-  TableHead,
-  TableCell,
-} from "@/components/ui/table";
-import { useEffect, useState } from "react";
+import PaginatedTable from "@/components/Table/PaginatedTable";
+import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
+import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
+import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
+import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
+import { ChevronDown } from "lucide-react";
+import { PlayCircle } from "@mui/icons-material";
+import { Button } from "@/components/ui/button";
 import callReportingService from "@/services/call-reporting.service";
+import SoundPlayer from "@/components/SoundPlayer";
 import {
   PhoneHistoryResponse,
   PhoneHistoryItem,
 } from "@/types/api/call-reporting";
-import { ChevronDown } from "lucide-react";
-import usePagination from "@/hooks/use-pagination";
-import React from "react";
+import { PaginatedTableContext } from "@/components/Table/PaginatedTable";
+import { Badge } from "@/components/ui/badge";
 
-interface PhoneHistoryModalProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  phoneNumber: string;
-}
+import {
+  ColumnDef,
+  useReactTable,
+  getCoreRowModel,
+  flexRender,
+} from "@tanstack/react-table";
 
-const getDirectionColor = (direction: string) => {
-  if (
-    direction.toLowerCase() === "inbound" ||
-    direction.toLowerCase() === "incoming"
-  )
-    return "text-green-600";
-  if (
-    direction.toLowerCase() === "outbound" ||
-    direction.toLowerCase() === "outgoing"
-  )
-    return "text-blue-600";
-  return "text-gray-600";
+// Direction variants mapping
+
+type BadgeVariant =
+  | "default"
+  | "muted"
+  | "secondary"
+  | "destructive"
+  | "success"
+  | "warning"
+  | "outline"
+  | "gray";
+
+const directionVariants: Record<string, BadgeVariant> = {
+  incoming: "muted",
+  inbound: "muted",
+  outgoing: "success",
+  outbound: "success",
+  local: "secondary",
+};
+
+// Direction Badge Component
+const DirectionBadge = ({ direction }: { direction: string }) => {
+  const normalizedDirection = direction.toLowerCase();
+
+  const variant: BadgeVariant =
+    directionVariants[normalizedDirection] ?? "default";
+
+  return (
+    <Badge variant={variant} className="capitalize">
+      {direction}
+    </Badge>
+  );
+};
+
+// StatusBadge color logic
+const CallAnsweredBadge = ({ answered }: { answered: boolean }) => {
+  return (
+    <Badge
+      className={`capitalize ${
+        answered ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+      }`}
+    >
+      {answered ? "Yes" : "No"}
+    </Badge>
+  );
 };
 
 const getAnsweredColor = (answered: boolean) =>
@@ -61,6 +95,72 @@ const ExtCell = ({ ext, name }: { ext: string; name: string }) => (
   </div>
 );
 
+const RecordingCell = ({ callId }: { callId: string }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [recordingUrl, setRecordingUrl] = useState<string | null>(null);
+
+  const getRecording = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent event bubbling to row click
+    setIsLoading(true);
+    try {
+      const url = await callReportingService.getCallRecording(callId);
+      setRecordingUrl(url);
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error("Failed to get recording:", error);
+      // You might want to show an error message to the user here
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleModalClose = (open: boolean) => {
+    setIsModalOpen(open);
+    if (!open) {
+      // Reset recording URL when modal closes
+      setRecordingUrl(null);
+    }
+  };
+
+  return (
+    <div onClick={(e) => e.stopPropagation()}>
+      {" "}
+      {/* Prevent any click events from bubbling */}
+      <Button
+        size="icon"
+        variant="ghost-success"
+        onClick={getRecording}
+        loading={isLoading}
+        disabled={isLoading}
+      >
+        <PlayCircle />
+      </Button>
+      <Dialog open={isModalOpen} onOpenChange={handleModalClose}>
+        <DialogContent onClick={(e) => e.stopPropagation()}>
+          {" "}
+          {/* Prevent modal content clicks from bubbling */}
+          <DialogHeader>
+            <DialogTitle>Call Recording</DialogTitle>
+          </DialogHeader>
+          {recordingUrl && (
+            <SoundPlayer
+              label={recordingUrl.split("/").pop() || "Recording"}
+              url={recordingUrl}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+interface PhoneHistoryModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  phoneNumber: string;
+}
+
 const PAGE_SIZE_OPTIONS = [10, 20, 30];
 
 const PhoneHistoryModal = ({
@@ -72,18 +172,6 @@ const PhoneHistoryModal = ({
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-
-  // Pagination state
-  const { pageIndex, pageSize, setPagination, pages } = usePagination({
-    totalItems: data.length,
-    perPage: 10,
-    defaultPageIndex: 0,
-  });
-
-  const paginatedData = data.slice(
-    pageIndex * pageSize,
-    (pageIndex + 1) * pageSize
-  );
 
   useEffect(() => {
     if (open && phoneNumber) {
@@ -110,190 +198,224 @@ const PhoneHistoryModal = ({
     }
   }, [open, phoneNumber]);
 
+  // Table columns
+  const columns: ColumnDef<PhoneHistoryItem>[] = [
+    {
+      id: "expander",
+      header: "",
+      cell: ({ row }) => (
+        <div className="w-8 text-center align-middle">
+          <ChevronDown
+            className={`mx-auto transition-transform duration-200 ${
+              expanded === row.original.id ? "rotate-180" : "rotate-0"
+            } text-gray-400 hover:text-gray-700 cursor-pointer`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setExpanded(
+                expanded === row.original.id ? null : row.original.id
+              );
+            }}
+          />
+        </div>
+      ),
+    },
+    {
+      accessorKey: "latestTime",
+      header: "Date",
+      cell: ({ row }) => (
+        <DateTime
+          date={row.original.latestTime.date}
+          time={row.original.latestTime.time}
+        />
+      ),
+    },
+    {
+      accessorKey: "direction",
+      header: "Direction",
+      cell: ({ row }) => <DirectionBadge direction={row.original.direction} />,
+    },
+    {
+      accessorKey: "isAnswered",
+      header: "Answered",
+      cell: ({ row }) => (
+        <CallAnsweredBadge answered={row.original.isAnswered} />
+      ),
+    },
+    {
+      accessorKey: "duration",
+      header: "Duration",
+      cell: ({ row }) => row.original.duration,
+    },
+    {
+      accessorKey: "totalHoldTime",
+      header: "Total Wait Time",
+      cell: ({ row }) => row.original.totalHoldTime,
+    },
+    {
+      accessorKey: "recording",
+      header: "Recording",
+      cell: ({ row }) =>
+        row.original.isAnswered ? (
+          <RecordingCell callId={row.original.id} />
+        ) : null,
+    },
+  ];
+
+  // Custom row rendering for expansion
+  const renderSubComponent = (row: PhoneHistoryItem) => (
+    <tr>
+      <td colSpan={columns.length} className="p-0 border bg-gray-50">
+        <div className="p-2">
+          <div className="font-semibold mb-2">Call Details</div>
+          <div className="max-h-48 overflow-y-auto">
+            <table className="w-full text-xs border">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="p-1 border">Answered</th>
+                  <th className="p-1 border">Duration</th>
+                  <th className="p-1 border">Wait Time</th>
+                  <th className="p-1 border">Date</th>
+                  <th className="p-1 border">Ext</th>
+                </tr>
+              </thead>
+              <tbody>
+                {row.calls.map((call, idx) => (
+                  <tr key={idx}>
+                    <td className="p-1 border">
+                      <CallAnsweredBadge answered={call.answered} />
+                    </td>
+                    <td className="p-1 border">{call.duration}</td>
+                    <td className="p-1 border">{call.holdTime}</td>
+                    <td className="p-1 border">
+                      <DateTime
+                        date={call.dateTime.date}
+                        time={call.dateTime.time}
+                      />
+                    </td>
+                    <td className="p-1 border">
+                      <ExtCell ext={call.ext.ext} name={call.ext.name} />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </td>
+    </tr>
+  );
+
+  // Custom row rendering for expansion
+  const PhoneHistoryTableBody = ({
+    data,
+    expanded,
+    setExpanded,
+    columns,
+  }: {
+    data: PhoneHistoryItem[];
+    expanded: string | null;
+    setExpanded: (id: string | null) => void;
+    columns: ColumnDef<PhoneHistoryItem>[];
+  }) => {
+    // Get pagination state from context
+    const paginatedTable = useContext(PaginatedTableContext);
+    let pageIndex = 0;
+    let pageSize = 10;
+    if (paginatedTable && paginatedTable.pagination) {
+      pageIndex = paginatedTable.pagination.pageIndex;
+      pageSize = paginatedTable.pagination.pageSize;
+    }
+    const paginatedRows = data.slice(
+      pageIndex * pageSize,
+      (pageIndex + 1) * pageSize
+    );
+    return (
+      <tbody>
+        {paginatedRows.map((row) => {
+          const isExpanded = expanded === row.id;
+          return (
+            <React.Fragment key={row.id}>
+              <tr
+                className={
+                  "cursor-pointer hover:bg-gray-50 group transition-all"
+                }
+                onClick={() => setExpanded(isExpanded ? null : row.id)}
+                title="Click to expand/collapse call details"
+              >
+                {columns.map((col, idx) => {
+                  // Expander column
+                  if (col.id === "expander") {
+                    return (
+                      <td
+                        key={col.id || idx}
+                        className="w-8 text-center align-middle"
+                      >
+                        <ChevronDown
+                          className={`mx-auto transition-transform duration-200 ${
+                            isExpanded ? "rotate-180" : "rotate-0"
+                          } text-gray-400 hover:text-gray-700 cursor-pointer`}
+                        />
+                      </td>
+                    );
+                  }
+                  // Custom cell renderer
+
+                  // TODO: FIX THIS ... 
+
+                  const cell =
+                    typeof col.cell === "function" //@ts-ignore
+                      ? col.cell({ row: { original: row } }) //@ts-ignore
+                      : row[col.accessorKey as keyof PhoneHistoryItem];
+
+                  //@ts-ignore
+                  return <td key={col.id || col.accessorKey || idx}>{cell}</td>;
+                })}
+              </tr>
+              {isExpanded && renderSubComponent(row)}
+            </React.Fragment>
+          );
+        })}
+      </tbody>
+    );
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl w-full">
+      <DialogContent className="w-[80vw] max-w-[80vw] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Phone History for {phoneNumber}</DialogTitle>
         </DialogHeader>
         {loading ? (
-          <div className="py-8 text-center">Loading...</div>
+          <PaginatedTableSkeleton />
         ) : error ? (
           <div className="py-8 text-center text-red-600">{error}</div>
         ) : data.length === 0 ? (
           <div className="py-8 text-center">No history found.</div>
         ) : (
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead></TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Direction</TableHead>
-                  <TableHead>Answered</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Total Wait Time</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {paginatedData.map((item) => {
-                  const isExpanded = expanded === item.id;
-                  return (
-                    <React.Fragment key={item.id}>
-                      <TableRow
-                        className={`cursor-pointer hover:bg-gray-50 group transition-all`}
-                        onClick={() => setExpanded(isExpanded ? null : item.id)}
-                        title="Click to expand/collapse call details"
-                      >
-                        <TableCell className="w-8 text-center align-middle">
-                          <ChevronDown
-                            className={`mx-auto transition-transform duration-200 ${
-                              isExpanded ? "rotate-180" : "rotate-0"
-                            } text-gray-400 group-hover:text-gray-700`}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <DateTime
-                            date={item.latestTime.date}
-                            time={item.latestTime.time}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <span className={getDirectionColor(item.direction)}>
-                            {item.direction}
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          <span className={getAnsweredColor(item.isAnswered)}>
-                            {item.isAnswered ? "Yes" : "No"}
-                          </span>
-                        </TableCell>
-                        <TableCell>{item.duration}</TableCell>
-                        <TableCell>{item.totalHoldTime}</TableCell>
-                      </TableRow>
-                      {isExpanded && (
-                        <TableRow>
-                          <TableCell
-                            colSpan={6}
-                            className="p-0 border bg-gray-50"
-                          >
-                            <div className="p-2">
-                              <div className="font-semibold mb-2">
-                                Call Details
-                              </div>
-                              <div className="max-h-48 overflow-y-auto">
-                                <Table>
-                                  <TableHeader>
-                                    <TableRow>
-                                      <TableHead>Answered</TableHead>
-                                      <TableHead>Duration</TableHead>
-                                      <TableHead>Wait Time</TableHead>
-                                      <TableHead>Date</TableHead>
-                                      <TableHead>Ext</TableHead>
-                                    </TableRow>
-                                  </TableHeader>
-                                  <TableBody>
-                                    {item.calls.map((call, idx) => (
-                                      <TableRow key={idx}>
-                                        <TableCell>
-                                          <span
-                                            className={getAnsweredColor(
-                                              call.answered
-                                            )}
-                                          >
-                                            {call.answered ? "Yes" : "No"}
-                                          </span>
-                                        </TableCell>
-                                        <TableCell>{call.duration}</TableCell>
-                                        <TableCell>{call.holdTime}</TableCell>
-                                        <TableCell>
-                                          <DateTime
-                                            date={call.dateTime.date}
-                                            time={call.dateTime.time}
-                                          />
-                                        </TableCell>
-                                        <TableCell>
-                                          <ExtCell
-                                            ext={call.ext.ext}
-                                            name={call.ext.name}
-                                          />
-                                        </TableCell>
-                                      </TableRow>
-                                    ))}
-                                  </TableBody>
-                                </Table>
-                              </div>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      )}
-                    </React.Fragment>
-                  );
-                })}
-              </TableBody>
-            </Table>
-            {/* Pagination Controls */}
-            <div className="flex flex-wrap justify-between items-center gap-2 p-2">
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-gray-500">Rows per page:</span>
-                <select
-                  className="border rounded px-2 py-1 text-xs"
-                  value={pageSize}
-                  onChange={(e) =>
-                    setPagination((p) => ({
-                      ...p,
-                      pageSize: Number(e.target.value),
-                      pageIndex: 0,
-                    }))
-                  }
-                >
-                  {PAGE_SIZE_OPTIONS.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  className="px-2 py-1 text-xs border rounded disabled:opacity-50"
-                  onClick={() =>
-                    setPagination((p) => ({
-                      ...p,
-                      pageIndex: Math.max(0, p.pageIndex - 1),
-                    }))
-                  }
-                  disabled={pageIndex === 0}
-                >
-                  Previous
-                </button>
-                <span className="text-xs text-gray-500">
-                  {pageIndex * pageSize + 1}-
-                  {Math.min((pageIndex + 1) * pageSize, data.length)} of{" "}
-                  {data.length}
-                </span>
-                <button
-                  className="px-2 py-1 text-xs border rounded disabled:opacity-50"
-                  onClick={() =>
-                    setPagination((p) => ({
-                      ...p,
-                      pageIndex: Math.min(
-                        Math.ceil(data.length / pageSize) - 1,
-                        p.pageIndex + 1
-                      ),
-                    }))
-                  }
-                  disabled={(pageIndex + 1) * pageSize >= data.length}
-                >
-                  Next
-                </button>
-              </div>
-            </div>
+          <PaginatedTable
+            data={data}
+            columns={columns}
+            pagination={{
+              totalItems: data.length,
+              totalPages: Math.ceil(data.length / 10),
+            }}
+            manualPagination={false}
+          >
+            <PaginatedTableContent>
+              <PaginatedTableHead />
+              <PhoneHistoryTableBody
+                data={data}
+                expanded={expanded}
+                setExpanded={setExpanded}
+                columns={columns}
+              />
+            </PaginatedTableContent>
+            <PaginatedTablePagination />
             <div className="text-xs text-gray-400 mt-2 flex items-center gap-1">
               <ChevronDown className="inline w-4 h-4" /> Click a row to
               expand/collapse call details
             </div>
-          </div>
+          </PaginatedTable>
         )}
       </DialogContent>
     </Dialog>
