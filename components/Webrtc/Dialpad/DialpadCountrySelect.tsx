@@ -8,6 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { webrtcCountries, defaultCountry } from "@/constants/countries";
+import Image from "next/image";
 import { useMemo } from "react";
 
 type CountrySelectProps = {
@@ -38,7 +39,14 @@ export const CountrySelect = ({
         noChevron
       >
         <SelectValue placeholder={placeholder}>
-          {selectedCountry?.flag}
+          {selectedCountry ? (
+            <Image
+              src={selectedCountry.flag}
+              alt={selectedCountry.name}
+              width={24}
+              height={24}
+            />
+          ) : null}
         </SelectValue>
       </SelectTrigger>
       <SelectContent>
@@ -46,7 +54,12 @@ export const CountrySelect = ({
           return (
             <SelectItem key={country.code} value={country.code}>
               <span className="flex items-center gap-2">
-                <span className="text-xl">{country.flag}</span>
+                <Image
+                  src={country.flag}
+                  alt={country.name}
+                  width={24}
+                  height={24}
+                />
                 {country.name}
                 {country.dialCode && (
                   <span className="ml-auto text-muted-foreground">

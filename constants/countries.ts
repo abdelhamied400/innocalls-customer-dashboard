@@ -7,21 +7,66 @@ export type WebrtcCountryOption = {
 
 export const defaultCountry: WebrtcCountryOption = {
   code: "(GL)",
-  flag: "🌍",
+  flag: "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f310.svg",
   name: "Global",
   dialCode: "",
 };
 
 export const webrtcCountries: WebrtcCountryOption[] = [
-  { code: "(EG)", flag: "🇪🇬", name: "Egypt", dialCode: "+20" },
-  { code: "(KSA)", flag: "🇸🇦", name: "Saudi Arabia", dialCode: "+966" },
-  { code: "(UAE)", flag: "🇦🇪", name: "United Arab Emirates", dialCode: "+971" },
-  { code: "(QA)", flag: "🇶🇦", name: "Qatar", dialCode: "+974" },
-  { code: "(KW)", flag: "🇰🇼", name: "Kuwait", dialCode: "+965" },
-  { code: "(BH)", flag: "🇧🇭", name: "Bahrain", dialCode: "+973" },
-  { code: "(JO)", flag: "🇯🇴", name: "Jordan", dialCode: "+962" },
-  { code: "(OM)", flag: "🇴🇲", name: "Oman", dialCode: "+968" },
-  { code: "(IQ)", flag: "🇮🇶", name: "Iraq", dialCode: "+964" },
+  {
+    code: "(EG)",
+    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/eg.svg",
+    name: "Egypt",
+    dialCode: "+20",
+  },
+  {
+    code: "(KSA)",
+    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/sa.svg",
+    name: "Saudi Arabia",
+    dialCode: "+966",
+  },
+  {
+    code: "(UAE)",
+    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/ae.svg",
+    name: "United Arab Emirates",
+    dialCode: "+971",
+  },
+  {
+    code: "(QA)",
+    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/qa.svg",
+    name: "Qatar",
+    dialCode: "+974",
+  },
+  {
+    code: "(KW)",
+    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/kw.svg",
+    name: "Kuwait",
+    dialCode: "+965",
+  },
+  {
+    code: "(BH)",
+    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/bh.svg",
+    name: "Bahrain",
+    dialCode: "+973",
+  },
+  {
+    code: "(JO)",
+    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/jo.svg",
+    name: "Jordan",
+    dialCode: "+962",
+  },
+  {
+    code: "(OM)",
+    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/om.svg",
+    name: "Oman",
+    dialCode: "+968",
+  },
+  {
+    code: "(IQ)",
+    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/iq.svg",
+    name: "Iraq",
+    dialCode: "+964",
+  },
   defaultCountry,
 ];
 
