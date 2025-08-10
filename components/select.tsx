@@ -112,7 +112,7 @@ const Select = ({
         <label
           className={cn(
             "field relative flex flex-col cursor-pointer",
-            "bg-gray-50 hover:bg-gray-100 px-4 pt-2 pb-1.5 border rounded-xl",
+            "bg-gray-50 hover:bg-gray-100 px-4 pt-3 pb-3 border rounded-xl",
             error && "border-red-500 bg-red-50 hover:bg-red-100 text-red-500"
           )}
         >
