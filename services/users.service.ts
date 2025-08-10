@@ -13,6 +13,8 @@ export type Agent = {
   ua: string;
 };
 
+const DECRYPT_SECRET = process.env.NEXT_PUBLIC_DECRYPT_SECRET!;
+
 export default {
   getUsers: async () => {
     const res = await api.get("/extension/list");
@@ -26,7 +28,7 @@ export default {
     const res = await api.get(`/extension/show/${id}`);
     const passwordBytes = CryptoJS.AES.decrypt(
       res.data.password,
-      "e6PyV2@*KYkNBFdU04CZ/n8x"
+      DECRYPT_SECRET
     );
     const decryptedPassword = passwordBytes.toString(CryptoJS.enc.Utf8);
 
