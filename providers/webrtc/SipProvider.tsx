@@ -14,6 +14,7 @@ import type {
   SipContextType,
   ExtensionState,
   SessionState,
+  SpyingStatus,
 } from "./SipProvider/types";
 
 import JsSIP from "jssip";
@@ -43,10 +44,15 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   const [extensionState, setExtensionState] =
     useState<ExtensionState>("disconnected");
 
+  const [spyingStatus, setSpyingStatus] = useState<SpyingStatus>("spy");
+  const [isSpying, setIsSpying] = useState(false);
+
   const { bindEvents, unbindEvents } = useUaEvents({
     setExtensionState,
     setCurrentSession,
     setSessionState,
+    setIsSpying,
+    setSpyingStatus,
   });
 
   const login = (extension: ExtensionWithCredentials) => {
@@ -125,6 +131,8 @@ export const SipProvider = ({ children }: SipProviderProps) => {
       return;
     }
 
+    setIsSpying(true);
+
     return call(`*199${extension}`);
   };
 
@@ -154,6 +162,9 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         setNumber,
         setCountryCode,
         spy,
+        spyingStatus,
+        setSpyingStatus,
+        isSpying,
       }}
     >
       {children}

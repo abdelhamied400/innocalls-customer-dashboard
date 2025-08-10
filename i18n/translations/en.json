@@ -18,7 +18,7 @@
           "uppercase": "Password must contain at least one uppercase letter",
           "number": "Password must contain at least one number",
           "special": "Password must contain at least one special character",
-          "required":"Password is required"
+          "required": "Password is required"
         },
         "date": {
           "from": {
@@ -1674,7 +1674,9 @@
             }
           }
         },
-        "actions": { "apply": "Apply Filters" },
+        "actions": {
+          "apply": "Apply Filters"
+        },
         "fields": {
           "sla": {
             "label": "SLA",
@@ -1811,7 +1813,10 @@
       "dialpad": "Dialpad",
       "phone": {
         "placeholder": "Press any digit"
-      }
+      },
+      "whisper": "whisper",
+      "spy": "spy",
+      "barrage": "barrage"
     },
     "direction": {
       "outgoing": "Outgoing Call",

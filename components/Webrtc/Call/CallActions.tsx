@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import {
+  ConnectWithoutContact,
   Dialpad,
+  InterpreterMode,
   Mic,
   MicOff,
   PauseCircleOutline,
@@ -21,11 +23,18 @@ import { digits } from "@/constants/digits";
 import { Input } from "@/components/ui/input";
 import { webrtcLogger } from "@/lib/logger";
 import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
 
 const CallActions = () => {
   const t = useTranslations("webrtc");
 
-  const { currentSession, sessionState } = useSip();
+  const {
+    currentSession,
+    sessionState,
+    spyingStatus,
+    isSpying,
+    setSpyingStatus,
+  } = useSip();
   const [muted, setIsMuted] = useState(false);
   const [hold, setIsHold] = useState(false);
   const [dtmfValue, setDtmfValue] = useState("");
@@ -68,6 +77,34 @@ const CallActions = () => {
     if (currentSession) {
       currentSession.sendDTMF(value);
       webrtcLogger.info("DTMF sent", { value });
+    }
+  };
+
+  const handleToggleWhisper = () => {
+    if (currentSession && isSpying) {
+      if (spyingStatus === "whisper") {
+        handleDTMFClick("4");
+        setSpyingStatus("spy");
+        webrtcLogger.info("Switched to spy mode");
+      } else {
+        handleDTMFClick("5");
+        setSpyingStatus("whisper");
+        webrtcLogger.info("Switched to whisper mode");
+      }
+    }
+  };
+
+  const handleToggleBarrage = () => {
+    if (currentSession && isSpying) {
+      if (spyingStatus === "barrage") {
+        handleDTMFClick("4");
+        setSpyingStatus("spy");
+        webrtcLogger.info("Switched to spy mode");
+      } else {
+        handleDTMFClick("6");
+        setSpyingStatus("barrage");
+        webrtcLogger.info("Switched to barrage mode");
+      }
     }
   };
 
@@ -143,6 +180,37 @@ const CallActions = () => {
           </div>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {isSpying && (
+        <Button
+          variant="ghost"
+          className={cn(
+            "[&_svg]:size-6 h-auto w-full p-4 flex-col font-normal",
+            spyingStatus === "whisper" && "bg-primary-200"
+          )}
+          onClick={handleToggleWhisper}
+          size="icon"
+          disabled={!currentSession || sessionState !== "answered"}
+        >
+          <ConnectWithoutContact />
+          <p>{t("callActions.whisper")}</p>
+        </Button>
+      )}
+      {isSpying && (
+        <Button
+          variant="ghost"
+          className={cn(
+            "[&_svg]:size-6 h-auto w-full p-4 flex-col font-normal",
+            spyingStatus === "barrage" && "bg-primary-200"
+          )}
+          onClick={handleToggleBarrage}
+          size="icon"
+          disabled={!currentSession || sessionState !== "answered"}
+        >
+          <InterpreterMode />
+          <p>{t("callActions.barrage")}</p>
+        </Button>
+      )}
     </div>
   );
 };

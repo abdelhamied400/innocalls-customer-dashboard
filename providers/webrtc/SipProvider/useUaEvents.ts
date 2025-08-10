@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useRouting } from "@/providers/RoutingProvider";
-import { ExtensionState, SessionState } from "./types";
+import { ExtensionState, SessionState, SpyingStatus } from "./types";
 import JsSIP from "jssip";
 import { RTCSessionEvent } from "jssip/lib/UA";
 import { RTCSession } from "jssip/lib/RTCSession";
@@ -11,15 +11,19 @@ import { webrtcLogger } from "@/lib/logger";
 
 export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
-  setCurrentSession?: React.Dispatch<React.SetStateAction<RTCSession | null>>;
-  setSessionState?: React.Dispatch<
+  setCurrentSession: React.Dispatch<React.SetStateAction<RTCSession | null>>;
+  setSessionState: React.Dispatch<
     React.SetStateAction<SessionState | undefined>
   >;
+  setIsSpying: React.Dispatch<React.SetStateAction<boolean>>;
+  setSpyingStatus: React.Dispatch<React.SetStateAction<SpyingStatus>>;
 };
 export const useUaEvents = ({
   setExtensionState,
   setCurrentSession,
   setSessionState,
+  setIsSpying,
+  setSpyingStatus,
 }: useUAEventsDeps) => {
   const { navigate } = useRouting();
 
@@ -135,7 +139,7 @@ export const useUaEvents = ({
     },
     [navigate, updateSessionState]
   );
- 
+
   const handleOutgoingCall = useCallback(
     (e: RTCSessionEvent, extension: ExtensionWithCredentials) => {
       webrtcLogger.info("Outgoing call initiated", { session: e.session });
@@ -199,12 +203,16 @@ export const useUaEvents = ({
           navigate("/dialpad");
           setCurrentSession?.(null);
           updateSessionState("ended");
+          setSpyingStatus("spy");
+          setIsSpying(false);
         });
         session.on("failed", (event) => {
           webrtcLogger.warn("Call failed", event);
           navigate("/dialpad");
           setCurrentSession?.(null);
           updateSessionState("failed");
+          setSpyingStatus("spy");
+          setIsSpying(false);
         });
 
         if (e.session.direction === "incoming") {

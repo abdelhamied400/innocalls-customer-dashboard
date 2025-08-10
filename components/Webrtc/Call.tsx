@@ -1,16 +1,14 @@
 import { useSip } from "@/providers/webrtc/SipProvider";
 import { Button } from "../ui/button";
-import { CallEnd, CallMade, CallReceived } from "@mui/icons-material";
+import { CallEnd } from "@mui/icons-material";
 import CallActions from "./Call/CallActions";
-import { SessionDirection } from "jssip/lib/RTCSession";
-import Timer from "../ui/timer";
-import { cn } from "@/lib/utils";
 import CallDirection from "./Call/CallDirection";
 import CallState from "./Call/CallState";
+import { cn } from "@/lib/utils";
 
 const Call = () => {
-  const { currentSession, sessionState } = useSip();
-  const number = currentSession?.remote_identity?.uri?.user;
+  const { currentSession, sessionState, isSpying, spyingStatus } = useSip();
+  const number = currentSession?.remote_identity?.uri?.user.replace("*199", "");
   const name = currentSession?.remote_identity?.display_name;
 
   const handleHangup = () => {
@@ -21,6 +19,27 @@ const Call = () => {
     <div className="screen" id="call-screen">
       <div className="flex flex-col gap-2">
         <CallDirection direction={currentSession?.direction} />
+        {/* if session is spying, show the spying message */}
+        {isSpying && (
+          <div className="flex items-center justify-center gap-2">
+            <div
+              className={cn("w-4 h-4 rounded-full animate-pulse", {
+                "bg-destructive-500": spyingStatus === "whisper",
+                "bg-primary-500": spyingStatus === "barrage",
+                "bg-success-500": spyingStatus === "spy",
+              })}
+            ></div>
+            <p
+              className={cn("text-sm font-semibold", {
+                "text-destructive-500": spyingStatus === "whisper",
+                "text-primary-500": spyingStatus === "barrage",
+                "text-success-500": spyingStatus === "spy",
+              })}
+            >
+              {spyingStatus}
+            </p>
+          </div>
+        )}
         {number && <h4 className="text-center"> {"\u200E" + number}</h4>}
         {name && <h2 className="text-center">{name}</h2>}
         {/* if session status is confirmed */}

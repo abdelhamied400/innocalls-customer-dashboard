@@ -4,6 +4,7 @@ import { RTCSession } from "jssip/lib/RTCSession";
 import React from "react";
 
 export type ExtensionState = "connecting" | "connected" | "disconnected";
+export type SpyingStatus = "spy" | "whisper" | "barrage";
 
 export type SessionState =
   | "trying"
@@ -28,4 +29,7 @@ export type SipContextType = {
   setNumber: React.Dispatch<React.SetStateAction<string>>;
   setCountryCode: React.Dispatch<React.SetStateAction<string>>;
   spy: (extension: string) => void;
+  spyingStatus: SpyingStatus;
+  setSpyingStatus: React.Dispatch<React.SetStateAction<SpyingStatus>>;
+  isSpying: boolean;
 };
