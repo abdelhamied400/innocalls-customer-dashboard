@@ -20,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Pagination,
@@ -39,30 +39,15 @@ import {
 } from "@/components/ui/select";
 import Field from "@/components/ui/field";
 import { SearchIcon } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { columns, PhoneNumber } from "./columns";
+import { columns } from "./columns";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import numbersService from "@/services/numbers.service";
 import { useTranslations } from "next-intl";
 import useAppStore from "@/store/app.slice";
 
-interface DataTableProps {
-  initialData: PhoneNumber[];
-  initialPagination?: {
-    pageIndex: number;
-    pageSize: number;
-  };
-  initialFilters?: ColumnFiltersState;
-  initialSorting?: SortingState;
-}
+interface DataTableProps {}
 
-const DataTable = ({
-  initialData,
-  initialFilters = [],
-  initialSorting = [],
-  initialPagination,
-}: DataTableProps) => {
-  const router = useRouter();
+const DataTable = ({}: DataTableProps) => {
   const { setPageTitle } = useAppStore();
 
   const t = useTranslations("numbers");
@@ -77,19 +62,17 @@ const DataTable = ({
   }, [setPageTitle, t]);
 
   // sorting, filters, and pagination state
-  const [sorting, setSorting] = useState<SortingState>(initialSorting);
-  const [columnFilters, setColumnFilters] =
-    useState<ColumnFiltersState>(initialFilters);
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: initialPagination?.pageIndex || 0,
-    pageSize: initialPagination?.pageSize || 10,
+    pageIndex: 0,
+    pageSize: 10,
   });
 
   // client-side data fetching
-  const { data } = useLocalizedQuery({
+  const { data = [] } = useLocalizedQuery({
     queryKey: ["numbers"],
     queryFn: numbersService.fetchNumbers,
-    initialData,
   });
 
   // use data and initials to set up the table
@@ -110,7 +93,6 @@ const DataTable = ({
     },
   });
 
-  const tableSorting = table.getState().sorting;
   // pagination calculations
   const { pageIndex, pageSize } = table.getState().pagination;
   const totalItems = table.getFilteredRowModel().rows.length;
@@ -125,29 +107,6 @@ const DataTable = ({
     const value = e.target.value;
     table.getColumn("number")?.setFilterValue(value);
   };
-
-  //? on any change in pagination, sorting, or filters, update the URL
-  useEffect(() => {
-    const params = new URLSearchParams();
-    params.set("page", (pageIndex + 1).toString());
-    params.set("pageSize", pageSize.toString());
-
-    if (columnFilters.length > 0) {
-      columnFilters.forEach((filter) => {
-        if (filter.value) {
-          params.set(filter.id, filter.value as string);
-        }
-      });
-    }
-
-    if (tableSorting.length > 0) {
-      tableSorting.forEach((sort) => {
-        params.set(`sort_${sort.id}`, sort.desc ? "desc" : "asc");
-      });
-    }
-
-    router.push(`?${params.toString()}`);
-  }, [pageIndex, pageSize, columnFilters, tableSorting, router]);
 
   return (
     <div className="h-full flex flex-col">
