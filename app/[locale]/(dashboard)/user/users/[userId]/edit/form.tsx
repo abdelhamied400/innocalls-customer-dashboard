@@ -63,6 +63,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
       });
       closeSheetRef.current?.click(); // Close the sheet
       queryClient.invalidateQueries({ queryKey: ["users"] }); // Invalidate the users query to refresh the list
+      queryClient.invalidateQueries({ queryKey: ["user", initialUser.id] });
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
