@@ -2,6 +2,8 @@ import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 import { auth } from "./auth";
 import { localeSlugs } from "./i18n/config";
+import { User } from "next-auth";
+import { notFound } from "next/navigation";
 
 const basePublicPages = [
   "/login",

@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       dynamic: 0,
       static: 180,
     },
+    authInterrupts: true,
   },
   sassOptions: {
     silenceDeprecations: ["legacy-js-api"],

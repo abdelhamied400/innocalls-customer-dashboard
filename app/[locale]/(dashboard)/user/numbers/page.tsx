@@ -1,7 +1,8 @@
 "use client";
+import withPermission from "@/containers/withPermission";
 import NumbersTable from "./table";
 
-const Numbers = () => {
+const Numbers = async () => {
   return (
     <div className="page h-full" id="numbers">
       <NumbersTable />
@@ -9,4 +10,4 @@ const Numbers = () => {
   );
 };
 
-export default Numbers;
+export default withPermission(Numbers, "fullAccessNumbers");

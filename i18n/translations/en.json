@@ -1,5 +1,6 @@
 {
   "common": {
+    "backToHome": "Back to Home",
     "pagination": {
       "rowsPerPage": "Rows per page",
       "of": "of",
@@ -72,6 +73,12 @@
       "day": "Day",
       "month": "Month",
       "year": "Year"
+    },
+    "errors": {
+      "403": {
+        "title": "Forbidden",
+        "message": "You don't have permission to access this page."
+      }
     }
   },
   "numbers": {
