@@ -1,23 +1,10 @@
-"use client";
 import LinkTabs, { LinkTab } from "@/components/LinkTabs";
-import { useLocale, useTranslations } from "next-intl";
-import { usePathname } from "next/navigation";
-import { PropsWithChildren, useEffect } from "react";
-import useAppStore from "@/store/app.slice";
-import { LocaleSlug } from "@/i18n/config";
+import { PropsWithChildren } from "react";
+import { getTranslations } from "next-intl/server";
 
 type UsageLayoutProps = PropsWithChildren<{}>;
-const UsageLayout = ({ children }: UsageLayoutProps) => {
-  const { setPageTitle } = useAppStore();
-
-  const t = useTranslations("usage");
-
-  useEffect(() => {
-    setPageTitle(t("title"));
-
-    // Cleanup when component unmounts
-    return () => setPageTitle(null);
-  }, [setPageTitle, t]);
+const UsageLayout = async ({ children }: UsageLayoutProps) => {
+  const t = await getTranslations("usage");
 
   return (
     <div className="bg-white rounded-xl p-4 h-auto sm:h-full flex flex-col gap-2">

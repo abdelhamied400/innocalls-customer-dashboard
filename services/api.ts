@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { getSession, signOut as clientSignout } from "next-auth/react";
 import { getCookie } from "cookies-next";
 import { auth, signOut } from "@/auth";
@@ -61,6 +61,7 @@ api.interceptors.response.use(
   },
   (error) => {
     const isServer = typeof window === "undefined";
+    console.error("API Error:", error);
     if (error.response) {
       // Handle specific error responses
       if (error.response.status === 401) {
@@ -72,7 +73,7 @@ api.interceptors.response.use(
           signOut();
         } else {
           // Client-side sign out
-          return clientSignout({ redirect: false });
+          return clientSignout();
         }
       } else if (error.response.status === 403) {
         // Handle forbidden access
