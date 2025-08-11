@@ -8,7 +8,6 @@ import {
 import PaginatedTable from "@/components/Table/PaginatedTable";
 import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
 import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
-import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import { ChevronDown } from "lucide-react";
 import { PlayCircle } from "@mui/icons-material";
@@ -24,9 +23,6 @@ import { Badge } from "@/components/ui/badge";
 
 import {
   ColumnDef,
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
 } from "@tanstack/react-table";
 
 // Direction variants mapping
@@ -281,8 +277,8 @@ const PhoneHistoryModal = ({
                     <td className="p-1 border">{call.holdTime}</td>
                     <td className="p-1 border">
                       <DateTime
-                        date={call.dateTime.date}
-                        time={call.dateTime.time}
+                        date={call.dateTime?.date}
+                        time={call.dateTime?.time}
                       />
                     </td>
                     <td className="p-1 border">
