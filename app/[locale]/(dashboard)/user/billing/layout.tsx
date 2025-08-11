@@ -6,6 +6,7 @@ import { PropsWithChildren, useEffect } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import useAppStore from "@/store/app.slice";
 import useRouteWithLocale from "@/hooks/use-route";
+import withPermission from "@/containers/withPermission";
 
 type BillingLayoutProps = PropsWithChildren<{
   refillSheet: React.ReactNode;
@@ -45,4 +46,4 @@ const BillingLayout = ({ children, refillSheet }: BillingLayoutProps) => {
   );
 };
 
-export default BillingLayout;
+export default withPermission(BillingLayout, "completeControlBilling");

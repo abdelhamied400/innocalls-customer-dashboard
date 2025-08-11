@@ -1,10 +1,12 @@
+"use client";
 import LinkTabs, { LinkTab } from "@/components/LinkTabs";
 import { PropsWithChildren } from "react";
-import { getTranslations } from "next-intl/server";
+import withPermission from "@/containers/withPermission";
+import { useTranslations } from "next-intl";
 
 type UsageLayoutProps = PropsWithChildren<{}>;
-const UsageLayout = async ({ children }: UsageLayoutProps) => {
-  const t = await getTranslations("usage");
+const UsageLayout = ({ children }: UsageLayoutProps) => {
+  const t = useTranslations("usage");
 
   return (
     <div className="bg-white rounded-xl p-4 h-auto sm:h-full flex flex-col gap-2">
@@ -19,4 +21,4 @@ const UsageLayout = async ({ children }: UsageLayoutProps) => {
   );
 };
 
-export default UsageLayout;
+export default withPermission(UsageLayout, "fullAccessUsageAnalytics");

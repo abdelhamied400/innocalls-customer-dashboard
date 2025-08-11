@@ -45,6 +45,7 @@ const UsageSummaryTable = ({}) => {
   } = useLocalizedQuery({
     queryKey: ["usageSummary", filters],
     queryFn: async () => usageService.fetchUsageSummary(filters),
+    retry: 0,
   });
 
   const columns = createColumns(data.columns);

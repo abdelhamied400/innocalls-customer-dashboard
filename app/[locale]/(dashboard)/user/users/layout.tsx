@@ -1,3 +1,5 @@
+"use client";
+import withPermission from "@/containers/withPermission";
 import { PropsWithChildren } from "react";
 
 type UsersLayoutProps = PropsWithChildren<{
@@ -12,4 +14,4 @@ const UsersLayout = ({ children, createSheet }: UsersLayoutProps) => {
   );
 };
 
-export default UsersLayout;
+export default withPermission(UsersLayout, "agentsAccessControl");
