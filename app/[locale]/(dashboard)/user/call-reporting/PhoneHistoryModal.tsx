@@ -8,7 +8,6 @@ import {
 import PaginatedTable from "@/components/Table/PaginatedTable";
 import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
 import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
-import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import { ChevronDown } from "lucide-react";
 import { PlayCircle } from "@mui/icons-material";
@@ -24,9 +23,6 @@ import { Badge } from "@/components/ui/badge";
 
 import {
   ColumnDef,
-  useReactTable,
-  getCoreRowModel,
-  flexRender,
 } from "@tanstack/react-table";
 
 // Direction variants mapping
@@ -43,10 +39,7 @@ type BadgeVariant =
 
 const directionVariants: Record<string, BadgeVariant> = {
   incoming: "muted",
-  inbound: "muted",
   outgoing: "success",
-  outbound: "success",
-  local: "secondary",
 };
 
 // Direction Badge Component
@@ -76,10 +69,6 @@ const CallAnsweredBadge = ({ answered }: { answered: boolean }) => {
   );
 };
 
-const getAnsweredColor = (answered: boolean) =>
-  answered
-    ? "bg-green-100 text-green-700 px-2 py-1 rounded"
-    : "bg-red-100 text-red-700 px-2 py-1 rounded";
 
 const DateTime = ({ date, time }: { date: string; time: string }) => (
   <div className="flex flex-col">
@@ -224,8 +213,8 @@ const PhoneHistoryModal = ({
       header: "Date",
       cell: ({ row }) => (
         <DateTime
-          date={row.original.latestTime.date}
-          time={row.original.latestTime.time}
+          date={row.original.latestTime?.date}
+          time={row.original.latestTime?.time}
         />
       ),
     },
@@ -255,7 +244,7 @@ const PhoneHistoryModal = ({
       accessorKey: "recording",
       header: "Recording",
       cell: ({ row }) =>
-        row.original.isAnswered ? (
+        row.original.hasRecording ? (
           <RecordingCell callId={row.original.id} />
         ) : null,
     },
@@ -288,12 +277,12 @@ const PhoneHistoryModal = ({
                     <td className="p-1 border">{call.holdTime}</td>
                     <td className="p-1 border">
                       <DateTime
-                        date={call.dateTime.date}
-                        time={call.dateTime.time}
+                        date={call.dateTime?.date}
+                        time={call.dateTime?.time}
                       />
                     </td>
                     <td className="p-1 border">
-                      <ExtCell ext={call.ext.ext} name={call.ext.name} />
+                      <ExtCell ext={call.ext?.ext} name={call.ext?.name} />
                     </td>
                   </tr>
                 ))}
