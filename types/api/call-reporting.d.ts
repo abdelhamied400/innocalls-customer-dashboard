@@ -69,6 +69,7 @@ export type PhoneHistoryItem = {
     time: string;
   };
   direction: string;
+  hasRecording: boolean;
   calls: PhoneHistoryCall[];
 };
 
