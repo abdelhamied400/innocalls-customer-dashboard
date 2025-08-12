@@ -811,7 +811,7 @@
           "info": "{percentage}% مقارنة بالشهر الماضي"
         },
         "answerRate": {
-          "title": "معدل الإجابة",
+          "title": "نسبة الإجابة",
           "info": "{percentage}% مقارنة بالشهر الماضي"
         },
         "talkTime": {
@@ -1193,7 +1193,7 @@
             "avgCallDuration": "متوسط مدة المكالمة",
             "totalTalkTime": "إجمالي وقت المكالمات",
             "answeredCount": "عدد المجابة",
-            "answerRate": "معدل الإجابة (%)",
+            "answerRate": "نسبة الإجابة (%)",
             "longestCall": "أطول مكالمة",
             "shortestCall": "أقصر مكالمة"
           }
@@ -1242,13 +1242,13 @@
       "form": {
         "fields": {
           "sla": {
-            "label": " وقت استجابة المكالمات الورادة",
+            "label": " وقت استجابة المكالمات الواردة",
             "placeholder": "أدخل وقت استجابة المكالمات الواردة"
           }
         },
         "validation": {
           "sla": {
-            "int": "يجب أن يكون استجابة المكالمات الواردة رقماً صحيحاً",
+            "int": "يجب أن يكون وقت استجابة المكالمات الواردة رقماً صحيحاً",
             "min": "يجب أن يكون وقت استجابة المكالمات الواردة على الأقل {min}"
           }
         }
@@ -1264,7 +1264,7 @@
         "totalCalls": "إجمالي المكالمات",
         "unansweredCalls": "المكالمات غير المجابة",
         "answeredCalls": "المكالمات المجابة",
-        "answerRate": "معدل الإجابة",
+        "answerRate": "نسبة الإجابة",
         "externalCalls": "المكالمات الخارجية",
         "avgDuration": "متوسط المدة"
       },
@@ -1319,7 +1319,7 @@
             "external": "خارجية",
             "answered": "مجابة",
             "unanswered": "غير مجابة",
-            "answerRate": "معدل الإجابة",
+            "answerRate": "نسبة الإجابة",
             "totalDuration": "إجمالي المدة",
             "avgDuration": "متوسط المدة",
             "shortest": "الأقصر",
@@ -1372,7 +1372,7 @@
         "completedCalls": "المكالمات المكتملة",
         "timeoutCalls": "المكالمات المنتهية بمهلة الانتظار",
         "abandonedCalls": "المكالمات المُغلقة قبل الرد",
-        "answerRate": "معدل الإجابة",
+        "answerRate": "نسبة الإجابة",
         "externalCalls": "المكالمات الخارجية",
         "unansweredCalls": "المكالمات غير المجابة"
       },
@@ -1399,10 +1399,10 @@
         "summary": "ملخص",
         "callDistribution": "توزيع المكالمات",
         "teamPerformance": "أداء الفريق",
-        "ivrInsights": "رؤى النظام التفاعلي",
+        "ivrInsights": "تحليلات الرد الصوتي التفاعلي",
         "frequentCallers": "المتصلين المتكررين",
-        "dateDistribution": "التوزيع التاريخي",
-        "queueAnalysis": " المكالمات الفائتة"
+        "dateDistribution": "التوزيع بالتاريخ",
+        "queueAnalysis": " تحليلات صفوف الانتظار"
       },
       "overview": {
         "title": "نظرة عامة على المكالمات الواردة",
@@ -1441,19 +1441,19 @@
         },
         "table": {
           "columns": {
-            "name": "لاسم",
+            "name": "الاسم",
             "ext": "الرقم",
             "callsHandled": "المكالمات المدارة",
             "avgWaitTime": "متوسط وقت الانتظار",
             "avgTalkTime": "متوسط وقت المحادثة",
             "totalTalkTime": "إجمالي وقت المحادثة",
             "totalWaitTime": "إجمالي وقت الانتظار",
-            "queuePosition": "موضع المتصل في الطابور"
+            "queuePosition": "موضع المتصل في الصف"
           }
         }
       },
       "ivrAnalysis": {
-        "title": "تحليل النظام التفاعلي",
+        "title": "تحليل نظام الرد الصوتي التفاعلي",
         "optionLabel": "خيار"
       },
       "repeatedCallers": {
@@ -1470,9 +1470,9 @@
             "abandonedCalls": "المكالمات المُغلقة قبل الرد",
             "timeoutCalls": "المكالمات المنتهية بمهلة الانتظار",
             "completedCalls": "المكالمات المكتملة",
-            "abandonRate": "معدل المتروكة (%)",
-            "timeoutRate": "معدل المنتهية بالمهلة (%)",
-            "completionRate": "معدل الإكمال (%)",
+            "abandonRate": "نسبة المتروكة (%)",
+            "timeoutRate": "نسبة المنتهية بالمهلة (%)",
+            "completionRate": "نسبة الإكمال (%)",
             "avgWaitTime": "متوسط وقت الانتظار",
             "avgTalkTime": "متوسط وقت المحادثة",
             "firstCallTime": "وقت أول مكالمة",
@@ -1502,7 +1502,7 @@
             "external": "خارجية",
             "answered": "مجابة",
             "unanswered": "غير مجابة",
-            "answerRate": "معدل الإجابة",
+            "answerRate": "نسبة الإجابة",
             "totalDuration": "إجمالي المدة",
             "avgDuration": "متوسط المدة",
             "shortest": "الأقصر",
@@ -1525,9 +1525,9 @@
         "abandonedAnalysis": {
           "title": "تحليل المكالمات التي أُغلِقت قبل الرد",
           "totalAbandoned": "إجمالي المكالمات المتروكة",
-          "uniqueCallers": "المتصلين الفريدين",
+          "uniqueCallers": "المتصلين المميزين",          
           "chartTitle": "تحليل المكالمات الغير مجابة  ",
-          "statsTitle": "إحصائيات الطابور",
+          "statsTitle": "إحصائيات صف الانتظار",
           "avgWaitTime": "متوسط وقت الانتظار",
           "minWaitTime": "أقل وقت انتظار",
           "maxWaitTime": "أقصى وقت انتظار",
@@ -1536,7 +1536,7 @@
         "timeoutAnalysis": {
           "title": "تحليل المكالمات المنتهية بمهلة الانتظار",
           "totalTimeout": "إجمالي المكالمات المنتهية بمهلة الانتظار",
-          "uniqueCallers": "المتصلين الفريدين",
+          "uniqueCallers": "المتصلين المميزين",
           "chartTitle": " تحليل المكالمات الغير مجابة ",
           "statsTitle": "إحصائيات الطابور",
           "avgWaitTime": "متوسط وقت الانتظار",
@@ -1615,7 +1615,7 @@
   "liveMonitor": {
     "agents": {
       "title": "المستخدمين",
-      "subtitle": "الحالة المباشرة والأداء",
+      "subtitle": "الحالة الحالية والأداء",
       "total": "المجموع",
       "status": {
         "onCall": "في مكالمة",
@@ -1666,7 +1666,7 @@
       "unknownError": "خطأ غير معروف",
       "statsCards": {
         "answerRate": {
-          "title": "معدل الإجابة",
+          "title": "نسبة الإجابة",
           "unit": "%",
           "comparison": "{percentage}% مقارنة بالسابق"
         },
@@ -1829,7 +1829,7 @@
     },
     "callActions": {
       "hold": "تعليق",
-      "resume": "استئناف",
+      "resume": "استكمال",
       "mute": "كتم الصوت",
       "unMute": "إلغاء كتم الصوت",
       "dialpad": "لوحة الاتصال",
