@@ -40,8 +40,10 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         title={t("quickStats.topAnsweredIncoming")}
         renderValue={
           <>
-            {(quickStatsData?.topAnsweredIncomingAgents?.length ?? 0) > 0 && (
-              <span className="text-gray-500">{t("noDataAvailable")}</span>
+            {(quickStatsData?.topAnsweredIncomingAgents?.length ?? 0) === 0 && (
+              <span className="text-gray-500">
+                {t("common.noDataAvailable")}{" "}
+              </span>
             )}
             <StackedStatsRowCard>
               {quickStatsData?.topAnsweredIncomingAgents.map((agent) => (
@@ -66,8 +68,11 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         title={t("quickStats.topConnectedOutbound")}
         renderValue={
           <>
-            {(quickStatsData?.topConnectedOutboundAgents?.length ?? 0) > 0 && (
-              <span className="text-gray-500">{t("noDataAvailable")}</span>
+            {(quickStatsData?.topConnectedOutboundAgents?.length ?? 0) ===
+              0 && (
+              <span className="text-gray-500">
+                {t("common.noDataAvailable")}
+              </span>
             )}
             <StackedStatsRowCard>
               {quickStatsData?.topConnectedOutboundAgents.map((agent) => (
@@ -92,8 +97,10 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         title={t("quickStats.bestSlaAgent")}
         renderValue={
           <>
-            {(quickStatsData?.topSlaComplianceAgents?.length ?? 0) > 0 && (
-              <span className="text-gray-500">{t("noDataAvailable")}</span>
+            {(quickStatsData?.topSlaComplianceAgents?.length ?? 0) === 0 && (
+              <span className="text-gray-500">
+                {t("common.noDataAvailable")}
+              </span>
             )}
             <StackedStatsRowCard>
               {quickStatsData?.topSlaComplianceAgents.map((agent) => (
