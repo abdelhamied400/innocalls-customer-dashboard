@@ -6,11 +6,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { localesArray } from "@/i18n/config";
-import { usePathname, useRouter } from "@/i18n/routing";
+import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import LanguageIcon from "@mui/icons-material/Language";
+import { usePathname } from "@/i18n/routing";
 
 const LocaleSwitcher = () => {
   const router = useRouter();
@@ -22,9 +23,7 @@ const LocaleSwitcher = () => {
   );
 
   const changeLocale = (locale: string) => {
-    router.push(pathname, {
-      locale,
-    });
+    router.push(`/${locale}${pathname}`);
   };
 
   return (

@@ -1,8 +1,7 @@
 "use client";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PropsWithChildren } from "react";
-import { usePathname } from "@/i18n/routing";
+import { Link, usePathname } from "@/i18n/routing";
 import { useSession } from "next-auth/react";
 
 interface LinkTabProps {
