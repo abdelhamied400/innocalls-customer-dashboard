@@ -119,7 +119,7 @@ const getIcon = (name?: string) => {
     hr: <Support />,
     operations: <Settings />,
     // fallback/default icon
-    default: <QuestionMark />,
+    default: <Call />,
   };
 
   const lowercaseName = name?.toLowerCase() || "default";
