@@ -12,6 +12,8 @@ import {
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { UserActivityFilters } from "./page";
 import { useTranslations } from "next-intl";
+import StackedStatsRowCard from "@/components/StackedStatsRowCard";
+import StatsRowCard from "@/components/StatsRowCard";
 
 type QuickStatsProps = {
   filters: UserActivityFilters;
@@ -36,10 +38,17 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       <StatsCard
         icon={<StackedLineChart className="w-6 h-6" />}
         title={t("quickStats.topAnsweredIncoming")}
-        value={
-          quickStatsData?.topAnsweredIncomingAgent
-            ? `${quickStatsData.topAnsweredIncomingAgent.name} (${quickStatsData.topAnsweredIncomingAgent.answeredIncomingCount})`
-            : t("quickStats.noDataAvailable")
+        renderValue={
+          <StackedStatsRowCard>
+            {quickStatsData?.topAnsweredIncomingAgents.map((agent) => (
+              <StatsRowCard
+                key={agent.ext}
+                label={agent.name}
+                value={agent.answeredIncomingCount}
+                color="success"
+              />
+            ))}
+          </StackedStatsRowCard>
         }
         color="success"
         isRefetching={isRefetching}
@@ -50,10 +59,17 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       <StatsCard
         icon={<MilitaryTech className="w-6 h-6" />}
         title={t("quickStats.topConnectedOutbound")}
-        value={
-          quickStatsData?.topConnectedOutboundAgent
-            ? `${quickStatsData.topConnectedOutboundAgent.name} (${quickStatsData.topConnectedOutboundAgent.connectedOutboundCount})`
-            : t("quickStats.noDataAvailable")
+        renderValue={
+          <StackedStatsRowCard>
+            {quickStatsData?.topConnectedOutboundAgents.map((agent) => (
+              <StatsRowCard
+                key={agent.ext}
+                label={agent.name}
+                value={agent.connectedOutboundCount}
+                color="info"
+              />
+            ))}
+          </StackedStatsRowCard>
         }
         color="info"
         isRefetching={isRefetching}
@@ -64,10 +80,17 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       <StatsCard
         icon={<EmojiEvents className="w-6 h-6" />}
         title={t("quickStats.bestSlaAgent")}
-        value={
-          quickStatsData?.topSlaComplianceAgent
-            ? `${quickStatsData.topSlaComplianceAgent.name} (${quickStatsData.topSlaComplianceAgent.slaPercentage}%)`
-            : t("quickStats.noDataAvailable")
+        renderValue={
+          <StackedStatsRowCard>
+            {quickStatsData?.topSlaComplianceAgents.map((agent) => (
+              <StatsRowCard
+                key={agent.ext}
+                label={agent.name}
+                value={agent.slaPercentage}
+                color="warning"
+              />
+            ))}
+          </StackedStatsRowCard>
         }
         color="warning"
         isRefetching={isRefetching}

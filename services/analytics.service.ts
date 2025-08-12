@@ -3,22 +3,22 @@ import api from "./api";
 import { UserActivityFilters } from "@/app/[locale]/(dashboard)/user/analytics/user-activity/page";
 
 type FetchQuickStatsResponse = {
-  topAnsweredIncomingAgent: {
+  topAnsweredIncomingAgents: {
     answeredIncomingCount: string;
     ext: string;
     name: string;
-  };
-  topConnectedOutboundAgent: {
+  }[];
+  topConnectedOutboundAgents: {
     connectedOutboundCount: string;
     ext: string;
     name: string;
-  };
-  topSlaComplianceAgent: {
+  }[];
+  topSlaComplianceAgents: {
     answeredWithinSLA: string;
     ext: string;
     name: string;
     slaPercentage: number;
-  };
+  }[];
   slaThreshold: number;
 };
 

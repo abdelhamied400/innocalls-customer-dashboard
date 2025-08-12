@@ -28,7 +28,7 @@ import {
 type StatsCardProps = StatsCardVariants & {
   icon: React.ReactNode;
   title: string;
-  value: string | number;
+  value?: string | number;
   className?: string;
   isRefetching?: boolean;
   isLoading?: boolean;
@@ -36,6 +36,7 @@ type StatsCardProps = StatsCardVariants & {
   error?: unknown;
   info?: React.ReactNode;
   canRefetch?: boolean;
+  renderValue?: React.ReactNode;
   refetchInterval?: number | false;
   setRefetchInterval?: (interval: number | false) => void;
   refetch?: (
@@ -59,6 +60,7 @@ const StatsCard = ({
   refetch,
   variant = "default",
   color = "default",
+  renderValue,
 }: StatsCardProps) => {
   const t = useTranslations("components.statsCard");
 
@@ -124,7 +126,9 @@ const StatsCard = ({
         )}
       </div>
       <div className="flex flex-col gap-2">
-        <p className={cn(statsCardValueVariants({ color }))}>{value}</p>
+        <p className={cn(statsCardValueVariants({ color }))}>
+          {renderValue || value}
+        </p>
         <div className={cn(statsCardInfoVariants({ color }))}>{info}</div>
       </div>
     </div>

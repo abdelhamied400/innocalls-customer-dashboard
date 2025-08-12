@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 
-const MAX_VISIBLE_CARDS = 3;
+const DEFAULT_MAX_VISIBLE_CARDS = 3;
 
 type StackedStatsRowCardProps = {
   children: React.ReactNode;
   defaultExpanded?: boolean;
+  maxVisibleCards?: number;
 };
 
 const StackedStatsRowCard = ({
   children,
   defaultExpanded = false,
+  maxVisibleCards = DEFAULT_MAX_VISIBLE_CARDS,
 }: StackedStatsRowCardProps) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
   const childrenArray = React.Children.toArray(children);
 
-  const visibleChildren = childrenArray.slice(0, MAX_VISIBLE_CARDS);
+  const visibleChildren = childrenArray.slice(0, maxVisibleCards);
 
   return (
     <div className="stacked-stats-container">
