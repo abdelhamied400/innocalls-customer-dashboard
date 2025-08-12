@@ -7,7 +7,6 @@ import AppNavbar from "@/components/AppNavbar";
 import useAppStore from "@/store/app.slice";
 import { cn } from "@/lib/utils";
 import { getCookie } from "cookies-next/client";
-import { WebrtcProvider } from "@/providers/webrtc/WebrtcProvider";
 import { useSession } from "next-auth/react";
 
 type DashboardLayoutProps = PropsWithChildren<object>;

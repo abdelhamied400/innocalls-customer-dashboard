@@ -1,3 +1,4 @@
+"use client";
 import hasTenant from "@/containers/hasTenant";
 
 const AnalyticsLayout = ({ children }: { children: React.ReactNode }) => (
