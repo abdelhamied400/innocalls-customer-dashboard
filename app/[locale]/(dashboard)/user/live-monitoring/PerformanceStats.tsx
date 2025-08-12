@@ -17,6 +17,7 @@ import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { formatNumbers } from "@/lib/utils";
+import { useQueryClient } from "@tanstack/react-query";
 
 export type PerformanceStatsFiltersType = {
   filterType: "day" | "hour";
@@ -30,10 +31,13 @@ type Option<T> = {
 
 const PerformanceStatsFilters = ({
   onFiltersChange,
+  filters,
 }: {
   onFiltersChange: (filters: PerformanceStatsFiltersType) => void;
+  filters: PerformanceStatsFiltersType;
 }) => {
   const t = useTranslations("liveMonitor.performanceStats");
+  const queryClient = useQueryClient();
 
   const filterTypesOptions: Option<"day" | "hour">[] = [
     { value: "day", label: t("form.filter.type.options.day") },
@@ -68,6 +72,10 @@ const PerformanceStatsFilters = ({
   const handleApplyFilters = () => {
     if (validateSla(sla)) {
       onFiltersChange({ filterType: filterType.value, sla });
+      // Invalidate the query to refetch data with new filters
+      queryClient.invalidateQueries({
+        queryKey: ["performanceStats", { filterType: filterType.value, sla }],
+      });
     }
   };
 
@@ -143,7 +151,10 @@ const PerformanceStats = () => {
         refetchInterval={refetchInterval}
         setRefetchInterval={setRefetchInterval}
       >
-        <PerformanceStatsFilters onFiltersChange={setFilters} />
+        <PerformanceStatsFilters
+          filters={filters}
+          onFiltersChange={setFilters}
+        />
         {isLoading && (
           <div className="performance-stats grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-4 gap-6">
             <StatsCardSkeleton />

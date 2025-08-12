@@ -7,7 +7,7 @@ export type WebrtcCountryOption = {
 
 export const defaultCountry: WebrtcCountryOption = {
   code: "(GL)",
-  flag: "https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/1f310.svg",
+  flag: "https://platform.innocalls.com/api/uploads/countries/1f310.svg",
   name: "Global",
   dialCode: "",
 };
@@ -15,55 +15,55 @@ export const defaultCountry: WebrtcCountryOption = {
 export const webrtcCountries: WebrtcCountryOption[] = [
   {
     code: "(EG)",
-    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/eg.svg",
+    flag: "https://platform.innocalls.com/api/uploads/countries/eg.svg",
     name: "Egypt",
     dialCode: "+20",
   },
   {
     code: "(KSA)",
-    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/sa.svg",
+    flag: "https://platform.innocalls.com/api/uploads/countries/sa.svg",
     name: "Saudi Arabia",
     dialCode: "+966",
   },
   {
     code: "(UAE)",
-    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/ae.svg",
+    flag: "https://platform.innocalls.com/api/uploads/countries/ae.svg",
     name: "United Arab Emirates",
     dialCode: "+971",
   },
   {
     code: "(QA)",
-    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/qa.svg",
+    flag: "https://platform.innocalls.com/api/uploads/countries/qa.svg",
     name: "Qatar",
     dialCode: "+974",
   },
   {
     code: "(KW)",
-    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/kw.svg",
+    flag: "https://platform.innocalls.com/api/uploads/countries/kw.svg",
     name: "Kuwait",
     dialCode: "+965",
   },
   {
     code: "(BH)",
-    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/bh.svg",
+    flag: "https://platform.innocalls.com/api/uploads/countries/bh.svg",
     name: "Bahrain",
     dialCode: "+973",
   },
   {
     code: "(JO)",
-    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/jo.svg",
+    flag: "https://platform.innocalls.com/api/uploads/countries/jo.svg",
     name: "Jordan",
     dialCode: "+962",
   },
   {
     code: "(OM)",
-    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/om.svg",
+    flag: "https://platform.innocalls.com/api/uploads/countries/om.svg",
     name: "Oman",
     dialCode: "+968",
   },
   {
     code: "(IQ)",
-    flag: "https://cdn.jsdelivr.net/gh/lipis/flag-icons/flags/4x3/iq.svg",
+    flag: "https://platform.innocalls.com/api/uploads/countries/iq.svg",
     name: "Iraq",
     dialCode: "+964",
   },

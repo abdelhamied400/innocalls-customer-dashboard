@@ -8,6 +8,7 @@ import LiveCalls from "./LiveCalls";
 import Agents from "./Agents";
 import PerformanceStats from "./PerformanceStats";
 import QueueManagement from "./QueueManagement";
+import hasTenant from "@/containers/hasTenant";
 
 const LiveMonitoring = () => {
   const { Organization } = useAuthStore();
@@ -41,4 +42,4 @@ const LiveMonitoring = () => {
   );
 };
 
-export default LiveMonitoring;
+export default hasTenant(LiveMonitoring);

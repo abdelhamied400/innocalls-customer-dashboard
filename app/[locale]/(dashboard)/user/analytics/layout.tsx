@@ -1,5 +1,7 @@
+import hasTenant from "@/containers/hasTenant";
+
 const AnalyticsLayout = ({ children }: { children: React.ReactNode }) => (
   <div className="h-full w-full">{children}</div>
 );
 
-export default AnalyticsLayout; 
+export default hasTenant(AnalyticsLayout);
