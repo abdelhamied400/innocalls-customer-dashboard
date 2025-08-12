@@ -3,13 +3,19 @@ import { useTranslations } from "next-intl";
 import React from "react";
 import FullPageError from "./FullPageError";
 import useAuthStore from "@/store/auth.slice";
+import { useSession } from "next-auth/react";
 
 const hasTenant = <P extends object>(Component: React.ComponentType<P>) => {
   const WrappedComponent = (props: P) => {
     const { Organization } = useAuthStore();
+    const { data: session, status } = useSession();
     const t = useTranslations("common");
 
-    if (!Organization?.hasTenant) {
+    if (
+      session?.user &&
+      status === "authenticated" &&
+      !Organization?.hasTenant
+    ) {
       return (
         <FullPageError
           status={403}

@@ -23,11 +23,11 @@ function withPermission<P extends object>(
   requiredPermission: userPermission
 ) {
   return function ComponentWithPermission(props: P) {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const t = useTranslations("common");
     const user = session?.user;
 
-    if (!user || !user[requiredPermission]) {
+    if (user && !user[requiredPermission] && status === "authenticated") {
       return (
         <FullPageError
           status={403}
