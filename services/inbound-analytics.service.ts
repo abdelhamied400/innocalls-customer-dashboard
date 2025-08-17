@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import api from "./api";
-import { InboundAnalyticsFilters } from "@/app/[locale]/(dashboard)/user/analytics/inbound/page";
+import { InboundAnalyticsFilters } from "@/app/[locale]/(dashboard)/analytics/inbound/page";
 import { durationToSeconds, formatDuration } from "@/lib/date";
 type FetchAnalyticsStatsResponse = {
   answerRate: number;

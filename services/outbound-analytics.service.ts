@@ -1,4 +1,4 @@
-import { OutboundAnalyticsFilters } from "@/app/[locale]/(dashboard)/user/analytics/outbound/page";
+import { OutboundAnalyticsFilters } from "@/app/[locale]/(dashboard)/analytics/outbound/page";
 import api from "./api";
 import { format } from "date-fns";
 

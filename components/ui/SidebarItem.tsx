@@ -6,7 +6,6 @@ import { usePathname } from "next/navigation";
 import { PropsWithChildren, ReactNode, useMemo } from "react";
 import { Badge } from "./badge";
 import { useTranslations } from "next-intl";
-import { useSession } from "next-auth/react";
 
 type SidebarItemProps = PropsWithChildren<{
   icon?: ReactNode;
@@ -25,14 +24,12 @@ const SidebarItem = ({
   isComingSoon,
 }: SidebarItemProps) => {
   const pathname = usePathname();
-  const { data: session } = useSession();
-  const userType = session?.user?.userType;
 
   const isActive = useMemo(() => {
-    if (href === `/${userType}`) return pathname === `/${userType}`;
+    if (href === `/`) return pathname === `/`;
     else return pathname.includes(href);
     //
-  }, [pathname, href, userType]);
+  }, [pathname, href]);
 
   const t = useTranslations("components.sidebarItem");
 

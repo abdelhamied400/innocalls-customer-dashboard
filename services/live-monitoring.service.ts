@@ -1,4 +1,4 @@
-import { PerformanceStatsFiltersType } from "@/app/[locale]/(dashboard)/user/live-monitoring/PerformanceStats";
+import { PerformanceStatsFiltersType } from "@/app/[locale]/(dashboard)/live-monitoring/PerformanceStats";
 import api from "./api";
 import usersService, { Agent } from "./users.service";
 

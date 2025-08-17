@@ -1,5 +1,5 @@
 "use client";
-import { PropsWithChildren, useEffect, useState } from "react";
+import React, { PropsWithChildren, useEffect, useState } from "react";
 import Innortc from "./Innortc";
 import useAuthStore from "@/store/auth.slice";
 import AppSidebar from "@/components/AppSidebar";
@@ -9,8 +9,10 @@ import { cn } from "@/lib/utils";
 import { getCookie } from "cookies-next/client";
 import { useSession } from "next-auth/react";
 
-type DashboardLayoutProps = PropsWithChildren<object>;
-const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+type DashboardLayoutProps = PropsWithChildren<{
+  agent?: React.ReactNode;
+}>;
+const DashboardLayout = ({ children, agent }: DashboardLayoutProps) => {
   const { data: session } = useSession();
   const { Organization } = useAuthStore();
   const { isSidebarOpen, isWebrtcOpen } = useAppStore();
@@ -69,7 +71,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
           <AppNavbar />
         </div>
 
-        <div className="overflow-auto p-4">{children}</div>
+        <div className="overflow-auto p-4">
+          {session?.user?.userType === "user" && children}
+          {session?.user?.userType === "agent" && agent}
+        </div>
 
         {hasWebrtcAccess && (
           <div className="row-span-2 col-start-3 overflow-y-auto border-s">

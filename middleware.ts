@@ -2,8 +2,6 @@ import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 import { auth } from "./auth";
 import { localeSlugs } from "./i18n/config";
-import { User } from "next-auth";
-import { notFound } from "next/navigation";
 
 const basePublicPages = [
   "/login",
@@ -25,33 +23,10 @@ const intlMiddleware = createMiddleware(routing);
 export default auth((request) => {
   const { pathname } = request.nextUrl;
 
-  // Extract locale and role
-  const segments = pathname.split("/").filter(Boolean);
-  const maybeLocale = localeSlugs.includes(segments[0]) ? segments[0] : null;
-  const maybeRole = maybeLocale ? segments[1] : segments[0];
-
-  const userType = request.auth?.user?.userType;
-
   const isPublicPage = publicPages.includes(pathname);
 
   if (!request.auth && !isPublicPage) {
     const newUrl = new URL(`/login?next=${pathname}`, request.nextUrl.origin);
-    return Response.redirect(newUrl);
-  }
-
-  // If logged in but URL doesn't include the role correctly
-  if (
-    request.auth &&
-    userType &&
-    !isPublicPage &&
-    (!maybeRole || maybeRole !== userType)
-  ) {
-    const remainingPath = segments.slice(maybeLocale ? 1 : 0).join("/");
-    const correctedPath = `/${maybeLocale ?? ""}/${userType}/${remainingPath}`
-      .replace(/\/+/g, "/")
-      .replace(/\/$/, "");
-
-    const newUrl = new URL(correctedPath, request.nextUrl.origin);
     return Response.redirect(newUrl);
   }
 

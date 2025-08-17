@@ -13,7 +13,7 @@ import {
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import ChartCard, { ChartCardSkeleton } from "@/components/ChartCard";
 import { OutboundAnalyticsFilters } from "./page";
-import NoData from "../../../../../../components/Analytics/NoData";
+import NoData from "../../../../../components/Analytics/NoData";
 import outboundAnalyticsService from "@/services/outbound-analytics.service";
 import { Timer, TimeToLeave } from "@mui/icons-material";
 import { useTranslations } from "next-intl";
