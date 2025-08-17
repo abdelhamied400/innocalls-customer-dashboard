@@ -6,6 +6,7 @@ import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-int
 import statsService from "@/services/stats.service";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useTranslations } from "next-intl";
+import { Call, Phone, Timer } from "@mui/icons-material";
 
 const AgentStats = () => {
   const t = useTranslations("dashboard.stats.todayCallsDuration");
@@ -64,7 +65,7 @@ const AgentStats = () => {
     <div className="agent-stats">
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-2">
         <StatsCard
-          icon={<img src="/assets/icons/stats/phone.svg" alt="" />}
+          icon={<Phone />}
           title={t("totalAnsweredCalls")}
           value={todayStats.totalAnsweredCount?.toString()}
           className="shadow-none"
@@ -73,9 +74,10 @@ const AgentStats = () => {
           refetchInterval={refetchInterval}
           setRefetchInterval={setRefetchInterval}
           refetch={refetch}
+          color="primary"
         ></StatsCard>
         <StatsCard
-          icon={<img src="/assets/icons/stats/add-call.svg" alt="" />}
+          icon={<Call />}
           title={t("totalCallsTitle")}
           value={todayStats.total}
           className="shadow-none"
@@ -84,14 +86,10 @@ const AgentStats = () => {
           refetchInterval={refetchInterval}
           setRefetchInterval={setRefetchInterval}
           refetch={refetch}
+          color="success"
         ></StatsCard>
         <StatsCard
-          icon={
-            <img
-              src="/assets/icons/stats/timer.svg"
-              alt="Today Calls Duration Icon"
-            />
-          }
+          icon={<Timer />}
           title={t("title")}
           value={formatDuration(todayStats.totalAnsweredDuration, t)}
           className="shadow-none"
@@ -100,6 +98,7 @@ const AgentStats = () => {
           refetchInterval={refetchInterval}
           setRefetchInterval={setRefetchInterval}
           refetch={refetch}
+          color="info"
         ></StatsCard>
       </div>
     </div>
