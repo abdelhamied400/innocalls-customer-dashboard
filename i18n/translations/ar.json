@@ -622,7 +622,8 @@
       "webcall": "مكالمة الويب",
       "zendeskCredentials": "بيانات اعتماد زين ديسك",
       "webrtcCredentials": "بيانات اعتماد WebRTC",
-      "apiCredentials": "بيانات اعتماد API"
+      "apiCredentials": "بيانات اعتماد API",
+      "activityReports": "تقارير النشاط"
     },
     "support": {
       "innoSupport": "دعم اينو"
@@ -1525,7 +1526,7 @@
         "abandonedAnalysis": {
           "title": "تحليل المكالمات التي أُغلِقت قبل الرد",
           "totalAbandoned": "إجمالي المكالمات المتروكة",
-          "uniqueCallers": "المتصلين المميزين",          
+          "uniqueCallers": "المتصلين المميزين",
           "chartTitle": "تحليل المكالمات الغير مجابة  ",
           "statsTitle": "إحصائيات صف الانتظار",
           "avgWaitTime": "متوسط وقت الانتظار",
@@ -1564,6 +1565,9 @@
         "noDataAvailable": "لا توجد بيانات متاحة",
         "loading": "جارٍ التحميل..."
       }
+    },
+    "activityReports": {
+      "title": "تقارير النشاط"
     },
     "common": {
       "form": {

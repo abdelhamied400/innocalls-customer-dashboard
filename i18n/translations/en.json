@@ -614,7 +614,8 @@
       "webcall": "Webcall",
       "zendeskCredentials": "Zendesk Credentials",
       "webrtcCredentials": "WebRTC Credentials",
-      "apiCredentials": "API Credentials"
+      "apiCredentials": "API Credentials",
+      "activityReports": "Activity Reports"
     },
     "support": {
       "innoSupport": "Innocalls Support"
@@ -1552,6 +1553,9 @@
         "noDataAvailable": "No data available",
         "loading": "Loading..."
       }
+    },
+    "activityReports": {
+      "title": "Activity Reports"
     },
     "common": {
       "form": {
