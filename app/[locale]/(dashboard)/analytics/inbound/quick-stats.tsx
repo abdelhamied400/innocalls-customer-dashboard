@@ -104,7 +104,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
       <StatsCard
         icon={<Clock className="w-6 h-6" />}
         title={t("answerRate")}
-        value={data?.answerRate || "0%"}
+        value={data?.answerRate || "0"}
         color="info"
         isRefetching={isRefetching}
         isLoading={isLoading}

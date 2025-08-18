@@ -16,12 +16,12 @@ const SourceCell = ({ row }: Cell<Call>) => {
           onClick={() => setOpen(true)}
         >
           <p>{row.original.from.name}</p>
-          <p className="text-gray-500">{number}</p>
+          <p className="text-gray-500">{"\u200E" + number}</p>
         </div>
       ) : (
         <div className="datetime-cell font-normal">
           <p>{row.original.from.name}</p>
-          <p className="text-gray-500">{number}</p>
+          <p className="text-gray-500">{"\u200E" + number}</p>
         </div>
       )}
       <PhoneHistoryModal

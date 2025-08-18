@@ -107,7 +107,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
                 <StatsRowCard
                   key={agent.ext}
                   label={agent.name}
-                  value={agent.slaPercentage}
+                  value={`${agent.slaPercentage}\u200E%`}
                   color="warning"
                 />
               ))}

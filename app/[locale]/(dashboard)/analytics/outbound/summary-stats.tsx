@@ -73,7 +73,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         key="Answer Rate"
         icon={<PercentIcon fontSize="medium" />}
         title={t("answerRate")}
-        value={`${quickStatsData?.answerRate || 0}%`}
+        value={`${quickStatsData?.answerRate || 0}\u200E%`}
         color="info"
         isRefetching={isRefetching}
         isLoading={isLoading}

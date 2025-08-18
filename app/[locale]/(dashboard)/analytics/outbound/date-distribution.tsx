@@ -64,7 +64,7 @@ const DateDistributionAnalytics = ({
     {
       header: t("table.columns.answerRate"),
       accessorKey: "answerRate",
-      cell: (row: any) => `${row.getValue("answerRate")}%`,
+      cell: (row: any) => `${row.getValue("answerRate")}\u200E%`,
     },
     {
       header: t("table.columns.totalDuration"),
