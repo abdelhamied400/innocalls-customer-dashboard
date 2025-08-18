@@ -46,7 +46,7 @@ const AppSidebar = () => {
         <SidebarItem
           icon={<DashboardCustomize />}
           title={t("navigation.dashboard")}
-          href={`/${session?.user.userType}`}
+          href={`/`}
           disabled={false}
           isNew={true}
           isComingSoon={false}
@@ -55,7 +55,7 @@ const AppSidebar = () => {
           <SidebarItem
             icon={<Monitor />}
             title={t("navigation.liveMonitoring")}
-            href={`/${session?.user.userType}/live-monitoring`}
+            href={`/live-monitoring`}
             disabled={false}
             isNew={true}
             isComingSoon={false}
@@ -65,7 +65,7 @@ const AppSidebar = () => {
           <SidebarItem
             icon={<SmartToy />}
             title={t("navigation.aiVoiceAgents")}
-            href={`/${session?.user.userType}/ai-voice-agents`}
+            href={`/ai-voice-agents`}
             disabled={true}
             isNew={false}
             isComingSoon={true}
@@ -76,7 +76,7 @@ const AppSidebar = () => {
           <SidebarCollapsibleItem
             icon={<Timeline />}
             title={t("navigation.analytics")}
-            href={`/${session?.user.userType}/analytics`}
+            href={`/analytics`}
             isNew={true}
             isComingSoon={false}
           >
@@ -84,7 +84,7 @@ const AppSidebar = () => {
               <SidebarItem
                 icon={<ArrowDownward />}
                 title={t("navigation.inbound")}
-                href={`/${session?.user.userType}/analytics/inbound`}
+                href={`/analytics/inbound`}
                 isNew={true}
                 isComingSoon={false}
               />
@@ -93,7 +93,7 @@ const AppSidebar = () => {
               <SidebarItem
                 icon={<ArrowUpward />}
                 title={t("navigation.outbound")}
-                href={`/${session?.user.userType}/analytics/outbound`}
+                href={`/analytics/outbound`}
                 isNew={true}
                 isComingSoon={false}
               />
@@ -102,7 +102,7 @@ const AppSidebar = () => {
               <SidebarItem
                 icon={<CallMissedOutgoing />}
                 title={t("navigation.unanswered")}
-                href={`/${session?.user.userType}/analytics/unanswered`}
+                href={`/analytics/unanswered`}
                 isNew={true}
                 isComingSoon={false}
               />
@@ -111,7 +111,17 @@ const AppSidebar = () => {
               <SidebarItem
                 icon={<PersonSearch />}
                 title={t("navigation.userActivity")}
-                href={`/${session?.user.userType}/analytics/user-activity`}
+                href={`/analytics/user-activity`}
+                isNew={true}
+                isComingSoon={false}
+              />
+            )}
+
+            {session?.user.userType === "agent" && (
+              <SidebarItem
+                icon={<PersonSearch />}
+                title={t("navigation.activityReports")}
+                href={`/analytics/activity-reports`}
                 isNew={true}
                 isComingSoon={false}
               />
@@ -130,7 +140,7 @@ const AppSidebar = () => {
             <SidebarItem
               icon={<History />}
               title={t("navigation.callHistory")}
-              href={`/${session?.user.userType}/call-reporting`}
+              href={`/call-reporting`}
               isNew={true}
               isComingSoon={false}
             />
@@ -142,7 +152,7 @@ const AppSidebar = () => {
             <SidebarItem
               icon={<Phone />}
               title={t("navigation.numbers")}
-              href={`/${session?.user.userType}/numbers`}
+              href={`/numbers`}
               disabled={false}
               isNew={true}
               isComingSoon={false}
@@ -155,7 +165,7 @@ const AppSidebar = () => {
             <SidebarItem
               icon={<Users />}
               title={t("navigation.users")}
-              href={`/${session?.user.userType}/users`}
+              href={`/users`}
               disabled={false}
               isNew={true}
               isComingSoon={false}
@@ -167,7 +177,7 @@ const AppSidebar = () => {
             <SidebarItem
               icon={<MonetizationOn />}
               title={t("navigation.billing")}
-              href={`/${session?.user.userType}/billing`}
+              href={`/billing`}
               disabled={false}
               isNew={true}
               isComingSoon={false}
@@ -179,7 +189,7 @@ const AppSidebar = () => {
             <SidebarItem
               icon={<DataUsage />}
               title={t("navigation.usage")}
-              href={`/${session?.user.userType}/usage`}
+              href={`/usage`}
               disabled={false}
               isNew={true}
               isComingSoon={false}
@@ -192,12 +202,12 @@ const AppSidebar = () => {
             title={t("navigation.apps")}
             isNew={false}
             isComingSoon={true}
-            href={`/${session?.user.userType}/apps`}
+            href={`/apps`}
           >
             <SidebarItem
               icon={<RingVolume />}
               title={t("navigation.autoDialer")}
-              href={`/${session?.user.userType}/auto-dialer`}
+              href={`/auto-dialer`}
               disabled={true}
               isNew={false}
               isComingSoon={true}
@@ -205,7 +215,7 @@ const AppSidebar = () => {
             <SidebarItem
               icon={<Quiz />}
               title={t("navigation.surveyCampaigns")}
-              href={`/${session?.user.userType}/survey`}
+              href={`/survey`}
               disabled={true}
               isNew={false}
               isComingSoon={true}
@@ -213,7 +223,7 @@ const AppSidebar = () => {
             <SidebarItem
               icon={<Assessment />}
               title={t("navigation.inCallSurvey")}
-              href={`/${session?.user.userType}/analytics/in-call-survey`}
+              href={`/analytics/in-call-survey`}
               disabled={true}
               isNew={false}
               isComingSoon={true}
@@ -221,7 +231,7 @@ const AppSidebar = () => {
             <SidebarItem
               icon={<Hub />}
               title={t("navigation.callBridge")}
-              href={`/${session?.user.userType}/analytics/call-bridge`}
+              href={`/analytics/call-bridge`}
               disabled={true}
               isNew={false}
               isComingSoon={true}
@@ -229,7 +239,7 @@ const AppSidebar = () => {
             <SidebarItem
               icon={<ShoppingCart />}
               title={t("navigation.orderConfirmation")}
-              href={`/${session?.user.userType}/apps/order-confirmation`}
+              href={`/apps/order-confirmation`}
               disabled={true}
               isNew={false}
               isComingSoon={true}
@@ -237,7 +247,7 @@ const AppSidebar = () => {
             <SidebarItem
               icon={<Campaign />}
               title={t("navigation.callCampaign")}
-              href={`/${session?.user.userType}/apps/call-campaign`}
+              href={`/apps/call-campaign`}
               disabled={true}
               isNew={false}
               isComingSoon={true}
@@ -250,12 +260,12 @@ const AppSidebar = () => {
             title={t("navigation.developersTab")}
             isNew={false}
             isComingSoon={true}
-            href={`/${session?.user.userType}/developers`}
+            href={`/developers`}
           >
             <SidebarItem
               icon={<Phone />}
               title={t("navigation.webcall")}
-              href={`/${session?.user.userType}/developers/webcall`}
+              href={`/developers/webcall`}
               disabled={true}
               isNew={false}
               isComingSoon={true}
@@ -263,7 +273,7 @@ const AppSidebar = () => {
             <SidebarItem
               icon={<Support />}
               title={t("navigation.zendeskCredentials")}
-              href={`/${session?.user.userType}/developers/zendesk-credentials`}
+              href={`/developers/zendesk-credentials`}
               disabled={true}
               isNew={false}
               isComingSoon={true}
@@ -271,7 +281,7 @@ const AppSidebar = () => {
             <SidebarItem
               icon={<Key />}
               title={t("navigation.webrtcCredentials")}
-              href={`/${session?.user.userType}/developers/webrtc-credentials`}
+              href={`/developers/webrtc-credentials`}
               disabled={true}
               isNew={false}
               isComingSoon={true}
@@ -279,7 +289,7 @@ const AppSidebar = () => {
             <SidebarItem
               icon={<Api />}
               title={t("navigation.apiCredentials")}
-              href={`/${session?.user.userType}/developers/api-credentials`}
+              href={`/developers/api-credentials`}
               disabled={true}
               isNew={false}
               isComingSoon={true}
@@ -290,7 +300,7 @@ const AppSidebar = () => {
           <SidebarItem
             icon={<Settings />}
             title={t("navigation.settings")}
-            href={`/${session?.user.userType}/settings`}
+            href={`/settings`}
             disabled={true}
             isNew={false}
             isComingSoon={true}

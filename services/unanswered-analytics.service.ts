@@ -1,4 +1,4 @@
-import { UnansweredAnalyticsFilters } from "@/app/[locale]/(dashboard)/user/analytics/unanswered/page";
+import { UnansweredAnalyticsFilters } from "@/app/[locale]/(dashboard)/analytics/unanswered/page";
 import api from "./api";
 import { format } from "date-fns";
 

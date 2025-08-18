@@ -67,7 +67,7 @@ const AgentStats = () => {
         <StatsCard
           icon={<Phone />}
           title={t("totalAnsweredCalls")}
-          value={todayStats.totalAnsweredCount.toString()}
+          value={todayStats.totalAnsweredCount?.toString()}
           className="shadow-none"
           isRefetching={isRefetching}
           canRefetch

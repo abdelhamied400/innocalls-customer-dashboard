@@ -28,11 +28,27 @@ const CredentialsProvider = Credentials({
     const userType = (credentials.userType || "user") as "user" | "agent";
 
     try {
-      const res = await authService.login({
-        email,
-        password,
-        userType,
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/v2/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-User-Type": userType,
+          },
+          body: JSON.stringify({ email, password, userType }),
+        }
+      ).catch((error) => {
+        console.error("Login request failed:", error);
+        throw new AuthError("Login request failed");
       });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new AuthError(errorData.message || "Login failed");
+      }
+
+      const res = await response.json();
 
       return {
         ...res.user,

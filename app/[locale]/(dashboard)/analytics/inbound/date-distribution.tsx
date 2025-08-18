@@ -23,7 +23,7 @@ import PaginatedTablePagination from "@/components/Table/PaginatedTablePaginatio
 import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import { ShowChart, TableView } from "@mui/icons-material";
 import { InboundAnalyticsFilters } from "./page";
-import NoData from "../../../../../../components/Analytics/NoData";
+import NoData from "../../../../../components/Analytics/NoData";
 import { useTranslations } from "next-intl";
 
 type InboundAnalyticsDateDistributionProps = {

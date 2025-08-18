@@ -2,7 +2,7 @@
 import withPermission from "@/containers/withPermission";
 import NumbersTable from "./table";
 
-const Numbers = async () => {
+const Numbers = () => {
   return (
     <div className="page h-full" id="numbers">
       <NumbersTable />

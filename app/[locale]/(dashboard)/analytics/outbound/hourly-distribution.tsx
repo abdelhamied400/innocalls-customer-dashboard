@@ -23,27 +23,34 @@ import PaginatedTablePagination from "@/components/Table/PaginatedTablePaginatio
 import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import { ShowChart, TableView } from "@mui/icons-material";
 import { OutboundAnalyticsFilters } from "./page";
-import NoData from "../../../../../../components/Analytics/NoData";
+import NoData from "../../../../../components/Analytics/NoData";
 import { useTranslations } from "next-intl";
 
-type DateDistributionAnalyticsProps = {
+type HourlyDistributionAnalyticsProps = {
   filters: OutboundAnalyticsFilters;
 };
 
-const DateDistributionAnalytics = ({
+const HourlyDistributionAnalytics = ({
   filters,
-}: DateDistributionAnalyticsProps) => {
-  const t = useTranslations("analytics.outbound.dateDistribution");
+}: HourlyDistributionAnalyticsProps) => {
+  const t = useTranslations("analytics.outbound.hourlyDistribution");
 
   const columns = [
     {
-      header: t("table.columns.date"),
-
-      accessorKey: "date",
+      header: t("table.columns.hour"),
+      accessorKey: "hourOfDay",
     },
     {
-      header: t("table.columns.total"),
+      header: t("table.columns.totalCalls"),
       accessorKey: "totalCalls",
+    },
+    {
+      header: t("table.columns.answered"),
+      accessorKey: "answeredCalls",
+    },
+    {
+      header: t("table.columns.unanswered"),
+      accessorKey: "unansweredCalls",
     },
     {
       header: t("table.columns.internal"),
@@ -53,45 +60,16 @@ const DateDistributionAnalytics = ({
       header: t("table.columns.external"),
       accessorKey: "externalCalls",
     },
-    {
-      header: t("table.columns.answered"),
-      accessorKey: "totalAnsweredCalls",
-    },
-    {
-      header: t("table.columns.unanswered"),
-      accessorKey: "totalUnAnsweredCalls",
-    },
-    {
-      header: t("table.columns.answerRate"),
-      accessorKey: "answerRate",
-      cell: (row: any) => `${row.getValue("answerRate")}%`,
-    },
-    {
-      header: t("table.columns.totalDuration"),
-      accessorKey: "totalDuration",
-    },
-    {
-      header: t("table.columns.avgDuration"),
-      accessorKey: "avgDuration",
-    },
-    {
-      header: t("table.columns.shortest"),
-      accessorKey: "shortestCall",
-    },
-    {
-      header: t("table.columns.longest"),
-      accessorKey: "longestCall",
-    },
   ];
 
   const { data, isLoading } = useLocalizedQuery({
-    queryKey: ["dateDistribution", filters],
+    queryKey: ["hourlyDistribution", filters],
     queryFn: () =>
-      outboundAnalyticsService.fetchDateDistributionAnalytics(filters),
+      outboundAnalyticsService.fetchHourlyDistributionAnalytics(filters),
   });
 
   return (
-    <div className="date-distribution-analytics">
+    <div className="hourly-distribution-analytics">
       <Tabs defaultValue="chart" className="w-full">
         <TabsList className="w-full flex justify-end">
           <TabsTrigger value="chart" className="flex items-center gap-1">
@@ -114,7 +92,7 @@ const DateDistributionAnalytics = ({
                 <LineChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
                   <XAxis
-                    dataKey="date"
+                    dataKey="hourOfDay"
                     fontSize={12}
                     tickLine={false}
                     axisLine={false}
@@ -137,7 +115,7 @@ const DateDistributionAnalytics = ({
                   />
                   <Line
                     type="monotone"
-                    dataKey="totalAnsweredCalls"
+                    dataKey="answeredCalls"
                     stroke="#10B981"
                     strokeWidth={2}
                     dot={false}
@@ -145,7 +123,7 @@ const DateDistributionAnalytics = ({
                   />
                   <Line
                     type="monotone"
-                    dataKey="totalUnAnsweredCalls"
+                    dataKey="unansweredCalls"
                     stroke="#EF4444"
                     strokeWidth={2}
                     dot={false}
@@ -176,4 +154,4 @@ const DateDistributionAnalytics = ({
   );
 };
 
-export default DateDistributionAnalytics;
+export default HourlyDistributionAnalytics;

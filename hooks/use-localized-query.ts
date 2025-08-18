@@ -1,3 +1,4 @@
+import useAuthStore from "@/store/auth.slice";
 import {
   useQuery,
   UseQueryOptions,
@@ -32,11 +33,12 @@ export function useLocalizedQuery<T>(
   options?: UseQueryOptions<T>
 ): UseQueryResult<T> {
   const locale = useLocale();
+  const { Organization } = useAuthStore();
 
   if (typeof keyOrObject === "string") {
     // Original pattern: useLocalizedQuery(key, queryFn, options)
     return useQuery({
-      queryKey: [keyOrObject, locale],
+      queryKey: [keyOrObject, locale, Organization?.id],
       queryFn: () => queryFn!({ locale }),
       ...options,
     });
@@ -44,7 +46,7 @@ export function useLocalizedQuery<T>(
     // New pattern: useLocalizedQuery({ queryKey, queryFn, ...options })
     const { queryKey, queryFn: fn, ...opts } = keyOrObject;
     return useQuery({
-      queryKey: [...queryKey, locale],
+      queryKey: [...queryKey, locale, Organization?.id],
       queryFn: fn,
       ...opts,
     });
