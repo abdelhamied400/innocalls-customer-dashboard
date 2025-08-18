@@ -1,6 +1,6 @@
 "use client";
 
-import AgentStats from "@/containers/agent/AgentStats";
+import AgentStats from "./AgentStats";
 
 const AgentDashboard = () => {
   return (

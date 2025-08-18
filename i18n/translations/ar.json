@@ -796,7 +796,12 @@
         "m": "د",
         "s": "ث",
         "totalCallsTitle": "إجمالي المكالمات",
-        "totalAnsweredCalls": "إجمالي المكالمات المجابة"
+        "totalAnsweredCalls": "إجمالي المكالمات المجابة",
+        "totalCalls": "إجمالي المكالمات",
+        "totalIncomingCalls": "إجمالي المكالمات الواردة",
+        "totalOutgoingCalls": "إجمالي المكالمات الصادرة",
+        "totalTalkTime": "إجمالي وقت المحادثة",
+        "totalWaitTime": "إجمالي وقت الانتظار"
       },
       "totalAnsweredCalls": {
         "title": "إجمالي المكالمات المجابة/يوم",
@@ -1567,7 +1572,25 @@
       }
     },
     "activityReports": {
-      "title": "تقارير النشاط"
+      "title": "تقارير النشاط",
+      "quickStats": {
+        "totalAnsweredCalls": "إجمالي المكالمات المجابة",
+        "totalCalls": "إجمالي المكالمات",
+        "totalIncomingCalls": "إجمالي المكالمات الواردة",
+        "totalOutgoingCalls": "إجمالي المكالمات الصادرة",
+        "totalTalkTime": "إجمالي وقت المحادثة",
+        "totalWaitTime": "إجمالي وقت الانتظار"
+      },
+      "detailedStats": {
+        "title": "إحصائيات النشاط المفصلة",
+        "subtitle": "عرض إحصائيات مفصلة للنشاط",
+        "tabs": {
+          "dateCallDistribution": "توزيع المكالمات بالتاريخ",
+          "hourlyCallDistribution": "توزيع المكالمات بالساعة",
+          "talkTimeDistribution": "توزيع وقت المحادثة",
+          "waitTimeDistribution": "توزيع وقت الانتظار"
+        }
+      }
     },
     "common": {
       "form": {

@@ -788,7 +788,12 @@
         "m": "M",
         "s": "S",
         "totalCallsTitle": "Total Calls",
-        "totalAnsweredCalls": "Total Answered Calls"
+        "totalAnsweredCalls": "Total Answered Calls",
+        "totalCalls": "Total Calls",
+        "totalIncomingCalls": "Total Incoming Calls",
+        "totalOutgoingCalls": "Total Outgoing Calls",
+        "totalTalkTime": "Total Talk Time",
+        "totalWaitTime": "Total Wait Time"
       },
       "totalAnsweredCalls": {
         "title": "Total Answered Calls/Day",
@@ -1555,7 +1560,25 @@
       }
     },
     "activityReports": {
-      "title": "Activity Reports"
+      "title": "Activity Reports",
+      "quickStats": {
+        "totalAnsweredCalls": "Total Answered Calls",
+        "totalCalls": "Total Calls",
+        "totalIncomingCalls": "Total Incoming Calls",
+        "totalOutgoingCalls": "Total Outgoing Calls",
+        "totalTalkTime": "Total Talk Time",
+        "totalWaitTime": "Total Wait Time"
+      },
+      "detailedStats": {
+        "title": "Detailed Activity Statistics",
+        "subtitle": "View detailed statistics for activity reports",
+        "tabs": {
+          "dateCallDistribution": "Date Call Distribution",
+          "hourlyCallDistribution": "Hourly Call Distribution",
+          "talkTimeDistribution": "Talk Time Distribution",
+          "waitTimeDistribution": "Wait Time Distribution"
+        }
+      }
     },
     "common": {
       "form": {

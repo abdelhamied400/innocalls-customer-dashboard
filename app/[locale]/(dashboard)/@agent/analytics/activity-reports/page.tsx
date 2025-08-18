@@ -5,13 +5,26 @@ import DatePicker from "@/components/ui/date-picker";
 import Field from "@/components/ui/field";
 import { useFilterManager } from "@/hooks/useFilterManager";
 import { activityReportsFiltersSchema } from "@/validation/activityReportsFilters";
-import { BarChart, Search } from "@mui/icons-material";
+import {
+  BarChart,
+  Insights,
+  PieChart,
+  Search,
+  StackedBarChart,
+} from "@mui/icons-material";
 import { CalendarIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
+import QuickStats from "./quick-stats";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useState } from "react";
+import DateCallDistribution from "./date-call-distribution";
+import TalkTimeDistribution from "./talk-time-distribution";
+import WaitTimeDistribution from "./wait-time-distribution";
+import HourlyCallDistribution from "./hourly-call-distribution";
 
-type ActivityReportsFilters = {
-  fromDate: Date | null;
-  toDate: Date | null;
+export type ActivityReportsFilters = {
+  fromDate: Date;
+  toDate: Date;
 };
 
 const today = new Date();
@@ -21,6 +34,7 @@ lastMonth.setDate(today.getDate() - 30);
 const ActivityReports = () => {
   const t = useTranslations("analytics.activityReports");
   const tCommon = useTranslations("analytics.common");
+  const [currentTab, setCurrentTab] = useState("dateCallDistribution");
 
   const activityReportsFilterConfig = {
     defaultValues: {
@@ -82,6 +96,67 @@ const ActivityReports = () => {
                 {tCommon("actions.applyFilters")}
               </Button>
             </div>
+          </StatsDetailedCard>
+        </div>
+
+        <div className="content">
+          <QuickStats filters={appliedValues} />
+
+          <StatsDetailedCard
+            title={t("detailedStats.title")}
+            subtitle={t("detailedStats.subtitle")}
+            icon={<Insights />}
+            value=""
+            color="primary"
+          >
+            <Tabs
+              className="w-full"
+              value={currentTab}
+              onValueChange={setCurrentTab}
+            >
+              <TabsList>
+                <TabsTrigger
+                  value="dateCallDistribution"
+                  className="flex items-center gap-1"
+                >
+                  <StackedBarChart />
+                  {t("detailedStats.tabs.dateCallDistribution")}
+                </TabsTrigger>
+                <TabsTrigger
+                  value="hourlyCallDistribution"
+                  className="flex items-center gap-1"
+                >
+                  <PieChart />
+                  {t("detailedStats.tabs.hourlyCallDistribution")}
+                </TabsTrigger>
+                <TabsTrigger
+                  value="talkTimeDistribution"
+                  className="flex items-center gap-1"
+                >
+                  <StackedBarChart />
+                  {t("detailedStats.tabs.talkTimeDistribution")}
+                </TabsTrigger>
+                <TabsTrigger
+                  value="waitTimeDistribution"
+                  className="flex items-center gap-1"
+                >
+                  <PieChart />
+                  {t("detailedStats.tabs.waitTimeDistribution")}
+                </TabsTrigger>
+              </TabsList>
+              <TabsContent value="dateCallDistribution">
+                <DateCallDistribution filters={appliedValues} />
+              </TabsContent>
+              <TabsContent value="hourlyCallDistribution">
+                <HourlyCallDistribution filters={appliedValues} />
+              </TabsContent>
+              <TabsContent value="talkTimeDistribution">
+                <TalkTimeDistribution filters={appliedValues} />
+              </TabsContent>
+              <TabsContent value="waitTimeDistribution">
+                <WaitTimeDistribution filters={appliedValues} />
+              </TabsContent>
+            </Tabs>
           </StatsDetailedCard>
         </div>
       </div>

@@ -158,6 +158,16 @@ export default {
     const res = await api.get("/v2/cdrs/today");
     return res.data;
   },
+  getAgentStats: async () => {
+    const res = await api.get("/agent-activity-reports/summary", {
+      params: {
+        fromDate: format(new Date(), "yyyy-MM-dd"),
+        toDate: format(new Date(), "yyyy-MM-dd"),
+      },
+    });
+
+    return res.data.summary;
+  },
   // ------->
   // billing
   getBalance: async () => {
