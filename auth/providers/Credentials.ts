@@ -27,46 +27,32 @@ const CredentialsProvider = Credentials({
     const password = credentials.password as string;
     const userType = (credentials.userType || "user") as "user" | "agent";
 
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/v2/auth/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-User-Type": userType,
-          },
-          body: JSON.stringify({ email, password, userType }),
-        }
-      ).catch((error) => {
-        console.error("Login request failed:", error);
-        throw new AuthError("Login request failed");
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new AuthError(errorData.message || "Login failed");
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/v2/auth/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-User-Type": userType,
+        },
+        body: JSON.stringify({ email, password, userType }),
       }
+    );
 
-      const res = await response.json();
-
-      return {
-        ...res.user,
-        ...res.agent,
-        organizations: res.organizations || [res.agent.organization],
-        accessToken: res.accessToken,
-        userType,
-      };
-    } catch (error) {
-      // console.log(error);
-      if (error instanceof AxiosError) {
-        throw new AuthError(error.response?.data.message);
-      }
-      // Handle other types of errors
-      throw new AuthError(
-        "An unexpected error occurred. Please try again later."
-      );
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new AuthError(errorData.message || "Login failed");
     }
+
+    const res = await response.json();
+
+    return {
+      ...res.user,
+      ...res.agent,
+      organizations: res.organizations || [res.agent.organization],
+      accessToken: res.accessToken,
+      userType,
+    };
   },
 });
 
