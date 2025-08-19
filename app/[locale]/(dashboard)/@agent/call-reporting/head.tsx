@@ -69,9 +69,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
   );
   const [numbers, setNumbers] = useState<Option[]>([]);
   const [selectedTags, setSelectedTags] = useState<Option[]>([]);
-  const [direction, setDirection] = useState<
-    "local" | "incoming" | "outgoing"
-  >();
+  const [direction, setDirection] = useState<string>("all");
   const [answeredFilter, setAnsweredFilter] = useState<string>("both");
 
   const handleExport = async () => {
@@ -131,7 +129,10 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
         selectedTags.length > 0
           ? selectedTags.map((tag) => tag.value).join(",")
           : undefined,
-      direction,
+      direction:
+        direction === "all"
+          ? undefined
+          : (direction as "local" | "incoming" | "outgoing"),
       isAnswered:
         answeredFilter === "both" ? undefined : answeredFilter === "answered",
     }));
@@ -168,7 +169,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
             setToDate(undefined);
             setNumbers([]);
             setSelectedTags([]);
-            setDirection(undefined);
+            setDirection("all");
             setAnsweredFilter("both");
             table.setPageIndex(0); // Reset to first page on filter change
           }}
@@ -280,7 +281,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
             />
           </FilterBox>
 
-          {/* direction single select */}
+          {/* direction radio buttons */}
           <FilterBox
             triggerLabel={t("filters.direction.triggerLabel")}
             label={t("filters.direction.label")}
@@ -289,29 +290,34 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
                 ...prev,
                 direction: undefined,
               }));
-              setDirection(undefined);
+              setDirection("all");
               table.setPageIndex(0);
             }}
             onApply={applyFilters}
-            numberOfFilters={direction ? 1 : 0}
+            numberOfFilters={direction !== "all" ? 1 : 0}
           >
-            <Select
+            <RadioGroup
               value={direction}
-              onValueChange={(value) =>
-                setDirection(value as "local" | "incoming" | "outgoing")
-              }
+              onValueChange={setDirection}
+              className="flex flex-col gap-3"
             >
-              <SelectTrigger className="w-max">
-                <SelectValue placeholder={t("filters.direction.placeholder")} />
-              </SelectTrigger>
-              <SelectContent>
-                {directionsOptions.map((option) => (
-                  <SelectItem key={option.value} value={option.value}>
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="all" id="all-directions" />
+                <Label htmlFor="all-directions">All</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="local" id="local" />
+                <Label htmlFor="local">Local</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="incoming" id="incoming" />
+                <Label htmlFor="incoming">Incoming</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="outgoing" id="outgoing" />
+                <Label htmlFor="outgoing">Outgoing</Label>
+              </div>
+            </RadioGroup>
           </FilterBox>
 
           {/* isAnswered radio buttons */}
