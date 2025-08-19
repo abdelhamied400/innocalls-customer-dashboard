@@ -3,13 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import callReportingService from "@/services/call-reporting.service";
-import { Call } from "@/types/api/call-reporting";
+import { AgentCall } from "@/types/api/call-reporting";
 import { Cell } from "@/types/cell";
 import { PlayCircle } from "@mui/icons-material";
 import { useTranslations } from "next-intl";
 import { useMemo, useState } from "react";
 
-const CallRecordingCell = ({ row }: Cell<Call>) => {
+const CallRecordingCell = ({ row }: Cell<AgentCall>) => {
   const hasRecording = row.original.hasRecording;
   const callId = row.original.id;
   const { toast } = useToast();

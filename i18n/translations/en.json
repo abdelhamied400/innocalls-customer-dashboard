@@ -631,7 +631,8 @@
       "callStatus": "Call Status",
       "callDirection": "Call Direction",
       "callSummary": "Call Summary",
-      "recording": "Recording"
+      "recording": "Recording",
+      "waitTime": "Wait Time"
     },
     "direction": {
       "incoming": "Incoming",
@@ -667,6 +668,20 @@
       "destination": {
         "triggerLabel": "Destination",
         "label": "Filter by Destination"
+      },
+      "numbers": {
+        "triggerLabel": "Numbers",
+        "label": "Filter by Numbers"
+      },
+      "direction": {
+        "triggerLabel": "Direction",
+        "label": "Filter by Direction",
+        "placeholder": "Select a direction"
+      },
+      "isAnswered": {
+        "triggerLabel": "Answered",
+        "label": "Filter by Answered Status",
+        "placeholder": "Is answered?"
       },
       "tags": {
         "triggerLabel": "Tags",

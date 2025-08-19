@@ -1,7 +1,7 @@
-import { Call } from "@/types/api/call-reporting";
+import { AgentCall } from "@/types/api/call-reporting";
 import { Cell } from "@/types/cell";
 
-const DestinationCell = ({ row }: Cell<Call>) => {
+const DestinationCell = ({ row }: Cell<AgentCall>) => {
   return (
     <div className="datetime-cell font-normal">
       <p>{row.original.to.name}</p>

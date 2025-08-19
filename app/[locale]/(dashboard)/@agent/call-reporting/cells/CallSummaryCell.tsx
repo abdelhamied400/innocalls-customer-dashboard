@@ -1,4 +1,4 @@
-import { Call } from "@/types/api/call-reporting";
+import { AgentCall } from "@/types/api/call-reporting";
 import { Cell } from "@/types/cell";
 import {
   Sheet,
@@ -13,7 +13,7 @@ import { Message } from "@mui/icons-material";
 import { Badge } from "@/components/ui/badge";
 import { useTranslations } from "next-intl";
 
-type CallSummaryCellProps = Cell<Call, unknown>;
+type CallSummaryCellProps = Cell<AgentCall, unknown>;
 
 const CallSummaryCell = ({ row }: CallSummaryCellProps) => {
   const t = useTranslations("callReporting.summary");

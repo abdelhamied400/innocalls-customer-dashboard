@@ -639,7 +639,8 @@
       "callStatus": "حالة المكالمة",
       "callDirection": "اتجاه المكالمة",
       "callSummary": "ملخص المكالمة",
-      "recording": "التسجيل"
+      "recording": "التسجيل",
+      "waitTime": "وقت الانتظار"
     },
     "direction": {
       "incoming": "واردة",
@@ -675,6 +676,20 @@
       "destination": {
         "triggerLabel": "المُسْتَقْبِل",
         "label": "تصفية حسب المُسْتَقْبِل"
+      },
+      "numbers": {
+        "triggerLabel": "الأرقام",
+        "label": "تصفية حسب الأرقام"
+      },
+      "direction": {
+        "triggerLabel": "اتجاه المكالمة",
+        "label": "تصفية حسب اتجاه المكالمة",
+        "placeholder": "اختر من القائمة"
+      },
+      "isAnswered": {
+        "triggerLabel": "تم الرد",
+        "label": "تصفية حسب حالة الرد",
+        "placeholder": "تم الرد"
       },
       "tags": {
         "triggerLabel": "العلامات",

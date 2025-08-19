@@ -1,5 +1,5 @@
 "use client";
-import { Call } from "@/types/api/call-reporting";
+import { AgentCall } from "@/types/api/call-reporting";
 import { ColumnDef } from "@tanstack/react-table";
 import CallSummaryCell from "./cells/CallSummaryCell";
 import DestinationCell from "./cells/DestinationCell";
@@ -10,7 +10,7 @@ import CallDirectionCell from "./cells/CallDirectionCell";
 import CallRecordingCell from "./cells/CallRecordingCell";
 import { useTranslations } from "next-intl";
 
-export const columns = (): ColumnDef<Call>[] => {
+export const columns = (): ColumnDef<AgentCall>[] => {
   const t = useTranslations("callReporting.columns");
 
   return [
@@ -28,6 +28,10 @@ export const columns = (): ColumnDef<Call>[] => {
       accessorKey: "datetime",
       header: t("callDate"),
       cell: DateTimeCell,
+    },
+    {
+      accessorKey: "waitTime",
+      header: t("waitTime"),
     },
     {
       accessorKey: "duration",

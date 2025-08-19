@@ -1,7 +1,10 @@
 "use client";
 
 import callReportingService from "@/services/call-reporting.service";
-import { CallReportingFilters } from "@/types/api/call-reporting";
+import {
+  AgentCallReportingFilters,
+  CallReportingFilters,
+} from "@/types/api/call-reporting";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
@@ -17,45 +20,27 @@ import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import { useTranslations } from "next-intl";
 
-type CallReportingTableProps = {
-  initialPagination?: {
-    pageIndex: number;
-    pageSize: number;
-  };
-  initialFilters?: CallReportingFilters;
-  initialSorting?: SortingState;
-};
+type CallReportingTableProps = {};
 
-const defaultFilters: CallReportingFilters = {
+const defaultFilters: AgentCallReportingFilters = {
   fromDate: undefined,
   toDate: undefined,
-  sourceExtensions: [],
-  destinationExtensions: [],
+  numbers: [],
   tags: [],
-  callStatuses: "",
-  search: "",
+  direction: undefined,
 };
 
-const CallReportingTable = ({
-  initialFilters = {},
-  initialSorting = [],
-  initialPagination = {
-    pageIndex: 0,
-    pageSize: 10,
-  },
-}: CallReportingTableProps) => {
+const CallReportingTable = ({}: CallReportingTableProps) => {
   const { toast } = useToast();
 
   const t = useTranslations("callReporting.messages");
 
-  const [filters, setFilters] = useState<CallReportingFilters>({
-    ...defaultFilters,
-    ...initialFilters,
-  });
+  const [filters, setFilters] =
+    useState<AgentCallReportingFilters>(defaultFilters);
 
   const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: initialPagination?.pageIndex || 0,
-    pageSize: initialPagination?.pageSize || 10,
+    pageIndex: 0,
+    pageSize: 10,
   });
 
   // Initialize the query to fetch call reporting data
@@ -68,7 +53,7 @@ const CallReportingTable = ({
   } = useLocalizedQuery({
     queryKey: ["call-reporting", pagination, filters],
     queryFn: async () =>
-      await callReportingService.getCallReporting(
+      await callReportingService.getAgentCallReporting(
         pagination.pageIndex + 1,
         pagination.pageSize,
         filters
@@ -98,11 +83,11 @@ const CallReportingTable = ({
   return (
     <div className="h-full flex flex-col">
       <PaginatedTable
-        data={callReporting?.data || []}
+        data={callReporting?.rows || []}
         columns={columns()}
         pagination={{
-          totalItems: callReporting?.total || 0,
-          totalPages: callReporting?.last_page || 0,
+          totalItems: callReporting?.totalItems || 0,
+          totalPages: callReporting?.totalPages || 0,
         }}
         onPaginationChange={(pagination) => {
           setPagination(pagination);

@@ -25,6 +25,26 @@ export type Call = {
   };
 };
 
+export type AgentCall = {
+  callSummary?: {
+    addedBy: string;
+    comment: string;
+    postCallTags: string[];
+  };
+  dateTime: {
+    date: string;
+    time: string;
+  };
+  direction: "incoming" | "outgoing" | "local";
+  duration: string;
+  from: CallMember;
+  hasRecording: boolean;
+  id: string;
+  isAnswered: boolean;
+  to: CallMember;
+  waitTime: string;
+};
+
 export type Option = {
   label: string;
   value: string;
@@ -38,6 +58,15 @@ export type CallReportingFilters = {
   callStatuses?: string;
   tags?: string | Option[];
   search?: string;
+};
+
+export type AgentCallReportingFilters = {
+  fromDate?: Date;
+  toDate?: Date;
+  numbers?: string | Option[];
+  isAnswered?: boolean;
+  direction?: "incoming" | "outgoing" | "local";
+  tags?: string | Option[];
 };
 
 export type ExportCallReportingFilters = CallReportingFilters & {

@@ -1,7 +1,7 @@
 "use client";
 
 import callReportingService from "@/services/call-reporting.service";
-import { CallReportingFilters, Option } from "@/types/api/call-reporting";
+import { AgentCallReportingFilters, Option } from "@/types/api/call-reporting";
 import { useState } from "react";
 import Field from "@/components/ui/field";
 import { FilterAltOutlined } from "@mui/icons-material";
@@ -19,17 +19,24 @@ import useVocabStore from "@/store/vocab.slice";
 import { isValidDateRange } from "@/lib/date";
 import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { useSession } from "next-auth/react";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
 import { useTranslations } from "next-intl";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 type CallReportingHeadProps = {
-  filters: CallReportingFilters;
-  setFilters: React.Dispatch<React.SetStateAction<CallReportingFilters>>;
+  filters: AgentCallReportingFilters;
+  setFilters: React.Dispatch<React.SetStateAction<AgentCallReportingFilters>>;
 };
 const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
   const { toast } = useToast();
@@ -48,11 +55,10 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
     label: tag.nameEN,
     value: tag.id,
   }));
-  const statusesOptions = [
-    { value: "ANSWERED", label: "answered" },
-    { value: "FAILED", label: "failed" },
-    { value: "NO ANSWER", label: "notAnswered" },
-    { value: "BUSY", label: "busy" },
+  const directionsOptions = [
+    { value: "local", label: "local" },
+    { value: "incoming", label: "incoming" },
+    { value: "outgoing", label: "outgoing" },
   ];
 
   const [fromDate, setFromDate] = useState<Date | undefined>(
@@ -61,12 +67,12 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
   const [toDate, setToDate] = useState<Date | undefined>(
     filters.toDate ? new Date(filters.toDate) : undefined
   );
-  const [sourceExtensions, setSourceExtensions] = useState<Option[]>([]);
-  const [destinationExtensions, setDestinationExtensions] = useState<Option[]>(
-    []
-  );
+  const [numbers, setNumbers] = useState<Option[]>([]);
   const [selectedTags, setSelectedTags] = useState<Option[]>([]);
-  const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
+  const [direction, setDirection] = useState<
+    "local" | "incoming" | "outgoing"
+  >();
+  const [answeredFilter, setAnsweredFilter] = useState<string>("both");
 
   const handleExport = async () => {
     try {
@@ -117,20 +123,17 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
       ...prev,
       fromDate: fromDate,
       toDate: toDate,
-      sourceExtensions:
-        sourceExtensions.length > 0
-          ? sourceExtensions.map((ext) => ext.value).join(",")
-          : undefined,
-      destinationExtensions:
-        destinationExtensions.length > 0
-          ? destinationExtensions.map((ext) => ext.value).join(",")
+      numbers:
+        numbers.length > 0
+          ? numbers.map((ext) => ext.value).join(",")
           : undefined,
       tags:
         selectedTags.length > 0
           ? selectedTags.map((tag) => tag.value).join(",")
           : undefined,
-      callStatuses:
-        selectedStatuses.length > 0 ? selectedStatuses.join(",") : undefined,
+      direction,
+      isAnswered:
+        answeredFilter === "both" ? undefined : answeredFilter === "answered",
     }));
 
     table.setPageIndex(0); // Reset to first page on filter change
@@ -163,10 +166,10 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
             setFilters({});
             setFromDate(undefined);
             setToDate(undefined);
-            setSourceExtensions([]);
-            setDestinationExtensions([]);
+            setNumbers([]);
             setSelectedTags([]);
-            setSelectedStatuses([]);
+            setDirection(undefined);
+            setAnsweredFilter("both");
             table.setPageIndex(0); // Reset to first page on filter change
           }}
         >
@@ -212,24 +215,24 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
             </Field>
           </FilterBox>
           <FilterBox
-            triggerLabel={t("filters.source.triggerLabel")}
-            label={t("filters.source.label")}
+            triggerLabel={t("filters.numbers.triggerLabel")}
+            label={t("filters.numbers.label")}
             onReset={() => {
               setFilters((prev) => ({
                 ...prev,
-                sourceExtensions: [],
+                numbers: [],
               }));
-              setSourceExtensions([]);
+              setNumbers([]);
               table.setPageIndex(0); // Reset to first page on filter change
             }}
             onApply={applyFilters}
-            numberOfFilters={sourceExtensions.length}
+            numberOfFilters={numbers.length}
           >
             <MultiSelect
               isCreatable
               options={extensionsOptions}
-              onChange={(exs) => setSourceExtensions(exs || [])}
-              value={sourceExtensions}
+              onChange={(exs) => setNumbers(exs || [])}
+              value={numbers}
               isMulti
               badgeClassName="text-xs"
               getLabel={(option) => option?.label || ""}
@@ -238,48 +241,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
                 // accept only numbers
                 if (/^\d+$/.test(newOption)) {
                   const newExt = { label: newOption, value: newOption };
-                  setSourceExtensions((prev) => [...prev, newExt]);
-                  return newExt;
-                }
-                toast({
-                  title: t("filters.validation.number.invalid"),
-                  description: t(
-                    "filters.validation.number.invalidDescription"
-                  ),
-                  variant: "destructive",
-                });
-                return false;
-              }}
-            />
-          </FilterBox>
-          <FilterBox
-            triggerLabel={t("filters.destination.triggerLabel")}
-            label={t("filters.destination.triggerLabel")}
-            onReset={() => {
-              setFilters((prev) => ({
-                ...prev,
-                destinationExtensions: [],
-              }));
-              setDestinationExtensions([]);
-              table.setPageIndex(0); // Reset to first page on filter change
-            }}
-            onApply={applyFilters}
-            numberOfFilters={destinationExtensions.length}
-          >
-            <MultiSelect
-              isCreatable
-              options={extensionsOptions}
-              onChange={(exs) => setDestinationExtensions(exs || [])}
-              value={destinationExtensions}
-              isMulti
-              badgeClassName="text-xs"
-              getLabel={(option) => option?.label || ""}
-              getValue={(option) => option?.value || ""}
-              onCreateOption={(newOption) => {
-                // accept only numbers
-                if (/^\d+$/.test(newOption)) {
-                  const newExt = { label: newOption, value: newOption };
-                  setDestinationExtensions((prev) => [...prev, newExt]);
+                  setNumbers((prev) => [...prev, newExt]);
                   return newExt;
                 }
                 toast({
@@ -317,40 +279,74 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
               getValue={(option) => option?.value || ""}
             />
           </FilterBox>
+
+          {/* direction single select */}
           <FilterBox
-            triggerLabel={t("filters.callStatus.triggerLabel")}
-            label={t("filters.callStatus.label")}
+            triggerLabel={t("filters.direction.triggerLabel")}
+            label={t("filters.direction.label")}
             onReset={() => {
               setFilters((prev) => ({
                 ...prev,
-                callStatuses: undefined,
+                direction: undefined,
               }));
-              setSelectedStatuses([]);
-              table.setPageIndex(0); // Reset to first page on filter change
+              setDirection(undefined);
+              table.setPageIndex(0);
             }}
             onApply={applyFilters}
-            numberOfFilters={selectedStatuses.length}
+            numberOfFilters={direction ? 1 : 0}
           >
-            <div className="flex flex-col gap-2">
-              {statusesOptions.map((status) => (
-                <div key={status.value} className="flex items-center gap-2">
-                  <Checkbox
-                    id={`call-status-${status.value}`}
-                    checked={selectedStatuses.includes(status.value)}
-                    onCheckedChange={(checked) => {
-                      setSelectedStatuses((prev) =>
-                        checked
-                          ? [...prev, status.value]
-                          : prev.filter((s) => s !== status.value)
-                      );
-                    }}
-                  />
-                  <Label htmlFor={`call-status-${status.value}`}>
-                    {t(`status.${status.label}`)}
-                  </Label>
-                </div>
-              ))}
-            </div>
+            <Select
+              value={direction}
+              onValueChange={(value) =>
+                setDirection(value as "local" | "incoming" | "outgoing")
+              }
+            >
+              <SelectTrigger className="w-max">
+                <SelectValue placeholder={t("filters.direction.placeholder")} />
+              </SelectTrigger>
+              <SelectContent>
+                {directionsOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </FilterBox>
+
+          {/* isAnswered radio buttons */}
+          <FilterBox
+            triggerLabel={t("filters.isAnswered.triggerLabel")}
+            label={t("filters.isAnswered.label")}
+            onReset={() => {
+              setFilters((prev) => ({
+                ...prev,
+                isAnswered: undefined,
+              }));
+              setAnsweredFilter("both");
+              table.setPageIndex(0);
+            }}
+            onApply={applyFilters}
+            numberOfFilters={answeredFilter !== "both" ? 1 : 0}
+          >
+            <RadioGroup
+              value={answeredFilter}
+              onValueChange={setAnsweredFilter}
+              className="flex flex-col gap-3"
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="both" id="both" />
+                <Label htmlFor="both">Both</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="answered" id="answered" />
+                <Label htmlFor="answered">Answered</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="not-answered" id="not-answered" />
+                <Label htmlFor="not-answered">Not Answered</Label>
+              </div>
+            </RadioGroup>
           </FilterBox>
         </FilterBar>
       </CollapsibleContent>
