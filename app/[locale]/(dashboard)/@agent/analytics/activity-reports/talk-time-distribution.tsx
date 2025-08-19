@@ -3,11 +3,9 @@ import { ActivityReportsFilters } from "./page";
 import activityReportsService from "@/services/activity-reports.service";
 import {
   ResponsiveContainer,
-  BarChart,
-  Bar,
-  CartesianGrid,
-  XAxis,
-  YAxis,
+  PieChart,
+  Pie,
+  Cell,
   Tooltip,
   Legend,
 } from "recharts";
@@ -28,6 +26,18 @@ type TalkTimeDistributionProps = {
   filters: ActivityReportsFilters;
 };
 
+// Colors for pie chart segments
+const COLORS = [
+  "#10B981", // emerald-500
+  "#3B82F6", // blue-500
+  "#F59E0B", // amber-500
+  "#EF4444", // red-500
+  "#8B5CF6", // violet-500
+  "#EC4899", // pink-500
+  "#06B6D4", // cyan-500
+  "#84CC16", // lime-500
+];
+
 const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
   const t = useTranslations("analytics.activityReports");
 
@@ -36,20 +46,6 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
       queryKey: ["agent-activity-reports", "talk-time-distribution", filters],
       queryFn: () => activityReportsService.fetchTalkTimeDistribution(filters),
     });
-
-  // Function to format time bucket for better display
-  const formatTimeBucket = (bucket: string): string => {
-    // Handle common time bucket formats like "0-1 min", "1-5 min", etc.
-    return bucket.replace(/(\d+)-(\d+)/, "$1-$2").replace(/min/g, "min");
-  };
-
-  // Format data for better display
-  const formattedData = data?.map((item) => ({
-    ...item,
-    formattedBucket: formatTimeBucket(item.timeBucket),
-    // Convert seconds to minutes if needed (assuming totalTalkTime is in seconds)
-    talkTimeMinutes: Math.round((item.totalTalkTime / 60) * 100) / 100,
-  }));
 
   if (isLoading) {
     return <ChartCardSkeleton />;
@@ -65,41 +61,38 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
       icon={<AccessTime />}
       variant="compound"
       color="success"
-      legends={[{ label: "Total Talk Time (minutes)", color: "#10B981" }]}
+      legends={data?.map((item) => ({
+        label: item.timeBucket,
+        color: COLORS[data.indexOf(item) % COLORS.length],
+      }))}
     >
-      {!isLoading && formattedData && formattedData.length > 0 ? (
+      {!isLoading && data && data.length > 0 ? (
         <ResponsiveContainer width="100%" height={400}>
-          <BarChart data={formattedData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-            <XAxis
-              dataKey="formattedBucket"
-              fontSize={12}
-              tickLine={false}
-              axisLine={false}
-              angle={-45}
-              textAnchor="end"
-              height={100}
-            />
-            <YAxis
-              fontSize={12}
-              tickLine={false}
-              axisLine={false}
-              allowDecimals={false}
-            />
-            <Tooltip
-              formatter={(value, name) => [`${value} min`, name]}
-              labelFormatter={(label) => `Duration: ${label}`}
-            />
-            <Legend />
-
-            <Bar
+          <PieChart>
+            <Pie
+              data={data}
+              cx="50%"
+              cy="50%"
+              labelLine={false}
+              label={({ timeBucket, percent }) =>
+                `${timeBucket} (${(percent * 100).toFixed(1)}%)`
+              }
+              outerRadius={120}
+              fill="#8884d8"
               dataKey="totalCalls"
-              fill="#10B981"
-              name="Total Calls"
-              opacity={0.8}
-              radius={[4, 4, 0, 0]}
+            >
+              {data.map((entry, index) => (
+                <Cell
+                  key={`cell-${index}`}
+                  fill={COLORS[index % COLORS.length]}
+                />
+              ))}
+            </Pie>
+            <Tooltip
+              formatter={(value, name) => [value, "Total Calls"]}
+              labelFormatter={(label) => `${label}`}
             />
-          </BarChart>
+          </PieChart>
         </ResponsiveContainer>
       ) : (
         <NoData />

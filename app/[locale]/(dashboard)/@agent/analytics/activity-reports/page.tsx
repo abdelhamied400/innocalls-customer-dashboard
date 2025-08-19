@@ -8,9 +8,11 @@ import { activityReportsFiltersSchema } from "@/validation/activityReportsFilter
 import {
   BarChart,
   Insights,
-  PieChart,
   Search,
-  StackedBarChart,
+  Timeline,
+  Schedule,
+  AccessTime,
+  HourglassEmpty,
 } from "@mui/icons-material";
 import { CalendarIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -119,28 +121,28 @@ const ActivityReports = () => {
                   value="dateCallDistribution"
                   className="flex items-center gap-1"
                 >
-                  <StackedBarChart />
+                  <Timeline />
                   {t("detailedStats.tabs.dateCallDistribution")}
                 </TabsTrigger>
                 <TabsTrigger
                   value="hourlyCallDistribution"
                   className="flex items-center gap-1"
                 >
-                  <PieChart />
+                  <Schedule />
                   {t("detailedStats.tabs.hourlyCallDistribution")}
                 </TabsTrigger>
                 <TabsTrigger
                   value="talkTimeDistribution"
                   className="flex items-center gap-1"
                 >
-                  <StackedBarChart />
+                  <AccessTime />
                   {t("detailedStats.tabs.talkTimeDistribution")}
                 </TabsTrigger>
                 <TabsTrigger
                   value="waitTimeDistribution"
                   className="flex items-center gap-1"
                 >
-                  <PieChart />
+                  <HourglassEmpty />
                   {t("detailedStats.tabs.waitTimeDistribution")}
                 </TabsTrigger>
               </TabsList>
