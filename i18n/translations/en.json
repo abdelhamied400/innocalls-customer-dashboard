@@ -1287,7 +1287,17 @@
       "talkTimeDistribution": {
         "title": "Talk Time Distribution",
         "chart": {
-          "title": "Talk Time Distribution"
+          "title": "Talk Time Distribution",
+          "legends": {
+            "timeBucket": {
+              "0-1min": "0-1min",
+              "1-3min": "1-3min",
+              "3-5min": "3-5min",
+              "5-10min": "5-10min",
+              "10-15min": "10-15min",
+              "15min+": "15min+"
+            }
+          }
         }
       },
       "hourlyDistribution": {
@@ -1431,13 +1441,29 @@
         "waitTime": {
           "title": "Wait Time Distribution",
           "legends": {
-            "totalCalls": "Total Calls"
+            "totalCalls": "Total Calls",
+            "timeBucket": {
+              "0-10s": "0-10s",
+              "11-20s": "11-20s",
+              "21-30s": "21-30s",
+              "31-60s": "31-60s",
+              "1-2min": "1-2min",
+              "2-5min": "2-5min"
+            }
           }
         },
         "talkTime": {
           "title": "Talk Time Distribution",
           "legends": {
-            "totalCalls": "Total Calls"
+            "totalCalls": "Total Calls",
+            "timeBucket": {
+              "0-1min": "0-1min",
+              "1-3min": "1-3min",
+              "3-5min": "3-5min",
+              "5-10min": "5-10min",
+              "10-15min": "10-15min",
+              "15min+": "15min+"
+            }
           }
         }
       },
@@ -1563,6 +1589,14 @@
           "avgAbandonWait": "Avg Abandon wait",
           "avgTimeoutWait": "Avg Timeout wait",
           "peakHours": "Peak hours"
+        },
+        "timeBucket": {
+          "0-10s": "0-10s",
+          "11-20s": "11-20s",
+          "21-30s": "21-30s",
+          "31-60s": "31-60s",
+          "1-2min": "1-2min",
+          "2-5min": "2-5min"
         }
       },
       "detailedStats": {
@@ -1597,13 +1631,29 @@
       "waitTime": {
         "title": "Wait Time Distribution",
         "legends": {
-          "totalCalls": "Total Calls"
+          "totalCalls": "Total Calls",
+          "timeBucket": {
+            "0-10s": "0-10s",
+            "11-20s": "11-20s",
+            "21-30s": "21-30s",
+            "31-60s": "31-60s",
+            "1-2min": "1-2min",
+            "2-5min": "2-5min"
+          }
         }
       },
       "talkTime": {
         "title": "Talk Time Distribution",
         "legends": {
-          "totalCalls": "Total Calls"
+          "totalCalls": "Total Calls",
+          "timeBucket": {
+            "0-1min": "0-1min",
+            "1-3min": "1-3min",
+            "3-5min": "3-5min",
+            "5-10min": "5-10min",
+            "10-15min": "10-15min",
+            "15min+": "15min+"
+          }
         }
       },
       "dateDistribution": {

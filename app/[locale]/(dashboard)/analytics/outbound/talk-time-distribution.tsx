@@ -48,6 +48,7 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
     return <NoData />;
   }
 
+  // chart.legends.timeBucket
   return (
     <div className="space-y-6">
       <ChartCard
@@ -55,7 +56,9 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
         icon={<Timer />}
         color="success"
         variant="compound"
-      >
+      >  
+
+      
         <ResponsiveContainer width="100%" height={320}>
           <PieChart>
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />

@@ -55,7 +55,7 @@ const WaitTimeDistribution = ({ filters }: WaitTimeDistributionProps) => {
       variant="compound"
       color="warning"
       legends={data?.map((item) => ({
-        label: item.timeBucket,
+        label: `${t(`waitTime.legends.timeBucket.${item.timeBucket}`)}`,
         color: COLORS[data.indexOf(item) % COLORS.length],
       }))}
     >
@@ -68,7 +68,7 @@ const WaitTimeDistribution = ({ filters }: WaitTimeDistributionProps) => {
               cy="50%"
               labelLine={false}
               label={({ timeBucket, percent }) =>
-                `${timeBucket} (${(percent * 100).toFixed(1)}%)`
+                `${t(`waitTime.legends.timeBucket.${timeBucket}`)} (${(percent * 100).toFixed(1)}%)`
               }
               outerRadius={120}
               fill="#8884d8"

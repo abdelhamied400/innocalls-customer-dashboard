@@ -62,7 +62,7 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
       variant="compound"
       color="success"
       legends={data?.map((item) => ({
-        label: item.timeBucket,
+        label: `${t(`talkTime.legends.timeBucket.${item.timeBucket}`)}`,
         color: COLORS[data.indexOf(item) % COLORS.length],
       }))}
     >
@@ -75,7 +75,9 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
               cy="50%"
               labelLine={false}
               label={({ timeBucket, percent }) =>
-                `${timeBucket} (${(percent * 100).toFixed(1)}%)`
+                `${t(`talkTime.legends.timeBucket.${timeBucket}`)} (${(
+                  percent * 100
+                ).toFixed(1)}%)`
               }
               outerRadius={120}
               fill="#8884d8"

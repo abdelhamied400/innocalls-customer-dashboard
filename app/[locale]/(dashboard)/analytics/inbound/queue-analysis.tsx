@@ -141,7 +141,7 @@ const InboundAnalyticsQueueAnalysis = ({
               icon={<Alarm />}
               color="destructive"
               legends={abandonedAnalysis.stats.map((stat, index) => ({
-                label: stat.timeBucket,
+                label: `${t(`timeBucket.${stat.timeBucket}`)}`,
                 color: colors[index % colors.length],
               }))}
               variant="compound"
@@ -230,7 +230,7 @@ const InboundAnalyticsQueueAnalysis = ({
               icon={<ExitToApp />}
               color="warning"
               legends={timeoutAnalysis.stats.map((stat, index) => ({
-                label: stat.timeBucket,
+                label: `${t(`timeBucket.${stat.timeBucket}`)}`,
                 color: colors[index % colors.length],
               }))}
               variant="compound"
