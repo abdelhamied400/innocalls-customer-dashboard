@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { Download, Pause, PlayArrow } from "@mui/icons-material";
 import { downloadFile } from "../lib/downloadFile";
 import { formatDuration } from "@/lib/date";
+import { Skeleton } from "./ui/skeleton";
 
 interface SoundPlayerProps {
   url: string;
@@ -16,12 +17,14 @@ const SoundPlayer = ({ label, url }: SoundPlayerProps) => {
   const [playerStatus, setPlayerStatus] = useState<"playing" | "paused">(
     "paused"
   );
+  const [loading, setLoading] = useState<boolean>(false);
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
   const formattedDuration = useMemo(() => formatDuration(duration), [duration]);
 
   useEffect(() => {
     if (waveformRef.current) {
+      setLoading(true);
       wavesurferRef.current = WaveSurfer.create({
         container: waveformRef.current,
         waveColor: "#CCCCCC",
@@ -34,6 +37,7 @@ const SoundPlayer = ({ label, url }: SoundPlayerProps) => {
 
       wavesurferRef.current.on("ready", () => {
         setDuration(wavesurferRef.current?.getDuration() || 0);
+        setLoading(false);
       });
 
       wavesurferRef.current.on("play", () => {
@@ -91,7 +95,7 @@ const SoundPlayer = ({ label, url }: SoundPlayerProps) => {
             {playerStatus === "playing" ? <Pause /> : <PlayArrow />}
           </Button>
         </div>
-
+        {loading && <Skeleton className="h-16 w-full" />}
         <div
           ref={waveformRef}
           style={{ width: "100%", marginBottom: 8, flex: 1 }}
