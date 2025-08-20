@@ -1390,7 +1390,7 @@
           "label": "Filter By",
           "placeholder": "Filter By",
           "options": {
-            "all": "All",
+            "all": "All Users",
             "team": "Team"
           }
         },
