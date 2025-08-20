@@ -1,7 +1,7 @@
 import { Call } from "@/types/api/call-reporting";
 import { Cell } from "@/types/cell";
 import { useState } from "react";
-import PhoneHistoryModal from "../PhoneHistoryModal";
+import PhoneHistoryModal from "../phone-history/PhoneHistoryModal";
 import { cn } from "@/lib/utils";
 import { OpenInBrowser } from "@mui/icons-material";
 
