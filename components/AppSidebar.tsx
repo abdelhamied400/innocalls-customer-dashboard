@@ -120,7 +120,7 @@ const AppSidebar = () => {
             {session?.user.userType === "agent" && (
               <SidebarItem
                 icon={<PersonSearch />}
-                title={t("navigation.activityReports")}
+                title={t("navigation.activityAnalysis")}
                 href={`/analytics/activity-reports`}
                 isNew={true}
                 isComingSoon={false}
@@ -133,6 +133,25 @@ const AppSidebar = () => {
               href={`/call-reporting`}
               isNew={true}
               isComingSoon={false}
+            />
+          </SidebarCollapsibleItem>
+        )}
+
+        {session?.user.userType === "agent" && (
+          <SidebarCollapsibleItem
+            icon={<Apps />}
+            title={t("navigation.apps")}
+            isNew={false}
+            isComingSoon={true}
+            href={`/apps`}
+          >
+            <SidebarItem
+              icon={<RingVolume />}
+              title={t("navigation.autoDialer")}
+              href={`/auto-dialer`}
+              disabled={true}
+              isNew={false}
+              isComingSoon={true}
             />
           </SidebarCollapsibleItem>
         )}

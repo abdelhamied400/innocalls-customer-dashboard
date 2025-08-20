@@ -1,19 +1,7 @@
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { ActivityReportsFilters } from "./page";
 import activityReportsService from "@/services/activity-reports.service";
-import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  PieChart,
-  Pie,
-  Cell,
-} from "recharts";
+import { ResponsiveContainer, Tooltip, PieChart, Pie, Cell } from "recharts";
 import ChartCard, {
   ChartCardError,
   ChartCardSkeleton,
@@ -44,19 +32,13 @@ const COLORS = [
 ];
 
 const WaitTimeDistribution = ({ filters }: WaitTimeDistributionProps) => {
-  const t = useTranslations("analytics.activityReports");
+  const t = useTranslations("analytics.activityAnalysis");
 
   const { data, isLoading, isError, error } =
     useLocalizedQuery<FetchWaitTimeDistributionResponse>({
       queryKey: ["agent-activity-reports", "wait-time-distribution", filters],
       queryFn: () => activityReportsService.fetchWaitTimeDistribution(filters),
     });
-
-  // Function to format time bucket for better display
-  const formatTimeBucket = (bucket: string): string => {
-    // Handle common time bucket formats like "0-1 min", "1-5 min", etc.
-    return bucket.replace(/(\d+)-(\d+)/, "$1-$2").replace(/min/g, "min");
-  };
 
   if (isLoading) {
     return <ChartCardSkeleton />;
@@ -68,7 +50,7 @@ const WaitTimeDistribution = ({ filters }: WaitTimeDistributionProps) => {
 
   return (
     <ChartCard
-      title="Wait Time Distribution"
+      title={t("waitTime.title")}
       icon={<HourglassEmpty />}
       variant="compound"
       color="warning"
@@ -100,7 +82,10 @@ const WaitTimeDistribution = ({ filters }: WaitTimeDistributionProps) => {
               ))}
             </Pie>
             <Tooltip
-              formatter={(value, name) => [value, "Total Calls"]}
+              formatter={(value, name) => [
+                value,
+                t("waitTime.legends.totalCalls"),
+              ]}
               labelFormatter={(label) => `${label}`}
             />
           </PieChart>

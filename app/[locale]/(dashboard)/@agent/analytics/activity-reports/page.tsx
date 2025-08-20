@@ -35,7 +35,7 @@ const lastMonth = new Date();
 lastMonth.setDate(today.getDate() - 30);
 
 const ActivityReports = () => {
-  const t = useTranslations("analytics.activityReports");
+  const t = useTranslations("analytics.activityAnalysis");
   const tCommon = useTranslations("analytics.common");
   const [currentTab, setCurrentTab] = useState("dateCallDistribution");
   const { setPageTitle } = useAppStore();

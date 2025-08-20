@@ -32,7 +32,7 @@ type HourlyCallDistributionProps = {
 };
 
 const HourlyCallDistribution = ({ filters }: HourlyCallDistributionProps) => {
-  const t = useTranslations("analytics.activityReports");
+  const t = useTranslations("analytics.activityAnalysis");
 
   const { data, isLoading, isError, error } =
     useLocalizedQuery<FetchHourlyCallDistributionResponse>({
@@ -49,10 +49,10 @@ const HourlyCallDistribution = ({ filters }: HourlyCallDistributionProps) => {
   }));
 
   function formatHour(hour: number): string {
-    if (hour === 0) return "12 AM";
-    if (hour === 12) return "12 PM";
-    if (hour < 12) return `${hour} AM`;
-    return `${hour - 12} PM`;
+    if (hour === 0) return `12 ${t("hourlyDistribution.hour.am")}`;
+    if (hour === 12) return `12 ${t("hourlyDistribution.hour.pm")}`;
+    if (hour < 12) return `${hour} ${t("hourlyDistribution.hour.am")}`;
+    return `${hour - 12} ${t("hourlyDistribution.hour.pm")}`;
   }
 
   if (isLoading) {
@@ -65,14 +65,14 @@ const HourlyCallDistribution = ({ filters }: HourlyCallDistributionProps) => {
 
   return (
     <ChartCard
-      title="Hourly Call Distribution"
+      title={t("hourlyDistribution.title")}
       icon={<Schedule />}
       variant="compound"
       color="info"
       legends={[
-        { label: "Total Calls", color: "#3B82F6" },
-        { label: "Answered Calls", color: "#10B981" },
-        { label: "Unanswered Calls", color: "#EF4444" },
+        { label: t("hourlyDistribution.legends.total"), color: "#3B82F6" },
+        { label: t("hourlyDistribution.legends.answered"), color: "#10B981" },
+        { label: t("hourlyDistribution.legends.unanswered"), color: "#EF4444" },
       ]}
     >
       {!isLoading && formattedData && formattedData.length > 0 ? (
@@ -96,7 +96,9 @@ const HourlyCallDistribution = ({ filters }: HourlyCallDistributionProps) => {
               labelFormatter={(label, payload) => {
                 if (payload && payload[0]) {
                   const originalData = payload[0].payload;
-                  return `Time: ${originalData.formattedHour}`;
+                  return `${t("hourlyDistribution.hour.title")}: ${
+                    originalData.formattedHour
+                  }`;
                 }
                 return label;
               }}
@@ -107,13 +109,13 @@ const HourlyCallDistribution = ({ filters }: HourlyCallDistributionProps) => {
             <Bar
               dataKey="answeredCalls"
               fill="#10B981"
-              name="Answered Calls"
+              name={t("hourlyDistribution.legends.answered")}
               opacity={0.8}
             />
             <Bar
               dataKey="unansweredCalls"
               fill="#EF4444"
-              name="Unanswered Calls"
+              name={t("hourlyDistribution.legends.unanswered")}
               opacity={0.8}
             />
 
@@ -123,7 +125,7 @@ const HourlyCallDistribution = ({ filters }: HourlyCallDistributionProps) => {
               dataKey="totalCalls"
               stroke="#3B82F6"
               strokeWidth={3}
-              name="Total Calls"
+              name={t("hourlyDistribution.legends.total")}
               dot={{ fill: "#3B82F6", strokeWidth: 2, r: 4 }}
             />
           </ComposedChart>

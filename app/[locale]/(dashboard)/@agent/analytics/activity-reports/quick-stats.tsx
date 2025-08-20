@@ -10,7 +10,7 @@ type QuickStatsProps = {
   filters: ActivityReportsFilters;
 };
 const QuickStats = ({ filters }: QuickStatsProps) => {
-  const t = useTranslations("analytics.activityReports.quickStats");
+  const t = useTranslations("analytics.activityAnalysis.quickStats");
 
   const { data, isRefetching, isLoading, isError, error } = useLocalizedQuery({
     queryKey: ["activity-reports-quick-stats", filters],

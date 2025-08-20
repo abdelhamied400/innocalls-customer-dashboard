@@ -39,7 +39,7 @@ const COLORS = [
 ];
 
 const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
-  const t = useTranslations("analytics.activityReports");
+  const t = useTranslations("analytics.activityAnalysis");
 
   const { data, isLoading, isError, error } =
     useLocalizedQuery<FetchTalkTimeDistributionResponse>({
@@ -57,7 +57,7 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
 
   return (
     <ChartCard
-      title="Talk Time Distribution"
+      title={t("talkTime.title")}
       icon={<AccessTime />}
       variant="compound"
       color="success"
@@ -89,7 +89,10 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
               ))}
             </Pie>
             <Tooltip
-              formatter={(value, name) => [value, "Total Calls"]}
+              formatter={(value, name) => [
+                value,
+                t("talkTime.legends.totalCalls"),
+              ]}
               labelFormatter={(label) => `${label}`}
             />
           </PieChart>

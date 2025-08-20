@@ -19,7 +19,6 @@ import ChartCard, {
 import NoData from "@/components/Analytics/NoData";
 import { BarChart } from "@mui/icons-material";
 import { useTranslations } from "next-intl";
-import { format } from "date-fns";
 
 type FetchCallDistributionResponse = Array<{
   date: string;
@@ -35,7 +34,7 @@ type DateCallDistributionProps = {
 };
 
 const DateCallDistribution = ({ filters }: DateCallDistributionProps) => {
-  const t = useTranslations("analytics.activityReports");
+  const t = useTranslations("analytics.activityAnalysis");
 
   const { data, isLoading, isError, error } =
     useLocalizedQuery<FetchCallDistributionResponse>({
@@ -53,16 +52,28 @@ const DateCallDistribution = ({ filters }: DateCallDistributionProps) => {
 
   return (
     <ChartCard
-      title="Date Call Distribution"
+      title={t("dateDistribution.title")}
       icon={<BarChart />}
       variant="compound"
       color="primary"
       legends={[
-        { label: "Total Calls", color: "#3B82F6" },
-        { label: "Incoming Calls", color: "#10B981" },
-        { label: "Outgoing Calls", color: "#F59E0B" },
-        { label: "Answered Incoming", color: "#8B5CF6" },
-        { label: "Answered Outgoing", color: "#EF4444" },
+        { label: t("dateDistribution.legends.totalCalls"), color: "#3B82F6" },
+        {
+          label: t("dateDistribution.legends.incomingCalls"),
+          color: "#10B981",
+        },
+        {
+          label: t("dateDistribution.legends.outgoingCalls"),
+          color: "#F59E0B",
+        },
+        {
+          label: t("dateDistribution.legends.answeredIncoming"),
+          color: "#8B5CF6",
+        },
+        {
+          label: t("dateDistribution.legends.answeredOutgoing"),
+          color: "#EF4444",
+        },
       ]}
     >
       {!isLoading && data && data.length > 0 ? (
@@ -85,7 +96,7 @@ const DateCallDistribution = ({ filters }: DateCallDistributionProps) => {
               labelFormatter={(label, payload) => {
                 if (payload && payload[0]) {
                   const originalData = payload[0].payload;
-                  return `Date: ${originalData.date}`;
+                  return `${originalData.date}`;
                 }
                 return label;
               }}
@@ -96,13 +107,13 @@ const DateCallDistribution = ({ filters }: DateCallDistributionProps) => {
             <Bar
               dataKey="totalIncomingCalls"
               fill="#10B981"
-              name="Incoming Calls"
+              name={t("dateDistribution.legends.incomingCalls")}
               opacity={0.8}
             />
             <Bar
               dataKey="totalOutgoingCalls"
               fill="#F59E0B"
-              name="Outgoing Calls"
+              name={t("dateDistribution.legends.outgoingCalls")}
               opacity={0.8}
             />
 
@@ -112,7 +123,7 @@ const DateCallDistribution = ({ filters }: DateCallDistributionProps) => {
               dataKey="totalAnsweredIncomingCalls"
               stroke="#8B5CF6"
               strokeWidth={2}
-              name="Answered Incoming"
+              name={t("dateDistribution.legends.answeredIncoming")}
               dot={{ fill: "#8B5CF6", strokeWidth: 2, r: 4 }}
             />
             <Line
@@ -120,7 +131,7 @@ const DateCallDistribution = ({ filters }: DateCallDistributionProps) => {
               dataKey="totalAnsweredOutgoingCalls"
               stroke="#EF4444"
               strokeWidth={2}
-              name="Answered Outgoing"
+              name={t("dateDistribution.legends.answeredOutgoing")}
               dot={{ fill: "#EF4444", strokeWidth: 2, r: 4 }}
             />
 
@@ -130,7 +141,7 @@ const DateCallDistribution = ({ filters }: DateCallDistributionProps) => {
               dataKey="totalCalls"
               stroke="#3B82F6"
               strokeWidth={3}
-              name="Total Calls"
+              name={t("dateDistribution.legends.totalCalls")}
               dot={{ fill: "#3B82F6", strokeWidth: 2, r: 4 }}
             />
           </ComposedChart>

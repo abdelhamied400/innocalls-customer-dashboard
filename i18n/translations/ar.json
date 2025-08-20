@@ -623,7 +623,7 @@
       "zendeskCredentials": "بيانات اعتماد زين ديسك",
       "webrtcCredentials": "بيانات اعتماد WebRTC",
       "apiCredentials": "بيانات اعتماد API",
-      "activityReports": "تقارير النشاط"
+      "activityAnalysis": "إحصائيات النشاط"
     },
     "support": {
       "innoSupport": "دعم اينو"
@@ -1586,8 +1586,8 @@
         "loading": "جارٍ التحميل..."
       }
     },
-    "activityReports": {
-      "title": "تقارير النشاط",
+    "activityAnalysis": {
+      "title": "إحصائيات النشاط",
       "quickStats": {
         "totalAnsweredCalls": "إجمالي المكالمات المجابة",
         "totalCalls": "إجمالي المكالمات",
@@ -1604,6 +1604,41 @@
           "hourlyCallDistribution": "توزيع المكالمات بالساعة",
           "talkTimeDistribution": "توزيع وقت المحادثة",
           "waitTimeDistribution": "توزيع وقت الانتظار"
+        }
+      },
+      "waitTime": {
+        "title": "توزيع وقت الانتظار",
+        "legends": {
+          "totalCalls": "إجمالي المكالمات"
+        }
+      },
+      "talkTime": {
+        "title": "توزيع وقت المحادثة",
+        "legends": {
+          "totalCalls": "إجمالي المكالمات"
+        }
+      },
+      "dateDistribution": {
+        "title": "التوزيع بالتاريخ",
+        "legends": {
+          "totalCalls": "إجمالي المكالمات",
+          "incomingCalls": "المكالمات الواردة",
+          "outgoingCalls": "المكالمات الصادرة",
+          "answeredIncoming": "الواردة المجابة",
+          "answeredOutgoing": "الصادرة المجابة"
+        }
+      },
+      "hourlyDistribution": {
+        "title": "التوزيع بالساعة ",
+        "legends": {
+          "total": "الإجمالي",
+          "answered": "مجابة",
+          "unanswered": "غير مجابة"
+        },
+        "hour": {
+          "title": "الساعة",
+          "am": "ص",
+          "pm": "م"
         }
       }
     },

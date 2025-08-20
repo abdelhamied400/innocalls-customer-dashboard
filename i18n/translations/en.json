@@ -615,7 +615,7 @@
       "zendeskCredentials": "Zendesk Credentials",
       "webrtcCredentials": "WebRTC Credentials",
       "apiCredentials": "API Credentials",
-      "activityReports": "Activity Reports"
+      "activityAnalysis": "Activity"
     },
     "support": {
       "innoSupport": "Innocalls Support"
@@ -1574,8 +1574,8 @@
         "loading": "Loading..."
       }
     },
-    "activityReports": {
-      "title": "Activity Reports",
+    "activityAnalysis": {
+      "title": "Activity Analytics",
       "quickStats": {
         "totalAnsweredCalls": "Total Answered Calls",
         "totalCalls": "Total Calls",
@@ -1592,6 +1592,41 @@
           "hourlyCallDistribution": "Hourly Call Distribution",
           "talkTimeDistribution": "Talk Time Distribution",
           "waitTimeDistribution": "Wait Time Distribution"
+        }
+      },
+      "waitTime": {
+        "title": "Wait Time Distribution",
+        "legends": {
+          "totalCalls": "Total Calls"
+        }
+      },
+      "talkTime": {
+        "title": "Talk Time Distribution",
+        "legends": {
+          "totalCalls": "Total Calls"
+        }
+      },
+      "dateDistribution": {
+        "title": "Date Distribution",
+        "legends": {
+          "totalCalls": "Total Calls",
+          "incomingCalls": "Incoming Calls",
+          "outgoingCalls": "Outgoing Calls",
+          "answeredIncoming": "Answered Incoming",
+          "answeredOutgoing": "Answered Outgoing"
+        }
+      },
+      "hourlyDistribution": {
+        "title": "Hourly Distribution",
+        "legends": {
+          "total": "Total",
+          "answered": "Answered",
+          "unanswered": "Unanswered"
+        },
+        "hour": {
+          "title": "Hour",
+          "am": "am",
+          "pm": "pm"
         }
       }
     },
