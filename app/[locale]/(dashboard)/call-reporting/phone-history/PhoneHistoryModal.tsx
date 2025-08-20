@@ -107,7 +107,7 @@ const PhoneHistoryModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[80vw] max-w-[80vw] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Phone History for {phoneNumber}</DialogTitle>
+          <DialogTitle>Phone History for {"\u200E" + phoneNumber}</DialogTitle>
         </DialogHeader>
         {renderContent()}
       </DialogContent>

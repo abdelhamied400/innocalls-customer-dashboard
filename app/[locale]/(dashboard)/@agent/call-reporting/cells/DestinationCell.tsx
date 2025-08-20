@@ -5,7 +5,7 @@ const DestinationCell = ({ row }: Cell<AgentCall>) => {
   return (
     <div className="datetime-cell font-normal">
       <p>{row.original.to.name}</p>
-      <p className="text-gray-500">{row.original.to.number}</p>
+      <p className="text-gray-500">{"\u200E" + row.original.to.number}</p>
     </div>
   );
 };
