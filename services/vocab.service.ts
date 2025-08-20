@@ -18,7 +18,7 @@ export default {
     return res.data;
   },
   getAllTags: async (): Promise<Tag[]> => {
-    const res = await api.get("/call-tag");
+    const res = await api.get("/v2/call-tags/active");
     return res.data.callTags;
   },
   getAllAccounts: async () => {

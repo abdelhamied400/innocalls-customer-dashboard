@@ -76,10 +76,7 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
   };
 
   const fetchAgentVocab = async () => {
-    const promises = [
-      fetchCountries(),
-      //  fetchTags()
-    ];
+    const promises = [fetchCountries(), fetchTags()];
     try {
       setLoading(true);
       await Promise.all(promises);

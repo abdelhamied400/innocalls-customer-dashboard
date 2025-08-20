@@ -52,7 +52,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
     value: ext.ext,
   }));
   const tagsOptions = tags.map((tag) => ({
-    label: tag.nameEN,
+    label: tag.name,
     value: tag.id,
   }));
   const directionsOptions = [
