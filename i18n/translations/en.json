@@ -1421,7 +1421,7 @@
         "ivrInsights": "IVR Insights",
         "frequentCallers": "Frequent Callers",
         "dateDistribution": "Date Distribution",
-        "queueAnalysis": "Missed Call"
+        "queueAnalysis": "Unanswered Queue Insights"
       },
       "overview": {
         "title": "Inbound Call Overview",
