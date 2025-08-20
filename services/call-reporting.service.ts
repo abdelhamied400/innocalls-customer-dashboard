@@ -73,6 +73,13 @@ export default {
     const res = await api.get(`/v2/cdrs/export?${queryString}`);
     return res.data;
   },
+  exportAgentCallReporting: async (
+    filters: AgentCallReportingFilters
+  ): Promise<void> => {
+    const queryString = objectToQueryString(filters);
+    const res = await api.get(`/cdr/agent/export?${queryString}`);
+    return res.data;
+  },
   getCallRecording: async (callId: string): Promise<string> => {
     const res = await api.get(`/v2/cdrs/download-record/${callId}`);
     return res.data;

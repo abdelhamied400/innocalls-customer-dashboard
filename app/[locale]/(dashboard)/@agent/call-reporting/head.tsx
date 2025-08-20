@@ -75,9 +75,8 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
   const handleExport = async () => {
     try {
       setIsExporting(true);
-      await callReportingService.exportCallReporting({
+      await callReportingService.exportAgentCallReporting({
         ...filters,
-        userEmail: session?.user?.email || "",
       });
 
       toast({
