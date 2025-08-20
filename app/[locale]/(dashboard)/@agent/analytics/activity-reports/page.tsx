@@ -18,11 +18,12 @@ import { CalendarIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import QuickStats from "./quick-stats";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DateCallDistribution from "./date-call-distribution";
 import TalkTimeDistribution from "./talk-time-distribution";
 import WaitTimeDistribution from "./wait-time-distribution";
 import HourlyCallDistribution from "./hourly-call-distribution";
+import useAppStore from "@/store/app.slice";
 
 export type ActivityReportsFilters = {
   fromDate: Date;
@@ -37,6 +38,7 @@ const ActivityReports = () => {
   const t = useTranslations("analytics.activityReports");
   const tCommon = useTranslations("analytics.common");
   const [currentTab, setCurrentTab] = useState("dateCallDistribution");
+  const { setPageTitle } = useAppStore();
 
   const activityReportsFilterConfig = {
     defaultValues: {
@@ -48,6 +50,10 @@ const ActivityReports = () => {
 
   const { values, appliedValues, errors, setValue, reset, apply } =
     useFilterManager<ActivityReportsFilters>(activityReportsFilterConfig);
+
+  useEffect(() => {
+    setPageTitle(t("title"));
+  }, []);
 
   return (
     <div className="page" id="activity-reports">

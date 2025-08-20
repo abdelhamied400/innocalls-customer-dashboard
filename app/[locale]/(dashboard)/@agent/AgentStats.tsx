@@ -37,6 +37,9 @@ const AgentStats = () => {
         isError={isError}
         error={error}
         color="success"
+        refetchInterval={refetchInterval}
+        setRefetchInterval={setRefetchInterval}
+        canRefetch
       />
       <StatsCard
         icon={<AddIcCall className="w-6 h-6" />}
@@ -47,6 +50,9 @@ const AgentStats = () => {
         isError={isError}
         error={error}
         color="primary"
+        refetchInterval={refetchInterval}
+        setRefetchInterval={setRefetchInterval}
+        canRefetch
       />
       <StatsCard
         icon={<RingVolume className="w-6 h-6" />}
@@ -57,6 +63,9 @@ const AgentStats = () => {
         isError={isError}
         error={error}
         color="warning"
+        refetchInterval={refetchInterval}
+        setRefetchInterval={setRefetchInterval}
+        canRefetch
       />
 
       <StatsCard
@@ -68,6 +77,9 @@ const AgentStats = () => {
         isError={isError}
         error={error}
         color="info"
+        refetchInterval={refetchInterval}
+        setRefetchInterval={setRefetchInterval}
+        canRefetch
       />
       <StatsCard
         icon={<LockClock className="w-6 h-6" />}
@@ -78,6 +90,9 @@ const AgentStats = () => {
         isError={isError}
         error={error}
         color="success"
+        refetchInterval={refetchInterval}
+        setRefetchInterval={setRefetchInterval}
+        canRefetch
       />
       <StatsCard
         icon={<HourglassBottom className="w-6 h-6" />}
@@ -88,6 +103,9 @@ const AgentStats = () => {
         isError={isError}
         error={error}
         color="warning"
+        refetchInterval={refetchInterval}
+        setRefetchInterval={setRefetchInterval}
+        canRefetch
       />
     </div>
   );

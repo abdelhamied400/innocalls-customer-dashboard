@@ -55,17 +55,12 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
     label: tag.name,
     value: tag.id,
   }));
-  const directionsOptions = [
-    { value: "local", label: "local" },
-    { value: "incoming", label: "incoming" },
-    { value: "outgoing", label: "outgoing" },
-  ];
 
-  const [fromDate, setFromDate] = useState<Date | undefined>(
-    filters.fromDate ? new Date(filters.fromDate) : undefined
+  const [fromDate, setFromDate] = useState<Date>(
+    filters.fromDate ? new Date(filters.fromDate) : new Date()
   );
-  const [toDate, setToDate] = useState<Date | undefined>(
-    filters.toDate ? new Date(filters.toDate) : undefined
+  const [toDate, setToDate] = useState<Date>(
+    filters.toDate ? new Date(filters.toDate) : new Date()
   );
   const [numbers, setNumbers] = useState<Option[]>([]);
   const [selectedTags, setSelectedTags] = useState<Option[]>([]);
@@ -164,8 +159,8 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
         <FilterBar
           onClear={() => {
             setFilters({});
-            setFromDate(undefined);
-            setToDate(undefined);
+            setFromDate(new Date());
+            setToDate(new Date());
             setNumbers([]);
             setSelectedTags([]);
             setDirection("all");
@@ -179,11 +174,11 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
             onReset={() => {
               setFilters({
                 ...filters,
-                fromDate: undefined,
-                toDate: undefined,
+                fromDate: new Date(),
+                toDate: new Date(),
               });
-              setFromDate(undefined);
-              setToDate(undefined);
+              setFromDate(new Date());
+              setToDate(new Date());
               table.setPageIndex(0); // Reset to first page on filter change
             }}
             onApply={applyFilters}
@@ -198,7 +193,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
                 className="flex-1"
                 placeholder={t("filters.fromDate.placeholder")}
                 value={fromDate}
-                onChange={setFromDate}
+                onChange={(date) => setFromDate(date || new Date())}
               />
             </Field>
             <Field
@@ -210,7 +205,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
                 className="flex-1"
                 placeholder={t("filters.toDate.placeholder")}
                 value={toDate}
-                onChange={setToDate}
+                onChange={(date) => setToDate(date || new Date())}
               />
             </Field>
           </FilterBox>
@@ -239,8 +234,11 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
               getValue={(option) => option?.value || ""}
               onCreateOption={(newOption) => {
                 // accept only numbers
-                if (/^\d+$/.test(newOption)) {
-                  const newExt = { label: newOption, value: newOption };
+                if (/^\d+$/.test(newOption.trim())) {
+                  const newExt = {
+                    label: newOption.trim(),
+                    value: newOption.trim(),
+                  };
                   setNumbers((prev) => [...prev, newExt]);
                   return newExt;
                 }

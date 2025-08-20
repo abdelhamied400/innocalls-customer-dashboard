@@ -2,8 +2,8 @@ import { Call } from "@/types/api/call-reporting";
 import { Cell } from "@/types/cell";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -32,45 +32,45 @@ const CallSummaryCell = ({ row }: CallSummaryCellProps) => {
             <Message />
           </Button>
         </SheetTrigger>
-        <SheetContent>
+        <SheetContent className="p-0">
           <SheetHeader>
-            <SheetTitle>{t("title")}</SheetTitle>
-            <SheetContent>
-              <div className="flex flex-col gap-2">
-                <div className="bg-gray-100 p-4 rounded-lg">
-                  <label className="text-sm text-gray-600">
-                    {t("comment")}
-                  </label>
-                  {summary?.comment && (
-                    <p className="text-gray-600 font-bold text-sm">
-                      {summary.comment}
-                    </p>
-                  )}
-                </div>
-                <div className="bg-gray-100 p-4 rounded-lg">
-                  <label className="text-sm text-gray-600">
-                    {t("addedBy")}
-                  </label>
-                  {summary?.comment && (
-                    <p className="text-gray-600 font-bold text-sm">
-                      {summary.addedBy}
-                    </p>
-                  )}
-                </div>
-
-                <p>{t("tags")}</p>
-                {summary?.postCallTags && (
-                  <div className="flex flex-wrap gap-1">
-                    {summary.postCallTags.map((tag) => (
-                      <Badge key={tag} variant="default">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
+            <SheetTitle className="flex items-center justify-between border-b p-4">
+              <span>
+                {t("title")} {summary?.addedBy}
+              </span>
+              <SheetClose />
+            </SheetTitle>
+          </SheetHeader>
+          <div className="content p-4">
+            <div className="flex flex-col gap-2">
+              <div className="bg-gray-100 min-h-64 p-4 rounded-lg">
+                <label className="text-sm text-gray-600">{t("comment")}</label>
+                {summary?.comment && (
+                  <p className="text-gray-600 font-bold text-sm">
+                    {summary.comment}
+                  </p>
                 )}
               </div>
-            </SheetContent>
-          </SheetHeader>
+              <div className="bg-gray-100 p-4 rounded-lg">
+                <label className="text-sm text-gray-600">{t("addedBy")}</label>
+                {summary?.comment && (
+                  <p className="text-gray-600 font-bold text-sm">
+                    {summary.addedBy}
+                  </p>
+                )}
+              </div>
+              <p>{t("tags")}</p>
+              {summary?.postCallTags && (
+                <div className="flex flex-wrap gap-1">
+                  {summary.postCallTags.map((tag) => (
+                    <Badge key={tag} variant="success">
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
         </SheetContent>
       </Sheet>
     </div>

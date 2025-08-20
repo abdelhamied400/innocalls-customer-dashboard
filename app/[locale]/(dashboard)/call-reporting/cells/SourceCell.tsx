@@ -9,7 +9,7 @@ const SourceCell = ({ row }: Cell<Call>) => {
   const [open, setOpen] = useState(false);
   const number = row.original.from.number;
   const direction = row.original.direction?.toLowerCase();
-  const isClickable = direction === "incoming" || direction === "inbound";
+  const isClickable = direction === "incoming";
   return (
     <div className="source-cell">
       <div

@@ -76,8 +76,17 @@ export default {
   exportAgentCallReporting: async (
     filters: AgentCallReportingFilters
   ): Promise<void> => {
-    const queryString = objectToQueryString(filters);
-    const res = await api.get(`/cdr/agent/export?${queryString}`);
+    const res = await api.get(`/cdr/agent/export`, {
+      params: {
+        ...filters,
+        fromDate: filters?.fromDate
+          ? format(filters.fromDate, "yyyy-MM-dd")
+          : undefined,
+        toDate: filters?.toDate
+          ? format(filters.toDate, "yyyy-MM-dd")
+          : undefined,
+      },
+    });
     return res.data;
   },
   getCallRecording: async (callId: string): Promise<string> => {
