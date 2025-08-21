@@ -1213,7 +1213,7 @@
             "totalCalls": "إجمالي المكالمات",
             "avgCallDuration": "متوسط مدة المكالمة",
             "totalTalkTime": "إجمالي وقت المكالمات",
-            "answeredCount": "عدد المجابة",
+            "answeredCount": "المكالمات المجابة",
             "answerRate": "نسبة الإجابة (%)",
             "longestCall": "أطول مكالمة",
             "shortestCall": "أقصر مكالمة"
@@ -1238,13 +1238,11 @@
           "columns": {
             "ext": "الرقم",
             "name": "الاسم",
-            "totalIncomingCalls": "إجمالي المكالمات الواردة",
-            "answeredIncomingCalls": "المكالمات الواردة المجابة",
-            "avgResponseTime": "متوسط وقت الاستجابة",
-            "callsAnsweredWithinSLA": "المكالمات الخارجية المجابة ضمن الوقت المحدد",
-            "slaCompliance": "نسبة الالتزام بالرد السريع (%)",
-            "answeredIncomingInternalCalls": "المكالمات الواردة الداخلية المجابة",
-            "answeredIncomingExternalCalls": "المكالمات الواردة الخارجية المجابة"
+            "totalIncomingCalls": "المكالمات الواردة",
+            "answeredCalls": "المكالمات المجابة",
+            "avgResponseTime": "متوسط وقت الرد",
+            "callsAnsweredWithinSLA": "المكالمات المجابة ضمن الوقت المحدد",
+            "slaCompliance": "نسبة الالتزام بالرد السريع (%)"
           }
         },
         "chart": {
