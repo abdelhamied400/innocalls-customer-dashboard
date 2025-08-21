@@ -15,15 +15,16 @@ export const columns = (): ColumnDef<Call>[] => {
 
   return [
     {
-      accessorKey: "destination",
-      header: t("destination"),
-      cell: DestinationCell,
-    },
-    {
       accessorKey: "source",
       header: t("source"),
       cell: SourceCell,
     },
+    {
+      accessorKey: "destination",
+      header: t("destination"),
+      cell: DestinationCell,
+    },
+
     {
       accessorKey: "datetime",
       header: t("callDate"),

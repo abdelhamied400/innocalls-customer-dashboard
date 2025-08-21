@@ -246,10 +246,12 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
               getValue={(option) => option?.value || ""}
               onCreateOption={(newOption) => {
                 // accept only numbers and plus sign
-                if (/^\+?\d+$/.test(newOption.trim())) {
+                const cleaned = newOption.replace(/\u200E/g, "").trim();
+
+                if (/^\+?\d+$/.test(cleaned)) {
                   const newExt = {
-                    label: newOption.trim(),
-                    value: newOption.trim(),
+                    label: cleaned,
+                    value: cleaned,
                   };
                   setSourceExtensions((prev) => [...prev, newExt]);
                   return newExt;
@@ -289,11 +291,13 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
               getLabel={(option) => option?.label || ""}
               getValue={(option) => option?.value || ""}
               onCreateOption={(newOption) => {
+                const cleaned = newOption.replace(/\u200E/g, "").trim();
+
                 // accept only numbers and plus sign
-                if (/^\+?\d+$/.test(newOption.trim())) {
+                if (/^\+?\d+$/.test(cleaned)) {
                   const newExt = {
-                    label: newOption.trim(),
-                    value: newOption.trim(),
+                    label: cleaned,
+                    value: cleaned,
                   };
                   setDestinationExtensions((prev) => [...prev, newExt]);
                   return newExt;

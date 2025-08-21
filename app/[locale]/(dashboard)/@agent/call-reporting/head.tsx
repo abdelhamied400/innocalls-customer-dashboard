@@ -226,11 +226,13 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
               getLabel={(option) => option?.label || ""}
               getValue={(option) => option?.value || ""}
               onCreateOption={(newOption) => {
+                const cleaned = newOption.replace(/\u200E/g, "").trim();
+
                 // accept only numbers
-                if (/^\+?\d+$/.test(newOption.trim())) {
+                if (/^\+?\d+$/.test(cleaned)) {
                   const newExt = {
-                    label: newOption.trim(),
-                    value: newOption.trim(),
+                    label: cleaned,
+                    value: cleaned,
                   };
                   setNumbers((prev) => [...prev, newExt]);
                   return newExt;
