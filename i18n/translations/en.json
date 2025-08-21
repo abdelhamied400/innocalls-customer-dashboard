@@ -772,6 +772,9 @@
         "collapse": "Collapse details",
         "clickToToggle": "Click to expand/collapse call details"
       }
+    },
+    "actions": {
+      "viewHistory": "View call history"
     }
   },
   "dashboard": {
@@ -1245,6 +1248,9 @@
           },
           "yAxisLabel": "Number of Calls",
           "tooltipAgent": "Agent"
+        },
+        "actions": {
+          "includeInternalCalls": "Include Internal Calls"
         }
       },
       "callStats": {

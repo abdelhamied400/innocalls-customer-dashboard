@@ -780,6 +780,9 @@
         "collapse": "إخفاء التفاصيل",
         "clickToToggle": "انقر لإظهار/إخفاء تفاصيل المكالمة"
       }
+    },
+    "actions": {
+      "viewHistory": "عرض سجل المكالمات"
     }
   },
   "dashboard": {
@@ -1256,6 +1259,9 @@
           },
           "yAxisLabel": "عدد المكالمات",
           "tooltipAgent": "المستخدم"
+        },
+        "actions": {
+          "includeInternalCalls": "إظهار المكالمات الداخلية"
         }
       },
       "callStats": {

@@ -35,7 +35,7 @@ const CallDistributionAnalytics = ({
   filters,
 }: CallDistributionAnalyticsProps) => {
   const t = useTranslations("analytics.userActivity.callDistribution");
-  const [includeInternalCalls, setIncludeInternalCalls] = useState(true);
+  const [includeInternalCalls, setIncludeInternalCalls] = useState(false);
 
   const columns = [
     {
@@ -115,7 +115,9 @@ const CallDistributionAnalytics = ({
               checked={includeInternalCalls}
               onCheckedChange={setIncludeInternalCalls}
             />
-            <Label htmlFor="includeInternalCalls">Include Internal Calls</Label>
+            <Label htmlFor="includeInternalCalls">
+              {t("actions.includeInternalCalls")}
+            </Label>
           </div>
 
           <TabsList className="">
