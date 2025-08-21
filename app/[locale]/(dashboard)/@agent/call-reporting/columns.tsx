@@ -15,14 +15,14 @@ export const columns = (): ColumnDef<AgentCall>[] => {
 
   return [
     {
-      accessorKey: "destination",
-      header: t("destination"),
-      cell: DestinationCell,
-    },
-    {
       accessorKey: "source",
       header: t("source"),
       cell: SourceCell,
+    },
+    {
+      accessorKey: "destination",
+      header: t("destination"),
+      cell: DestinationCell,
     },
     {
       accessorKey: "datetime",
