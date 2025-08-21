@@ -5,6 +5,7 @@ import { Download, Pause, PlayArrow } from "@mui/icons-material";
 import { downloadFile } from "../lib/downloadFile";
 import { formatDuration } from "@/lib/date";
 import { Skeleton } from "./ui/skeleton";
+import Spinner from "./ui/spinner";
 
 interface SoundPlayerProps {
   url: string;
@@ -71,7 +72,10 @@ const SoundPlayer = ({ label, url }: SoundPlayerProps) => {
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
         <p className="text-gray-500 text-sm">{label}</p>
-        <p className="text-gray-500 text-sm">{formattedDuration}</p>
+        <div className="flex items-center gap-2">
+          {loading && <Spinner className="w-4" />}
+          <p className="text-gray-500 text-sm">{formattedDuration}</p>
+        </div>
       </div>
       <div className="flex items-center gap-12">
         <div className="flex items-center gap-4">
@@ -81,6 +85,7 @@ const SoundPlayer = ({ label, url }: SoundPlayerProps) => {
             className="w-16 h-16 flex items-center justify-center rounded-3xl [&_svg]:size-6"
             onClick={handleDownload}
             loading={downloadLoading}
+            disabled={loading}
           >
             <Download />
           </Button>
@@ -91,16 +96,42 @@ const SoundPlayer = ({ label, url }: SoundPlayerProps) => {
             }
             onClick={handlePlayPause}
             className="w-16 h-16 flex items-center justify-center rounded-3xl [&_svg]:size-6"
+            disabled={loading}
           >
             {playerStatus === "playing" ? <Pause /> : <PlayArrow />}
           </Button>
         </div>
-        {loading && <Skeleton className="h-16 w-full" />}
+        {loading && <WaveformLoader />}
         <div
           ref={waveformRef}
-          style={{ width: "100%", marginBottom: 8, flex: 1 }}
+          style={{ width: "100%", marginBottom: 8, flex: loading ? 0 : 1 }}
         />
       </div>
+    </div>
+  );
+};
+
+const WaveformLoader = ({ bars = 42, color = "bg-gray-300" }) => {
+  // Generate an array with symmetric indexes around the center
+  const half = Math.floor(bars / 2);
+  const indices = [...Array(bars)].map((_, i) => i - half);
+
+  return (
+    <div className="flex items-center justify-center gap-[3px] h-12">
+      {indices.map((offset, i) => {
+        const delay = (Math.random() * 1).toFixed(2); // random 0–1s delay
+        const duration = (1 + Math.random()).toFixed(2); // random 1–2s duration
+        return (
+          <div
+            key={i}
+            className={`w-0.5 h-full ${color} rounded-full animate-wave`}
+            style={{
+              animationDelay: `${delay}s`,
+              animationDuration: `${duration}s`,
+            }}
+          />
+        );
+      })}
     </div>
   );
 };

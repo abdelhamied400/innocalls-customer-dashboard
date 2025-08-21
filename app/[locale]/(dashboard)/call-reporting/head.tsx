@@ -246,7 +246,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
               getValue={(option) => option?.value || ""}
               onCreateOption={(newOption) => {
                 // accept only numbers and plus sign
-                if (/^\d+$/.test(newOption.trim())) {
+                if (/^\+?\d+$/.test(newOption.trim())) {
                   const newExt = {
                     label: newOption.trim(),
                     value: newOption.trim(),
@@ -290,7 +290,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
               getValue={(option) => option?.value || ""}
               onCreateOption={(newOption) => {
                 // accept only numbers and plus sign
-                if (/^\d+$/.test(newOption.trim())) {
+                if (/^\+?\d+$/.test(newOption.trim())) {
                   const newExt = {
                     label: newOption.trim(),
                     value: newOption.trim(),
