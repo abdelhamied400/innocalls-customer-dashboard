@@ -26,10 +26,14 @@ type FetchCallDistributionResponse = Array<{
   ext: string;
   name: string;
   totalCalls: number;
-  totalIncomingCalls: number;
-  totalOutgoingCalls: number;
-  answeredIncomingCount: number;
-  connectedOutboundCount: number;
+  totalAnsweredIncomingExternalCalls: number;
+  totalAnsweredIncomingInternalCalls: number;
+  totalAnsweredOutgoingExternalCalls: number;
+  totalAnsweredOutgoingInternalCalls: number;
+  totalIncomingExternalCalls: number;
+  totalIncomingInternalCalls: number;
+  totalOutgoingExternalCalls: number;
+  totalOutgoingInternalCalls: number;
 }>;
 
 type FetchCallStatsResponse = Array<{
@@ -83,6 +87,7 @@ export default {
             ? filters.agents.map((agent) => agent.value).join(",")
             : undefined,
         sla: filters.sla,
+        includeInternalCalls: true, // TODO: Remove this later
       },
     });
     return response.data.callsDistribution;

@@ -14,15 +14,18 @@ import {
   BarChart,
   Brush,
   CartesianGrid,
-  Label,
+  Label as RechartsLabel,
   ResponsiveContainer,
   Tooltip,
   XAxis,
   YAxis,
 } from "recharts";
+import { Label } from "@/components/ui/label";
 import NoData from "./NoData";
 import { UserActivityFilters } from "./page";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { Switch } from "@/components/ui/switch";
 
 type CallDistributionAnalyticsProps = {
   filters: UserActivityFilters;
@@ -32,6 +35,7 @@ const CallDistributionAnalytics = ({
   filters,
 }: CallDistributionAnalyticsProps) => {
   const t = useTranslations("analytics.userActivity.callDistribution");
+  const [includeInternalCalls, setIncludeInternalCalls] = useState(true);
 
   const columns = [
     {
@@ -46,34 +50,50 @@ const CallDistributionAnalytics = ({
       header: t("table.columns.totalCalls"),
       accessorKey: "totalCalls",
     },
-    {
-      header: t("table.columns.incomingInternal"),
-      accessorKey: "totalIncomingInternalCalls",
-    },
+    ...(includeInternalCalls
+      ? [
+          {
+            header: t("table.columns.incomingInternal"),
+            accessorKey: "totalIncomingInternalCalls",
+          },
+        ]
+      : []),
     {
       header: t("table.columns.incomingExternal"),
       accessorKey: "totalIncomingExternalCalls",
     },
-    {
-      header: t("table.columns.outgoingInternal"),
-      accessorKey: "totalOutgoingInternalCalls",
-    },
+    ...(includeInternalCalls
+      ? [
+          {
+            header: t("table.columns.outgoingInternal"),
+            accessorKey: "totalOutgoingInternalCalls",
+          },
+        ]
+      : []),
     {
       header: t("table.columns.outgoingExternal"),
       accessorKey: "totalOutgoingExternalCalls",
     },
-    {
-      header: t("table.columns.answeredInternalIncoming"),
-      accessorKey: "totalAnsweredIncomingInternalCalls",
-    },
+    ...(includeInternalCalls
+      ? [
+          {
+            header: t("table.columns.answeredInternalIncoming"),
+            accessorKey: "totalAnsweredIncomingInternalCalls",
+          },
+        ]
+      : []),
     {
       header: t("table.columns.answeredExternalIncoming"),
       accessorKey: "totalAnsweredIncomingExternalCalls",
     },
-    {
-      header: t("table.columns.connectedInternalOutgoing"),
-      accessorKey: "totalAnsweredOutgoingInternalCalls",
-    },
+    ...(includeInternalCalls
+      ? [
+          {
+            header: t("table.columns.connectedInternalOutgoing"),
+            accessorKey: "totalAnsweredOutgoingInternalCalls",
+          },
+        ]
+      : []),
     {
       header: t("table.columns.connectedExternalOutgoing"),
       accessorKey: "totalAnsweredOutgoingExternalCalls",
@@ -88,14 +108,25 @@ const CallDistributionAnalytics = ({
   return (
     <div className="call-distribution-analytics">
       <Tabs defaultValue="chart" className="w-full">
-        <TabsList className="w-full flex justify-end">
-          <TabsTrigger value="chart" className="flex items-center gap-1">
-            <ShowChart />
-          </TabsTrigger>
-          <TabsTrigger value="table" className="flex items-center gap-1">
-            <TableView />
-          </TabsTrigger>
-        </TabsList>
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="includeInternalCalls"
+              checked={includeInternalCalls}
+              onCheckedChange={setIncludeInternalCalls}
+            />
+            <Label htmlFor="includeInternalCalls">Include Internal Calls</Label>
+          </div>
+
+          <TabsList className="">
+            <TabsTrigger value="chart" className="flex items-center gap-1">
+              <ShowChart />
+            </TabsTrigger>
+            <TabsTrigger value="table" className="flex items-center gap-1">
+              <TableView />
+            </TabsTrigger>
+          </TabsList>
+        </div>
         <TabsContent value="chart">
           {isLoading && <ChartCardSkeleton />}
           {!isLoading && data && (
@@ -104,18 +135,26 @@ const CallDistributionAnalytics = ({
               icon={<ShowChart />}
               color="primary"
               legends={[
-                {
-                  label: t("chart.legends.incomingInternal"),
-                  color: "#8B5CF6",
-                },
+                ...(includeInternalCalls
+                  ? [
+                      {
+                        label: t("chart.legends.incomingInternal"),
+                        color: "#8B5CF6",
+                      },
+                    ]
+                  : []),
                 {
                   label: t("chart.legends.incomingExternal"),
                   color: "#3B82F6",
                 },
-                {
-                  label: t("chart.legends.outgoingInternal"),
-                  color: "#F59E42",
-                },
+                ...(includeInternalCalls
+                  ? [
+                      {
+                        label: t("chart.legends.outgoingInternal"),
+                        color: "#F59E42",
+                      },
+                    ]
+                  : []),
                 {
                   label: t("chart.legends.outgoingExternal"),
                   color: "#10B981",
@@ -134,7 +173,7 @@ const CallDistributionAnalytics = ({
                       <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
                       <XAxis dataKey="name" type="category" width={120}></XAxis>
                       <YAxis type="number">
-                        <Label
+                        <RechartsLabel
                           value={t("chart.yAxisLabel")}
                           angle={-90}
                           position="insideLeft"
@@ -172,24 +211,28 @@ const CallDistributionAnalytics = ({
                           `${t("chart.tooltipAgent")}: ${label}`
                         }
                       />
-                      <Bar
-                        dataKey="totalIncomingInternalCalls"
-                        stackId="a"
-                        fill="#8B5CF6"
-                        name={t("chart.legends.incomingInternal")}
-                      />
+                      {includeInternalCalls && (
+                        <Bar
+                          dataKey="totalIncomingInternalCalls"
+                          stackId="a"
+                          fill="#8B5CF6"
+                          name={t("chart.legends.incomingInternal")}
+                        />
+                      )}
                       <Bar
                         dataKey="totalIncomingExternalCalls"
                         stackId="a"
                         fill="#3B82F6"
                         name={t("chart.legends.incomingExternal")}
                       />
-                      <Bar
-                        dataKey="totalOutgoingInternalCalls"
-                        stackId="b"
-                        fill="#F59E42"
-                        name={t("chart.legends.outgoingInternal")}
-                      />
+                      {includeInternalCalls && (
+                        <Bar
+                          dataKey="totalOutgoingInternalCalls"
+                          stackId="b"
+                          fill="#F59E42"
+                          name={t("chart.legends.outgoingInternal")}
+                        />
+                      )}
                       <Bar
                         dataKey="totalOutgoingExternalCalls"
                         stackId="b"
