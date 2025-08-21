@@ -45,13 +45,13 @@ type FetchCallStatsResponse = Array<{
 }>;
 
 type FetchSlaComplianceResponse = Array<{
-  answeredIncomingCalls: number;
+  answeredCalls: number;
   avgResponseTime: string;
   callsAnsweredWithinSLA: number;
   ext: string;
   name: string;
   slaCompliance: string | number;
-  totalIncomingCalls: number;
+  totalCalls: number;
 }>;
 
 export default {

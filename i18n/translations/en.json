@@ -605,7 +605,7 @@
       "inbound": "Inbound",
       "outbound": "Outbound",
       "unanswered": "Unanswered",
-      "userActivity": "Users Activity",
+      "userActivity": "Users Performance",
       "callHistory": "Call History",
       "apps": "Apps",
       "surveyCampaigns": "Survey Campaigns",
@@ -1150,8 +1150,8 @@
       }
     },
     "userActivity": {
-      "title": "User Activity Analytics",
-      "subtitle": "View detailed analytics for user activity",
+      "title": "Users Performance Analytics",
+      "subtitle": "View detailed analytics for user performance",
       "dateRangeSearch": "Date Range Search",
       "quickStats": {
         "topAnsweredIncoming": "Top Answered Incoming",
@@ -1202,7 +1202,7 @@
             "totalCalls": "Total Calls",
             "avgCallDuration": "Avg Call Duration",
             "totalTalkTime": "Total Talk Time",
-            "answeredCount": "Answered Count",
+            "answeredCount": "Connected Count",
             "answerRate": "Answer Rate (%)",
             "longestCall": "Longest Call",
             "shortestCall": "Shortest Call"
@@ -1227,13 +1227,11 @@
           "columns": {
             "ext": "Ext",
             "name": "Name",
-            "totalIncomingCalls": "Total Incoming Calls",
-            "answeredIncomingCalls": "Answered Incoming Calls",
-            "avgResponseTime": "Avg Response Time",
-            "callsAnsweredWithinSLA": "External Calls Answered Within SLA",
-            "slaCompliance": "SLA Compliance (%)",
-            "answeredIncomingInternalCalls": "Answered Incoming Internal Calls",
-            "answeredIncomingExternalCalls": "Answered Incoming External Calls"
+            "totalIncomingCalls": "Incoming Calls",
+            "answeredCalls": "Answered Calls",
+            "avgResponseTime": "Avg Answer Time",
+            "callsAnsweredWithinSLA": "Calls Answered Within SLA",
+            "slaCompliance": "SLA Compliance (%)"
           }
         },
         "chart": {
@@ -1797,7 +1795,7 @@
         "slaCompliance": {
           "title": "SLA Compliance",
           "comparison": "{percentage}% vs previous"
-        }
+        } 
       },
       "form": {
         "filter": {
