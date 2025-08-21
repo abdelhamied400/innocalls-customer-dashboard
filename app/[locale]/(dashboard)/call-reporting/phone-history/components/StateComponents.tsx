@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import { ErrorMessageProps } from "../types";
 
 export const LoadingSpinner = () => (
@@ -10,6 +11,8 @@ export const ErrorMessage = ({ message }: ErrorMessageProps) => (
   <div className="py-8 text-center text-red-600">{message}</div>
 );
 
-export const EmptyState = () => (
-  <div className="py-8 text-center">No history found.</div>
-);
+export const EmptyState = () => {
+  const t = useTranslations("callReporting.phoneHistory.states");
+
+  return <div className="text-gray-500">{t("empty")}</div>;
+};

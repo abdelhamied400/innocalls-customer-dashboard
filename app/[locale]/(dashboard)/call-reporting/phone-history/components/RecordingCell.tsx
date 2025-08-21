@@ -11,10 +11,13 @@ import { Button } from "@/components/ui/button";
 import callReportingService from "@/services/call-reporting.service";
 import SoundPlayer from "@/components/SoundPlayer";
 import { RecordingCellProps } from "../types";
+import { useTranslations } from "next-intl";
 
 export const RecordingCell = ({ callId }: RecordingCellProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [recordingUrl, setRecordingUrl] = useState<string | null>(null);
+
+  const t = useTranslations("callReporting.phoneHistory.recording");
 
   const getRecording = async () => {
     setIsLoading(true);
@@ -56,11 +59,11 @@ export const RecordingCell = ({ callId }: RecordingCellProps) => {
         }}
       >
         <DialogHeader>
-          <DialogTitle>Call Recording</DialogTitle>
+          <DialogTitle>{t("title")}</DialogTitle>
         </DialogHeader>
         {recordingUrl && (
           <SoundPlayer
-            label={recordingUrl.split("/").pop() || "Recording"}
+            label={recordingUrl.split("/").pop() || t("title")}
             url={recordingUrl}
           />
         )}

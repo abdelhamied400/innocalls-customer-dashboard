@@ -24,6 +24,7 @@ import {
 } from "./components";
 import { PhoneHistoryModalProps } from "./types";
 import { Add, Remove } from "@mui/icons-material";
+import { useTranslations } from "next-intl";
 
 const PhoneHistoryModal = ({
   open,
@@ -34,6 +35,8 @@ const PhoneHistoryModal = ({
   const [loading, setLoading] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const t = useTranslations("callReporting.phoneHistory");
 
   const columns = usePhoneHistoryColumns();
 
@@ -48,9 +51,7 @@ const PhoneHistoryModal = ({
         })
         .catch((err) => {
           setError(
-            err?.response?.data?.message ||
-              err.message ||
-              "Failed to fetch phone history."
+            err?.response?.data?.message || err.message || t("states.error")
           );
         })
         .finally(() => setLoading(false));
@@ -96,8 +97,8 @@ const PhoneHistoryModal = ({
         </PaginatedTableContent>
         <PaginatedTablePagination />
         <div className="text-xs text-gray-400 mt-2 flex items-center gap-1">
-          <Add className="!w-4" /> / <Remove className="!w-4" /> Click a row to
-          expand/collapse call details
+          <Add className="!w-4" /> / <Remove className="!w-4" />{" "}
+          {t("actions.clickToToggle")}
         </div>
       </PaginatedTable>
     );
@@ -107,7 +108,9 @@ const PhoneHistoryModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[80vw] max-w-[80vw] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Phone History for {"\u200E" + phoneNumber}</DialogTitle>
+          <DialogTitle>
+            {t("title", { phoneNumber: `\u200E  ${phoneNumber}` })}
+          </DialogTitle>
         </DialogHeader>
         {renderContent()}
       </DialogContent>

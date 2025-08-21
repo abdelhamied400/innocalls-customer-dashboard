@@ -718,6 +718,60 @@
       "errorFetchingData": "Error fetching data",
       "unexpectedError": "An unexpected error occurred",
       "invalidDateRange": "Invalid date range"
+    },
+    "phoneHistory": {
+      "title": "Phone History for {phoneNumber}",
+      "modal": {
+        "dialogTitle": "Call History Details"
+      },
+      "table": {
+        "columns": {
+          "expander": "",
+          "date": "Date",
+          "direction": "Direction",
+          "answered": "Answered",
+          "duration": "Duration",
+          "totalWaitTime": "Total Wait Time",
+          "recording": "Recording"
+        },
+        "expandHint": "Click a row to expand/collapse call details"
+      },
+      "callDetails": {
+        "title": "Call Details",
+        "columns": {
+          "answered": "Answered",
+          "duration": "Duration",
+          "waitTime": "Wait Time",
+          "date": "Date",
+          "user": "User"
+        }
+      },
+      "badges": {
+        "direction": {
+          "incoming": "Incoming",
+          "outgoing": "Outgoing"
+        },
+        "answered": {
+          "yes": "Yes",
+          "no": "No"
+        }
+      },
+      "recording": {
+        "title": "Call Recording",
+        "playButton": "Play Recording",
+        "fileName": "Recording"
+      },
+      "states": {
+        "loading": "Loading call history...",
+        "error": "Failed to load phone history",
+        "empty": "No history found.",
+        "recordingError": "Failed to get recording"
+      },
+      "actions": {
+        "expand": "Expand details",
+        "collapse": "Collapse details",
+        "clickToToggle": "Click to expand/collapse call details"
+      }
     }
   },
   "dashboard": {
@@ -1795,7 +1849,7 @@
         "slaCompliance": {
           "title": "SLA Compliance",
           "comparison": "{percentage}% vs previous"
-        } 
+        }
       },
       "form": {
         "filter": {

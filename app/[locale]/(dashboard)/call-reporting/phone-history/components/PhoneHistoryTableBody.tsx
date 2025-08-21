@@ -5,21 +5,32 @@ import { PaginatedTableContext } from "@/components/Table/PaginatedTable";
 import { PhoneHistoryTableBodyProps } from "../types";
 import { CallAnsweredBadge, DateTime, ExtCell } from "./index";
 import { Add, Remove } from "@mui/icons-material";
+import { useTranslations } from "next-intl";
 
-const renderSubComponent = (row: PhoneHistoryItem, columnsLength: number) => (
+const renderSubComponent = (
+  row: PhoneHistoryItem,
+  columnsLength: number,
+  t: any
+) => (
   <tr>
     <td colSpan={columnsLength} className="p-0 border bg-gray-50">
       <div className="p-2">
-        <div className="font-semibold mb-2">Call Details</div>
+        <div className="font-semibold mb-2">{t("callDetails.title")}</div>
         <div className="max-h-48 overflow-y-auto">
           <table className="w-full text-xs border">
             <thead>
               <tr className="bg-gray-200">
-                <th className="p-1 border">Answered</th>
-                <th className="p-1 border">Duration</th>
-                <th className="p-1 border">Wait Time</th>
-                <th className="p-1 border">Date</th>
-                <th className="p-1 border">Ext</th>
+                <th className="p-1 border">
+                  {t("callDetails.columns.answered")}
+                </th>
+                <th className="p-1 border">
+                  {t("callDetails.columns.duration")}
+                </th>
+                <th className="p-1 border">
+                  {t("callDetails.columns.waitTime")}
+                </th>
+                <th className="p-1 border">{t("callDetails.columns.date")}</th>
+                <th className="p-1 border">{t("callDetails.columns.user")}</th>
               </tr>
             </thead>
             <tbody>
@@ -55,6 +66,8 @@ export const PhoneHistoryTableBody = ({
   setExpanded,
   columns,
 }: PhoneHistoryTableBodyProps) => {
+  const t = useTranslations("callReporting.phoneHistory");
+
   // Get pagination state from context
   const paginatedTable = useContext(PaginatedTableContext);
   let pageIndex = 0;
@@ -78,7 +91,7 @@ export const PhoneHistoryTableBody = ({
             <tr
               className="cursor-pointer hover:bg-gray-50 group transition-all"
               onClick={() => setExpanded(isExpanded ? null : row.id)}
-              title="Click to expand/collapse call details"
+              title={t("actions.clickToToggle")}
             >
               {columns.map((col, idx) => {
                 // Expander column
@@ -112,7 +125,7 @@ export const PhoneHistoryTableBody = ({
                 );
               })}
             </tr>
-            {isExpanded && renderSubComponent(row, columns.length)}
+            {isExpanded && renderSubComponent(row, columns.length, t)}
           </React.Fragment>
         );
       })}

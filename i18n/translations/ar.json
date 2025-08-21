@@ -726,6 +726,60 @@
       "errorFetchingData": "خطأ في جلب البيانات",
       "unexpectedError": "حدث خطأ غير متوقع",
       "invalidDateRange": "نطاق تاريخ غير صحيح"
+    },
+    "phoneHistory": {
+      "title": "سجل المكالمات لرقم {phoneNumber}",
+      "modal": {
+        "dialogTitle": "تفاصيل سجل المكالمات"
+      },
+      "table": {
+        "columns": {
+          "expander": "",
+          "date": "التاريخ",
+          "direction": "الاتجاه",
+          "answered": "تم الرد",
+          "duration": "المدة",
+          "totalWaitTime": "إجمالي وقت الانتظار",
+          "recording": "التسجيل"
+        },
+        "expandHint": "انقر على الصف لإظهار/إخفاء تفاصيل المكالمة"
+      },
+      "callDetails": {
+        "title": "تفاصيل المكالمة",
+        "columns": {
+          "answered": "تم الرد",
+          "duration": "المدة",
+          "waitTime": "وقت الانتظار",
+          "date": "التاريخ",
+          "user": "المستخدم"
+        }
+      },
+      "badges": {
+        "direction": {
+          "incoming": "واردة",
+          "outgoing": "صادرة"
+        },
+        "answered": {
+          "yes": "نعم",
+          "no": "لا"
+        }
+      },
+      "recording": {
+        "title": "تسجيل المكالمة",
+        "playButton": "تشغيل التسجيل",
+        "fileName": "التسجيل"
+      },
+      "states": {
+        "loading": "جاري تحميل سجل المكالمات...",
+        "error": "فشل في تحميل سجل المكالمات",
+        "empty": "لم يتم العثور على سجل.",
+        "recordingError": "فشل في الحصول على التسجيل"
+      },
+      "actions": {
+        "expand": "إظهار التفاصيل",
+        "collapse": "إخفاء التفاصيل",
+        "clickToToggle": "انقر لإظهار/إخفاء تفاصيل المكالمة"
+      }
     }
   },
   "dashboard": {

@@ -8,8 +8,11 @@ import {
   DateTime,
   RecordingCell,
 } from "../components";
+import { useTranslations } from "next-intl";
 
 export const usePhoneHistoryColumns = (): ColumnDef<PhoneHistoryItem>[] => {
+  const t = useTranslations("callReporting.phoneHistory.table.columns");
+
   return useMemo(
     () => [
       {
@@ -23,7 +26,7 @@ export const usePhoneHistoryColumns = (): ColumnDef<PhoneHistoryItem>[] => {
       },
       {
         accessorKey: "latestTime",
-        header: "Date",
+        header: t("date"),
         cell: ({ row }) => (
           <DateTime
             date={row.original.latestTime?.date}
@@ -33,31 +36,31 @@ export const usePhoneHistoryColumns = (): ColumnDef<PhoneHistoryItem>[] => {
       },
       {
         accessorKey: "direction",
-        header: "Direction",
+        header: t("direction"),
         cell: ({ row }) => (
           <DirectionBadge direction={row.original.direction} />
         ),
       },
       {
         accessorKey: "isAnswered",
-        header: "Answered",
+        header: t("answered"),
         cell: ({ row }) => (
           <CallAnsweredBadge answered={row.original.isAnswered} />
         ),
       },
       {
         accessorKey: "duration",
-        header: "Duration",
+        header: t("duration"),
         cell: ({ row }) => row.original.duration,
       },
       {
         accessorKey: "totalHoldTime",
-        header: "Total Wait Time",
+        header: t("totalWaitTime"),
         cell: ({ row }) => row.original.totalHoldTime,
       },
       {
         accessorKey: "recording",
-        header: "Recording",
+        header: t("recording"),
         cell: ({ row }) =>
           row.original.hasRecording ? (
             <RecordingCell callId={row.original.id} />
