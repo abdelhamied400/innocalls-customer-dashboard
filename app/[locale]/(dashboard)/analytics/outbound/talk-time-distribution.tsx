@@ -56,9 +56,11 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
         icon={<Timer />}
         color="success"
         variant="compound"
-      >  
-
-      
+        legends={data.map((item, idx) => ({
+          label: t(`chart.legends.timeBucket.${item.timeBucket}`),
+          color: COLORS[idx % COLORS.length],
+        }))}
+      >
         <ResponsiveContainer width="100%" height={320}>
           <PieChart>
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
@@ -71,12 +73,16 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
               outerRadius={100}
               label
             >
-              {data.map((entry, idx) => (
+              {data.map((_entry, idx) => (
                 <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
               ))}
             </Pie>
-            <RechartsTooltip />
-            <RechartsLegend />
+            <RechartsTooltip
+              formatter={(value, name) => [
+                value,
+                t(`chart.legends.timeBucket.${name}`),
+              ]}
+            />
           </PieChart>
         </ResponsiveContainer>
       </ChartCard>

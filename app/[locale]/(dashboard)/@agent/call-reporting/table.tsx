@@ -22,9 +22,9 @@ import { useTranslations } from "next-intl";
 
 type CallReportingTableProps = {};
 
-const defaultFilters: AgentCallReportingFilters = {
-  fromDate: undefined,
-  toDate: undefined,
+export const defaultFilters: AgentCallReportingFilters = {
+  fromDate: new Date(),
+  toDate: new Date(),
   numbers: [],
   tags: [],
   direction: undefined,

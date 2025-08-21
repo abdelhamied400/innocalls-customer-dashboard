@@ -67,6 +67,9 @@ const InboundAnalyticsDistribution = ({
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
+                tickFormatter={(value) =>
+                  t(`waitTime.legends.timeBucket.${value}`)
+                }
               />
               <YAxis
                 fontSize={12}
@@ -74,7 +77,11 @@ const InboundAnalyticsDistribution = ({
                 axisLine={false}
                 allowDecimals={false}
               />
-              <Tooltip />
+              <Tooltip
+                labelFormatter={(value) =>
+                  t(`waitTime.legends.timeBucket.${value}`)
+                }
+              />
               <Bar
                 name={t("waitTime.legends.totalCalls")}
                 dataKey="totalCalls"
@@ -108,6 +115,9 @@ const InboundAnalyticsDistribution = ({
                 fontSize={12}
                 tickLine={false}
                 axisLine={false}
+                tickFormatter={(value) =>
+                  t(`talkTime.legends.timeBucket.${value}`)
+                }
               />
               <YAxis
                 fontSize={12}
@@ -115,7 +125,11 @@ const InboundAnalyticsDistribution = ({
                 axisLine={false}
                 allowDecimals={false}
               />
-              <Tooltip />
+              <Tooltip
+                labelFormatter={(value) =>
+                  t(`talkTime.legends.timeBucket.${value}`)
+                }
+              />
               <Bar
                 name={t("talkTime.legends.totalCalls")}
                 dataKey="totalCalls"

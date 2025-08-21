@@ -24,15 +24,9 @@ import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
 import { useTranslations } from "next-intl";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { defaultFilters } from "./table";
 
 type CallReportingHeadProps = {
   filters: AgentCallReportingFilters;
@@ -45,7 +39,6 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
 
   const { table } = usePaginatedTable();
   const [isExporting, setIsExporting] = useState(false);
-  const { data: session } = useSession();
   const { extensions, tags } = useVocabStore();
   const extensionsOptions = extensions?.map((ext) => ({
     label: `${ext.name} (${ext.ext})`,
@@ -158,7 +151,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
       <CollapsibleContent className="">
         <FilterBar
           onClear={() => {
-            setFilters({});
+            setFilters(defaultFilters);
             setFromDate(new Date());
             setToDate(new Date());
             setNumbers([]);
@@ -234,7 +227,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
               getValue={(option) => option?.value || ""}
               onCreateOption={(newOption) => {
                 // accept only numbers
-                if (/^\d+$/.test(newOption.trim())) {
+                if (/^\+?\d+$/.test(newOption.trim())) {
                   const newExt = {
                     label: newOption.trim(),
                     value: newOption.trim(),
