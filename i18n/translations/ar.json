@@ -214,11 +214,11 @@
     }
   },
   "users": {
-    "title": "المستخدمين",
+    "title": "الوكلاء",
     "list": {
-      "title": "قائمة المستخدمين",
+      "title": "قائمة الوكلاء",
       "columns": {
-        "extension": "رقم المستخدم",
+        "extension": "رقم الوكيل",
         "name": "الاسم",
         "email": "البريد الإلكتروني",
         "status": "الحالة",
@@ -232,9 +232,9 @@
       "actions": {
         "activate": "تفعيل",
         "deactivate": "إلغاء التفعيل",
-        "edit": "تعديل المستخدم",
-        "delete": "حذف المستخدم",
-        "create": "إنشاء مستخدم جديد"
+        "edit": "تعديل الوكيل",
+        "delete": "حذف الوكيل",
+        "create": "إنشاء وكيل جديد"
       },
       "filters": {
         "status": "الحالة",
@@ -243,33 +243,33 @@
       },
       "confirmations": {
         "areYouSure": "هل أنت متأكد؟",
-        "enableUser": "تريد تفعيل هذا المستخدم؟",
-        "disableUser": "تريد تعطيل هذا المستخدم؟",
-        "deleteUser": "تريد حذف هذا المستخدم؟",
+        "enableUser": "تريد تفعيل هذا الوكيل؟",
+        "disableUser": "تريد تعطيل هذا الوكيل؟",
+        "deleteUser": "تريد حذف هذا الوكيل؟",
         "noCancel": "لا، لا تتابع",
         "yesEnable": "نعم فعله",
         "yesDisable": "نعم عطله",
         "yesDelete": "نعم، احذفه"
       },
       "messages": {
-        "userActivated": "تم تفعيل المستخدم بنجاح",
-        "userActivatedDesc": "المستخدم {name} فعال الآن.",
-        "userDeactivated": "تم تعطيل المستخدم بنجاح",
-        "userDeactivatedDesc": "المستخدم {name} غير فعال الآن.",
-        "userDeleted": "تم حذف المستخدم بنجاح",
-        "userDeletedDesc": "تم حذف المستخدم {name}.",
-        "errorActivating": "خطأ في تفعيل المستخدم",
-        "errorDeactivating": "خطأ في تعطيل المستخدم",
-        "errorDeleting": "خطأ في حذف المستخدم",
+        "userActivated": "تم تفعيل الوكيل بنجاح",
+        "userActivatedDesc": "الوكيل {name} فعال الآن.",
+        "userDeactivated": "تم تعطيل الوكيل بنجاح",
+        "userDeactivatedDesc": "الوكيل {name} غير فعال الآن.",
+        "userDeleted": "تم حذف الوكيل بنجاح",
+        "userDeletedDesc": "تم حذف الوكيل {name}.",
+        "errorActivating": "خطأ في تفعيل الوكيل",
+        "errorDeactivating": "خطأ في تعطيل الوكيل",
+        "errorDeleting": "خطأ في حذف الوكيل",
         "unexpectedError": "حدث خطأ غير متوقع.",
         "actionError": "حدث خطأ أثناء تنفيذ الطلب .",
         "deleting": "جاري الحذف..."
       }
     },
     "monitor": {
-      "title": "متابعة المستخدمين",
+      "title": "متابعة الوكلاء",
       "columns": {
-        "extension": "رقم المستخدم",
+        "extension": "رقم الوكيل",
         "name": "الاسم",
         "ip": "عنوان IP",
         "status": "الحالة",
@@ -286,12 +286,12 @@
       "sipConnectionError": "يجب أن تكون متصلاً ببرنامج الاتصال لمراقبة المكالمات."
     },
     "tabs": {
-      "usersList": "قائمة المستخدمين",
-      "monitorUsers": "  متابعة المستخدمين"
+      "usersList": "قائمة الوكلاء",
+      "monitorUsers": "  متابعة الوكلاء"
     },
     "create": {
-      "title": "إنشاء مستخدم جديد",
-      "description": "إنشاء مستخدم جديد عن طريق ملء النموذج أدناه.",
+      "title": "إنشاء وكيل جديد",
+      "description": "إنشاء وكيل جديد عن طريق ملء النموذج أدناه.",
       "form": {
         "fields": {
           "name": {
@@ -371,18 +371,18 @@
         }
       },
       "messages": {
-        "success": "تم إنشاء المستخدم",
-        "successDescription": "تم إنشاء المستخدم {name} بنجاح",
+        "success": "تم إنشاء الوكيل",
+        "successDescription": "تم إنشاء الوكيل {name} بنجاح",
         "error": "خطأ",
         "unknownError": "حدث خطأ غير معروف"
       },
       "actions": {
-        "submit": "إنشاء مستخدم جديد"
+        "submit": "إنشاء وكيل جديد"
       }
     },
     "update": {
-      "title": "تعديل المستخدم",
-      "description": "تعديل بيانات المستخدم عن طريق ملء النموذج أدناه.",
+      "title": "تعديل الوكيل",
+      "description": "تعديل بيانات الوكيل عن طريق ملء النموذج أدناه.",
       "form": {
         "validation": {
           "extensionId": {
@@ -391,13 +391,13 @@
         }
       },
       "messages": {
-        "success": "تم تعديل المستخدم بنجاح",
-        "successDescription": "تم تعديل المستخدم {name} بنجاح.",
-        "error": "خطأ في تعديل المستخدم",
+        "success": "تم تعديل الوكيل بنجاح",
+        "successDescription": "تم تعديل الوكيل {name} بنجاح.",
+        "error": "خطأ في تعديل الوكيل",
         "unknownError": "حدث خطأ غير معروف."
       },
       "actions": {
-        "submit": "تعديل المستخدم"
+        "submit": "تعديل الوكيل"
       }
     }
   },
@@ -598,7 +598,7 @@
       "dashboard": "لوحة التحكم",
       "liveMonitoring": "المراقبة المباشرة",
       "numbers": "الأرقام",
-      "users": "المستخدمين",
+      "users": "الوكلاء",
       "callReporting": "تقارير المكالمات",
       "billing": "الفواتير",
       "usage": "الاستخدام",
@@ -613,7 +613,7 @@
       "inbound": "الواردة",
       "outbound": "الصادرة",
       "unanswered": "غير المجابة",
-      "userActivity": "أداء المستخدمين ",
+      "userActivity": "أداء الوكلاء ",
       "callHistory": "تقارير المكالمات",
       "apps": "التطبيقات",
       "surveyCampaigns": "حملات الاستطلاع",
@@ -751,7 +751,7 @@
           "duration": "المدة",
           "waitTime": "وقت الانتظار",
           "date": "التاريخ",
-          "user": "المستخدم"
+          "user": "الوكيل"
         }
       },
       "badges": {
@@ -1219,8 +1219,8 @@
       }
     },
     "userActivity": {
-      "title": "إحصائيات أداء المستخدمين",
-      "subtitle": "عرض الإحصائيات التفصيلية لأداء المستخدمين",
+      "title": "إحصائيات أداء الوكلاء",
+      "subtitle": "عرض الإحصائيات التفصيلية لأداء الوكلاء",
       "quickStats": {
         "topAnsweredIncoming": "الأكثر ردًا على المكالمات الواردة",
         "topConnectedOutbound": "الأكثر اتصالًا بالمكالمات الصادرة",
@@ -1258,7 +1258,7 @@
             "outgoingExternal": "صادرة خارجية"
           },
           "yAxisLabel": "عدد المكالمات",
-          "tooltipAgent": "المستخدم"
+          "tooltipAgent": "الوكيل"
         },
         "actions": {
           "includeInternalCalls": "إظهار المكالمات الداخلية"
@@ -1285,7 +1285,7 @@
             "answeredCalls": "المكالمات المجابة"
           },
           "yAxisLabel": "عدد المكالمات",
-          "tooltipAgent": "المستخدم",
+          "tooltipAgent": "الوكيل",
           "tooltipLabels": {
             "totalCalls": "إجمالي المكالمات",
             "answered": "المكالمات المجابة"
@@ -1351,7 +1351,7 @@
         "talkTimeDistribution": "توزيع وقت المحادثة",
         "hourlyDistribution": "التوزيع بالساعة",
         "dateDistribution": "التوزيع بالتاريخ",
-        "agentStats": "إحصائيات المستخدمين"
+        "agentStats": "إحصائيات الوكلاء"
       },
       "talkTimeDistribution": {
         "title": "توزيع وقت المحادثة",
@@ -1417,9 +1417,9 @@
         }
       },
       "agentStats": {
-        "title": "إحصائيات المستخدمين",
+        "title": "إحصائيات الوكلاء",
         "chart": {
-          "title": "إحصائيات المستخدمين",
+          "title": "إحصائيات الوكلاء",
           "legends": {
             "totalCalls": "إجمالي المكالمات",
             "answered": "مجابة",
@@ -1440,7 +1440,7 @@
           }
         },
         "errors": {
-          "loading": "خطأ في تحميل إحصائيات المستخدمين"
+          "loading": "خطأ في تحميل إحصائيات الوكلاء"
         }
       },
       "common": {
@@ -1470,7 +1470,7 @@
           "label": "تصفية حسب",
           "placeholder": "تصفية حسب",
           "options": {
-            "all": "جميع المستخدمين",
+            "all": "جميع الوكلاء",
             "team": "الفريق"
           }
         },
@@ -1768,8 +1768,8 @@
             "label": "البحث بنطاق التاريخ"
           },
           "agents": {
-            "label": "اختر المستخدمين",
-            "placeholder": "اختر المستخدمين"
+            "label": "اختر الوكلاء",
+            "placeholder": "اختر الوكلاء"
           }
         },
         "validation": {
@@ -1785,8 +1785,8 @@
             "futureDate": "لا يمكن أن يكون التاريخ النهائي في المستقبل"
           },
           "agents": {
-            "invalid": "يرجى اختيار مستخدمين صحيحين",
-            "maxSelection": "يمكن اختيار {max} مستخدمين كحد أقصى"
+            "invalid": "يرجى اختيار وكلاء صحيحين",
+            "maxSelection": "يمكن اختيار {max} وكلاء كحد أقصى"
           },
           "dateRange": {
             "maxDays": "لا يمكن أن يتجاوز نطاق التاريخ {max} يوماً",
@@ -1802,7 +1802,7 @@
   },
   "liveMonitor": {
     "agents": {
-      "title": "المستخدمين",
+      "title": "الوكلاء",
       "subtitle": "الحالة الحالية والأداء",
       "total": "المجموع",
       "status": {
@@ -1835,11 +1835,11 @@
         "waitingCallsTitle": "المكالمات في الانتظار",
         "noActiveCalls": "لا توجد مكالمات نشطة",
         "noWaitingCalls": "لا توجد مكالمات في الانتظار",
-        "unknownAgent": "المستخدم غير معروف",
+        "unknownAgent": "الوكيل غير معروف",
         "active": "نشط",
         "totalCallsSubtitle": "إجمالي المكالمات",
         "queueCardCall": {
-          "agent": "المستخدم",
+          "agent": "الوكيل",
           "callDuration": "مدة المكالمة",
           "waitingDuration": "مدة الانتظار",
           "error": "خطأ",

@@ -165,7 +165,7 @@
             "maxLength": "Password must be no more than {max} characters"
           },
           "userType": {
-            "required": "Please select user type"
+            "required": "Please select agent type"
           }
         }
       },
@@ -214,9 +214,9 @@
     }
   },
   "users": {
-    "title": "Users",
+    "title": "Agents",
     "list": {
-      "title": "Users List",
+      "title": "Agents List",
       "columns": {
         "extension": "Extension No.",
         "name": "Name",
@@ -232,9 +232,9 @@
       "actions": {
         "activate": "Activate",
         "deactivate": "Deactivate",
-        "edit": "Edit User",
-        "delete": "Delete User",
-        "create": "Create new user"
+        "edit": "Edit Agent",
+        "delete": "Delete Agent",
+        "create": "Create new agent"
       },
       "filters": {
         "status": "Status",
@@ -243,31 +243,31 @@
       },
       "confirmations": {
         "areYouSure": "Are you sure?",
-        "enableUser": "you want to enable this user?",
-        "disableUser": "you want to disable this user?",
-        "deleteUser": "You want to delete this user?",
+        "enableUser": "you want to enable this agent?",
+        "disableUser": "you want to disable this agent?",
+        "deleteUser": "You want to delete this agent?",
         "noCancel": "No, Dont Proceed",
         "yesEnable": "Yes Enable it",
         "yesDisable": "Yes Disable it",
         "yesDelete": "Yes, Delete it"
       },
       "messages": {
-        "userActivated": "User activated successfully",
-        "userActivatedDesc": "User {name} is now active.",
-        "userDeactivated": "User deactivated successfully",
-        "userDeactivatedDesc": "User {name} is now inactive.",
-        "userDeleted": "User deleted successfully",
-        "userDeletedDesc": "User {name} has been deleted.",
-        "errorActivating": "Error activating user",
-        "errorDeactivating": "Error deactivating user",
-        "errorDeleting": "Error deleting user",
+        "userActivated": "Agent activated successfully",
+        "userActivatedDesc": "Agent {name} is now active.",
+        "userDeactivated": "Agent deactivated successfully",
+        "userDeactivatedDesc": "Agent {name} is now inactive.",
+        "userDeleted": "Agent deleted successfully",
+        "userDeletedDesc": "Agent {name} has been deleted.",
+        "errorActivating": "Error activating agent",
+        "errorDeactivating": "Error deactivating agent",
+        "errorDeleting": "Error deleting agent",
         "unexpectedError": "An unexpected error occurred.",
         "actionError": "An error occurred while processing the request.",
         "deleting": "Deleting..."
       }
     },
     "monitor": {
-      "title": "Monitor Users",
+      "title": "Monitor Agents",
       "columns": {
         "extension": "Extension No.",
         "name": "Name",
@@ -286,12 +286,12 @@
       "sipConnectionError": "You must be connected to a WebRTC/softphone client to monitor calls"
     },
     "tabs": {
-      "usersList": "Users List",
-      "monitorUsers": "Monitor Users"
+      "usersList": "Agents List",
+      "monitorUsers": "Monitor Agents"
     },
     "create": {
-      "title": "Create new user",
-      "description": "Create a new user by filling out the form below.",
+      "title": "Create new agent",
+      "description": "Create a new agent by filling out the form below.",
       "form": {
         "fields": {
           "name": {
@@ -371,18 +371,18 @@
         }
       },
       "messages": {
-        "success": "User Created",
-        "successDescription": "User {name} has been created successfully",
+        "success": "Agent Created",
+        "successDescription": "Agent {name} has been created successfully",
         "error": "Error",
         "unknownError": "An unknown error occurred"
       },
       "actions": {
-        "submit": "Create new user"
+        "submit": "Create new agent"
       }
     },
     "update": {
-      "title": "Edit User",
-      "description": "Edit the user by filling out the form below.",
+      "title": "Edit Agent",
+      "description": "Edit the agent by filling out the form below.",
       "form": {
         "validation": {
           "extensionId": {
@@ -391,13 +391,13 @@
         }
       },
       "messages": {
-        "success": "User edited successfully",
-        "successDescription": "User {name} has been edited successfully.",
-        "error": "Error editing user",
+        "success": "Agent edited successfully",
+        "successDescription": "Agent {name} has been edited successfully.",
+        "error": "Error editing agent",
         "unknownError": "An unknown error occurred."
       },
       "actions": {
-        "submit": "Edit user"
+        "submit": "Edit agent"
       }
     }
   },
@@ -590,7 +590,7 @@
       "dashboard": "Dashboard",
       "liveMonitoring": "Live Monitoring",
       "numbers": "Numbers",
-      "users": "Users",
+      "users": "Agents",
       "callReporting": "Call Reporting",
       "billing": "Billing",
       "usage": "Usage",
@@ -605,7 +605,7 @@
       "inbound": "Inbound",
       "outbound": "Outbound",
       "unanswered": "Unanswered",
-      "userActivity": "Users Performance",
+      "userActivity": "Agents Performance",
       "callHistory": "Call History",
       "apps": "Apps",
       "surveyCampaigns": "Survey Campaigns",
@@ -743,7 +743,7 @@
           "duration": "Duration",
           "waitTime": "Wait Time",
           "date": "Date",
-          "user": "User"
+          "user": "Agent"
         }
       },
       "badges": {
@@ -1207,13 +1207,13 @@
       }
     },
     "userActivity": {
-      "title": "Users Performance Analytics",
-      "subtitle": "View detailed analytics for user performance",
+      "title": "Agents Performance Analytics",
+      "subtitle": "View detailed analytics for agent performance",
       "dateRangeSearch": "Date Range Search",
       "quickStats": {
         "topAnsweredIncoming": "Top Answered Incoming",
         "topConnectedOutbound": "Top Connected Outbound",
-        "bestSlaAgent": "Best SLA User",
+        "bestSlaAgent": "Best SLA Agent",
         "noDataAvailable": "No data available"
       },
       "tabs": {
@@ -1458,7 +1458,7 @@
           "label": "Filter By",
           "placeholder": "Filter By",
           "options": {
-            "all": "All Users",
+            "all": "All Agents",
             "team": "Team"
           }
         },
@@ -1790,7 +1790,7 @@
   },
   "liveMonitor": {
     "agents": {
-      "title": "Users",
+      "title": "Agents",
       "subtitle": "Live status & performance",
       "total": "Total",
       "status": {
@@ -1823,11 +1823,11 @@
         "waitingCallsTitle": "Waiting Calls",
         "noActiveCalls": "No active calls",
         "noWaitingCalls": "No waiting calls",
-        "unknownAgent": "Unknown User",
+        "unknownAgent": "Unknown Agent",
         "active": "Active",
         "totalCallsSubtitle": "Total Calls",
         "queueCardCall": {
-          "agent": "User",
+          "agent": "Agent",
           "callDuration": "Call Duration",
           "waitingDuration": "Waiting Duration",
           "error": "Error",
