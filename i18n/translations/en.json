@@ -315,12 +315,12 @@
             "placeholder": "Enter PIN..."
           },
           "inbound": {
-            "label": "Inbound Calls",
+            "label": "Incoming Calls",
             "enable": "Enable",
             "disable": "Disable"
           },
           "outbound": {
-            "label": "Outbound Calls",
+            "label": "Outgoing Calls",
             "enable": "Enable",
             "disable": "Disable"
           },
@@ -602,8 +602,8 @@
       "postCallSurvey": "Post Call Survey",
       "aiVoiceAgents": "AI Voice Agents",
       "analytics": "Analytics",
-      "inbound": "Inbound",
-      "outbound": "Outbound",
+      "inbound": "Incoming",
+      "outbound": "Outgoing",
       "unanswered": "Unanswered",
       "userActivity": "Agents Performance",
       "callHistory": "Call History",
@@ -1158,20 +1158,20 @@
         "internalUnansweredCalls": "Internal Unanswered Calls"
       },
       "tabs": {
-        "inbound": "Inbound Unanswered",
-        "outbound": "Outbound Unanswered"
+        "inbound": "Incoming Unanswered",
+        "outbound": "Outgoing Unanswered"
       },
       "inbound": {
         "callDistribution": {
           "lineLabels": {
             "totalCalls": "Total Calls",
             "missedTotal": "Missed (Total)",
-            "inboundInternal": "Inbound (Int.)",
-            "inboundExternal": "Inbound (Ext.)",
+            "inboundInternal": "Incoming (Int.)",
+            "inboundExternal": "Incoming (Ext.)",
             "missedInternal": "Missed (Int.)",
             "missedExternal": "Missed (Ext.)",
-            "outboundInternal": "Outbound (Int.)",
-            "outboundExternal": "Outbound (Ext.)",
+            "outboundInternal": "Outgoing (Int.)",
+            "outboundExternal": "Outgoing (Ext.)",
             "unansweredTotal": "Unanswered (Total)",
             "unansweredInternal": "Unans. (Int.)",
             "unansweredExternal": "Unans. (Ext.)",
@@ -1185,8 +1185,8 @@
           "lineLabels": {
             "totalCalls": "Total Calls",
             "unansweredTotal": "Unanswered (Total)",
-            "outboundInternal": "Outbound (Int.)",
-            "outboundExternal": "Outbound (Ext.)",
+            "outboundInternal": "Outgoing (Int.)",
+            "outboundExternal": "Outgoing (Ext.)",
             "unansweredInternal": "Unans. (Int.)",
             "unansweredExternal": "Unans. (Ext.)"
           }
@@ -1200,10 +1200,10 @@
         }
       },
       "charts": {
-        "inboundDistribution": "Inbound Distribution",
-        "outboundDistribution": "Outbound Distribution",
-        "outboundHourlyUnanswered": "Outbound Hourly Unanswered Calls",
-        "inboundHourlyUnanswered": "Inbound Hourly Unanswered Calls"
+        "inboundDistribution": "Incoming Distribution",
+        "outboundDistribution": "Outgoing Distribution",
+        "outboundHourlyUnanswered": "Outgoing Hourly Unanswered Calls",
+        "inboundHourlyUnanswered": "Incoming Hourly Unanswered Calls"
       }
     },
     "userActivity": {
@@ -1212,7 +1212,7 @@
       "dateRangeSearch": "Date Range Search",
       "quickStats": {
         "topAnsweredIncoming": "Top Answered Incoming",
-        "topConnectedOutbound": "Top Connected Outbound",
+        "topConnectedOutbound": "Top Connected Outgoing",
         "bestSlaAgent": "Best SLA Agent",
         "noDataAvailable": "No data available"
       },
@@ -1326,8 +1326,8 @@
       }
     },
     "outbound": {
-      "title": "Outbound Analytics",
-      "subtitle": "View detailed analytics for outbound calls",
+      "title": "Outgoing Analytics",
+      "subtitle": "View detailed analytics for outgoing calls",
       "quickStats": {
         "totalCalls": "Total Calls",
         "unansweredCalls": "Unanswered Calls",
@@ -1440,8 +1440,8 @@
       }
     },
     "inbound": {
-      "title": "Inbound Analytics",
-      "subtitle": "View detailed analytics for inbound calls",
+      "title": "Incoming Analytics",
+      "subtitle": "View detailed analytics for incoming calls",
       "quickStats": {
         "totalCalls": "Total Calls",
         "avgWaitTime": "Avg Wait Time",
@@ -1482,7 +1482,7 @@
         "queueAnalysis": "Unanswered Queue Insights"
       },
       "overview": {
-        "title": "Inbound Call Overview",
+        "title": "Incoming Call Overview",
         "legends": {
           "totalCalls": "Total Calls",
           "answeredCalls": "Answered Calls",
@@ -1639,12 +1639,12 @@
           "peakTimeoutHour": "Peak Hour"
         },
         "comparison": {
-          "title": "Inbound unanswered comparison",
+          "title": "Incoming unanswered comparison",
           "abandonedVsTimeout": "Abandoned vs Timeout Calls",
           "comparisonTitle": "Time Comparison",
           "totalAbandoned": "Total Abandoned Calls",
           "totalTimeout": "Total Timeout Calls",
-          "totalUnanswered": "Total inbound unanswered",
+          "totalUnanswered": "Total incoming unanswered",
           "avgAbandonWait": "Avg Abandon wait",
           "avgTimeoutWait": "Avg Timeout wait",
           "peakHours": "Peak hours"
@@ -1661,7 +1661,7 @@
       },
       "detailedStats": {
         "title": "Detailed Call Statistics",
-        "subtitle": "View detailed statistics for inbound calls"
+        "subtitle": "View detailed statistics for incoming calls"
       },
       "common": {
         "noDataAvailable": "No data available",
