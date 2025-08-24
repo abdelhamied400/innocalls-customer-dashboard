@@ -1,4 +1,4 @@
-import SoundPlayer from "@/components/SoundPlayer";
+import StreamingSoundPlayer from "@/components/StreamingSoundPlayer";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
@@ -58,7 +58,7 @@ const CallRecordingCell = ({ row }: Cell<Call>) => {
           <DialogContent>
             <DialogTitle>{t("title")}</DialogTitle>
             {recordingUrl && (
-              <SoundPlayer label={recordingFileName} url={recordingUrl} />
+              <StreamingSoundPlayer label={recordingFileName} url={recordingUrl} />
             )}
           </DialogContent>
         </Dialog>

@@ -9,7 +9,7 @@ import {
 import { PlayCircle } from "@mui/icons-material";
 import { Button } from "@/components/ui/button";
 import callReportingService from "@/services/call-reporting.service";
-import SoundPlayer from "@/components/SoundPlayer";
+import StreamingSoundPlayer from "@/components/StreamingSoundPlayer";
 import { RecordingCellProps } from "../types";
 import { useTranslations } from "next-intl";
 
@@ -62,7 +62,7 @@ export const RecordingCell = ({ callId }: RecordingCellProps) => {
           <DialogTitle>{t("title")}</DialogTitle>
         </DialogHeader>
         {recordingUrl && (
-          <SoundPlayer
+          <StreamingSoundPlayer
             label={recordingUrl.split("/").pop() || t("title")}
             url={recordingUrl}
           />
