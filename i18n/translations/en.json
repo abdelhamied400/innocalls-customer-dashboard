@@ -1271,13 +1271,13 @@
         "chart": {
           "legends": {
             "totalCalls": "Total Calls",
-            "answeredCalls": "Answered Calls"
+            "answeredCalls": "Connected Calls"
           },
           "yAxisLabel": "Number of Calls",
           "tooltipAgent": "Agent",
           "tooltipLabels": {
             "totalCalls": "Total Calls",
-            "answered": "Answered"
+            "answered": "Connected"
           }
         }
       },
