@@ -1,6 +1,7 @@
 import { PerformanceStatsFiltersType } from "@/app/[locale]/(dashboard)/live-monitoring/PerformanceStats";
 import api from "./api";
 import usersService, { Agent } from "./users.service";
+import { QueueManagementFilters } from "@/app/[locale]/(dashboard)/live-monitoring/QueueManagement";
 
 export type FetchQueueDataResponse = Array<{
   queue: string;
@@ -89,8 +90,12 @@ type LiveCall = {
 type FetchLiveCallsResponse = Array<LiveCall>;
 
 export default {
-  fetchQueueData: async (): Promise<FetchQueueDataResponse> => {
-    const res = await api.get("/queue-live-monitor");
+  fetchQueueData: async (
+    filters: QueueManagementFilters
+  ): Promise<FetchQueueDataResponse> => {
+    const res = await api.get("/queue-live-monitor", {
+      params: { ...filters },
+    });
     return res.data;
   },
   fetchQueueStats: async ({

@@ -1834,6 +1834,15 @@
           "sipConnectionError": "You must be connected to a WebRTC/softphone client to monitor calls",
           "incognito": "Incognito"
         }
+      },
+      "form": {
+        "fields": {
+          "sla": {
+            "label": "SLA",
+            "placeholder": "SLA (seconds)",
+            "invalid": "SLA must be an integer greater than or equal to 1"
+          }
+        }
       }
     },
     "performanceStats": {

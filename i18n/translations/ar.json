@@ -1846,6 +1846,15 @@
           "sipConnectionError": "يجب أن تكون متصلاً ببرنامج الاتصال لمراقبة المكالمات.",
           "incognito": "متخفي"
         }
+      },
+      "form": {
+        "fields": {
+          "sla": {
+            "label": "SLA",
+            "placeholder": "SLA (بالثواني)",
+            "invalid": "SLA يجب أن يكون عددًا صحيحًا أكبر من أو يساوي 1"
+          }
+        }
       }
     },
     "performanceStats": {

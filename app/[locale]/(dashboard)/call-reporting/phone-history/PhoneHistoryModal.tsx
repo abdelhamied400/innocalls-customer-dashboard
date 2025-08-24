@@ -25,6 +25,7 @@ import {
 import { PhoneHistoryModalProps } from "./types";
 import { Add, Remove } from "@mui/icons-material";
 import { useTranslations } from "next-intl";
+import NoData from "@/components/Analytics/NoData";
 
 const PhoneHistoryModal = ({
   open,
@@ -73,7 +74,7 @@ const PhoneHistoryModal = ({
     }
 
     if (data.length === 0) {
-      return <EmptyState />;
+      return <NoData />;
     }
 
     return (
