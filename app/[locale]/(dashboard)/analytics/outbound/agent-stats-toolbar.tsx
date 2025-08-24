@@ -1,11 +1,11 @@
 import { Input } from "@/components/ui/input";
-import { CallDistributionFilters } from "./call-distribution";
 import Field from "@/components/ui/field";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
+import { AgentStatsFilters } from "./agent-stats";
 
 type AgentStatsToolbarProps = {
-  filters: CallDistributionFilters;
-  setFilters: (filters: CallDistributionFilters) => void;
+  filters: AgentStatsFilters;
+  setFilters: (filters: AgentStatsFilters) => void;
 };
 const AgentStatsToolbar = ({ filters, setFilters }: AgentStatsToolbarProps) => {
   const { table } = usePaginatedTable();
