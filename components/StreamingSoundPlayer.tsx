@@ -20,11 +20,47 @@ const StreamingSoundPlayer = ({ label, url }: StreamingSoundPlayerProps) => {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [buffered, setBuffered] = useState<number>(0);
   const [canPlay, setCanPlay] = useState<boolean>(false);
+  const [waveformData, setWaveformData] = useState<number[]>([]);
 
   const formattedDuration = useMemo(() => formatDuration(duration), [duration]);
   const formattedCurrentTime = useMemo(() => formatDuration(currentTime), [currentTime]);
   const progressPercentage = duration ? (currentTime / duration) * 100 : 0;
   const bufferedPercentage = duration ? (buffered / duration) * 100 : 0;
+
+  // Generate waveform from audio data
+  const generateWaveform = async (audioUrl: string) => {
+    try {
+      const response = await fetch(audioUrl);
+      const arrayBuffer = await response.arrayBuffer();
+      
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+      
+      const rawData = audioBuffer.getChannelData(0); // Get first channel
+      const samples = 100; // Number of bars in waveform
+      const blockSize = Math.floor(rawData.length / samples);
+      const filteredData = [];
+      
+      for (let i = 0; i < samples; i++) {
+        let blockStart = blockSize * i;
+        let sum = 0;
+        for (let j = 0; j < blockSize; j++) {
+          sum += Math.abs(rawData[blockStart + j]);
+        }
+        filteredData.push(sum / blockSize);
+      }
+      
+      // Normalize the data
+      const multiplier = Math.pow(Math.max(...filteredData), -1);
+      const normalizedData = filteredData.map(n => n * multiplier);
+      
+      setWaveformData(normalizedData);
+    } catch (error) {
+      console.error('Error generating waveform:', error);
+      // Fallback to simple bars if waveform generation fails
+      setWaveformData(Array.from({ length: 100 }, () => Math.random() * 0.7 + 0.3));
+    }
+  };
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -42,6 +78,8 @@ const StreamingSoundPlayer = ({ label, url }: StreamingSoundPlayerProps) => {
 
     const handleLoadedMetadata = () => {
       setDuration(audio.duration || 0);
+      // Generate waveform after metadata is loaded
+      generateWaveform(url);
     };
 
     const handleTimeUpdate = () => {
@@ -173,29 +211,58 @@ const StreamingSoundPlayer = ({ label, url }: StreamingSoundPlayerProps) => {
           </Button>
         </div>
 
-        {/* Progress bar */}
+        {/* Waveform Progress bar */}
         <div className="flex-1 relative">
           <div 
             ref={progressRef}
-            className="w-full h-2 bg-gray-200 rounded-full cursor-pointer relative overflow-hidden"
+            className="w-full h-12 cursor-pointer relative flex items-end gap-[1px] overflow-hidden"
             onClick={handleProgressClick}
           >
-            {/* Buffered progress */}
-            <div
-              className="absolute top-0 left-0 h-full bg-gray-300 rounded-full transition-all duration-200"
-              style={{ width: `${bufferedPercentage}%` }}
-            />
-            {/* Current progress */}
-            <div
-              className="absolute top-0 left-0 h-full bg-blue-500 rounded-full transition-all duration-100"
-              style={{ width: `${progressPercentage}%` }}
-            />
+            {/* Render actual waveform bars */}
+            {waveformData.length > 0 ? (
+              waveformData.map((amplitude, i) => {
+                const barProgress = (i / waveformData.length) * 100;
+                
+                // Determine bar color based on progress
+                let barColor = "#E5E7EB"; // Gray - unplayed
+                if (barProgress <= bufferedPercentage) {
+                  barColor = "#D1D5DB"; // Light gray - buffered
+                }
+                if (barProgress <= progressPercentage) {
+                  barColor = "#3B82F6"; // Blue - played
+                }
+                
+                return (
+                  <div
+                    key={i}
+                    className="flex-1 transition-all duration-100"
+                    style={{
+                      height: `${Math.max(amplitude * 100, 4)}%`, // Use actual amplitude, minimum 4%
+                      backgroundColor: barColor,
+                      minWidth: '1px'
+                    }}
+                  />
+                );
+              })
+            ) : (
+              // Loading placeholder bars
+              Array.from({ length: 100 }, (_, i) => (
+                <div
+                  key={i}
+                  className="flex-1 bg-gray-200 animate-pulse"
+                  style={{
+                    height: `${30 + Math.sin(i * 0.5) * 20}%`,
+                    minWidth: '1px'
+                  }}
+                />
+              ))
+            )}
           </div>
           
           {/* Loading indicator for streaming */}
           {loading && canPlay && (
-            <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
-              <div className="flex items-center gap-1 text-xs text-gray-500">
+            <div className="absolute right-2 top-0">
+              <div className="flex items-center gap-1 text-xs text-gray-500 bg-white/80 px-2 py-1 rounded">
                 <VolumeUp className="w-3 h-3" />
                 <span>Streaming...</span>
               </div>
