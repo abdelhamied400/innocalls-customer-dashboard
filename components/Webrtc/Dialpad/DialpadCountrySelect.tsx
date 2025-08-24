@@ -23,7 +23,7 @@ export const CountrySelect = ({
   placeholder = "Select a country",
 }: CountrySelectProps) => {
   const selectedCountry = useMemo(
-    () => webrtcCountries.find((c) => c.code === value),
+    () => webrtcCountries.find((c) => c.code === value) || defaultCountry,
     [value]
   );
 

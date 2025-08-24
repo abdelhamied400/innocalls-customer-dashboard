@@ -21,7 +21,7 @@ import JsSIP from "jssip";
 import { useUaEvents } from "./SipProvider/useUaEvents";
 import { RTCSession } from "jssip/lib/RTCSession";
 import { defaultCountry } from "@/constants/countries";
-import { replaceCountryCode } from "@/lib/webrtc";
+import { replaceDialCode } from "@/lib/webrtc";
 import { useToast } from "@/hooks/use-toast";
 
 const SipContext = createContext<SipContextType | null>(null);
@@ -39,7 +39,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   const { toast } = useToast();
 
   const [number, setNumber] = useState<string>("");
-  const [countryCode, setCountryCode] = useState<string>(defaultCountry.code);
+  const [dialCode, setDialCode] = useState<string>(defaultCountry.code);
 
   const [extensionState, setExtensionState] =
     useState<ExtensionState>("disconnected");
@@ -91,9 +91,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   };
 
   const call = (phoneNumber?: string) => {
-    const calleeNumber = replaceCountryCode(
-      phoneNumber || `${countryCode}${number}`
-    );
+    const calleeNumber = phoneNumber || `${dialCode}${number}`;
     if (!ua) {
       console.error("User agent is not initialized");
       return;
@@ -152,7 +150,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         extension,
         extensionState,
         number,
-        countryCode,
+        dialCode,
         currentSession,
         sessionState,
         login,
@@ -160,7 +158,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         reconnect,
         call,
         setNumber,
-        setCountryCode,
+        setDialCode,
         spy,
         spyingStatus,
         setSpyingStatus,

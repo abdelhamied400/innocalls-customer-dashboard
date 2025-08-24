@@ -19,7 +19,7 @@ export type SipContextType = {
   ua: JsSIP.UA | null;
   extensionState: ExtensionState;
   number: string;
-  countryCode: string;
+  dialCode: string;
   currentSession: RTCSession | null;
   sessionState?: SessionState;
   login: (extension: ExtensionWithCredentials) => void;
@@ -27,7 +27,7 @@ export type SipContextType = {
   reconnect: () => void;
   call: (number?: string) => RTCSession | undefined;
   setNumber: React.Dispatch<React.SetStateAction<string>>;
-  setCountryCode: React.Dispatch<React.SetStateAction<string>>;
+  setDialCode: React.Dispatch<React.SetStateAction<string>>;
   spy: (extension: string) => void;
   spyingStatus: SpyingStatus;
   setSpyingStatus: React.Dispatch<React.SetStateAction<SpyingStatus>>;

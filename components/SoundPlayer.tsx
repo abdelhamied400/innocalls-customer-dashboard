@@ -4,7 +4,6 @@ import { Button } from "./ui/button";
 import { Download, Pause, PlayArrow } from "@mui/icons-material";
 import { downloadFile } from "../lib/downloadFile";
 import { formatDuration } from "@/lib/date";
-import { Skeleton } from "./ui/skeleton";
 import Spinner from "./ui/spinner";
 
 interface SoundPlayerProps {
@@ -118,7 +117,7 @@ const WaveformLoader = ({ bars = 42, color = "bg-gray-300" }) => {
 
   return (
     <div className="flex items-center justify-center gap-[3px] h-12">
-      {indices.map((offset, i) => {
+      {indices.map((_offset, i) => {
         const delay = (Math.random() * 1).toFixed(2); // random 0–1s delay
         const duration = (1 + Math.random()).toFixed(2); // random 1–2s duration
         return (

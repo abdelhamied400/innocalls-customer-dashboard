@@ -2,26 +2,38 @@ import Field from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { digits } from "@/constants/digits";
 import { useSip } from "@/providers/webrtc/SipProvider";
-import React from "react";
+import React, { useState } from "react";
 import { CountrySelect } from "./DialpadCountrySelect";
 import { useTranslations } from "next-intl";
+import { detectCountryFromNumber } from "@/lib/webrtc";
+import { defaultCountry, webrtcCountries } from "@/constants/countries";
 
 const DialpadInput = () => {
   const t = useTranslations("webrtc.fields");
+  const { number, setNumber, dialCode, setDialCode, call } = useSip();
 
-  const { number, setNumber, countryCode, setCountryCode, call } = useSip();
+  // Track if user manually changed country
+  const [userSelectedCountry, setUserSelectedCountry] = useState(false);
 
+  // Handle typing in the input
   const onNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
 
-    // Allow + only as the first character, then only digits, #, *
-    if (value.startsWith("+")) {
-      value = "+" + value.slice(1).replace(/[^0-9#*]/g, "");
+    // Allow only leading +, then digits, #, *
+    let rawDigits = value;
+    if (rawDigits.startsWith("+")) {
+      rawDigits = "+" + rawDigits.slice(1).replace(/[^\d#*]/g, "");
     } else {
-      value = value.replace(/[^0-9#*]/g, "");
+      rawDigits = rawDigits.replace(/[^\d#*]/g, "");
     }
 
-    setNumber(value);
+    // Auto-detect country only if user didn't pick one manually
+    if (!userSelectedCountry) {
+      const detectedDialCode = detectCountryFromNumber(rawDigits);
+      setDialCode(detectedDialCode);
+    }
+
+    setNumber(rawDigits);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -40,11 +52,34 @@ const DialpadInput = () => {
     }
   };
 
+  const handleCountryChange = (code: string) => {
+    const isDefault = code === defaultCountry.code;
+    setDialCode(code);
+    setUserSelectedCountry(!isDefault);
+    // prepend the dial code to the number
+    if (!isDefault) {
+      const country = webrtcCountries.find((c) => c.code === code);
+      if (country) {
+        // check if the number starts with any country dialCode
+        // if so replace it
+        const countryDialCodes = webrtcCountries.map((c) => c.dialCode);
+        const matchingDialCode = countryDialCodes.find((dial) =>
+          number.startsWith(dial)
+        );
+        if (matchingDialCode) {
+          setNumber(number.replace(matchingDialCode, country.dialCode));
+        } else {
+          setNumber(`${country.dialCode}${number}`);
+        }
+      }
+    }
+  };
+
   return (
     <Field label={t("phone.label")}>
       <CountrySelect
-        value={countryCode}
-        onChange={setCountryCode}
+        value={dialCode}
+        onChange={handleCountryChange}
         placeholder={t("country.placeholder")}
       />
       <Input
