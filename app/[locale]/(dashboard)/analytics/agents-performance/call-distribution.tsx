@@ -26,9 +26,14 @@ import { UserActivityFilters } from "./page";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
+import CallDistributionToolbar from "./call-distribution-toolbar";
 
 type CallDistributionAnalyticsProps = {
   filters: UserActivityFilters;
+};
+
+export type CallDistributionFilters = {
+  search: string;
 };
 
 const CallDistributionAnalytics = ({
@@ -36,6 +41,10 @@ const CallDistributionAnalytics = ({
 }: CallDistributionAnalyticsProps) => {
   const t = useTranslations("analytics.userActivity.callDistribution");
   const [includeInternalCalls, setIncludeInternalCalls] = useState(false);
+  const [callDistributionFilters, setCallDistributionFilters] =
+    useState<CallDistributionFilters>({
+      search: "",
+    });
 
   const columns = [
     {
@@ -257,6 +266,10 @@ const CallDistributionAnalytics = ({
             columns={columns}
             manualPagination={false}
           >
+            <CallDistributionToolbar
+              filters={callDistributionFilters}
+              setFilters={setCallDistributionFilters}
+            />
             <PaginatedTableContent>
               <PaginatedTableHead />
               {isLoading && <PaginatedTableSkeleton />}

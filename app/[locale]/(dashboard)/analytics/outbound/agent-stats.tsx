@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import {
   ResponsiveContainer,
@@ -26,13 +26,24 @@ import outboundAnalyticsService from "@/services/outbound-analytics.service";
 import NoData from "../../../../../components/Analytics/NoData";
 import { OutboundAnalyticsFilters } from "./page";
 import { useTranslations } from "next-intl";
+import AgentStatsToolbar from "./agent-stats-toolbar";
 
 type AgentStatsAnalyticsProps = {
   filters: OutboundAnalyticsFilters;
 };
 
+export type AgentStatsFilters = {
+  search: string;
+};
+
 const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
   const t = useTranslations("analytics.outbound.agentStats");
+
+  const [agentStatsFilters, setAgentStatsFilters] = useState<AgentStatsFilters>(
+    {
+      search: "",
+    }
+  );
 
   const {
     data: agentStats,
@@ -161,6 +172,10 @@ const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
           columns={columns}
           manualPagination={false}
         >
+          <AgentStatsToolbar
+            filters={agentStatsFilters}
+            setFilters={setAgentStatsFilters}
+          />
           <PaginatedTableContent>
             <PaginatedTableHead />
             {isLoading && <PaginatedTableSkeleton />}

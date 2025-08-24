@@ -70,7 +70,7 @@ const UsersTableHeader = ({ filters, setFilters }: UsersTableHeaderProps) => {
             </Toggle>
           </CollapsibleTrigger>
           {Organization?.hasTenant && (
-            <Link href="/users/create">
+            <Link href="/agents/create">
               <Button>{t("actions.create")}</Button>
             </Link>
           )}

@@ -225,7 +225,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <Link href={`/users/${row.original.id}/edit`}>
+          <Link href={`/agents/${row.original.id}/edit`}>
             <DropdownMenuItem>
               <Edit />
               {t("actions.edit")}
