@@ -52,6 +52,9 @@ api.interceptors.request.use(async (config) => {
     config.headers["Accept-Language"] = lang;
   }
 
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  config.headers["timezone"] = timezone;
+
   return config;
 });
 

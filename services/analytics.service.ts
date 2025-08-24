@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import api from "./api";
-import { UserActivityFilters } from "@/app/[locale]/(dashboard)/analytics/user-activity/page";
+import { UserActivityFilters } from "@/app/[locale]/(dashboard)/analytics/agents-performance/page";
 
 type FetchQuickStatsResponse = {
   topAnsweredIncomingAgents: {
@@ -87,7 +87,6 @@ export default {
             ? filters.agents.map((agent) => agent.value).join(",")
             : undefined,
         sla: filters.sla,
-        includeInternalCalls: true, // TODO: Remove this later
       },
     });
     return response.data.callsDistribution;

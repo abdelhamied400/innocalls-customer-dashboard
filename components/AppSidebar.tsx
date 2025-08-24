@@ -111,7 +111,7 @@ const AppSidebar = () => {
               <SidebarItem
                 icon={<PersonSearch />}
                 title={t("navigation.userActivity")}
-                href={`/analytics/user-activity`}
+                href={`/analytics/agents-performance`}
                 isNew={true}
                 isComingSoon={false}
               />
@@ -174,7 +174,7 @@ const AppSidebar = () => {
             <SidebarItem
               icon={<Users />}
               title={t("navigation.users")}
-              href={`/users`}
+              href={`/agents`}
               disabled={false}
               isNew={true}
               isComingSoon={false}
