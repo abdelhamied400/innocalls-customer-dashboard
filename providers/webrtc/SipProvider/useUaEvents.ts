@@ -186,12 +186,45 @@ export const useUaEvents = ({
 
   const bindEvents = useCallback(
     (userAgent: JsSIP.UA, extension: ExtensionWithCredentials) => {
-      userAgent.on("connecting", () => setExtensionState("connecting"));
-      userAgent.on("connected", () => setExtensionState("connected"));
-      userAgent.on("disconnected", () => setExtensionState("disconnected"));
-      userAgent.on("registrationFailed", (e) => {
-        webrtcLogger.error("Registration failed", e);
+      // Connection state events
+      userAgent.on("connecting", () => {
+        webrtcLogger.info("SIP connecting...");
+        setExtensionState("connecting");
+      });
+      
+      userAgent.on("connected", () => {
+        webrtcLogger.info("SIP websocket connected (not yet registered)");
+        // Don't set to "connected" here - wait for actual registration
+      });
+      
+      userAgent.on("disconnected", () => {
+        webrtcLogger.info("SIP disconnected");
         setExtensionState("disconnected");
+      });
+
+      // Registration events  
+      userAgent.on("registered", () => {
+        webrtcLogger.info("SIP registration successful");
+        setExtensionState("connected");
+        navigate("/dialpad");
+      });
+
+      userAgent.on("unregistered", () => {
+        webrtcLogger.info("SIP unregistered");
+        setExtensionState("disconnected");
+      });
+      
+      userAgent.on("registrationFailed", (e) => {
+        webrtcLogger.error("Registration failed", { 
+          cause: e.cause, 
+          response: e.response?.status_code,
+          uri: extension.uri 
+        });
+        setExtensionState("disconnected");
+      });
+
+      userAgent.on("registrationExpiring", () => {
+        webrtcLogger.info("Registration expiring, auto-renewal will occur");
       });
       userAgent.on("newRTCSession", (e: RTCSessionEvent) => {
         const session = e.session;
@@ -234,7 +267,9 @@ export const useUaEvents = ({
 
   const unbindEvents = useCallback(
     (userAgent: JsSIP.UA) => {
-      userAgent.removeAllListeners(); // or remove specific if needed
+      webrtcLogger.info("Unbinding UA events");
+      // Remove all listeners to prevent memory leaks
+      userAgent.removeAllListeners();
       setExtensionState("disconnected");
       updateSessionState(undefined);
     },

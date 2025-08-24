@@ -11,7 +11,7 @@ import webrtcService from "@/services/webrtc.service";
 import useAppStore from "@/store/app.slice";
 import { ArrowForward, Dialpad as DialpadIcon } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 const Innortc = () => {
   const { isRoute } = useRouting();
@@ -19,21 +19,36 @@ const Innortc = () => {
   const { data: session } = useSession();
 
   const { login, ua, extensionState } = useSip();
+  const hasTriggeredLogin = useRef(false);
 
   useEffect(() => {
-    // if agent and ua is not initialized, login automatically
+    // if agent and not connected, login automatically
     const tryLogin = async () => {
       if (
         session?.user?.userType === "agent" &&
-        !ua &&
-        extensionState === "disconnected"
+        extensionState === "disconnected" &&
+        !hasTriggeredLogin.current
       ) {
+        hasTriggeredLogin.current = true;
         const agent = await webrtcService.getAgentExtension();
         login(agent);
       }
     };
-    tryLogin();
-  }, [ua, extensionState, login]);
+    
+    // Only run if we have session data
+    if (session?.user) {
+      tryLogin();
+    }
+  }, [session?.user?.userType, extensionState, login]);
+
+  // Reset the login trigger when UA is successfully established or when disconnected
+  useEffect(() => {
+    if (ua && extensionState === "connected") {
+      hasTriggeredLogin.current = false;
+    } else if (extensionState === "disconnected" && !ua) {
+      hasTriggeredLogin.current = false;
+    }
+  }, [ua, extensionState]);
 
   return (
     <div className="innortc flex flex-col h-full">
