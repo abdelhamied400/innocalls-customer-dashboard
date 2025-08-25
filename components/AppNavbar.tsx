@@ -5,16 +5,19 @@ import ProfileMenu from "./ProfileMenu";
 import { Button } from "./ui/button";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { useTranslations } from "next-intl";
+import { useLayoutManager } from "@/hooks/use-layout-manager";
 
 const AppNavbar = () => {
   const t = useTranslations("sidebar");
   const { isSidebarOpen, toggleSidebar, pageTitle } = useAppStore();
+  const { isMobile } = useLayoutManager();
 
   return (
     <nav className="navbar">
       <div className="flex justify-between items-center gap-8 px-4 border-b-2 h-24">
         <div className="flex items-center gap-2">
-          {!isSidebarOpen && (
+          {/* Show menu button only on desktop when sidebar is closed */}
+          {!isMobile && !isSidebarOpen && (
             <Button variant="ghost" size="icon" onClick={toggleSidebar}>
               <MenuOpenIcon />
             </Button>
