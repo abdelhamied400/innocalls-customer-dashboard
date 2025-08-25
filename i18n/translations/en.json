@@ -1310,7 +1310,7 @@
       "form": {
         "fields": {
           "sla": {
-            "label": "SLA Time",
+            "label": "SLA (seconds)",
             "placeholder": "Enter SLA compliance percentage"
           }
         },
@@ -1805,7 +1805,7 @@
       "valueSubtitle": "Today's Active Queues",
       "queueCard": {
         "activeCalls": "active calls",
-        "sla": "SLA",
+        "sla": "SLA (seconds)",
         "inProgress": "In Progress",
         "waiting": "Waiting",
         "calls": "calls",
@@ -1838,7 +1838,7 @@
       "form": {
         "fields": {
           "sla": {
-            "label": "SLA",
+            "label": "SLA (seconds)",
             "placeholder": "SLA (seconds)",
             "invalid": "SLA must be an integer greater than or equal to 1"
           }
@@ -1883,7 +1883,7 @@
         },
         "fields": {
           "sla": {
-            "label": "SLA",
+            "label": "SLA (seconds)",
             "placeholder": "SLA (seconds)"
           },
           "timePeriod": {
