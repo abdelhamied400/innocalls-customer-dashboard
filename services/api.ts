@@ -32,6 +32,28 @@ api.interceptors.request.use(async (config) => {
     const nextHeaders = require("next/headers");
     const headers = await nextHeaders.headers();
     lang = headers.get("NEXT_LOCALE") || "en";
+
+    // Add client IP forwarding when on server-side
+    try {
+      // Get client IP from the headers that Caddy forwarded
+      const clientIP = headers.get('x-forwarded-for')?.split(',')[0].trim() || 
+                       headers.get('x-real-ip') || 
+                       headers.get('x-client-ip') ||
+                       'unknown';
+      
+      // Forward it to backend API
+      config.headers['X-Client-IP'] = clientIP;
+      
+      // Temporary logging for debugging
+      console.log('=== CLIENT IP DEBUG ===');
+      console.log('x-forwarded-for:', headers.get('x-forwarded-for'));
+      console.log('x-real-ip:', headers.get('x-real-ip'));
+      console.log('x-client-ip:', headers.get('x-client-ip'));
+      console.log('Final clientIP:', clientIP);
+      console.log('=====================');
+    } catch (error) {
+      console.warn('Could not get client IP:', error);
+    }
   } else {
     lang = (await getCookie("NEXT_LOCALE")) || "en";
   }
