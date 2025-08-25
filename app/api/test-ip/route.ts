@@ -16,7 +16,6 @@ export async function GET(request: NextRequest) {
   return Response.json({
     clientIP,
     allHeaders: headers,
-    requestIP: request.ip,
     // Show all request headers for debugging
     allRequestHeaders: Object.fromEntries(request.headers.entries())
   });
