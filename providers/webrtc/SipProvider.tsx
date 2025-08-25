@@ -21,7 +21,6 @@ import JsSIP from "jssip";
 import { useUaEvents } from "./SipProvider/useUaEvents";
 import { RTCSession } from "jssip/lib/RTCSession";
 import { defaultCountry } from "@/constants/countries";
-import { replaceDialCode } from "@/lib/webrtc";
 import { useToast } from "@/hooks/use-toast";
 
 const SipContext = createContext<SipContextType | null>(null);
@@ -91,7 +90,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   };
 
   const call = (phoneNumber?: string) => {
-    const calleeNumber = phoneNumber || `${dialCode}${number}`;
+    const calleeNumber = phoneNumber || number;
     if (!ua) {
       console.error("User agent is not initialized");
       return;
