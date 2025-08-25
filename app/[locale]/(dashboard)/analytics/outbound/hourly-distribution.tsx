@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   ResponsiveContainer,
   LineChart,
@@ -25,6 +25,9 @@ import { ShowChart, TableView } from "@mui/icons-material";
 import { OutboundAnalyticsFilters } from "./page";
 import NoData from "../../../../../components/Analytics/NoData";
 import { useTranslations } from "next-intl";
+import HourlyDistributionToolbar, {
+  HourlyDistributionFilters,
+} from "./hourly-distribution-toolbar";
 
 type HourlyDistributionAnalyticsProps = {
   filters: OutboundAnalyticsFilters;
@@ -34,6 +37,11 @@ const HourlyDistributionAnalytics = ({
   filters,
 }: HourlyDistributionAnalyticsProps) => {
   const t = useTranslations("analytics.outbound.hourlyDistribution");
+
+  const [hourlyDistributionFilters, setHourlyDistributionFilters] =
+    useState<HourlyDistributionFilters>({
+      search: "",
+    });
 
   const columns = [
     {
@@ -141,6 +149,10 @@ const HourlyDistributionAnalytics = ({
             columns={columns}
             manualPagination={false}
           >
+            <HourlyDistributionToolbar
+              filters={hourlyDistributionFilters}
+              setFilters={setHourlyDistributionFilters}
+            />
             <PaginatedTableContent>
               <PaginatedTableHead />
               {isLoading && <PaginatedTableSkeleton />}

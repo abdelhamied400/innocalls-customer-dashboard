@@ -25,6 +25,8 @@ import {
 import { UserActivityFilters } from "./page";
 import NoData from "./NoData";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import CallStatsToolbar, { CallStatsFilters } from "./call-stats-toolbar";
 
 type CallStatsAnalyticsProps = {
   filters: UserActivityFilters;
@@ -33,6 +35,10 @@ type CallStatsAnalyticsProps = {
 const CallStatsAnalytics = ({ filters }: CallStatsAnalyticsProps) => {
   const t = useTranslations("analytics.userActivity.callStats");
   const tCommon = useTranslations("analytics.userActivity.common");
+
+  const [callStatsFilters, setCallStatsFilters] = useState<CallStatsFilters>({
+    search: "",
+  });
 
   const columns = [
     { header: t("table.columns.name"), accessorKey: "name" },
@@ -151,6 +157,10 @@ const CallStatsAnalytics = ({ filters }: CallStatsAnalyticsProps) => {
             columns={columns}
             manualPagination={false}
           >
+            <CallStatsToolbar
+              filters={callStatsFilters}
+              setFilters={setCallStatsFilters}
+            />
             <PaginatedTableContent>
               <PaginatedTableHead />
               {isLoading && <PaginatedTableSkeleton />}

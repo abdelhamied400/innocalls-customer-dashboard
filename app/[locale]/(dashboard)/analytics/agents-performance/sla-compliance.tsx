@@ -22,6 +22,10 @@ import {
 import { UserActivityFilters } from "./page";
 import NoData from "./NoData";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import SlaComplianceToolbar, {
+  SlaComplianceFilters,
+} from "./sla-compliance-toolbar";
 
 type SlaComplianceAnalyticsProps = {
   filters: UserActivityFilters;
@@ -29,6 +33,11 @@ type SlaComplianceAnalyticsProps = {
 
 const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
   const t = useTranslations("analytics.userActivity.slaCompliance");
+
+  const [slaComplianceFilters, setSlaComplianceFilters] =
+    useState<SlaComplianceFilters>({
+      search: "",
+    });
 
   const columns = [
     { header: t("table.columns.name"), accessorKey: "name" },
@@ -38,7 +47,7 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
       accessorKey: "totalCalls",
     },
     {
-      header: t("table.columns.answeredCalls"), 
+      header: t("table.columns.answeredCalls"),
       accessorKey: "answeredCalls",
     },
     {
@@ -127,6 +136,10 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
             columns={columns}
             manualPagination={false}
           >
+            <SlaComplianceToolbar
+              filters={slaComplianceFilters}
+              setFilters={setSlaComplianceFilters}
+            />
             <PaginatedTableContent>
               <PaginatedTableHead />
               {isLoading && <PaginatedTableSkeleton />}
