@@ -98,7 +98,7 @@ api.interceptors.response.use(
         console.error("Unauthorized access - redirecting to login");
 
 
-        deleteCookie("accessToken")
+        // deleteCookie("accessToken")
         if (isServer) {
           // Server-side sign out
          await clientSignout_();
