@@ -13,7 +13,9 @@ interface StreamingSoundPlayerProps {
 const StreamingSoundPlayer = ({ label, url }: StreamingSoundPlayerProps) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const progressRef = useRef<HTMLDivElement | null>(null);
-  const [playerStatus, setPlayerStatus] = useState<"playing" | "paused">("paused");
+  const [playerStatus, setPlayerStatus] = useState<"playing" | "paused">(
+    "paused"
+  );
   const [loading, setLoading] = useState<boolean>(true);
   const [downloadLoading, setDownloadLoading] = useState<boolean>(false);
   const [duration, setDuration] = useState<number>(0);
@@ -23,7 +25,10 @@ const StreamingSoundPlayer = ({ label, url }: StreamingSoundPlayerProps) => {
   const [waveformData, setWaveformData] = useState<number[]>([]);
 
   const formattedDuration = useMemo(() => formatDuration(duration), [duration]);
-  const formattedCurrentTime = useMemo(() => formatDuration(currentTime), [currentTime]);
+  const formattedCurrentTime = useMemo(
+    () => formatDuration(currentTime),
+    [currentTime]
+  );
   const progressPercentage = duration ? (currentTime / duration) * 100 : 0;
   const bufferedPercentage = duration ? (buffered / duration) * 100 : 0;
 
@@ -32,15 +37,16 @@ const StreamingSoundPlayer = ({ label, url }: StreamingSoundPlayerProps) => {
     try {
       const response = await fetch(audioUrl);
       const arrayBuffer = await response.arrayBuffer();
-      
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+
+      const audioContext = new (window.AudioContext ||
+        (window as any).webkitAudioContext)();
       const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-      
+
       const rawData = audioBuffer.getChannelData(0); // Get first channel
       const samples = 100; // Number of bars in waveform
       const blockSize = Math.floor(rawData.length / samples);
       const filteredData = [];
-      
+
       for (let i = 0; i < samples; i++) {
         let blockStart = blockSize * i;
         let sum = 0;
@@ -49,16 +55,18 @@ const StreamingSoundPlayer = ({ label, url }: StreamingSoundPlayerProps) => {
         }
         filteredData.push(sum / blockSize);
       }
-      
+
       // Normalize the data
       const multiplier = Math.pow(Math.max(...filteredData), -1);
-      const normalizedData = filteredData.map(n => n * multiplier);
-      
+      const normalizedData = filteredData.map((n) => n * multiplier);
+
       setWaveformData(normalizedData);
     } catch (error) {
-      console.error('Error generating waveform:', error);
+      console.error("Error generating waveform:", error);
       // Fallback to simple bars if waveform generation fails
-      setWaveformData(Array.from({ length: 100 }, () => Math.random() * 0.7 + 0.3));
+      setWaveformData(
+        Array.from({ length: 100 }, () => Math.random() * 0.7 + 0.3)
+      );
     }
   };
 
@@ -155,7 +163,7 @@ const StreamingSoundPlayer = ({ label, url }: StreamingSoundPlayerProps) => {
     const clickX = e.clientX - rect.left;
     const clickPercentage = clickX / rect.width;
     const newTime = clickPercentage * duration;
-    
+
     audio.currentTime = newTime;
     setCurrentTime(newTime);
   };
@@ -168,13 +176,8 @@ const StreamingSoundPlayer = ({ label, url }: StreamingSoundPlayerProps) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <audio
-        ref={audioRef}
-        src={url}
-        preload="metadata"
-        className="hidden"
-      />
-      
+      <audio ref={audioRef} src={url} preload="metadata" className="hidden" />
+
       <div className="flex items-center justify-between">
         <p className="text-gray-500 text-sm">{label}</p>
         <div className="flex items-center gap-2">
@@ -213,52 +216,50 @@ const StreamingSoundPlayer = ({ label, url }: StreamingSoundPlayerProps) => {
 
         {/* Waveform Progress bar */}
         <div className="flex-1 relative">
-          <div 
+          <div
             ref={progressRef}
-            className="w-full h-12 cursor-pointer relative flex items-end gap-[1px] overflow-hidden"
+            className="w-full h-12 cursor-pointer relative flex items-center gap-[1px] overflow-hidden"
             onClick={handleProgressClick}
           >
             {/* Render actual waveform bars */}
-            {waveformData.length > 0 ? (
-              waveformData.map((amplitude, i) => {
-                const barProgress = (i / waveformData.length) * 100;
-                
-                // Determine bar color based on progress
-                let barColor = "#E5E7EB"; // Gray - unplayed
-                if (barProgress <= bufferedPercentage) {
-                  barColor = "#D1D5DB"; // Light gray - buffered
-                }
-                if (barProgress <= progressPercentage) {
-                  barColor = "#3B82F6"; // Blue - played
-                }
-                
-                return (
+            {waveformData.length > 0
+              ? waveformData.map((amplitude, i) => {
+                  const barProgress = (i / waveformData.length) * 100;
+
+                  // Determine bar color based on progress
+                  let barColor = "#E5E7EB"; // Gray - unplayed
+                  if (barProgress <= bufferedPercentage) {
+                    barColor = "#D1D5DB"; // Light gray - buffered
+                  }
+                  if (barProgress <= progressPercentage) {
+                    barColor = "#3B82F6"; // Blue - played
+                  }
+
+                  return (
+                    <div
+                      key={i}
+                      className="flex-1 rounded-full transition-all duration-100"
+                      style={{
+                        height: `${Math.max(amplitude * 100, 4)}%`, // Use actual amplitude, minimum 4%
+                        backgroundColor: barColor,
+                        minWidth: "1px",
+                      }}
+                    />
+                  );
+                })
+              : // Loading placeholder bars
+                Array.from({ length: 100 }, (_, i) => (
                   <div
                     key={i}
-                    className="flex-1 transition-all duration-100"
+                    className="flex-1 bg-gray-200 rounded-full animate-pulse"
                     style={{
-                      height: `${Math.max(amplitude * 100, 4)}%`, // Use actual amplitude, minimum 4%
-                      backgroundColor: barColor,
-                      minWidth: '1px'
+                      height: `${30 + Math.sin(i * 0.5) * 20}%`,
+                      minWidth: "1px",
                     }}
                   />
-                );
-              })
-            ) : (
-              // Loading placeholder bars
-              Array.from({ length: 100 }, (_, i) => (
-                <div
-                  key={i}
-                  className="flex-1 bg-gray-200 animate-pulse"
-                  style={{
-                    height: `${30 + Math.sin(i * 0.5) * 20}%`,
-                    minWidth: '1px'
-                  }}
-                />
-              ))
-            )}
+                ))}
           </div>
-          
+
           {/* Loading indicator for streaming */}
           {loading && canPlay && (
             <div className="absolute right-2 top-0">

@@ -12,6 +12,7 @@ import callReportingService from "@/services/call-reporting.service";
 import StreamingSoundPlayer from "@/components/StreamingSoundPlayer";
 import { RecordingCellProps } from "../types";
 import { useTranslations } from "next-intl";
+import { WaveformLoader } from "@/components/SoundPlayer";
 
 export const RecordingCell = ({ callId }: RecordingCellProps) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -61,7 +62,9 @@ export const RecordingCell = ({ callId }: RecordingCellProps) => {
         <DialogHeader>
           <DialogTitle>{t("title")}</DialogTitle>
         </DialogHeader>
-        {recordingUrl && (
+        {isLoading && <WaveformLoader />}
+
+        {!isLoading && recordingUrl && (
           <StreamingSoundPlayer
             label={recordingUrl.split("/").pop() || t("title")}
             url={recordingUrl}
