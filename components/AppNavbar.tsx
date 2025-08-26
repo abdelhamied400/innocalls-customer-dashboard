@@ -5,7 +5,6 @@ import ProfileMenu from "./ProfileMenu";
 import { Button } from "./ui/button";
 import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 import { useTranslations } from "next-intl";
-import { useLayoutManager } from "@/hooks/use-layout-manager";
 
 const AppNavbar = () => {
   const t = useTranslations("sidebar");

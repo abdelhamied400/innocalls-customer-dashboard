@@ -50,21 +50,12 @@ export const useLayoutManager = () => {
 
     // On mobile, sidebar is always hidden from grid layout (handled by sheet)
     if (isMobile) {
-      if (isWebrtcOpen) {
-        return {
-          ...baseClasses,
-          container: `${baseClasses.container} grid-cols-[1fr_280px] grid-rows-[96px_1fr]`,
-          sidebar: `${baseClasses.sidebar} hidden`, // Hidden on mobile
-          navbar: "col-span-2",
-        };
-      } else {
-        return {
-          ...baseClasses,
-          container: `${baseClasses.container} grid-cols-[1fr_80px] grid-rows-[96px_1fr]`,
-          sidebar: `${baseClasses.sidebar} hidden`, // Hidden on mobile
-          navbar: "col-span-3",
-        };
-      }
+      return {
+        ...baseClasses,
+        container: `${baseClasses.container} grid-cols-[1fr_80px] grid-rows-[96px_1fr]`,
+        sidebar: `${baseClasses.sidebar} hidden`, // Hidden on mobile
+        navbar: "col-span-2",
+      };
     }
 
     // Desktop layout - add grid-rows to base container
@@ -106,6 +97,7 @@ export const useLayoutManager = () => {
     hasExpandedSidebar: isSidebarOpen,
     hasExpandedWebrtc: isWebrtcOpen,
     shouldUseSidebarSheet: isMobile,
+    shouldUseWebrtcSheet: isMobile,
   };
 };
 
