@@ -282,4 +282,29 @@ const StreamingSoundPlayer = ({ label, url }: StreamingSoundPlayerProps) => {
   );
 };
 
+export const WaveformLoader = ({ bars = 42, color = "bg-gray-300" }) => {
+  // Generate an array with symmetric indexes around the center
+  const half = Math.floor(bars / 2);
+  const indices = [...Array(bars)].map((_, i) => i - half);
+
+  return (
+    <div className="flex items-center justify-center gap-[3px] h-12">
+      {indices.map((_offset, i) => {
+        const delay = (Math.random() * 1).toFixed(2); // random 0–1s delay
+        const duration = (1 + Math.random()).toFixed(2); // random 1–2s duration
+        return (
+          <div
+            key={i}
+            className={`w-0.5 h-full ${color} rounded-full animate-wave`}
+            style={{
+              animationDelay: `${delay}s`,
+              animationDuration: `${duration}s`,
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+};
+
 export default StreamingSoundPlayer;

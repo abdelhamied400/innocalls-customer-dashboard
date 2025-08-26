@@ -9,10 +9,11 @@ import {
 import { PlayCircle } from "@mui/icons-material";
 import { Button } from "@/components/ui/button";
 import callReportingService from "@/services/call-reporting.service";
-import StreamingSoundPlayer from "@/components/StreamingSoundPlayer";
+import StreamingSoundPlayer, {
+  WaveformLoader,
+} from "@/components/StreamingSoundPlayer";
 import { RecordingCellProps } from "../types";
 import { useTranslations } from "next-intl";
-import { WaveformLoader } from "@/components/SoundPlayer";
 
 export const RecordingCell = ({ callId }: RecordingCellProps) => {
   const [isLoading, setIsLoading] = useState(false);
