@@ -1,7 +1,8 @@
 import axios, { AxiosError } from "axios";
 import { getSession, signOut as clientSignout } from "next-auth/react";
-import { getCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
 import { auth, signOut } from "@/auth";
+import { clientSignout_ } from "@/lib/auth";
 
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
@@ -84,8 +85,11 @@ api.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
+  async(error) => {
     const isServer = typeof window === "undefined";
+
+    console.log({isServer});
+
     console.error("API Error:", error);
     if (error.response) {
       // Handle specific error responses
@@ -93,12 +97,14 @@ api.interceptors.response.use(
         // Handle unauthorized access, e.g., redirect to login
         console.error("Unauthorized access - redirecting to login");
 
+
+        deleteCookie("accessToken")
         if (isServer) {
           // Server-side sign out
-          signOut();
+         await clientSignout_();
         } else {
           // Client-side sign out
-          return clientSignout();
+         await clientSignout_();
         }
       } else if (error.response.status === 403) {
         // Handle forbidden access
