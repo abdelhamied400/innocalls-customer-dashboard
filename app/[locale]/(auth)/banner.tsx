@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import DotGrid from "@/components/DotGrid";
 import { useLocale, useTranslations } from "next-intl";
 import { locales, LocaleSlug } from "@/i18n/config";
+import Autoplay from "embla-carousel-autoplay";
 
 const AuthBanner = () => {
   const locale = useLocale() as LocaleSlug;
@@ -102,7 +103,16 @@ const AuthBanner = () => {
             <Carousel
               setApi={setApi}
               opts={{ loop: true, startIndex: 1 }}
-              plugins={[]}
+              plugins={[
+                Autoplay({
+                  delay: 4000,
+                  stopOnLastSnap: false,
+                  stopOnMouseEnter: true,
+                  active: true,
+                  stopOnFocusIn: false,
+                  stopOnInteraction: false,
+                }),
+              ]}
               className="flex flex-col gap-8"
             >
               <CarouselContent className="items-center">
