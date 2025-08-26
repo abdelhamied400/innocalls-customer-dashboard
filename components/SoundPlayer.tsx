@@ -110,7 +110,7 @@ const SoundPlayer = ({ label, url }: SoundPlayerProps) => {
   );
 };
 
-const WaveformLoader = ({ bars = 42, color = "bg-gray-300" }) => {
+export const WaveformLoader = ({ bars = 42, color = "bg-gray-300" }) => {
   // Generate an array with symmetric indexes around the center
   const half = Math.floor(bars / 2);
   const indices = [...Array(bars)].map((_, i) => i - half);

@@ -9,9 +9,10 @@ import {
 import { PlayCircle } from "@mui/icons-material";
 import { Button } from "@/components/ui/button";
 import callReportingService from "@/services/call-reporting.service";
-import SoundPlayer from "@/components/SoundPlayer";
+import StreamingSoundPlayer from "@/components/StreamingSoundPlayer";
 import { RecordingCellProps } from "../types";
 import { useTranslations } from "next-intl";
+import { WaveformLoader } from "@/components/SoundPlayer";
 
 export const RecordingCell = ({ callId }: RecordingCellProps) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -61,8 +62,10 @@ export const RecordingCell = ({ callId }: RecordingCellProps) => {
         <DialogHeader>
           <DialogTitle>{t("title")}</DialogTitle>
         </DialogHeader>
-        {recordingUrl && (
-          <SoundPlayer
+        {isLoading && <WaveformLoader />}
+
+        {!isLoading && recordingUrl && (
+          <StreamingSoundPlayer
             label={recordingUrl.split("/").pop() || t("title")}
             url={recordingUrl}
           />
