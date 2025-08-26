@@ -11,6 +11,7 @@ const config: Config = {
     "./containers/**/*.{ts,tsx}",
     "./providers/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
+    "./hooks/**/*.{ts,tsx}",
   ],
   theme: {
     extend: {

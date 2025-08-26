@@ -44,8 +44,8 @@ export const useLayoutManager = () => {
         "h-screen w-screen grid box-border transition-all duration-800 ease-in-out",
       sidebar: "row-span-3 overflow-y-auto border-e",
       navbar: "col-span-2 col-start-2 col-end-4",
-      mainContent: "row-span-2 overflow-auto p-4",
-      webrtc: "row-span-2 col-start-3 overflow-y-auto border-s",
+      mainContent: "overflow-auto p-4",
+      webrtc: "overflow-y-auto border-s",
     };
 
     // On mobile, sidebar is always hidden from grid layout (handled by sheet)
@@ -55,14 +55,14 @@ export const useLayoutManager = () => {
           ...baseClasses,
           container: `${baseClasses.container} grid-cols-[1fr_280px] grid-rows-[96px_1fr]`,
           sidebar: `${baseClasses.sidebar} hidden`, // Hidden on mobile
-          navbar: "col-span-1",
+          navbar: "col-span-2",
         };
       } else {
         return {
           ...baseClasses,
           container: `${baseClasses.container} grid-cols-[1fr_80px] grid-rows-[96px_1fr]`,
           sidebar: `${baseClasses.sidebar} hidden`, // Hidden on mobile
-          navbar: "col-span-1",
+          navbar: "col-span-3",
         };
       }
     }
