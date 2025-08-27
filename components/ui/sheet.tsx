@@ -6,6 +6,8 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { useLocale } from "next-intl";
+import { locales, LocaleSlug } from "@/i18n/config";
 
 const Sheet = SheetPrimitive.Root;
 
@@ -71,18 +73,37 @@ const SheetContent = React.forwardRef<
   (
     { side = "right", className, children, hasOverlay = true, ...props },
     ref
-  ) => (
-    <SheetPortal>
-      {hasOverlay && <SheetOverlay />}
-      <SheetPrimitive.Content
-        ref={ref}
-        className={cn(sheetVariants({ side }), className)}
-        {...props}
-      >
-        {children}
-      </SheetPrimitive.Content>
-    </SheetPortal>
-  )
+  ) => {
+    const locale = useLocale() as LocaleSlug;
+    const { dir } = locales[locale];
+
+    const directionalSide = React.useMemo(() => {
+      if (dir === "ltr") return side;
+      if (dir === "rtl") {
+        switch (side) {
+          case "left":
+            return "right";
+          case "right":
+            return "left";
+          default:
+            return side;
+        }
+      }
+    }, [dir, side]);
+
+    return (
+      <SheetPortal>
+        {hasOverlay && <SheetOverlay />}
+        <SheetPrimitive.Content
+          ref={ref}
+          className={cn(sheetVariants({ side: directionalSide }), className)}
+          {...props}
+        >
+          {children}
+        </SheetPrimitive.Content>
+      </SheetPortal>
+    );
+  }
 );
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 
