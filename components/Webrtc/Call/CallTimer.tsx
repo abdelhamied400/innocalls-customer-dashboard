@@ -36,7 +36,7 @@ const CallTimer = ({ startTime }: CallTimerProps) => {
   }
 
   // Calculate elapsed time based on start time
-  const elapsedSeconds = Math.floor((currentTime - startTime) / 1000);
+  const elapsedSeconds = Math.floor(Math.abs(currentTime - startTime) / 1000);
 
   return secondsToDuration(elapsedSeconds);
 };
