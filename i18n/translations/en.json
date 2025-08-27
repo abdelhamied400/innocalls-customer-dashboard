@@ -1446,7 +1446,7 @@
         "totalCalls": "Total Calls",
         "avgWaitTime": "Avg Wait Time",
         "avgTalkTime": "Avg Talk Time",
-        "completedCalls": "Completed Calls",
+        "completedCalls": "Answered Calls",
         "timeoutCalls": "Timeout Calls",
         "abandonedCalls": "Abandoned Calls",
         "answerRate": "Answer Rate",
