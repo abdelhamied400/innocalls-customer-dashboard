@@ -22,10 +22,24 @@ const CredentialsProvider = Credentials({
       options: ["user", "agent"],
     },
   },
-  authorize: async (credentials) => {
+  authorize: async (credentials, req) => {
     const email = credentials.email as string;
     const password = credentials.password as string;
     const userType = (credentials.userType || "user") as "user" | "agent";
+
+    // Extract client IP from the request (using Headers.get() method)
+    const clientIP = req?.headers?.get('x-forwarded-for')?.split(',')[0].trim() || 
+                     req?.headers?.get('x-real-ip') || 
+                     req?.headers?.get('x-client-ip') ||
+                     'unknown';
+
+    // Debug logging
+    console.log('=== NEXTAUTH CLIENT IP DEBUG ===');
+    console.log('x-forwarded-for:', req?.headers?.get('x-forwarded-for'));
+    console.log('x-real-ip:', req?.headers?.get('x-real-ip'));
+    console.log('x-client-ip:', req?.headers?.get('x-client-ip'));
+    console.log('Final clientIP:', clientIP);
+    console.log('===============================');
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/v2/auth/login`,
@@ -34,6 +48,7 @@ const CredentialsProvider = Credentials({
         headers: {
           "Content-Type": "application/json",
           "X-User-Type": userType,
+          "X-Client-IP": clientIP,
         },
         body: JSON.stringify({ email, password, userType }),
       }

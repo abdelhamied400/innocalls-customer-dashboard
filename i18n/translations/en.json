@@ -852,7 +852,7 @@
         "title": "Overdue Invoices"
       },
       "todayCallsDuration": {
-        "title": "Total call duration today",
+        "title": "Today's Call Statistics",
         "basedOn": "Based on",
         "calls": "calls",
         "ofTotal": "calls of total",

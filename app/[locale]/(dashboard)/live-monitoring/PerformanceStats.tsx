@@ -47,7 +47,7 @@ const PerformanceStatsFilters = ({
   const [filterType, setFilterType] = useState<Option<"day" | "hour">>(
     filterTypesOptions[0]
   );
-  const [sla, setSla] = useState<number>(30);
+  const [sla, setSla] = useState<number>(filters.sla);
   const [slaError, setSlaError] = useState<string>("");
 
   const validateSla = (value: number): boolean => {
@@ -120,7 +120,7 @@ const PerformanceStats = () => {
   );
   const [filters, setFilters] = useState<PerformanceStatsFiltersType>({
     filterType: "day",
-    sla: 10,
+    sla: 30,
   });
   const {
     data: performanceStats,

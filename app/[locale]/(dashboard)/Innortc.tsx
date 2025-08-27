@@ -11,7 +11,7 @@ import webrtcService from "@/services/webrtc.service";
 import useAppStore from "@/store/app.slice";
 import { ArrowForward, Dialpad as DialpadIcon } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 const Innortc = () => {
   const { isRoute } = useRouting();
@@ -20,14 +20,18 @@ const Innortc = () => {
 
   const { login, ua, extensionState } = useSip();
 
+  const hasTriggeredLogin = useRef(false);
+
   useEffect(() => {
     // if agent and ua is not initialized, login automatically
     const tryLogin = async () => {
       if (
+        !hasTriggeredLogin.current &&
         session?.user?.userType === "agent" &&
         !ua &&
         extensionState === "disconnected"
       ) {
+        hasTriggeredLogin.current = true;
         const agent = await webrtcService.getAgentExtension();
         login(agent);
       }

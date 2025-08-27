@@ -38,7 +38,6 @@
     "@tanstack/react-query-devtools": "^5.61.5",
     "@tanstack/react-table": "^8.20.5",
     "@types/react-virtualized": "^9.22.2",
-    "@wavesurfer/react": "^1.0.11",
     "@xyflow/react": "^12.3.5",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
@@ -48,6 +47,7 @@
     "crypto-js": "^4.2.0",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
+    "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "jssip": "^3.10.1",
     "lucide-react": "^0.462.0",
@@ -69,7 +69,6 @@
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^11.0.5",
-    "wavesurfer.js": "^7.9.9",
     "zod": "^3.23.8",
     "zustand": "^5.0.2"
   },
