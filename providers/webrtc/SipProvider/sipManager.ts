@@ -45,7 +45,7 @@ class SipManager {
         // Check if UA has any active sessions and terminate them
         if (this.ua && (this.ua as any)._sessions) {
           Object.values((this.ua as any)._sessions).forEach((session: any) => {
-            if (session && typeof session.terminate === 'function') {
+            if (session && typeof session.terminate === "function") {
               session.terminate();
             }
           });
@@ -53,21 +53,21 @@ class SipManager {
 
         // Listen for proper unregistration
         const onUnregistered = () => {
-          this.ua?.removeListener('unregistered', onUnregistered);
-          this.ua?.removeListener('disconnected', onDisconnected);
+          this.ua?.removeListener("unregistered", onUnregistered);
+          this.ua?.removeListener("disconnected", onDisconnected);
           cleanup();
         };
 
         const onDisconnected = () => {
-          this.ua?.removeListener('unregistered', onUnregistered);
-          this.ua?.removeListener('disconnected', onDisconnected);
+          this.ua?.removeListener("unregistered", onUnregistered);
+          this.ua?.removeListener("disconnected", onDisconnected);
           cleanup();
         };
 
-        if (this.ua.isRegistered()) {
-          this.ua.on('unregistered', onUnregistered);
-          this.ua.on('disconnected', onDisconnected);
-          this.ua.stop();
+        if (this.ua?.isRegistered()) {
+          this.ua?.on("unregistered", onUnregistered);
+          this.ua?.on("disconnected", onDisconnected);
+          this.ua?.stop();
         } else {
           cleanup();
         }
@@ -127,12 +127,12 @@ class SipManager {
   async ensureSingleSession(uri: string, password: string): Promise<JsSIP.UA> {
     // Prevent multiple concurrent creations
     if (this.isCreating) {
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
       if (this.ua && this.currentUri === uri) {
         return this.ua;
       }
     }
-    
+
     // If we already have a UA for the same URI, check its connection state
     if (this.ua && this.currentUri === uri && !this.isDestroying) {
       // Only reuse if it's actually connected, otherwise create fresh

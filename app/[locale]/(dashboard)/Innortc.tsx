@@ -26,15 +26,15 @@ const Innortc = () => {
     const tryLogin = async () => {
       if (
         session?.user?.userType === "agent" &&
-        extensionState === "disconnected" &&
-        !hasTriggeredLogin.current
+        extensionState === "disconnected"
+        // !hasTriggeredLogin.current
       ) {
         hasTriggeredLogin.current = true;
         const agent = await webrtcService.getAgentExtension();
         login(agent);
       }
     };
-    
+
     // Only run if we have session data
     if (session?.user) {
       tryLogin();

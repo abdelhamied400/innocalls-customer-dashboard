@@ -10,7 +10,7 @@ import { addCallToLog } from "@/lib/call-log";
 import { webrtcLogger } from "@/lib/logger";
 
 export type useUAEventsDeps = {
-  setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
+  setExtensionState: (state: ExtensionState) => void;
   setCurrentSession: React.Dispatch<React.SetStateAction<RTCSession | null>>;
   setSessionState: React.Dispatch<
     React.SetStateAction<SessionState | undefined>
@@ -191,18 +191,18 @@ export const useUaEvents = ({
         webrtcLogger.info("SIP connecting...");
         setExtensionState("connecting");
       });
-      
+
       userAgent.on("connected", () => {
         webrtcLogger.info("SIP websocket connected (not yet registered)");
         // Don't set to "connected" here - wait for actual registration
       });
-      
+
       userAgent.on("disconnected", () => {
         webrtcLogger.info("SIP disconnected");
         setExtensionState("disconnected");
       });
 
-      // Registration events  
+      // Registration events
       userAgent.on("registered", () => {
         webrtcLogger.info("SIP registration successful");
         setExtensionState("connected");
@@ -213,12 +213,12 @@ export const useUaEvents = ({
         webrtcLogger.info("SIP unregistered");
         setExtensionState("disconnected");
       });
-      
+
       userAgent.on("registrationFailed", (e) => {
-        webrtcLogger.error("Registration failed", { 
-          cause: e.cause, 
+        webrtcLogger.error("Registration failed", {
+          cause: e.cause,
           response: e.response?.status_code,
-          uri: extension.uri 
+          uri: extension.uri,
         });
         setExtensionState("disconnected");
       });
