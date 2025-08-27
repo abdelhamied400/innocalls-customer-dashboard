@@ -1,8 +1,9 @@
-import axios, { AxiosError } from "axios";
-import { getSession, signOut as clientSignout } from "next-auth/react";
-import { deleteCookie, getCookie } from "cookies-next";
-import { auth, signOut } from "@/auth";
-import { clientSignout_ } from "@/lib/auth";
+import axios from "axios";
+import { getSession } from "next-auth/react";
+import { getCookie } from "cookies-next";
+import { auth } from "@/auth";
+import { clientSignout } from "@/lib/auth";
+import { defaultLocale } from "@/i18n/config";
 
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
@@ -19,52 +20,31 @@ const api = axios.create({
 api.interceptors.request.use(async (config) => {
   const isServer = typeof window === "undefined";
   const session = isServer ? await auth() : await getSession();
+  const user = session?.user;
   let organizationId;
+  let lang = defaultLocale;
+  const { ip } = await fetch("/api/get-ip")
+    .then((res) => res.json())
+    .catch(() => ({}));
+
   if (isServer) {
     const nextHeaders = require("next/headers");
     const cookies = await nextHeaders.cookies();
+    const headers = await nextHeaders.headers();
+
     organizationId = cookies.get("OrganizationId")?.value;
+    lang = headers.get("NEXT_LOCALE") || defaultLocale;
   } else {
     organizationId = await getCookie("OrganizationId");
+    lang = (await getCookie("NEXT_LOCALE")) || defaultLocale;
   }
 
-  let lang = "en";
-  if (isServer) {
-    const nextHeaders = require("next/headers");
-    const headers = await nextHeaders.headers();
-    lang = headers.get("NEXT_LOCALE") || "en";
-
-    // Add client IP forwarding when on server-side
-    try {
-      // Get client IP from the headers that Caddy forwarded
-      const clientIP = headers.get('x-forwarded-for')?.split(',')[0].trim() || 
-                       headers.get('x-real-ip') || 
-                       headers.get('x-client-ip') ||
-                       'unknown';
-      
-      // Forward it to backend API
-      config.headers['X-Client-IP'] = clientIP;
-      
-      // Temporary logging for debugging
-      console.log('=== CLIENT IP DEBUG ===');
-      console.log('x-forwarded-for:', headers.get('x-forwarded-for'));
-      console.log('x-real-ip:', headers.get('x-real-ip'));
-      console.log('x-client-ip:', headers.get('x-client-ip'));
-      console.log('Final clientIP:', clientIP);
-      console.log('=====================');
-    } catch (error) {
-      console.warn('Could not get client IP:', error);
-    }
-  } else {
-    lang = (await getCookie("NEXT_LOCALE")) || "en";
+  if (user?.accessToken) {
+    config.headers.Authorization = `Bearer ${user?.accessToken}`;
   }
 
-  if (session?.user.accessToken) {
-    config.headers.Authorization = `Bearer ${session.user.accessToken}`;
-  }
-
-  if (session?.user.userType) {
-    config.headers["x-user-type"] = session.user.userType;
+  if (user?.userType) {
+    config.headers["x-user-type"] = user?.userType;
   }
 
   if (organizationId) {
@@ -78,6 +58,10 @@ api.interceptors.request.use(async (config) => {
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   config.headers["timezone"] = timezone;
 
+  if (ip) {
+    config.headers["X-Client-IP"] = ip;
+  }
+
   return config;
 });
 
@@ -85,10 +69,10 @@ api.interceptors.response.use(
   (response) => {
     return response;
   },
-  async(error) => {
+  async (error) => {
     const isServer = typeof window === "undefined";
 
-    console.log({isServer});
+    console.log({ isServer });
 
     console.error("API Error:", error);
     if (error.response) {
@@ -97,14 +81,13 @@ api.interceptors.response.use(
         // Handle unauthorized access, e.g., redirect to login
         console.error("Unauthorized access - redirecting to login");
 
-
         // deleteCookie("accessToken")
         if (isServer) {
           // Server-side sign out
-         await clientSignout_();
+          await clientSignout();
         } else {
           // Client-side sign out
-         await clientSignout_();
+          await clientSignout();
         }
       } else if (error.response.status === 403) {
         // Handle forbidden access
