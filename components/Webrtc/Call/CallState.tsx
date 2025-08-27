@@ -1,5 +1,6 @@
-import Timer from "@/components/ui/timer";
+import CallTimer from "./CallTimer";
 import { cn } from "@/lib/utils";
+import { useSip } from "@/providers/webrtc/SipProvider";
 import { SessionState } from "@/providers/webrtc/SipProvider/types";
 import { useTranslations } from "next-intl";
 
@@ -8,6 +9,7 @@ type CallStateProps = {
 };
 const CallState = ({ state }: CallStateProps) => {
   const t = useTranslations("webrtc.state");
+  const { callStartTime } = useSip();
 
   return (
     <div className="flex flex-col gap-2">
@@ -37,7 +39,7 @@ const CallState = ({ state }: CallStateProps) => {
       <div className="flex items-center justify-center gap-2">
         {state === "answered" && (
           <h4 className="text-center">
-            <Timer startingTime={0} />
+            <CallTimer startTime={callStartTime} />
           </h4>
         )}
       </div>

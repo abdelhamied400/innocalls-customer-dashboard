@@ -34,6 +34,16 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   );
   const [currentSession, setCurrentSession] = useState<RTCSession | null>(null);
   const [sessionState, setSessionState] = useState<SessionState>();
+  const [callStartTime, setCallStartTime] = useState<number | null>(null);
+
+  // Track when call starts (answered) to record start time
+  useEffect(() => {
+    if (sessionState === "answered" && !callStartTime) {
+      setCallStartTime(Date.now());
+    } else if (sessionState === "ended" || sessionState === "failed") {
+      setCallStartTime(null);
+    }
+  }, [sessionState, callStartTime]);
 
   const { toast } = useToast();
 
@@ -152,6 +162,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         dialCode,
         currentSession,
         sessionState,
+        callStartTime,
         login,
         logout,
         reconnect,

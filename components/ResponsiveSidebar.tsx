@@ -25,7 +25,6 @@ const ResponsiveSidebar = () => {
         <Sheet
           open={isSidebarOpen}
           onOpenChange={(e) => {
-            console.log("???", e);
             toggleSidebar();
           }}
         >

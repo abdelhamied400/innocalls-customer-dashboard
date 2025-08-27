@@ -22,6 +22,7 @@ export type SipContextType = {
   dialCode: string;
   currentSession: RTCSession | null;
   sessionState?: SessionState;
+  callStartTime: number | null;
   login: (extension: ExtensionWithCredentials) => void;
   logout: () => void;
   reconnect: () => void;

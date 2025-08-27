@@ -13,7 +13,6 @@ const useAppStore = create<AppState>()((set) => ({
   isSidebarOpen: true,
   toggleSidebar: () =>
     set((state) => {
-      console.log("test", state.isSidebarOpen);
       return { isSidebarOpen: !state.isSidebarOpen };
     }),
   isWebrtcOpen: false,
