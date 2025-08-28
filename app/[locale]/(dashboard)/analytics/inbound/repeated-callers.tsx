@@ -24,14 +24,24 @@ import inboundAnalyticsService from "@/services/inbound-analytics.service";
 import { InboundAnalyticsFilters } from "./page";
 import NoData from "@/components/Analytics/NoData";
 import { useTranslations } from "next-intl";
+import RepeatedCallersToolbar from "./repeated-callers-toolbar";
 
 type InboundAnalyticsRepeatedCallersProps = {
   filters: InboundAnalyticsFilters;
+};
+
+export type RepeatedCallersFilters = {
+  search: string;
 };
 const InboundAnalyticsRepeatedCallers = ({
   filters,
 }: InboundAnalyticsRepeatedCallersProps) => {
   const t = useTranslations("analytics.inbound.repeatedCallers");
+
+  const [repeatedCallersFilters, setRepeatedCallersFilters] =
+    useState<RepeatedCallersFilters>({
+      search: "",
+    });
 
   const columns = [
     { header: t("table.columns.caller"), accessorKey: "caller" },
@@ -134,6 +144,10 @@ const InboundAnalyticsRepeatedCallers = ({
           columns={columns}
           manualPagination={false}
         >
+          <RepeatedCallersToolbar
+            filters={repeatedCallersFilters}
+            setFilters={setRepeatedCallersFilters}
+          />
           <PaginatedTableContent>
             <PaginatedTableHead />
             {isLoading && <PaginatedTableSkeleton />}

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import {
+  Close,
   ConnectWithoutContact,
   Dialpad,
   InterpreterMode,
@@ -38,6 +39,7 @@ const CallActions = () => {
   const [muted, setIsMuted] = useState(false);
   const [hold, setIsHold] = useState(false);
   const [dtmfValue, setDtmfValue] = useState("");
+  const [dtmfOpen, setDtmfOpen] = useState(false);
 
   const handleToggleMute = () => {
     // Handle mute logic here
@@ -149,20 +151,29 @@ const CallActions = () => {
         <p>{t("contacts.title")}</p>
       </Button>
 
-      <DropdownMenu>
+      <DropdownMenu open={dtmfOpen} onOpenChange={setDtmfOpen} modal>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
             className="[&_svg]:size-6 h-auto w-full p-4 flex-col font-normal"
             size="icon"
-            disabled={!currentSession || sessionState !== "answered"}
+            // disabled={!currentSession || sessionState !== "answered"}
           >
             <Dialpad />
             <p>{t("callActions.dialpad")}</p>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent align="center" side="bottom" className="w-64">
           <div className="dtmf flex flex-col gap-2 p-4">
+            <div className="flex justify-end">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setDtmfOpen(false)}
+              >
+                <Close />
+              </Button>
+            </div>
             <Input
               value={dtmfValue}
               readOnly

@@ -65,7 +65,7 @@ const RadioGroupField = ({
       >
         <div
           className={cn(
-            "bg-gray-50 hover:bg-gray-100 p-4 border rounded-xl flex justify-between items-center gap-2",
+            "bg-gray-50 hover:bg-gray-100 p-4 border rounded-xl flex flex-col lg:flex-row justify-between items-center gap-2",
             error && "border-red-500 bg-red-50 hover:bg-red-100 text-red-500"
           )}
           {...props}

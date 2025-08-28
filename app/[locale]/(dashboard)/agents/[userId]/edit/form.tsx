@@ -110,7 +110,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
         </Button>
       </StepperHeader>
 
-      <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[600px] max-h-[calc(100vh - 200px)] overflow-auto">
+      <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[600px] max-h-[calc(100vh - 200px)]">
         <Form {...form}>
           <form onSubmit={onSubmit} className="h-full">
             <StepperStep
