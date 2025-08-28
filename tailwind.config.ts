@@ -27,6 +27,7 @@ const config: Config = {
       fontFamily: {
         sans: ["Poppins", "sans-serif"],
         "ar-sans": ["Cairo", "sans-serif"],
+        code: ["monospace"],
       },
       keyframes: {
         "accordion-down": {
