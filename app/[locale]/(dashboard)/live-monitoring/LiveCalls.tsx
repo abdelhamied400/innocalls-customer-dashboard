@@ -9,11 +9,14 @@ import liveMonitoringService from "@/services/live-monitoring.service";
 import { Call } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useTranslations } from "next-intl";
+import useLayoutManager from "@/hooks/use-layout-manager";
+import { cn } from "@/lib/utils";
 
 const LiveCalls = () => {
   const { refetchInterval, setRefetchInterval } = usePersistentRefetchInterval(
     "live_monitoring_live_calls_interval"
   );
+  const { layoutVariant } = useLayoutManager();
 
   const t = useTranslations("liveMonitor.liveCalls");
 
@@ -88,7 +91,16 @@ const LiveCalls = () => {
         refetchInterval={refetchInterval}
         setRefetchInterval={setRefetchInterval}
       >
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div
+          className={cn(
+            "grid gap-4",
+            layoutVariant === "both-closed" &&
+              "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+            layoutVariant === "sidebar-only" && "grid-cols-1 lg:grid-cols-2",
+            layoutVariant === "webrtc-only" && "grid-cols-1 lg:grid-cols-2",
+            layoutVariant === "both-open" && "grid-cols-1"
+          )}
+        >
           {liveCallsData.map((call, index) => (
             <LiveCall
               key={index}

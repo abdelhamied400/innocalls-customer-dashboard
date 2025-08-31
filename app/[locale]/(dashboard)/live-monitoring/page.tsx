@@ -9,11 +9,14 @@ import Agents from "./Agents";
 import PerformanceStats from "./PerformanceStats";
 import QueueManagement from "./QueueManagement";
 import hasTenant from "@/containers/hasTenant";
+import useLayoutManager from "@/hooks/use-layout-manager";
+import { cn } from "@/lib/utils";
 
 const LiveMonitoring = () => {
   const { Organization } = useAuthStore();
   const { setPageTitle } = useAppStore();
   const t = useTranslations("dashboard.containers");
+  const { layoutVariant } = useLayoutManager();
 
   useEffect(() => {
     setPageTitle(t("liveMonitoringStats"));
@@ -27,13 +30,23 @@ const LiveMonitoring = () => {
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-1 lg:grid-cols-10 gap-6">
           {/* Main Content */}
-          <div className="lg:col-span-7 space-y-6">
+          <div
+            className={cn(
+              "space-y-6",
+              layoutVariant !== "both-open" ? "lg:col-span-7" : "lg:col-span-10"
+            )}
+          >
             <LiveCalls />
             {Organization?.hasTenant && <PerformanceStats />}
             {Organization?.hasTenant && <QueueManagement />}
           </div>
           {/* Sidebar */}
-          <div className="lg:col-span-3">
+          <div
+            className={cn(
+              "",
+              layoutVariant !== "both-open" ? "lg:col-span-3" : "lg:col-span-10"
+            )}
+          >
             <Agents />
           </div>
         </div>

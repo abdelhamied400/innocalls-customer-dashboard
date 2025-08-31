@@ -31,7 +31,7 @@ export const useLayoutManager = () => {
     return () => window.removeEventListener("resize", checkIsMobile);
   }, []);
 
-  const layoutVariant: LayoutVariant = useMemo(() => {
+  const layoutVariant: LayoutVariant = useMemo<LayoutVariant>(() => {
     if (isSidebarOpen && isWebrtcOpen) return "both-open";
     if (isSidebarOpen && !isWebrtcOpen) return "sidebar-only";
     if (!isSidebarOpen && isWebrtcOpen) return "webrtc-only";
