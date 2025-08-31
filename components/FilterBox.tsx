@@ -8,7 +8,7 @@ import {
 import { ChevronDownIcon } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { cn } from "@/lib/utils";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type FilterBoxProps = PropsWithChildren<{
   className?: string;

@@ -2,7 +2,7 @@ import CallTimer from "./CallTimer";
 import { cn } from "@/lib/utils";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import { SessionState } from "@/providers/webrtc/SipProvider/types";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type CallStateProps = {
   state?: SessionState;

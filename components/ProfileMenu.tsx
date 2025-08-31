@@ -17,7 +17,7 @@ import useAuthStore from "@/store/auth.slice";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "./ui/skeleton";
 import { useEffect } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const ProfileMenu = () => {
   const { data: session, status } = useSession();

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import { Badge } from "./badge";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import {
   Collapsible,
   CollapsibleContent,

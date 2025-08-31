@@ -5,7 +5,7 @@ import StatsCard, {
 } from "@/components/StatsCard";
 import statsService from "@/services/stats.service";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 
 const LastHourCallsDuration = () => {

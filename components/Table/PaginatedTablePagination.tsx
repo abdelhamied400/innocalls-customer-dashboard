@@ -17,7 +17,7 @@ import {
   PaginationPrevious,
 } from "../ui/pagination";
 import usePagination from "./usePagination";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const PaginatedTablePagination = () => {
   const { table, pagination } = usePaginatedTable();

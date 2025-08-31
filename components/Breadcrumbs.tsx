@@ -1,4 +1,4 @@
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const Breadcrumbs = () => {
   return (

@@ -2,7 +2,7 @@
 import { useSession } from "next-auth/react";
 import React from "react";
 import FullPageError from "./FullPageError";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type userPermission =
   | "fullAccessNumbers"

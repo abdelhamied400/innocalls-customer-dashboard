@@ -1,5 +1,5 @@
 "use client";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import FullPageError from "./FullPageError";
 
 const NotFoundContent = () => {

@@ -10,7 +10,7 @@ import ContactRow from "./ContactRow";
 import { useRouting } from "@/providers/RoutingProvider";
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 import { useEffect } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const ContactsList = () => {
   const t = useTranslations("webrtc.contacts");

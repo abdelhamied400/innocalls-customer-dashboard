@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import statsService from "@/services/stats.service";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import MiniStatsCard from "../MiniStatsCard";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const ErgLast30DaysWaitingTime = () => {
   const t = useTranslations("dashboard.stats.ergStats.last30DaysWaitingTime");

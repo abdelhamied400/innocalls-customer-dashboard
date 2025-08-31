@@ -7,7 +7,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import useAppStore from "@/store/app.slice";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const queueCallCardVariants = cva(
   "p-3 rounded-lg border hover:border-500 transition-all duration-200 group",

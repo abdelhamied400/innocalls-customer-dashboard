@@ -8,7 +8,7 @@ import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-int
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import statsService from "@/services/stats.service";
 import { formatDurationShort } from "@/lib/date";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import { formatNumbers } from "@/lib/utils";
 
 const WaitTimeStats = () => {

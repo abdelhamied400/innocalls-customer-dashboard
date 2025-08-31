@@ -24,7 +24,7 @@ import Digit from "../Shared/Digit";
 import { digits } from "@/constants/digits";
 import { Input } from "@/components/ui/input";
 import { webrtcLogger } from "@/lib/logger";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import { cn } from "@/lib/utils";
 
 const CallActions = () => {

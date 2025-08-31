@@ -1,11 +1,9 @@
 "use client";
-import FullPageError from "@/containers/FullPageError";
-import { NextIntlClientProvider, useTranslations } from "next-intl";
-import { usePathname } from "next/navigation";
 import { defaultLocale, LocaleSlug } from "@/i18n/config";
 import localFont from "next/font/local";
 import { NextFontWithVariable } from "next/dist/compiled/@next/font";
 import NotFoundContent from "@/containers/NotFoundContent";
+import { TranslationProvider } from "@/providers/TranslationProvider";
 
 const poppins = localFont({
   src: "./fonts/Poppins.otf",
@@ -23,41 +21,15 @@ const fonts: Record<LocaleSlug, NextFontWithVariable> = {
   ar: cairo,
 };
 
-const getMessages = (locale: LocaleSlug) => {
-  const messages = {
-    en: {
-      common: {
-        backToHome: "Back to Home",
-      },
-      notFound: {
-        title: "Page Not Found",
-        message: "The page you are looking for does not exist.",
-      },
-    },
-    ar: {
-      common: {
-        backToHome: "العودة إلى الصفحة الرئيسية",
-      },
-      notFound: {
-        title: "الصفحة غير موجودة",
-        message: "الصفحة التي تبحث عنها غير موجودة.",
-      },
-    },
-  };
-  return messages[locale] || messages[defaultLocale];
-};
-
 export default function NotFound() {
-  const pathname = usePathname();
-  const match = pathname.match(/^\/([a-z]{2})(\/|$)/);
-  const locale = (match?.[1] || defaultLocale) as LocaleSlug;
+  const locale = defaultLocale; // Use default locale for not found page
 
   return (
     <html lang={locale}>
       <body className={`${fonts[locale].variable} antialiased`}>
-        <NextIntlClientProvider messages={getMessages(locale)} locale={locale}>
+        <TranslationProvider initialLocale={locale}>
           <NotFoundContent />
-        </NextIntlClientProvider>
+        </TranslationProvider>
       </body>
     </html>
   );

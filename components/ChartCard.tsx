@@ -13,7 +13,7 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import { refetchIntervals } from "@/constants/stats";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import React, { PropsWithChildren } from "react";
 import { AxiosError } from "axios";
 import { XIcon } from "lucide-react";

@@ -6,7 +6,7 @@ import ErgTodayCallsSummary from "@/components/Stats/ErgTodayCallsSummary";
 import ErgTodayTalkTime from "@/components/Stats/ErgTodayTalkTime";
 import ErgTodayWaitingTime from "@/components/Stats/ErgTodayWaitingTime";
 import ErgWaitingCallsCount from "@/components/Stats/ErgWaitingCallsCount";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const ErgStats = () => {
   const t = useTranslations("dashboard.containers");

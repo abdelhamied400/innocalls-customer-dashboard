@@ -1,7 +1,7 @@
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import StatsCard, { StatsCardError, StatsCardSkeleton } from "../StatsCard";
 import statsService from "@/services/stats.service";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import { ViewCarousel } from "@mui/icons-material";
 
 const Last30DaysUsage = () => {

@@ -4,7 +4,7 @@ import vocabService from "@/services/vocab.service";
 import useAuthStore from "@/store/auth.slice";
 import useVocabStore from "@/store/vocab.slice";
 import { useSession } from "next-auth/react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import { PropsWithChildren, useEffect, useRef, useState } from "react";
 
 type VocabProviderProps = PropsWithChildren<{}>;

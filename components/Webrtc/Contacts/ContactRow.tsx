@@ -13,7 +13,7 @@ import webrtcService from "@/services/webrtc.service";
 import { Call, DeleteForever, Edit, MoreVert } from "@mui/icons-material";
 import { useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type ContactRowProps = {
   contact: {

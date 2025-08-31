@@ -4,7 +4,7 @@ import React from "react";
 import Select, { components, SingleValueProps } from "react-select";
 import { FixedSizeList as List } from "react-window";
 import { countries, CountryOption } from "@/constants/countries";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 // Single value display (selected country)
 const customSingleValue = (props: SingleValueProps<CountryOption>) => (

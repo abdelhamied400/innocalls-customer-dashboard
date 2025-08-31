@@ -16,7 +16,7 @@ import {
 } from "./ui/dropdown-menu";
 import { refetchIntervals } from "@/constants/stats";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import {
   statsCardIconVariants,
   statsCardInfoVariants,

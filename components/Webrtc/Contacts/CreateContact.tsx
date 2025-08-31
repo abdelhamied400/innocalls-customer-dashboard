@@ -15,7 +15,7 @@ import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createContactSchema } from "@/validation/Webrtc";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const CreateContact = () => {
   const t = useTranslations("webrtc.contacts");

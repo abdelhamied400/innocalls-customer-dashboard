@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 export const PasswordSchema = (t: ReturnType<typeof useTranslations>) =>
   z

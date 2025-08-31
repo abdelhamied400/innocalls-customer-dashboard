@@ -4,7 +4,7 @@ import { PropsWithChildren, useEffect, useMemo } from "react";
 import { RoutingProvider } from "../RoutingProvider";
 import { SipProvider } from "./SipProvider";
 import { useSession } from "next-auth/react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type WebrtcProviderProps = PropsWithChildren<{}>;
 export const WebrtcProvider = ({ children }: WebrtcProviderProps) => {
