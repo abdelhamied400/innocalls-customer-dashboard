@@ -23,14 +23,24 @@ import { InboundAnalyticsFilters } from "./page";
 import NoData from "@/components/Analytics/NoData";
 import { durationToSeconds, formatDuration } from "@/lib/date";
 import { useTranslations } from "next-intl";
+import AgentPerformanceToolbar from "./agent-performance-toolbar";
 
 type InboundAnalyticsAgentPerformanceProps = {
   filters: InboundAnalyticsFilters;
+};
+
+export type AgentPerformanceFilters = {
+  search: string;
 };
 const InboundAnalyticsAgentPerformance = ({
   filters,
 }: InboundAnalyticsAgentPerformanceProps) => {
   const t = useTranslations("analytics.inbound.agentPerformance");
+
+  const [agentPerformanceFilters, setAgentPerformanceFilters] =
+    useState<AgentPerformanceFilters>({
+      search: "",
+    });
 
   const columns = [
     { header: t("table.columns.name"), accessorKey: "name" },
@@ -151,6 +161,10 @@ const InboundAnalyticsAgentPerformance = ({
           columns={columns}
           manualPagination={false}
         >
+          <AgentPerformanceToolbar
+            filters={agentPerformanceFilters}
+            setFilters={setAgentPerformanceFilters}
+          />
           <PaginatedTableContent>
             <PaginatedTableHead />
             {isLoading && <PaginatedTableSkeleton />}

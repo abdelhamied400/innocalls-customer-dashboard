@@ -109,7 +109,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
         </Button>
       </StepperHeader>
 
-      <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[600px] max-h-[calc(100vh - 200px)] overflow-auto">
+      <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[600px] max-h-[calc(100vh - 200px)]">
         <Form {...form}>
           <form onSubmit={onSubmit} className="h-full">
             <StepperStep
@@ -240,12 +240,15 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                               onChange(parseInt(value, 10));
                             }
                           }}
+                          className="flex items-center gap-2"
                         >
                           <div className="flex items-center space-x-4">
                             <RadioGroupItem value="1" id="inbound-enable" />
                             <label htmlFor="inbound-enable">
                               {t("form.fields.inbound.enable")}
                             </label>
+                          </div>
+                          <div className="flex items-center space-x-4">
                             <RadioGroupItem value="0" id="inbound-disable" />
                             <label htmlFor="inbound-disable">
                               {t("form.fields.inbound.disable")}

@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { defaultLocale, LocaleSlug } from "@/i18n/config";
 import localFont from "next/font/local";
 import { NextFontWithVariable } from "next/dist/compiled/@next/font";
+import NotFoundContent from "@/containers/NotFoundContent";
 
 const poppins = localFont({
   src: "./fonts/Poppins.otf",
@@ -61,10 +62,3 @@ export default function NotFound() {
     </html>
   );
 }
-
-const NotFoundContent = () => {
-  const t = useTranslations("notFound");
-  return (
-    <FullPageError status={404} title={t("title")} message={t("message")} />
-  );
-};

@@ -11,6 +11,7 @@ const config: Config = {
     "./containers/**/*.{ts,tsx}",
     "./providers/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
+    "./hooks/**/*.{ts,tsx}",
   ],
   theme: {
     extend: {
@@ -26,6 +27,7 @@ const config: Config = {
       fontFamily: {
         sans: ["Poppins", "sans-serif"],
         "ar-sans": ["Cairo", "sans-serif"],
+        code: ["monospace"],
       },
       keyframes: {
         "accordion-down": {

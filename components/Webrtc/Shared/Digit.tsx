@@ -22,7 +22,9 @@ const Digit = ({ digit, onClick, onLongPress }: DigitProps) => {
       onClick={handleClick}
       onLongPress={onLongPress}
     >
-      <h2 className="text-3xl font-normal leading-8">{digit.number}</h2>
+      <h2 className="text-3xl font-normal leading-8 font-code">
+        {digit.number}
+      </h2>
       <p className="text-xs text-gray-500">{digit.alt}</p>
     </Button>
   );

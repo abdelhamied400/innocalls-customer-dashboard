@@ -51,7 +51,12 @@ export type StepperHeaderProps = PropsWithChildren<{
 }>;
 export const StepperHeader = ({ children, className }: StepperHeaderProps) => {
   return (
-    <div className={cn("stepper-header bg-white gap-2 p-4 flex", className)}>
+    <div
+      className={cn(
+        "stepper-header bg-white gap-2 p-4 flex sticky top-0 z-10",
+        className
+      )}
+    >
       {children}
     </div>
   );

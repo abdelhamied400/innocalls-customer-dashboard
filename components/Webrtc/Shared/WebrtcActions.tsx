@@ -43,7 +43,10 @@ const WebrtcActions = () => {
               <ContactsIcon />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-96 p-0">
+          <PopoverContent
+            portalled={false}
+            className="w-96 p-0 popover-content"
+          >
             <ContactsProviders>
               <Contacts />
             </ContactsProviders>

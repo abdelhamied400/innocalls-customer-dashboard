@@ -8,17 +8,15 @@ import { useTranslations } from "next-intl";
 
 const AppNavbar = () => {
   const t = useTranslations("sidebar");
-  const { isSidebarOpen, toggleSidebar, pageTitle } = useAppStore();
+  const { toggleSidebar, pageTitle } = useAppStore();
 
   return (
     <nav className="navbar">
       <div className="flex justify-between items-center gap-8 px-4 border-b-2 h-24">
         <div className="flex items-center gap-2">
-          {!isSidebarOpen && (
-            <Button variant="ghost" size="icon" onClick={toggleSidebar}>
-              <MenuOpenIcon />
-            </Button>
-          )}
+          <Button variant="ghost" size="icon" onClick={toggleSidebar}>
+            <MenuOpenIcon />
+          </Button>
 
           <h1 className="hidden sm:block">
             {pageTitle || t("navigation.dashboard")}

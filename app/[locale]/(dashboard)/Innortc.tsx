@@ -19,47 +19,41 @@ const Innortc = () => {
   const { data: session } = useSession();
 
   const { login, ua, extensionState } = useSip();
-
   const hasTriggeredLogin = useRef(false);
 
   useEffect(() => {
-    // if agent and ua is not initialized, login automatically
+    // if agent and not connected, login automatically
     const tryLogin = async () => {
       if (
         !hasTriggeredLogin.current &&
         session?.user?.userType === "agent" &&
-        !ua &&
-        extensionState === "disconnected"
+        extensionState === "disconnected" &&
+        !hasTriggeredLogin.current
       ) {
         hasTriggeredLogin.current = true;
         const agent = await webrtcService.getAgentExtension();
         login(agent);
       }
     };
-    tryLogin();
-  }, [ua, extensionState, login]);
 
-  return (
-    <div className="innortc flex flex-col h-full">
-      <div className="head border-b flex justify-center items-center">
-        <Button
-          variant="unstyled"
-          className={cn(
-            "[&_svg]:size-6 w-full p-6 h-auto transition-transform duration-400 ease-in-out",
-            isWebrtcOpen ? "rotate-180" : "rotate-0"
-          )}
-          onClick={() => setWebrtcOpen(!isWebrtcOpen)}
-        >
-          <ArrowForward />
-        </Button>
-      </div>
+    // Only run if we have session data
+    if (session?.user) {
+      tryLogin();
+    }
+  }, [session?.user?.userType, extensionState, login]);
 
-      <div
-        className={cn(
-          "flex flex-col gap-4 flex-1 overflow-auto",
-          !isWebrtcOpen && "opacity-0 invisible"
-        )}
-      >
+  // Reset the login trigger when UA is successfully established or when disconnected
+  useEffect(() => {
+    if (ua && extensionState === "connected") {
+      hasTriggeredLogin.current = false;
+    } else if (extensionState === "disconnected" && !ua) {
+      hasTriggeredLogin.current = false;
+    }
+  }, [ua, extensionState]);
+
+  if (isWebrtcOpen) {
+    return (
+      <>
         <div className="mb-4">
           <ExtensionStateBar />
         </div>
@@ -70,19 +64,11 @@ const Innortc = () => {
           {isRoute("/call") && <Call />}
           {isRoute("/incoming-call") && <IncomingCall />}
         </div>
-      </div>
+      </>
+    );
+  }
 
-      <div className="foot border-t flex justify-center items-center">
-        <Button
-          variant="unstyled"
-          className="[&_svg]:size-6 text-primary-500 w-full p-6 h-auto"
-          onClick={() => setWebrtcOpen(!isWebrtcOpen)}
-        >
-          <DialpadIcon />
-        </Button>
-      </div>
-    </div>
-  );
+  return null;
 };
 
 export default Innortc;

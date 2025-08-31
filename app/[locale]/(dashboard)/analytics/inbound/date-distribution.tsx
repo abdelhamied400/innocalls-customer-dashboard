@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   ResponsiveContainer,
   LineChart,
@@ -25,15 +25,25 @@ import { ShowChart, TableView } from "@mui/icons-material";
 import { InboundAnalyticsFilters } from "./page";
 import NoData from "../../../../../components/Analytics/NoData";
 import { useTranslations } from "next-intl";
+import DateDistributionToolbar from "./date-distribution-toolbar";
 
 type InboundAnalyticsDateDistributionProps = {
   filters: InboundAnalyticsFilters;
+};
+
+export type DateDistributionFilters = {
+  search: string;
 };
 
 const InboundAnalyticsDateDistribution = ({
   filters,
 }: InboundAnalyticsDateDistributionProps) => {
   const t = useTranslations("analytics.inbound.dateDistribution");
+
+  const [dateDistributionFilters, setDateDistributionFilters] =
+    useState<DateDistributionFilters>({
+      search: "",
+    });
 
   const allColumns = [
     {
@@ -223,6 +233,10 @@ const InboundAnalyticsDateDistribution = ({
             columns={filters.filterBy === "team" ? teamColumns : allColumns}
             manualPagination={false}
           >
+            <DateDistributionToolbar
+              filters={dateDistributionFilters}
+              setFilters={setDateDistributionFilters}
+            />
             <PaginatedTableContent>
               <PaginatedTableHead />
               {isLoading && <PaginatedTableSkeleton />}

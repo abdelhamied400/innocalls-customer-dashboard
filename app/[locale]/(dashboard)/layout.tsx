@@ -2,12 +2,17 @@
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import Innortc from "./Innortc";
 import useAuthStore from "@/store/auth.slice";
-import AppSidebar from "@/components/AppSidebar";
+import ResponsiveSidebar from "@/components/ResponsiveSidebar";
+import ResponsiveWebrtc from "@/components/ResponsiveWebrtc";
 import AppNavbar from "@/components/AppNavbar";
 import useAppStore from "@/store/app.slice";
 import { cn } from "@/lib/utils";
 import { getCookie } from "cookies-next/client";
 import { useSession } from "next-auth/react";
+import { useLayoutManager } from "@/hooks/use-layout-manager";
+import { Button } from "@/components/ui/button";
+import { ArrowForward, Dialpad } from "@mui/icons-material";
+import InnortcLayout from "@/components/Webrtc/InnortcLayout";
 
 type DashboardLayoutProps = PropsWithChildren<{
   agent?: React.ReactNode;
@@ -15,33 +20,20 @@ type DashboardLayoutProps = PropsWithChildren<{
 const DashboardLayout = ({ children, agent }: DashboardLayoutProps) => {
   const { data: session } = useSession();
   const { Organization } = useAuthStore();
-  const { isSidebarOpen, isWebrtcOpen } = useAppStore();
   const [defaultOrganizationId, setDefaultOrganizationId] = useState<
     string | null
   >(null);
+  const { isWebrtcOpen, setWebrtcOpen } = useAppStore();
+
+  // Use the layout manager hook for clean layout management
+  const { getLayoutClasses, shouldUseSidebarSheet, shouldUseWebrtcSheet } =
+    useLayoutManager();
 
   const hasWebrtcAccess =
     (Organization?.hasTenant &&
       session?.user?.userType === "user" &&
       session?.user.webrtcAccess) ||
     session?.user?.userType === "agent";
-
-  const getLayoutClassName = () => {
-    const bothOpen = "grid-cols-[360px_1fr_280px]";
-    const sidebarOpen = "grid-cols-[360px_1fr_80px]";
-    const webrtcOpen = "grid-cols-[0px_1fr_280px]";
-    const bothClosed = "grid-cols-[0px_1fr_80px]";
-
-    if (isSidebarOpen && isWebrtcOpen) {
-      return bothOpen;
-    } else if (isSidebarOpen) {
-      return sidebarOpen;
-    } else if (isWebrtcOpen) {
-      return webrtcOpen;
-    } else {
-      return bothClosed;
-    }
-  };
 
   useEffect(() => {
     const orgId = getCookie("OrganizationId");
@@ -57,28 +49,31 @@ const DashboardLayout = ({ children, agent }: DashboardLayoutProps) => {
       className="dashboard-layout"
       key={Organization?.id || defaultOrganizationId}
     >
-      <div
-        className={cn(
-          "h-screen w-screen grid grid-rows-[96px_1fr] box-border transition-all duration-800 ease-in-out",
-          getLayoutClassName()
-        )}
-      >
-        <div className="row-span-3 overflow-y-auto border-e">
-          <AppSidebar />
+      {/* Mobile sidebar trigger - rendered outside grid */}
+      {shouldUseSidebarSheet && <ResponsiveSidebar />}
+
+      <div className={getLayoutClasses.container}>
+        {/* Desktop sidebar - hidden on mobile */}
+        <div className={getLayoutClasses.sidebar}>
+          {!shouldUseSidebarSheet && <ResponsiveSidebar />}
         </div>
 
-        <div className="col-span-2 col-start-2 col-end-4">
+        <div className={getLayoutClasses.navbar}>
           <AppNavbar />
         </div>
 
-        <div className="overflow-auto p-4">
+        <div className={getLayoutClasses.mainContent}>
           {session?.user?.userType === "user" && children}
           {session?.user?.userType === "agent" && agent}
         </div>
 
         {hasWebrtcAccess && (
-          <div className="row-span-2 col-start-3 overflow-y-auto border-s">
-            <Innortc />
+          <div className={getLayoutClasses.webrtc}>
+            <InnortcLayout>
+              <ResponsiveWebrtc>
+                <Innortc />
+              </ResponsiveWebrtc>
+            </InnortcLayout>
           </div>
         )}
       </div>

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import {
+  Close,
   ConnectWithoutContact,
   Dialpad,
   InterpreterMode,
@@ -13,11 +14,12 @@ import {
 import { useState } from "react";
 
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import Digit from "../Shared/Digit";
 import { digits } from "@/constants/digits";
 import { Input } from "@/components/ui/input";
@@ -38,6 +40,7 @@ const CallActions = () => {
   const [muted, setIsMuted] = useState(false);
   const [hold, setIsHold] = useState(false);
   const [dtmfValue, setDtmfValue] = useState("");
+  const [dtmfOpen, setDtmfOpen] = useState(false);
 
   const handleToggleMute = () => {
     // Handle mute logic here
@@ -149,8 +152,8 @@ const CallActions = () => {
         <p>{t("contacts.title")}</p>
       </Button>
 
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+      <Dialog open={dtmfOpen} onOpenChange={setDtmfOpen}>
+        <DialogTrigger asChild>
           <Button
             variant="ghost"
             className="[&_svg]:size-6 h-auto w-full p-4 flex-col font-normal"
@@ -160,15 +163,18 @@ const CallActions = () => {
             <Dialpad />
             <p>{t("callActions.dialpad")}</p>
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <div className="dtmf flex flex-col gap-2 p-4">
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>{t("callActions.dialpad")}</DialogTitle>
+          </DialogHeader>
+          <div className="dtmf flex flex-col gap-4">
             <Input
               value={dtmfValue}
               readOnly
               placeholder={t("callActions.phone.placeholder")}
             />
-            <div className="digits grid grid-cols-3 gap-5 place-items-center p-4">
+            <div className="digits grid grid-cols-3 gap-4 place-items-center">
               {digits.map((digit) => (
                 <Digit
                   key={digit.number}
@@ -178,8 +184,8 @@ const CallActions = () => {
               ))}
             </div>
           </div>
-        </DropdownMenuContent>
-      </DropdownMenu>
+        </DialogContent>
+      </Dialog>
 
       {isSpying && (
         <Button

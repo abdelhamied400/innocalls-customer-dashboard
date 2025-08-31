@@ -1458,7 +1458,7 @@
         "totalCalls": "إجمالي المكالمات",
         "avgWaitTime": "متوسط وقت الانتظار",
         "avgTalkTime": "متوسط وقت المحادثة",
-        "completedCalls": "المكالمات المكتملة",
+        "completedCalls": "المكالمات المجابة",
         "timeoutCalls": "المكالمات المنتهية بمهلة الانتظار",
         "abandonedCalls": "المكالمات المُغلقة قبل الرد",
         "answerRate": "نسبة الإجابة",
