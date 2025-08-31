@@ -44,6 +44,14 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
     spy(extension.toString());
   };
 
+  const getAutoDialerCall = (num: string) => {
+    if (num.includes("unknow")) {
+      return t("autoDialerCall");
+    }
+
+    return num;
+  };
+
   return (
     <div className="live-call p-4 border border-primary-200 bg-gradient-to-r from-primary-100/50 to-primary-200/50 rounded-lg hover:from-primary-100/70 hover:to-primary-200/70 hover:border-primary-300 transition-colors flex flex-col gap-2">
       <div className="from bg-white border p-2 rounded-lg">
@@ -53,7 +61,7 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
         </div>
         <div className="text-sm font-semibold text-gray-800">
           {" "}
-          {"\u200E" + from}
+          {"\u200E" + getAutoDialerCall(from)}
         </div>
         {getExtensionNumber(from) && (
           <div className="flex justify-end">
@@ -79,7 +87,7 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
         </div>
         <div className="text-sm font-semibold text-gray-800">
           {" "}
-          {"\u200E" + to}
+          {"\u200E" + getAutoDialerCall(to)}
         </div>
         {getExtensionNumber(to) && (
           <div className="flex justify-end">

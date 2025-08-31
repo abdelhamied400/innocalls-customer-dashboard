@@ -1911,7 +1911,8 @@
         "sipConnectionError": "You must be connected to a WebRTC/softphone client to monitor calls",
         "from": "From",
         "to": "To",
-        "duration": "Duration"
+        "duration": "Duration",
+        "autoDialerCall":"Auto Dialer Call"
       }
     }
   },
