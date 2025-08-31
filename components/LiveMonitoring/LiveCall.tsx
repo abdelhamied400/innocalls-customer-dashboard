@@ -14,8 +14,8 @@ interface LiveCallProps {
 }
 
 const getExtensionNumber = (phoneNumber: string): string => {
-  // if the phone number has something like that name (ext)
-  const match = phoneNumber.match(/\((\d+)\)/);
+  // Match exactly 3 or 4 digits inside parentheses
+  const match = phoneNumber.match(/\((\d{3,4})\)/);
   return match ? match[1] : "";
 };
 
