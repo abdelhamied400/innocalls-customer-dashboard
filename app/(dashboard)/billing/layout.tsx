@@ -15,13 +15,14 @@ const BillingLayout = ({ children, refillSheet }: BillingLayoutProps) => {
   const { setPageTitle } = useAppStore();
 
   const t = useTranslations("billing");
+  const locale = useLocale();
 
   useEffect(() => {
     setPageTitle(t("title"));
 
     // Cleanup when component unmounts
     return () => setPageTitle(null);
-  }, []);
+  }, [locale]);
 
   return (
     <div className="bg-white rounded-xl p-4 h-auto sm:h-full flex flex-col gap-2">

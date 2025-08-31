@@ -24,7 +24,7 @@ import useVocabStore from "@/store/vocab.slice";
 import { Button } from "@/components/ui/button";
 import { useFilterManager } from "@/hooks/useFilterManager";
 import { userActivityFiltersSchema } from "@/validation/userActivityFilters";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 
 type Option = {
@@ -49,13 +49,14 @@ const UserActivityAnalytics = () => {
 
   const t = useTranslations("analytics.userActivity");
   const tCommon = useTranslations("analytics.common");
+  const locale = useLocale();
 
   useEffect(() => {
     setPageTitle(t("title"));
 
     // Cleanup when component unmounts
     return () => setPageTitle(null);
-  }, []);
+  }, [locale]);
 
   const userActivityFilterConfig = {
     defaultValues: {

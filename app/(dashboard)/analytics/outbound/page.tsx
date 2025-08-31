@@ -18,7 +18,7 @@ import DateDistributionAnalytics from "./date-distribution";
 import AgentStatsAnalytics from "./agent-stats";
 import Select from "@/components/select";
 import useVocabStore from "@/store/vocab.slice";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 
 type Option = {
@@ -43,13 +43,14 @@ const OutboundAnalytics = () => {
 
   const tCommon = useTranslations("analytics.common");
   const t = useTranslations("analytics.outbound");
+  const locale = useLocale();
 
   useEffect(() => {
     setPageTitle(t("title"));
 
     // Cleanup when component unmounts
     return () => setPageTitle(null);
-  }, []);
+  }, [locale]);
 
   const outboundFilterConfig = {
     defaultValues: {

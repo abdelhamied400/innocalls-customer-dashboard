@@ -25,7 +25,7 @@ import { useSession } from "next-auth/react";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 
 type CallReportingHeadProps = {
@@ -38,13 +38,14 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
 
   const t = useTranslations("callReporting");
   const tCommon = useTranslations("common");
+  const locale = useLocale();
 
   useEffect(() => {
     setPageTitle(t("title"));
 
     // Cleanup when component unmounts
     return () => setPageTitle(null);
-  }, []);
+  }, [locale]);
 
   const { table } = usePaginatedTable();
   const [isExporting, setIsExporting] = useState(false);

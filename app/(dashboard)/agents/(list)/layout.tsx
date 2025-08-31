@@ -2,12 +2,13 @@
 import LinkTabs, { LinkTab } from "@/components/LinkTabs";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren, useEffect } from "react";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 
 type UsersLayoutProps = PropsWithChildren<{}>;
 const UsersLayout = ({ children }: UsersLayoutProps) => {
   const { setPageTitle } = useAppStore();
+  const locale = useLocale();
 
   const t = useTranslations("users");
 
@@ -16,7 +17,7 @@ const UsersLayout = ({ children }: UsersLayoutProps) => {
 
     // Cleanup when component unmounts
     return () => setPageTitle(null);
-  }, []);
+  }, [locale]);
 
   return (
     <>

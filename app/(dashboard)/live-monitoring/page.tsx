@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import useAuthStore from "@/store/auth.slice";
 import useAppStore from "@/store/app.slice";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import LiveCalls from "./LiveCalls";
 import Agents from "./Agents";
 import PerformanceStats from "./PerformanceStats";
@@ -17,13 +17,14 @@ const LiveMonitoring = () => {
   const { setPageTitle } = useAppStore();
   const t = useTranslations("dashboard.containers");
   const { layoutVariant } = useLayoutManager();
+  const locale = useLocale();
 
   useEffect(() => {
     setPageTitle(t("liveMonitoringStats"));
 
     // Cleanup when component unmounts
     return () => setPageTitle(null);
-  }, []);
+  }, [locale]);
 
   return (
     <div className="page" id="live-monitoring">

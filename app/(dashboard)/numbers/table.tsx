@@ -42,7 +42,7 @@ import { SearchIcon } from "lucide-react";
 import { columns } from "./columns";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import numbersService from "@/services/numbers.service";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 
 interface DataTableProps {}
@@ -53,13 +53,14 @@ const DataTable = ({}: DataTableProps) => {
   const t = useTranslations("numbers");
   const tCommonSearch = useTranslations("common.search");
   const tCommonPagination = useTranslations("common.pagination");
+  const locale = useLocale();
 
   useEffect(() => {
     setPageTitle(t("title"));
 
     // Cleanup when component unmounts
     return () => setPageTitle(null);
-  }, []);
+  }, [locale]);
 
   // sorting, filters, and pagination state
   const [sorting, setSorting] = useState<SortingState>([]);

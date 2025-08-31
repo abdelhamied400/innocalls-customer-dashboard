@@ -28,7 +28,7 @@ import Select from "@/components/select";
 import useVocabStore from "@/store/vocab.slice";
 import InboundAnalyticsDateDistribution from "./date-distribution";
 import InboundAnalyticsQueueAnalysis from "./queue-analysis";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 import { useSession } from "next-auth/react";
 
@@ -56,13 +56,14 @@ const InboundAnalytics = () => {
 
   const t = useTranslations("analytics.inbound");
   const tCommon = useTranslations("analytics.common");
+  const locale = useLocale();
 
   useEffect(() => {
     setPageTitle(t("title"));
 
     // Cleanup when component unmounts
     return () => setPageTitle(null);
-  }, []);
+  }, [locale]);
 
   const filterByOptions = [
     { value: "all", label: t("filters.filterBy.options.all") },

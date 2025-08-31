@@ -17,7 +17,7 @@ import InboundUnansweredHourly from "./inbound-hourly";
 import OutboundDistribution from "./outbound-distribution";
 import OutboundUnansweredHourly from "./outbound-hourly";
 import QuickStats from "./quick-stats";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 
 type Option = {
@@ -38,6 +38,7 @@ lastMonth.setDate(today.getDate() - 30);
 const UnansweredAnalytics = () => {
   const { extensions } = useVocabStore();
   const { setPageTitle } = useAppStore();
+  const locale = useLocale();
 
   const t = useTranslations("analytics.unanswered");
   const tCommon = useTranslations("analytics.common");
@@ -47,7 +48,7 @@ const UnansweredAnalytics = () => {
 
     // Cleanup when component unmounts
     return () => setPageTitle(null);
-  }, []);
+  }, [locale]);
 
   const unansweredFilterConfig = {
     defaultValues: {

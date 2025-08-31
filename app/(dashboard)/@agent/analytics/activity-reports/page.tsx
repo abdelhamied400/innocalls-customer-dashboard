@@ -15,7 +15,7 @@ import {
   HourglassEmpty,
 } from "@mui/icons-material";
 import { CalendarIcon } from "lucide-react";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import QuickStats from "./quick-stats";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
@@ -39,6 +39,7 @@ const ActivityReports = () => {
   const tCommon = useTranslations("analytics.common");
   const [currentTab, setCurrentTab] = useState("dateCallDistribution");
   const { setPageTitle } = useAppStore();
+  const locale = useLocale();
 
   const activityReportsFilterConfig = {
     defaultValues: {
@@ -53,7 +54,7 @@ const ActivityReports = () => {
 
   useEffect(() => {
     setPageTitle(t("title"));
-  }, []);
+  }, [locale]);
 
   return (
     <div className="page" id="activity-reports">
