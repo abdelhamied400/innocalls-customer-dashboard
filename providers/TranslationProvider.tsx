@@ -10,6 +10,7 @@ import React, {
 import { LocaleSlug, defaultLocale } from "@/i18n/config";
 import { loadTranslations, getTranslation } from "@/lib/translations";
 import { getStoredLocale, setStoredLocale } from "@/lib/locale-storage";
+import "@/lib/preload-translations"; // Pre-load translations
 
 interface TranslationContextType {
   locale: LocaleSlug;
@@ -43,8 +44,12 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
       const storedLocale = getStoredLocale();
       const targetLocale = initialLocale || storedLocale;
 
-      // Load translations for the target locale
-      await loadTranslations(targetLocale);
+      // Pre-load both locales to avoid runtime loading issues
+      try {
+        await Promise.all([loadTranslations("en"), loadTranslations("ar")]);
+      } catch (error) {
+        console.error("Failed to pre-load translations:", error);
+      }
 
       setLocaleState(targetLocale);
       setStoredLocale(targetLocale);

@@ -1,8 +1,9 @@
+"use client";
 import ForgotPasswordForm from "./form";
 import { useTranslations } from "@/providers/TranslationProvider";
 
 const ForgotPassword = () => {
-    const t = useTranslations("auth.forgotPassword");
+  const t = useTranslations("auth.forgotPassword");
 
   return (
     <div
