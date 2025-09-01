@@ -2,7 +2,7 @@
 import { PropsWithChildren } from "react";
 import { Button } from "./ui/button";
 import { Close } from "@mui/icons-material";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type FilterBarProps = PropsWithChildren<{
   onClear?: () => void;

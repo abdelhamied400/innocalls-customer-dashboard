@@ -3,7 +3,7 @@
 import { flexRender } from "@tanstack/react-table";
 import { TableBody, TableCell, TableRow } from "../ui/table";
 import { usePaginatedTable } from "./PaginatedTable";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const PaginatedTableBody = () => {
   const { table } = usePaginatedTable();

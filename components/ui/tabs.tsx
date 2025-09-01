@@ -4,7 +4,7 @@ import * as React from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 
 import { cn } from "@/lib/utils";
-import { useLocale } from "next-intl";
+import { useLocale } from "@/providers/TranslationProvider";
 import { locales, LocaleSlug } from "@/i18n/config";
 
 const Tabs = React.forwardRef<

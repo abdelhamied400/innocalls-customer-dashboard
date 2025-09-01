@@ -6,7 +6,7 @@ import StatsCard, {
 import statsService from "@/services/stats.service";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import MiniStatsCard from "../MiniStatsCard";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
 
 const ErgTodayTalkTime = () => {

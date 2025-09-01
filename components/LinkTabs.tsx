@@ -1,7 +1,8 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { PropsWithChildren } from "react";
-import { Link, usePathname } from "@/i18n/routing";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface LinkTabProps {
   href?: string;

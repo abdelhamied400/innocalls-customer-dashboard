@@ -4,7 +4,7 @@ import { digits } from "@/constants/digits";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import React, { useState } from "react";
 import { CountrySelect } from "./DialpadCountrySelect";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import { detectCountryFromNumber } from "@/lib/webrtc";
 import { defaultCountry, webrtcCountries } from "@/constants/countries";
 

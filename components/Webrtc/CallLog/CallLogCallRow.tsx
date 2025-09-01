@@ -2,7 +2,7 @@ import { Badge, BadgeVariant } from "@/components/ui/badge";
 import { CallLogCall } from "@/lib/call-log";
 import { CalendarMonth, Timer } from "@mui/icons-material";
 import { format, parse } from "date-fns";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations, useLocale } from "@/providers/TranslationProvider";
 import { ar, enUS } from "date-fns/locale";
 
 const badgeVariants: Record<CallLogCall["type"], BadgeVariant> = {

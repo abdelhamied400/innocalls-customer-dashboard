@@ -16,7 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations, useLocale } from "@/providers/TranslationProvider";
 import { ar, enUS } from "date-fns/locale";
 
 type CallLogRowProps = Omit<CallLog, "calls"> & {

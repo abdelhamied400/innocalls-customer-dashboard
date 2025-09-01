@@ -1,5 +1,5 @@
 import { CallMade, CallReceived } from "@mui/icons-material";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type CallDirectionProps = {
   direction?: "incoming" | "outgoing";

@@ -21,7 +21,7 @@ import CallLog from "../CallLog";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import { Contacts, ContactsProviders } from "../Contacts";
 import { useSession } from "next-auth/react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const WebrtcActions = () => {
   const t = useTranslations("webrtc.actions");

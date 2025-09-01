@@ -9,7 +9,7 @@ import { useSip } from "@/providers/webrtc/SipProvider";
 import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import CallLogCallRow from "./CallLog/CallLogCallRow";
 import { useState } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const CallLog = () => {
   const t = useTranslations("webrtc.callLog");

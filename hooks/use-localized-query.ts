@@ -4,7 +4,7 @@ import {
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
-import { useLocale } from "next-intl";
+import { useLocale } from "@/providers/TranslationProvider";
 
 type QueryFn<T> = (context: { locale: string }) => Promise<T>;
 

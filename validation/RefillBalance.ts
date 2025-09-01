@@ -1,4 +1,4 @@
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import { z } from "zod";
 
 export const refillBalanceSchema = (t: ReturnType<typeof useTranslations>) =>

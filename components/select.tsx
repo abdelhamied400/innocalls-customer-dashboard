@@ -12,7 +12,7 @@ import ReactSelect, {
 } from "react-select";
 import CreatableReactSelect from "react-select/creatable";
 import { FixedSizeList as List } from "react-window";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const heightPerItem = 40;
 const maxVisibleItems = 6;

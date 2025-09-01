@@ -24,7 +24,7 @@ import QueueCallCard from "./QueueCallCard";
 import StatsRowCard from "../StatsRowCard";
 import StackedStatsRowCard from "../StackedStatsRowCard";
 import { FetchQueueDataResponse } from "@/services/live-monitoring.service";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import { formatNumbers } from "@/lib/utils";
 
 // Variants using cva

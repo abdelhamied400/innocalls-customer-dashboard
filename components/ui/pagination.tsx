@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { Button, ButtonProps, buttonVariants } from "@/components/ui/button";
 import { EllipsisIcon } from "lucide-react";
 import { FirstPage, LastPage } from "@mui/icons-material";
-import { useLocale } from "next-intl";
+import { useLocale } from "@/providers/TranslationProvider";
 import { locales, LocaleSlug } from "@/i18n/config";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (

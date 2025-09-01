@@ -5,7 +5,7 @@ import StatsCard, {
 import statsService from "@/services/stats.service";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-interval";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const ErgWaitingCallsCount = () => {
   const t = useTranslations("dashboard.stats.ergStats.waitingCallsCount");

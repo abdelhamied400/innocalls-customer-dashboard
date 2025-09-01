@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import api from "./api";
-import { UserActivityFilters } from "@/app/[locale]/(dashboard)/analytics/agents-performance/page";
+import { UserActivityFilters } from "@/app/(dashboard)/analytics/agents-performance/page";
 
 type FetchQuickStatsResponse = {
   topAnsweredIncomingAgents: {

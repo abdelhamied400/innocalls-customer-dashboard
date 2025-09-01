@@ -1,5 +1,5 @@
 "use client";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import React from "react";
 import FullPageError from "./FullPageError";
 import useAuthStore from "@/store/auth.slice";

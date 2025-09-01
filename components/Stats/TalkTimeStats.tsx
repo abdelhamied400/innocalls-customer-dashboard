@@ -9,7 +9,7 @@ import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-int
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import statsService from "@/services/stats.service";
 import { formatDurationShort } from "@/lib/date";
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import { formatNumbers } from "@/lib/utils";
 
 const TalkTimeStats = () => {

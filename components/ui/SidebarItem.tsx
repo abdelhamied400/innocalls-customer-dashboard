@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PropsWithChildren, ReactNode, useMemo } from "react";
 import { Badge } from "./badge";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type SidebarItemProps = PropsWithChildren<{
   icon?: ReactNode;

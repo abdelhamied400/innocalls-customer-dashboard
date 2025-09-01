@@ -1,7 +1,7 @@
 import LastHourCallsDuration from "@/components/Stats/LastHourCallsDuration";
 import LiveCallsCount from "@/components/Stats/LiveCallsCount";
 import TodayCallsDuration from "@/components/Stats/TodayCallsDuration";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const ServiceLevelStats = () => {
   const t = useTranslations("dashboard.containers");

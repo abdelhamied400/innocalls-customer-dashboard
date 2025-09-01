@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import NextIntlProvider from "./NextIntlProvider";
+import { TranslationProvider } from "./TranslationProvider";
 import { SessionProvider } from "next-auth/react";
 import ClientProvider from "./ClientProvider";
 import { WebrtcProvider } from "./webrtc/WebrtcProvider";
@@ -8,11 +8,11 @@ type MainProviderProps = PropsWithChildren<object>;
 const MainProvider = async ({ children }: MainProviderProps) => {
   return (
     <SessionProvider>
-      <NextIntlProvider>
+      <TranslationProvider>
         <ClientProvider>
           <WebrtcProvider>{children}</WebrtcProvider>
         </ClientProvider>
-      </NextIntlProvider>
+      </TranslationProvider>
     </SessionProvider>
   );
 };

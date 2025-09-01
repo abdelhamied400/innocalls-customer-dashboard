@@ -1,5 +1,5 @@
 import { differenceInDays, isAfter } from "date-fns";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 export const isValidDateRange = (
   fromDate?: Date,

@@ -30,7 +30,7 @@ import Support from "@mui/icons-material/Support";
 import SmartToy from "@mui/icons-material/SmartToy";
 import Image from "next/image";
 import { Button } from "./ui/button";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import { useSession } from "next-auth/react";
 import useAuthStore from "@/store/auth.slice";
 

@@ -6,7 +6,7 @@ import StatsCard, {
 import statsService from "@/services/stats.service";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import MiniStatsCard from "../MiniStatsCard";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const ErgLast30DaysCallsSummary = () => {
   const t = useTranslations("dashboard.stats.ergStats.last30DaysCallsSummary");

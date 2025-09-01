@@ -1,7 +1,7 @@
-import { PerformanceStatsFiltersType } from "@/app/[locale]/(dashboard)/live-monitoring/PerformanceStats";
+import { PerformanceStatsFiltersType } from "@/app/(dashboard)/live-monitoring/PerformanceStats";
 import api from "./api";
 import usersService, { Agent } from "./users.service";
-import { QueueManagementFilters } from "@/app/[locale]/(dashboard)/live-monitoring/QueueManagement";
+import { QueueManagementFilters } from "@/app/(dashboard)/live-monitoring/QueueManagement";
 
 export type FetchQueueDataResponse = Array<{
   queue: string;

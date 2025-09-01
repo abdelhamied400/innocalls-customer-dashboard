@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useSip } from "@/providers/webrtc/SipProvider";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const ExtensionStateBar = () => {
   const t = useTranslations("webrtc");

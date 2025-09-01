@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { PasswordSchema } from "./shared/Password";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 export const ResetPasswordSchema =  (t: ReturnType<typeof useTranslations>, tCommon: ReturnType<typeof useTranslations>) =>
   z

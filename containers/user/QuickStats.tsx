@@ -6,7 +6,7 @@ import { usePersistentRefetchInterval } from "@/hooks/use-persistent-refetch-int
 import statsService from "@/services/stats.service";
 import { BarChart, Bolt, ShowChart } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 
 const QuickStats = () => {
   const t = useTranslations("dashboard.stats.quickStats");

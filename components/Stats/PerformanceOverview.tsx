@@ -19,7 +19,7 @@ import { RocketLaunch } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import statsService from "@/services/stats.service";
 import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const PerformanceOverview = () => {
   const t = useTranslations("dashboard.stats.performanceOverview");

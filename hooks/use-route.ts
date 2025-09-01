@@ -1,5 +1,5 @@
 import { LocaleSlug } from "@/i18n/config";
-import { useLocale } from "next-intl";
+import { useLocale } from "@/providers/TranslationProvider";
 import { usePathname } from "next/navigation";
 
 const useRouteWithLocale = () => {

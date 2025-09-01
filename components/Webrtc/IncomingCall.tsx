@@ -2,7 +2,7 @@ import { useSip } from "@/providers/webrtc/SipProvider";
 import { Button } from "../ui/button";
 import { CallEnd, Phone } from "@mui/icons-material";
 import { SessionDirection } from "jssip/lib/RTCSession";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const IncomingCall = () => {
   const t = useTranslations("webrtc");

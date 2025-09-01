@@ -8,7 +8,7 @@ import {
   TimerOutlined,
 } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import { formatNumbers } from "@/lib/utils";
 
 const CallSummaryStats = () => {

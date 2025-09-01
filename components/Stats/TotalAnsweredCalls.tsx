@@ -10,7 +10,7 @@ import {
 import statsService from "@/services/stats.service";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { StatsCardError, StatsCardSkeleton } from "../StatsCard";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 import ChartCard from "../ChartCard";
 import { BarChart as BarChartIcon } from "@mui/icons-material";
 import NoData from "../Analytics/NoData";

@@ -4,7 +4,7 @@ import { useSip } from "@/providers/webrtc/SipProvider";
 import { useToast } from "@/hooks/use-toast";
 import useAppStore from "@/store/app.slice";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const agentCardVariants = cva(
   "rounded-lg border p-2 hover:shadow-md transition-all duration-200 group",

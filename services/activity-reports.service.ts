@@ -1,4 +1,4 @@
-import { ActivityReportsFilters } from "@/app/[locale]/(dashboard)/@agent/analytics/activity-reports/page";
+import { ActivityReportsFilters } from "@/app/(dashboard)/@agent/analytics/activity-reports/page";
 import api from "./api";
 import { format } from "date-fns";
 
