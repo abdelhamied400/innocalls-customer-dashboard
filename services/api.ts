@@ -36,7 +36,7 @@ api.interceptors.request.use(async (config) => {
     lang = headers.get("NEXT_LOCALE") || defaultLocale;
   } else {
     organizationId = await getCookie("OrganizationId");
-    lang = (await getCookie("NEXT_LOCALE")) || defaultLocale;
+    lang = localStorage.getItem("app-locale") || defaultLocale;
   }
 
   if (user?.accessToken) {
