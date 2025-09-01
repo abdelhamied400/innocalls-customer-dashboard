@@ -1,16 +1,8 @@
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
 import AuthBanner from "./banner";
 
 type AuthLayoutProps = PropsWithChildren<object>;
 const AuthLayout = async ({ children }: AuthLayoutProps) => {
-  const session = await auth();
-
-  if (!!session) {
-    return redirect("/");
-  }
-
   return (
     <div className="layout h-screen" id="auth-layout">
       <div className="grid grid-cols-5 h-full">
