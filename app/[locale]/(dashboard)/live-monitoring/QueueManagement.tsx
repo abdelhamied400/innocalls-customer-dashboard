@@ -115,7 +115,7 @@ const QueueManagement = () => {
           </div>
           <div className="flex justify-end">
             <Button type="submit" disabled={!isValid}>
-              Apply Filters
+              {t('actions.applyFilters')}
             </Button>
           </div>
         </form>

@@ -1843,6 +1843,9 @@
             "invalid": "SLA must be an integer greater than or equal to 1"
           }
         }
+      },
+      "actions": {
+        "applyFilters": "Apply Filters"
       }
     },
     "performanceStats": {
@@ -1912,7 +1915,7 @@
         "from": "From",
         "to": "To",
         "duration": "Duration",
-        "autoDialerCall":"Auto Dialer Call"
+        "autoDialerCall": "Auto Dialer Call"
       }
     }
   },
