@@ -157,6 +157,7 @@ export const useUaEvents = ({
       );
 
       updateSessionState("trying");
+      navigate("/call");
 
       session.on("progress", () => {
         webrtcLogger.info("Call is in progress");
@@ -177,9 +178,6 @@ export const useUaEvents = ({
       connection.addEventListener("addstream", (event: any) => {
         webrtcLogger.debug("Stream added for outgoing call", event);
       });
-
-      navigate("/call");
-      updateSessionState("trying");
     },
     [navigate, updateSessionState]
   );
