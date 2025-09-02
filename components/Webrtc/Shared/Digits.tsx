@@ -3,13 +3,13 @@ import Digit from "./Digit";
 import { useSip } from "@/providers/webrtc/SipProvider";
 
 const Digits = () => {
-  const { setNumber } = useSip();
+  const { setNumber, number } = useSip();
 
   const handleDigitClick = (digit: string) => {
     if (digit === "+") {
-      setNumber((prev) => (prev.length === 0 ? "+" : prev));
+      setNumber(number.length === 0 ? "+" : number);
     } else if (/^[0-9#*]$/.test(digit)) {
-      setNumber((prev) => prev + digit);
+      setNumber(number + digit);
     }
   };
 

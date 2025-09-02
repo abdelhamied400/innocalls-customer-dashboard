@@ -3,7 +3,7 @@ import { useSip } from "@/providers/webrtc/SipProvider";
 import { Backspace, Logout, Phone } from "@mui/icons-material";
 
 const DialpadActions = () => {
-  const { call, setNumber } = useSip();
+  const { call, setNumber, number } = useSip();
 
   const handleCall = () => {
     // Implement call functionality here
@@ -12,7 +12,7 @@ const DialpadActions = () => {
   };
 
   const handleBackspace = () => {
-    setNumber((prev) => prev.slice(0, -1));
+    setNumber(number.slice(0, -1));
   };
 
   const handleLongBackspace = () => {
