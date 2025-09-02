@@ -23,7 +23,7 @@ const InnortcLayout = ({ children }: InnortcLayoutProps) => {
         </Button>
       </div>
 
-      <div className="flex-1">{children}</div>
+      <div className="flex-1 overflow-auto">{children}</div>
 
       <div className="foot border-t flex justify-center items-center">
         <Button

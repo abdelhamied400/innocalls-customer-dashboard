@@ -35,7 +35,7 @@ const ExtensionRow = ({ extension, disabled, onClick }: ExtensionRowProps) => {
     <Button
       key={extension.id}
       variant="ghost"
-      className="h-auto py-4"
+      className="h-auto py-4 whitespace-normal"
       disabled={disabled || loading}
       onClick={handleClick}
     >
