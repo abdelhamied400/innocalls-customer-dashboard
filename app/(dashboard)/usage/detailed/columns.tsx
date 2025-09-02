@@ -15,14 +15,12 @@ const generateHeaderFromKey = (key: string) => {
 
 export const createColumns = (columnKeys: string[]) => {
   const t = useTranslations("usage.detailed.columns");
-    const tOrigin = useTranslations("usage.detailed.origin");
-
+  const tOrigin = useTranslations("usage.detailed.origin");
 
   const predefinedColumns: Record<string, ColumnDef<UsageDetailed>> = {
     origin: {
       accessorKey: "origin",
       header: t("origin"),
-
       cell: ({ row }) => {
         const origin = row.getValue("origin") as string;
         const variantsLookup: any = {
@@ -33,7 +31,9 @@ export const createColumns = (columnKeys: string[]) => {
         const variant = variantsLookup[origin] || "muted";
         return (
           <div className="flex items-center">
-            <Badge variant={variant}>{tOrigin(`${origin?.toLocaleLowerCase()}`)}</Badge>
+            <Badge variant={variant}>
+              {tOrigin(`${origin?.toLocaleLowerCase()}`)}
+            </Badge>
           </div>
         );
       },
@@ -51,7 +51,16 @@ export const createColumns = (columnKeys: string[]) => {
     return {
       accessorKey: key,
       header: translatedHeader,
-      cell: ({ row }: any) => row.getValue(key),
+      cell: ({ row }: any) => {
+        const value = row.getValue(key);
+        if (
+          key.toLowerCase().includes("srcpartyid") ||
+          key.toLowerCase().includes("dstpartyid")
+        ) {
+          return "\u200E" + value; // add Left-to-Right Mark
+        }
+        return value;
+      },
     };
   });
 };
