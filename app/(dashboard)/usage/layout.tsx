@@ -1,12 +1,21 @@
 "use client";
 import LinkTabs, { LinkTab } from "@/components/LinkTabs";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import withPermission from "@/containers/withPermission";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import useAppStore from "@/store/app.slice";
 
 type UsageLayoutProps = PropsWithChildren<{}>;
 const UsageLayout = ({ children }: UsageLayoutProps) => {
   const t = useTranslations("usage");
+  const tNav = useTranslations("sidebar.navigation");
+
+  const { setPageTitle } = useAppStore();
+  const locale = useLocale();
+
+  useEffect(() => {
+    setPageTitle(tNav("usage"));
+  }, [locale]);
 
   return (
     <div className="bg-white rounded-xl p-4 h-auto sm:h-full flex flex-col gap-2">
