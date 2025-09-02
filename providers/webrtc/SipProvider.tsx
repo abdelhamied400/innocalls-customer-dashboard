@@ -5,77 +5,55 @@ import React, {
   PropsWithChildren,
   useContext,
   useEffect,
-  useState,
   useRef,
   useCallback,
 } from "react";
 import { useRouting } from "@/providers/RoutingProvider";
-import { ExtensionWithCredentials } from "@/types/api/extension";
 import { sipManager } from "./SipProvider/sipManager";
-import type {
-  SipContextType,
-  ExtensionState,
-  SessionState,
-  SpyingStatus,
-} from "./SipProvider/types";
+import type { SipContextType } from "./SipProvider/types";
 
 import JsSIP from "jssip";
 import { useUaEvents } from "./SipProvider/useUaEvents";
-import { RTCSession } from "jssip/lib/RTCSession";
-import { defaultCountry } from "@/constants/countries";
 import { useToast } from "@/hooks/use-toast";
+import useWebrtcStore from "@/store/webrtc.slice";
+import { ExtensionWithCredentials } from "@/types/api/extension";
 
 const SipContext = createContext<SipContextType | null>(null);
-
-// Global singleton state to survive provider re-creation
-let globalState: {
-  ua: JsSIP.UA | null;
-  extension: ExtensionWithCredentials | null;
-  extensionState: ExtensionState;
-  subscribers: Set<() => void>;
-} = {
-  ua: null,
-  extension: null,
-  extensionState: "disconnected",
-  subscribers: new Set(),
-};
-
-const notifySubscribers = () => {
-  globalState.subscribers.forEach((callback) => callback());
-};
-
-const setGlobalExtensionState = (state: ExtensionState) => {
-  globalState.extensionState = state;
-  notifySubscribers();
-};
-
-const setGlobalExtension = (extension: ExtensionWithCredentials | null) => {
-  globalState.extension = extension;
-  notifySubscribers();
-};
-
-const setGlobalUA = (ua: JsSIP.UA | null) => {
-  globalState.ua = ua;
-  notifySubscribers();
-};
 
 type SipProviderProps = PropsWithChildren<{}>;
 export const SipProvider = ({ children }: SipProviderProps) => {
   const { navigate } = useRouting();
+  const { toast } = useToast();
 
-  // Use global state that survives provider re-creation
-  const [ua, setUa] = useState<JsSIP.UA | null>(globalState.ua);
-  const [extension, setExtension] = useState<ExtensionWithCredentials | null>(
-    globalState.extension
-  );
-  const [extensionState, setExtensionState] = useState<ExtensionState>(
-    globalState.extensionState
-  );
-  const [forceRender, setForceRender] = useState(0);
-
-  const [currentSession, setCurrentSession] = useState<RTCSession | null>(null);
-  const [sessionState, setSessionState] = useState<SessionState>();
-  const [callStartTime, setCallStartTime] = useState<number | null>(null);
+  // Use global WebRTC store instead of local state
+  const {
+    ua,
+    setUa,
+    extension,
+    setExtension,
+    extensionState,
+    setExtensionState,
+    currentSession,
+    setCurrentSession,
+    sessionState,
+    setSessionState,
+    callStartTime,
+    setCallStartTime,
+    number,
+    setNumber,
+    dialCode,
+    setDialCode,
+    spyingStatus,
+    setSpyingStatus,
+    isSpying,
+    setIsSpying,
+    isConnecting,
+    setIsConnecting,
+    registrationAttempts,
+    setRegistrationAttempts,
+    lastLoginAttempt,
+    setLastLoginAttempt,
+  } = useWebrtcStore();
 
   // Track when call starts (answered) to record start time
   useEffect(() => {
@@ -84,38 +62,10 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     } else if (sessionState === "ended" || sessionState === "failed") {
       setCallStartTime(null);
     }
-  }, [sessionState, callStartTime]);
-
-  const { toast } = useToast();
-
-  const [number, setNumber] = useState<string>("");
-  const [dialCode, setDialCode] = useState<string>(defaultCountry.code);
-
-  // Subscribe to global state changes
-  useEffect(() => {
-    const handleGlobalStateChange = () => {
-      setUa(globalState.ua);
-      setExtension(globalState.extension);
-      setExtensionState(globalState.extensionState);
-      setForceRender((prev) => prev + 1);
-    };
-
-    globalState.subscribers.add(handleGlobalStateChange);
-    return () => {
-      globalState.subscribers.delete(handleGlobalStateChange);
-    };
-  }, []);
-
-  const [spyingStatus, setSpyingStatus] = useState<SpyingStatus>("spy");
-  const [isSpying, setIsSpying] = useState(false);
-
-  // Single session management state
-  const [isConnecting, setIsConnecting] = useState(false);
-  const [registrationAttempts, setRegistrationAttempts] = useState(0);
-  const [lastLoginAttempt, setLastLoginAttempt] = useState(0);
+  }, [sessionState, callStartTime, setCallStartTime]);
 
   const { bindEvents, unbindEvents } = useUaEvents({
-    setExtensionState: setGlobalExtensionState,
+    setExtensionState,
     setCurrentSession,
     setSessionState,
     setIsSpying,
@@ -165,7 +115,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
       // Check if already connected to same URI
       const currentUA = sipManager.getCurrentUA();
       if (currentUA && sipManager.isConnected()) {
-        setGlobalUA(currentUA); // Ensure UA is set in global state
+        setUa(currentUA); // Ensure UA is set in global state
         navigate("/dialpad");
         return;
       }
@@ -183,9 +133,9 @@ export const SipProvider = ({ children }: SipProviderProps) => {
           extension.password
         );
 
-        setGlobalExtension(extension);
+        setExtension(extension);
         bindEvents(userAgent, extension);
-        setGlobalUA(userAgent); // Set UA immediately for extension bar and calls to work
+        setUa(userAgent); // Set UA immediately for extension bar and calls to work
 
         // Only start if not already started
         if (!userAgent.isConnected()) {
@@ -233,7 +183,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         extension.password
       );
       bindEvents(userAgent, extension);
-      setGlobalUA(userAgent);
+      setUa(userAgent);
 
       // Start connection
       userAgent.start();
@@ -255,7 +205,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
     try {
       await disconnectExistingSession();
-      setGlobalExtension(null);
+      setExtension(null);
       navigate("/extensions");
     } finally {
       setIsConnecting(false);

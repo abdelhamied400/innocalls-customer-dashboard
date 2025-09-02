@@ -27,10 +27,10 @@ export type SipContextType = {
   logout: () => void;
   reconnect: () => void;
   call: (number?: string) => RTCSession | undefined;
-  setNumber: React.Dispatch<React.SetStateAction<string>>;
-  setDialCode: React.Dispatch<React.SetStateAction<string>>;
+  setNumber: (number: string) => void;
+  setDialCode: (code: string) => void;
   spy: (extension: string) => void;
   spyingStatus: SpyingStatus;
-  setSpyingStatus: React.Dispatch<React.SetStateAction<SpyingStatus>>;
+  setSpyingStatus: (status: SpyingStatus) => void;
   isSpying: boolean;
 };

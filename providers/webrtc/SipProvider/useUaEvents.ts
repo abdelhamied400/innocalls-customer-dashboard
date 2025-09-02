@@ -11,12 +11,10 @@ import { webrtcLogger } from "@/lib/logger";
 
 export type useUAEventsDeps = {
   setExtensionState: (state: ExtensionState) => void;
-  setCurrentSession: React.Dispatch<React.SetStateAction<RTCSession | null>>;
-  setSessionState: React.Dispatch<
-    React.SetStateAction<SessionState | undefined>
-  >;
-  setIsSpying: React.Dispatch<React.SetStateAction<boolean>>;
-  setSpyingStatus: React.Dispatch<React.SetStateAction<SpyingStatus>>;
+  setCurrentSession: (session: RTCSession | null) => void;
+  setSessionState: (state: SessionState | undefined) => void;
+  setIsSpying: (spying: boolean) => void;
+  setSpyingStatus: (status: SpyingStatus) => void;
 };
 export const useUaEvents = ({
   setExtensionState,
@@ -223,6 +221,8 @@ export const useUaEvents = ({
 
       userAgent.on("registrationExpiring", () => {
         webrtcLogger.info("Registration expiring, auto-renewal will occur");
+        // Trigger auto-renewal
+        userAgent.register();
       });
       userAgent.on("newRTCSession", (e: RTCSessionEvent) => {
         const session = e.session;
