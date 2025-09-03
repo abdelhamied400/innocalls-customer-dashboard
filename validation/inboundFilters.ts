@@ -12,6 +12,7 @@ export const inboundFiltersSchema = (
       agents: z.array(z.string()).optional(),
       queue: z.string().optional(),
       filterBy: z.enum(["all", "team"]),
+      includeInternalCalls: z.boolean(),
     })
     .refine(
       (data) => {

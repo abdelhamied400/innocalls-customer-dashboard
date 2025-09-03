@@ -60,10 +60,14 @@ const HourlyDistributionAnalytics = ({
       header: t("table.columns.unanswered"),
       accessorKey: "unansweredCalls",
     },
-    {
-      header: t("table.columns.internal"),
-      accessorKey: "internalCalls",
-    },
+    ...(filters.includeInternalCalls
+      ? [
+          {
+            header: t("table.columns.internal"),
+            accessorKey: "internalCalls",
+          },
+        ]
+      : []),
     {
       header: t("table.columns.external"),
       accessorKey: "externalCalls",

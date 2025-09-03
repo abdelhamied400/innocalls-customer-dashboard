@@ -103,6 +103,7 @@ const formatParams = (filters: InboundAnalyticsFilters) => ({
   toDate: format(filters.toDate, "yyyy-MM-dd"),
   exts: filters.agents?.length ? filters.agents.join(",") : undefined,
   queue: filters.queue,
+  includeInternalCalls: filters.includeInternalCalls,
 });
 
 export default {

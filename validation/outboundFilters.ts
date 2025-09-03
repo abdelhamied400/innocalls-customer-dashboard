@@ -11,19 +11,23 @@ export const outboundFiltersSchema = (t: ReturnType<typeof useTranslations>) =>
         required_error: t("form.validation.toDate.required"),
       }),
       agents: z.array(z.object({ value: z.string(), label: z.string() })),
+      includeInternalCalls: z.boolean(),
     })
-    .refine((data) => {
-      const from = new Date(data.fromDate);
-      const to = new Date(data.toDate);
-    
-      from.setHours(0, 0, 0, 0);
-      to.setHours(0, 0, 0, 0);
-    
-      return from <= to;
-    }, {
-      message: t("form.validation.toDate.beforeFromDate"),
-      path: ["toDate"],
-    })
+    .refine(
+      (data) => {
+        const from = new Date(data.fromDate);
+        const to = new Date(data.toDate);
+
+        from.setHours(0, 0, 0, 0);
+        to.setHours(0, 0, 0, 0);
+
+        return from <= to;
+      },
+      {
+        message: t("form.validation.toDate.beforeFromDate"),
+        path: ["toDate"],
+      }
+    )
     .refine(
       (data) => {
         const diff =

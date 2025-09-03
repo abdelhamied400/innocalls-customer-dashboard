@@ -54,10 +54,14 @@ const InboundAnalyticsDateDistribution = ({
       header: t("table.allColumns.total"),
       accessorKey: "totalCalls",
     },
-    {
-      header: t("table.allColumns.internal"),
-      accessorKey: "internalCalls",
-    },
+    ...(filters.includeInternalCalls
+      ? [
+          {
+            header: t("table.allColumns.internal"),
+            accessorKey: "internalCalls",
+          },
+        ]
+      : []),
     {
       header: t("table.allColumns.external"),
       accessorKey: "externalCalls",

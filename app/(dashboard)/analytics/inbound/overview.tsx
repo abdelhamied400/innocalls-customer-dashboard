@@ -32,7 +32,9 @@ const InboundAnalyticsOverview = ({
       { label: t("legends.totalCalls"), color: "#3B82F6" },
       { label: t("legends.answeredCalls"), color: "#10B981" },
       { label: t("legends.externalCalls"), color: "#F59E42" },
-      { label: t("legends.internalCalls"), color: "#A855F7" },
+      ...(filters.includeInternalCalls
+        ? [{ label: t("legends.internalCalls"), color: "#A855F7" }]
+        : []),
       { label: t("legends.unansweredCalls"), color: "#EF4444" },
     ],
   };
@@ -123,14 +125,16 @@ const InboundAnalyticsOverview = ({
                 strokeWidth={3}
                 dot={false}
               />
-              <Line
-                type="monotone"
-                dataKey="internalCalls"
-                label={t("legends.internalCalls")}
-                stroke="#A855F7"
-                strokeWidth={3}
-                dot={false}
-              />
+              {filters.includeInternalCalls && (
+                <Line
+                  type="monotone"
+                  dataKey="internalCalls"
+                  label={t("legends.internalCalls")}
+                  stroke="#A855F7"
+                  strokeWidth={3}
+                  dot={false}
+                />
+              )}
               <Line
                 type="monotone"
                 dataKey="unansweredCalls"

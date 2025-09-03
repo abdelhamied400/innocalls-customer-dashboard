@@ -75,10 +75,14 @@ const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
       accessorKey: "unansweredCalls",
       header: t("table.columns.unanswered"),
     },
-    {
-      accessorKey: "internalCalls",
-      header: t("table.columns.internal"),
-    },
+    ...(filters.includeInternalCalls
+      ? [
+          {
+            accessorKey: "internalCalls",
+            header: t("table.columns.internal"),
+          },
+        ]
+      : []),
     {
       accessorKey: "externalCalls",
       header: t("table.columns.external"),

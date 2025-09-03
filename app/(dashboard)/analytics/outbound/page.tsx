@@ -20,6 +20,8 @@ import Select from "@/components/select";
 import useVocabStore from "@/store/vocab.slice";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 type Option = {
   value: string;
@@ -30,6 +32,7 @@ export type OutboundAnalyticsFilters = {
   fromDate: Date;
   toDate: Date;
   agents: Option[];
+  includeInternalCalls: boolean;
 };
 
 const today = new Date();
@@ -57,6 +60,7 @@ const OutboundAnalytics = () => {
       fromDate: lastMonth,
       toDate: today,
       agents: [],
+      includeInternalCalls: false,
     } as OutboundAnalyticsFilters,
     schema: outboundFiltersSchema(tCommon),
   };
@@ -115,6 +119,18 @@ const OutboundAnalytics = () => {
                   error={errors.agents}
                   isClearable
                 />
+              </div>
+              {/* add a switch only if the filterBy is "team" */}
+              <div className="flex items-center space-x-2">
+                <Switch
+                  checked={values.includeInternalCalls}
+                  onCheckedChange={(checked) =>
+                    setValue("includeInternalCalls", checked)
+                  }
+                />
+                <Label htmlFor="includeInternalCalls">
+                  {t("actions.includeInternalCalls")}
+                </Label>
               </div>
             </div>
             <div className="flex flex-wrap justify-end gap-2">

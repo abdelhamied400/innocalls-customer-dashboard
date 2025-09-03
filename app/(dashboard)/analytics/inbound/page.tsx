@@ -31,13 +31,10 @@ import InboundAnalyticsQueueAnalysis from "./queue-analysis";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 import { useSession } from "next-auth/react";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 export type InboundAnalyticsFilterBy = "all" | "team";
-
-type Option<T> = {
-  value: T;
-  label: string;
-};
 
 export type InboundAnalyticsFilters = {
   fromDate: Date;
@@ -45,6 +42,7 @@ export type InboundAnalyticsFilters = {
   agents?: string[];
   queue?: string;
   filterBy: InboundAnalyticsFilterBy;
+  includeInternalCalls: boolean;
 };
 
 const InboundAnalytics = () => {
@@ -81,6 +79,7 @@ const InboundAnalytics = () => {
       agents: [],
       queue: undefined,
       filterBy: "all" as InboundAnalyticsFilterBy,
+      includeInternalCalls: false,
     } as InboundAnalyticsFilters,
     schema: inboundFiltersSchema(t, tCommon),
   };
@@ -192,6 +191,21 @@ const InboundAnalytics = () => {
                     showSelectedTags={false}
                     error={errors.agents}
                   />
+                </div>
+              )}
+
+              {/* add a switch only if the filterBy is "team" */}
+              {values.filterBy === "all" && (
+                <div className="flex items-center space-x-2">
+                  <Switch
+                    checked={values.includeInternalCalls}
+                    onCheckedChange={(checked) =>
+                      setValue("includeInternalCalls", checked)
+                    }
+                  />
+                  <Label htmlFor="includeInternalCalls">
+                    {t("actions.includeInternalCalls")}
+                  </Label>
                 </div>
               )}
             </div>

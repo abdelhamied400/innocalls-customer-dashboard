@@ -46,17 +46,20 @@ const DateDistributionAnalytics = ({
   const columns = [
     {
       header: t("table.columns.date"),
-
       accessorKey: "date",
     },
     {
       header: t("table.columns.total"),
       accessorKey: "totalCalls",
     },
-    {
-      header: t("table.columns.internal"),
-      accessorKey: "internalCalls",
-    },
+    ...(filters.includeInternalCalls
+      ? [
+          {
+            header: t("table.columns.internal"),
+            accessorKey: "internalCalls",
+          },
+        ]
+      : []),
     {
       header: t("table.columns.external"),
       accessorKey: "externalCalls",
