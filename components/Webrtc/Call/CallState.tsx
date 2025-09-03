@@ -1,15 +1,15 @@
 import CallTimer from "./CallTimer";
 import { cn } from "@/lib/utils";
-import { useSip } from "@/providers/webrtc/SipProvider";
 import { SessionState } from "@/providers/webrtc/SipProvider/types";
 import { useTranslations } from "@/providers/TranslationProvider";
+import useWebrtcStore from "@/store/webrtc.slice";
 
 type CallStateProps = {
   state?: SessionState;
 };
 const CallState = ({ state }: CallStateProps) => {
   const t = useTranslations("webrtc.state");
-  const { callStartTime } = useSip();
+  const { callStartTime } = useWebrtcStore();
 
   return (
     <div className="flex flex-col gap-2">
