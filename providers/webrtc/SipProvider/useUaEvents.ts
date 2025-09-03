@@ -10,11 +10,13 @@ import { addCallToLog } from "@/lib/call-log";
 import { webrtcLogger } from "@/lib/logger";
 
 export type useUAEventsDeps = {
-  setExtensionState: (state: ExtensionState) => void;
-  setCurrentSession: (session: RTCSession | null) => void;
-  setSessionState: (state: SessionState | undefined) => void;
-  setIsSpying: (spying: boolean) => void;
-  setSpyingStatus: (status: SpyingStatus) => void;
+  setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
+  setCurrentSession: React.Dispatch<React.SetStateAction<RTCSession | null>>;
+  setSessionState: React.Dispatch<
+    React.SetStateAction<SessionState | undefined>
+  >;
+  setIsSpying: React.Dispatch<React.SetStateAction<boolean>>;
+  setSpyingStatus: React.Dispatch<React.SetStateAction<SpyingStatus>>;
 };
 export const useUaEvents = ({
   setExtensionState,
@@ -155,7 +157,6 @@ export const useUaEvents = ({
       );
 
       updateSessionState("trying");
-      navigate("/call");
 
       session.on("progress", () => {
         webrtcLogger.info("Call is in progress");
@@ -176,53 +177,21 @@ export const useUaEvents = ({
       connection.addEventListener("addstream", (event: any) => {
         webrtcLogger.debug("Stream added for outgoing call", event);
       });
+
+      navigate("/call");
+      updateSessionState("trying");
     },
     [navigate, updateSessionState]
   );
 
   const bindEvents = useCallback(
     (userAgent: JsSIP.UA, extension: ExtensionWithCredentials) => {
-      // Connection state events
-      userAgent.on("connecting", () => {
-        webrtcLogger.info("SIP connecting...");
-        setExtensionState("connecting");
-      });
-
-      userAgent.on("connected", () => {
-        webrtcLogger.info("SIP websocket connected (not yet registered)");
-        // Don't set to "connected" here - wait for actual registration
-      });
-
-      userAgent.on("disconnected", () => {
-        webrtcLogger.info("SIP disconnected");
-        setExtensionState("disconnected");
-      });
-
-      // Registration events
-      userAgent.on("registered", () => {
-        webrtcLogger.info("SIP registration successful");
-        setExtensionState("connected");
-        navigate("/dialpad");
-      });
-
-      userAgent.on("unregistered", () => {
-        webrtcLogger.info("SIP unregistered");
-        setExtensionState("disconnected");
-      });
-
+      userAgent.on("connecting", () => setExtensionState("connecting"));
+      userAgent.on("connected", () => setExtensionState("connected"));
+      userAgent.on("disconnected", () => setExtensionState("disconnected"));
       userAgent.on("registrationFailed", (e) => {
-        webrtcLogger.error("Registration failed", {
-          cause: e.cause,
-          response: e.response?.status_code,
-          uri: extension.uri,
-        });
+        webrtcLogger.error("Registration failed", e);
         setExtensionState("disconnected");
-      });
-
-      userAgent.on("registrationExpiring", () => {
-        webrtcLogger.info("Registration expiring, auto-renewal will occur");
-        // Trigger auto-renewal
-        userAgent.register();
       });
       userAgent.on("newRTCSession", (e: RTCSessionEvent) => {
         const session = e.session;
@@ -265,9 +234,7 @@ export const useUaEvents = ({
 
   const unbindEvents = useCallback(
     (userAgent: JsSIP.UA) => {
-      webrtcLogger.info("Unbinding UA events");
-      // Remove all listeners to prevent memory leaks
-      userAgent.removeAllListeners();
+      userAgent.removeAllListeners(); // or remove specific if needed
       setExtensionState("disconnected");
       updateSessionState(undefined);
     },

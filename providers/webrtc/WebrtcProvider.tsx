@@ -1,30 +1,28 @@
 "use client";
 
-import { PropsWithChildren, useEffect, useMemo } from "react";
+import { PropsWithChildren, useEffect } from "react";
 import { RoutingProvider } from "../RoutingProvider";
 import { SipProvider } from "./SipProvider";
 import { useSession } from "next-auth/react";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useTranslations } from "../TranslationProvider";
 
 type WebrtcProviderProps = PropsWithChildren<{}>;
 export const WebrtcProvider = ({ children }: WebrtcProviderProps) => {
   const t = useTranslations("common.states");
 
   const { data: session, status } = useSession();
-  
-  // Memoize the initial route to prevent re-renders
-  const initialRoute = useMemo(() => {
-    const userType = session?.user?.userType;
-    if (userType === "agent") {
-      return "/dialpad";
-    } else if (userType === "user") {
-      return "/extensions";
-    }
-    return "";
-  }, [session?.user?.userType]);
+  let initialRoute = "";
 
   if (status === "loading") {
     return <div>{t("loading")}</div>;
+  }
+
+  const userType = session?.user?.userType;
+
+  if (userType === "agent") {
+    initialRoute = "/dialpad";
+  } else if (userType === "user") {
+    initialRoute = "/extensions";
   }
 
   return (

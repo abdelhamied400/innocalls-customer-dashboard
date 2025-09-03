@@ -22,15 +22,14 @@ export type SipContextType = {
   dialCode: string;
   currentSession: RTCSession | null;
   sessionState?: SessionState;
-  callStartTime: number | null;
   login: (extension: ExtensionWithCredentials) => void;
   logout: () => void;
   reconnect: () => void;
   call: (number?: string) => RTCSession | undefined;
-  setNumber: (number: string) => void;
-  setDialCode: (code: string) => void;
+  setNumber: React.Dispatch<React.SetStateAction<string>>;
+  setDialCode: React.Dispatch<React.SetStateAction<string>>;
   spy: (extension: string) => void;
   spyingStatus: SpyingStatus;
-  setSpyingStatus: (status: SpyingStatus) => void;
+  setSpyingStatus: React.Dispatch<React.SetStateAction<SpyingStatus>>;
   isSpying: boolean;
 };
