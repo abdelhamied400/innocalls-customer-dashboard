@@ -81,14 +81,20 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
               dot={false}
               name={t("outbound.callDistribution.lineLabels.unansweredTotal")}
             />
-            <Line
-              type="monotone"
-              dataKey="internalCalls"
-              stroke="#10B981"
-              strokeWidth={2}
-              dot={false}
-              name={t("outbound.callDistribution.lineLabels.outboundInternal")}
-            />
+
+            {filters.includeInternalCalls && (
+              <Line
+                type="monotone"
+                dataKey="internalCalls"
+                stroke="#10B981"
+                strokeWidth={2}
+                dot={false}
+                name={t(
+                  "outbound.callDistribution.lineLabels.outboundInternal"
+                )}
+              />
+            )}
+
             <Line
               type="monotone"
               dataKey="externalCalls"
@@ -97,16 +103,20 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
               dot={false}
               name={t("outbound.callDistribution.lineLabels.outboundExternal")}
             />
-            <Line
-              type="monotone"
-              dataKey="internalUnansweredCalls"
-              stroke="#F59E0B"
-              strokeWidth={2}
-              dot={false}
-              name={t(
-                "outbound.callDistribution.lineLabels.unansweredInternal"
-              )}
-            />
+
+            {filters.includeInternalCalls && (
+              <Line
+                type="monotone"
+                dataKey="internalUnansweredCalls"
+                stroke="#F59E0B"
+                strokeWidth={2}
+                dot={false}
+                name={t(
+                  "outbound.callDistribution.lineLabels.unansweredInternal"
+                )}
+              />
+            )}
+
             <Line
               type="monotone"
               dataKey="externalUnansweredCalls"

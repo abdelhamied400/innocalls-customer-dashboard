@@ -1204,6 +1204,9 @@
         "outboundDistribution": "Outgoing Distribution",
         "outboundHourlyUnanswered": "Outgoing Hourly Unanswered Calls",
         "inboundHourlyUnanswered": "Incoming Hourly Unanswered Calls"
+      },
+      "filters": {
+        "includeInternalCalls": { "label": "Include Internal Calls" }
       }
     },
     "userActivity": {

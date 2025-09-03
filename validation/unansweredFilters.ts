@@ -6,6 +6,7 @@ export const unansweredFiltersSchema = (
 ) =>
   z
     .object({
+      includeInternalCalls: z.boolean(),
       fromDate: z.date({
         required_error: t("form.validation.fromDate.required"),
       }),
@@ -14,18 +15,21 @@ export const unansweredFiltersSchema = (
       }),
       agents: z.array(z.object({ value: z.string(), label: z.string() })),
     })
-    .refine((data) => {
-      const from = new Date(data.fromDate);
-      const to = new Date(data.toDate);
-    
-      from.setHours(0, 0, 0, 0);
-      to.setHours(0, 0, 0, 0);
-    
-      return from <= to;
-    }, {
-      message: t("form.validation.toDate.beforeFromDate"),
-      path: ["toDate"],
-    })
+    .refine(
+      (data) => {
+        const from = new Date(data.fromDate);
+        const to = new Date(data.toDate);
+
+        from.setHours(0, 0, 0, 0);
+        to.setHours(0, 0, 0, 0);
+
+        return from <= to;
+      },
+      {
+        message: t("form.validation.toDate.beforeFromDate"),
+        path: ["toDate"],
+      }
+    )
     .refine(
       (data) => {
         const diff =

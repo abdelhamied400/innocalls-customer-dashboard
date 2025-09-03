@@ -56,12 +56,15 @@ const OutboundUnansweredHourly = ({
             <YAxis />
             <Tooltip />
 
-            <Bar
-              dataKey="internalUnansweredCalls"
-              stackId="a"
-              fill={"#3b82f6"}
-              name={t("common.hourDistribution.internalUnanswered")}
-            />
+            {filters.includeInternalCalls && (
+              <Bar
+                dataKey="internalUnansweredCalls"
+                stackId="a"
+                fill={"#3b82f6"}
+                name={t("common.hourDistribution.internalUnanswered")}
+              />
+            )}
+
             <Bar
               dataKey="externalUnansweredCalls"
               stackId="a"

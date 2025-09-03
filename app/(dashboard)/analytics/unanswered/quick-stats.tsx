@@ -53,16 +53,19 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
         isError={isError}
         error={error}
       />
-      <StatsCard
-        title={t("internalUnansweredCalls")}
-        value={data?.totalInternalUnansweredCalls || 0}
-        icon={<GroupIcon fontSize="small" />}
-        color="info"
-        isRefetching={isRefetching}
-        isLoading={isLoading}
-        isError={isError}
-        error={error}
-      />
+
+      {filters.includeInternalCalls && (
+        <StatsCard
+          title={t("internalUnansweredCalls")}
+          value={data?.totalInternalUnansweredCalls || 0}
+          icon={<GroupIcon fontSize="small" />}
+          color="info"
+          isRefetching={isRefetching}
+          isLoading={isLoading}
+          isError={isError}
+          error={error}
+        />
+      )}
     </div>
   );
 };

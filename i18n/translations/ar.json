@@ -1216,6 +1216,9 @@
         "outboundDistribution": "توزيع المكالمات الصادرة",
         "outboundHourlyUnanswered": "المكالمات الصادرة غير المجابة بالساعة",
         "inboundHourlyUnanswered": "المكالمات الواردة غير المجابة بالساعة"
+      },
+      "filters": {
+        "includeInternalCalls": { "label": "إظهار المكالمات الداخلية" }
       }
     },
     "userActivity": {

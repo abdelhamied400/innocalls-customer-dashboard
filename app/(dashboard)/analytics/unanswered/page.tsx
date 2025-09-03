@@ -19,6 +19,8 @@ import OutboundUnansweredHourly from "./outbound-hourly";
 import QuickStats from "./quick-stats";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 type Option = {
   value: string;
@@ -29,6 +31,7 @@ export type UnansweredAnalyticsFilters = {
   fromDate: Date;
   toDate: Date;
   agents: Option[];
+  includeInternalCalls: boolean;
 };
 
 const today = new Date();
@@ -55,6 +58,7 @@ const UnansweredAnalytics = () => {
       fromDate: lastMonth,
       toDate: today,
       agents: [],
+      includeInternalCalls: false,
     } as UnansweredAnalyticsFilters,
     schema: unansweredFiltersSchema(tCommon),
   };
@@ -113,6 +117,18 @@ const UnansweredAnalytics = () => {
                   error={errors.agents}
                   isClearable
                 />
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Switch
+                  checked={values.includeInternalCalls}
+                  onCheckedChange={(checked) =>
+                    setValue("includeInternalCalls", checked)
+                  }
+                />
+                <Label htmlFor="includeInternalCalls">
+                  {t("filters.includeInternalCalls.label")}
+                </Label>
               </div>
             </div>
             <div className="flex flex-wrap justify-end gap-2">

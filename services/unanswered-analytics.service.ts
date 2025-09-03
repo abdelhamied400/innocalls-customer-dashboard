@@ -55,6 +55,7 @@ export default {
           filters.agents.length > 0
             ? filters.agents.map((agent) => agent.value).join(",")
             : undefined,
+        includeInternalCalls: filters.includeInternalCalls,
       },
     });
     return response.data.summary;
@@ -72,6 +73,7 @@ export default {
             filters.agents.length > 0
               ? filters.agents.map((agent) => agent.value).join(",")
               : undefined,
+          includeInternalCalls: filters.includeInternalCalls,
         },
       }
     );
@@ -90,6 +92,7 @@ export default {
             filters.agents.length > 0
               ? filters.agents.map((agent) => agent.value).join(",")
               : undefined,
+          includeInternalCalls: filters.includeInternalCalls,
         },
       }
     );
@@ -108,6 +111,7 @@ export default {
             filters.agents.length > 0
               ? filters.agents.map((agent) => agent.value).join(",")
               : undefined,
+          includeInternalCalls: filters.includeInternalCalls,
         },
       }
     );
@@ -126,6 +130,7 @@ export default {
             filters.agents.length > 0
               ? filters.agents.map((agent) => agent.value).join(",")
               : undefined,
+          includeInternalCalls: filters.includeInternalCalls,
         },
       }
     );
