@@ -129,7 +129,7 @@ const OutboundAnalytics = () => {
                   }
                 />
                 <Label htmlFor="includeInternalCalls">
-                  {t("actions.includeInternalCalls")}
+                  {t("filters.includeInternalCalls.label")}
                 </Label>
               </div>
             </div>

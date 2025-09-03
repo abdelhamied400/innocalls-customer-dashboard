@@ -1437,6 +1437,9 @@
         "loading": "Loading...",
         "chart": "Chart",
         "table": "Table"
+      },
+      "filters": {
+        "includeInternalCalls": { "label": "Include Internal Calls" }
       }
     },
     "inbound": {
@@ -1466,6 +1469,7 @@
           "label": "Select Team",
           "placeholder": "Select team"
         },
+        "includeInternalCalls": { "label": "Include Internal Calls" },
         "validation": {
           "team": {
             "required": "Team selection is required when filtering by team"

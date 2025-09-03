@@ -1448,6 +1448,9 @@
         "loading": "جاري التحميل...",
         "chart": "مخطط",
         "table": "جدول"
+      },
+      "filters": {
+        "includeInternalCalls": { "label": "إظهار المكالمات الداخلية" }
       }
     },
     "inbound": {
@@ -1478,6 +1481,7 @@
           "label": "اختيار الفريق",
           "placeholder": "اختر فريق"
         },
+        "includeInternalCalls": { "label": "إظهار المكالمات الداخلية" },
         "validation": {
           "team": {
             "required": "يجب اختيار الفريق عند التصفية حسب الفريق"
