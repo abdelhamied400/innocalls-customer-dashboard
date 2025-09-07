@@ -22,7 +22,10 @@ import {
   RadioGroupItem,
 } from "@/components/ui/radio-group";
 
-import editUserSchema, { type EditUserSchema } from "@/validation/EditUser";
+import editUserSchema, {
+  type EditUserSchema,
+  type EditUserSubmitSchema,
+} from "@/validation/EditUser";
 import usersService from "@/services/users.service";
 import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
@@ -41,6 +44,9 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
   const t = useTranslations("users");
   const commonT = useTranslations("common");
 
+  // Store the original password to check if it has changed
+  const originalPassword = initialUser.password;
+
   const form = useForm<EditUserSchema>({
     resolver: zodResolver(editUserSchema(t)),
     defaultValues: {
@@ -52,9 +58,15 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
 
   const onSubmit = form.handleSubmit(async (data) => {
     try {
-      const res = await usersService.editUser({
-        ...data,
-      });
+      // Create a copy of the data
+      const submitData: EditUserSubmitSchema = { ...data };
+
+      // If password hasn't changed from the original, remove it from the request
+      if (data.password === originalPassword) {
+        delete submitData.password;
+      }
+
+      const res = await usersService.editUser(submitData);
       toast({
         title: t("update.messages.success"),
         description: t("update.messages.successDescription", {

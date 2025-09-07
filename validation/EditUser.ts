@@ -71,4 +71,10 @@ const editUserSchema = (t: ReturnType<typeof useTranslations>) =>
   });
 
 export type EditUserSchema = z.infer<ReturnType<typeof editUserSchema>>;
+
+// Type for the data sent to the API (password is optional)
+export type EditUserSubmitSchema = Omit<EditUserSchema, "password"> & {
+  password?: string;
+};
+
 export default editUserSchema;

@@ -1,5 +1,5 @@
 import { CreateUserSchema } from "@/validation/CreateUser";
-import { EditUserSchema } from "@/validation/EditUser";
+import { EditUserSchema, EditUserSubmitSchema } from "@/validation/EditUser";
 import api from "./api";
 import CryptoJS from "crypto-js";
 
@@ -41,7 +41,7 @@ export default {
     const res = await api.post("/extension", data);
     return res.data;
   },
-  editUser: async (data: EditUserSchema) => {
+  editUser: async (data: EditUserSubmitSchema) => {
     const res = await api.put(`/extension`, data);
     return res.data;
   },
