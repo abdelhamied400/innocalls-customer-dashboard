@@ -55,7 +55,7 @@ const DialpadInput = () => {
   const handleCountryChange = (code: string) => {
     const isDefault = code === defaultCountry.code;
     setDialCode(code);
-    setUserSelectedCountry(!isDefault);
+    setUserSelectedCountry(true);
     // prepend the dial code to the number
     if (!isDefault) {
       const country = webrtcCountries.find((c) => c.code === code);
