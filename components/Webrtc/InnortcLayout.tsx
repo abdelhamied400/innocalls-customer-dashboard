@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { ArrowForward, Dialpad } from "@mui/icons-material";
 import { PropsWithChildren } from "react";
 import useAppStore from "@/store/app.slice";
+import CallSummaryModal from "./Call/CallSummaryModal";
 
 type InnortcLayoutProps = PropsWithChildren<object>;
 const InnortcLayout = ({ children }: InnortcLayoutProps) => {
@@ -34,6 +35,8 @@ const InnortcLayout = ({ children }: InnortcLayoutProps) => {
           <Dialpad />
         </Button>
       </div>
+
+      <CallSummaryModal />
     </div>
   );
 };

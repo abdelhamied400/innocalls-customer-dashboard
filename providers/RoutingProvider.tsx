@@ -5,6 +5,7 @@ import React, {
   useContext,
   useState,
   PropsWithChildren,
+  useMemo,
 } from "react";
 
 type RouteKey = string;
@@ -29,7 +30,7 @@ export const RoutingProvider = ({
   children,
 }: RoutingProviderProps) => {
   const [history, setHistory] = useState<RouteKey[]>([initialRoute]);
-  const route = history[history.length - 1];
+  const route = useMemo(() => history[history.length - 1], [history]);
 
   const navigate = (newRoute: RouteKey) => {
     setHistory((prev) => [...prev, newRoute]);

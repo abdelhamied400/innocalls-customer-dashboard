@@ -1,5 +1,19 @@
 import api from "./api";
 
+type SearchAgentLiveCallsResponse = {
+  callId: string;
+};
+type SaveCallSummaryPayload = {
+  comment: string;
+  postCallTags: Array<string>;
+  callId: string;
+  from: string;
+  to: string;
+  direction: string;
+  duration: number;
+  callDateTime: string;
+};
+
 export default {
   getExtension: async (id: string) => {
     const res = await api.get(`/extension/login/${id}`);
@@ -24,5 +38,17 @@ export default {
   getAgentExtension: async () => {
     const res = await api.get("/extension/agent-info");
     return res.data.agent;
+  },
+  searchAgentLiveCalls: async (
+    phone: string
+  ): Promise<SearchAgentLiveCallsResponse> => {
+    const res = await api.get(
+      `agent-calls/live?phone=${encodeURIComponent(phone)}`
+    );
+    return res.data;
+  },
+  saveCallSummary: async (payload: SaveCallSummaryPayload) => {
+    const res = await api.post("call-summary", payload);
+    return res.data;
   },
 };
