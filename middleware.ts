@@ -1,4 +1,4 @@
-import { auth } from "./auth";
+import { auth, signOut } from "./auth";
 
 const basePublicPages = [
   "/login",
@@ -14,6 +14,12 @@ export default auth((request) => {
 
   if (!request.auth && !isPublicPage) {
     const newUrl = new URL(`/login?next=${pathname}`, request.nextUrl.origin);
+    return Response.redirect(newUrl);
+  }
+
+  // if the user is authenticated and goes to a public page, redirect to home
+  if (request.auth && isPublicPage) {
+    const newUrl = new URL(`/`, request.nextUrl.origin);
     return Response.redirect(newUrl);
   }
 
