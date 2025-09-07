@@ -213,6 +213,10 @@
       }
     }
   },
+  "notFound": {
+    "title": "Page Not Found",
+    "message": "The page you are looking for does not exist."
+  },
   "users": {
     "title": "Agents",
     "list": {
@@ -1206,7 +1210,9 @@
         "inboundHourlyUnanswered": "Incoming Hourly Unanswered Calls"
       },
       "filters": {
-        "includeInternalCalls": { "label": "Include Internal Calls" }
+        "includeInternalCalls": {
+          "label": "Include Internal Calls"
+        }
       }
     },
     "userActivity": {
@@ -1442,7 +1448,9 @@
         "table": "Table"
       },
       "filters": {
-        "includeInternalCalls": { "label": "Include Internal Calls" }
+        "includeInternalCalls": {
+          "label": "Include Internal Calls"
+        }
       }
     },
     "inbound": {
@@ -1472,7 +1480,9 @@
           "label": "Select Team",
           "placeholder": "Select team"
         },
-        "includeInternalCalls": { "label": "Include Internal Calls" },
+        "includeInternalCalls": {
+          "label": "Include Internal Calls"
+        },
         "validation": {
           "team": {
             "required": "Team selection is required when filtering by team"

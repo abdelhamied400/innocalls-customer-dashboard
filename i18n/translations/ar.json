@@ -213,6 +213,10 @@
       }
     }
   },
+  "notFound": {
+    "title": "هذه الصفحة غير موجودة",
+    "message": "الصفحة التي تبحث عنها غير موجودة."
+  },
   "users": {
     "title": "الوكلاء",
     "list": {
@@ -1218,7 +1222,9 @@
         "inboundHourlyUnanswered": "المكالمات الواردة غير المجابة بالساعة"
       },
       "filters": {
-        "includeInternalCalls": { "label": "إظهار المكالمات الداخلية" }
+        "includeInternalCalls": {
+          "label": "إظهار المكالمات الداخلية"
+        }
       }
     },
     "userActivity": {
@@ -1453,7 +1459,9 @@
         "table": "جدول"
       },
       "filters": {
-        "includeInternalCalls": { "label": "إظهار المكالمات الداخلية" }
+        "includeInternalCalls": {
+          "label": "إظهار المكالمات الداخلية"
+        }
       }
     },
     "inbound": {
@@ -1484,7 +1492,9 @@
           "label": "اختيار الفريق",
           "placeholder": "اختر فريق"
         },
-        "includeInternalCalls": { "label": "إظهار المكالمات الداخلية" },
+        "includeInternalCalls": {
+          "label": "إظهار المكالمات الداخلية"
+        },
         "validation": {
           "team": {
             "required": "يجب اختيار الفريق عند التصفية حسب الفريق"
