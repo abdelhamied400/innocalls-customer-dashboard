@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import { CallEnd, Phone } from "@mui/icons-material";
 import { SessionDirection } from "jssip/lib/RTCSession";
 import { useTranslations } from "@/providers/TranslationProvider";
+import { webrtcLogger } from "@/lib/logger";
 
 const IncomingCall = () => {
   const t = useTranslations("webrtc");
@@ -22,6 +23,20 @@ const IncomingCall = () => {
     if (currentSession) {
       currentSession.answer({
         mediaConstraints: { audio: true, video: false },
+      });
+
+      currentSession.connection.addEventListener("addstream", (e: any) => {
+        webrtcLogger.debug("Stream added", e);
+        const remoteAudio = document.createElement("audio");
+        remoteAudio.srcObject = e.stream;
+        remoteAudio.play();
+      });
+
+      currentSession.connection.addEventListener("track", (e) => {
+        webrtcLogger.debug("Track event", e);
+        const remoteAudio = document.createElement("audio");
+        remoteAudio.srcObject = e.streams && e.streams[0] ? e.streams[0] : null;
+        remoteAudio.play();
       });
     }
   };

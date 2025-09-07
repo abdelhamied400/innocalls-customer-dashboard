@@ -71,20 +71,8 @@ export const useUaEvents = ({
           extension.ext
         );
 
-        navigate("/call");
-        const connection = session.connection;
-
-        connection.addEventListener("track", (event) => {
-          const remoteAudio = document.createElement("audio");
-          remoteAudio.srcObject = event.streams?.[0] || null;
-          remoteAudio.play();
-        });
-
-        connection.addEventListener("addstream", (event: any) => {
-          webrtcLogger.debug("Stream added", event);
-        });
-
         updateSessionState("answered");
+        navigate("/call");
       });
 
       session.on("ended", (event) => {
@@ -170,14 +158,18 @@ export const useUaEvents = ({
         updateSessionState("answered");
       });
 
-      connection.addEventListener("track", (event) => {
+      connection.addEventListener("addstream", (e: any) => {
+        webrtcLogger.debug("Stream added", e);
         const remoteAudio = document.createElement("audio");
-        remoteAudio.srcObject = event.streams?.[0] || null;
+        remoteAudio.srcObject = e.stream;
         remoteAudio.play();
       });
 
-      connection.addEventListener("addstream", (event: any) => {
-        webrtcLogger.debug("Stream added for outgoing call", event);
+      connection.addEventListener("track", (e) => {
+        webrtcLogger.debug("Track event", e);
+        const remoteAudio = document.createElement("audio");
+        remoteAudio.srcObject = e.streams && e.streams[0] ? e.streams[0] : null;
+        remoteAudio.play();
       });
 
       navigate("/call");
