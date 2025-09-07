@@ -8,15 +8,7 @@ const ExtensionStateBar = () => {
 
   const { extension, extensionState, reconnect } = useSip();
 
-  console.log(
-    "ExtensionStateBar - extension:",
-    extension,
-    "extensionState:",
-    extensionState
-  );
-
   if (!extension) {
-    console.log("ExtensionStateBar - No extension, not rendering");
     return null;
   }
 

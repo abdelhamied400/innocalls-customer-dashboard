@@ -39,7 +39,6 @@ const activeUserAgents = new Set<JsSIP.UA>();
 
 // Cleanup function to stop all previous user agents
 const cleanupAllUserAgents = () => {
-  console.log("Cleaning up all active user agents:", activeUserAgents.size);
   activeUserAgents.forEach((ua) => {
     try {
       ua.stop();
@@ -63,17 +62,11 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   const providerId = useRef(Math.random().toString(36).substr(2, 9));
   const hasAttemptedAutoLogin = useRef(false);
 
-  console.log("SipProvider instance:", providerId.current);
-
   const [ua, setUa] = useState<JsSIP.UA | null>(null);
   const [extension, setExtension] = useState<ExtensionWithCredentials | null>(
     null
   );
 
-  // Debug extension changes
-  useEffect(() => {
-    console.log(`[${providerId.current}] Extension changed to:`, extension);
-  }, [extension]);
   const [currentSession, setCurrentSession] = useState<RTCSession | null>(null);
   const [sessionState, setSessionState] = useState<SessionState>();
 
@@ -92,14 +85,6 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   const [extensionState, setExtensionState] =
     useState<ExtensionState>("disconnected");
 
-  // Debug extension state changes
-  useEffect(() => {
-    console.log(
-      `[${providerId.current}] Extension state changed to:`,
-      extensionState
-    );
-  }, [extensionState]);
-
   const [spyingStatus, setSpyingStatus] = useState<SpyingStatus>("spy");
   const [isSpying, setIsSpying] = useState(false);
 
@@ -114,9 +99,6 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   // Cleanup on unmount and when new instances are created
   useEffect(() => {
     return () => {
-      console.log(
-        `[${providerId.current}] SipProvider unmounting, cleaning up UA`
-      );
       if (uaRef.current) {
         activeUserAgents.delete(uaRef.current);
         try {
@@ -131,32 +113,17 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
   const login = useCallback(
     (extensionData: ExtensionWithCredentials) => {
-      console.log(
-        `[${providerId.current}] login function called with:`,
-        extensionData
-      );
-      console.log(`[${providerId.current}] Current states:`, {
-        extensionState,
-        ua: !!ua,
-        hasBindEvents: !!bindEvents,
-      });
+      setExtension(extensionData);
 
       // Use ref to avoid dependency on ua state
       if (uaRef.current) {
-        console.log(`[${providerId.current}] Stopping existing UA`);
         activeUserAgents.delete(uaRef.current);
         uaRef.current.stop();
       }
 
       // Clean up any other active user agents before creating new one
-      console.log(
-        `[${providerId.current}] Cleaning up other user agents before creating new one`
-      );
       cleanupAllUserAgents();
 
-      console.log(
-        `[${providerId.current}] Creating new user agent (without starting)...`
-      );
       // Create UA without starting it first so we can bind events
       const SIP_INTERFACE = process.env.NEXT_PUBLIC_SIP_INTERFACE!;
       const DECRYPT_SECRET = process.env.NEXT_PUBLIC_DECRYPT_SECRET!;
@@ -175,37 +142,12 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         user_agent: "platform-webrtc",
       });
 
-      console.log(
-        `[${providerId.current}] User agent created (not started yet):`,
-        !!userAgent
-      );
-
       // Register the new user agent
       activeUserAgents.add(userAgent);
 
-      console.log(`[${providerId.current}] Setting extension:`, extensionData);
-      setExtension(extensionData);
-      console.log(
-        `[${providerId.current}] Extension set, current extension state will be logged by useEffect`
-      );
-
-      // Immediate check - this should show the extension is set
-      setTimeout(() => {
-        console.log(
-          `[${providerId.current}] Checking extension after setState:`,
-          extensionData
-        );
-      }, 0);
-
-      console.log("Binding events before starting UA...");
       bindEvents(userAgent, extensionData);
-      console.log(`[${providerId.current}] Events bound, setting UA...`);
       setUa(userAgent);
-
-      console.log(`[${providerId.current}] Now starting the user agent...`);
       userAgent.start();
-
-      console.log(`[${providerId.current}] Navigating to dialpad...`);
       navigate("/dialpad");
     },
     [bindEvents, navigate] // Removed ua dependency
@@ -224,7 +166,6 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   };
 
   const logout = () => {
-    console.log(`[${providerId.current}] Logout called`);
     if (ua) {
       activeUserAgents.delete(ua);
       ua.stop();
@@ -291,36 +232,20 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     const attemptAutoLogin = async () => {
       const sessionId = session?.user?.id;
 
-      console.log(`[${providerId.current}] attemptAutoLogin called`, {
-        userType: session?.user?.userType,
-        extensionState,
-        attempted: hasAttemptedAutoLogin.current,
-        sessionId: session?.user?.id,
-        hasSession: !!session?.user,
-        hasBindEvents: !!bindEvents,
-        hasNavigate: !!navigate,
-      });
-
       // Additional safeguards
       if (!sessionId) return; // No valid session
       if (session.user.userType !== "agent") return; // Not an agent
       if (extensionState !== "disconnected") return; // Already connected/connecting
       if (hasAttemptedAutoLogin.current) return; // Already attempted for this provider instance
 
-      console.log(`[${providerId.current}] Attempting auto-login for agent`);
       hasAttemptedAutoLogin.current = true;
 
       // Add a small delay to ensure everything is initialized
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       try {
-        console.log("Fetching agent extension...");
         const agent = await webrtcService.getAgentExtension();
-        console.log("Agent extension fetched:", agent);
-
-        console.log("Calling login function...");
         login(agent);
-        console.log("Login function called");
       } catch (error) {
         console.error("Auto-login failed:", error);
         // Reset flag to allow retry after a delay

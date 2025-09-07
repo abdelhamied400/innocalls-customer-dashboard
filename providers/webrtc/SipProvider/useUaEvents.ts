@@ -8,6 +8,7 @@ import { ExtensionWithCredentials } from "@/types/api/extension";
 
 import { addCallToLog } from "@/lib/call-log";
 import { webrtcLogger } from "@/lib/logger";
+import useWebrtcStore from "@/store/webrtc.slice";
 
 export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
@@ -26,6 +27,7 @@ export const useUaEvents = ({
   setSpyingStatus,
 }: useUAEventsDeps) => {
   const { navigate } = useRouting();
+  const { setCallStartTime } = useWebrtcStore();
 
   // Helper to update session state if setter is provided
   const updateSessionState = useCallback(
@@ -197,6 +199,10 @@ export const useUaEvents = ({
         const session = e.session;
 
         setCurrentSession?.(session);
+
+        session.on("confirmed", () => {
+          setCallStartTime?.(Date.now());
+        });
 
         session.on("ended", (event) => {
           webrtcLogger.info("Call ended", event);

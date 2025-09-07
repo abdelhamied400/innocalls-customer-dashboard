@@ -9,7 +9,7 @@ import React from "react";
 
 const Innortc = () => {
   const { isRoute } = useRouting();
-  const { isWebrtcOpen, setWebrtcOpen } = useAppStore();
+  const { isWebrtcOpen } = useAppStore();
 
   if (isWebrtcOpen) {
     return (
