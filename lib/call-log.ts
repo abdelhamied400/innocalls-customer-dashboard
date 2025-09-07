@@ -38,7 +38,10 @@ const getCallLog = (ext: string): CallLog[] => {
 };
 
 export const getLatestCallLog = (ext: string): CallLog[] => {
-  return [...getCallLog(ext)].reverse();
+  return [...getCallLog(ext)].reverse().map((log) => ({
+    ...log,
+    calls: [...log.calls].reverse(),
+  }));
 };
 
 export const setCallLog = (callLog: CallLog[], ext: string): void => {
