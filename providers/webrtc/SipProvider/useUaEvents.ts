@@ -11,6 +11,7 @@ import { webrtcLogger } from "@/lib/logger";
 import useWebrtcStore from "@/store/webrtc.slice";
 import webrtcService from "@/services/webrtc.service";
 import { differenceInSeconds, format, intervalToDuration } from "date-fns";
+import { useSession } from "next-auth/react";
 
 export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
@@ -29,6 +30,7 @@ export const useUaEvents = ({
   setSpyingStatus,
 }: useUAEventsDeps) => {
   const { navigate } = useRouting();
+  const { data: authSession } = useSession();
   const {
     setCallStartTime,
     setCallSummaryModalOpen,
@@ -203,25 +205,27 @@ export const useUaEvents = ({
         const phoneNumber = session.remote_identity?.uri?.user;
         let dateNow: Date | null = null;
 
-        const liveCall = await webrtcService
-          .searchAgentLiveCalls(phoneNumber)
-          .catch((err) => {
-            webrtcLogger.error("Error searching live calls", err);
-            return null;
-          });
+        if (authSession?.user?.userType === "agent") {
+          const liveCall = await webrtcService
+            .searchAgentLiveCalls(phoneNumber)
+            .catch((err) => {
+              webrtcLogger.error("Error searching live calls", err);
+              return null;
+            });
 
-        if (!!liveCall?.callId) {
-          webrtcLogger.info("Found live call with ID", {
-            callId: liveCall.callId,
-          });
-          updateLastCall({
-            callId: liveCall.callId,
-            from: extension.ext,
-            to: phoneNumber,
-            direction: session.direction as "incoming" | "outgoing",
-          });
-        } else {
-          webrtcLogger.info("No live call found for this session");
+          if (!!liveCall?.callId) {
+            webrtcLogger.info("Found live call with ID", {
+              callId: liveCall.callId,
+            });
+            updateLastCall({
+              callId: liveCall.callId,
+              from: extension.ext,
+              to: phoneNumber,
+              direction: session.direction as "incoming" | "outgoing",
+            });
+          } else {
+            webrtcLogger.info("No live call found for this session");
+          }
         }
 
         session.on("confirmed", () => {
@@ -242,7 +246,9 @@ export const useUaEvents = ({
           setSpyingStatus("spy");
           setIsSpying(false);
 
-          setCallSummaryModalOpen(true);
+          if (authSession?.user?.userType === "agent") {
+            setCallSummaryModalOpen(true);
+          }
           updateLastCall({
             duration: differenceInSeconds(new Date(), dateNow || new Date()),
           });
@@ -255,7 +261,9 @@ export const useUaEvents = ({
           setSpyingStatus("spy");
           setIsSpying(false);
 
-          setCallSummaryModalOpen(true);
+          if (authSession?.user?.userType === "agent") {
+            setCallSummaryModalOpen(true);
+          }
 
           const failStatus = event.cause;
           if (failStatus === C.causes.BUSY) {
