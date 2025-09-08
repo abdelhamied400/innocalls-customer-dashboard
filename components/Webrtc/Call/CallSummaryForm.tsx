@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import webrtcService from "@/services/webrtc.service";
 import useWebrtcStore from "@/store/webrtc.slice";
 import useVocabStore from "@/store/vocab.slice";
+import { format } from "date-fns";
 
 // Define the schema for the call summary form
 const callSummarySchema = z.object({
@@ -36,12 +37,7 @@ interface CallSummaryFormProps {
 const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const {
-    // setCallSummaryModalOpen,
-    // currentCall,
-    currentSession,
-    // clearCurrentCall,
-  } = useWebrtcStore();
+  const { lastCall, setCallSummaryModalOpen, clearLastCall } = useWebrtcStore();
   const { tags } = useVocabStore();
   const tagsOptions = tags.map((tag) => ({
     label: tag.name,
@@ -59,26 +55,30 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
   const handleSubmit = form.handleSubmit(async (data) => {
     setIsSubmitting(true);
     try {
-      // if (!currentCall.callId) return;
+      if (!lastCall || !lastCall.callId) return;
 
-      // await webrtcService.saveCallSummary({
-      //   ...data,
-      //   postCallTags: data.postCallTags.map((tag) => tag.value),
-      //   callId: currentCall.callId,
-      //   from: currentSession?.local_identity?.uri?.user || "",
-      //   to: currentSession?.remote_identity?.uri?.user || "",
-      //   direction: currentSession?.direction || "",
-      //   duration: currentCall.duration || 0,
-      //   callDateTime: currentCall.startTime || "",
-      // });
+      await webrtcService.saveCallSummary({
+        ...data,
+        postCallTags: data.postCallTags.map((tag) => tag.value),
+        callId: lastCall.callId,
+        from: lastCall.from || "",
+        to: lastCall.to || "",
+        direction: lastCall.direction || "",
+        duration: lastCall.duration || 0,
+        callDateTime:
+          format(
+            lastCall.callDateTime || new Date(),
+            "dd-MM-yyyy hh:mm:ss a"
+          ) || "",
+        status: lastCall.status || "Answered",
+      });
       toast({
         title: "Call Summary Saved",
         description: "Your call summary has been saved successfully.",
         variant: "default",
       });
       form.reset();
-      // setCallSummaryModalOpen(false);
-      // clearCurrentCall();
+      setCallSummaryModalOpen(false);
     } catch (error) {
       toast({
         title: "Error",
@@ -87,13 +87,14 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
       });
     } finally {
       setIsSubmitting(false);
+      clearLastCall();
     }
   });
 
   const handleCancel = () => {
     form.reset();
-    // setCallSummaryModalOpen(false);
-    // clearCurrentCall();
+    setCallSummaryModalOpen(false);
+    clearLastCall();
   };
 
   return (

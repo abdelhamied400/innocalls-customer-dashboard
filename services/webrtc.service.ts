@@ -12,6 +12,7 @@ type SaveCallSummaryPayload = {
   direction: string;
   duration: number;
   callDateTime: string;
+  status: "Answered" | "Busy" | "Failed" | "Unanswered";
 };
 
 export default {
@@ -42,10 +43,12 @@ export default {
   searchAgentLiveCalls: async (
     phone: string
   ): Promise<SearchAgentLiveCallsResponse> => {
-    const res = await api.get(
-      `agent-calls/live?phone=${encodeURIComponent(phone)}`
-    );
-    return res.data;
+    return new Promise((resolve) => setTimeout(resolve, 500)).then(async () => {
+      const res = await api.get(
+        `agent-calls/live?phone=${encodeURIComponent(phone)}`
+      );
+      return res.data;
+    });
   },
   saveCallSummary: async (payload: SaveCallSummaryPayload) => {
     const res = await api.post("call-summary", payload);

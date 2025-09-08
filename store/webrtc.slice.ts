@@ -9,6 +9,17 @@ import JsSIP from "jssip";
 import { defaultCountry } from "@/constants/countries";
 import { create } from "zustand";
 
+type Call = {
+  session: RTCSession;
+  callId: string;
+  to: string;
+  from: string;
+  callDateTime: Date;
+  direction: "incoming" | "outgoing";
+  duration: number; // in seconds
+  status: "Answered" | "Busy" | "Failed" | "Unanswered";
+};
+
 type WebrtcStore = {
   // UA and Extension
   ua: JsSIP.UA | null;
@@ -25,6 +36,9 @@ type WebrtcStore = {
   setSessionState: (state: SessionState | undefined) => void;
   callStartTime: number | null;
   setCallStartTime: (time: number | null) => void;
+  lastCall: Partial<Call> | null;
+  updateLastCall: (call: Partial<Call> | null) => void;
+  clearLastCall: () => void;
 
   // Dialing
   number: string;
@@ -45,6 +59,10 @@ type WebrtcStore = {
   setRegistrationAttempts: (attempts: number) => void;
   lastLoginAttempt: number;
   setLastLoginAttempt: (time: number) => void;
+
+  // modals
+  callSummaryModalOpen: boolean;
+  setCallSummaryModalOpen: (open: boolean) => void;
 };
 
 const useWebrtcStore = create<WebrtcStore>()((set) => ({
@@ -66,6 +84,15 @@ const useWebrtcStore = create<WebrtcStore>()((set) => ({
     set({ sessionState: state }),
   callStartTime: null,
   setCallStartTime: (time: number | null) => set({ callStartTime: time }),
+  lastCall: null,
+  updateLastCall: (call) =>
+    set((state) => ({
+      lastCall: {
+        ...state.lastCall,
+        ...call,
+      },
+    })),
+  clearLastCall: () => set({ lastCall: null }),
 
   // Dialing
   number: "",
@@ -87,6 +114,11 @@ const useWebrtcStore = create<WebrtcStore>()((set) => ({
     set({ registrationAttempts: attempts }),
   lastLoginAttempt: 0,
   setLastLoginAttempt: (time: number) => set({ lastLoginAttempt: time }),
+
+  // modals
+  callSummaryModalOpen: false,
+  setCallSummaryModalOpen: (open: boolean) =>
+    set({ callSummaryModalOpen: open }),
 }));
 
 export default useWebrtcStore;

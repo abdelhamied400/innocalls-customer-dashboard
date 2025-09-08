@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useRouting } from "@/providers/RoutingProvider";
 import { ExtensionState, SessionState, SpyingStatus } from "./types";
-import JsSIP from "jssip";
+import JsSIP, { C } from "jssip";
 import { RTCSessionEvent } from "jssip/lib/UA";
 import { RTCSession } from "jssip/lib/RTCSession";
 import { ExtensionWithCredentials } from "@/types/api/extension";
@@ -9,6 +9,8 @@ import { ExtensionWithCredentials } from "@/types/api/extension";
 import { addCallToLog } from "@/lib/call-log";
 import { webrtcLogger } from "@/lib/logger";
 import useWebrtcStore from "@/store/webrtc.slice";
+import webrtcService from "@/services/webrtc.service";
+import { differenceInSeconds, format, intervalToDuration } from "date-fns";
 
 export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
@@ -27,7 +29,13 @@ export const useUaEvents = ({
   setSpyingStatus,
 }: useUAEventsDeps) => {
   const { navigate } = useRouting();
-  const { setCallStartTime } = useWebrtcStore();
+  const {
+    setCallStartTime,
+    setCallSummaryModalOpen,
+    lastCall,
+    callStartTime,
+    updateLastCall,
+  } = useWebrtcStore();
 
   // Helper to update session state if setter is provided
   const updateSessionState = useCallback(
@@ -187,13 +195,43 @@ export const useUaEvents = ({
         webrtcLogger.error("Registration failed", e);
         setExtensionState("disconnected");
       });
-      userAgent.on("newRTCSession", (e: RTCSessionEvent) => {
+      userAgent.on("newRTCSession", async (e: RTCSessionEvent) => {
         const session = e.session;
 
         setCurrentSession?.(session);
 
+        const phoneNumber = session.remote_identity?.uri?.user;
+        let dateNow: Date | null = null;
+
+        const liveCall = await webrtcService
+          .searchAgentLiveCalls(phoneNumber)
+          .catch((err) => {
+            webrtcLogger.error("Error searching live calls", err);
+            return null;
+          });
+
+        if (!!liveCall?.callId) {
+          webrtcLogger.info("Found live call with ID", {
+            callId: liveCall.callId,
+          });
+          updateLastCall({
+            callId: liveCall.callId,
+            from: extension.ext,
+            to: phoneNumber,
+            direction: session.direction as "incoming" | "outgoing",
+          });
+        } else {
+          webrtcLogger.info("No live call found for this session");
+        }
+
         session.on("confirmed", () => {
+          webrtcLogger.info("Call confirmed");
           setCallStartTime?.(Date.now());
+          updateLastCall({
+            callDateTime: new Date(),
+            status: "Answered",
+          });
+          dateNow = new Date();
         });
 
         session.on("ended", (event) => {
@@ -203,6 +241,11 @@ export const useUaEvents = ({
           updateSessionState("ended");
           setSpyingStatus("spy");
           setIsSpying(false);
+
+          setCallSummaryModalOpen(true);
+          updateLastCall({
+            duration: differenceInSeconds(new Date(), dateNow || new Date()),
+          });
         });
         session.on("failed", (event) => {
           webrtcLogger.warn("Call failed", event);
@@ -211,6 +254,21 @@ export const useUaEvents = ({
           updateSessionState("failed");
           setSpyingStatus("spy");
           setIsSpying(false);
+
+          setCallSummaryModalOpen(true);
+
+          const failStatus = event.cause;
+          if (failStatus === C.causes.BUSY) {
+            updateLastCall({ status: "Busy" });
+          } else if (failStatus === C.causes.CANCELED) {
+            updateLastCall({ status: "Busy" });
+          } else if (failStatus === C.causes.REJECTED) {
+            updateLastCall({ status: "Busy" });
+          } else if (failStatus === C.causes.SIP_FAILURE_CODE) {
+            updateLastCall({ status: "Unanswered" });
+          } else {
+            updateLastCall({ status: "Failed" });
+          }
         });
 
         if (e.session.direction === "incoming") {
