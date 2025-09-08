@@ -6,12 +6,13 @@ import CallSummaryForm from "./CallSummaryForm";
 
 const CallSummaryModal = () => {
   const { data: session } = useSession();
-  const { callSummaryModalOpen, setCallSummaryModalOpen } = useWebrtcStore();
+  // const { callSummaryModalOpen, setCallSummaryModalOpen } = useWebrtcStore();
 
   if (session?.user.userType === "user") return null;
 
   return (
-    <Dialog open={callSummaryModalOpen} onOpenChange={setCallSummaryModalOpen}>
+    // <Dialog open={callSummaryModalOpen} onOpenChange={setCallSummaryModalOpen}>
+    <Dialog open={true} onOpenChange={() => {}}>
       <DialogContent className="max-h-[90vh] overflow-auto">
         <DialogTitle>Call Summary</DialogTitle>
         <CallSummaryForm />

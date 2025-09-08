@@ -37,10 +37,10 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const {
-    setCallSummaryModalOpen,
-    currentCall,
+    // setCallSummaryModalOpen,
+    // currentCall,
     currentSession,
-    clearCurrentCall,
+    // clearCurrentCall,
   } = useWebrtcStore();
   const { tags } = useVocabStore();
   const tagsOptions = tags.map((tag) => ({
@@ -59,26 +59,26 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
   const handleSubmit = form.handleSubmit(async (data) => {
     setIsSubmitting(true);
     try {
-      if (!currentCall.callId) return;
+      // if (!currentCall.callId) return;
 
-      await webrtcService.saveCallSummary({
-        ...data,
-        postCallTags: data.postCallTags.map((tag) => tag.value),
-        callId: currentCall.callId,
-        from: currentSession?.local_identity?.uri?.user || "",
-        to: currentSession?.remote_identity?.uri?.user || "",
-        direction: currentSession?.direction || "",
-        duration: currentCall.duration || 0,
-        callDateTime: currentCall.startTime || "",
-      });
+      // await webrtcService.saveCallSummary({
+      //   ...data,
+      //   postCallTags: data.postCallTags.map((tag) => tag.value),
+      //   callId: currentCall.callId,
+      //   from: currentSession?.local_identity?.uri?.user || "",
+      //   to: currentSession?.remote_identity?.uri?.user || "",
+      //   direction: currentSession?.direction || "",
+      //   duration: currentCall.duration || 0,
+      //   callDateTime: currentCall.startTime || "",
+      // });
       toast({
         title: "Call Summary Saved",
         description: "Your call summary has been saved successfully.",
         variant: "default",
       });
       form.reset();
-      setCallSummaryModalOpen(false);
-      clearCurrentCall();
+      // setCallSummaryModalOpen(false);
+      // clearCurrentCall();
     } catch (error) {
       toast({
         title: "Error",
@@ -92,8 +92,8 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
 
   const handleCancel = () => {
     form.reset();
-    setCallSummaryModalOpen(false);
-    clearCurrentCall();
+    // setCallSummaryModalOpen(false);
+    // clearCurrentCall();
   };
 
   return (
