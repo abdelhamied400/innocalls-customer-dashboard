@@ -249,6 +249,7 @@ export const useUaEvents = ({
         session.on("confirmed", () => {
           webrtcLogger.info("Call confirmed");
           setCallStartTime?.(Date.now());
+          dateNow = new Date();
           updateLastCall({
             status: "Answered",
           });
@@ -284,7 +285,7 @@ export const useUaEvents = ({
           if (failStatus === C.causes.BUSY) {
             updateLastCall({ status: "Busy" });
           } else if (failStatus === C.causes.CANCELED) {
-            updateLastCall({ status: "Busy" });
+            updateLastCall({ status: "Unanswered" });
           } else if (failStatus === C.causes.REJECTED) {
             updateLastCall({ status: "Busy" });
           } else if (failStatus === C.causes.SIP_FAILURE_CODE) {

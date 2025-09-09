@@ -9,7 +9,10 @@ export const SummarySchema = (t: ReturnType<typeof useTranslations>) =>
         z.object({
           label: z.string().min(2).max(100),
           value: z.string().min(2).max(100),
-        })
+        }),
+        {
+          invalid_type_error: t("form.validation.tags.min"),
+        }
       )
       .min(1, t("form.validation.tags.min")),
   });
