@@ -140,7 +140,6 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
                     value={field.value}
                     onChange={field.onChange}
                     isMulti={true}
-                    isCreatable={true}
                     placeholder="Select or create post call tags..."
                     showSelectedTags={true}
                   />
