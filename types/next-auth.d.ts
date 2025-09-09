@@ -10,6 +10,7 @@ declare module "next-auth" {
     provider: string;
     enableAfterCallTags: boolean;
     isDemo: boolean;
+    allowedBreakTypes: Array<string>;
   };
 
   interface User {

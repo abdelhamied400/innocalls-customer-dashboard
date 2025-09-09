@@ -54,4 +54,11 @@ export default {
     const res = await api.post("call-summary", payload);
     return res.data;
   },
+  changeAgentState: async (state: string, breakType?: string) => {
+    const res = await api.post("/v1/agent-activities", {
+      type: state,
+      breakType,
+    });
+    return res.data;
+  },
 };
