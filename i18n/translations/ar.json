@@ -2068,6 +2068,67 @@
       "trying": "يُحاوِل",
       "ended": "انْتَهَت",
       "failed": "فَشِلَت"
+    },
+    "ua": {
+      "unknownName": "غير معروف",
+      "unknownNumber": "غير معروف"
+    },
+    "summary": {
+      "title": "ملخص المكالمة",
+      "form": {
+        "fields": {
+          "comment": {
+            "label": "التعليق",
+            "placeholder": "أدخل تعليقك هنا..."
+          },
+          "tags": {
+            "label": "علامات ما بعد المكالمة",
+            "placeholder": "اختر علامات ما بعد المكالمة..."
+          }
+        },
+        "validation": {
+          "comment": {
+            "required": "التعليق مطلوب",
+            "min": "يجب أن يكون التعليق على الأقل حرفين"
+          },
+          "tags": {
+            "min": "يجب اختيار علامة واحدة على الأقل"
+          }
+        },
+        "actions": {
+          "cancel": "إلغاء",
+          "save": "حفظ الملخص"
+        },
+        "submit": {
+          "success": {
+            "title": "تم حفظ الملخص",
+            "description": "تم حفظ ملخص المكالمة بنجاح"
+          },
+          "failed": {
+            "description": "فشل في حفظ ملخص المكالمة. يرجى المحاولة مرة أخرى",
+            "title": "خطأ"
+          },
+          "saving": {
+            "title": "جاري الحفظ..."
+          }
+        }
+      },
+      "conclusion": {
+        "status": {
+          "answered": "مجاب",
+          "unanswered": "غير مجاب",
+          "busy": "مشغول",
+          "failed": "فشل"
+        },
+        "duration": {
+          "sec": "ث"
+        },
+        "fields": {
+          "date": "التاريخ",
+          "duration": "المدة",
+          "status": "الحالة"
+        }
+      }
     }
   }
 }

@@ -2057,6 +2057,63 @@
     "ua": {
       "unknownName": "Unknown",
       "unknownNumber": "Unknown"
+    },
+    "summary": {
+      "title": "Call Summary",
+      "form": {
+        "fields": {
+          "comment": {
+            "label": "Comment",
+            "placeholder": "Enter your comment here..."
+          },
+          "tags": {
+            "label": "Post Call Tags",
+            "placeholder": "Select post call tags..."
+          }
+        },
+        "validation": {
+          "comment": {
+            "required": "Comment is required",
+            "min": "Comment must be at least 2 characters"
+          },
+          "tags": {
+            "min": "At least one tag must be selected"
+          }
+        },
+        "actions": {
+          "cancel": "Cancel",
+          "save": "Save Summary"
+        },
+        "submit": {
+          "success": {
+            "title": "Call Summary Saved",
+            "description": "Your call summary has been saved successfully"
+          },
+          "failed": {
+            "title": "Error",
+            "description": "Failed to save call summary. Please try again"
+          },
+          "saving": {
+            "title": "Saving..."
+          }
+        }
+      },
+      "conclusion": {
+        "status": {
+          "answered": "Answered",
+          "unanswered": "Unanswered",
+          "busy": "Busy",
+          "failed": "Failed"
+        },
+        "duration": {
+          "sec": "s"
+        },
+        "fields": {
+          "date": "Date",
+          "duration": "Duration",
+          "status": "Status"
+        }
+      }
     }
   }
 }

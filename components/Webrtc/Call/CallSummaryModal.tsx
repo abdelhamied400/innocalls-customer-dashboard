@@ -4,6 +4,7 @@ import useWebrtcStore from "@/store/webrtc.slice";
 import { useSession } from "next-auth/react";
 import CallSummaryForm from "./CallSummaryForm";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const CallSummaryModal = () => {
   const { data: session } = useSession();
@@ -15,6 +16,8 @@ const CallSummaryModal = () => {
   } = useWebrtcStore();
 
   if (session?.user.userType === "user") return null;
+
+  const t = useTranslations("webrtc.summary");
 
   const onCallSummaryModalOpenChange = (open: boolean) => {
     setCallSummaryModalOpen(open);
@@ -29,13 +32,22 @@ const CallSummaryModal = () => {
       onOpenChange={onCallSummaryModalOpenChange}
     >
       <DialogContent className="max-h-[90vh] overflow-auto">
-        <DialogTitle>Call Summary</DialogTitle>
+        <DialogTitle>{t("title")}</DialogTitle>
         <DialogDescription className="text-sm text-muted-foreground">
-          {lastCall?.from} &rarr; {lastCall?.to} | Duration:{" "}
-          {lastCall?.duration ? `${lastCall.duration} sec` : "N/A"}
-          {lastCall?.status ? ` | Status: ${lastCall.status}` : ""}
+          {lastCall?.from} &rarr; {lastCall?.to} |{" "}
+          {t("conclusion.fields.duration")}:{" "}
+          {lastCall?.duration
+            ? `${lastCall.duration} ${t("conclusion.duration.sec")}`
+            : `0 ${t("conclusion.duration.sec")}`}
+          {lastCall?.status
+            ? ` | ${t("conclusion.fields.status")}: ${t(
+                `conclusion.status.${lastCall.status.toLocaleLowerCase()}`
+              )}`
+            : ""}
           {lastCall?.callDateTime
-            ? ` | Date: ${new Date(lastCall.callDateTime).toLocaleString()}`
+            ? ` | ${t("conclusion.fields.date")}: ${new Date(
+                lastCall.callDateTime
+              ).toLocaleString()}`
             : ""}
         </DialogDescription>
         <CallSummaryForm />
