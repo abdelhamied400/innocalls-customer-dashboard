@@ -68,7 +68,7 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
         callDateTime:
           format(
             lastCall.callDateTime || new Date(),
-            "dd-MM-yyyy hh:mm:ss a"
+            "dd-MM-yyyy, h:mm:ss aaa"
           ) || "",
         status: lastCall.status || "Answered",
       });
@@ -133,6 +133,7 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
               <FormItem>
                 <FormControl>
                   <MultiSelect
+                    portalled={false}
                     label="Post Call Tags"
                     error={form.formState.errors.postCallTags?.message || ""}
                     options={tagsOptions}

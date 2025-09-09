@@ -34,6 +34,9 @@ const CallSummaryModal = () => {
           {lastCall?.from} &rarr; {lastCall?.to} | Duration:{" "}
           {lastCall?.duration ? `${lastCall.duration} sec` : "N/A"}
           {lastCall?.status ? ` | Status: ${lastCall.status}` : ""}
+          {lastCall?.callDateTime
+            ? ` | Date: ${new Date(lastCall.callDateTime).toLocaleString()}`
+            : ""}
         </DialogDescription>
         <CallSummaryForm />
       </DialogContent>

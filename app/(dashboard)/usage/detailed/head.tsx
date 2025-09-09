@@ -32,6 +32,8 @@ import { usePaginatedTable } from "@/components/Table/PaginatedTable";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { defaultFilters } from "./table";
 import { useVocab } from "@/hooks/useVocab";
+import { Account } from "@/types/api/account";
+import { Package } from "@/types/api/package";
 
 // 30 days ago
 const defaultFromDate = new Date();
@@ -179,7 +181,7 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
                 <SelectValue placeholder={t("filters.account.label")} />
               </SelectTrigger>
               <SelectContent>
-                {accounts?.map((account) => (
+                {accounts?.map((account: Account) => (
                   <SelectItem key={account.id} value={account.id.toString()}>
                     {account.name}
                   </SelectItem>
@@ -227,7 +229,7 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
                 <SelectValue placeholder={t("filters.package.label")} />
               </SelectTrigger>
               <SelectContent>
-                {packages?.map((pkg) => (
+                {packages?.map((pkg: Package) => (
                   <SelectItem key={pkg.id} value={pkg.id.toString()}>
                     {pkg.name}
                   </SelectItem>

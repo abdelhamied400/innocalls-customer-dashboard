@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useRouting } from "@/providers/RoutingProvider";
 import { ExtensionState, SessionState, SpyingStatus } from "./types";
 import JsSIP, { C } from "jssip";
@@ -35,9 +35,13 @@ export const useUaEvents = ({
     setCallStartTime,
     setCallSummaryModalOpen,
     lastCall,
-    callStartTime,
     updateLastCall,
   } = useWebrtcStore();
+  const currentCallId = useRef("");
+
+  useEffect(() => {
+    currentCallId.current = lastCall?.callId || "";
+  }, [lastCall]);
 
   // Helper to update session state if setter is provided
   const updateSessionState = useCallback(
@@ -168,6 +172,15 @@ export const useUaEvents = ({
         updateSessionState("answered");
       });
 
+      session.on("failed", (event) => {
+        if (
+          authSession?.user?.userType === "agent" &&
+          !!currentCallId.current
+        ) {
+          setCallSummaryModalOpen(true);
+        }
+      });
+
       connection.addEventListener("addstream", (e: any) => {
         webrtcLogger.debug("Stream added", e);
         const remoteAudio = document.createElement("audio");
@@ -205,37 +218,40 @@ export const useUaEvents = ({
         const phoneNumber = session.remote_identity?.uri?.user;
         let dateNow: Date | null = null;
 
-        if (authSession?.user?.userType === "agent") {
-          const liveCall = await webrtcService
-            .searchAgentLiveCalls(phoneNumber)
-            .catch((err) => {
-              webrtcLogger.error("Error searching live calls", err);
-              return null;
-            });
+        session.on("progress", async () => {
+          if (authSession?.user?.userType === "agent") {
+            const liveCall = await webrtcService
+              .searchAgentLiveCalls(phoneNumber)
+              .catch((err) => {
+                webrtcLogger.error("Error searching live calls", err);
+                return null;
+              });
 
-          if (!!liveCall?.callId) {
-            webrtcLogger.info("Found live call with ID", {
-              callId: liveCall.callId,
-            });
-            updateLastCall({
-              callId: liveCall.callId,
-              from: extension.ext,
-              to: phoneNumber,
-              direction: session.direction as "incoming" | "outgoing",
-            });
-          } else {
-            webrtcLogger.info("No live call found for this session");
+            if (!!liveCall?.callId) {
+              webrtcLogger.info("Found live call with ID", {
+                callId: liveCall.callId,
+              });
+              updateLastCall({
+                callId: liveCall.callId,
+                from: extension.ext,
+                to: phoneNumber,
+                direction: session.direction as "incoming" | "outgoing",
+              });
+            } else {
+              webrtcLogger.info("No live call found for this session");
+            }
           }
-        }
+          updateLastCall({
+            callDateTime: new Date(),
+          });
+        });
 
         session.on("confirmed", () => {
           webrtcLogger.info("Call confirmed");
           setCallStartTime?.(Date.now());
           updateLastCall({
-            callDateTime: new Date(),
             status: "Answered",
           });
-          dateNow = new Date();
         });
 
         session.on("ended", (event) => {
@@ -246,7 +262,10 @@ export const useUaEvents = ({
           setSpyingStatus("spy");
           setIsSpying(false);
 
-          if (authSession?.user?.userType === "agent") {
+          if (
+            authSession?.user?.userType === "agent" &&
+            !!currentCallId.current
+          ) {
             setCallSummaryModalOpen(true);
           }
           updateLastCall({
@@ -260,10 +279,6 @@ export const useUaEvents = ({
           updateSessionState("failed");
           setSpyingStatus("spy");
           setIsSpying(false);
-
-          if (authSession?.user?.userType === "agent") {
-            setCallSummaryModalOpen(true);
-          }
 
           const failStatus = event.cause;
           if (failStatus === C.causes.BUSY) {
