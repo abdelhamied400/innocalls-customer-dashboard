@@ -15,7 +15,6 @@ import { Toggle } from "@/components/ui/toggle";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import DatePicker from "@/components/ui/date-picker";
-import useVocabStore from "@/store/vocab.slice";
 import { isValidDateRange } from "@/lib/date";
 import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
@@ -27,6 +26,7 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { defaultFilters } from "./table";
+import { useVocab } from "@/hooks/useVocab";
 
 type CallReportingHeadProps = {
   filters: AgentCallReportingFilters;
@@ -39,7 +39,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
 
   const { table } = usePaginatedTable();
   const [isExporting, setIsExporting] = useState(false);
-  const { extensions, tags } = useVocabStore();
+  const { extensions, tags } = useVocab();
   const extensionsOptions = extensions?.map((ext) => ({
     label: `${ext.name} (${ext.ext})`,
     value: ext.ext,

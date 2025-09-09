@@ -1,108 +1,17 @@
 "use client";
 import AppSpinner from "@/components/ui/AppSpinner";
-import vocabService from "@/services/vocab.service";
-import useAuthStore from "@/store/auth.slice";
-import useVocabStore from "@/store/vocab.slice";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "@/providers/TranslationProvider";
-import { PropsWithChildren, useEffect, useRef, useState } from "react";
+import { PropsWithChildren } from "react";
+import { useVocab } from "@/hooks/useVocab";
 
 type VocabProviderProps = PropsWithChildren<{}>;
 const VocabProvider = ({ children }: VocabProviderProps) => {
-  const [loading, setLoading] = useState(false);
-  const {
-    setCountries,
-    setDids,
-    setExtensions,
-    setTags,
-    setAccounts,
-    setPackages,
-    setErgs,
-  } = useVocabStore();
-  const { data: session, status } = useSession();
-  const { Organization } = useAuthStore();
-  const didFetch = useRef(false);
-
-  const fetchCountries = async () => {
-    const countries = await vocabService.getAllCountries();
-    setCountries(countries);
-  };
-  const fetchDids = async () => {
-    const dids = await vocabService.getAllDids();
-    setDids(dids);
-  };
-  const fetchExtensions = async () => {
-    const extensions = await vocabService.getAllExtensions();
-    setExtensions(extensions);
-  };
-  const fetchTags = async () => {
-    const tags = await vocabService.getAllTags();
-    setTags(tags);
-  };
-  const fetchAccounts = async () => {
-    const accounts = await vocabService.getAllAccounts();
-    setAccounts(accounts);
-  };
-  const fetchPackages = async () => {
-    const packages = await vocabService.getAllPackages();
-    setPackages(packages);
-  };
-  const fetchErgs = async () => {
-    const ergs = await vocabService.getAllErgs();
-    setErgs(ergs);
-  };
-
-  const fetchUserVocab = async () => {
-    const promises = [
-      fetchCountries(),
-      fetchTags(),
-      fetchAccounts(),
-      fetchPackages(),
-      fetchErgs(),
-
-      session?.user?.fullAccessNumbers ? fetchDids() : Promise.resolve(),
-      session?.user?.agentsAccessControl
-        ? fetchExtensions()
-        : Promise.resolve(),
-    ];
-    try {
-      setLoading(true);
-      await Promise.all(promises);
-    } catch (error) {
-      console.error("Error fetching user vocab:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchAgentVocab = async () => {
-    const promises = [fetchCountries(), fetchTags()];
-    try {
-      setLoading(true);
-      await Promise.all(promises);
-    } catch (error) {
-      console.error("Error fetching agent vocab:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fetch countries on mount
-  useEffect(() => {
-    if (status !== "authenticated" || didFetch.current) return;
-
-    didFetch.current = true;
-
-    if (!!Organization) {
-      if (session?.user?.userType === "agent") {
-        fetchAgentVocab();
-      } else {
-        fetchUserVocab();
-      }
-    }
-  }, [status, Organization]);
-
+  // Compute loading state from all queries
   const t = useTranslations("common.states");
+
+  const { status } = useSession();
+  const { loading } = useVocab();
 
   if (status === "loading") {
     return (

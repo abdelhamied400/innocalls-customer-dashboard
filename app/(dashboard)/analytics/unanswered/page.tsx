@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
 import Select from "@/components/select";
-import useVocabStore from "@/store/vocab.slice";
 import { useFilterManager } from "@/hooks/useFilterManager";
 import { unansweredFiltersSchema } from "@/validation/unansweredFilters";
 import InboundDistribution from "./inbound-distribution";
@@ -21,6 +20,7 @@ import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { useVocab } from "@/hooks/useVocab";
 
 type Option = {
   value: string;
@@ -39,7 +39,7 @@ const lastMonth = new Date();
 lastMonth.setDate(today.getDate() - 30);
 
 const UnansweredAnalytics = () => {
-  const { extensions } = useVocabStore();
+  const { extensions } = useVocab();
   const { setPageTitle } = useAppStore();
   const locale = useLocale();
 

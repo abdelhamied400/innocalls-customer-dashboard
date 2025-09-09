@@ -12,8 +12,8 @@ import { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import webrtcService from "@/services/webrtc.service";
 import useWebrtcStore from "@/store/webrtc.slice";
-import useVocabStore from "@/store/vocab.slice";
 import { format } from "date-fns";
+import { useVocab } from "@/hooks/useVocab";
 
 // Define the schema for the call summary form
 const callSummarySchema = z.object({
@@ -38,7 +38,7 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { lastCall, setCallSummaryModalOpen, clearLastCall } = useWebrtcStore();
-  const { tags } = useVocabStore();
+  const { tags } = useVocab();
   const tagsOptions = tags.map((tag) => ({
     label: tag.name,
     value: tag.id,

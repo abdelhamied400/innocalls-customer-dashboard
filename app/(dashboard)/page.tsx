@@ -8,12 +8,12 @@ import HistoricalStats from "@/containers/user/HistoricalStats";
 import QuickStats from "@/containers/user/QuickStats";
 import PerformanceStats from "@/containers/user/PerformanceStats";
 import { useSession } from "next-auth/react";
-import useVocabStore from "@/store/vocab.slice";
+import { useVocab } from "@/hooks/useVocab";
 
 const Dashboard = () => {
   const { Organization } = useAuthStore();
   const { data: session } = useSession();
-  const { ergs } = useVocabStore();
+  const { ergs } = useVocab();
 
   return (
     <div className="page" id="dashboard">
