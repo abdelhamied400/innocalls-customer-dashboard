@@ -32,4 +32,5 @@ export type SipContextType = {
   spyingStatus: SpyingStatus;
   setSpyingStatus: React.Dispatch<React.SetStateAction<SpyingStatus>>;
   isSpying: boolean;
+  extensionLoading: boolean;
 };

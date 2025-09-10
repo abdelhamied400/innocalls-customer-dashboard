@@ -53,4 +53,8 @@ export default {
 
     return res.data;
   },
+  fetchUserProfile: async () => {
+    const res = await api.get("/agent/profile");
+    return res.data;
+  },
 };

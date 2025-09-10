@@ -57,7 +57,7 @@ export default {
   changeAgentState: async (state: string, breakType?: string) => {
     const res = await api.post("/v1/agent-activities", {
       type: state,
-      breakType,
+      subType: breakType,
     });
     return res.data;
   },

@@ -1,3 +1,4 @@
+import { AgentActivityValue } from "@/constants/agent-activity";
 import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
 
@@ -38,6 +39,9 @@ declare module "next-auth" {
     fullAccessConferenceBridge: boolean;
     organizations: Organization[];
     accessToken?: string;
+    latestActivity: {
+      type: AgentActivityValue;
+    };
   }
 
   interface Session {

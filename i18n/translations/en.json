@@ -2005,6 +2005,16 @@
       "connecting": "Connecting",
       "disconnected": "Disconnected"
     },
+    "breakTypes": {
+      "logged_in": "Logged In",
+      "logged_out": "Logged Out",
+      "connected_not_ready": "Not Ready",
+      "ready_accept_call": "Ready to Accept Call",
+      "break_started": "Break Started",
+      "break_ended": "Break Ended",
+      "dialpad_logged_out": "Dialpad Logged Out",
+      "portal_logged_out": "Portal Logged Out"
+    },
     "callLog": {
       "title": "Call Log",
       "noCalls": " No calls logged yet. Make a call to see it here.",

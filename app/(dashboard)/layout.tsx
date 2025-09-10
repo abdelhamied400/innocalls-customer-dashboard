@@ -13,6 +13,7 @@ import { useLayoutManager } from "@/hooks/use-layout-manager";
 import { Button } from "@/components/ui/button";
 import { ArrowForward, Dialpad } from "@mui/icons-material";
 import InnortcLayout from "@/components/Webrtc/InnortcLayout";
+import DevLogger from "@/components/DevLogger";
 
 type DashboardLayoutProps = PropsWithChildren<{
   agent?: React.ReactNode;
@@ -77,6 +78,8 @@ const DashboardLayout = ({ children, agent }: DashboardLayoutProps) => {
           </div>
         )}
       </div>
+
+      <DevLogger />
     </div>
   );
 };

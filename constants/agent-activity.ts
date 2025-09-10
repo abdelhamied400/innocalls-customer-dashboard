@@ -1,4 +1,4 @@
-type AgentActivityValue =
+export type AgentActivityValue =
   | "logged_in"
   | "logged_out"
   | "connected_not_ready"
@@ -8,6 +8,24 @@ type AgentActivityValue =
   | "dialpad_logged_out"
   | "portal_logged_out";
 
+export const agentActivitiesColors: Record<AgentActivityValue, string> = {
+  logged_in: "#facc15",
+  logged_out: "#3b82f6",
+  connected_not_ready: "#ef4444",
+  ready_accept_call: "#22c55e",
+  break_started: "#eab308",
+  break_ended: "#38bdf8",
+  dialpad_logged_out: "#ef4444",
+  portal_logged_out: "#22c55e",
+};
+
+export const webrtcStoppingActivities: AgentActivityValue[] = [
+  "connected_not_ready",
+  "break_started",
+  "dialpad_logged_out",
+  "portal_logged_out",
+];
+
 export type AgentActivity = {
   value: AgentActivityValue;
   label: string;
@@ -15,44 +33,24 @@ export type AgentActivity = {
 };
 
 export const agentActivities: Array<AgentActivity> = [
-  // {
-  //   value: "logged_in",
-  //   label: "Logged In",
-  //   color: "#2563eb", // Blue for active/logged in
-  // },
-  // {
-  //   value: "logged_out",
-  //   label: "Logged Out",
-  //   color: "#6b7280", // Gray for logged out
-  // },
-  {
-    value: "connected_not_ready",
-    label: "Connected Not Ready",
-    color: "#f59e42", // Orange for connected but not ready
-  },
   {
     value: "ready_accept_call",
     label: "Ready Accept Call",
-    color: "#22c55e", // Green for ready
+    color: agentActivitiesColors.ready_accept_call,
   },
   {
     value: "break_started",
-    label: "Break Started",
-    color: "#eab308", // Yellow for break started
+    label: "Take Break",
+    color: agentActivitiesColors.break_started,
   },
   {
     value: "break_ended",
-    label: "Break Ended",
-    color: "#38bdf8", // Light blue for break ended
+    label: "End Break",
+    color: agentActivitiesColors.break_ended,
   },
   {
     value: "dialpad_logged_out",
-    label: "Dialpad Logged Out",
-    color: "#ef4444", // Red for dialpad logged out
+    label: "Logout",
+    color: agentActivitiesColors.dialpad_logged_out,
   },
-  // {
-  //   value: "portal_logged_out",
-  //   label: "Portal Logged Out",
-  //   color: "#a21caf", // Purple for portal logged out
-  // },
 ];

@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { Skeleton } from "./ui/skeleton";
 import { useEffect } from "react";
 import { useTranslations } from "@/providers/TranslationProvider";
+import { agentActivitiesColors } from "@/constants/agent-activity";
 
 const ProfileMenu = () => {
   const { data: session, status } = useSession();
@@ -25,6 +26,7 @@ const ProfileMenu = () => {
   const router = useRouter();
   const t = useTranslations("components.profileMenu");
   const tActions = useTranslations("common.actions");
+  const breakType = session?.user.latestActivity.type;
 
   const handleLogout = async () => {
     // TODO: FIND ANOTHER WAY TP LOGOUT ...
@@ -54,6 +56,7 @@ const ProfileMenu = () => {
         isDemo: false,
         listenToCallEvents: false,
         provider: "",
+        allowedBreakTypes: [],
       });
     }
     const org = session?.user?.organizations?.find((org) => org.id === orgId);
@@ -84,12 +87,20 @@ const ProfileMenu = () => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <div className="flex items-center gap-2">
-          <span className="border-[3px] border-primary p-0.5 rounded-full w-14 h-14">
+          <span className="border-[3px] border-primary p-0.5 rounded-full w-14 h-14 relative">
             <img
               src="/assets/images/avatar.png"
               alt="avatar"
               className="rounded-full"
             />
+            {breakType && (
+              <span
+                className="absolute bottom-0 right-0 border-4 border-white w-4 h-4 rounded-full"
+                style={{
+                  backgroundColor: agentActivitiesColors[breakType],
+                }}
+              ></span>
+            )}
           </span>
           <div className="flex-col items-start gap-1 hidden md:flex">
             <p className="font-semibold text-lg">{session?.user?.name}</p>
