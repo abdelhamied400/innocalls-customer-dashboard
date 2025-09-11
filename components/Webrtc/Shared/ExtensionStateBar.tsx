@@ -41,14 +41,14 @@ const ExtensionStateBar = () => {
       if (isAxiosError(error)) {
         const errorMessage = error.response?.data?.message || error.message;
         toast({
-          title: "Error",
+          title: t("activity.messages.error"),
           description: errorMessage,
           variant: "destructive",
         });
       } else {
         toast({
-          title: "Error",
-          description: "An unexpected error occurred.",
+          title: t("activity.messages.error"),
+          description: t("activity.messages.unexpectedError"),
           variant: "destructive",
         });
       }
