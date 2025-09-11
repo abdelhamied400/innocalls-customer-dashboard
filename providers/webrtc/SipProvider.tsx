@@ -29,6 +29,7 @@ import { useSession } from "next-auth/react";
 import webrtcService from "@/services/webrtc.service";
 import CryptoJS from "crypto-js";
 import { webrtcStoppingActivities } from "@/constants/agent-activity";
+import { AgentActivity } from "@/types/webrtc";
 
 const SipContext = createContext<SipContextType | null>(null);
 
@@ -70,7 +71,8 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
   const [currentSession, setCurrentSession] = useState<RTCSession | null>(null);
   const [sessionState, setSessionState] = useState<SessionState>();
-  const breakType = session?.user.latestActivity.type;
+  const breakType =
+    session?.user.latestActivity.type || AgentActivity.CONNECTED_NOT_READY;
 
   const uaRef = useRef<JsSIP.UA | null>(null);
 

@@ -1,56 +1,48 @@
-export type AgentActivityValue =
-  | "logged_in"
-  | "logged_out"
-  | "connected_not_ready"
-  | "ready_accept_call"
-  | "break_started"
-  | "break_ended"
-  | "dialpad_logged_out"
-  | "portal_logged_out";
+import { AgentActivity } from "@/types/webrtc";
 
-export const agentActivitiesColors: Record<AgentActivityValue, string> = {
-  logged_in: "#facc15",
-  logged_out: "#3b82f6",
-  connected_not_ready: "#ef4444",
-  ready_accept_call: "#22c55e",
-  break_started: "#eab308",
-  break_ended: "#38bdf8",
-  dialpad_logged_out: "#ef4444",
-  portal_logged_out: "#22c55e",
+export const agentActivitiesColors: Record<AgentActivity, string> = {
+  [AgentActivity.LOGGED_IN]: "#facc15",
+  [AgentActivity.LOGGED_OUT]: "#3b82f6",
+  [AgentActivity.CONNECTED_NOT_READY]: "#ef4444",
+  [AgentActivity.READY_ACCEPT_CALL]: "#22c55e",
+  [AgentActivity.BREAK_STARTED]: "#eab308",
+  [AgentActivity.BREAK_ENDED]: "#38bdf8",
+  [AgentActivity.DIALPAD_LOGGED_OUT]: "#ef4444",
+  [AgentActivity.PORTAL_LOGGED_OUT]: "#22c55e",
 };
 
-export const webrtcStoppingActivities: AgentActivityValue[] = [
-  "connected_not_ready",
-  "break_started",
-  "dialpad_logged_out",
-  "portal_logged_out",
+export const webrtcStoppingActivities: AgentActivity[] = [
+  AgentActivity.CONNECTED_NOT_READY,
+  AgentActivity.BREAK_STARTED,
+  AgentActivity.DIALPAD_LOGGED_OUT,
+  AgentActivity.PORTAL_LOGGED_OUT,
 ];
 
-export type AgentActivity = {
-  value: AgentActivityValue;
+export type AgentActivityOption = {
+  value: AgentActivity;
   label: string;
   color: string;
 };
 
-export const agentActivities: Array<AgentActivity> = [
+export const agentActivities: Array<AgentActivityOption> = [
   {
-    value: "ready_accept_call",
+    value: AgentActivity.READY_ACCEPT_CALL,
     label: "Ready Accept Call",
-    color: agentActivitiesColors.ready_accept_call,
+    color: agentActivitiesColors[AgentActivity.READY_ACCEPT_CALL],
   },
   {
-    value: "break_started",
+    value: AgentActivity.BREAK_STARTED,
     label: "Take Break",
-    color: agentActivitiesColors.break_started,
+    color: agentActivitiesColors[AgentActivity.BREAK_STARTED],
   },
   {
-    value: "break_ended",
+    value: AgentActivity.BREAK_ENDED,
     label: "End Break",
-    color: agentActivitiesColors.break_ended,
+    color: agentActivitiesColors[AgentActivity.BREAK_ENDED],
   },
   {
-    value: "dialpad_logged_out",
+    value: AgentActivity.DIALPAD_LOGGED_OUT,
     label: "Logout",
-    color: agentActivitiesColors.dialpad_logged_out,
+    color: agentActivitiesColors[AgentActivity.DIALPAD_LOGGED_OUT],
   },
 ];

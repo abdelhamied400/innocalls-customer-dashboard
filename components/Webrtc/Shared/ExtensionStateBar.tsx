@@ -9,15 +9,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  AgentActivity,
-  webrtcStoppingActivities,
-} from "@/constants/agent-activity";
+import { webrtcStoppingActivities } from "@/constants/agent-activity";
 import useAuthStore from "@/store/auth.slice";
 import webrtcService from "@/services/webrtc.service";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { isValidTransition } from "@/lib/webrtc";
+import { AgentActivity } from "@/types/webrtc";
 
 const ExtensionStateBar = () => {
   const t = useTranslations("webrtc");
@@ -25,20 +24,19 @@ const ExtensionStateBar = () => {
   const { extension, extensionState, reconnect, extensionLoading } = useSip();
   const { Organization } = useAuthStore();
   const { update, data: session } = useSession();
-  const breakType = session?.user.latestActivity.type;
+  const breakType =
+    session?.user.latestActivity.type || AgentActivity.CONNECTED_NOT_READY;
 
   const handleActivityChange = async (
-    activity: AgentActivity["value"],
-    breakType?: string
+    activity: AgentActivity,
+    breakType?: AgentActivity
   ) => {
     try {
       await webrtcService.changeAgentState(activity, breakType);
       update({ refreshUser: true });
-      // logout();
     } catch (error) {
       console.error(error);
     } finally {
-      // optional: any cleanup or state update after the request
     }
   };
 
@@ -85,13 +83,12 @@ const ExtensionStateBar = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem
-              key="ready_accept_call"
+              key={AgentActivity.READY_ACCEPT_CALL}
               onClick={() => {
-                handleActivityChange("ready_accept_call");
+                handleActivityChange(AgentActivity.READY_ACCEPT_CALL);
               }}
               disabled={
-                breakType === "ready_accept_call" ||
-                breakType === "break_started"
+                !isValidTransition(breakType, AgentActivity.READY_ACCEPT_CALL)
               }
             >
               <span
@@ -107,9 +104,11 @@ const ExtensionStateBar = () => {
             <DropdownMenu>
               <DropdownMenuTrigger
                 asChild
-                disabled={breakType === "break_started"}
+                disabled={
+                  !isValidTransition(breakType, AgentActivity.BREAK_STARTED)
+                }
               >
-                <DropdownMenuItem key="break_started">
+                <DropdownMenuItem key={AgentActivity.BREAK_STARTED}>
                   <span
                     className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
                     style={{ backgroundColor: "#eab308" }}
@@ -118,28 +117,30 @@ const ExtensionStateBar = () => {
                 </DropdownMenuItem>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                {Organization?.allowedBreakTypes.map((breakType: string) => (
+                {Organization?.allowedBreakTypes.map((type: AgentActivity) => (
                   <DropdownMenuItem
-                    key={breakType}
+                    key={type}
                     onClick={() => {
-                      handleActivityChange("break_started", breakType);
+                      handleActivityChange(AgentActivity.BREAK_STARTED, type);
                     }}
                   >
                     <span
                       className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
                       style={{ backgroundColor: "#eab308" }}
                     />
-                    {breakType}
+                    {type}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
             </DropdownMenu>
             <DropdownMenuItem
-              key="break_ended"
+              key={AgentActivity.BREAK_ENDED}
               onClick={() => {
-                handleActivityChange("break_ended");
+                handleActivityChange(AgentActivity.BREAK_ENDED);
               }}
-              disabled={breakType !== "break_started"}
+              disabled={
+                !isValidTransition(breakType, AgentActivity.BREAK_ENDED)
+              }
             >
               <span
                 className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
@@ -152,11 +153,13 @@ const ExtensionStateBar = () => {
 
             {/* Logout */}
             <DropdownMenuItem
-              key="dialpad_logged_out"
+              key={AgentActivity.DIALPAD_LOGGED_OUT}
               onClick={() => {
-                handleActivityChange("dialpad_logged_out");
+                handleActivityChange(AgentActivity.DIALPAD_LOGGED_OUT);
               }}
-              disabled={breakType === "dialpad_logged_out"}
+              disabled={
+                !isValidTransition(breakType, AgentActivity.DIALPAD_LOGGED_OUT)
+              }
             >
               <span
                 className="inline-block w-2.5 h-2.5 mr-2 rounded-full"

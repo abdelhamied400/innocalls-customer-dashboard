@@ -1,6 +1,7 @@
 import { AgentActivityValue } from "@/constants/agent-activity";
 import NextAuth, { DefaultSession, DefaultUser } from "next-auth";
 import { DefaultJWT } from "next-auth/jwt";
+import { AgentActivity } from "./webrtc";
 
 declare module "next-auth" {
   type Organization = {
@@ -11,7 +12,7 @@ declare module "next-auth" {
     provider: string;
     enableAfterCallTags: boolean;
     isDemo: boolean;
-    allowedBreakTypes: Array<string>;
+    allowedBreakTypes: Array<AgentActivity>;
   };
 
   interface User {
@@ -40,7 +41,7 @@ declare module "next-auth" {
     organizations: Organization[];
     accessToken?: string;
     latestActivity: {
-      type: AgentActivityValue;
+      type: AgentActivity;
     };
   }
 

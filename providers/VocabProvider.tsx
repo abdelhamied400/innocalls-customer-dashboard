@@ -96,7 +96,7 @@ const VocabProvider = ({ children }: VocabProviderProps) => {
     if (!!Organization) {
       if (session?.user?.userType === "agent") {
         fetchAgentVocab();
-      } else {
+      } else if (session?.user?.userType === "user") {
         fetchUserVocab();
       }
     }

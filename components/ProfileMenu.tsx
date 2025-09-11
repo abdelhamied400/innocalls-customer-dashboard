@@ -19,6 +19,8 @@ import { Skeleton } from "./ui/skeleton";
 import { useEffect } from "react";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { agentActivitiesColors } from "@/constants/agent-activity";
+import { AgentActivity } from "@/types/webrtc";
+import webrtcService from "@/services/webrtc.service";
 
 const ProfileMenu = () => {
   const { data: session, status } = useSession();
@@ -26,7 +28,8 @@ const ProfileMenu = () => {
   const router = useRouter();
   const t = useTranslations("components.profileMenu");
   const tActions = useTranslations("common.actions");
-  const breakType = session?.user.latestActivity.type;
+  const breakType =
+    session?.user.latestActivity.type || AgentActivity.CONNECTED_NOT_READY;
 
   const handleLogout = async () => {
     // TODO: FIND ANOTHER WAY TP LOGOUT ...
@@ -35,7 +38,11 @@ const ProfileMenu = () => {
 
     // Sign out without redirect first
     await signOut({ redirect: false });
-
+    await webrtcService
+      .changeAgentState(AgentActivity.PORTAL_LOGGED_OUT)
+      .catch((err) => {
+        console.error("Error changing agent state on logout:", err);
+      });
     // Then manually redirect to the login page using the correct base URL
     window.location.href = `${baseUrl}/login`;
   };
