@@ -2036,6 +2036,10 @@
         "coffee": "قهوة",
         "general": "عام"
       },
+      "messages": {
+        "unexpectedError": "حدث خطأ غير متوقع.",
+        "error": "خطأ"
+      },
       "logged_in": "تسجيل الدخول",
       "logged_out": "غير متصل",
       "connected_not_ready": "غير جاهز",

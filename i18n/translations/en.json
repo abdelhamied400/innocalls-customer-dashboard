@@ -2022,6 +2022,10 @@
         "coffee": "Coffee",
         "general": "General"
       },
+      "messages": {
+        "unexpectedError": "An unexpected error occurred.",
+        "error": "Error"
+      },
       "logged_in": "Logged In",
       "logged_out": "Offline",
       "connected_not_ready": "Not Ready",
