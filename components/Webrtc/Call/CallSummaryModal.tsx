@@ -14,7 +14,7 @@ const CallSummaryModal = () => {
     clearLastCall,
   } = useWebrtcStore();
 
-  if (session?.user.userType === "user" || !lastCall?.callId) return null;
+  if (session?.user.userType === "user") return null;
 
   const onCallSummaryModalOpenChange = (open: boolean) => {
     setCallSummaryModalOpen(open);

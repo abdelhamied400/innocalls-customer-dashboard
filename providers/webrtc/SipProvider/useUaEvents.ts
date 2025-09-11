@@ -246,7 +246,7 @@ export const useUaEvents = ({
           setSpyingStatus("spy");
           setIsSpying(false);
 
-          if (authSession?.user?.userType === "agent") {
+          if (authSession?.user?.userType === "agent" && !!lastCall?.callId) {
             setCallSummaryModalOpen(true);
           }
           updateLastCall({
@@ -261,7 +261,7 @@ export const useUaEvents = ({
           setSpyingStatus("spy");
           setIsSpying(false);
 
-          if (authSession?.user?.userType === "agent") {
+          if (authSession?.user?.userType === "agent" && !!lastCall?.callId) {
             setCallSummaryModalOpen(true);
           }
 
