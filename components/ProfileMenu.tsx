@@ -29,7 +29,7 @@ const ProfileMenu = () => {
   const t = useTranslations("components.profileMenu");
   const tActions = useTranslations("common.actions");
   const breakType =
-    session?.user.latestActivity.type || AgentActivity.CONNECTED_NOT_READY;
+    session?.user.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
 
   const handleLogout = async () => {
     // TODO: FIND ANOTHER WAY TP LOGOUT ...
@@ -100,7 +100,7 @@ const ProfileMenu = () => {
               alt="avatar"
               className="rounded-full"
             />
-            {breakType && (
+            {session?.user.userType === "agent" && breakType && (
               <span
                 className="absolute bottom-0 right-0 border-4 border-white w-4 h-4 rounded-full"
                 style={{
