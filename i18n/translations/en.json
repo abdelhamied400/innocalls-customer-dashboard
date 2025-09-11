@@ -2005,15 +2005,31 @@
       "connecting": "Connecting",
       "disconnected": "Disconnected"
     },
-    "breakTypes": {
+    "activity": {
+      "actions": {
+        "ready": "Ready to accept call",
+        "takeBreak": "Take a break",
+        "returnFromBreak": "Return from break",
+        "logout": "Logout"
+      },
+      "breakTypes": {
+        "meeting": "Meeting",
+        "training": "Training",
+        "Prayer": "Prayer",
+        "personal": "Personal",
+        "lunch": "Lunch",
+        "breakfast": "Breakfast",
+        "coffee": "Coffee",
+        "general": "General"
+      },
       "logged_in": "Logged In",
-      "logged_out": "Logged Out",
+      "logged_out": "Offline",
       "connected_not_ready": "Not Ready",
-      "ready_accept_call": "Ready to Accept Call",
-      "break_started": "Break Started",
-      "break_ended": "Break Ended",
-      "dialpad_logged_out": "Dialpad Logged Out",
-      "portal_logged_out": "Portal Logged Out"
+      "ready_accept_call": "Ready to Accept Calls",
+      "break_started": "On Break",
+      "break_ended": "Available",
+      "dialpad_logged_out": "Offline",
+      "portal_logged_out": "Offline"
     },
     "callLog": {
       "title": "Call Log",

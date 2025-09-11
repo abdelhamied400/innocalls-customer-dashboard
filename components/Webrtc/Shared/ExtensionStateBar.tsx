@@ -63,7 +63,7 @@ const ExtensionStateBar = () => {
           {extensionState === "disconnected" &&
           !!breakType &&
           webrtcStoppingActivities.includes(breakType)
-            ? t("breakTypes." + breakType)
+            ? t("activity." + breakType)
             : t("status." + extensionState)}
         </p>
 
@@ -95,7 +95,7 @@ const ExtensionStateBar = () => {
                 className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
                 style={{ backgroundColor: "#22c55e" }}
               />
-              Ready To Accept Call
+              {t("activity.actions.ready")}
             </DropdownMenuItem>
 
             <DropdownMenuSeparator className="h-px bg-gray-200" />
@@ -113,7 +113,7 @@ const ExtensionStateBar = () => {
                     className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
                     style={{ backgroundColor: "#eab308" }}
                   />
-                  Take Break
+                  {t("activity.actions.takeBreak")}
                 </DropdownMenuItem>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
@@ -128,7 +128,10 @@ const ExtensionStateBar = () => {
                       className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
                       style={{ backgroundColor: "#eab308" }}
                     />
-                    {type}
+                    {t(`activity.breakTypes.${type.toLocaleLowerCase()}`) !==
+                    `activity.breakTypes.${type.toLocaleLowerCase()}`
+                      ? t(`activity.breakTypes.${type.toLocaleLowerCase()}`)
+                      : type}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -146,7 +149,7 @@ const ExtensionStateBar = () => {
                 className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
                 style={{ backgroundColor: "#38bdf8" }}
               />
-              End Break
+              {t("activity.actions.returnFromBreak")}
             </DropdownMenuItem>
 
             <DropdownMenuSeparator className="h-px bg-gray-200" />
@@ -165,7 +168,7 @@ const ExtensionStateBar = () => {
                 className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
                 style={{ backgroundColor: "#ef4444" }}
               />
-              Logout
+              {t("activity.actions.logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

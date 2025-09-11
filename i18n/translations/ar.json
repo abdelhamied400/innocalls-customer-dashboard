@@ -2019,15 +2019,31 @@
       "connecting": "جارٍ الاتصال",
       "disconnected": "غير متصل"
     },
-    "breakTypes": {
+    "activity": {
+      "actions": {
+        "ready": "جاهز لاستقبال المكالمات",
+        "takeBreak": "بدء استراحة",
+        "returnFromBreak": "العودة للعمل",
+        "logout": "تسجيل الخروج"
+      },
+      "breakTypes": {
+        "meeting": "اجتماع",
+        "training": "تدريب",
+        "prayer": "صلاة",
+        "personal": "شخصي",
+        "breakfast": "إفطار",
+        "lunch": "غداء",
+        "coffee": "قهوة",
+        "general": "عام"
+      },
       "logged_in": "تسجيل الدخول",
-      "logged_out": "تسجيل الخروج",
+      "logged_out": "غير متصل",
       "connected_not_ready": "غير جاهز",
-      "ready_accept_call": "جاهز لقبول المكالمة",
-      "break_started": "بدء الاستراحة",
+      "ready_accept_call": "جاهز لاستقبال المكالمات",
+      "break_started": "في استراحة",
       "break_ended": "انتهاء الاستراحة",
-      "dialpad_logged_out": "تسجيل الخروج من لوحة الاتصال",
-      "portal_logged_out": "تسجيل الخروج من البوابة"
+      "dialpad_logged_out": "غير متصل",
+      "portal_logged_out": "غير متصل"
     },
     "callLog": {
       "title": "سجل المكالمات",
