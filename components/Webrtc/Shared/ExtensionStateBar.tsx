@@ -25,7 +25,7 @@ const ExtensionStateBar = () => {
   const { Organization } = useAuthStore();
   const { update, data: session } = useSession();
   const breakType =
-    session?.user.latestActivity.type || AgentActivity.CONNECTED_NOT_READY;
+    session?.user?.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
 
   const handleActivityChange = async (
     activity: AgentActivity,
@@ -36,6 +36,8 @@ const ExtensionStateBar = () => {
       update({ refreshUser: true });
     } catch (error) {
       console.error(error);
+
+      // SHOULD DISPLAY ALERT HERE .... MAY THE AGENT CONFUSE IF THE STATE NOT CHANGED 
     } finally {
     }
   };
@@ -75,103 +77,114 @@ const ExtensionStateBar = () => {
             </Button>
           )}
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button size="sm" variant="link">
-              <MoreVert />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem
-              key={AgentActivity.READY_ACCEPT_CALL}
-              onClick={() => {
-                handleActivityChange(AgentActivity.READY_ACCEPT_CALL);
-              }}
-              disabled={
-                !isValidTransition(breakType, AgentActivity.READY_ACCEPT_CALL)
-              }
-            >
-              <span
-                className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
-                style={{ backgroundColor: "#22c55e" }}
-              />
-              {t("activity.actions.ready")}
-            </DropdownMenuItem>
-
-            <DropdownMenuSeparator className="h-px bg-gray-200" />
-
-            {/* Break */}
-            <DropdownMenu>
-              <DropdownMenuTrigger
-                asChild
+        {session?.user.userType === "agent" && breakType && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="sm" variant="link">
+                <MoreVert />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                key={AgentActivity.READY_ACCEPT_CALL}
+                onClick={() => {
+                  handleActivityChange(AgentActivity.READY_ACCEPT_CALL);
+                }}
                 disabled={
-                  !isValidTransition(breakType, AgentActivity.BREAK_STARTED)
+                  !isValidTransition(breakType, AgentActivity.READY_ACCEPT_CALL)
                 }
               >
-                <DropdownMenuItem key={AgentActivity.BREAK_STARTED}>
-                  <span
-                    className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
-                    style={{ backgroundColor: "#eab308" }}
-                  />
-                  {t("activity.actions.takeBreak")}
-                </DropdownMenuItem>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                {Organization?.allowedBreakTypes.map((type: AgentActivity) => (
-                  <DropdownMenuItem
-                    key={type}
-                    onClick={() => {
-                      handleActivityChange(AgentActivity.BREAK_STARTED, type);
-                    }}
-                  >
+                <span
+                  className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
+                  style={{ backgroundColor: "#22c55e" }}
+                />
+                {t("activity.actions.ready")}
+              </DropdownMenuItem>
+
+              <DropdownMenuSeparator className="h-px bg-gray-200" />
+
+              {/* Break */}
+              <DropdownMenu>
+                <DropdownMenuTrigger
+                  asChild
+                  disabled={
+                    !isValidTransition(breakType, AgentActivity.BREAK_STARTED)
+                  }
+                >
+                  <DropdownMenuItem key={AgentActivity.BREAK_STARTED}>
                     <span
                       className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
                       style={{ backgroundColor: "#eab308" }}
                     />
-                    {t(`activity.breakTypes.${type.toLocaleLowerCase()}`) !==
-                    `activity.breakTypes.${type.toLocaleLowerCase()}`
-                      ? t(`activity.breakTypes.${type.toLocaleLowerCase()}`)
-                      : type}
+                    {t("activity.actions.takeBreak")}
                   </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <DropdownMenuItem
-              key={AgentActivity.BREAK_ENDED}
-              onClick={() => {
-                handleActivityChange(AgentActivity.BREAK_ENDED);
-              }}
-              disabled={
-                !isValidTransition(breakType, AgentActivity.BREAK_ENDED)
-              }
-            >
-              <span
-                className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
-                style={{ backgroundColor: "#38bdf8" }}
-              />
-              {t("activity.actions.returnFromBreak")}
-            </DropdownMenuItem>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {Organization?.allowedBreakTypes.map(
+                    (type: AgentActivity) => (
+                      <DropdownMenuItem
+                        key={type}
+                        onClick={() => {
+                          handleActivityChange(
+                            AgentActivity.BREAK_STARTED,
+                            type
+                          );
+                        }}
+                      >
+                        <span
+                          className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
+                          style={{ backgroundColor: "#eab308" }}
+                        />
+                        {t(
+                          `activity.breakTypes.${type.toLocaleLowerCase()}`
+                        ) !== `activity.breakTypes.${type.toLocaleLowerCase()}`
+                          ? t(`activity.breakTypes.${type.toLocaleLowerCase()}`)
+                          : type}
+                      </DropdownMenuItem>
+                    )
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <DropdownMenuItem
+                key={AgentActivity.BREAK_ENDED}
+                onClick={() => {
+                  handleActivityChange(AgentActivity.BREAK_ENDED);
+                }}
+                disabled={
+                  !isValidTransition(breakType, AgentActivity.BREAK_ENDED)
+                }
+              >
+                <span
+                  className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
+                  style={{ backgroundColor: "#38bdf8" }}
+                />
+                {t("activity.actions.returnFromBreak")}
+              </DropdownMenuItem>
 
-            <DropdownMenuSeparator className="h-px bg-gray-200" />
+              <DropdownMenuSeparator className="h-px bg-gray-200" />
 
-            {/* Logout */}
-            <DropdownMenuItem
-              key={AgentActivity.DIALPAD_LOGGED_OUT}
-              onClick={() => {
-                handleActivityChange(AgentActivity.DIALPAD_LOGGED_OUT);
-              }}
-              disabled={
-                !isValidTransition(breakType, AgentActivity.DIALPAD_LOGGED_OUT)
-              }
-            >
-              <span
-                className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
-                style={{ backgroundColor: "#ef4444" }}
-              />
-              {t("activity.actions.logout")}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              {/* Logout */}
+              <DropdownMenuItem
+                key={AgentActivity.DIALPAD_LOGGED_OUT}
+                onClick={() => {
+                  handleActivityChange(AgentActivity.DIALPAD_LOGGED_OUT);
+                }}
+                disabled={
+                  !isValidTransition(
+                    breakType,
+                    AgentActivity.DIALPAD_LOGGED_OUT
+                  )
+                }
+              >
+                <span
+                  className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
+                  style={{ backgroundColor: "#ef4444" }}
+                />
+                {t("activity.actions.logout")}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
     </div>
   );

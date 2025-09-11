@@ -72,7 +72,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   const [currentSession, setCurrentSession] = useState<RTCSession | null>(null);
   const [sessionState, setSessionState] = useState<SessionState>();
   const breakType =
-    session?.user.latestActivity.type || AgentActivity.CONNECTED_NOT_READY;
+    session?.user.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
 
   const uaRef = useRef<JsSIP.UA | null>(null);
 

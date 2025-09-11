@@ -40,7 +40,7 @@ declare module "next-auth" {
     fullAccessConferenceBridge: boolean;
     organizations: Organization[];
     accessToken?: string;
-    latestActivity: {
+    latestActivity?: {
       type: AgentActivity;
     };
   }
