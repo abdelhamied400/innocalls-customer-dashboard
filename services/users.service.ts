@@ -67,4 +67,10 @@ export default {
     const res = await api.delete(`/extension/${id}`);
     return res.data;
   },
+  getAgentsPerformance: async (filters: any) => {
+    const res = await api.get("/v1/agent-activities/performance-report", {
+      params: filters,
+    });
+    return res.data.agents;
+  },
 };

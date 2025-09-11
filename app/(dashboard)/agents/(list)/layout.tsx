@@ -24,6 +24,9 @@ const UsersLayout = ({ children }: UsersLayoutProps) => {
       <LinkTabs>
         <LinkTab href="/agents">{t("tabs.usersList")}</LinkTab>
         <LinkTab href="/agents/monitor">{t("tabs.monitorUsers")}</LinkTab>
+        <LinkTab href="/agents/agents-performance">
+          {t("tabs.agentsPerformance")}
+        </LinkTab>
       </LinkTabs>
       <div className="flex-1 h-[calc(100%-3rem)]">
         <div className="h-full w-full">{children}</div>
