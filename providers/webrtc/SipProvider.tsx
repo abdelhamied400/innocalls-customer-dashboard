@@ -303,6 +303,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         setNumber,
         setDialCode,
         spy,
+        setExtension,
         spyingStatus,
         setSpyingStatus,
         isSpying,

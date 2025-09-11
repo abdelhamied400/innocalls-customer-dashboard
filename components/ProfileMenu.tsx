@@ -37,12 +37,14 @@ const ProfileMenu = () => {
     const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
 
     // Sign out without redirect first
+    if (session?.user.userType === "agent") {
+      await webrtcService
+        .changeAgentState(AgentActivity.PORTAL_LOGGED_OUT)
+        .catch((err) => {
+          console.error("Error changing agent state on logout:", err);
+        });
+    }
     await signOut({ redirect: false });
-    await webrtcService
-      .changeAgentState(AgentActivity.PORTAL_LOGGED_OUT)
-      .catch((err) => {
-        console.error("Error changing agent state on logout:", err);
-      });
     // Then manually redirect to the login page using the correct base URL
     window.location.href = `${baseUrl}/login`;
   };

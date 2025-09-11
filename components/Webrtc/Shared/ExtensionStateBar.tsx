@@ -17,6 +17,8 @@ import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { isValidTransition } from "@/lib/webrtc";
 import { AgentActivity } from "@/types/webrtc";
+import { isAxiosError } from "axios";
+import { useToast } from "@/hooks/use-toast";
 
 const ExtensionStateBar = () => {
   const t = useTranslations("webrtc");
@@ -26,6 +28,7 @@ const ExtensionStateBar = () => {
   const { update, data: session } = useSession();
   const breakType =
     session?.user?.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
+  const { toast } = useToast();
 
   const handleActivityChange = async (
     activity: AgentActivity,
@@ -35,12 +38,25 @@ const ExtensionStateBar = () => {
       await webrtcService.changeAgentState(activity, breakType);
       update({ refreshUser: true });
     } catch (error) {
-      console.error(error);
-
-      // SHOULD DISPLAY ALERT HERE .... MAY THE AGENT CONFUSE IF THE STATE NOT CHANGED 
+      if (isAxiosError(error)) {
+        const errorMessage = error.response?.data?.message || error.message;
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "An unexpected error occurred.",
+          variant: "destructive",
+        });
+      }
     } finally {
     }
   };
+
+  console.log(extension);
 
   if (extensionLoading) {
     return <Skeleton className="h-16 w-full" />;

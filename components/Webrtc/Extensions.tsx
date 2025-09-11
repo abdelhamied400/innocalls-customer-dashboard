@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const Extensions = () => {
   const { extensions } = useVocabStore();
-  const { login } = useSip();
+  const { login, setExtension } = useSip();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
@@ -16,6 +16,7 @@ const Extensions = () => {
     try {
       setLoading(true);
       const credentials = await webrtcService.getExtension(extension.id);
+      setExtension(credentials.agent);
       login({
         ...extension,
         uri: credentials.agent.uri,
