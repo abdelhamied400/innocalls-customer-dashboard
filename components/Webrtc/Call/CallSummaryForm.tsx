@@ -66,8 +66,10 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
         direction: lastCall.direction || "",
         duration: lastCall.duration || 0,
         callDateTime:
-          format(lastCall.callDateTime || new Date(), "dd-MM-yyyy h:mm:ss a") ||
-          "",
+          format(
+            lastCall.callDateTime || new Date(),
+            "dd-MM-yyyy, h:mm:ss aaa"
+          ) || "",
         status: lastCall.status || "Answered",
       });
       toast({
