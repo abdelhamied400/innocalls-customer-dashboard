@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useRouting } from "@/providers/RoutingProvider";
 import { ExtensionState, SessionState, SpyingStatus } from "./types";
 import JsSIP, { C } from "jssip";
@@ -38,6 +38,7 @@ export const useUaEvents = ({
     callStartTime,
     updateLastCall,
   } = useWebrtcStore();
+  const liveCallRef = useRef<any>(null);
 
   // Helper to update session state if setter is provided
   const updateSessionState = useCallback(
@@ -212,6 +213,7 @@ export const useUaEvents = ({
               webrtcLogger.error("Error searching live calls", err);
               return null;
             });
+          liveCallRef.current = liveCall;
 
           if (!!liveCall?.callId) {
             webrtcLogger.info("Found live call with ID", {
@@ -245,8 +247,10 @@ export const useUaEvents = ({
           updateSessionState("ended");
           setSpyingStatus("spy");
           setIsSpying(false);
-
-          if (authSession?.user?.userType === "agent" && !!lastCall?.callId) {
+          if (
+            authSession?.user?.userType === "agent" &&
+            !!liveCallRef.current?.callId
+          ) {
             setCallSummaryModalOpen(true);
           }
           updateLastCall({
@@ -261,7 +265,10 @@ export const useUaEvents = ({
           setSpyingStatus("spy");
           setIsSpying(false);
 
-          if (authSession?.user?.userType === "agent" && !!lastCall?.callId) {
+          if (
+            authSession?.user?.userType === "agent" &&
+            !!liveCallRef.current?.callId
+          ) {
             setCallSummaryModalOpen(true);
           }
 
