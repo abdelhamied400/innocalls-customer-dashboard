@@ -2005,6 +2005,36 @@
       "connecting": "Connecting",
       "disconnected": "Disconnected"
     },
+    "activity": {
+      "actions": {
+        "ready": "Ready to accept call",
+        "takeBreak": "Take a break",
+        "returnFromBreak": "Return from break",
+        "logout": "Logout"
+      },
+      "breakTypes": {
+        "meeting": "Meeting",
+        "training": "Training",
+        "Prayer": "Prayer",
+        "personal": "Personal",
+        "lunch": "Lunch",
+        "breakfast": "Breakfast",
+        "coffee": "Coffee",
+        "general": "General"
+      },
+      "messages": {
+        "unexpectedError": "An unexpected error occurred.",
+        "error": "Error"
+      },
+      "logged_in": "Logged In",
+      "logged_out": "Offline",
+      "connected_not_ready": "Not Ready",
+      "ready_accept_call": "Ready to Accept Calls",
+      "break_started": "On Break",
+      "break_ended": "Available",
+      "dialpad_logged_out": "Offline",
+      "portal_logged_out": "Offline"
+    },
     "callLog": {
       "title": "Call Log",
       "noCalls": " No calls logged yet. Make a call to see it here.",

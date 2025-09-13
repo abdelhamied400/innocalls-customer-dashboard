@@ -15,7 +15,7 @@ const useAppStore = create<AppState>()((set) => ({
     set((state) => {
       return { isSidebarOpen: !state.isSidebarOpen };
     }),
-  isWebrtcOpen: false,
+  isWebrtcOpen: true,
   setWebrtcOpen: (isOpen: boolean) => set(() => ({ isWebrtcOpen: isOpen })),
   pageTitle: null,
   setPageTitle: (title: string | null) => set(() => ({ pageTitle: title })),

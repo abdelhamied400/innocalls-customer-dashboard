@@ -28,6 +28,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useSession } from "next-auth/react";
 import webrtcService from "@/services/webrtc.service";
 import CryptoJS from "crypto-js";
+import { webrtcStoppingActivities } from "@/constants/agent-activity";
+import { AgentActivity } from "@/types/webrtc";
 
 const SipContext = createContext<SipContextType | null>(null);
 
@@ -69,6 +71,8 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
   const [currentSession, setCurrentSession] = useState<RTCSession | null>(null);
   const [sessionState, setSessionState] = useState<SessionState>();
+  const breakType =
+    session?.user.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
 
   const uaRef = useRef<JsSIP.UA | null>(null);
 
@@ -84,6 +88,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
   const [extensionState, setExtensionState] =
     useState<ExtensionState>("disconnected");
+  const [extensionLoading, setExtensionLoading] = useState(false);
 
   const [spyingStatus, setSpyingStatus] = useState<SpyingStatus>("spy");
   const [isSpying, setIsSpying] = useState(false);
@@ -113,8 +118,6 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
   const login = useCallback(
     (extensionData: ExtensionWithCredentials) => {
-      setExtension(extensionData);
-
       // Use ref to avoid dependency on ua state
       if (uaRef.current) {
         activeUserAgents.delete(uaRef.current);
@@ -244,7 +247,11 @@ export const SipProvider = ({ children }: SipProviderProps) => {
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       try {
+        setExtensionLoading(true);
         const agent = await webrtcService.getAgentExtension();
+        setExtension(agent);
+
+        if (!!breakType && webrtcStoppingActivities.includes(breakType)) return; // On break
         login(agent);
       } catch (error) {
         console.error("Auto-login failed:", error);
@@ -252,6 +259,8 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         setTimeout(() => {
           hasAttemptedAutoLogin.current = false;
         }, 5000); // Wait 5 seconds before allowing retry
+      } finally {
+        setExtensionLoading(false);
       }
     };
 
@@ -294,9 +303,11 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         setNumber,
         setDialCode,
         spy,
+        setExtension,
         spyingStatus,
         setSpyingStatus,
         isSpying,
+        extensionLoading,
       }}
     >
       {children}

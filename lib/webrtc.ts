@@ -1,4 +1,5 @@
 import { defaultCountry, webrtcCountries } from "@/constants/countries";
+import { AgentActivity } from "@/types/webrtc";
 
 export const replaceDialCode = (number: string): string => {
   const country = webrtcCountries.find((c) => number.startsWith(c.code));
@@ -56,4 +57,72 @@ export const detectCountryFromNumber = (input: string): string => {
   }
 
   return defaultCountry.code; // No country found
+};
+
+/**
+ * Validates if an agent can transition from one activity to another
+ * @param from - Current agent activity (null if no previous activity)
+ * @param to - Target activity to transition to
+ * @returns true if transition is allowed, false otherwise
+ */
+export const isValidTransition = (
+  from: AgentActivity | null,
+  to: AgentActivity
+): boolean => {
+  // First time activity
+  if (!from) {
+    return [
+      AgentActivity.BREAK_STARTED,
+      AgentActivity.READY_ACCEPT_CALL,
+      AgentActivity.PORTAL_LOGGED_OUT,
+      AgentActivity.DIALPAD_LOGGED_OUT,
+    ].includes(to);
+  }
+
+  // Prevent duplicate consecutive activities (e.g., BREAK_STARTED -> BREAK_STARTED)
+  if (from === to) {
+    return false;
+  }
+
+  if (
+    from == AgentActivity.PORTAL_LOGGED_OUT ||
+    from == AgentActivity.DIALPAD_LOGGED_OUT
+  ) {
+    return [AgentActivity.READY_ACCEPT_CALL].includes(to);
+  }
+
+  // Agent on break can only: end break, logout from portal, or logout from dialpad
+  if (from === AgentActivity.BREAK_STARTED) {
+    return [
+      AgentActivity.BREAK_ENDED,
+      AgentActivity.PORTAL_LOGGED_OUT,
+      AgentActivity.DIALPAD_LOGGED_OUT,
+    ].includes(to);
+  }
+
+  // After break ends, agent can: logout from portal/dialpad or become ready for calls
+  if (from === AgentActivity.BREAK_ENDED) {
+    return [
+      AgentActivity.PORTAL_LOGGED_OUT,
+      AgentActivity.DIALPAD_LOGGED_OUT,
+      AgentActivity.BREAK_STARTED,
+    ].includes(to);
+  }
+
+  // Ready agent can: logout from portal/dialpad or go on break
+  if (from === AgentActivity.READY_ACCEPT_CALL) {
+    return [
+      AgentActivity.PORTAL_LOGGED_OUT,
+      AgentActivity.DIALPAD_LOGGED_OUT,
+      AgentActivity.BREAK_STARTED,
+    ].includes(to);
+  }
+
+  // Connected but not ready agent can:  become ready for calls
+  if (from === AgentActivity.CONNECTED_NOT_READY) {
+    return [AgentActivity.READY_ACCEPT_CALL].includes(to);
+  }
+
+  // For all other activity types, allow any transition (fallback rule)
+  return true;
 };
