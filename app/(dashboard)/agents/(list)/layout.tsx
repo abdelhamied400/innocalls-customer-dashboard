@@ -27,6 +27,7 @@ const UsersLayout = ({ children }: UsersLayoutProps) => {
         <LinkTab href="/agents/agents-performance">
           {t("tabs.agentsPerformance")}
         </LinkTab>
+        <LinkTab href="/agents/timeline">{t("tabs.timeline")}</LinkTab>
       </LinkTabs>
       <div className="flex-1 h-[calc(100%-3rem)]">
         <div className="h-full w-full">{children}</div>

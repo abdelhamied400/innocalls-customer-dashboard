@@ -292,7 +292,8 @@
     "tabs": {
       "usersList": "قائمة الوكلاء",
       "monitorUsers": "  متابعة الوكلاء",
-      "agentsPerformance": "أداء الوكلاء"
+      "agentsPerformance": "أداء الوكلاء",
+      "timeline": "الجدول الزمني"
     },
     "create": {
       "title": "إنشاء وكيل جديد",

@@ -9,7 +9,7 @@ import { RowData } from "@tanstack/react-table";
 const PaginatedTableHead = () => {
   const { table } = usePaginatedTable();
   return (
-    <TableHeader className="bg-gray-100 sticky top-0 z-10">
+    <TableHeader className="bg-gray-100 sticky top-0 z-20">
       {table.getHeaderGroups().map((headerGroup) => (
         <TableRow key={headerGroup.id}>
           {headerGroup.headers.map((header) => {

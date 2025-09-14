@@ -5,12 +5,15 @@ import { TableBody, TableCell, TableRow } from "../ui/table";
 import { usePaginatedTable } from "./PaginatedTable";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { Fragment } from "react";
+import { cn } from "@/lib/utils";
 
 type PaginatedTableBodyProps<T> = {
   renderDetails?: (row: Row<T>) => React.ReactNode;
+  sticky?: boolean;
 };
 const PaginatedTableBody = <T,>({
   renderDetails,
+  sticky,
 }: PaginatedTableBodyProps<T>) => {
   const { table } = usePaginatedTable<T, any>();
 
@@ -23,7 +26,11 @@ const PaginatedTableBody = <T,>({
           <Fragment key={row.id}>
             <TableRow
               data-state={row.getIsSelected() && "selected"}
-              className="h-14"
+              className={cn(
+                "h-14",
+                sticky &&
+                  "sticky top-9 z-30 bg-white shadow-lg border-b shadow-gray-100"
+              )}
             >
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id}>

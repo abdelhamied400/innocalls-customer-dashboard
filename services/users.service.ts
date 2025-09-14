@@ -41,6 +41,19 @@ type AgentPerformance = {
   totalBreaks: number;
 };
 
+type TimelineActivity = {
+  id: string;
+  ext: number;
+  name: string;
+  activities: Array<{
+    timestamp: string;
+    unixTimestamp: number;
+    type: AgentActivity;
+    subType: string;
+    eventType: string;
+  }>;
+};
+
 const DECRYPT_SECRET = process.env.NEXT_PUBLIC_DECRYPT_SECRET!;
 
 export default {
@@ -100,5 +113,11 @@ export default {
       params: filters,
     });
     return res.data.agents;
+  },
+  getTimeline: async (filters: any): Promise<TimelineActivity[]> => {
+    const res = await api.get("/v1/agent-activities/timeline-report", {
+      params: filters,
+    });
+    return res.data.rows;
   },
 };

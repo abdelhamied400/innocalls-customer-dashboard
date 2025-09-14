@@ -292,7 +292,8 @@
     "tabs": {
       "usersList": "Agents List",
       "monitorUsers": "Monitor Agents",
-      "agentsPerformance": "Agents Performance"
+      "agentsPerformance": "Agents Performance",
+      "timeline": "Timeline"
     },
     "create": {
       "title": "Create new agent",
@@ -426,7 +427,7 @@
           "latestAnsweredCall": "Latest Answered Call",
           "longestCall": "Longest Call",
           "shortestCall": "Shortest Call",
-          "noCallStats":"No data available"
+          "noCallStats": "No data available"
         }
       },
       "filters": {
