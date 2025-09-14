@@ -6,33 +6,35 @@ import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
 import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
-import { columns } from "./columns";
+import { AgentPerformance, columns } from "./columns";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useState } from "react";
 import usersService from "@/services/users.service";
 import { useTranslations } from "@/providers/TranslationProvider";
+import RowDetails from "./row-details";
+import { format } from "date-fns";
 
 export type AgentsPerformanceFilters = {
   fromDate: string;
   toDate: string;
+  exts?: string;
+  includeInternalCalls: boolean;
 };
 
 const defaultFilters: AgentsPerformanceFilters = {
-  fromDate: "2025-09-09",
-  toDate: "2025-09-09",
+  fromDate: format(new Date(), "yyyy-MM-dd"),
+  toDate: format(new Date(), "yyyy-MM-dd"),
+  exts: undefined,
+  includeInternalCalls: false,
 };
 
 const AgentsPerformanceTable = () => {
-  const t = useTranslations("agents.performance");
+  const t = useTranslations("users.agentPerformance.table");
+  const webrtcT = useTranslations("webrtc");
+
   const [filters, setFilters] =
     useState<AgentsPerformanceFilters>(defaultFilters);
-  const {
-    data = [],
-    isLoading,
-    isError,
-    error,
-    refetch,
-  } = useLocalizedQuery({
+  const { data = [], isLoading } = useLocalizedQuery({
     queryKey: ["agents", "agents-performance", filters],
     queryFn: async () => usersService.getAgentsPerformance(filters),
     refetchInterval: 30000,
@@ -40,13 +42,21 @@ const AgentsPerformanceTable = () => {
 
   return (
     <div className="flex flex-col gap-0 h-full border rounded-xl">
-      <PaginatedTable data={data} columns={columns(t)} manualPagination={false}>
+      <PaginatedTable
+        data={data}
+        columns={columns(t, webrtcT)}
+        manualPagination={false}
+      >
         <AgentsPerformanceHead filters={filters} setFilters={setFilters} />
 
         <PaginatedTableContent>
           <PaginatedTableHead />
           {isLoading && <PaginatedTableSkeleton />}
-          {!isLoading && <PaginatedTableBody />}
+          {!isLoading && (
+            <PaginatedTableBody<AgentPerformance>
+              renderDetails={(row) => <RowDetails row={row} />}
+            />
+          )}
         </PaginatedTableContent>
         {!isLoading && <PaginatedTablePagination />}
       </PaginatedTable>

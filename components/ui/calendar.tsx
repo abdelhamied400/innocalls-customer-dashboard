@@ -10,6 +10,8 @@ import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker";
 
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { useLocale } from "@/providers/TranslationProvider";
+import { locales } from "@/i18n/config";
 
 function Calendar({
   className,
@@ -133,14 +135,26 @@ function Calendar({
           );
         },
         Chevron: ({ className, orientation, ...props }) => {
+          const localeSlug = useLocale();
+          const dir = locales[localeSlug]?.dir || "ltr";
+
+          // For left chevron: RTL should show right icon, LTR left icon
           if (orientation === "left") {
-            return (
+            return dir === "rtl" ? (
+              <ChevronRightIcon
+                className={cn("size-4", className)}
+                {...props}
+              />
+            ) : (
               <ChevronLeftIcon className={cn("size-4", className)} {...props} />
             );
           }
 
+          // For right chevron: RTL should show left icon, LTR right icon
           if (orientation === "right") {
-            return (
+            return dir === "rtl" ? (
+              <ChevronLeftIcon className={cn("size-4", className)} {...props} />
+            ) : (
               <ChevronRightIcon
                 className={cn("size-4", className)}
                 {...props}
@@ -148,6 +162,7 @@ function Calendar({
             );
           }
 
+          // Down chevron remains unchanged
           return (
             <ChevronDownIcon className={cn("size-4", className)} {...props} />
           );

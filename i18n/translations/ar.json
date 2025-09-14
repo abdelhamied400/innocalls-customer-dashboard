@@ -291,7 +291,8 @@
     },
     "tabs": {
       "usersList": "قائمة الوكلاء",
-      "monitorUsers": "  متابعة الوكلاء"
+      "monitorUsers": "  متابعة الوكلاء",
+      "agentsPerformance": "أداء الوكلاء"
     },
     "create": {
       "title": "إنشاء وكيل جديد",
@@ -402,6 +403,47 @@
       },
       "actions": {
         "submit": "تعديل الوكيل"
+      }
+    },
+    "agentPerformance": {
+      "title": "أداء الوكلاء",
+      "table": {
+        "columns": {
+          "name": "الاسم",
+          "extension": "رقم التحويلة",
+          "latestActivity": "آخر نشاط",
+          "firstLoggedIn": "أول تسجيل دخول",
+          "firstBreakStarted": "أول بداية استراحة",
+          "totalBreaks": "إجمالي الاستراحات"
+        },
+        "details": {
+          "answeredCalls": "المكالمات المجابة",
+          "totalCalls": "إجمالي المكالمات",
+          "totalTalkTime": "إجمالي وقت المحادثة",
+          "firstCall": "أول مكالمة",
+          "latestCall": "آخر مكالمة",
+          "firstAnsweredCall": "أول مكالمة مجابة",
+          "latestAnsweredCall": "آخر مكالمة مجابة",
+          "longestCall": "أطول مكالمة",
+          "shortestCall": "أقصر مكالمة"
+        }
+      },
+      "filters": {
+        "selectFromList": "اختر من القائمة",
+        "date": {
+          "triggerLabel": "التاريخ",
+          "label": "اختر التاريخ",
+          "hint": "اختر تاريخاً",
+          "placeholder": "اختر تاريخاً..."
+        },
+        "exts": {
+          "triggerLabel": "التحويلات",
+          "label": "اختر التحويلات"
+        },
+        "includeInternalCalls": {
+          "triggerLabel": "إظهار المكالمات الداخلية",
+          "label": "إظهار المكالمات الداخلية"
+        }
       }
     }
   },

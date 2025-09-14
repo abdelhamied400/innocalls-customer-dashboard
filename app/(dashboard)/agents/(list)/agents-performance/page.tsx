@@ -2,7 +2,7 @@ import AgentsPerformanceTable from "./table";
 
 const AgentsPerformance = () => {
   return (
-    <div className="page" id="agents-performance">
+    <div className="page h-full" id="agents-performance">
       <AgentsPerformanceTable />
     </div>
   );

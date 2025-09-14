@@ -2,6 +2,7 @@ import { CreateUserSchema } from "@/validation/CreateUser";
 import { EditUserSchema, EditUserSubmitSchema } from "@/validation/EditUser";
 import api from "./api";
 import CryptoJS from "crypto-js";
+import { AgentActivity } from "@/types/webrtc";
 
 export type Agent = {
   dnd: string;
@@ -11,6 +12,33 @@ export type Agent = {
   on_call: boolean;
   status: "online" | "offline";
   ua: string;
+};
+
+type AgentPerformance = {
+  callStatistics: Array<{
+    answeredCalls: number;
+    date: string;
+    firstAnsweredCall: string | null;
+    firstCall: string;
+    latestAnsweredCall: string | null;
+    latestCall: string;
+    longestCall: string;
+    shortestCall: string;
+    totalCalls: number;
+    totalTalkTime: string;
+    totalTalkTimeSeconds: number;
+  }>;
+  ext: string;
+  firstBreakStarted: string | null;
+  firstLoggedIn: string | null;
+  id: string;
+  latestActivity: {
+    datetime: string;
+    subType: string;
+    type: AgentActivity;
+  } | null;
+  name: string;
+  totalBreaks: number;
 };
 
 const DECRYPT_SECRET = process.env.NEXT_PUBLIC_DECRYPT_SECRET!;
@@ -67,7 +95,7 @@ export default {
     const res = await api.delete(`/extension/${id}`);
     return res.data;
   },
-  getAgentsPerformance: async (filters: any) => {
+  getAgentsPerformance: async (filters: any): Promise<AgentPerformance[]> => {
     const res = await api.get("/v1/agent-activities/performance-report", {
       params: filters,
     });

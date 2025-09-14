@@ -291,7 +291,8 @@
     },
     "tabs": {
       "usersList": "Agents List",
-      "monitorUsers": "Monitor Agents"
+      "monitorUsers": "Monitor Agents",
+      "agentsPerformance": "Agents Performance"
     },
     "create": {
       "title": "Create new agent",
@@ -402,6 +403,47 @@
       },
       "actions": {
         "submit": "Edit agent"
+      }
+    },
+    "agentPerformance": {
+      "title": "Agents Performance",
+      "table": {
+        "columns": {
+          "name": "Name",
+          "extension": "Extension No.",
+          "latestActivity": "Latest Activity",
+          "firstLoggedIn": "First Logged In",
+          "firstBreakStarted": "First Break Started",
+          "totalBreaks": "Total Breaks"
+        },
+        "details": {
+          "answeredCalls": "Answered Calls",
+          "totalCalls": "Total Calls",
+          "totalTalkTime": "Total Talk Time",
+          "firstCall": "First Call",
+          "latestCall": "Latest Call",
+          "firstAnsweredCall": "First Answered Call",
+          "latestAnsweredCall": "Latest Answered Call",
+          "longestCall": "Longest Call",
+          "shortestCall": "Shortest Call"
+        }
+      },
+      "filters": {
+        "selectFromList": "Select from the list",
+        "date": {
+          "triggerLabel": "Date",
+          "label": "Select Date",
+          "hint": "Select a date",
+          "placeholder": "Select a date..."
+        },
+        "exts": {
+          "triggerLabel": "Extensions",
+          "label": "Select Extensions"
+        },
+        "includeInternalCalls": {
+          "triggerLabel": "Include Internal Calls",
+          "label": "Include Internal Calls"
+        }
       }
     }
   },
