@@ -20,12 +20,12 @@ import SlaComplianceAnalytics from "./sla-compliance";
 import QuickStats from "./quick-stats";
 import Select from "@/components/select";
 import { Input } from "@/components/ui/input";
-import useVocabStore from "@/store/vocab.slice";
 import { Button } from "@/components/ui/button";
 import { useFilterManager } from "@/hooks/useFilterManager";
 import { userActivityFiltersSchema } from "@/validation/userActivityFilters";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
+import { useVocab } from "@/hooks/useVocab";
 
 type Option = {
   value: string;
@@ -44,7 +44,7 @@ const lastMonth = new Date();
 lastMonth.setDate(today.getDate() - 30);
 
 const UserActivityAnalytics = () => {
-  const { extensions } = useVocabStore();
+  const { extensions } = useVocab();
   const { setPageTitle } = useAppStore();
 
   const t = useTranslations("analytics.userActivity");

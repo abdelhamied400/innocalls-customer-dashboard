@@ -25,7 +25,6 @@ import InboundAnalyticsIVRAnalysis from "./ivr-analysis";
 import InboundAnalyticsRepeatedCallers from "./repeated-callers";
 import QuickStats from "./quick-stats";
 import Select from "@/components/select";
-import useVocabStore from "@/store/vocab.slice";
 import InboundAnalyticsDateDistribution from "./date-distribution";
 import InboundAnalyticsQueueAnalysis from "./queue-analysis";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
@@ -33,6 +32,7 @@ import useAppStore from "@/store/app.slice";
 import { useSession } from "next-auth/react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { useVocab } from "@/hooks/useVocab";
 
 export type InboundAnalyticsFilterBy = "all" | "team";
 
@@ -46,7 +46,7 @@ export type InboundAnalyticsFilters = {
 };
 
 const InboundAnalytics = () => {
-  const { extensions, ergs } = useVocabStore();
+  const { extensions, ergs } = useVocab();
   const { setPageTitle } = useAppStore();
   const { data: session } = useSession();
 

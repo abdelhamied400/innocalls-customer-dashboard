@@ -1,12 +1,12 @@
 // components/CallerIdSelector.tsx
 import { useMemo } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
-import useVocabStore from "@/store/vocab.slice";
 import { generateUUID } from "@/lib/utils";
 import { Button } from "../ui/button";
 import PlusIcon from "@mui/icons-material/Add";
 import CallerIdRow from "./CallerIdRow";
 import { AutoDialerCreateStep2 } from "@/validation/AutoDialerCreateCampaign";
+import { useVocab } from "@/hooks/useVocab";
 
 const CallerIdSelector = () => {
   const { control, watch } = useFormContext<AutoDialerCreateStep2>();
@@ -16,7 +16,7 @@ const CallerIdSelector = () => {
   });
 
   const callerIds = watch("callerIds");
-  const { countries, dids } = useVocabStore();
+  const { countries, dids } = useVocab();
 
   const availableCountryOptions = useMemo(() => {
     const selectedCodes = new Set(callerIds.map((c: any) => c.destination));

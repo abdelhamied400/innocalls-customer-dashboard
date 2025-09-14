@@ -17,11 +17,11 @@ import HourlyDistributionAnalytics from "./hourly-distribution";
 import DateDistributionAnalytics from "./date-distribution";
 import AgentStatsAnalytics from "./agent-stats";
 import Select from "@/components/select";
-import useVocabStore from "@/store/vocab.slice";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { useVocab } from "@/hooks/useVocab";
 
 type Option = {
   value: string;
@@ -41,7 +41,7 @@ lastMonth.setDate(today.getDate() - 30);
 
 // --- Main Component ---
 const OutboundAnalytics = () => {
-  const { extensions } = useVocabStore();
+  const { extensions } = useVocab();
   const { setPageTitle } = useAppStore();
 
   const tCommon = useTranslations("analytics.common");

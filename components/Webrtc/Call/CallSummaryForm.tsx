@@ -8,41 +8,35 @@ import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import MultiSelect from "@/components/select";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import webrtcService from "@/services/webrtc.service";
 import useWebrtcStore from "@/store/webrtc.slice";
-import useVocabStore from "@/store/vocab.slice";
 import { format } from "date-fns";
+import { useVocab } from "@/hooks/useVocab";
+import { useTranslations } from "@/providers/TranslationProvider";
+import { SummarySchema } from "@/validation/summary";
 
-// Define the schema for the call summary form
-const callSummarySchema = z.object({
-  comment: z.string().trim().min(1, "Comment is required"),
-  postCallTags: z
-    .array(
-      z.object({
-        label: z.string().min(2).max(100),
-        value: z.string().min(2).max(100),
-      })
-    )
-    .min(1, "At least one tag is required"),
-});
-
-type CallSummaryFormData = z.infer<typeof callSummarySchema>;
+// Infer the type from the schema
+type CallSummaryFormData = z.infer<ReturnType<typeof SummarySchema>>;
 
 interface CallSummaryFormProps {
   initialData?: Partial<CallSummaryFormData>;
 }
 
 const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
+  const t = useTranslations("webrtc.summary");
+
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { lastCall, setCallSummaryModalOpen, clearLastCall } = useWebrtcStore();
-  const { tags } = useVocabStore();
+  const { tags } = useVocab();
   const tagsOptions = tags.map((tag) => ({
     label: tag.name,
     value: tag.id,
   }));
+
+  const callSummarySchema = useMemo(() => SummarySchema(t), [t]); // CHECK THIS
 
   const form = useForm<CallSummaryFormData>({
     resolver: zodResolver(callSummarySchema),
@@ -68,21 +62,21 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
         callDateTime:
           format(
             lastCall.callDateTime || new Date(),
-            "dd-MM-yyyy hh:mm:ss a"
+            "dd-MM-yyyy, h:mm:ss aaa"
           ) || "",
         status: lastCall.status || "Answered",
       });
       toast({
-        title: "Call Summary Saved",
-        description: "Your call summary has been saved successfully.",
+        title: t("form.submit.success.title"),
+        description: t("form.submit.success.description"),
         variant: "default",
       });
       form.reset();
       setCallSummaryModalOpen(false);
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to save call summary. Please try again.",
+        title: t("form.submit.failed.title"),
+        description: t("form.submit.failed.description"),
         variant: "destructive",
       });
     } finally {
@@ -109,14 +103,14 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
               <FormItem>
                 <FormControl>
                   <Field
-                    label="Comment"
+                    label={t("form.fields.comment.label")}
                     error={form.formState.errors.comment?.message || ""}
                     htmlFor="comment"
                   >
                     <Textarea
                       id="comment"
                       className="border-0 shadow-none focus-visible:ring-0"
-                      placeholder="Enter your call summary here..."
+                      placeholder={t("form.fields.comment.placeholder")}
                       {...field}
                     />
                   </Field>
@@ -133,14 +127,15 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
               <FormItem>
                 <FormControl>
                   <MultiSelect
-                    label="Post Call Tags"
+                    portalled={false}
+                    label={t("form.fields.tags.label")}
                     error={form.formState.errors.postCallTags?.message || ""}
                     options={tagsOptions}
                     value={field.value}
                     onChange={field.onChange}
                     isMulti={true}
-                    isCreatable={true}
-                    placeholder="Select or create post call tags..."
+                    isCreatable={false}
+                    placeholder={t("form.fields.tags.placeholder")}
                     showSelectedTags={true}
                   />
                 </FormControl>
@@ -151,7 +146,9 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
             <Button type="submit" className="flex-1" disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : "Save Summary"}
+              {isSubmitting
+                ? t("form.submit.saving.title")
+                : t("form.actions.save")}
             </Button>
 
             <Button
@@ -161,7 +158,7 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
               disabled={isSubmitting}
               className="flex-1"
             >
-              Cancel
+              {t("form.actions.cancel")}
             </Button>
           </div>
         </form>

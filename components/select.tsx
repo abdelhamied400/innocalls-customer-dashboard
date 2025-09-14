@@ -44,6 +44,8 @@ type SelectProps<OptionType> = {
   hint?: string;
   isDisabled?: boolean;
   badgeClassName?: string;
+
+  portalled?: boolean;
 } & Partial<
   Omit<
     ReactSelectProps<OptionType, boolean, GroupBase<OptionType>>,
@@ -72,6 +74,7 @@ const Select = ({
   hint,
   isDisabled,
   badgeClassName,
+  portalled = true,
   ...rest
 }: SelectProps<any>) => {
   const t = useTranslations("common.select");
@@ -146,8 +149,10 @@ const Select = ({
             }
             noOptionsMessage={() => t("noOptionsMessage")}
             loadingMessage={() => t("loadingMessage")}
-            menuPortalTarget={document.body}
-            styles={{ menuPortal: (base) => ({ ...base, zIndex: 9999 }) }}
+            {...(portalled && {
+              menuPortalTarget: document.body,
+              styles: { menuPortal: (base) => ({ ...base, zIndex: 9999 }) },
+            })}
             classNames={{
               control: () => "control",
               valueContainer: () => "value-container",

@@ -24,7 +24,6 @@ import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { isValidDateRange } from "@/lib/date";
 import { useToast } from "@/hooks/use-toast";
-import useVocabStore from "@/store/vocab.slice";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { isAxiosError } from "axios";
@@ -32,6 +31,9 @@ import { Button } from "@/components/ui/button";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { defaultFilters } from "./table";
+import { useVocab } from "@/hooks/useVocab";
+import { Account } from "@/types/api/account";
+import { Package } from "@/types/api/package";
 
 // 30 days ago
 const defaultFromDate = new Date();
@@ -44,7 +46,7 @@ type DetailedUsageHeadProps = {
 };
 const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
   const { toast } = useToast();
-  const { packages, accounts } = useVocabStore();
+  const { packages, accounts } = useVocab();
   const { table } = usePaginatedTable();
 
   const [accountId, setAccountId] = useState<string>("");
@@ -179,7 +181,7 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
                 <SelectValue placeholder={t("filters.account.label")} />
               </SelectTrigger>
               <SelectContent>
-                {accounts?.map((account) => (
+                {accounts?.map((account: Account) => (
                   <SelectItem key={account.id} value={account.id.toString()}>
                     {account.name}
                   </SelectItem>
@@ -227,7 +229,7 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
                 <SelectValue placeholder={t("filters.package.label")} />
               </SelectTrigger>
               <SelectContent>
-                {packages?.map((pkg) => (
+                {packages?.map((pkg: Package) => (
                   <SelectItem key={pkg.id} value={pkg.id.toString()}>
                     {pkg.name}
                   </SelectItem>

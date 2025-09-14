@@ -1,13 +1,13 @@
 import { useSip } from "@/providers/webrtc/SipProvider";
 import webrtcService from "@/services/webrtc.service";
-import useVocabStore from "@/store/vocab.slice";
 import { Extension } from "@/types/api/extension";
 import ExtensionRow from "./Extensions/ExtensionRow";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useVocab } from "@/hooks/useVocab";
 
 const Extensions = () => {
-  const { extensions } = useVocabStore();
+  const { extensions } = useVocab();
   const { login, setExtension } = useSip();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
