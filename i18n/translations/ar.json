@@ -425,7 +425,8 @@
           "firstAnsweredCall": "أول مكالمة مجابة",
           "latestAnsweredCall": "آخر مكالمة مجابة",
           "longestCall": "أطول مكالمة",
-          "shortestCall": "أقصر مكالمة"
+          "shortestCall": "أقصر مكالمة",
+          "noCallStats": "لا توجد بيانات متاحة"
         }
       },
       "filters": {

@@ -425,7 +425,8 @@
           "firstAnsweredCall": "First Answered Call",
           "latestAnsweredCall": "Latest Answered Call",
           "longestCall": "Longest Call",
-          "shortestCall": "Shortest Call"
+          "shortestCall": "Shortest Call",
+          "noCallStats":"No data available"
         }
       },
       "filters": {
