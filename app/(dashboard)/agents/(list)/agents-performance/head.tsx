@@ -95,10 +95,15 @@ const AgentsPerformanceHead = ({
             onReset={() => {
               setFilters((prev) => ({
                 ...prev,
+                fromDate: format(new Date(), "yyyy-MM-dd"),
+                toDate: format(new Date(), "yyyy-MM-dd"),
               }));
+              setFromDate(new Date());
+              setToDate(new Date());
+              table.setPageIndex(0); // Reset to first page on filter change
               table.resetColumnFilters();
             }}
-            onApply={() => applyFilters}
+            onApply={applyFilters}
           >
             <Field
               label={t("filters.date.label")}
