@@ -441,7 +441,7 @@
         }
       },
       "filters": {
-        "selectFromList": "Select from the list",
+        "selectFromList": "Select a date range",
         "date": {
           "triggerLabel": "Date",
           "label": "Select Date",
@@ -495,7 +495,7 @@
         "noData": "No data available"
       },
       "filters": {
-        "selectFromList": "Select from the list",
+        "selectFromList": "Select a date range",
         "date": {
           "triggerLabel": "Date",
           "label": "Select Date",

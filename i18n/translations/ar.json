@@ -441,7 +441,7 @@
         }
       },
       "filters": {
-        "selectFromList": "اختر من القائمة",
+        "selectFromList": "اختر نطاق التاريخ",
         "date": {
           "triggerLabel": "التاريخ",
           "label": "اختر التاريخ",
@@ -495,7 +495,7 @@
         "noData": "لا توجد بيانات متاحة"
       },
       "filters": {
-        "selectFromList": "اختر من القائمة",
+        "selectFromList": "اختر نطاق التاريخ",
         "date": {
           "triggerLabel": "التاريخ",
           "label": "اختر التاريخ",
