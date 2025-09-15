@@ -1,14 +1,9 @@
 "use client";
 
 import SortingHead from "@/components/SortingHead";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { ColumnDef, RowData } from "@tanstack/react-table";
 import { useTranslations } from "@/providers/TranslationProvider";
-import Image from "next/image";
 import { AgentActivity } from "@/types/webrtc";
-import { agentActivitiesColors } from "@/constants/agent-activity";
-import { cn } from "@/lib/utils";
 import ExpandCell from "@/components/ExpandCell";
 
 // Extend TableMeta

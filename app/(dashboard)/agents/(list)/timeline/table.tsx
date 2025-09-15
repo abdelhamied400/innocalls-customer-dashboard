@@ -30,7 +30,6 @@ const defaultFilters: TimelineFilters = {
 
 const TimelineTable = () => {
   const t = useTranslations("users.timeline.table");
-  const webrtcT = useTranslations("webrtc");
 
   const [filters, setFilters] = useState<TimelineFilters>(defaultFilters);
   const { data = [], isLoading } = useLocalizedQuery({

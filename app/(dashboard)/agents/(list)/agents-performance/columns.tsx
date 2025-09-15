@@ -110,9 +110,18 @@ export const columns = (
                         agentActivitiesColors[latestActivity.type],
                     }}
                   />
+                  {/* {webrtcT(
+                    `activity.breakTypes.${latestActivity.subType.toLowerCase()}`
+                  )} */}
+
                   {webrtcT(
                     `activity.breakTypes.${latestActivity.subType.toLowerCase()}`
-                  )}
+                  ) !==
+                  `activity.breakTypes.${latestActivity.subType.toLowerCase()}`
+                    ? webrtcT(
+                        `activity.breakTypes.${latestActivity.subType.toLowerCase()}`
+                      )
+                    : latestActivity.subType}
                 </div>
               </Badge>
             )}

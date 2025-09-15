@@ -293,7 +293,7 @@
       "usersList": "Agents List",
       "monitorUsers": "Monitor Agents",
       "agentsPerformance": "Agents Performance",
-      "timeline": "Timeline"
+      "timeline": "Daily Activity Log"
     },
     "create": {
       "title": "Create new agent",
@@ -445,6 +445,56 @@
         "includeInternalCalls": {
           "triggerLabel": "Include Internal Calls",
           "label": "Include Internal Calls"
+        }
+      }
+    },
+    "timeline": {
+      "title": "Daily Activity Log",
+      "table": {
+        "columns": {
+          "name": "Name",
+          "extension": "Extension No.",
+          "latestActivity": "Latest Activity"
+        },
+        "activity": {
+          "type": {
+            "logged_in": "Logged In",
+            "logged_out": "Logged Out",
+            "connected_not_ready": "Connected (Not Ready)",
+            "ready_accept_call": "Available for Calls",
+            "break_started": "Break Started",
+            "break_ended": "Break Ended",
+            "dialpad_logged_out": "Phone Logged Out",
+            "portal_logged_out": "Portal Logged Out"
+          },
+          "subType": {
+            "meeting": "Meeting",
+            "training": "Training",
+            "Prayer": "Prayer",
+            "personal": "Personal",
+            "lunch": "Lunch",
+            "breakfast": "Breakfast",
+            "coffee": "Coffee",
+            "general": "General"
+          },
+          "eventType": {
+            "general": "General",
+            "phone": "Phone"
+          }
+        },
+        "noData": "No data available"
+      },
+      "filters": {
+        "selectFromList": "Select from the list",
+        "date": {
+          "triggerLabel": "Date",
+          "label": "Select Date",
+          "hint": "Select a date",
+          "placeholder": "Select a date..."
+        },
+        "exts": {
+          "triggerLabel": "Extensions",
+          "label": "Select Extensions"
         }
       }
     }
@@ -2051,7 +2101,7 @@
     },
     "activity": {
       "actions": {
-        "ready": "Ready to accept call",
+        "ready": "Ready to accept calls",
         "takeBreak": "Take a break",
         "returnFromBreak": "Return from break",
         "logout": "Logout"

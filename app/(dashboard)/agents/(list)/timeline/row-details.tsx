@@ -6,22 +6,22 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import PhoneMissedIcon from "@mui/icons-material/PhoneMissed";
 import PersonIcon from "@mui/icons-material/Person";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import { useTranslations } from "@/providers/TranslationProvider";
+import { fromUnixTime } from "date-fns";
+import { formatInTimeZone } from "date-fns-tz";
 
 type RowDetailsProps = {
   row: Row<AgentTimeline>;
 };
 
 const RowDetails = ({ row }: RowDetailsProps) => {
-  const t = useTranslations("users.timeline.table.details");
+  const t = useTranslations("users.timeline.table");
   const activities = row.original.activities;
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   if (!activities || activities.length === 0) {
     return (
-      <div className="mt-2 text-center text-gray-400 py-4">
-        {t("noCallStats")}
-      </div>
+      <div className="mt-2 text-center text-gray-400 py-4">{t("noData")}</div>
     );
   }
 
@@ -46,6 +46,24 @@ const RowDetails = ({ row }: RowDetailsProps) => {
         return <LogoutIcon {...iconProps} />;
       default:
         return <RadioButtonUncheckedIcon {...iconProps} />;
+    }
+  };
+
+  //CHECK THIS
+  const convertToTimeOnly = (timestamp: number | string, timezone: string) => {
+    if (!timestamp) return "";
+
+    try {
+      const timestampNum =
+        typeof timestamp === "string" ? parseInt(timestamp, 10) : timestamp;
+
+      // convert unix -> Date
+      const date = fromUnixTime(timestampNum);
+
+      // format in specific timezone
+      return formatInTimeZone(date, timezone, "HH:mm:ss");
+    } catch (error) {
+      return "";
     }
   };
 
@@ -90,16 +108,26 @@ const RowDetails = ({ row }: RowDetailsProps) => {
           </div>
           {/* Activity details */}
           <div className="flex flex-col gap-1">
-            <span className="text-xs text-gray-500">{activity.timestamp}</span>
+            <span className="text-xs text-gray-500">
+              {convertToTimeOnly(activity.unixTimestamp, timezone)}
+            </span>
             <span className="font-medium text-base">
-              {activity.type.replace(/_/g, " ").toLowerCase()}
+              {t(`activity.type.${activity.type}`)}
             </span>
             {activity.subType && (
-              <span className="text-sm text-gray-600">{activity.subType}</span>
+              <span className="text-sm text-gray-600">
+                {t(
+                  `activity.subType.${activity.subType.toLocaleLowerCase()}`
+                ) !== `activity.subType.${activity.subType.toLocaleLowerCase()}`
+                  ? t(
+                      `activity.subType.${activity.subType.toLocaleLowerCase()}`
+                    )
+                  : activity.subType}
+              </span>
             )}
             {activity.eventType && (
               <span className="text-xs text-gray-400">
-                {activity.eventType}
+                {t(`activity.eventType.${activity.eventType}`)}
               </span>
             )}
           </div>

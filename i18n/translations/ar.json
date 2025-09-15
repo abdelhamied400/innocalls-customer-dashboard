@@ -293,7 +293,7 @@
       "usersList": "قائمة الوكلاء",
       "monitorUsers": "  متابعة الوكلاء",
       "agentsPerformance": "أداء الوكلاء",
-      "timeline": "الجدول الزمني"
+      "timeline": "سجل الأنشطة اليومية"
     },
     "create": {
       "title": "إنشاء وكيل جديد",
@@ -445,6 +445,56 @@
         "includeInternalCalls": {
           "triggerLabel": "إظهار المكالمات الداخلية",
           "label": "إظهار المكالمات الداخلية"
+        }
+      }
+    },
+    "timeline": {
+      "title": "سجل الأنشطة اليومية",
+      "table": {
+        "columns": {
+          "name": "الاسم",
+          "extension": "رقم التحويلة",
+          "latestActivity": "آخر نشاط"
+        },
+        "activity": {
+          "type": {
+            "logged_in": "تسجيل الدخول",
+            "logged_out": "تسجيل الخروج",
+            "connected_not_ready": "متصل (غير جاهز)",
+            "ready_accept_call": "متاح للمكالمات",
+            "break_started": "بداية الاستراحة",
+            "break_ended": "نهاية الاستراحة",
+            "dialpad_logged_out": "تسجيل الخروج من الهاتف",
+            "portal_logged_out": "تسجيل الخروج من البوابة"
+          },
+          "subType": {
+            "meeting": "اجتماع",
+            "training": "تدريب",
+            "prayer": "صلاة",
+            "personal": "شخصي",
+            "breakfast": "إفطار",
+            "lunch": "غداء",
+            "coffee": "قهوة",
+            "general": "عام"
+          },
+          "eventType": {
+            "general": "عام",
+            "phone": "الهاتف"
+          }
+        },
+        "noData": "لا توجد بيانات متاحة"
+      },
+      "filters": {
+        "selectFromList": "اختر من القائمة",
+        "date": {
+          "triggerLabel": "التاريخ",
+          "label": "اختر التاريخ",
+          "hint": "اختر تاريخاً",
+          "placeholder": "اختر تاريخاً..."
+        },
+        "exts": {
+          "triggerLabel": "التحويلات",
+          "label": "اختر التحويلات"
         }
       }
     }
