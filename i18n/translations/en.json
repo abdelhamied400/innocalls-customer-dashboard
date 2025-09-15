@@ -435,7 +435,7 @@
         "date": {
           "triggerLabel": "Date",
           "label": "Select Date",
-          "hint": "Select a date",
+          "hint": "DD/MM/YYYY",
           "placeholder": "Select a date..."
         },
         "exts": {
@@ -489,7 +489,7 @@
         "date": {
           "triggerLabel": "Date",
           "label": "Select Date",
-          "hint": "Select a date",
+          "hint": "DD/MM/YYYY",
           "placeholder": "Select a date..."
         },
         "exts": {
