@@ -93,7 +93,7 @@ export const columns = (
                         agentActivitiesColors[latestActivity.type],
                     }}
                   />
-                  {webrtcT(`activity.${latestActivity.type.toLowerCase()}`)}
+                  {t(`activity.type.${latestActivity.type}`)}
                 </div>
               </Badge>
             )}
@@ -110,10 +110,6 @@ export const columns = (
                         agentActivitiesColors[latestActivity.type],
                     }}
                   />
-                  {/* {webrtcT(
-                    `activity.breakTypes.${latestActivity.subType.toLowerCase()}`
-                  )} */}
-
                   {webrtcT(
                     `activity.breakTypes.${latestActivity.subType.toLowerCase()}`
                   ) !==

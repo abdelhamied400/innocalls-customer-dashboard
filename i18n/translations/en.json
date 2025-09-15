@@ -428,6 +428,16 @@
           "longestCall": "Longest Call",
           "shortestCall": "Shortest Call",
           "noCallStats": "No data available"
+        },
+        "activity": {
+          "type": {
+            "connected_not_ready": "Connected (Not Ready)",
+            "ready_accept_call": "Available",
+            "break_started": "On Break",
+            "break_ended": "Available",
+            "dialpad_logged_out": "Phone Offline",
+            "portal_logged_out": "Portal Offline"
+          }
         }
       },
       "filters": {

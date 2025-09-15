@@ -428,6 +428,16 @@
           "longestCall": "أطول مكالمة",
           "shortestCall": "أقصر مكالمة",
           "noCallStats": "لا توجد بيانات متاحة"
+        },
+        "activity": {
+          "type": {
+            "connected_not_ready": "متصل (غير جاهز)",
+            "ready_accept_call": "متاح",
+            "break_started": "في استراحة",
+            "break_ended": "متاح",
+            "dialpad_logged_out": "الهاتف غير متصل",
+            "portal_logged_out": "البوابة غير متصلة"
+          }
         }
       },
       "filters": {
