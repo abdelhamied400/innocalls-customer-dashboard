@@ -14,6 +14,8 @@ type RowDetailsProps = {
   row: Row<AgentTimeline>;
 };
 
+// TODO: ABDO. CHECK THIS 
+
 const RowDetails = ({ row }: RowDetailsProps) => {
   const t = useTranslations("users.timeline.table");
   const activities = row.original.activities;
@@ -21,118 +23,206 @@ const RowDetails = ({ row }: RowDetailsProps) => {
 
   if (!activities || activities.length === 0) {
     return (
-      <div className="mt-2 text-center text-gray-400 py-4">{t("noData")}</div>
+      <div className="px-4 py-3 bg-gray-50 text-center text-sm text-gray-500">
+        {t("noData")}
+      </div>
     );
   }
 
-  // Icon mapping for activity type
-  const iconProps = { style: { fontSize: 24, color: "#fff" } };
-  const activityIcon = (type: string) => {
-    switch (type) {
-      case "ready_accept_call":
-        return <CheckCircleIcon {...iconProps} />;
-      case "break_started":
-        return <PauseCircleIcon {...iconProps} />;
-      case "break_ended":
-        return <CheckCircleIcon {...iconProps} />;
-      case "dialpad_logged_out":
-      case "portal_logged_out":
-        return <LogoutIcon {...iconProps} />;
-      case "connected_not_ready":
-        return <PhoneMissedIcon {...iconProps} />;
-      case "logged_in":
-        return <PersonIcon {...iconProps} />;
-      case "logged_out":
-        return <LogoutIcon {...iconProps} />;
-      default:
-        return <RadioButtonUncheckedIcon {...iconProps} />;
-    }
+  const getActivityConfig = (type: string) => {
+    const configs: any = {
+      ready_accept_call: {
+        icon: CheckCircleIcon,
+        color: "text-green-600",
+        bg: "bg-green-100",
+      },
+      break_started: {
+        icon: PauseCircleIcon,
+        color: "text-yellow-600",
+        bg: "bg-yellow-100",
+      },
+      break_ended: {
+        icon: CheckCircleIcon,
+        color: "text-blue-600",
+        bg: "bg-blue-100",
+      },
+      dialpad_logged_out: {
+        icon: LogoutIcon,
+        color: "text-red-600",
+        bg: "bg-red-100",
+      },
+      portal_logged_out: {
+        icon: LogoutIcon,
+        color: "text-red-600",
+        bg: "bg-red-100",
+      },
+      connected_not_ready: {
+        icon: PhoneMissedIcon,
+        color: "text-orange-600",
+        bg: "bg-orange-100",
+      },
+      logged_in: {
+        icon: PersonIcon,
+        color: "text-blue-700",
+        bg: "bg-blue-100",
+      },
+      logged_out: {
+        icon: LogoutIcon,
+        color: "text-gray-600",
+        bg: "bg-gray-100",
+      },
+    };
+
+    return (
+      configs[type] || {
+        icon: RadioButtonUncheckedIcon,
+        color: "text-gray-500",
+        bg: "bg-gray-100",
+      }
+    );
   };
 
-  //CHECK THIS
   const convertToTimeOnly = (timestamp: number | string, timezone: string) => {
     if (!timestamp) return "";
-
     try {
       const timestampNum =
         typeof timestamp === "string" ? parseInt(timestamp, 10) : timestamp;
-
-      // convert unix -> Date
       const date = fromUnixTime(timestampNum);
-
-      // format in specific timezone
       return formatInTimeZone(date, timezone, "HH:mm:ss");
     } catch (error) {
       return "";
     }
   };
 
+  const getSubTypeConfig = (subType: string) => {
+    const subTypeConfigs: any = {
+      meeting: {
+        bg: "bg-purple-50",
+        text: "text-purple-700",
+        border: "border-purple-200",
+      },
+      training: {
+        bg: "bg-indigo-50",
+        text: "text-indigo-700",
+        border: "border-indigo-200",
+      },
+      prayer: {
+        bg: "bg-emerald-50",
+        text: "text-emerald-700",
+        border: "border-emerald-200",
+      },
+      personal: {
+        bg: "bg-pink-50",
+        text: "text-pink-700",
+        border: "border-pink-200",
+      },
+      lunch: {
+        bg: "bg-orange-50",
+        text: "text-orange-700",
+        border: "border-orange-200",
+      },
+      breakfast: {
+        bg: "bg-yellow-50",
+        text: "text-yellow-700",
+        border: "border-yellow-200",
+      },
+      coffee: {
+        bg: "bg-amber-50",
+        text: "text-amber-700",
+        border: "border-amber-200",
+      },
+      general: {
+        bg: "bg-gray-50",
+        text: "text-gray-700",
+        border: "border-gray-200",
+      },
+    };
+
+    // Fallback for unknown subTypes
+    return (
+      subTypeConfigs[subType.toLowerCase()] || {
+        bg: "bg-slate-50",
+        text: "text-slate-700",
+        border: "border-slate-200",
+      }
+    );
+  };
+
   return (
-    <div className="relative flex flex-col gap-8 py-4">
-      {/* Vertical line */}
-      <div className="absolute left-6 top-0 h-full w-0.5 bg-gray-200" />
-      {activities.map((activity, idx) => (
-        <div
-          key={activity.timestamp + idx}
-          className="relative flex items-start gap-4"
-        >
-          {/* Timeline dot and icon */}
-          <div className="flex flex-col items-center">
-            <div
-              className={
-                "z-10 rounded-full p-2 shadow flex items-center justify-center " +
-                (activity.type === "ready_accept_call"
-                  ? "bg-green-500"
-                  : activity.type === "break_started"
-                  ? "bg-yellow-500"
-                  : activity.type === "break_ended"
-                  ? "bg-blue-500"
-                  : activity.type === "dialpad_logged_out" ||
-                    activity.type === "portal_logged_out"
-                  ? "bg-red-500"
-                  : activity.type === "connected_not_ready"
-                  ? "bg-orange-500"
-                  : activity.type === "logged_in"
-                  ? "bg-blue-700"
-                  : activity.type === "logged_out"
-                  ? "bg-gray-500"
-                  : "bg-gray-400")
-              }
-            >
-              {activityIcon(activity.type)}
-            </div>
-            {/* Connector line for all but last */}
-            {idx < activities.length - 1 && (
-              <div className="w-0.5 flex-1 bg-gray-200 mt-1" />
-            )}
-          </div>
-          {/* Activity details */}
-          <div className="flex flex-col gap-1">
-            <span className="text-xs text-gray-500">
-              {convertToTimeOnly(activity.unixTimestamp, timezone)}
-            </span>
-            <span className="font-medium text-base">
-              {t(`activity.type.${activity.type}`)}
-            </span>
-            {activity.subType && (
-              <span className="text-sm text-gray-600">
-                {t(
-                  `activity.subType.${activity.subType.toLocaleLowerCase()}`
-                ) !== `activity.subType.${activity.subType.toLocaleLowerCase()}`
-                  ? t(
-                      `activity.subType.${activity.subType.toLocaleLowerCase()}`
-                    )
-                  : activity.subType}
-              </span>
-            )}
-            {activity.eventType && (
-              <span className="text-xs text-gray-400">
-                {t(`activity.eventType.${activity.eventType}`)}
-              </span>
-            )}
+    <div className="bg-gray-50 border-t border-gray-200">
+      <div className="px-4 py-3">
+        <div className="relative">
+          {/* Timeline line */}
+          <div className="absolute left-4 top-2 bottom-2 w-px bg-gray-300" />
+
+          {/* Compact timeline items */}
+          <div className="space-y-2">
+            {activities.map((activity, idx) => {
+              const config = getActivityConfig(activity.type);
+              const Icon = config.icon;
+
+              return (
+                <div
+                  key={activity.timestamp + idx}
+                  className="relative flex items-center gap-3 py-1"
+                >
+                  {/* Compact icon */}
+                  <div
+                    className={`relative z-10 w-8 h-8 rounded-full ${config.bg} ${config.color} flex items-center justify-center flex-shrink-0`}
+                  >
+                    <Icon style={{ fontSize: 16 }} />
+                  </div>
+
+                  {/* Compact content with better hierarchy */}
+                  <div className="flex-1 min-w-0 flex items-center justify-between hover:bg-white hover:rounded-md hover:shadow-sm transition-colors duration-150 px-2 py-1 -mx-2">
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-sm text-gray-800 truncate">
+                        {t(`activity.type.${activity.type}`)}
+                      </div>
+
+                      {/* Enhanced sub-details */}
+                      {(activity.subType || activity.eventType) && (
+                        <div className="flex items-center gap-2 text-xs text-gray-500 mt-1">
+                          {activity.subType &&
+                            (() => {
+                              const subTypeConfig = getSubTypeConfig(
+                                activity.subType
+                              );
+                              return (
+                                <span
+                                  className={`${subTypeConfig.bg} ${subTypeConfig.text} px-2 py-0.5 rounded-full border ${subTypeConfig.border} font-medium`}
+                                >
+                                  {t(
+                                    `activity.subType.${activity.subType.toLocaleLowerCase()}`
+                                  ) !==
+                                  `activity.subType.${activity.subType.toLocaleLowerCase()}`
+                                    ? t(
+                                        `activity.subType.${activity.subType.toLocaleLowerCase()}`
+                                      )
+                                    : activity.subType}
+                                </span>
+                              );
+                            })()}
+                          {activity.eventType && (
+                            <span className="text-gray-600 bg-gray-100 px-2 py-0.5 rounded-md text-xs">
+                              {t(`activity.eventType.${activity.eventType}`)}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Time on the right */}
+                    <div className="text-xs font-mono text-gray-600 bg-white px-2 py-1 rounded border ml-3">
+                      {convertToTimeOnly(activity.unixTimestamp, timezone)}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
-      ))}
+      </div>
     </div>
   );
 };
