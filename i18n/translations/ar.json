@@ -412,7 +412,7 @@
         "columns": {
           "name": "الاسم",
           "extension": "رقم التحويلة",
-          "latestActivity": "آخر نشاط",
+          "latestActivity": "آخر نشاط للهاتف",
           "firstLoggedIn": "أول تسجيل دخول",
           "firstBreakStarted": "أول بداية استراحة",
           "totalBreaks": "إجمالي الاستراحات"

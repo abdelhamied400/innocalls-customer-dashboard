@@ -412,7 +412,7 @@
         "columns": {
           "name": "Name",
           "extension": "Extension No.",
-          "latestActivity": "Latest Activity",
+          "latestActivity": "Latest Phone Activity",
           "firstLoggedIn": "First Logged In",
           "firstBreakStarted": "First Break Started",
           "totalBreaks": "Total Breaks"
