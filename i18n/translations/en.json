@@ -439,8 +439,8 @@
           "placeholder": "Select a date..."
         },
         "exts": {
-          "triggerLabel": "Extensions",
-          "label": "Select Extensions"
+          "triggerLabel": "Agents",
+          "label": "Select Agents"
         },
         "includeInternalCalls": {
           "triggerLabel": "Include Internal Calls",
@@ -493,8 +493,8 @@
           "placeholder": "Select a date..."
         },
         "exts": {
-          "triggerLabel": "Extensions",
-          "label": "Select Extensions"
+          "triggerLabel": "Agents",
+          "label": "Select Agents"
         }
       }
     }

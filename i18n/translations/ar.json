@@ -439,8 +439,8 @@
           "placeholder": "اختر تاريخاً..."
         },
         "exts": {
-          "triggerLabel": "التحويلات",
-          "label": "اختر التحويلات"
+          "triggerLabel": "الوكلاء",
+          "label": "اختر الوكلاء"
         },
         "includeInternalCalls": {
           "triggerLabel": "إظهار المكالمات الداخلية",
@@ -493,8 +493,8 @@
           "placeholder": "اختر تاريخاً..."
         },
         "exts": {
-          "triggerLabel": "التحويلات",
-          "label": "اختر التحويلات"
+          "triggerLabel": "الوكلاء",
+          "label": "اختر الوكلاء"
         }
       }
     }
