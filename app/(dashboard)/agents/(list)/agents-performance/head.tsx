@@ -27,6 +27,7 @@ type AgentsPerformanceHeadProps = {
   filters: AgentsPerformanceFilters;
   setFilters: React.Dispatch<React.SetStateAction<AgentsPerformanceFilters>>;
 };
+
 const AgentsPerformanceHead = ({
   filters,
   setFilters,
@@ -36,9 +37,10 @@ const AgentsPerformanceHead = ({
 
   const [fromDate, setFromDate] = useState<Date>(new Date(filters.fromDate));
   const [toDate, setToDate] = useState<Date>(new Date(filters.toDate));
-  const [exts, setExts] = useState<
-    { label: string; value: string }[] | undefined
-  >(undefined);
+  // ✅ Changed to use the same pattern as working tags - array instead of undefined
+  const [selectedExts, setSelectedExts] = useState<
+    { label: string; value: string }[]
+  >([]);
   const [includeInternalCalls, setIncludeInternalCalls] = useState(false);
 
   const { extensions } = useVocab();
@@ -52,7 +54,10 @@ const AgentsPerformanceHead = ({
       ...prev,
       fromDate: fromDate ? format(fromDate, "yyyy-MM-dd") : "",
       toDate: toDate ? format(toDate, "yyyy-MM-dd") : "",
-      exts: exts?.map((e) => e.value).join(",") || undefined,
+      // ✅ Use selectedExts instead of exts
+      exts: selectedExts?.length > 0 
+        ? selectedExts.map((e) => e.value).join(",") 
+        : undefined,
       includeInternalCalls,
     }));
     table.setPageIndex(0); // Reset to first page on filter change
@@ -82,7 +87,8 @@ const AgentsPerformanceHead = ({
             }));
             setFromDate(new Date());
             setToDate(new Date());
-            setExts([]);
+            // ✅ Clear selectedExts array
+            setSelectedExts([]);
             setIncludeInternalCalls(false);
             table.resetColumnFilters();
             table.setGlobalFilter("");
@@ -130,16 +136,20 @@ const AgentsPerformanceHead = ({
                 ...prev,
                 exts: undefined,
               }));
-              setExts(undefined);
+              // ✅ Clear selectedExts array
+              setSelectedExts([]);
               table.setPageIndex(0); // Reset to first page on filter change
             }}
             onApply={applyFilters}
-            numberOfFilters={exts?.length}
+            // ✅ Use selectedExts length for number of filters
+            numberOfFilters={selectedExts?.length}
           >
             <MultiSelect
               options={extensionsOptions}
-              onChange={(exs) => setExts(exs || undefined)}
-              value={exts}
+              // ✅ Update selectedExts directly (same as tags pattern)
+              onChange={(exs) => setSelectedExts(exs || [])}
+              // ✅ Use selectedExts as value (same as tags pattern)
+              value={selectedExts}
               isMulti
               badgeClassName="text-xs"
               getLabel={(option) => option?.label || ""}

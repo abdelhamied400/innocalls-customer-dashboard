@@ -9,7 +9,6 @@ import {
 import { Toggle } from "@/components/ui/toggle";
 import {
   CalendarMonth,
-  CalendarMonthOutlined,
   FilterAlt,
 } from "@mui/icons-material";
 import { FilterBar } from "@/components/FilterBar";
@@ -19,23 +18,24 @@ import DatePicker from "@/components/ui/date-picker";
 import { useState } from "react";
 import MultiSelect from "@/components/select";
 import { useVocab } from "@/hooks/useVocab";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
+
 import { format } from "date-fns";
 
 type TimelineHeadProps = {
   filters: TimelineFilters;
   setFilters: React.Dispatch<React.SetStateAction<TimelineFilters>>;
 };
+
 const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
   const t = useTranslations("users.timeline");
   const { table } = usePaginatedTable();
 
   const [fromDate, setFromDate] = useState<Date>(new Date(filters.fromDate));
   const [toDate, setToDate] = useState<Date>(new Date(filters.toDate));
-  const [exts, setExts] = useState<
-    { label: string; value: string }[] | undefined
-  >(undefined);
+  // ✅ Changed to use the same pattern as working tags
+  const [selectedExts, setSelectedExts] = useState<
+    { label: string; value: string }[]
+  >([]);
   const [includeInternalCalls, setIncludeInternalCalls] = useState(false);
 
   const { extensions } = useVocab();
@@ -45,11 +45,14 @@ const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
   }));
 
   const applyFilters = () => {
-    setFilters((prev) => ({
+    setFilters((prev:any) => ({
       ...prev,
       fromDate: fromDate ? format(fromDate, "yyyy-MM-dd") : "",
       toDate: toDate ? format(toDate, "yyyy-MM-dd") : "",
-      exts: exts?.map((e) => e.value).join(",") || undefined,
+      // ✅ Use selectedExts instead of exts
+      exts: selectedExts?.length > 0 
+        ? selectedExts.map((e) => e.value).join(",") 
+        : undefined,
       includeInternalCalls,
     }));
     table.setPageIndex(0); // Reset to first page on filter change
@@ -70,7 +73,7 @@ const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
       <CollapsibleContent>
         <FilterBar
           onClear={() => {
-            setFilters((prev) => ({
+            setFilters((prev:any) => ({
               ...prev,
               fromDate: format(new Date(), "yyyy-MM-dd"),
               toDate: format(new Date(), "yyyy-MM-dd"),
@@ -79,7 +82,8 @@ const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
             }));
             setFromDate(new Date());
             setToDate(new Date());
-            setExts([]);
+            // ✅ Clear selectedExts array
+            setSelectedExts([]);
             setIncludeInternalCalls(false);
             table.resetColumnFilters();
             table.setGlobalFilter("");
@@ -90,7 +94,7 @@ const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
             triggerLabel={t("filters.date.triggerLabel")}
             label={t("filters.selectFromList")}
             onReset={() => {
-              setFilters((prev) => ({
+              setFilters((prev:any) => ({
                 ...prev,
                 fromDate: format(new Date(), "yyyy-MM-dd"),
                 toDate: format(new Date(), "yyyy-MM-dd"),
@@ -123,20 +127,24 @@ const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
             triggerLabel={t("filters.exts.triggerLabel")}
             label={t("filters.exts.label")}
             onReset={() => {
-              setFilters((prev) => ({
+              setFilters((prev:any) => ({
                 ...prev,
                 exts: undefined,
               }));
-              setExts(undefined);
+              // ✅ Clear selectedExts array
+              setSelectedExts([]);
               table.setPageIndex(0); // Reset to first page on filter change
             }}
             onApply={applyFilters}
-            numberOfFilters={exts?.length}
+            // ✅ Use selectedExts length for number of filters
+            numberOfFilters={selectedExts?.length}
           >
             <MultiSelect
               options={extensionsOptions}
-              onChange={(exs) => setExts(exs || undefined)}
-              value={exts}
+              // ✅ Update selectedExts directly (same as tags pattern)
+              onChange={(exs) => setSelectedExts(exs || [])}
+              // ✅ Use selectedExts as value (same as tags pattern)
+              value={selectedExts}
               isMulti
               badgeClassName="text-xs"
               getLabel={(option) => option?.label || ""}
