@@ -1,3 +1,4 @@
+"use client";
 import { LocaleSlug, defaultLocale } from "@/i18n/config";
 
 // Store for translation messages

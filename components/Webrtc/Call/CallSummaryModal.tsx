@@ -15,7 +15,7 @@ const CallSummaryModal = () => {
     clearLastCall,
   } = useWebrtcStore();
 
-  if (session?.user.userType === "user") return null;
+  if (session?.userType === "user") return null;
 
   const t = useTranslations("webrtc.summary");
 

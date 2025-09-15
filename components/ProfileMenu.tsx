@@ -12,7 +12,6 @@ import { Button } from "./ui/button";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { getCookie, setCookie } from "cookies-next/client";
-import { Organization } from "next-auth";
 import useAuthStore from "@/store/auth.slice";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "./ui/skeleton";
@@ -21,15 +20,19 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import { agentActivitiesColors } from "@/constants/agent-activity";
 import { AgentActivity } from "@/types/webrtc";
 import webrtcService from "@/services/webrtc.service";
+import useAuth from "@/hooks/useAuth";
+import { Organization } from "@/types/api/organization";
 
 const ProfileMenu = () => {
   const { data: session, status } = useSession();
+  const { data: auth } = useAuth();
+
   const { Organization, setOrganization } = useAuthStore();
   const router = useRouter();
   const t = useTranslations("components.profileMenu");
   const tActions = useTranslations("common.actions");
   const breakType =
-    session?.user.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
+    auth?.user?.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
 
   const handleLogout = async () => {
     // TODO: FIND ANOTHER WAY TP LOGOUT ...
@@ -37,7 +40,7 @@ const ProfileMenu = () => {
     const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
 
     // Sign out without redirect first
-    if (session?.user.userType === "agent") {
+    if (session?.userType === "agent") {
       await webrtcService
         .changeAgentState(AgentActivity.PORTAL_LOGGED_OUT)
         .catch((err) => {
@@ -68,12 +71,12 @@ const ProfileMenu = () => {
         allowedBreakTypes: [],
       });
     }
-    const org = session?.user?.organizations?.find((org) => org.id === orgId);
+    const org = auth?.organizations?.find((org) => org.id === orgId);
     if (org) {
       setOrganization(org);
       return;
     }
-    const defaultOrg = session?.user?.organizations?.[0];
+    const defaultOrg = auth?.organizations?.[0];
     if (defaultOrg) {
       setCookie("OrganizationId", defaultOrg.id);
       setOrganization(defaultOrg);
@@ -102,7 +105,7 @@ const ProfileMenu = () => {
               alt="avatar"
               className="rounded-full"
             />
-            {session?.user.userType === "agent" && breakType && (
+            {session?.userType === "agent" && breakType && (
               <span
                 className="absolute bottom-0 right-0 border-4 border-white w-4 h-4 rounded-full"
                 style={{
@@ -114,7 +117,7 @@ const ProfileMenu = () => {
           <div className="flex-col items-start gap-1 hidden md:flex">
             <p className="font-semibold text-lg">{session?.user?.name}</p>
             <p className="text-neutral-400 text-sm">{Organization?.name}</p>
-            {/* <p className="text-neutral-400 text-sm">{session?.user.userType}</p> */}
+            {/* <p className="text-neutral-400 text-sm">{session?.userType}</p> */}
           </div>
 
           <ExpandCircleDownOutlinedIcon className="text-neutral-300" />
@@ -123,7 +126,7 @@ const ProfileMenu = () => {
       <DropdownMenuContent>
         <DropdownMenuLabel>{t("organizations")}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {session?.user?.organizations?.map((org) => (
+        {auth?.organizations?.map((org) => (
           <DropdownMenuItem
             key={org.name}
             className="flex flex-col items-start gap-0"

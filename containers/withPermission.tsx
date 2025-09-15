@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import React from "react";
 import FullPageError from "./FullPageError";
 import { useTranslations } from "@/providers/TranslationProvider";
+import useAuth from "@/hooks/useAuth";
 
 type userPermission =
   | "fullAccessNumbers"
@@ -23,11 +24,15 @@ function withPermission<P extends object>(
   requiredPermission: userPermission
 ) {
   return function ComponentWithPermission(props: P) {
-    const { data: session, status } = useSession();
+    const { status } = useSession();
     const t = useTranslations("common");
-    const user = session?.user;
+    const { data: auth } = useAuth();
 
-    if (user && !user[requiredPermission] && status === "authenticated") {
+    if (
+      auth?.user &&
+      !auth?.user[requiredPermission] &&
+      status === "authenticated"
+    ) {
       return (
         <FullPageError
           status={403}

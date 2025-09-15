@@ -76,7 +76,7 @@ const WebrtcActions = () => {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
 
-            {session?.user.userType === "user" && (
+            {session?.userType === "user" && (
               <DropdownMenuItem
                 onClick={handleLogout}
                 className="flex items-center gap-2 p-2 text-sm [&_svg]:size-5 hover:bg-gray-100"
