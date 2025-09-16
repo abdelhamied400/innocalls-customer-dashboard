@@ -42,6 +42,7 @@ declare module "next-auth" {
     accessToken?: string;
     latestActivity?: {
       type: AgentActivity;
+      subType?: string;
     };
   }
 

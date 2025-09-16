@@ -7,6 +7,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import { Button } from "./ui/button";
 import { signOut } from "next-auth/react";
@@ -28,8 +34,18 @@ const ProfileMenu = () => {
   const router = useRouter();
   const t = useTranslations("components.profileMenu");
   const tActions = useTranslations("common.actions");
+  const tWebRTC = useTranslations("webrtc");
+
+  // Get activity type only for agents
   const breakType =
-    session?.user.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
+    session?.user.userType === "agent"
+      ? session?.user.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY
+      : null;
+
+  const breakSubType =
+    session?.user.userType === "agent"
+      ? session?.user.latestActivity?.subType?.toLocaleLowerCase() || ""
+      : null;
 
   const handleLogout = async () => {
     // TODO: FIND ANOTHER WAY TP LOGOUT ...
@@ -93,60 +109,94 @@ const ProfileMenu = () => {
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <div className="flex items-center gap-2">
-          <span className="border-[3px] border-primary p-0.5 rounded-full w-14 h-14 relative">
-            <img
-              src="/assets/images/avatar.png"
-              alt="avatar"
-              className="rounded-full"
-            />
-            {session?.user.userType === "agent" && breakType && (
-              <span
-                className="absolute bottom-0 right-0 border-4 border-white w-4 h-4 rounded-full"
-                style={{
-                  backgroundColor: agentActivitiesColors[breakType],
-                }}
-              ></span>
+    <TooltipProvider>
+      <DropdownMenu>
+        <DropdownMenuTrigger>
+          <div className="flex items-center gap-2">
+            {session?.user.userType === "agent" && breakType ? (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span
+                    className="p-0.5 rounded-full w-14 h-14 relative border-[3px] transition-colors duration-200"
+                    style={{
+                      borderColor: agentActivitiesColors[breakType],
+                    }}
+                  >
+                    <img
+                      src="/assets/images/avatar.png"
+                      alt="avatar"
+                      className="rounded-full"
+                    />
+                    <span
+                      className="absolute bottom-0 right-0 border-4 border-white w-4 h-4 rounded-full transition-colors duration-200"
+                      style={{
+                        backgroundColor: agentActivitiesColors[breakType],
+                      }}
+                    ></span>
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {breakSubType ? (
+                    <p>
+                      {tWebRTC(`activity.${breakType}`)} ({" "}
+                      {tWebRTC(`activity.breakTypes.${breakSubType}`) !==
+                      `activity.breakTypes.${breakSubType}`
+                        ? tWebRTC(`activity.breakTypes.${breakSubType}`)
+                        : breakSubType}{" "}
+                      )
+                    </p>
+                  ) : (
+                    <p>{tWebRTC(`activity.${breakType}`)}</p>
+                  )}
+                </TooltipContent>
+              </Tooltip>
+            ) : (
+              <span className="border-[3px] border-primary p-0.5 rounded-full w-14 h-14 relative">
+                <img
+                  src="/assets/images/avatar.png"
+                  alt="avatar"
+                  className="rounded-full"
+                />
+              </span>
             )}
-          </span>
-          <div className="flex-col items-start gap-1 hidden md:flex">
-            <p className="font-semibold text-lg">{session?.user?.name}</p>
-            <p className="text-neutral-400 text-sm">{Organization?.name}</p>
-            {/* <p className="text-neutral-400 text-sm">{session?.user.userType}</p> */}
-          </div>
 
-          <ExpandCircleDownOutlinedIcon className="text-neutral-300" />
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>{t("organizations")}</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        {session?.user?.organizations?.map((org) => (
-          <DropdownMenuItem
-            key={org.name}
-            className="flex flex-col items-start gap-0"
-            onClick={() => handleOrganizationChange(org)}
-          >
-            <span>{org.name}</span>
-            <span className="text-xs text-gray-600">
-              {/* {org.hasTenant ? t("tenant") : t("noTenant")} */}
-            </span>
+            <div className="flex-col items-start gap-1 hidden md:flex">
+              <p className="font-semibold text-lg">{session?.user?.name}</p>
+              <p className="text-neutral-400 text-sm">{Organization?.name}</p>
+              {/* <p className="text-neutral-400 text-sm">{session?.user.userType}</p> */}
+            </div>
+
+            <ExpandCircleDownOutlinedIcon className="text-neutral-300" />
+          </div>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>{t("organizations")}</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {session?.user?.organizations?.map((org) => (
+            <DropdownMenuItem
+              key={org.name}
+              className="flex flex-col items-start gap-0"
+              onClick={() => handleOrganizationChange(org)}
+            >
+              <span>{org.name}</span>
+              <span className="text-xs text-gray-600">
+                {/* {org.hasTenant ? t("tenant") : t("noTenant")} */}
+              </span>
+            </DropdownMenuItem>
+          ))}
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Button
+              className="w-full"
+              variant="ghost-destructive"
+              onClick={handleLogout}
+            >
+              {tActions("logout")}
+            </Button>
           </DropdownMenuItem>
-        ))}
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Button
-            className="w-full"
-            variant="ghost-destructive"
-            onClick={handleLogout}
-          >
-            {tActions("logout")}
-          </Button>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </TooltipProvider>
   );
 };
 
