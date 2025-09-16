@@ -9,6 +9,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import Field from "@/components/ui/field";
 import { CalendarIcon, SearchIcon } from "lucide-react";
 import usageService, { UsageDetailedFilters } from "@/services/usage.service";
@@ -44,6 +50,7 @@ type DetailedUsageHeadProps = {
   filters: UsageDetailedFilters;
   setFilters: React.Dispatch<React.SetStateAction<UsageDetailedFilters>>;
 };
+
 const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
   const { toast } = useToast();
   const { packages, accounts } = useVocab();
@@ -139,30 +146,46 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
     <Collapsible>
       <div className="usage-detailed-table-head flex flex-wrap items-center justify-between p-4">
         <h2>{t("title")}</h2>
-        <div className="actions flex flex-wrap items-center gap-2">
-          <Field preIcon={<SearchIcon />}>
-            <Input
-              variant="field"
-              placeholder={t("actions.search")}
-              value={search}
-              onChange={handleSearchChange}
-              type="search"
-            />
-          </Field>
-          <CollapsibleTrigger asChild>
-            <Toggle pressed={true} className="rounded-full">
-              <FilterAltOutlined />
-            </Toggle>
-          </CollapsibleTrigger>
-          <Button
-            size="icon"
-            variant="ghost"
-            onClick={exportUsage}
-            loading={isExporting}
-          >
-            <Download />
-          </Button>
-        </div>
+        <TooltipProvider>
+          <div className="actions flex flex-wrap items-center gap-2">
+            <Field preIcon={<SearchIcon />}>
+              <Input
+                variant="field"
+                placeholder={t("actions.search")}
+                value={search}
+                onChange={handleSearchChange}
+                type="search"
+              />
+            </Field>
+            <Tooltip>
+              <CollapsibleTrigger asChild>
+                <TooltipTrigger asChild>
+                  <Toggle pressed={true} className="rounded-full">
+                    <FilterAltOutlined />
+                  </Toggle>
+                </TooltipTrigger>
+              </CollapsibleTrigger>
+              <TooltipContent>
+                <p>{t("tooltips.toggleFilters")}</p>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={exportUsage}
+                  loading={isExporting}
+                >
+                  <Download />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{t("tooltips.export")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
       </div>
       <CollapsibleContent>
         <FilterBar onClear={handleClearFilters}>

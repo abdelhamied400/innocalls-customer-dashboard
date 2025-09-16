@@ -1188,6 +1188,9 @@
         "errorDescription": "An unexpected error occurred while loading usage summary data.",
         "invalidDateRange": "Invalid date range",
         "noData": "No usage data found for the selected criteria."
+      },
+      "tooltips": {
+        "toggleFilters": "Click to show/hide search filters"
       }
     },
     "detailed": {
@@ -1236,6 +1239,10 @@
           "triggerLabel": "Date Range",
           "label": "Select a date range"
         }
+      },
+      "tooltips": {
+        "export": "Export",
+        "toggleFilters": "Click to show/hide search filters"
       }
     },
     "common": {
