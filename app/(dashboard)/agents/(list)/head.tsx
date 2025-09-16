@@ -20,6 +20,13 @@ import { userStatuses } from "@/constants/user";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 interface UsersTableHeaderProps {
   filters: Record<string, string>;
   setFilters: React.Dispatch<React.SetStateAction<Record<string, any>>>;
@@ -54,27 +61,38 @@ const UsersTableHeader = ({ filters, setFilters }: UsersTableHeaderProps) => {
     <Collapsible>
       <div className="users-table-head flex flex-wrap items-center justify-between p-4">
         <h2>{t("title")}</h2>
-        <div className="actions flex flex-wrap items-center gap-2">
-          <Field preIcon={<SearchIcon />}>
-            <Input
-              variant="field"
-              placeholder={commonT("placeholder")}
-              value={filters.name}
-              onChange={handleSearchChange}
-              type="search"
-            />
-          </Field>
-          <CollapsibleTrigger asChild>
-            <Toggle pressed={true} className="rounded-full">
-              <FilterAltIcon />
-            </Toggle>
-          </CollapsibleTrigger>
-          {Organization?.hasTenant && (
-            <Link href="/agents/create">
-              <Button>{t("actions.create")}</Button>
-            </Link>
-          )}
-        </div>
+        <TooltipProvider>
+          <div className="actions flex flex-wrap items-center gap-2">
+            <Field preIcon={<SearchIcon />}>
+              <Input
+                variant="field"
+                placeholder={commonT("placeholder")}
+                value={filters.name}
+                onChange={handleSearchChange}
+                type="search"
+              />
+            </Field>
+
+            <Tooltip>
+              <CollapsibleTrigger asChild>
+                <TooltipTrigger asChild>
+                  <Toggle pressed={true} className="rounded-full">
+                    <FilterAltIcon />
+                  </Toggle>
+                </TooltipTrigger>
+              </CollapsibleTrigger>
+              <TooltipContent>
+                <p>{t("tooltips.toggleFilters")}</p>
+              </TooltipContent>
+            </Tooltip>
+
+            {Organization?.hasTenant && (
+              <Link href="/agents/create">
+                <Button>{t("actions.create")}</Button>
+              </Link>
+            )}
+          </div>
+        </TooltipProvider>
       </div>
       <CollapsibleContent>
         <FilterBar

@@ -16,6 +16,12 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import { FilterBox } from "@/components/FilterBox";
 import { FilterBar } from "@/components/FilterBar";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type RatesFilters = {
   search: string;
@@ -30,6 +36,7 @@ const RatesHead = ({ filters, setFilters }: RatesHeadProps) => {
 
   const t = useTranslations("billing.rates");
   const tCommon = useTranslations("common");
+  const tBillingCommon = useTranslations("billing.common");
 
   const [search, setSearch] = useState<string>(filters.search);
   const [serviceId, setServiceId] = useState<string | undefined>(
@@ -55,7 +62,7 @@ const RatesHead = ({ filters, setFilters }: RatesHeadProps) => {
     <Collapsible>
       <div className="users-table-head flex flex-wrap items-center justify-between p-4">
         <h2>{t("title")}</h2>
-        <div className="actions flex flex-wrap items-center gap-2">
+        {/* <div className="actions flex flex-wrap items-center gap-2">
           <Field preIcon={<Search />}>
             <Input
               variant="field"
@@ -71,7 +78,34 @@ const RatesHead = ({ filters, setFilters }: RatesHeadProps) => {
               <FilterAltOutlined />
             </Toggle>
           </CollapsibleTrigger>
-        </div>
+        </div> */}
+
+        <TooltipProvider>
+          <div className="actions flex flex-wrap items-center gap-2">
+            <Field preIcon={<Search />}>
+              <Input
+                variant="field"
+                placeholder={tCommon("search.placeholder")}
+                value={filters.search}
+                onChange={handleSearchChange}
+                type="search"
+              />
+            </Field>
+
+            <Tooltip>
+              <CollapsibleTrigger asChild>
+                <TooltipTrigger asChild>
+                  <Toggle pressed={true} className="rounded-full">
+                    <FilterAltOutlined />
+                  </Toggle>
+                </TooltipTrigger>
+              </CollapsibleTrigger>
+              <TooltipContent>
+                <p>{tBillingCommon("tooltips.toggleFilters")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
       </div>
       <CollapsibleContent>
         <FilterBar

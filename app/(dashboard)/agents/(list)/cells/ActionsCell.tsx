@@ -29,6 +29,12 @@ import {
 import Spinner from "@/components/ui/spinner";
 import Link from "next/link";
 import { useTranslations } from "@/providers/TranslationProvider";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type ActionsCellProps = Cell<User>;
 const ActionsCell = ({ row }: ActionsCellProps) => {
@@ -153,16 +159,24 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
     <div className="flex gap-2">
       {row.getValue("status") === "enabled" ? (
         <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button
-              variant="ghost-destructive"
-              size="icon"
-              disabled={isDeactivating}
-              loading={isDeactivating}
-            >
-              <Block />
-            </Button>
-          </AlertDialogTrigger>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="ghost-destructive"
+                    size="icon"
+                    disabled={isDeactivating}
+                    loading={isDeactivating}
+                  >
+                    <Block />
+                  </Button>
+                </AlertDialogTrigger>
+              </TooltipTrigger>
+              <TooltipContent>{t("actions.deactivate")}</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>
@@ -186,16 +200,24 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
         </AlertDialog>
       ) : (
         <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button
-              variant="ghost-success"
-              size="icon"
-              disabled={isActivating}
-              loading={isActivating}
-            >
-              <Cached />
-            </Button>
-          </AlertDialogTrigger>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="ghost-success"
+                    size="icon"
+                    disabled={isActivating}
+                    loading={isActivating}
+                  >
+                    <Cached />
+                  </Button>
+                </AlertDialogTrigger>
+              </TooltipTrigger>
+              <TooltipContent>{t("actions.activate")}</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>

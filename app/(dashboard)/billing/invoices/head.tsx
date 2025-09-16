@@ -19,6 +19,12 @@ import DatePicker from "@/components/ui/date-picker";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
 import { defaultFilters } from "./table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type InvoicesFilters = {
   fromDate?: Date | undefined;
@@ -100,7 +106,7 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
     if (fromTotal && toTotal && parseFloat(fromTotal) > parseFloat(toTotal)) {
       toast({
         title: t("messages.invalidAmountRange"),
-        description:  t("filters.validation.toTotal.isGreaterThanFrom"),
+        description: t("filters.validation.toTotal.isGreaterThanFrom"),
         variant: "destructive",
       });
       hasValidTotalRange = false;
@@ -122,13 +128,22 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
     <Collapsible>
       <div className="table-head flex flex-wrap items-center justify-between p-4">
         <h2>{t("title")}</h2>
-        <div className="actions flex flex-wrap items-center gap-2">
-          <CollapsibleTrigger asChild>
-            <Toggle pressed={true} className="rounded-full">
-              <FilterAltOutlined />
-            </Toggle>
-          </CollapsibleTrigger>
-        </div>
+        <TooltipProvider>
+          <div className="actions flex flex-wrap items-center gap-2">
+            <Tooltip>
+              <CollapsibleTrigger asChild>
+                <TooltipTrigger asChild>
+                  <Toggle pressed={true} className="rounded-full">
+                    <FilterAltOutlined />
+                  </Toggle>
+                </TooltipTrigger>
+              </CollapsibleTrigger>
+              <TooltipContent>
+                <p>{tBillingCommon("tooltips.toggleFilters")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
       </div>
       <CollapsibleContent>
         <FilterBar onClear={handleClearFilters}>

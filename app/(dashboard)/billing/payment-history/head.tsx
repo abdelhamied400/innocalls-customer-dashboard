@@ -17,6 +17,12 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 // 30 days ago
 const defaultFromDate = new Date();
@@ -77,13 +83,22 @@ const PaymentHistoryHead = ({
     <Collapsible>
       <div className="users-table-head flex flex-wrap items-center justify-between p-4">
         <h2>{t("title")}</h2>
-        <div className="actions flex flex-wrap items-center gap-2">
-          <CollapsibleTrigger asChild>
-            <Toggle pressed={true} className="rounded-full">
-              <FilterAltOutlined />
-            </Toggle>
-          </CollapsibleTrigger>
-        </div>
+        <TooltipProvider>
+          <div className="actions flex flex-wrap items-center gap-2">
+            <Tooltip>
+              <CollapsibleTrigger asChild>
+                <TooltipTrigger asChild>
+                  <Toggle pressed={true} className="rounded-full">
+                    <FilterAltOutlined />
+                  </Toggle>
+                </TooltipTrigger>
+              </CollapsibleTrigger>
+              <TooltipContent>
+                <p>{tBillingCommon("tooltips.toggleFilters")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
       </div>
       <CollapsibleContent>
         <FilterBar

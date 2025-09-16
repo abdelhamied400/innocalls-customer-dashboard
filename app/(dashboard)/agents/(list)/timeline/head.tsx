@@ -7,10 +7,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Toggle } from "@/components/ui/toggle";
-import {
-  CalendarMonth,
-  FilterAlt,
-} from "@mui/icons-material";
+import { CalendarMonth, FilterAlt } from "@mui/icons-material";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import Field from "@/components/ui/field";
@@ -18,13 +15,20 @@ import DatePicker from "@/components/ui/date-picker";
 import { useState } from "react";
 import MultiSelect from "@/components/select";
 import { useVocab } from "@/hooks/useVocab";
-
 import { format } from "date-fns";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type TimelineHeadProps = {
   filters: TimelineFilters;
   setFilters: React.Dispatch<React.SetStateAction<TimelineFilters>>;
 };
+
+// TODO: PLZ CHECK THIS PAGE (ADDO)
 
 const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
   const t = useTranslations("users.timeline");
@@ -45,14 +49,15 @@ const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
   }));
 
   const applyFilters = () => {
-    setFilters((prev:any) => ({
+    setFilters((prev: any) => ({
       ...prev,
       fromDate: fromDate ? format(fromDate, "yyyy-MM-dd") : "",
       toDate: toDate ? format(toDate, "yyyy-MM-dd") : "",
       // ✅ Use selectedExts instead of exts
-      exts: selectedExts?.length > 0 
-        ? selectedExts.map((e) => e.value).join(",") 
-        : undefined,
+      exts:
+        selectedExts?.length > 0
+          ? selectedExts.map((e) => e.value).join(",")
+          : undefined,
       includeInternalCalls,
     }));
     table.setPageIndex(0); // Reset to first page on filter change
@@ -62,18 +67,27 @@ const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
     <Collapsible>
       <div className="users-table-head flex flex-wrap items-center justify-between p-4">
         <h2>{t("title")}</h2>
-        <div className="actions flex flex-wrap items-center gap-2">
-          <CollapsibleTrigger asChild>
-            <Toggle pressed={true} className="rounded-full">
-              <FilterAlt />
-            </Toggle>
-          </CollapsibleTrigger>
-        </div>
+        <TooltipProvider>
+          <div className="actions flex flex-wrap items-center gap-2">
+            <Tooltip>
+              <CollapsibleTrigger asChild>
+                <TooltipTrigger asChild>
+                  <Toggle pressed={true} className="rounded-full">
+                    <FilterAlt />
+                  </Toggle>
+                </TooltipTrigger>
+              </CollapsibleTrigger>
+              <TooltipContent>
+                <p>{t("tooltips.toggleFilters")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
       </div>
       <CollapsibleContent>
         <FilterBar
           onClear={() => {
-            setFilters((prev:any) => ({
+            setFilters((prev: any) => ({
               ...prev,
               fromDate: format(new Date(), "yyyy-MM-dd"),
               toDate: format(new Date(), "yyyy-MM-dd"),
@@ -94,7 +108,7 @@ const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
             triggerLabel={t("filters.date.triggerLabel")}
             label={t("filters.selectFromList")}
             onReset={() => {
-              setFilters((prev:any) => ({
+              setFilters((prev: any) => ({
                 ...prev,
                 fromDate: format(new Date(), "yyyy-MM-dd"),
                 toDate: format(new Date(), "yyyy-MM-dd"),
@@ -127,7 +141,7 @@ const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
             triggerLabel={t("filters.exts.triggerLabel")}
             label={t("filters.exts.label")}
             onReset={() => {
-              setFilters((prev:any) => ({
+              setFilters((prev: any) => ({
                 ...prev,
                 exts: undefined,
               }));

@@ -22,11 +22,19 @@ import { useVocab } from "@/hooks/useVocab";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { format } from "date-fns";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type AgentsPerformanceHeadProps = {
   filters: AgentsPerformanceFilters;
   setFilters: React.Dispatch<React.SetStateAction<AgentsPerformanceFilters>>;
 };
+
+// TODO: PLZ CHECK THIS PAGE (ADDO)
 
 const AgentsPerformanceHead = ({
   filters,
@@ -55,9 +63,10 @@ const AgentsPerformanceHead = ({
       fromDate: fromDate ? format(fromDate, "yyyy-MM-dd") : "",
       toDate: toDate ? format(toDate, "yyyy-MM-dd") : "",
       // ✅ Use selectedExts instead of exts
-      exts: selectedExts?.length > 0 
-        ? selectedExts.map((e) => e.value).join(",") 
-        : undefined,
+      exts:
+        selectedExts?.length > 0
+          ? selectedExts.map((e) => e.value).join(",")
+          : undefined,
       includeInternalCalls,
     }));
     table.setPageIndex(0); // Reset to first page on filter change
@@ -67,13 +76,22 @@ const AgentsPerformanceHead = ({
     <Collapsible>
       <div className="users-table-head flex flex-wrap items-center justify-between p-4">
         <h2>{t("title")}</h2>
-        <div className="actions flex flex-wrap items-center gap-2">
-          <CollapsibleTrigger asChild>
-            <Toggle pressed={true} className="rounded-full">
-              <FilterAlt />
-            </Toggle>
-          </CollapsibleTrigger>
-        </div>
+        <TooltipProvider>
+          <div className="actions flex flex-wrap items-center gap-2">
+            <Tooltip>
+              <CollapsibleTrigger asChild>
+                <TooltipTrigger asChild>
+                  <Toggle pressed={true} className="rounded-full">
+                    <FilterAlt />
+                  </Toggle>
+                </TooltipTrigger>
+              </CollapsibleTrigger>
+              <TooltipContent>
+                <p>{t("tooltips.toggleFilters")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
+        </TooltipProvider>
       </div>
       <CollapsibleContent>
         <FilterBar
