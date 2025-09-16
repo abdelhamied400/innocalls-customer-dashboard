@@ -27,6 +27,12 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { defaultFilters } from "./table";
 import { useVocab } from "@/hooks/useVocab";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type CallReportingHeadProps = {
   filters: AgentCallReportingFilters;
@@ -93,7 +99,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
       toDate,
       (message) => {
         toast({
-          title: "Invalid date range",
+          title: t("messages.invalidDateRange"),
           description: message,
           variant: "destructive",
         });
@@ -132,20 +138,29 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
       <div className="call-reporting-table-head flex items-center justify-between p-4">
         <h2>{t("title")}</h2>
         <div className="flex items-center gap-2">
-          <div className="actions flex items-center gap-2">
-            <CollapsibleTrigger asChild>
-              <Toggle pressed={true} className="rounded-full">
-                <FilterAltOutlined />
-              </Toggle>
-            </CollapsibleTrigger>
-            <Button
-              variant="default"
-              onClick={handleExport}
-              loading={isExporting}
-            >
-              {t("export.button")}
-            </Button>
-          </div>
+          <TooltipProvider>
+            <div className="actions flex flex-wrap items-center gap-2">
+              <Tooltip>
+                <CollapsibleTrigger asChild>
+                  <TooltipTrigger asChild>
+                    <Toggle pressed={true} className="rounded-full">
+                      <FilterAltOutlined />
+                    </Toggle>
+                  </TooltipTrigger>
+                </CollapsibleTrigger>
+                <TooltipContent>
+                  <p>{t("tooltips.toggleFilters")}</p>
+                </TooltipContent>
+              </Tooltip>
+              <Button
+                variant="default"
+                onClick={handleExport}
+                loading={isExporting}
+              >
+                {t("export.button")}
+              </Button>
+            </div>
+          </TooltipProvider>
         </div>
       </div>
       <CollapsibleContent className="">

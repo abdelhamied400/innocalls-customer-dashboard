@@ -910,6 +910,9 @@
     },
     "actions": {
       "viewHistory": "عرض سجل المكالمات"
+    },
+    "tooltips": {
+      "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
     }
   },
   "dashboard": {

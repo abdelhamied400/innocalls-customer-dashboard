@@ -902,6 +902,9 @@
     },
     "actions": {
       "viewHistory": "View call history"
+    },
+    "tooltips": {
+      "toggleFilters": "Click to show/hide search filters"
     }
   },
   "dashboard": {
