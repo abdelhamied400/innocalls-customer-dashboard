@@ -7,7 +7,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Toggle } from "@/components/ui/toggle";
-import { CalendarMonth, FilterAlt } from "@mui/icons-material";
+import { CalendarMonth, FilterAlt, Search } from "@mui/icons-material";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import Field from "@/components/ui/field";
@@ -22,6 +22,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Input } from "@/components/ui/input";
 
 type TimelineHeadProps = {
   filters: TimelineFilters;
@@ -32,8 +33,10 @@ type TimelineHeadProps = {
 
 const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
   const t = useTranslations("users.timeline");
+  const searchT = useTranslations("common.search");
   const { table } = usePaginatedTable();
 
+  const [name, setName] = useState("");
   const [fromDate, setFromDate] = useState<Date>(new Date(filters.fromDate));
   const [toDate, setToDate] = useState<Date>(new Date(filters.toDate));
   // ✅ Changed to use the same pattern as working tags
@@ -63,6 +66,13 @@ const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
     table.setPageIndex(0); // Reset to first page on filter change
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setName(value);
+    table.setGlobalFilter(value);
+    table.setPageIndex(0); // Reset to first page on search change
+  };
+
   return (
     <Collapsible>
       <div className="users-table-head flex flex-wrap items-center justify-between p-4">
@@ -81,6 +91,15 @@ const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
                 <p>{t("tooltips.toggleFilters")}</p>
               </TooltipContent>
             </Tooltip>
+            <Field preIcon={<Search />}>
+              <Input
+                variant="field"
+                placeholder={searchT("placeholder")}
+                value={name}
+                onChange={handleSearchChange}
+                type="search"
+              />
+            </Field>
           </div>
         </TooltipProvider>
       </div>
@@ -94,6 +113,7 @@ const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
               exts: undefined,
               includeInternalCalls: false,
             }));
+            setName("");
             setFromDate(new Date());
             setToDate(new Date());
             // ✅ Clear selectedExts array

@@ -11,6 +11,7 @@ import {
   CalendarMonth,
   CalendarMonthOutlined,
   FilterAlt,
+  Search,
 } from "@mui/icons-material";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
@@ -28,6 +29,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Input } from "@/components/ui/input";
 
 type AgentsPerformanceHeadProps = {
   filters: AgentsPerformanceFilters;
@@ -41,8 +43,10 @@ const AgentsPerformanceHead = ({
   setFilters,
 }: AgentsPerformanceHeadProps) => {
   const t = useTranslations("users.agentPerformance");
+  const searchT = useTranslations("common.search");
   const { table } = usePaginatedTable();
 
+  const [name, setName] = useState("");
   const [fromDate, setFromDate] = useState<Date>(new Date(filters.fromDate));
   const [toDate, setToDate] = useState<Date>(new Date(filters.toDate));
   // ✅ Changed to use the same pattern as working tags - array instead of undefined
@@ -72,6 +76,13 @@ const AgentsPerformanceHead = ({
     table.setPageIndex(0); // Reset to first page on filter change
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setName(value);
+    table.setGlobalFilter(value);
+    table.setPageIndex(0); // Reset to first page on search change
+  };
+
   return (
     <Collapsible>
       <div className="users-table-head flex flex-wrap items-center justify-between p-4">
@@ -90,6 +101,15 @@ const AgentsPerformanceHead = ({
                 <p>{t("tooltips.toggleFilters")}</p>
               </TooltipContent>
             </Tooltip>
+            <Field preIcon={<Search />}>
+              <Input
+                variant="field"
+                placeholder={searchT("placeholder")}
+                value={name}
+                onChange={handleSearchChange}
+                type="search"
+              />
+            </Field>
           </div>
         </TooltipProvider>
       </div>
@@ -103,6 +123,7 @@ const AgentsPerformanceHead = ({
               exts: undefined,
               includeInternalCalls: false,
             }));
+            setName("");
             setFromDate(new Date());
             setToDate(new Date());
             // ✅ Clear selectedExts array
