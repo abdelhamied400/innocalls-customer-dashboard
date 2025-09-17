@@ -11,7 +11,6 @@ import {
 } from "react";
 import { useRouting } from "@/providers/RoutingProvider";
 import { ExtensionWithCredentials } from "@/types/api/extension";
-import { createUserAgent } from "./SipProvider/userAgent";
 import type {
   SipContextType,
   ExtensionState,
@@ -114,7 +113,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
       cleanupAllUserAgents();
 
       // Create UA without starting it first so we can bind events
-      const SIP_INTERFACE = process.env.NEXT_PUBLIC_SIP_INTERFACE!;
+      const SIP_INTERFACE = extensionData.sipWebSocketUrl;
       const DECRYPT_SECRET = process.env.NEXT_PUBLIC_DECRYPT_SECRET!;
 
       const socket = new JsSIP.WebSocketInterface(SIP_INTERFACE);

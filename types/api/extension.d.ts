@@ -5,6 +5,7 @@ export type Extension = {
   id: string;
   name: string;
   status: ExtensionStatus;
+  sipWebSocketUrl: string;
 };
 
 export type WithCredentials<T> = T & {
