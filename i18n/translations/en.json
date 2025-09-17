@@ -764,7 +764,8 @@
     "direction": {
       "incoming": "Incoming",
       "outgoing": "Outgoing",
-      "local": "Local"
+      "local": "Local",
+      "all":"All"
     },
     "status": {
       "answered": "Answered",
@@ -905,6 +906,11 @@
     },
     "tooltips": {
       "toggleFilters": "Click to show/hide search filters"
+    },
+    "isAnswered":{
+      "both":"Both",
+      "answered":"Answered",
+      "notAnswered":"Not Answered"
     }
   },
   "dashboard": {
