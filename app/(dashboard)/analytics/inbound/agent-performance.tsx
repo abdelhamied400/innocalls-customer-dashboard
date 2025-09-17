@@ -22,8 +22,10 @@ import {
 import { InboundAnalyticsFilters } from "./page";
 import NoData from "@/components/Analytics/NoData";
 import { durationToSeconds, formatDuration } from "@/lib/date";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import AgentPerformanceToolbar from "./agent-performance-toolbar";
+import RechartTooltip from "@/components/RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
 
 type InboundAnalyticsAgentPerformanceProps = {
   filters: InboundAnalyticsFilters;
@@ -36,6 +38,8 @@ const InboundAnalyticsAgentPerformance = ({
   filters,
 }: InboundAnalyticsAgentPerformanceProps) => {
   const t = useTranslations("analytics.inbound.agentPerformance");
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
 
   const [agentPerformanceFilters, setAgentPerformanceFilters] =
     useState<AgentPerformanceFilters>({
@@ -121,6 +125,7 @@ const InboundAnalyticsAgentPerformance = ({
                   allowDecimals={false}
                 />
                 <Tooltip
+                  contentStyle={{ direction: locale.dir }}
                   formatter={(value, name, item) => {
                     if (item.dataKey === "avgWaitTime")
                       return [

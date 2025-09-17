@@ -11,6 +11,9 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import RechartTooltip from "../RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
+import { useLocale } from "@/providers/TranslationProvider";
 
 interface DailyData {
   date: string;
@@ -29,6 +32,9 @@ interface OutboundDailyVolumeChartProps {
 const OutboundDailyVolumeChart: React.FC<OutboundDailyVolumeChartProps> = ({
   data,
 }) => {
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
+
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const dayData = payload[0].payload;
@@ -68,7 +74,10 @@ const OutboundDailyVolumeChart: React.FC<OutboundDailyVolumeChartProps> = ({
             allowDecimals={false}
             tick={{ fill: "#6B7280" }}
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip
+            contentStyle={{ direction: locale.dir }}
+            content={<CustomTooltip />}
+          />
 
           <Line
             type="monotone"

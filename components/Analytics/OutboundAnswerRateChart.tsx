@@ -1,7 +1,19 @@
 "use client";
 
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, LabelList } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  LabelList,
+} from "recharts";
+import RechartTooltip from "../RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
+import { useLocale } from "@/providers/TranslationProvider";
 
 interface AnswerRateData {
   timeSlot: string;
@@ -14,7 +26,11 @@ interface OutboundAnswerRateChartProps {
   data: AnswerRateData[];
 }
 
-const OutboundAnswerRateChart: React.FC<OutboundAnswerRateChartProps> = ({ data }) => {
+const OutboundAnswerRateChart: React.FC<OutboundAnswerRateChartProps> = ({
+  data,
+}) => {
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
@@ -33,7 +49,13 @@ const OutboundAnswerRateChart: React.FC<OutboundAnswerRateChartProps> = ({ data 
   const CustomLabel = (props: any) => {
     const { x, y, width, value } = props;
     return (
-      <text x={x + width / 2} y={y - 5} textAnchor="middle" fill="#6B7280" fontSize={12}>
+      <text
+        x={x + width / 2}
+        y={y - 5}
+        textAnchor="middle"
+        fill="#6B7280"
+        fontSize={12}
+      >
         {`${value}%`}
       </text>
     );
@@ -42,29 +64,31 @@ const OutboundAnswerRateChart: React.FC<OutboundAnswerRateChartProps> = ({ data 
   return (
     <div className="h-80">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+        <BarChart
+          data={data}
+          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        >
           <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-          <XAxis 
-            dataKey="timeSlot" 
-            fontSize={12} 
-            tickLine={false} 
+          <XAxis
+            dataKey="timeSlot"
+            fontSize={12}
+            tickLine={false}
             axisLine={false}
-            tick={{ fill: '#6B7280' }}
+            tick={{ fill: "#6B7280" }}
           />
-          <YAxis 
-            fontSize={12} 
-            tickLine={false} 
+          <YAxis
+            fontSize={12}
+            tickLine={false}
             axisLine={false}
-            tick={{ fill: '#6B7280' }}
+            tick={{ fill: "#6B7280" }}
             domain={[0, 100]}
             tickFormatter={(value) => `${value}%`}
           />
-          <Tooltip content={<CustomTooltip />} />
-          <Bar 
-            dataKey="answerRate" 
-            fill="#8B5CF6" 
-            radius={[4, 4, 0, 0]}
-          >
+          <Tooltip
+            contentStyle={{ direction: locale.dir }}
+            content={<CustomTooltip />}
+          />
+          <Bar dataKey="answerRate" fill="#8B5CF6" radius={[4, 4, 0, 0]}>
             <LabelList dataKey="answerRate" content={<CustomLabel />} />
           </Bar>
         </BarChart>
@@ -73,4 +97,4 @@ const OutboundAnswerRateChart: React.FC<OutboundAnswerRateChartProps> = ({ data 
   );
 };
 
-export default OutboundAnswerRateChart; 
+export default OutboundAnswerRateChart;

@@ -23,7 +23,9 @@ import StatsRowCard from "@/components/StatsRowCard";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
 import NoData from "@/components/Analytics/NoData";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import RechartTooltip from "@/components/RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
 
 const colors = [
   "#3B82F6",
@@ -43,6 +45,8 @@ const InboundAnalyticsQueueAnalysis = ({
   filters,
 }: InboundAnalyticsQueueAnalysisProps) => {
   const t = useTranslations("analytics.inbound.queueAnalysis");
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
 
   const {
     data: abandonedAnalysis,
@@ -165,7 +169,7 @@ const InboundAnalyticsQueueAnalysis = ({
                       />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip contentStyle={{ direction: locale.dir }} />
                 </PieChart>
               </ResponsiveContainer>
             </ChartCard>
@@ -253,7 +257,7 @@ const InboundAnalyticsQueueAnalysis = ({
                       />
                     ))}
                   </Pie>
-                  <Tooltip />
+                  <Tooltip contentStyle={{ direction: locale.dir }} />
                 </PieChart>
               </ResponsiveContainer>
             </ChartCard>

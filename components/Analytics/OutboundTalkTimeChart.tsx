@@ -1,7 +1,19 @@
 "use client";
 
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, LabelList } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  LabelList,
+} from "recharts";
+import RechartTooltip from "../RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
+import { useLocale } from "@/providers/TranslationProvider";
 
 interface TalkTimeData {
   timeBucket: string;
@@ -12,7 +24,11 @@ interface OutboundTalkTimeChartProps {
   data: TalkTimeData[];
 }
 
-const OutboundTalkTimeChart: React.FC<OutboundTalkTimeChartProps> = ({ data }) => {
+const OutboundTalkTimeChart: React.FC<OutboundTalkTimeChartProps> = ({
+  data,
+}) => {
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
@@ -28,7 +44,13 @@ const OutboundTalkTimeChart: React.FC<OutboundTalkTimeChartProps> = ({ data }) =
   const CustomLabel = (props: any) => {
     const { x, y, width, value } = props;
     return (
-      <text x={x + width / 2} y={y - 5} textAnchor="middle" fill="#6B7280" fontSize={12}>
+      <text
+        x={x + width / 2}
+        y={y - 5}
+        textAnchor="middle"
+        fill="#6B7280"
+        fontSize={12}
+      >
         {value}
       </text>
     );
@@ -37,28 +59,30 @@ const OutboundTalkTimeChart: React.FC<OutboundTalkTimeChartProps> = ({ data }) =
   return (
     <div className="h-80">
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+        <BarChart
+          data={data}
+          margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        >
           <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-          <XAxis 
-            dataKey="timeBucket" 
-            fontSize={12} 
-            tickLine={false} 
+          <XAxis
+            dataKey="timeBucket"
+            fontSize={12}
+            tickLine={false}
             axisLine={false}
-            tick={{ fill: '#6B7280' }}
+            tick={{ fill: "#6B7280" }}
           />
-          <YAxis 
-            fontSize={12} 
-            tickLine={false} 
+          <YAxis
+            fontSize={12}
+            tickLine={false}
             axisLine={false}
             allowDecimals={false}
-            tick={{ fill: '#6B7280' }}
+            tick={{ fill: "#6B7280" }}
           />
-          <Tooltip content={<CustomTooltip />} />
-          <Bar 
-            dataKey="totalCalls" 
-            fill="#F59E0B" 
-            radius={[4, 4, 0, 0]}
-          >
+          <Tooltip
+            contentStyle={{ direction: locale.dir }}
+            content={<CustomTooltip />}
+          />
+          <Bar dataKey="totalCalls" fill="#F59E0B" radius={[4, 4, 0, 0]}>
             <LabelList dataKey="totalCalls" content={<CustomLabel />} />
           </Bar>
         </BarChart>
@@ -67,4 +91,4 @@ const OutboundTalkTimeChart: React.FC<OutboundTalkTimeChartProps> = ({ data }) =
   );
 };
 
-export default OutboundTalkTimeChart; 
+export default OutboundTalkTimeChart;

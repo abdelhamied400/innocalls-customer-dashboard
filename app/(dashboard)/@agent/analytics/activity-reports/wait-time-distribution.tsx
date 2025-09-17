@@ -2,13 +2,15 @@ import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { ActivityReportsFilters } from "./page";
 import activityReportsService from "@/services/activity-reports.service";
 import { ResponsiveContainer, Tooltip, PieChart, Pie, Cell } from "recharts";
+import { defaultLocale, locales } from "@/i18n/config";
 import ChartCard, {
   ChartCardError,
   ChartCardSkeleton,
 } from "@/components/ChartCard";
 import NoData from "@/components/Analytics/NoData";
 import { HourglassEmpty } from "@mui/icons-material";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import RechartTooltip from "@/components/RechartTooltip";
 
 type FetchWaitTimeDistributionResponse = Array<{
   totalCalls: number;
@@ -33,6 +35,8 @@ const COLORS = [
 
 const WaitTimeDistribution = ({ filters }: WaitTimeDistributionProps) => {
   const t = useTranslations("analytics.activityAnalysis");
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
 
   const { data, isLoading, isError, error } =
     useLocalizedQuery<FetchWaitTimeDistributionResponse>({
@@ -68,7 +72,9 @@ const WaitTimeDistribution = ({ filters }: WaitTimeDistributionProps) => {
               cy="50%"
               labelLine={false}
               label={({ timeBucket, percent }) =>
-                `${t(`waitTime.legends.timeBucket.${timeBucket}`)} (${(percent * 100).toFixed(1)}%)`
+                `${t(`waitTime.legends.timeBucket.${timeBucket}`)} (${(
+                  percent * 100
+                ).toFixed(1)}%)`
               }
               outerRadius={120}
               fill="#8884d8"
@@ -82,6 +88,7 @@ const WaitTimeDistribution = ({ filters }: WaitTimeDistributionProps) => {
               ))}
             </Pie>
             <Tooltip
+              contentStyle={{ direction: locale.dir }}
               formatter={(value, name) => [
                 value,
                 t("waitTime.legends.totalCalls"),

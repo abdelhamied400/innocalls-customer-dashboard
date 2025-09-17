@@ -4,6 +4,7 @@ import { LineAxis } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import {
   CartesianGrid,
+  DefaultTooltipContent,
   Line,
   LineChart,
   ResponsiveContainer,
@@ -13,13 +14,17 @@ import {
 } from "recharts";
 import { InboundAnalyticsFilters } from "./page";
 import NoData from "@/components/Analytics/NoData";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import RechartTooltip from "@/components/RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
 
 type InboundAnalyticsOverviewProps = { filters: InboundAnalyticsFilters };
 const InboundAnalyticsOverview = ({
   filters,
 }: InboundAnalyticsOverviewProps) => {
   const t = useTranslations("analytics.inbound.overview");
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
 
   const legends = {
     team: [
@@ -83,7 +88,9 @@ const InboundAnalyticsOverview = ({
                 axisLine={false}
                 allowDecimals={false}
               />
+
               <Tooltip
+                contentStyle={{ direction: locale.dir }}
                 formatter={(_, name) => {
                   // Map dataKey to label
 

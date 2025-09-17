@@ -11,6 +11,9 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import RechartTooltip from "../RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
+import { useLocale } from "@/providers/TranslationProvider";
 
 interface IvrOption {
   optionNumber: number;
@@ -30,6 +33,8 @@ interface IvrDistributionChartProps {
 const IvrDistributionChart: React.FC<IvrDistributionChartProps> = ({
   data,
 }) => {
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
   // Transform data for chart display
   const chartData = data.map((ivr) => {
     const optionData: any = { ivrName: ivr.ivrName };
@@ -73,7 +78,7 @@ const IvrDistributionChart: React.FC<IvrDistributionChartProps> = ({
             axisLine={false}
             allowDecimals={false}
           />
-          <Tooltip />
+          <Tooltip contentStyle={{ direction: locale.dir }} />
 
           {data[0]?.options.map((option, index) => (
             <Bar

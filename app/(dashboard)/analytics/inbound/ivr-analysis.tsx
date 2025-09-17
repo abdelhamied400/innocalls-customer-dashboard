@@ -14,7 +14,9 @@ import {
 } from "recharts";
 import { InboundAnalyticsFilters } from "./page";
 import NoData from "@/components/Analytics/NoData";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import RechartTooltip from "@/components/RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
 
 type InboundAnalyticsIVRAnalysisProps = {
   filters: InboundAnalyticsFilters;
@@ -23,6 +25,8 @@ const InboundAnalyticsIVRAnalysis = ({
   filters,
 }: InboundAnalyticsIVRAnalysisProps) => {
   const t = useTranslations("analytics.inbound.ivrAnalysis");
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
 
   const colors = [
     "#3B82F6",
@@ -102,7 +106,7 @@ const InboundAnalyticsIVRAnalysis = ({
                   axisLine={false}
                   allowDecimals={false}
                 />
-                <Tooltip />
+                <Tooltip contentStyle={{ direction: locale.dir }} />
 
                 {allOptions.map((option, index) => (
                   <Bar

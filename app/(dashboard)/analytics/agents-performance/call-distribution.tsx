@@ -23,10 +23,12 @@ import {
 import { Label } from "@/components/ui/label";
 import NoData from "./NoData";
 import { UserActivityFilters } from "./page";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import CallDistributionToolbar from "./call-distribution-toolbar";
+import RechartTooltip from "@/components/RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
 
 type CallDistributionAnalyticsProps = {
   filters: UserActivityFilters;
@@ -39,6 +41,8 @@ export type CallDistributionFilters = {
 const CallDistributionAnalytics = ({
   filters,
 }: CallDistributionAnalyticsProps) => {
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
   const t = useTranslations("analytics.userActivity.callDistribution");
   const [includeInternalCalls, setIncludeInternalCalls] = useState(false);
   const [callDistributionFilters, setCallDistributionFilters] =
@@ -192,6 +196,7 @@ const CallDistributionAnalytics = ({
                         />
                       </YAxis>
                       <Tooltip
+                        contentStyle={{ direction: locale.dir }}
                         formatter={(value, name) => {
                           switch (name) {
                             case "totalIncomingInternalCalls":

@@ -11,6 +11,9 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import RechartTooltip from "../RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
+import { useLocale } from "@/providers/TranslationProvider";
 
 interface AgentPerformanceData {
   agentExt: number;
@@ -30,6 +33,9 @@ interface AgentPerformanceChartProps {
 const AgentPerformanceChart: React.FC<AgentPerformanceChartProps> = ({
   data,
 }) => {
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
+
   // Convert time strings to seconds for better visualization
   const processedData = data.map((item) => ({
     ...item,
@@ -66,6 +72,7 @@ const AgentPerformanceChart: React.FC<AgentPerformanceChartProps> = ({
             allowDecimals={false}
           />
           <Tooltip
+            contentStyle={{ direction: locale.dir }}
             formatter={(value, name) => {
               if (name === "avgWaitTimeSec")
                 return [

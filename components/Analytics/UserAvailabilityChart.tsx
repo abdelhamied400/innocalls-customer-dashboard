@@ -11,6 +11,9 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import RechartTooltip from "../RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
+import { useLocale } from "@/providers/TranslationProvider";
 
 interface AvailabilityData {
   hour: number;
@@ -26,6 +29,8 @@ interface UserAvailabilityChartProps {
 const UserAvailabilityChart: React.FC<UserAvailabilityChartProps> = ({
   data,
 }) => {
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
   const formatHour = (hour: number) => {
     return `${hour}:00`;
   };
@@ -80,7 +85,10 @@ const UserAvailabilityChart: React.FC<UserAvailabilityChartProps> = ({
             domain={[0, 100]}
             tickFormatter={(value) => `${value}%`}
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip
+            contentStyle={{ direction: locale.dir }}
+            content={<CustomTooltip />}
+          />
 
           <Line
             type="monotone"

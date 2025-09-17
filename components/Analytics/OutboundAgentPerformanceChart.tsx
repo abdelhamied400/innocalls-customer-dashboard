@@ -11,6 +11,9 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import RechartTooltip from "../RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
+import { useLocale } from "@/providers/TranslationProvider";
 
 interface AgentPerformanceData {
   agentExt: number;
@@ -28,6 +31,9 @@ interface OutboundAgentPerformanceChartProps {
 const OutboundAgentPerformanceChart: React.FC<
   OutboundAgentPerformanceChartProps
 > = ({ data }) => {
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
+
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const agent = payload[0].payload;
@@ -66,7 +72,10 @@ const OutboundAgentPerformanceChart: React.FC<
             allowDecimals={false}
             tick={{ fill: "#6B7280" }}
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip
+            contentStyle={{ direction: locale.dir }}
+            content={<CustomTooltip />}
+          />
 
           <Bar
             dataKey="callsMade"

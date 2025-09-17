@@ -1,7 +1,17 @@
 "use client";
 
 import React from "react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
+import RechartTooltip from "../RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
+import { useLocale } from "@/providers/TranslationProvider";
 
 interface UserStatusData {
   status: string;
@@ -14,10 +24,15 @@ interface UserStatusChartProps {
 }
 
 const UserStatusChart: React.FC<UserStatusChartProps> = ({ data }) => {
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const payloadData = payload[0].payload;
-      const total = data.reduce((sum: number, item: UserStatusData) => sum + item.count, 0);
+      const total = data.reduce(
+        (sum: number, item: UserStatusData) => sum + item.count,
+        0
+      );
       const percentage = Math.round((payloadData.count / total) * 100);
       return (
         <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
@@ -39,8 +54,8 @@ const UserStatusChart: React.FC<UserStatusChartProps> = ({ data }) => {
       <div className="flex flex-wrap justify-center gap-4 mt-4">
         {payload.map((entry: any, index: number) => (
           <div key={`legend-${index}`} className="flex items-center gap-2">
-            <div 
-              className="w-3 h-3 rounded-full" 
+            <div
+              className="w-3 h-3 rounded-full"
               style={{ backgroundColor: entry.color }}
             />
             <span className="text-sm text-gray-600">{entry.value}</span>
@@ -68,7 +83,10 @@ const UserStatusChart: React.FC<UserStatusChartProps> = ({ data }) => {
               <Cell key={`cell-${index}`} fill={entry.color} />
             ))}
           </Pie>
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip
+            contentStyle={{ direction: locale.dir }}
+            content={<CustomTooltip />}
+          />
           <Legend content={<CustomLegend />} />
         </PieChart>
       </ResponsiveContainer>
@@ -76,4 +94,4 @@ const UserStatusChart: React.FC<UserStatusChartProps> = ({ data }) => {
   );
 };
 
-export default UserStatusChart; 
+export default UserStatusChart;

@@ -11,6 +11,9 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import RechartTooltip from "../RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
+import { useLocale } from "@/providers/TranslationProvider";
 
 interface HourlyData {
   hour: number;
@@ -26,6 +29,9 @@ interface OutboundHourlyTrendsChartProps {
 const OutboundHourlyTrendsChart: React.FC<OutboundHourlyTrendsChartProps> = ({
   data,
 }) => {
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
+
   const formatHour = (hour: number) => {
     return `${hour}:00`;
   };
@@ -70,7 +76,10 @@ const OutboundHourlyTrendsChart: React.FC<OutboundHourlyTrendsChartProps> = ({
             allowDecimals={false}
             tick={{ fill: "#6B7280" }}
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip
+            contentStyle={{ direction: locale.dir }}
+            content={<CustomTooltip />}
+          />
 
           <Line
             type="monotone"

@@ -21,17 +21,21 @@ import {
 } from "recharts";
 import { UserActivityFilters } from "./page";
 import NoData from "./NoData";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import { useState } from "react";
 import SlaComplianceToolbar, {
   SlaComplianceFilters,
 } from "./sla-compliance-toolbar";
+import RechartTooltip from "@/components/RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
 
 type SlaComplianceAnalyticsProps = {
   filters: UserActivityFilters;
 };
 
 const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
   const t = useTranslations("analytics.userActivity.slaCompliance");
 
   const [slaComplianceFilters, setSlaComplianceFilters] =
@@ -109,7 +113,10 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
                   <BarChart data={data}>
                     <XAxis dataKey="name" />
                     <YAxis domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
-                    <Tooltip formatter={(value) => `${value}%`} />
+                    <Tooltip
+                      contentStyle={{ direction: locale.dir }}
+                      formatter={(value) => `${value}%`}
+                    />
                     <Bar
                       dataKey="slaCompliance"
                       name={t("chart.tooltipLabels.slaCompliance")}

@@ -13,7 +13,9 @@ import {
 import { InboundAnalyticsFilters } from "./page";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
 import NoData from "@/components/Analytics/NoData";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import RechartTooltip from "@/components/RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
 
 type InboundAnalyticsDistributionProps = {
   filters: InboundAnalyticsFilters;
@@ -22,6 +24,8 @@ const InboundAnalyticsDistribution = ({
   filters,
 }: InboundAnalyticsDistributionProps) => {
   const t = useTranslations("analytics.inbound.distribution");
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
 
   const {
     data: waitTimeData,
@@ -78,6 +82,7 @@ const InboundAnalyticsDistribution = ({
                 allowDecimals={false}
               />
               <Tooltip
+                contentStyle={{ direction: locale.dir }}
                 labelFormatter={(value) =>
                   t(`waitTime.legends.timeBucket.${value}`)
                 }
@@ -126,6 +131,7 @@ const InboundAnalyticsDistribution = ({
                 allowDecimals={false}
               />
               <Tooltip
+                contentStyle={{ direction: locale.dir }}
                 labelFormatter={(value) =>
                   t(`talkTime.legends.timeBucket.${value}`)
                 }

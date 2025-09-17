@@ -17,7 +17,9 @@ import ChartCard, {
 import { GroupOutlined } from "@mui/icons-material";
 import NoData from "@/components/Analytics/NoData";
 import { UnansweredAnalyticsFilters } from "./page";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import RechartTooltip from "@/components/RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
 
 type OutboundUnansweredHourlyProps = {
   filters: UnansweredAnalyticsFilters;
@@ -27,6 +29,9 @@ const OutboundUnansweredHourly = ({
   filters,
 }: OutboundUnansweredHourlyProps) => {
   const t = useTranslations("analytics.unanswered");
+
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
 
   const { data, isLoading, isError, error } = useLocalizedQuery({
     queryKey: ["outboundUnansweredHourly", filters],
@@ -54,7 +59,7 @@ const OutboundUnansweredHourly = ({
           <BarChart data={data}>
             <XAxis dataKey="hourOfDay" tickFormatter={(h) => `${h}:00`} />
             <YAxis />
-            <Tooltip />
+            <Tooltip contentStyle={{ direction: locale.dir }} />
 
             {filters.includeInternalCalls && (
               <Bar

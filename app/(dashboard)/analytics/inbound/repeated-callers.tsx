@@ -23,8 +23,10 @@ import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import inboundAnalyticsService from "@/services/inbound-analytics.service";
 import { InboundAnalyticsFilters } from "./page";
 import NoData from "@/components/Analytics/NoData";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import RepeatedCallersToolbar from "./repeated-callers-toolbar";
+import RechartTooltip from "@/components/RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
 
 type InboundAnalyticsRepeatedCallersProps = {
   filters: InboundAnalyticsFilters;
@@ -37,6 +39,8 @@ const InboundAnalyticsRepeatedCallers = ({
   filters,
 }: InboundAnalyticsRepeatedCallersProps) => {
   const t = useTranslations("analytics.inbound.repeatedCallers");
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
 
   const [repeatedCallersFilters, setRepeatedCallersFilters] =
     useState<RepeatedCallersFilters>({
@@ -112,7 +116,7 @@ const InboundAnalyticsRepeatedCallers = ({
                   axisLine={false}
                   allowDecimals={false}
                 />
-                <Tooltip />
+                <Tooltip contentStyle={{ direction: locale.dir }} />
                 <Brush dataKey="caller" height={30} stroke="#8884d8" />
                 <Bar
                   dataKey="completedCalls"

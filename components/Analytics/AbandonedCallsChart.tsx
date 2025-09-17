@@ -1,7 +1,22 @@
 "use client";
 
 import React from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer, Tooltip, Legend, PieChart, Pie, Cell } from "recharts";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
+import RechartTooltip from "../RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
+import { useLocale } from "@/providers/TranslationProvider";
 
 interface AbandonedCallsData {
   totalAbandonedCalls: number;
@@ -26,6 +41,9 @@ interface AbandonedCallsChartProps {
 }
 
 const AbandonedCallsChart: React.FC<AbandonedCallsChartProps> = ({ data }) => {
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
+
   const waitTimeDistribution = [
     { name: "0-10s", value: data.quickAbandons_0_10s, color: "#EF4444" },
     { name: "11-30s", value: data.shortWait_11_30s, color: "#F59E42" },
@@ -35,10 +53,34 @@ const AbandonedCallsChart: React.FC<AbandonedCallsChartProps> = ({ data }) => {
   ];
 
   const queueStats = [
-    { name: "Avg Wait Time", value: `${Math.floor(data.avgWaitTimeBeforeAbandon / 60)}:${(data.avgWaitTimeBeforeAbandon % 60).toString().padStart(2, '0')}` },
-    { name: "Min Wait Time", value: `${Math.floor(data.minWaitTimeBeforeAbandon / 60)}:${(data.minWaitTimeBeforeAbandon % 60).toString().padStart(2, '0')}` },
-    { name: "Max Wait Time", value: `${Math.floor(data.maxWaitTimeBeforeAbandon / 60)}:${(data.maxWaitTimeBeforeAbandon % 60).toString().padStart(2, '0')}` },
-    { name: "Avg Queue Position", value: data.avgInitialQueuePosition.toFixed(1) },
+    {
+      name: "Avg Wait Time",
+      value: `${Math.floor(data.avgWaitTimeBeforeAbandon / 60)}:${(
+        data.avgWaitTimeBeforeAbandon % 60
+      )
+        .toString()
+        .padStart(2, "0")}`,
+    },
+    {
+      name: "Min Wait Time",
+      value: `${Math.floor(data.minWaitTimeBeforeAbandon / 60)}:${(
+        data.minWaitTimeBeforeAbandon % 60
+      )
+        .toString()
+        .padStart(2, "0")}`,
+    },
+    {
+      name: "Max Wait Time",
+      value: `${Math.floor(data.maxWaitTimeBeforeAbandon / 60)}:${(
+        data.maxWaitTimeBeforeAbandon % 60
+      )
+        .toString()
+        .padStart(2, "0")}`,
+    },
+    {
+      name: "Avg Queue Position",
+      value: data.avgInitialQueuePosition.toFixed(1),
+    },
     { name: "Peak Abandon Hour", value: `${data.peakAbandonHour}:00` },
   ];
 
@@ -47,16 +89,28 @@ const AbandonedCallsChart: React.FC<AbandonedCallsChartProps> = ({ data }) => {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="bg-red-50 p-4 rounded-lg border">
-          <h3 className="text-lg font-semibold text-red-800">Total Abandoned</h3>
-          <p className="text-2xl font-bold text-red-600">{data.totalAbandonedCalls}</p>
+          <h3 className="text-lg font-semibold text-red-800">
+            Total Abandoned
+          </h3>
+          <p className="text-2xl font-bold text-red-600">
+            {data.totalAbandonedCalls}
+          </p>
         </div>
         <div className="bg-orange-50 p-4 rounded-lg border">
-          <h3 className="text-lg font-semibold text-orange-800">Unique Callers</h3>
-          <p className="text-2xl font-bold text-orange-600">{data.uniqueCallersAbandoned}</p>
+          <h3 className="text-lg font-semibold text-orange-800">
+            Unique Callers
+          </h3>
+          <p className="text-2xl font-bold text-orange-600">
+            {data.uniqueCallersAbandoned}
+          </p>
         </div>
         <div className="bg-blue-50 p-4 rounded-lg border">
-          <h3 className="text-lg font-semibold text-blue-800">Queues Affected</h3>
-          <p className="text-2xl font-bold text-blue-600">{data.queuesWithAbandons}</p>
+          <h3 className="text-lg font-semibold text-blue-800">
+            Queues Affected
+          </h3>
+          <p className="text-2xl font-bold text-blue-600">
+            {data.queuesWithAbandons}
+          </p>
         </div>
       </div>
 
@@ -79,7 +133,7 @@ const AbandonedCallsChart: React.FC<AbandonedCallsChartProps> = ({ data }) => {
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip contentStyle={{ direction: locale.dir }} />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -89,9 +143,14 @@ const AbandonedCallsChart: React.FC<AbandonedCallsChartProps> = ({ data }) => {
           <h3 className="text-lg font-semibold mb-4">Queue Statistics</h3>
           <div className="space-y-3">
             {queueStats.map((stat, index) => (
-              <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded">
+              <div
+                key={index}
+                className="flex justify-between items-center p-2 bg-gray-50 rounded"
+              >
                 <span className="font-medium">{stat.name}</span>
-                <span className="text-blue-600 font-semibold">{stat.value}</span>
+                <span className="text-blue-600 font-semibold">
+                  {stat.value}
+                </span>
               </div>
             ))}
           </div>
@@ -101,4 +160,4 @@ const AbandonedCallsChart: React.FC<AbandonedCallsChartProps> = ({ data }) => {
   );
 };
 
-export default AbandonedCallsChart; 
+export default AbandonedCallsChart;

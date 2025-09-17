@@ -9,6 +9,7 @@ import {
   Legend as RechartsLegend,
   ResponsiveContainer,
   CartesianGrid,
+  Tooltip,
 } from "recharts";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import ChartCard, { ChartCardSkeleton } from "@/components/ChartCard";
@@ -16,7 +17,9 @@ import { OutboundAnalyticsFilters } from "./page";
 import NoData from "../../../../components/Analytics/NoData";
 import outboundAnalyticsService from "@/services/outbound-analytics.service";
 import { Timer, TimeToLeave } from "@mui/icons-material";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import RechartTooltip from "@/components/RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
 
 type TalkTimeDistributionProps = {
   filters: OutboundAnalyticsFilters;
@@ -33,6 +36,8 @@ const COLORS = [
 
 const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
   const t = useTranslations("analytics.outbound.talkTimeDistribution");
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
 
   const { data, isLoading } = useLocalizedQuery({
     queryKey: ["talkTimeDistribution", filters],
@@ -77,7 +82,8 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
                 <Cell key={idx} fill={COLORS[idx % COLORS.length]} />
               ))}
             </Pie>
-            <RechartsTooltip
+            <Tooltip
+              contentStyle={{ direction: locale.dir }}
               formatter={(value, name) => [
                 value,
                 t(`chart.legends.timeBucket.${name}`),

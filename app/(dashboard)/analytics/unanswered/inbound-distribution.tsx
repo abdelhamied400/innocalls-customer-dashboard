@@ -18,7 +18,9 @@ import ChartCard, {
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import NoData from "@/components/Analytics/NoData";
 import { UnansweredAnalyticsFilters } from "./page";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import { defaultLocale, locales } from "@/i18n/config";
+import RechartTooltip from "@/components/RechartTooltip";
 
 type InboundDistributionProps = {
   filters: UnansweredAnalyticsFilters;
@@ -26,6 +28,8 @@ type InboundDistributionProps = {
 
 const InboundDistribution = ({ filters }: InboundDistributionProps) => {
   const t = useTranslations("analytics.unanswered");
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
 
   const { data, isLoading, isError, error } = useLocalizedQuery({
     queryKey: ["inboundDistribution", filters],
@@ -63,7 +67,7 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
               axisLine={false}
               allowDecimals={false}
             />
-            <Tooltip />
+            <Tooltip contentStyle={{ direction: locale.dir }} />
 
             <Line
               type="monotone"

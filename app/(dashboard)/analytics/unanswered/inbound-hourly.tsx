@@ -17,13 +17,17 @@ import ChartCard, {
 import { GroupIcon } from "lucide-react";
 import NoData from "@/components/Analytics/NoData";
 import { UnansweredAnalyticsFilters } from "./page";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import RechartTooltip from "@/components/RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
 
 type InboundUnansweredHourlyProps = {
   filters: UnansweredAnalyticsFilters;
 };
 const InboundUnansweredHourly = ({ filters }: InboundUnansweredHourlyProps) => {
   const t = useTranslations("analytics.unanswered");
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
 
   const { data, isLoading, isError, error } = useLocalizedQuery({
     queryKey: ["inboundUnansweredHourly", filters],
@@ -51,7 +55,7 @@ const InboundUnansweredHourly = ({ filters }: InboundUnansweredHourlyProps) => {
           <BarChart data={data}>
             <XAxis dataKey="hourOfDay" tickFormatter={(h) => `${h}:00`} />
             <YAxis />
-            <Tooltip />
+            <Tooltip contentStyle={{ direction: locale.dir }} />
 
             {filters.includeInternalCalls && (
               <Bar

@@ -11,6 +11,9 @@ import {
   Tooltip,
   Legend,
 } from "recharts";
+import RechartTooltip from "../RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
+import { useLocale } from "@/providers/TranslationProvider";
 
 interface UserCallMetricsData {
   userId: string;
@@ -31,6 +34,8 @@ interface UserCallMetricsChartProps {
 const UserCallMetricsChart: React.FC<UserCallMetricsChartProps> = ({
   data,
 }) => {
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       const user = payload[0].payload;
@@ -81,7 +86,10 @@ const UserCallMetricsChart: React.FC<UserCallMetricsChartProps> = ({
             allowDecimals={false}
             tick={{ fill: "#6B7280" }}
           />
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip
+            contentStyle={{ direction: locale.dir }}
+            content={<CustomTooltip />}
+          />
 
           <Bar
             dataKey="totalCalls"

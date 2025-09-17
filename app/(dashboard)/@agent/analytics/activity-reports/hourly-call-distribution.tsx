@@ -18,7 +18,9 @@ import ChartCard, {
 } from "@/components/ChartCard";
 import NoData from "@/components/Analytics/NoData";
 import { Schedule } from "@mui/icons-material";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import RechartTooltip from "@/components/RechartTooltip";
+import { defaultLocale, locales } from "@/i18n/config";
 
 type FetchHourlyCallDistributionResponse = Array<{
   answeredCalls: number;
@@ -33,6 +35,9 @@ type HourlyCallDistributionProps = {
 
 const HourlyCallDistribution = ({ filters }: HourlyCallDistributionProps) => {
   const t = useTranslations("analytics.activityAnalysis");
+
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
 
   const { data, isLoading, isError, error } =
     useLocalizedQuery<FetchHourlyCallDistributionResponse>({
@@ -93,6 +98,7 @@ const HourlyCallDistribution = ({ filters }: HourlyCallDistributionProps) => {
               allowDecimals={false}
             />
             <Tooltip
+              contentStyle={{ direction: locale.dir }}
               labelFormatter={(label, payload) => {
                 if (payload && payload[0]) {
                   const originalData = payload[0].payload;
