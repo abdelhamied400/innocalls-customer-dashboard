@@ -26,8 +26,7 @@ const DashboardLayout = ({ children, agent }: DashboardLayoutProps) => {
   const { isWebrtcOpen, setWebrtcOpen } = useAppStore();
 
   // Use the layout manager hook for clean layout management
-  const { getLayoutClasses, shouldUseSidebarSheet, shouldUseWebrtcSheet } =
-    useLayoutManager();
+  const { getLayoutClasses, shouldUseSidebarSheet } = useLayoutManager();
 
   const hasWebrtcAccess =
     (Organization?.hasTenant &&

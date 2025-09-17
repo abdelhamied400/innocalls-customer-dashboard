@@ -1,5 +1,8 @@
 import { useMemo, useEffect, useState } from "react";
 import useAppStore from "@/store/app.slice";
+import { useSession } from "next-auth/react";
+import useAuth from "./useAuth";
+import useAuthStore from "@/store/auth.slice";
 
 export type LayoutVariant =
   | "both-open" // sidebar + webrtc open
@@ -17,7 +20,18 @@ export interface LayoutClasses {
 
 export const useLayoutManager = () => {
   // Get state directly from the store - no need to pass booleans!
-  const { isSidebarOpen, isWebrtcOpen } = useAppStore();
+  const { data: session } = useSession();
+  const { data: auth } = useAuth();
+  const { Organization } = useAuthStore();
+  const { isSidebarOpen, isWebrtcOpen: storeWebrtcOpen } = useAppStore();
+  const hasWebrtcAccess =
+    (Organization?.hasTenant &&
+      session?.userType === "user" &&
+      auth?.user?.webrtcAccess) ||
+    session?.userType === "agent";
+
+  // If user doesn't have WebRTC access, force isWebrtcOpen to false
+  const isWebrtcOpen = hasWebrtcAccess ? storeWebrtcOpen : false;
   const [isMobile, setIsMobile] = useState(false);
 
   // Track screen size for responsive behavior
