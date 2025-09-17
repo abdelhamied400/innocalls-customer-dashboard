@@ -36,7 +36,7 @@ const SidebarCollapsibleItem = ({
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  const userType = session?.user?.userType;
+  const userType = session?.userType;
 
   const isActive = useMemo(() => {
     if (href === `/${userType}`) return pathname === `/${userType}`;

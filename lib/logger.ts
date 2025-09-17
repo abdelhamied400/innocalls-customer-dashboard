@@ -206,5 +206,6 @@ class Logger {
 
 export const webrtcLogger = Logger.create("WebRTC");
 export const paymentLogger = Logger.create("Payment");
+export const apiLogger = Logger.create("API");
 
 export default Logger;

@@ -1,4 +1,4 @@
-import { Organization } from "next-auth";
+import { Organization } from "@/types/api/organization";
 import { create } from "zustand";
 
 type AuthState = {

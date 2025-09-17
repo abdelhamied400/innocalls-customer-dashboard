@@ -1,4 +1,5 @@
 "use client";
+import useAuth from "@/hooks/useAuth";
 import useAuthStore from "@/store/auth.slice";
 import { useSession } from "next-auth/react";
 import React, { useState } from "react";
@@ -7,6 +8,7 @@ const DevLogger = () => {
   const [open, setOpen] = useState(false);
   const { Organization } = useAuthStore();
   const { data: session } = useSession();
+  const { data: auth } = useAuth();
 
   if (process.env.NODE_ENV !== "development") {
     return null;
@@ -68,6 +70,7 @@ const DevLogger = () => {
                       timestamp: new Date().toISOString(),
                       Organization,
                       session,
+                      auth,
                     },
                     null,
                     2

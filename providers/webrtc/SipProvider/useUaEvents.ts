@@ -31,6 +31,7 @@ export const useUaEvents = ({
 }: useUAEventsDeps) => {
   const { navigate } = useRouting();
   const { data: authSession } = useSession();
+
   const {
     setCallStartTime,
     setCallSummaryModalOpen,
@@ -173,10 +174,7 @@ export const useUaEvents = ({
       });
 
       session.on("failed", (event) => {
-        if (
-          authSession?.user?.userType === "agent" &&
-          !!currentCallId.current
-        ) {
+        if (authSession?.userType === "agent" && !!currentCallId.current) {
           setCallSummaryModalOpen(true);
         }
       });
@@ -219,7 +217,7 @@ export const useUaEvents = ({
         let dateNow: Date | null = null;
 
         session.on("progress", async () => {
-          if (authSession?.user?.userType === "agent") {
+          if (authSession?.userType === "agent") {
             const liveCall = await webrtcService
               .searchAgentLiveCalls(phoneNumber)
               .catch((err) => {
@@ -263,10 +261,7 @@ export const useUaEvents = ({
           setSpyingStatus("spy");
           setIsSpying(false);
 
-          if (
-            authSession?.user?.userType === "agent" &&
-            !!currentCallId.current
-          ) {
+          if (authSession?.userType === "agent" && !!currentCallId.current) {
             setCallSummaryModalOpen(true);
           }
           updateLastCall({

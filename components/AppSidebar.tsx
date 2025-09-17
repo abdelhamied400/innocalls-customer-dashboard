@@ -33,10 +33,12 @@ import { Button } from "./ui/button";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { useSession } from "next-auth/react";
 import useAuthStore from "@/store/auth.slice";
+import useAuth from "@/hooks/useAuth";
 
 const AppSidebar = () => {
   const t = useTranslations("sidebar");
   const { data: session } = useSession();
+  const { data: auth } = useAuth();
   const { Organization } = useAuthStore();
 
   return (
@@ -51,7 +53,7 @@ const AppSidebar = () => {
           isNew={true}
           isComingSoon={false}
         />
-        {session?.user.userType === "user" && Organization?.hasTenant && (
+        {session?.userType === "user" && Organization?.hasTenant && (
           <SidebarItem
             icon={<Monitor />}
             title={t("navigation.liveMonitoring")}
@@ -61,7 +63,7 @@ const AppSidebar = () => {
             isComingSoon={false}
           />
         )}
-        {session?.user.userType === "user" && (
+        {session?.userType === "user" && (
           <SidebarItem
             icon={<SmartToy />}
             title={t("navigation.aiVoiceAgents")}
@@ -80,7 +82,7 @@ const AppSidebar = () => {
             isNew={true}
             isComingSoon={false}
           >
-            {session?.user.userType === "user" && (
+            {session?.userType === "user" && (
               <SidebarItem
                 icon={<ArrowDownward />}
                 title={t("navigation.inbound")}
@@ -89,7 +91,7 @@ const AppSidebar = () => {
                 isComingSoon={false}
               />
             )}
-            {session?.user.userType === "user" && (
+            {session?.userType === "user" && (
               <SidebarItem
                 icon={<ArrowUpward />}
                 title={t("navigation.outbound")}
@@ -98,7 +100,7 @@ const AppSidebar = () => {
                 isComingSoon={false}
               />
             )}
-            {session?.user.userType === "user" && (
+            {session?.userType === "user" && (
               <SidebarItem
                 icon={<CallMissedOutgoing />}
                 title={t("navigation.unanswered")}
@@ -107,7 +109,7 @@ const AppSidebar = () => {
                 isComingSoon={false}
               />
             )}
-            {session?.user.userType === "user" && (
+            {session?.userType === "user" && (
               <SidebarItem
                 icon={<PersonSearch />}
                 title={t("navigation.userActivity")}
@@ -117,7 +119,7 @@ const AppSidebar = () => {
               />
             )}
 
-            {session?.user.userType === "agent" && (
+            {session?.userType === "agent" && (
               <SidebarItem
                 icon={<PersonSearch />}
                 title={t("navigation.activityAnalysis")}
@@ -137,7 +139,7 @@ const AppSidebar = () => {
           </SidebarCollapsibleItem>
         )}
 
-        {session?.user.userType === "agent" && (
+        {session?.userType === "agent" && (
           <SidebarCollapsibleItem
             icon={<Apps />}
             title={t("navigation.apps")}
@@ -156,21 +158,20 @@ const AppSidebar = () => {
           </SidebarCollapsibleItem>
         )}
 
-        {session?.user.userType === "user" &&
-          session?.user.fullAccessNumbers && (
-            <SidebarItem
-              icon={<Phone />}
-              title={t("navigation.numbers")}
-              href={`/numbers`}
-              disabled={false}
-              isNew={true}
-              isComingSoon={false}
-            />
-          )}
+        {session?.userType === "user" && auth?.user?.fullAccessNumbers && (
+          <SidebarItem
+            icon={<Phone />}
+            title={t("navigation.numbers")}
+            href={`/numbers`}
+            disabled={false}
+            isNew={true}
+            isComingSoon={false}
+          />
+        )}
 
-        {session?.user.userType === "user" &&
+        {session?.userType === "user" &&
           Organization?.hasTenant &&
-          session?.user.agentsAccessControl && (
+          auth?.user?.agentsAccessControl && (
             <SidebarItem
               icon={<Users />}
               title={t("navigation.users")}
@@ -181,31 +182,29 @@ const AppSidebar = () => {
             />
           )}
 
-        {session?.user.userType === "user" &&
-          session?.user.completeControlBilling && (
-            <SidebarItem
-              icon={<MonetizationOn />}
-              title={t("navigation.billing")}
-              href={`/billing`}
-              disabled={false}
-              isNew={true}
-              isComingSoon={false}
-            />
-          )}
+        {session?.userType === "user" && auth?.user?.completeControlBilling && (
+          <SidebarItem
+            icon={<MonetizationOn />}
+            title={t("navigation.billing")}
+            href={`/billing`}
+            disabled={false}
+            isNew={true}
+            isComingSoon={false}
+          />
+        )}
 
-        {session?.user.userType === "user" &&
-          session?.user.fullAccessUsageAnalytics && (
-            <SidebarItem
-              icon={<DataUsage />}
-              title={t("navigation.usage")}
-              href={`/usage`}
-              disabled={false}
-              isNew={true}
-              isComingSoon={false}
-            />
-          )}
+        {session?.userType === "user" && auth?.user?.fullAccessUsageAnalytics && (
+          <SidebarItem
+            icon={<DataUsage />}
+            title={t("navigation.usage")}
+            href={`/usage`}
+            disabled={false}
+            isNew={true}
+            isComingSoon={false}
+          />
+        )}
 
-        {session?.user.userType === "user" && (
+        {session?.userType === "user" && (
           <SidebarCollapsibleItem
             icon={<Apps />}
             title={t("navigation.apps")}
@@ -263,7 +262,7 @@ const AppSidebar = () => {
             />
           </SidebarCollapsibleItem>
         )}
-        {session?.user.userType === "user" && (
+        {session?.userType === "user" && (
           <SidebarCollapsibleItem
             icon={<Code />}
             title={t("navigation.developersTab")}
@@ -305,7 +304,7 @@ const AppSidebar = () => {
             />
           </SidebarCollapsibleItem>
         )}
-        {session?.user.userType === "user" && (
+        {session?.userType === "user" && (
           <SidebarItem
             icon={<Settings />}
             title={t("navigation.settings")}

@@ -19,15 +19,19 @@ import { isValidTransition } from "@/lib/webrtc";
 import { AgentActivity } from "@/types/webrtc";
 import { isAxiosError } from "axios";
 import { useToast } from "@/hooks/use-toast";
+import useAuth from "@/hooks/useAuth";
 
 const ExtensionStateBar = () => {
   const t = useTranslations("webrtc");
 
   const { extension, extensionState, reconnect, extensionLoading } = useSip();
+  const { data: auth, refetch: refetchUser } = useAuth();
   const { Organization } = useAuthStore();
-  const { update, data: session } = useSession();
+  const { data: session } = useSession();
+  const { onActivityChange } = useSip();
+
   const breakType =
-    session?.user?.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
+    auth?.user?.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
   const { toast } = useToast();
 
   const handleActivityChange = async (
@@ -36,7 +40,8 @@ const ExtensionStateBar = () => {
   ) => {
     try {
       await webrtcService.changeAgentState(activity, breakType);
-      update({ refreshUser: true });
+      await refetchUser();
+      onActivityChange(activity);
     } catch (error) {
       if (isAxiosError(error)) {
         const errorMessage = error.response?.data?.message || error.message;
@@ -55,8 +60,6 @@ const ExtensionStateBar = () => {
     } finally {
     }
   };
-
-  console.log(extension);
 
   if (extensionLoading) {
     return <Skeleton className="h-16 w-full" />;
@@ -93,7 +96,7 @@ const ExtensionStateBar = () => {
             </Button>
           )}
 
-        {session?.user.userType === "agent" && breakType && (
+        {session?.userType === "agent" && breakType && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button size="sm" variant="link">

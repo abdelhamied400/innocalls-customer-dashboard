@@ -33,6 +33,7 @@ import { useSession } from "next-auth/react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useVocab } from "@/hooks/useVocab";
+import useAuth from "@/hooks/useAuth";
 
 export type InboundAnalyticsFilterBy = "all" | "team";
 
@@ -48,7 +49,7 @@ export type InboundAnalyticsFilters = {
 const InboundAnalytics = () => {
   const { extensions, ergs } = useVocab();
   const { setPageTitle } = useAppStore();
-  const { data: session } = useSession();
+  const { data: auth } = useAuth();
 
   const [currentTab, setCurrentTab] = useState<string>("overview");
 
@@ -262,7 +263,7 @@ const InboundAnalytics = () => {
                 </TabsTrigger>
               )}
               {appliedValues.filterBy === "all" &&
-                session?.user.role === "Admin" && (
+                auth?.user?.role === "Admin" && (
                   <TabsTrigger value="ivr" className="flex items-center gap-1">
                     <Call />
                     {t("tabs.ivrInsights")}

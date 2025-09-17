@@ -1,9 +1,18 @@
 import api from "./api";
+import { User } from "@/types/api/user";
+import { Organization } from "@/types/api/organization";
 
 type Credentials = {
   email: string;
   password: string;
   userType?: "user" | "agent";
+};
+
+type FetchProfileResponse = {
+  id?: string;
+  user: User;
+  organizations: Array<Organization>;
+  permissions: Array<string>;
 };
 
 export default {
@@ -53,8 +62,16 @@ export default {
 
     return res.data;
   },
-  fetchUserProfile: async () => {
-    const res = await api.get("/agent/profile");
+  fetchUserProfile: async (): Promise<FetchProfileResponse> => {
+    const res = await api.get("/user/profile");
     return res.data;
+  },
+  fetchAgentProfile: async (): Promise<FetchProfileResponse> => {
+    const res = await api.get("/agent/profile");
+    return {
+      user: res.data,
+      organizations: [res.data.organization],
+      permissions: [],
+    };
   },
 };

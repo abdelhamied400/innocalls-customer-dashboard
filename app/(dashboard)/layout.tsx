@@ -6,20 +6,19 @@ import ResponsiveSidebar from "@/components/ResponsiveSidebar";
 import ResponsiveWebrtc from "@/components/ResponsiveWebrtc";
 import AppNavbar from "@/components/AppNavbar";
 import useAppStore from "@/store/app.slice";
-import { cn } from "@/lib/utils";
 import { getCookie } from "cookies-next/client";
 import { useSession } from "next-auth/react";
 import { useLayoutManager } from "@/hooks/use-layout-manager";
-import { Button } from "@/components/ui/button";
-import { ArrowForward, Dialpad } from "@mui/icons-material";
 import InnortcLayout from "@/components/Webrtc/InnortcLayout";
 import DevLogger from "@/components/DevLogger";
+import useAuth from "@/hooks/useAuth";
 
 type DashboardLayoutProps = PropsWithChildren<{
   agent?: React.ReactNode;
 }>;
 const DashboardLayout = ({ children, agent }: DashboardLayoutProps) => {
   const { data: session } = useSession();
+  const { data: auth } = useAuth();
   const { Organization } = useAuthStore();
   const [defaultOrganizationId, setDefaultOrganizationId] = useState<
     string | null
@@ -32,9 +31,9 @@ const DashboardLayout = ({ children, agent }: DashboardLayoutProps) => {
 
   const hasWebrtcAccess =
     (Organization?.hasTenant &&
-      session?.user?.userType === "user" &&
-      session?.user.webrtcAccess) ||
-    session?.user?.userType === "agent";
+      session?.userType === "user" &&
+      auth?.user?.webrtcAccess) ||
+    session?.userType === "agent";
 
   useEffect(() => {
     const orgId = getCookie("OrganizationId");
@@ -64,8 +63,8 @@ const DashboardLayout = ({ children, agent }: DashboardLayoutProps) => {
         </div>
 
         <div className={getLayoutClasses.mainContent}>
-          {session?.user?.userType === "user" && children}
-          {session?.user?.userType === "agent" && agent}
+          {session?.userType === "user" && children}
+          {session?.userType === "agent" && agent}
         </div>
 
         {hasWebrtcAccess && (

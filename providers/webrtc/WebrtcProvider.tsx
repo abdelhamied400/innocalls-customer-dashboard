@@ -17,7 +17,7 @@ export const WebrtcProvider = ({ children }: WebrtcProviderProps) => {
     return <div>{t("loading")}</div>;
   }
 
-  const userType = session?.user?.userType;
+  const userType = session?.userType;
 
   if (userType === "agent") {
     initialRoute = "/dialpad";

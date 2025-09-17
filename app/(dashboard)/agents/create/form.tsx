@@ -14,7 +14,7 @@ import Stepper, {
 } from "@/components/ui/stepper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeftIcon, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
   RadioGroup,
@@ -31,11 +31,29 @@ import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "@/providers/TranslationProvider";
 
-type CreateUserFormProps = {
-  ext: number;
-  pin: string;
-};
-const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
+const CreateUserForm = () => {
+  const [ext, setExt] = useState<number | null>(null);
+  const [pin, setPin] = useState<string>("");
+
+  useEffect(() => {
+    let isMounted = true;
+    usersService
+      .getRecommendedNumber()
+      .then((num) => {
+        if (isMounted) setExt(Number(num));
+      })
+      .catch(() => {
+        if (isMounted) setExt(1000);
+      });
+    // Generate a random 4-digit PIN
+    const generatedPin = (Math.floor(Math.random() * 10000) + 1)
+      .toString()
+      .padStart(4, "0");
+    setPin(generatedPin);
+    return () => {
+      isMounted = false;
+    };
+  }, []);
   const queryClient = useQueryClient();
   const [currentStep, setCurrentStep] = useState(0);
   const { toast } = useToast();
@@ -48,8 +66,8 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
     defaultValues: {
       name: "",
       email: "",
-      ext,
-      pin, // Generate a random 4-digit PIN
+      ext: ext ?? 1000,
+      pin: pin,
       inbound: 1,
       outbound: 1,
       voicemail: 0,
@@ -84,6 +102,12 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
     }
   });
 
+  if (ext === null || pin === "") {
+    return (
+      <div className="flex items-center justify-center h-full">Loading...</div>
+    );
+  }
+
   return (
     <Stepper
       steps={[t("title")]}
@@ -116,55 +140,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
               idx={0}
               className="p-4 rounded-xl bg-white h-full flex flex-col gap-2"
             >
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Field
-                        label={t("form.fields.name.label")}
-                        error={
-                          form.formState.errors.name?.message?.toString() || ""
-                        }
-                        htmlFor="name"
-                      >
-                        <Input
-                          id="name"
-                          variant="field"
-                          placeholder={t("form.fields.name.placeholder")}
-                          {...field}
-                        />
-                      </Field>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Field
-                        label={t("form.fields.email.label")}
-                        error={
-                          form.formState.errors.email?.message?.toString() || ""
-                        }
-                        htmlFor="email"
-                      >
-                        <Input
-                          id="email"
-                          variant="field"
-                          placeholder={t("form.fields.email.placeholder")}
-                          type="email"
-                          {...field}
-                        />
-                      </Field>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
+              {/* ...existing code... */}
               <FormField
                 control={form.control}
                 name="ext"
@@ -188,6 +164,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                             // check if the value is a valid number
                             if (/^\d*$/.test(value)) {
                               field.onChange(+value);
+                              setExt(+value);
                             }
                           }}
                         />
@@ -221,118 +198,7 @@ const CreateUserForm = ({ ext, pin }: CreateUserFormProps) => {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="inbound"
-                render={({ field: { onChange, ...field } }) => (
-                  <FormItem>
-                    <FormControl>
-                      <RadioGroupField
-                        label={t("form.fields.inbound.label")}
-                        htmlFor="inbound"
-                        error={form.formState.errors.inbound?.message?.toString()}
-                      >
-                        <RadioGroup
-                          {...field}
-                          value={field.value?.toString() || "1"}
-                          onValueChange={(value) => {
-                            if (/^\d+$/.test(value)) {
-                              onChange(parseInt(value, 10));
-                            }
-                          }}
-                          className="flex items-center gap-2"
-                        >
-                          <div className="flex items-center space-x-4">
-                            <RadioGroupItem value="1" id="inbound-enable" />
-                            <label htmlFor="inbound-enable">
-                              {t("form.fields.inbound.enable")}
-                            </label>
-                          </div>
-                          <div className="flex items-center space-x-4">
-                            <RadioGroupItem value="0" id="inbound-disable" />
-                            <label htmlFor="inbound-disable">
-                              {t("form.fields.inbound.disable")}
-                            </label>
-                          </div>
-                        </RadioGroup>
-                      </RadioGroupField>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="outbound"
-                render={({ field: { onChange, ...field } }) => (
-                  <FormItem>
-                    <FormControl>
-                      <RadioGroupField
-                        label={t("form.fields.outbound.label")}
-                        htmlFor="outbound"
-                        error={form.formState.errors.outbound?.message?.toString()}
-                      >
-                        <RadioGroup
-                          {...field}
-                          value={field.value?.toString() || "1"}
-                          onValueChange={(value) => {
-                            if (/^\d+$/.test(value)) {
-                              onChange(parseInt(value, 10));
-                            }
-                          }}
-                        >
-                          <div className="flex items-center space-x-4">
-                            <RadioGroupItem value="1" id="outbound-enable" />
-                            <label htmlFor="outbound-enable">
-                              {t("form.fields.outbound.enable")}
-                            </label>
-                            <RadioGroupItem value="0" id="outbound-disable" />
-                            <label htmlFor="outbound-disable">
-                              {t("form.fields.outbound.disable")}
-                            </label>
-                          </div>
-                        </RadioGroup>
-                      </RadioGroupField>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="voicemail"
-                render={({ field: { onChange, ...field } }) => (
-                  <FormItem>
-                    <FormControl>
-                      <RadioGroupField
-                        label={t("form.fields.voicemail.label")}
-                        htmlFor="voicemail"
-                        error={form.formState.errors.voicemail?.message?.toString()}
-                      >
-                        <RadioGroup
-                          {...field}
-                          value={field.value?.toString() || "0"}
-                          onValueChange={(value) => {
-                            if (/^\d+$/.test(value)) {
-                              onChange(parseInt(value, 10));
-                            }
-                          }}
-                        >
-                          <div className="flex items-center space-x-4">
-                            <RadioGroupItem value="1" id="voicemail-enable" />
-                            <label htmlFor="voicemail-enable">
-                              {t("form.fields.voicemail.enable")}
-                            </label>
-                            <RadioGroupItem value="0" id="voicemail-disable" />
-                            <label htmlFor="voicemail-disable">
-                              {t("form.fields.voicemail.disable")}
-                            </label>
-                          </div>
-                        </RadioGroup>
-                      </RadioGroupField>
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-
+              {/* ...existing code... */}
               <Button type="submit">{t("actions.submit")}</Button>
             </StepperStep>
           </form>
