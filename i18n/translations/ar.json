@@ -1994,7 +1994,10 @@
           "waitingDuration": "مدة الانتظار",
           "error": "خطأ",
           "sipConnectionError": "يجب أن تكون متصلاً ببرنامج الاتصال لمراقبة المكالمات.",
-          "incognito": "متخفي"
+          "incognito": "متخفي",
+          "tooltips": {
+            "spy": "تنصّت"
+          }
         }
       },
       "form": {

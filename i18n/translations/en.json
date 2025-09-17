@@ -1982,7 +1982,10 @@
           "waitingDuration": "Waiting Duration",
           "error": "Error",
           "sipConnectionError": "You must be connected to a WebRTC/softphone client to monitor calls",
-          "incognito": "Incognito"
+          "incognito": "Incognito",
+          "tooltips": {
+            "spy": "Spy"
+          }
         }
       },
       "form": {
@@ -2066,8 +2069,8 @@
         "to": "To",
         "duration": "Duration",
         "autoDialerCall": "Auto Dialer Call",
-        "tooltips":{
-          "spy":"Spy"
+        "tooltips": {
+          "spy": "Spy"
         }
       }
     }

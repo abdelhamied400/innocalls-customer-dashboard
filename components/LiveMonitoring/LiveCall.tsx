@@ -88,7 +88,7 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>{t('tooltips.spy')}</p>
+                  <p>{t("tooltips.spy")}</p>
                 </TooltipContent>
               </Tooltip>
             </div>
@@ -105,20 +105,29 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
           {"\u200E" + getAutoDialerCall(to)}
         </div>
         {getExtensionNumber(to) && (
-          <div className="flex justify-end">
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => handleSpy(getExtensionNumber(to))}
-            >
-              <Image
-                src="/assets/icons/incognito.svg"
-                alt="spy"
-                width={24}
-                height={24}
-              />
-            </Button>
-          </div>
+          <TooltipProvider>
+            <div className="flex justify-end">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => handleSpy(getExtensionNumber(to))}
+                  >
+                    <Image
+                      src="/assets/icons/incognito.svg"
+                      alt="spy"
+                      width={24}
+                      height={24}
+                    />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t("tooltips.spy")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </TooltipProvider>
         )}
       </div>
       <hr />
