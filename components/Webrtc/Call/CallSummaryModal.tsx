@@ -5,9 +5,11 @@ import { useSession } from "next-auth/react";
 import CallSummaryForm from "./CallSummaryForm";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { useTranslations } from "@/providers/TranslationProvider";
+import useAuthStore from "@/store/auth.slice";
 
 const CallSummaryModal = () => {
   const { data: session } = useSession();
+  const { Organization } = useAuthStore();
   const {
     callSummaryModalOpen,
     setCallSummaryModalOpen,
@@ -15,7 +17,8 @@ const CallSummaryModal = () => {
     clearLastCall,
   } = useWebrtcStore();
 
-  if (session?.userType === "user") return null;
+  if (session?.userType === "user" || !Organization?.enableAfterCallTags)
+    return null;
 
   const t = useTranslations("webrtc.summary");
 
