@@ -772,7 +772,8 @@
     "direction": {
       "incoming": "واردة",
       "outgoing": "صادرة",
-      "local": "محلية"
+      "local": "محلية",
+      "all":"الجميع"
     },
     "status": {
       "answered": "تم الرد",
@@ -913,6 +914,11 @@
     },
     "tooltips": {
       "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
+    },
+      "isAnswered":{
+      "both":"كلاهما",
+      "answered":"مجابة",
+      "notAnswered":"غير مجابة"
     }
   },
   "dashboard": {
