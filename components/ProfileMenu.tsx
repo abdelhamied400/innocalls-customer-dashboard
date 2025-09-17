@@ -51,10 +51,6 @@ const ProfileMenu = () => {
       : null;
 
 
-      console.log({or1: auth?.user.organizations});
-      console.log({or2: session?.organizations});
-      console.log({or3: session?.user?.organizations})
-
   const handleLogout = async () => {
     // TODO: FIND ANOTHER WAY TP LOGOUT ...
     // Get the current base URL
