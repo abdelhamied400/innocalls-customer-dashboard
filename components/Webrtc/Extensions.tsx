@@ -19,6 +19,7 @@ const Extensions = () => {
       setExtension(credentials.agent);
       login({
         ...extension,
+        ...credentials.agent,
         uri: credentials.agent.uri,
         password: credentials.agent.password,
       });
