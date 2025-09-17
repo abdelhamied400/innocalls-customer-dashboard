@@ -2079,7 +2079,10 @@
         "from": "من",
         "to": "إلى",
         "duration": "المدة",
-        "autoDialerCall": "مكالمة اتصال تلقائي"
+        "autoDialerCall": "مكالمة اتصال تلقائي",
+        "tooltips": {
+          "spy": "تنصّت"
+        }
       }
     }
   },

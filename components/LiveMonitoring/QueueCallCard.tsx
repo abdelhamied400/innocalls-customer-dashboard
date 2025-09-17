@@ -91,7 +91,7 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
           <Button size="icon" variant="ghost" onClick={handleSpy}>
             <Image
               src="/assets/icons/incognito.svg"
-              alt="Incognito"
+              alt="spy"
               width={24}
               height={24}
             />

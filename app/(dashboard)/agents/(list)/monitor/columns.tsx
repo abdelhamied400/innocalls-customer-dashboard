@@ -77,7 +77,7 @@ export const columns = (
             >
               <Image
                 src="/assets/icons/incognito.svg"
-                alt="Incognito"
+                alt="spy"
                 width={24}
                 height={24}
               />

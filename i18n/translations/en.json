@@ -2065,7 +2065,10 @@
         "from": "From",
         "to": "To",
         "duration": "Duration",
-        "autoDialerCall": "Auto Dialer Call"
+        "autoDialerCall": "Auto Dialer Call",
+        "tooltips":{
+          "spy":"Spy"
+        }
       }
     }
   },

@@ -5,6 +5,12 @@ import { useToast } from "@/hooks/use-toast";
 import useAppStore from "@/store/app.slice";
 import Image from "next/image";
 import { useTranslations } from "@/providers/TranslationProvider";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const agentCardVariants = cva(
   "rounded-lg border p-2 hover:shadow-md transition-all duration-200 group",
@@ -101,14 +107,23 @@ const AgentCard: React.FC<AgentCardProps> = ({
       </div>
       <div className="flex justify-end">
         {status === "onCall" && (
-          <Button size="icon" variant="ghost" onClick={handleSpy}>
-            <Image
-              src="/assets/icons/incognito.svg"
-              alt="Incognito"
-              width={24}
-              height={24}
-            />
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button size="icon" variant="ghost" onClick={handleSpy}>
+                  <Image
+                    src="/assets/icons/incognito.svg"
+                    alt="spy"
+                    width={24}
+                    height={24}
+                  />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{t("tooltips.spy")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )}
       </div>
     </div>
