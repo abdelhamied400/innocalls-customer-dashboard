@@ -5,12 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import billingService from "@/services/billing.service";
-import { Download, MonetizationOn, Money } from "@mui/icons-material";
+import { Download, MonetizationOn } from "@mui/icons-material";
 import { ColumnDef } from "@tanstack/react-table";
 import { AxiosError } from "axios";
-import { ArrowUpDownIcon } from "lucide-react";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { useState } from "react";
+import { Tooltip } from "@mui/material";
 
 export type Invoice = {
   currencyCode: string;
@@ -148,25 +148,29 @@ export const columns = (): ColumnDef<Invoice>[] => {
         return (
           <div className="flex items-center gap-2">
             {status === "overdue" && (
-              <Button
-                size="icon"
-                variant="ghost-success"
-                onClick={getInvoiceUrl}
-                loading={isLoading}
-              >
-                <MonetizationOn className="h-4 w-4" />
-              </Button>
+              <Tooltip title={t("tooltips.pay")} arrow>
+                <Button
+                  size="icon"
+                  variant="ghost-success"
+                  onClick={getInvoiceUrl}
+                  loading={isLoading}
+                >
+                  <MonetizationOn className="h-4 w-4" />
+                </Button>
+              </Tooltip>
             )}
 
             {["paid", "overdue"].includes(status) && (
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={downloadFile}
-                loading={isDownloading}
-              >
-                <Download className="h-4 w-4" />
-              </Button>
+              <Tooltip title={t("tooltips.download")} arrow>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={downloadFile}
+                  loading={isDownloading}
+                >
+                  <Download className="h-4 w-4" />
+                </Button>
+              </Tooltip>
             )}
           </div>
         );

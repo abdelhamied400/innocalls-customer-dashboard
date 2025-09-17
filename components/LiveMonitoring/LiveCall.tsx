@@ -6,6 +6,12 @@ import { useSip } from "@/providers/webrtc/SipProvider";
 import useAppStore from "@/store/app.slice";
 import Image from "next/image";
 import { useTranslations } from "@/providers/TranslationProvider";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface LiveCallProps {
   from: string;
@@ -64,20 +70,29 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
           {"\u200E" + getAutoDialerCall(from)}
         </div>
         {getExtensionNumber(from) && (
-          <div className="flex justify-end">
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => handleSpy(getExtensionNumber(from))}
-            >
-              <Image
-                src="/assets/icons/incognito.svg"
-                alt="Incognito"
-                width={24}
-                height={24}
-              />
-            </Button>
-          </div>
+          <TooltipProvider>
+            <div className="flex justify-end">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => handleSpy(getExtensionNumber(from))}
+                  >
+                    <Image
+                      src="/assets/icons/incognito.svg"
+                      alt="spy"
+                      width={24}
+                      height={24}
+                    />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t("tooltips.spy")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </TooltipProvider>
         )}
       </div>
       <div className="from bg-white border p-2 rounded-lg">
@@ -90,20 +105,29 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
           {"\u200E" + getAutoDialerCall(to)}
         </div>
         {getExtensionNumber(to) && (
-          <div className="flex justify-end">
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => handleSpy(getExtensionNumber(to))}
-            >
-              <Image
-                src="/assets/icons/incognito.svg"
-                alt="Incognito"
-                width={24}
-                height={24}
-              />
-            </Button>
-          </div>
+          <TooltipProvider>
+            <div className="flex justify-end">
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    onClick={() => handleSpy(getExtensionNumber(to))}
+                  >
+                    <Image
+                      src="/assets/icons/incognito.svg"
+                      alt="spy"
+                      width={24}
+                      height={24}
+                    />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t("tooltips.spy")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </div>
+          </TooltipProvider>
         )}
       </div>
       <hr />

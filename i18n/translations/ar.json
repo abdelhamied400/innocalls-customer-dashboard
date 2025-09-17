@@ -268,6 +268,9 @@
         "unexpectedError": "حدث خطأ غير متوقع.",
         "actionError": "حدث خطأ أثناء تنفيذ الطلب .",
         "deleting": "جاري الحذف..."
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
       }
     },
     "monitor": {
@@ -286,6 +289,9 @@
       "onCall": {
         "yes": "نعم",
         "no": "لا"
+      },
+      "tooltips": {
+        "spy": "تنصّت"
       },
       "sipConnectionError": "يجب أن تكون متصلاً ببرنامج الاتصال لمراقبة المكالمات."
     },
@@ -441,7 +447,7 @@
         }
       },
       "filters": {
-        "selectFromList": "اختر من القائمة",
+        "selectFromList": "اختر نطاق التاريخ",
         "date": {
           "triggerLabel": "التاريخ",
           "label": "اختر التاريخ",
@@ -456,6 +462,9 @@
           "triggerLabel": "إظهار المكالمات الداخلية",
           "label": "إظهار المكالمات الداخلية"
         }
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
       }
     },
     "timeline": {
@@ -495,7 +504,7 @@
         "noData": "لا توجد بيانات متاحة"
       },
       "filters": {
-        "selectFromList": "اختر من القائمة",
+        "selectFromList": "اختر نطاق التاريخ",
         "date": {
           "triggerLabel": "التاريخ",
           "label": "اختر التاريخ",
@@ -506,6 +515,9 @@
           "triggerLabel": "الوكلاء",
           "label": "اختر الوكلاء"
         }
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
       }
     }
   },
@@ -609,6 +621,10 @@
         "downloadError": "خطأ في تحميل الفاتورة",
         "unknownError": "حدث خطأ غير معروف.",
         "invalidAmountRange": "نطاق مبلغ غير صحيح"
+      },
+      "tooltips": {
+        "pay": "دفع الفاتورة",
+        "download": "تحميل الفاتورة"
       }
     },
     "charges": {
@@ -651,6 +667,9 @@
       },
       "messages": {
         "invalidDateRange": "نطاق تاريخ غير صحيح"
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
       }
     },
     "refillBalance": {
@@ -891,6 +910,9 @@
     },
     "actions": {
       "viewHistory": "عرض سجل المكالمات"
+    },
+    "tooltips": {
+      "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
     }
   },
   "dashboard": {
@@ -1197,6 +1219,9 @@
         "errorDescription": "حدث خطأ غير متوقع أثناء تحميل بيانات ملخص الاستخدام.",
         "invalidDateRange": "نطاق تاريخ غير صالح",
         "noData": "لم يتم العثور على بيانات استخدام للمعايير المحددة."
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
       }
     },
     "detailed": {
@@ -1246,6 +1271,10 @@
           "triggerLabel": "نطاق التاريخ",
           "label": "اختر نطاق التاريخ"
         }
+      },
+      "tooltips": {
+        "export": "استخراج",
+        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
       }
     },
     "filters": {
@@ -1965,7 +1994,10 @@
           "waitingDuration": "مدة الانتظار",
           "error": "خطأ",
           "sipConnectionError": "يجب أن تكون متصلاً ببرنامج الاتصال لمراقبة المكالمات.",
-          "incognito": "متخفي"
+          "incognito": "متخفي",
+          "tooltips": {
+            "spy": "تنصّت"
+          }
         }
       },
       "form": {
@@ -2050,7 +2082,10 @@
         "from": "من",
         "to": "إلى",
         "duration": "المدة",
-        "autoDialerCall": "مكالمة اتصال تلقائي"
+        "autoDialerCall": "مكالمة اتصال تلقائي",
+        "tooltips": {
+          "spy": "تنصّت"
+        }
       }
     }
   },

@@ -268,6 +268,9 @@
         "unexpectedError": "An unexpected error occurred.",
         "actionError": "An error occurred while processing the request.",
         "deleting": "Deleting..."
+      },
+      "tooltips": {
+        "toggleFilters": "Click to show/hide search filters"
       }
     },
     "monitor": {
@@ -286,6 +289,9 @@
       "onCall": {
         "yes": "yes",
         "no": "no"
+      },
+      "tooltips": {
+        "spy": "Spy"
       },
       "sipConnectionError": "You must be connected to a WebRTC/softphone client to monitor calls"
     },
@@ -441,7 +447,7 @@
         }
       },
       "filters": {
-        "selectFromList": "Select from the list",
+        "selectFromList": "Select a date range",
         "date": {
           "triggerLabel": "Date",
           "label": "Select Date",
@@ -456,6 +462,9 @@
           "triggerLabel": "Include Internal Calls",
           "label": "Include Internal Calls"
         }
+      },
+      "tooltips": {
+        "toggleFilters": "Click to show/hide search filters"
       }
     },
     "timeline": {
@@ -495,7 +504,7 @@
         "noData": "No data available"
       },
       "filters": {
-        "selectFromList": "Select from the list",
+        "selectFromList": "Select a date range",
         "date": {
           "triggerLabel": "Date",
           "label": "Select Date",
@@ -506,6 +515,9 @@
           "triggerLabel": "Agents",
           "label": "Select Agents"
         }
+      },
+      "tooltips": {
+        "toggleFilters": "Click to show/hide search filters"
       }
     }
   },
@@ -609,6 +621,10 @@
         "downloadError": "Error downloading invoice",
         "unknownError": "An unknown error occurred.",
         "invalidAmountRange": "Invalid Amount Range"
+      },
+      "tooltips": {
+        "pay": "Pay Invoice",
+        "download": "Download Invoice"
       }
     },
     "charges": {
@@ -690,6 +706,9 @@
       },
       "messages": {
         "invalidDateRange": "Invalid date range"
+      },
+      "tooltips": {
+        "toggleFilters": "Click to show/hide search filters"
       }
     }
   },
@@ -883,6 +902,9 @@
     },
     "actions": {
       "viewHistory": "View call history"
+    },
+    "tooltips": {
+      "toggleFilters": "Click to show/hide search filters"
     }
   },
   "dashboard": {
@@ -1188,6 +1210,9 @@
         "errorDescription": "An unexpected error occurred while loading usage summary data.",
         "invalidDateRange": "Invalid date range",
         "noData": "No usage data found for the selected criteria."
+      },
+      "tooltips": {
+        "toggleFilters": "Click to show/hide search filters"
       }
     },
     "detailed": {
@@ -1236,6 +1261,10 @@
           "triggerLabel": "Date Range",
           "label": "Select a date range"
         }
+      },
+      "tooltips": {
+        "export": "Export",
+        "toggleFilters": "Click to show/hide search filters"
       }
     },
     "common": {
@@ -1953,7 +1982,10 @@
           "waitingDuration": "Waiting Duration",
           "error": "Error",
           "sipConnectionError": "You must be connected to a WebRTC/softphone client to monitor calls",
-          "incognito": "Incognito"
+          "incognito": "Incognito",
+          "tooltips": {
+            "spy": "Spy"
+          }
         }
       },
       "form": {
@@ -2036,7 +2068,10 @@
         "from": "From",
         "to": "To",
         "duration": "Duration",
-        "autoDialerCall": "Auto Dialer Call"
+        "autoDialerCall": "Auto Dialer Call",
+        "tooltips": {
+          "spy": "Spy"
+        }
       }
     }
   },

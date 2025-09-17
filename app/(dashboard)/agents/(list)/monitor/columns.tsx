@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ColumnDef, RowData } from "@tanstack/react-table";
 import { useTranslations } from "@/providers/TranslationProvider";
 import Image from "next/image";
+import { Tooltip } from "@mui/material";
 
 // Extend TableMeta to include onSpy
 declare module "@tanstack/react-table" {
@@ -68,18 +69,20 @@ export const columns = (
           {row.getValue("on_call") ? t("onCall.yes") : t("onCall.no")}
         </Badge>
         {!!row.getValue("on_call") && (
-          <Button
-            size="icon"
-            variant="ghost"
-            onClick={() => table.options.meta?.onSpy?.(row.original.ext)}
-          >
-            <Image
-              src="/assets/icons/incognito.svg"
-              alt="Incognito"
-              width={24}
-              height={24}
-            />
-          </Button>
+          <Tooltip title={t("tooltips.spy")} arrow>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => table.options.meta?.onSpy?.(row.original.ext)}
+            >
+              <Image
+                src="/assets/icons/incognito.svg"
+                alt="spy"
+                width={24}
+                height={24}
+              />
+            </Button>
+          </Tooltip>
         )}
       </div>
     ),

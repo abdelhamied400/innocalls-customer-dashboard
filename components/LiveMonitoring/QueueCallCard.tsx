@@ -8,6 +8,12 @@ import { useSip } from "@/providers/webrtc/SipProvider";
 import useAppStore from "@/store/app.slice";
 import Image from "next/image";
 import { useTranslations } from "@/providers/TranslationProvider";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const queueCallCardVariants = cva(
   "p-3 rounded-lg border hover:border-500 transition-all duration-200 group",
@@ -88,14 +94,23 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
           </p>
         </div>
         {status === "active" && (
-          <Button size="icon" variant="ghost" onClick={handleSpy}>
-            <Image
-              src="/assets/icons/incognito.svg"
-              alt="Incognito"
-              width={24}
-              height={24}
-            />
-          </Button>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button size="icon" variant="ghost" onClick={handleSpy}>
+                  <Image
+                    src="/assets/icons/incognito.svg"
+                    alt="spy"
+                    width={24}
+                    height={24}
+                  />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{t("tooltips.spy")}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         )}
       </div>
       {status === "active" && (

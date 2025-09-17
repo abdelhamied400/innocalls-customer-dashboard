@@ -27,5 +27,6 @@ export type User = {
   accessToken?: string;
   latestActivity?: {
     type: AgentActivity;
+    subType?: string;
   };
 };
