@@ -41,12 +41,12 @@ const ProfileMenu = () => {
 
   // Get activity type only for agents
   const breakType =
-    auth?.user.userType === "agent"
+    session?.userType === "agent"
       ? auth?.user.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY
       : null;
 
   const breakSubType =
-    auth?.user.userType === "agent"
+    session?.userType === "agent"
       ? auth?.user.latestActivity?.subType?.toLocaleLowerCase() || ""
       : null;
 
@@ -116,7 +116,7 @@ const ProfileMenu = () => {
       <DropdownMenu>
         <DropdownMenuTrigger>
           <div className="flex items-center gap-2">
-            {auth?.user.userType === "agent" && breakType ? (
+            {session?.userType === "agent" && breakType ? (
               <Tooltip>
                 <TooltipTrigger asChild>
                   <span
@@ -164,7 +164,7 @@ const ProfileMenu = () => {
             )}
 
             <div className="flex-col items-start gap-1 hidden md:flex">
-              <p className="font-semibold text-lg">{session?.user?.name}</p>
+              <p className="font-semibold text-lg">{auth?.user?.name}</p>
               <p className="text-neutral-400 text-sm">{Organization?.name}</p>
               {/* <p className="text-neutral-400 text-sm">{session?.user.userType}</p> */}
             </div>
@@ -175,7 +175,7 @@ const ProfileMenu = () => {
         <DropdownMenuContent>
           <DropdownMenuLabel>{t("organizations")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {session?.user?.organizations?.map((org) => (
+          {auth?.user?.organizations?.map((org) => (
             <DropdownMenuItem
               key={org.name}
               className="flex flex-col items-start gap-0"
