@@ -50,7 +50,6 @@ const ProfileMenu = () => {
       ? auth?.user.latestActivity?.subType?.toLocaleLowerCase() || ""
       : null;
 
-
   const handleLogout = async () => {
     // TODO: FIND ANOTHER WAY TP LOGOUT ...
     // Get the current base URL
@@ -65,6 +64,7 @@ const ProfileMenu = () => {
         });
     }
     await signOut({ redirect: false });
+    setCookie("OrganizationId", "");
     // Then manually redirect to the login page using the correct base URL
     window.location.href = `${baseUrl}/login`;
   };
