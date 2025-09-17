@@ -75,8 +75,6 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   const breakType =
     auth?.user?.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
 
-  console.log(breakType);
-
   const uaRef = useRef<JsSIP.UA | null>(null);
 
   // Keep uaRef in sync with ua state
@@ -103,21 +101,6 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     setIsSpying,
     setSpyingStatus,
   });
-
-  // Cleanup on unmount and when new instances are created
-  useEffect(() => {
-    return () => {
-      if (uaRef.current) {
-        activeUserAgents.delete(uaRef.current);
-        try {
-          uaRef.current.stop();
-          unbindEvents(uaRef.current);
-        } catch (error) {
-          console.warn("Error during unmount cleanup:", error);
-        }
-      }
-    };
-  }, [unbindEvents]);
 
   const login = useCallback(
     (extensionData: ExtensionWithCredentials) => {
@@ -162,14 +145,16 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   const reconnect = () => {
     setExtensionState("connecting");
 
-    if (!ua || !extension) return;
-    ua.stop();
-    unbindEvents(ua);
+    if (!extension) return;
+    if (!!ua) {
+      ua.stop();
+      unbindEvents(ua);
+    }
 
     login(extension);
   };
 
-  const logout = () => {
+  const cleanup = () => {
     if (ua) {
       activeUserAgents.delete(ua);
       ua.stop();
@@ -181,6 +166,10 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     if (auth?.user?.id) {
       hasAttemptedAutoLogin.current = false;
     }
+  };
+
+  const logout = () => {
+    cleanup();
     navigate("/extensions");
   };
 
@@ -231,6 +220,19 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     return call(`*199${extension}`);
   };
 
+  const onActivityChange = async (activity: AgentActivity) => {
+    try {
+      const shouldLogout = webrtcStoppingActivities.includes(activity);
+      if (shouldLogout) {
+        cleanup();
+      } else if (!!extension && !ua) {
+        login(extension);
+      }
+    } catch (error) {
+      console.error("Error changing agent state on activity change:", error);
+    }
+  };
+
   // Auto-login for agent users
   useEffect(() => {
     const attemptAutoLogin = async () => {
@@ -278,6 +280,21 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     navigate,
   ]); // login is now stable due to useCallback with stable dependencies
 
+  // Cleanup on unmount and when new instances are created
+  useEffect(() => {
+    return () => {
+      if (uaRef.current) {
+        activeUserAgents.delete(uaRef.current);
+        try {
+          uaRef.current.stop();
+          unbindEvents(uaRef.current);
+        } catch (error) {
+          console.warn("Error during unmount cleanup:", error);
+        }
+      }
+    };
+  }, [unbindEvents]);
+
   useEffect(() => {
     if (window) {
       window.onbeforeunload = (event) => {
@@ -309,6 +326,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         setSpyingStatus,
         isSpying,
         extensionLoading,
+        onActivityChange,
       }}
     >
       {children}

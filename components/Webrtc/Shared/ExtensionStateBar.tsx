@@ -28,11 +28,11 @@ const ExtensionStateBar = () => {
   const { data: auth, refetch: refetchUser } = useAuth();
   const { Organization } = useAuthStore();
   const { data: session } = useSession();
+  const { onActivityChange } = useSip();
+
   const breakType =
     auth?.user?.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
   const { toast } = useToast();
-
-  console.log(breakType);
 
   const handleActivityChange = async (
     activity: AgentActivity,
@@ -40,7 +40,8 @@ const ExtensionStateBar = () => {
   ) => {
     try {
       await webrtcService.changeAgentState(activity, breakType);
-      refetchUser();
+      await refetchUser();
+      onActivityChange(activity);
     } catch (error) {
       if (isAxiosError(error)) {
         const errorMessage = error.response?.data?.message || error.message;
@@ -59,8 +60,6 @@ const ExtensionStateBar = () => {
     } finally {
     }
   };
-
-  console.log(extension);
 
   if (extensionLoading) {
     return <Skeleton className="h-16 w-full" />;

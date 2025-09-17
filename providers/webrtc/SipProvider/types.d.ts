@@ -1,4 +1,5 @@
 import { ExtensionWithCredentials } from "@/types/api/extension";
+import { AgentActivity } from "@/types/webrtc";
 import JsSIP from "jssip";
 import { RTCSession } from "jssip/lib/RTCSession";
 import React from "react";
@@ -36,4 +37,5 @@ export type SipContextType = {
   setExtension: React.Dispatch<
     React.SetStateAction<ExtensionWithCredentials | null>
   >;
+  onActivityChange: (activity: AgentActivity) => Promise<void>;
 };
