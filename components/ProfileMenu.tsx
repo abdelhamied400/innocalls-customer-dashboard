@@ -50,6 +50,11 @@ const ProfileMenu = () => {
       ? auth?.user.latestActivity?.subType?.toLocaleLowerCase() || ""
       : null;
 
+
+      console.log({or1: auth?.user.organizations});
+      console.log({or2: session?.organizations});
+      console.log({or3: session?.user?.organizations})
+
   const handleLogout = async () => {
     // TODO: FIND ANOTHER WAY TP LOGOUT ...
     // Get the current base URL
@@ -175,7 +180,7 @@ const ProfileMenu = () => {
         <DropdownMenuContent>
           <DropdownMenuLabel>{t("organizations")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {auth?.user?.organizations?.map((org) => (
+          {session?.organizations?.map((org) => (
             <DropdownMenuItem
               key={org.name}
               className="flex flex-col items-start gap-0"
