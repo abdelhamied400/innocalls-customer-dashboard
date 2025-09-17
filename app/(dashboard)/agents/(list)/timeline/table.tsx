@@ -35,7 +35,8 @@ const TimelineTable = () => {
   const { data = [], isLoading } = useLocalizedQuery({
     queryKey: ["agents", "timeline", filters],
     queryFn: async () => usersService.getTimeline(filters),
-    refetchInterval: 30000,
+    refetchInterval:
+      filters.fromDate === defaultFilters.fromDate ? 30000 : false,
   });
 
   return (

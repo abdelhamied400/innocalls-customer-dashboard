@@ -37,7 +37,8 @@ const AgentsPerformanceTable = () => {
   const { data = [], isLoading } = useLocalizedQuery({
     queryKey: ["agents", "agents-performance", filters],
     queryFn: async () => usersService.getAgentsPerformance(filters),
-    refetchInterval: 30000,
+    refetchInterval:
+      filters.fromDate === defaultFilters.fromDate ? 30000 : false,
   });
 
   return (
