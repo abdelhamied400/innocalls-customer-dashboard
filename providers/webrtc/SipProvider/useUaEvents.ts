@@ -12,6 +12,7 @@ import useWebrtcStore from "@/store/webrtc.slice";
 import webrtcService from "@/services/webrtc.service";
 import { differenceInSeconds, format, intervalToDuration } from "date-fns";
 import { useSession } from "next-auth/react";
+import { forcePCMA } from "@/lib/webrtc";
 
 export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
@@ -149,6 +150,11 @@ export const useUaEvents = ({
     (e: RTCSessionEvent, extension: ExtensionWithCredentials) => {
       webrtcLogger.info("Outgoing call initiated", { session: e.session });
       const session = e.session;
+
+      session.on("sdp", (e) => {
+        e.sdp = forcePCMA(e.sdp);
+      });
+
       const connection = session.connection;
 
       const calledNumber = session.remote_identity?.uri?.user || "Unknown";

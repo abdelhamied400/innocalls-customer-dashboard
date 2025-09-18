@@ -126,3 +126,23 @@ export const isValidTransition = (
   // For all other activity types, allow any transition (fallback rule)
   return true;
 };
+
+export const forcePCMA = (sdp: string) => {
+  const lines = sdp.split("\r\n");
+
+  // Keep only PCMA in the m=audio line
+  const mAudioIndex = lines.findIndex((l) => l.startsWith("m=audio"));
+  if (mAudioIndex !== -1) {
+    lines[mAudioIndex] = lines[mAudioIndex].replace(
+      /(m=audio \d+ [A-Z\/]+).*/,
+      "$1 8"
+    );
+  }
+
+  // Filter rtpmap: keep only PCMA
+  const filtered = lines.filter(
+    (line) => !line.startsWith("a=rtpmap:") || line.includes("PCMA/8000")
+  );
+
+  return filtered.join("\r\n");
+};
