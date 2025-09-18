@@ -177,7 +177,7 @@ const InboundAnalyticsQueueAnalysis = ({
                     contentStyle={{ direction: locale.dir }}
                     formatter={(value, name) => [
                       value,
-                      "t(`timeBucket.${name}`)",
+                      `${t(`timeBucket.${name}`)}`,
                     ]}
                   />
                 </PieChart>
