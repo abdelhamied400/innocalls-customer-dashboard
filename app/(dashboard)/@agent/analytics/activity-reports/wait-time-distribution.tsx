@@ -64,22 +64,25 @@ const WaitTimeDistribution = ({ filters }: WaitTimeDistributionProps) => {
       }))}
     >
       {!isLoading && data && data.length > 0 ? (
-        <ResponsiveContainer
-          style={{ direction: "ltr" }}
-          width="100%"
-          height={400}
-        >
+        <ResponsiveContainer width="100%" height={400}>
           <PieChart>
             <Pie
               data={data}
               cx="50%"
               cy="50%"
-              labelLine={false}
-              label={({ timeBucket, percent }) =>
-                `${t(`waitTime.legends.timeBucket.${timeBucket}`)} (${(
-                  percent * 100
-                ).toFixed(1)}%)`
-              }
+              label={({ fill, timeBucket, percent, x, y, textAnchor }) => (
+                <text
+                  x={x}
+                  y={y}
+                  fill={fill}
+                  textAnchor={textAnchor === "start" ? "end" : "start"}
+                  dominantBaseline="central"
+                >
+                  {`${t(`waitTime.legends.timeBucket.${timeBucket}`)} (${(
+                    percent * 100
+                  ).toFixed(1)}%)`}
+                </text>
+              )}
               outerRadius={120}
               fill="#8884d8"
               dataKey="totalCalls"

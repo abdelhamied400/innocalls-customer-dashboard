@@ -29,8 +29,17 @@ const OutboundCallStatusChart = ({ data }: OutboundCallStatusChartProps) => {
           data={data}
           cx="50%"
           cy="50%"
-          labelLine={false}
-          label={({ name, count }) => `${name}: ${count}`}
+          label={({ fill, name, count, x, y, textAnchor }) => (
+            <text
+              x={x}
+              y={y}
+              fill={fill}
+              textAnchor={textAnchor === "start" ? "end" : "start"}
+              dominantBaseline="central"
+            >
+              {`${name}: ${count}`}
+            </text>
+          )}
           outerRadius={100}
           fill="#2563EB"
           dataKey="count"

@@ -77,8 +77,17 @@ const UserStatusChart: React.FC<UserStatusChartProps> = ({ data }) => {
             data={data}
             cx="50%"
             cy="50%"
-            labelLine={false}
-            label={({ status, count }) => `${status}: ${count}`}
+            label={({ fill, name, count, x, y, textAnchor }) => (
+              <text
+                x={x}
+                y={y}
+                fill={fill}
+                textAnchor={textAnchor === "start" ? "end" : "start"}
+                dominantBaseline="central"
+              >
+                {`${name}: ${count}`}
+              </text>
+            )}
             outerRadius={120}
             fill="#8884d8"
             dataKey="count"

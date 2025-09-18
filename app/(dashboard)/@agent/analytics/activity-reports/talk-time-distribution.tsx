@@ -81,12 +81,19 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
               data={data}
               cx="50%"
               cy="50%"
-              labelLine={false}
-              label={({ timeBucket, percent }) =>
-                `${t(`talkTime.legends.timeBucket.${timeBucket}`)} (${(
-                  percent * 100
-                ).toFixed(1)}%)`
-              }
+              label={({ fill, timeBucket, percent, x, y, textAnchor }) => (
+                <text
+                  x={x}
+                  y={y}
+                  fill={fill}
+                  textAnchor={textAnchor === "start" ? "end" : "start"}
+                  dominantBaseline="central"
+                >
+                  {`${t(`talkTime.legends.timeBucket.${timeBucket}`)} (${(
+                    percent * 100
+                  ).toFixed(1)}%)`}
+                </text>
+              )}
               outerRadius={120}
               fill="#8884d8"
               dataKey="totalCalls"

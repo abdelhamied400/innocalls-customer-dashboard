@@ -131,7 +131,17 @@ const AbandonedCallsChart: React.FC<AbandonedCallsChartProps> = ({ data }) => {
                   cy="50%"
                   outerRadius={80}
                   dataKey="value"
-                  label={({ name, value }) => `${name}: ${value}`}
+                  label={({ fill, name, value, x, y, textAnchor }) => (
+                    <text
+                      x={x}
+                      y={y}
+                      fill={fill}
+                      textAnchor={textAnchor === "start" ? "end" : "start"}
+                      dominantBaseline="central"
+                    >
+                      {`${name}: ${value}`}
+                    </text>
+                  )}
                 >
                   {waitTimeDistribution.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
