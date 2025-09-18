@@ -144,7 +144,7 @@ const UsersTableHeader = ({ filters, setFilters }: UsersTableHeaderProps) => {
               value={status.length === 1 ? status[0] : ""}
             >
               {userStatuses.map((s) => (
-                <div className="flex items-center space-x-2" key={s.value}>
+                <div className="flex items-center gap-2" key={s.value}>
                   <RadioGroupItem value={s.value} id={s.value} />
                   <Label htmlFor={s.value}>{t(`status.${s.value}`)}</Label>
                 </div>

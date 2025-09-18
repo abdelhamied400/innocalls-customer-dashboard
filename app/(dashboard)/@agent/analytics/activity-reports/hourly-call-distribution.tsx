@@ -81,7 +81,11 @@ const HourlyCallDistribution = ({ filters }: HourlyCallDistributionProps) => {
       ]}
     >
       {!isLoading && formattedData && formattedData.length > 0 ? (
-        <ResponsiveContainer width="100%" height={400}>
+        <ResponsiveContainer
+          style={{ direction: "ltr" }}
+          width="100%"
+          height={400}
+        >
           <ComposedChart data={formattedData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
             <XAxis

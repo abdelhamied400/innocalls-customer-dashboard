@@ -63,7 +63,11 @@ const OutboundAnswerRateChart: React.FC<OutboundAnswerRateChartProps> = ({
 
   return (
     <div className="h-80">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer
+        style={{ direction: "ltr" }}
+        width="100%"
+        height="100%"
+      >
         <BarChart
           data={data}
           margin={{ top: 20, right: 30, left: 20, bottom: 5 }}

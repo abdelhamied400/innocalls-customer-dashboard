@@ -66,7 +66,11 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
           color: COLORS[idx % COLORS.length],
         }))}
       >
-        <ResponsiveContainer width="100%" height={320}>
+        <ResponsiveContainer
+          style={{ direction: "ltr" }}
+          width="100%"
+          height={320}
+        >
           <PieChart>
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
             <Pie

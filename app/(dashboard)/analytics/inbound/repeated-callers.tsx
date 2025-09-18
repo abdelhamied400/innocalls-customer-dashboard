@@ -101,7 +101,11 @@ const InboundAnalyticsRepeatedCallers = ({
           (repeatedCallersData.length === 0 && <NoData />)}
         {repeatedCallersData && repeatedCallersData.length > 0 && (
           <div className="w-full h-80 mb-8">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer
+              style={{ direction: "ltr" }}
+              width="100%"
+              height="100%"
+            >
               <BarChart data={repeatedCallersData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
                 <XAxis

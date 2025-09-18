@@ -161,7 +161,11 @@ const InboundAnalyticsDateDistribution = ({
               variant="compound"
               legends={legends[filters.filterBy]}
             >
-              <ResponsiveContainer width="100%" height={320}>
+              <ResponsiveContainer
+                style={{ direction: "ltr" }}
+                width="100%"
+                height={320}
+              >
                 <LineChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
                   <XAxis

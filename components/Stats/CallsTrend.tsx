@@ -70,7 +70,11 @@ const CallsTrend = () => {
       }))}
     >
       <ChartContainer config={chartConfig} className="w-full h-full">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer
+          style={{ direction: "ltr" }}
+          width="100%"
+          height="100%"
+        >
           <LineChart data={callsTrendData.calls}>
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
             <XAxis

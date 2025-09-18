@@ -91,7 +91,11 @@ const InboundAnalyticsIVRAnalysis = ({
         <div className="w-full h-80">
           {ivrAnalysisData?.length === 0 && <NoData />}
           {ivrAnalysisData && ivrAnalysisData.length > 0 && (
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer
+              style={{ direction: "ltr" }}
+              width="100%"
+              height="100%"
+            >
               <BarChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
                 <XAxis

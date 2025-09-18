@@ -128,11 +128,11 @@ const RatesHead = ({ filters, setFilters }: RatesHeadProps) => {
             onApply={applyFilters}
           >
             <RadioGroup onValueChange={setServiceId} value={serviceId || "1"}>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="1" id="calls" />
                 <Label htmlFor="calls">{t("services.calls")}</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="2" id="sms" />
                 <Label htmlFor="sms">{t("services.sms")}</Label>
               </div>

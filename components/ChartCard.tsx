@@ -248,7 +248,7 @@ const ChartCard = ({
             </DropdownMenu>
           )}
         </div>
-        <div className="flex flex-col gap-2 h-[calc(100%-50px)]" dir="ltr">
+        <div className="flex flex-col gap-2 h-[calc(100%-50px)]">
           {children}
         </div>
       </div>

@@ -308,19 +308,19 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
               onValueChange={setDirection}
               className="flex flex-col gap-3"
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="all" id="all-directions" />
                 <Label htmlFor="all-directions">{t("direction.all")}</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="local" id="local" />
                 <Label htmlFor="local">{t("direction.local")}</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="incoming" id="incoming" />
                 <Label htmlFor="incoming">{t("direction.incoming")}</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="outgoing" id="outgoing" />
                 <Label htmlFor="outgoing">{t("direction.outgoing")}</Label>
               </div>
@@ -347,23 +347,22 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
               onValueChange={setAnsweredFilter}
               className="flex flex-col gap-3"
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="both" id="both" />
                 <Label htmlFor="both">{t("isAnswered.both")}</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="answered" id="answered" />
                 <Label htmlFor="answered">{t("isAnswered.answered")}</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="not-answered" id="not-answered" />
-                <Label htmlFor="not-answered">{t("isAnswered.notAnswered")}</Label>
+                <Label htmlFor="not-answered">
+                  {t("isAnswered.notAnswered")}
+                </Label>
               </div>
             </RadioGroup>
           </FilterBox>
-
-
-        
         </FilterBar>
       </CollapsibleContent>
     </Collapsible>

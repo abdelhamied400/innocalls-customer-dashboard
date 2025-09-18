@@ -109,7 +109,11 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
               variant="compound"
             >
               {data && data.length > 0 ? (
-                <ResponsiveContainer width="100%" height={300}>
+                <ResponsiveContainer
+                  style={{ direction: "ltr" }}
+                  width="100%"
+                  height={300}
+                >
                   <BarChart data={data}>
                     <XAxis dataKey="name" />
                     <YAxis domain={[0, 100]} tickFormatter={(v) => `${v}%`} />

@@ -55,7 +55,11 @@ const OutboundUnansweredHourly = ({
       color="success"
     >
       {!isLoading && data && data.length > 0 && (
-        <ResponsiveContainer width="100%" height={320}>
+        <ResponsiveContainer
+          style={{ direction: "ltr" }}
+          width="100%"
+          height={320}
+        >
           <BarChart data={data}>
             <XAxis dataKey="hourOfDay" tickFormatter={(h) => `${h}:00`} />
             <YAxis />

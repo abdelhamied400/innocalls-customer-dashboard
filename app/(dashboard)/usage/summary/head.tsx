@@ -242,15 +242,15 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
               onValueChange={setSummaryBy}
               value={summaryBy}
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="" id="general" />
                 <Label htmlFor="general">{t("summaryBy.general")}</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="dateDay" id="dateDay" />
                 <Label htmlFor="dateDay">{t("summaryBy.byDay")}</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="dateMonth" id="dateMonth" />
                 <Label htmlFor="dateMonth">{t("summaryBy.byMonth")}</Label>
               </div>

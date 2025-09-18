@@ -67,7 +67,11 @@ const UserStatusChart: React.FC<UserStatusChartProps> = ({ data }) => {
 
   return (
     <div className="h-96">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer
+        style={{ direction: "ltr" }}
+        width="100%"
+        height="100%"
+      >
         <PieChart>
           <Pie
             data={data}

@@ -227,11 +227,11 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
               onValueChange={setOrigin}
               value={origin}
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="orig" id="orig" />
                 <Label htmlFor="orig">{t("origin.outgoing")}</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="term" id="term" />
                 <Label htmlFor="term">{t("origin.incoming")}</Label>
               </div>

@@ -106,7 +106,11 @@ const InboundAnalyticsAgentPerformance = ({
         {agentPerformanceData?.length === 0 && <NoData />}
         {(agentPerformanceData?.length ?? 0) > 0 && (
           <div className="w-full h-80">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer
+              style={{ direction: "ltr" }}
+              width="100%"
+              height="100%"
+            >
               <BarChart data={agentPerformanceData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
                 <XAxis

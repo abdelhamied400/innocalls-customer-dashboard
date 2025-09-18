@@ -150,7 +150,11 @@ const InboundAnalyticsQueueAnalysis = ({
               }))}
               variant="compound"
             >
-              <ResponsiveContainer width="100%" height={288}>
+              <ResponsiveContainer
+                style={{ direction: "ltr" }}
+                width="100%"
+                height={288}
+              >
                 <PieChart>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
                   <Pie
@@ -169,7 +173,13 @@ const InboundAnalyticsQueueAnalysis = ({
                       />
                     ))}
                   </Pie>
-                  <Tooltip contentStyle={{ direction: locale.dir }} />
+                  <Tooltip
+                    contentStyle={{ direction: locale.dir }}
+                    formatter={(value, name) => [
+                      value,
+                      "t(`timeBucket.${name}`)",
+                    ]}
+                  />
                 </PieChart>
               </ResponsiveContainer>
             </ChartCard>
@@ -239,7 +249,11 @@ const InboundAnalyticsQueueAnalysis = ({
               }))}
               variant="compound"
             >
-              <ResponsiveContainer width="100%" height={288}>
+              <ResponsiveContainer
+                style={{ direction: "ltr" }}
+                width="100%"
+                height={288}
+              >
                 <PieChart>
                   <Pie
                     data={timeoutAnalysis.stats}

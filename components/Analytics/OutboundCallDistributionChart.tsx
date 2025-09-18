@@ -39,7 +39,7 @@ const OutboundCallDistributionLineChart: React.FC<
       </CardHeader>
       <CardContent>
         <div style={{ width: "100%", height: 300 }}>
-          <ResponsiveContainer>
+          <ResponsiveContainer style={{ direction: "ltr" }}>
             <LineChart data={data}>
               <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
               <XAxis

@@ -5,14 +5,19 @@ import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { Circle } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { useLocale } from "@/providers/TranslationProvider";
+import { defaultLocale, locales } from "@/i18n/config";
 
 const RadioGroup = React.forwardRef<
   React.ElementRef<typeof RadioGroupPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>
 >(({ className, ...props }, ref) => {
+  const localeSlug = useLocale() || defaultLocale;
+  const locale = locales[localeSlug];
   return (
     <RadioGroupPrimitive.Root
       className={cn("grid gap-2", className)}
+      dir={locale.dir}
       {...props}
       ref={ref}
     />

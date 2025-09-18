@@ -172,11 +172,11 @@ const AutoDialerArchivedHead = ({
                 onValueChange={setDurationType}
                 value={durationType || ""}
               >
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-2">
                   <RadioGroupItem value="time-limited" id="time-limited" />
                   <Label htmlFor="time-limited">Time Limited</Label>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center gap-2">
                   <RadioGroupItem
                     value="agent-availability"
                     id="agent-availability"
@@ -208,7 +208,7 @@ const AutoDialerArchivedHead = ({
               numberOfFilters={Object.keys(status).length}
             >
               {autoDialerCampaignArchivedStatuses.map((s) => (
-                <div className="flex items-center space-x-2" key={s.value}>
+                <div className="flex items-center gap-2" key={s.value}>
                   <Checkbox
                     id={s.value}
                     checked={!!status[s.value]}

@@ -179,7 +179,11 @@ const CallDistributionAnalytics = ({
             >
               <div className="w-full h-80">
                 {data && data.length > 0 ? (
-                  <ResponsiveContainer width="100%" height="100%">
+                  <ResponsiveContainer
+                    style={{ direction: "ltr" }}
+                    width="100%"
+                    height="100%"
+                  >
                     <BarChart
                       data={data}
                       layout="horizontal"

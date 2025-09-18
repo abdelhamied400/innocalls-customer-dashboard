@@ -234,19 +234,19 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
               }
               value={status}
             >
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="draft" id="draft" />
                 <Label htmlFor="draft">{t("status.draft")}</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="overdue" id="overdue" />
                 <Label htmlFor="overdue">{t("status.overdue")}</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="paid" id="paid" />
                 <Label htmlFor="paid">{t("status.paid")}</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center gap-2">
                 <RadioGroupItem value="partially_paid" id="partially_paid" />
                 <Label htmlFor="partially_paid">
                   {t("status.partially_paid")}

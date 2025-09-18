@@ -63,7 +63,11 @@ const InboundAnalyticsDistribution = ({
       >
         {waitTimeData?.length === 0 && <NoData />}
         {(waitTimeData?.length ?? 0) > 0 && (
-          <ResponsiveContainer width="100%" height={288}>
+          <ResponsiveContainer
+            style={{ direction: "ltr" }}
+            width="100%"
+            height={288}
+          >
             <BarChart data={waitTimeData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
               <XAxis
@@ -112,7 +116,11 @@ const InboundAnalyticsDistribution = ({
       >
         {talkTimeData?.length === 0 && <NoData />}
         {(talkTimeData?.length ?? 0) > 0 && (
-          <ResponsiveContainer width="100%" height={288}>
+          <ResponsiveContainer
+            style={{ direction: "ltr" }}
+            width="100%"
+            height={288}
+          >
             <BarChart data={talkTimeData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
               <XAxis

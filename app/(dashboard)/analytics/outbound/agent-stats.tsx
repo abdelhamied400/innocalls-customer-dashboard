@@ -138,7 +138,11 @@ const AgentStatsAnalytics = ({ filters }: AgentStatsAnalyticsProps) => {
           {agentStats && agentStats.length === 0 ? (
             <NoData />
           ) : (
-            <ResponsiveContainer width="100%" height={400}>
+            <ResponsiveContainer
+              style={{ direction: "ltr" }}
+              width="100%"
+              height={400}
+            >
               <BarChart
                 data={agentStats || []}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}

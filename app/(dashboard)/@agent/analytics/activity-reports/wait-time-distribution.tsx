@@ -64,7 +64,11 @@ const WaitTimeDistribution = ({ filters }: WaitTimeDistributionProps) => {
       }))}
     >
       {!isLoading && data && data.length > 0 ? (
-        <ResponsiveContainer width="100%" height={400}>
+        <ResponsiveContainer
+          style={{ direction: "ltr" }}
+          width="100%"
+          height={400}
+        >
           <PieChart>
             <Pie
               data={data}

@@ -34,7 +34,7 @@ const OutboundUnansweredHourlyChart: React.FC<
       </CardHeader>
       <CardContent>
         <div style={{ width: "100%", height: 300 }}>
-          <ResponsiveContainer>
+          <ResponsiveContainer style={{ direction: "ltr" }}>
             <BarChart data={data}>
               <XAxis dataKey="hour" tickFormatter={(h) => `${h}:00`} />
               <YAxis />

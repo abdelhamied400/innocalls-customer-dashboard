@@ -81,7 +81,11 @@ const DateCallDistribution = ({ filters }: DateCallDistributionProps) => {
       ]}
     >
       {!isLoading && data && data.length > 0 ? (
-        <ResponsiveContainer width="100%" height={400}>
+        <ResponsiveContainer
+          style={{ direction: "ltr" }}
+          width="100%"
+          height={400}
+        >
           <ComposedChart data={data}>
             <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
             <XAxis
