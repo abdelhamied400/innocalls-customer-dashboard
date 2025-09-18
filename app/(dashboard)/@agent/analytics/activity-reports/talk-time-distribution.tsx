@@ -71,11 +71,7 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
       }))}
     >
       {!isLoading && data && data.length > 0 ? (
-        <ResponsiveContainer
-          style={{ direction: "ltr" }}
-          width="100%"
-          height={400}
-        >
+        <ResponsiveContainer width="100%" height={400}>
           <PieChart>
             <Pie
               data={data}
@@ -89,7 +85,7 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
                   textAnchor={textAnchor === "start" ? "end" : "start"}
                   dominantBaseline="central"
                 >
-                  {`${t(`talkTime.legends.timeBucket.${timeBucket}`)} (${(
+                  {`${t(`waitTime.legends.timeBucket.${timeBucket}`)} (${(
                     percent * 100
                   ).toFixed(1)}%)`}
                 </text>

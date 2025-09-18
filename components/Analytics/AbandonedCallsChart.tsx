@@ -119,11 +119,7 @@ const AbandonedCallsChart: React.FC<AbandonedCallsChartProps> = ({ data }) => {
         <div className="bg-white p-4 rounded-lg border">
           <h3 className="text-lg font-semibold mb-4">Wait Time Distribution</h3>
           <div className="h-64">
-            <ResponsiveContainer
-              style={{ direction: "ltr" }}
-              width="100%"
-              height="100%"
-            >
+            <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={waitTimeDistribution}
