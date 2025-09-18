@@ -85,7 +85,7 @@ const TalkTimeDistribution = ({ filters }: TalkTimeDistributionProps) => {
                   textAnchor={textAnchor === "start" ? "end" : "start"}
                   dominantBaseline="central"
                 >
-                  {`${t(`waitTime.legends.timeBucket.${timeBucket}`)} (${(
+                  {`${t(`talkTime.legends.timeBucket.${timeBucket}`)} (${(
                     percent * 100
                   ).toFixed(1)}%)`}
                 </text>
