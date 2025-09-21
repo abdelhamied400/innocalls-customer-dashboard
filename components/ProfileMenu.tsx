@@ -51,10 +51,6 @@ const ProfileMenu = () => {
       : null;
 
   const handleLogout = async () => {
-    // TODO: FIND ANOTHER WAY TP LOGOUT ...
-    // Get the current base URL
-    const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
-
     // Sign out without redirect first
     if (session?.userType === "agent") {
       await webrtcService
@@ -63,10 +59,8 @@ const ProfileMenu = () => {
           console.error("Error changing agent state on logout:", err);
         });
     }
-    await signOut({ redirect: false });
+    await signOut();
     setCookie("OrganizationId", "");
-    // Then manually redirect to the login page using the correct base URL
-    window.location.href = `${baseUrl}/login`;
   };
 
   const handleOrganizationChange = async (org: Organization) => {
