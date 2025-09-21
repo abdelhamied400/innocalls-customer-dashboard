@@ -59,9 +59,9 @@ const ProfileMenu = () => {
           console.error("Error changing agent state on logout:", err);
         });
     }
-    await signOut();
-    update(null);
     setCookie("OrganizationId", "");
+    await signOut({ redirect: false });
+    router.push("/login");
   };
 
   const handleOrganizationChange = async (org: Organization) => {
