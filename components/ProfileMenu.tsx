@@ -126,7 +126,14 @@ const ProfileMenu = () => {
                       className="rounded-full"
                     />
                     <span
-                      className="absolute bottom-0 right-0 border-4 border-white w-4 h-4 rounded-full transition-colors duration-200"
+                      className="absolute bottom-0 right-0 border-4 border-white w-4 h-4 rounded-full transition-colors"
+                      style={{
+                        backgroundColor: agentActivitiesColors[breakType],
+                        boxShadow: `0 0 20 0 ${agentActivitiesColors[breakType]}`,
+                      }}
+                    ></span>
+                    <span
+                      className="absolute bottom-0 right-0 border-4 border-white w-4 h-4 rounded-full transition-colors animate-ping duration-[2000ms]"
                       style={{
                         backgroundColor: agentActivitiesColors[breakType],
                       }}
