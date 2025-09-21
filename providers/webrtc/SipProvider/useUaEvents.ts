@@ -152,7 +152,7 @@ export const useUaEvents = ({
       const session = e.session;
 
       session.on("sdp", (e) => {
-        e.sdp = forcePCMA(e.sdp);
+        // e.sdp = forcePCMA(e.sdp);
       });
 
       const connection = session.connection;
