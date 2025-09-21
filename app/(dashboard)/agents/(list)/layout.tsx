@@ -21,15 +21,18 @@ const UsersLayout = ({ children }: UsersLayoutProps) => {
 
   return (
     <>
-      <LinkTabs>
-        <LinkTab href="/agents">{t("tabs.usersList")}</LinkTab>
-        <LinkTab href="/agents/monitor">{t("tabs.monitorUsers")}</LinkTab>
-        <LinkTab href="/agents/agents-performance">
-          {t("tabs.agentsPerformance")}
-        </LinkTab>
-        <LinkTab href="/agents/timeline">{t("tabs.timeline")}</LinkTab>
-      </LinkTabs>
-      <div className="flex-1 h-[calc(100%-3rem)]">
+      <LinkTabs
+        tabs={[
+          { label: t("tabs.usersList"), href: "/agents" },
+          { label: t("tabs.monitorUsers"), href: "/agents/monitor" },
+          {
+            label: t("tabs.agentsPerformance"),
+            href: "/agents/agents-performance",
+          },
+          { label: t("tabs.timeline"), href: "/agents/timeline" },
+        ]}
+      />
+      <div className="flex-1 h-[calc(100%-10rem)]">
         <div className="h-full w-full">{children}</div>
       </div>
     </>
