@@ -30,7 +30,7 @@ import useAuth from "@/hooks/useAuth";
 import { Organization } from "@/types/api/organization";
 
 const ProfileMenu = () => {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const { data: auth } = useAuth();
 
   const { Organization, setOrganization } = useAuthStore();
@@ -60,6 +60,7 @@ const ProfileMenu = () => {
         });
     }
     await signOut();
+    update(null);
     setCookie("OrganizationId", "");
   };
 
