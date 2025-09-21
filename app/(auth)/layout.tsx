@@ -1,12 +1,10 @@
 "use client";
 import { PropsWithChildren, useEffect } from "react";
 import AuthBanner from "./banner";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 type AuthLayoutProps = PropsWithChildren<object>;
 const AuthLayout = ({ children }: AuthLayoutProps) => {
-  const { update } = useSession();
-
   useEffect(() => {
     signOut({ redirect: false });
   }, []);
