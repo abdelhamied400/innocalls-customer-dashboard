@@ -17,12 +17,6 @@ export default auth((request) => {
     return Response.redirect(newUrl);
   }
 
-  // if the user is authenticated and goes to a public page, redirect to home
-  if (request.auth && isPublicPage) {
-    const newUrl = new URL(`/`, request.nextUrl.origin);
-    return Response.redirect(newUrl);
-  }
-
   // No intl middleware needed, just continue
   return;
 });

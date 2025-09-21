@@ -1,8 +1,16 @@
-import { PropsWithChildren } from "react";
+"use client";
+import { PropsWithChildren, useEffect } from "react";
 import AuthBanner from "./banner";
+import { signOut, useSession } from "next-auth/react";
 
 type AuthLayoutProps = PropsWithChildren<object>;
-const AuthLayout = async ({ children }: AuthLayoutProps) => {
+const AuthLayout = ({ children }: AuthLayoutProps) => {
+  const { update } = useSession();
+
+  useEffect(() => {
+    signOut({ redirect: false });
+  }, []);
+
   return (
     <div className="layout h-screen" id="auth-layout">
       <div className="grid grid-cols-5 h-full">
