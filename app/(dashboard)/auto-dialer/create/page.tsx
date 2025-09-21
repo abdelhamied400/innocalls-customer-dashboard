@@ -65,7 +65,6 @@ const CreateAutoDialerCampaignSheet = () => {
   });
 
   const onSubmit = form.handleSubmit((data) => {
-    // console.log(data);
     // setCurrentStep((step) => step + 1);
   });
 

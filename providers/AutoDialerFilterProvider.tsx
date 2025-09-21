@@ -27,7 +27,6 @@ const AutoDialerFilterProvider = ({ children }: FilterProviderProps) => {
   });
 
   const updateFilter = (key: string, value: any) => {
-    // console.log("Updating filter", { ...filters, [key]: value });
     // setFilters((prev) => ({ ...prev, [key]: value }));
   };
 

@@ -26,7 +26,6 @@ const CustomersListForm = ({ onNext }: CustomersListFormProps) => {
 
     if (isValid) {
       // Proceed to the next step
-      // console.log("Valid customers list");
     }
   };
 

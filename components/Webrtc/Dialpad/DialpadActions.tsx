@@ -7,7 +7,6 @@ const DialpadActions = () => {
 
   const handleCall = () => {
     // Implement call functionality here
-    console.log("Call clicked");
     call();
   };
 

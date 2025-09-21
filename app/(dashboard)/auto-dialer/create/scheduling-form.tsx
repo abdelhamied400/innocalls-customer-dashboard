@@ -49,8 +49,6 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
       }
     ).safeParseAsync(getValues());
 
-    // console.log(res);
-
     if (!res.success) {
       setTimeout(() => {
         res.error.issues.forEach((issue) => {
