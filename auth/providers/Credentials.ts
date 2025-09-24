@@ -1,5 +1,3 @@
-import authService from "@/services/auth.service";
-import { AxiosError } from "axios";
 import { setCookie } from "cookies-next";
 import { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
@@ -46,6 +44,8 @@ const CredentialsProvider = Credentials({
     }
 
     const res = await response.json();
+
+    console.log(res.organizations);
 
     setCookie("OrganizationId", res.organizations?.[0]?.id || "");
 

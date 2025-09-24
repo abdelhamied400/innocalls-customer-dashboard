@@ -17,7 +17,7 @@ import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOu
 import { Button } from "./ui/button";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
-import { getCookie, setCookie } from "cookies-next/client";
+import { getCookie, setCookie, deleteCookie } from "cookies-next/client";
 import useAuthStore from "@/store/auth.slice";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "./ui/skeleton";
@@ -59,7 +59,7 @@ const ProfileMenu = () => {
           console.error("Error changing agent state on logout:", err);
         });
     }
-    setCookie("OrganizationId", "");
+    deleteCookie("OrganizationId");
     await signOut({ redirect: false });
     router.push("/login");
   };
@@ -90,10 +90,11 @@ const ProfileMenu = () => {
     }
     const defaultOrg = auth?.organizations?.[0];
     if (defaultOrg) {
-      setCookie("OrganizationId", defaultOrg.id);
       setOrganization(defaultOrg);
+      setCookie("OrganizationId", defaultOrg.id);
+      return;
     }
-  }, [session, setOrganization, setCookie, getCookie, router]);
+  }, []);
 
   if (status === "loading") {
     return (
