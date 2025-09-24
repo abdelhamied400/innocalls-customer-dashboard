@@ -81,20 +81,28 @@ const ExtensionStateBar = () => {
       >
         <p className="">
           {extension?.ext}{" "}
-          {extensionState === "disconnected" &&
+          {session?.userType === "agent" &&
+          extensionState === "disconnected" &&
           !!breakType &&
           webrtcStoppingActivities.includes(breakType)
             ? t("activity." + breakType)
             : t("status." + extensionState)}
         </p>
 
-        {extensionState === "disconnected" &&
+        {session?.userType === "agent" &&
+          extensionState === "disconnected" &&
           !!breakType &&
           !webrtcStoppingActivities.includes(breakType) && (
             <Button onClick={reconnect} size="sm" variant="link">
               {t("actions.reconnect")}
             </Button>
           )}
+
+        {session?.userType === "user" && extensionState === "disconnected" && (
+          <Button onClick={reconnect} size="sm" variant="link">
+            {t("actions.reconnect")}
+          </Button>
+        )}
 
         {session?.userType === "agent" && breakType && (
           <DropdownMenu>
