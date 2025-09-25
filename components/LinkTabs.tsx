@@ -35,7 +35,7 @@ interface Tab {
 }
 
 interface LinkTabsProps {
-  tabs: Tab[];
+  children: React.ReactNode;
 }
 
 import {
@@ -45,17 +45,42 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { MoreVert } from "@mui/icons-material";
+import React from "react";
 
-const LinkTabs = ({ tabs }: LinkTabsProps) => {
+const LinkTabs = ({ children }: LinkTabsProps) => {
   const pathname = usePathname();
-  const activeTab = tabs.find((tab) => tab.href === pathname) || tabs[0];
+
+  // Extract tab data from LinkTab children
+  const tabItems: Tab[] = React.useMemo(() => {
+    const childrenArray = React.Children.toArray(children);
+    return childrenArray
+      .map((child) => {
+        if (
+          React.isValidElement<LinkTabProps>(child) &&
+          child.type === LinkTab
+        ) {
+          const href = child.props.href || "";
+          const label = child.props.children;
+          return { href, label };
+        }
+        return { href: "", label: "" };
+      })
+      .filter((tab) => tab.href); // Filter out invalid tabs
+  }, [children]);
+
+  if (tabItems.length === 0) {
+    return null;
+  }
+
+  const activeTab =
+    tabItems.find((tab) => tab.href === pathname) || tabItems[0];
 
   // Responsive: show all tabs on desktop, selected tab + dropdown on mobile
   return (
     <div className="tabs flex flex-wrap gap-2 items-center">
       {/* Desktop */}
       <div className="hidden sm:flex gap-2">
-        {tabs.map((tab) => (
+        {tabItems.map((tab) => (
           <LinkTab key={tab.href} href={tab.href}>
             {tab.label}
           </LinkTab>
@@ -71,7 +96,7 @@ const LinkTabs = ({ tabs }: LinkTabsProps) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
-            {tabs
+            {tabItems
               .filter((tab) => tab.href !== activeTab.href)
               .map((tab) => (
                 <DropdownMenuItem key={tab.href} asChild>

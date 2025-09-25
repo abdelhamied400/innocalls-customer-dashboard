@@ -773,7 +773,7 @@
       "incoming": "واردة",
       "outgoing": "صادرة",
       "local": "محلية",
-      "all":"الجميع"
+      "all": "الجميع"
     },
     "status": {
       "answered": "تم الرد",
@@ -915,10 +915,10 @@
     "tooltips": {
       "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
     },
-      "isAnswered":{
-      "both":"كلاهما",
-      "answered":"مجابة",
-      "notAnswered":"غير مجابة"
+    "isAnswered": {
+      "both": "كلاهما",
+      "answered": "مجابة",
+      "notAnswered": "غير مجابة"
     }
   },
   "dashboard": {
@@ -1303,6 +1303,14 @@
     }
   },
   "analytics": {
+    "layout": {
+      "tabs": {
+        "inbound": "الواردة",
+        "outbound": "الصادرة",
+        "unanswered": "غير مجابة",
+        "userActivity": "نشاط المستخدمين"
+      }
+    },
     "unanswered": {
       "title": "إحصائيات المكالمات غير المجابة",
       "subtitle": "عرض إحصائيات تفصيلية للمكالمات غير المجابة",

@@ -765,7 +765,7 @@
       "incoming": "Incoming",
       "outgoing": "Outgoing",
       "local": "Local",
-      "all":"All"
+      "all": "All"
     },
     "status": {
       "answered": "Answered",
@@ -907,10 +907,10 @@
     "tooltips": {
       "toggleFilters": "Click to show/hide search filters"
     },
-    "isAnswered":{
-      "both":"Both",
-      "answered":"Answered",
-      "notAnswered":"Not Answered"
+    "isAnswered": {
+      "both": "Both",
+      "answered": "Answered",
+      "notAnswered": "Not Answered"
     }
   },
   "dashboard": {
@@ -1290,6 +1290,14 @@
     }
   },
   "analytics": {
+    "layout": {
+      "tabs": {
+        "inbound": "Incoming",
+        "outbound": "Outgoing",
+        "unanswered": "Unanswered",
+        "userActivity": "Agents Performance"
+      }
+    },
     "unanswered": {
       "title": "Unanswered Analytics",
       "subtitle": "View detailed analytics for unanswered calls",

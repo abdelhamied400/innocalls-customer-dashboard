@@ -20,12 +20,10 @@ const UsageLayout = ({ children }: UsageLayoutProps) => {
   return (
     <div className="bg-white rounded-xl p-4 h-auto sm:h-full flex flex-col gap-2">
       <div className="flex justify-between items-center">
-        <LinkTabs
-          tabs={[
-            { label: t("layout.tabs.summary"), href: "/usage/summary" },
-            { label: t("layout.tabs.detailed"), href: "/usage/detailed" },
-          ]}
-        />
+        <LinkTabs>
+          <LinkTab href="/usage/summary">{t("layout.tabs.summary")}</LinkTab>
+          <LinkTab href="/usage/detailed">{t("layout.tabs.detailed")}</LinkTab>
+        </LinkTabs>
       </div>
       <div className="h-[calc(100%-3rem)]">{children}</div>
     </div>
