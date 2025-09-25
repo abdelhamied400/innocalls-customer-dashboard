@@ -27,17 +27,16 @@ const BillingLayout = ({ children, refillSheet }: BillingLayoutProps) => {
   return (
     <div className="bg-white rounded-xl p-4 h-auto sm:h-full flex flex-col gap-2">
       <div className="flex flex-wrap justify-between items-center">
-        <LinkTabs
-          tabs={[
-            { label: t("layout.tabs.charges"), href: "/billing/charges" },
-            {
-              label: t("layout.tabs.paymentHistory"),
-              href: "/billing/payment-history",
-            },
-            { label: t("layout.tabs.rates"), href: "/billing/rates" },
-            { label: t("layout.tabs.invoices"), href: "/billing/invoices" },
-          ]}
-        />
+        <LinkTabs>
+          <LinkTab href="/billing/charges">{t("layout.tabs.charges")}</LinkTab>
+          <LinkTab href="/billing/payment-history">
+            {t("layout.tabs.paymentHistory")}
+          </LinkTab>
+          <LinkTab href="/billing/rates">{t("layout.tabs.rates")}</LinkTab>
+          <LinkTab href="/billing/invoices">
+            {t("layout.tabs.invoices")}
+          </LinkTab>
+        </LinkTabs>
         <Link href="/billing/refill-balance">
           <Button>{t("layout.actions.refillBalance")}</Button>
         </Link>
