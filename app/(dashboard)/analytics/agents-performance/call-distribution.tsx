@@ -61,7 +61,15 @@ const CallDistributionAnalytics = ({
     },
     {
       header: t("table.columns.totalCalls"),
-      accessorKey: "totalCalls",
+      accessorKey: "totalCalls", // Total Calls Case (Include), Otherwise External Sum
+      //@ts-ignore
+      cell: ({ row }) => {
+        const value = includeInternalCalls
+          ? row.original.totalCalls
+          : (row.original.totalIncomingExternalCalls || 0) +
+            (row.original.totalOutgoingExternalCalls || 0);
+        return value;
+      },
     },
     ...(includeInternalCalls
       ? [
