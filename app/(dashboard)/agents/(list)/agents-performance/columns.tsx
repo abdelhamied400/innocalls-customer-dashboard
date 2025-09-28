@@ -137,19 +137,6 @@ export const columns = (
     },
   },
   {
-    accessorKey: "firstBreakStarted",
-    header: ({ column }: { column: any }) => (
-      <SortingHead column={column}>
-        {t("columns.firstBreakStarted")}
-      </SortingHead>
-    ),
-    cell: ({ row }) => {
-      return row.original.firstBreakStarted
-        ? row.original.firstBreakStarted
-        : "-";
-    },
-  },
-  {
     accessorKey: "totalBreaks",
     header: ({ column }: { column: any }) => (
       <SortingHead column={column}>{t("columns.totalBreaks")}</SortingHead>

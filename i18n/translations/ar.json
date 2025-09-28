@@ -1308,8 +1308,8 @@
         "inbound": "الواردة",
         "outbound": "الصادرة",
         "unanswered": "غير مجابة",
-        "userActivity": "نشاط المستخدمين",
-        "callReporting": "تاريخ المكالمات"
+        "callReporting": "تاريخ المكالمات",
+        "userActivity": "أداء الوكلاء "
       }
     },
     "unanswered": {
