@@ -7,6 +7,7 @@ export const statsCardVariants = cva(
       variant: {
         default: "bg-white border-t-4 border-transparent",
         compound: "shadow-none hover:shadow-none border bg-gradient-to-b",
+        subtle: "bg-gray-50 shadow-none hover:shadow-none",
       },
       color: {
         default: "",
@@ -123,25 +124,33 @@ export const statsCardInfoVariants = cva(
   }
 );
 
-export const statsCardIconVariants = cva("transition-colors rounded-full p-1", {
-  variants: {
-    color: {
-      default:
-        "bg-gray-100 text-gray-500 group-hover:bg-gray-500 group-hover:text-white",
-      primary:
-        "bg-primary-100 text-primary-500 group-hover:bg-primary-500 group-hover:text-white",
-      warning:
-        "bg-amber-100 text-amber-500 group-hover:bg-amber-500 group-hover:text-white",
-      destructive:
-        "bg-destructive-100 text-destructive-500 group-hover:bg-destructive-500 group-hover:text-white",
-      success:
-        "bg-success-100 text-success-500 group-hover:bg-success-500 group-hover:text-white",
-      info: "bg-indigo-100 text-indigo-500 group-hover:bg-indigo-500 group-hover:text-white",
+export const statsCardIconVariants = cva(
+  "transition-colors rounded-full p-1 w-8 h-8 flex items-center justify-center",
+  {
+    variants: {
+      variant: {
+        default: "",
+        subtle: "rounded-lg",
+        compound: "",
+      },
+      color: {
+        default:
+          "bg-gray-100 text-gray-500 group-hover:bg-gray-500 group-hover:text-white",
+        primary:
+          "bg-primary-200 text-primary-600 group-hover:bg-primary-500 group-hover:text-white",
+        warning:
+          "bg-amber-100 text-amber-500 group-hover:bg-amber-500 group-hover:text-white",
+        destructive:
+          "bg-destructive-100 text-destructive-500 group-hover:bg-destructive-500 group-hover:text-white",
+        success:
+          "bg-success-100 text-success-500 group-hover:bg-success-500 group-hover:text-white",
+        info: "bg-indigo-100 text-indigo-500 group-hover:bg-indigo-500 group-hover:text-white",
+      },
     },
-  },
-  defaultVariants: {
-    color: "default",
-  },
-});
+    defaultVariants: {
+      color: "default",
+    },
+  }
+);
 
 export type StatsCardVariants = VariantProps<typeof statsCardVariants>;

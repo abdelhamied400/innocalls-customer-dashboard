@@ -2,6 +2,13 @@
 import LinkTabs, { LinkTab } from "@/components/LinkTabs";
 import hasTenant from "@/containers/hasTenant";
 import { useTranslations } from "@/providers/TranslationProvider";
+import {
+  ArrowDownward,
+  ArrowUpward,
+  CallMissedOutgoing,
+  History,
+  SupervisedUserCircle,
+} from "@mui/icons-material";
 
 const AnalyticsLayout = ({ children }: { children: React.ReactNode }) => {
   const t = useTranslations("analytics");
@@ -12,18 +19,29 @@ const AnalyticsLayout = ({ children }: { children: React.ReactNode }) => {
         <div className="flex flex-col gap-2">
           <LinkTabs>
             <LinkTab href="/analytics/inbound">
+              <ArrowDownward />
               {t("layout.tabs.inbound")}
             </LinkTab>
             <LinkTab href="/analytics/outbound">
+              <ArrowUpward />
               {t("layout.tabs.outbound")}
             </LinkTab>
             <LinkTab href="/analytics/unanswered">
+              <CallMissedOutgoing />
               {t("layout.tabs.unanswered")}
             </LinkTab>
             <LinkTab href="/analytics/user-activity">
+              <SupervisedUserCircle />
               {t("layout.tabs.userActivity")}
             </LinkTab>
+            <LinkTab href="/call-reporting">
+              <History />
+              {t("layout.tabs.callReporting")}
+            </LinkTab>
           </LinkTabs>
+
+          <hr />
+
           {children}
         </div>
       </div>

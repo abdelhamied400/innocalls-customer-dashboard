@@ -1,4 +1,4 @@
-import { differenceInDays, isAfter } from "date-fns";
+import { differenceInDays, format, isAfter } from "date-fns";
 import { useTranslations } from "@/providers/TranslationProvider";
 
 export const isValidDateRange = (
@@ -87,3 +87,6 @@ export const formatDurationShort = (
 
   return parts.join(" ");
 };
+
+// Jul 11, 2025
+export const formatDate = (date: Date) => format(date, "MMM d, yyyy");

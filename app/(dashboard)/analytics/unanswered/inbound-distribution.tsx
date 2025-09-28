@@ -7,20 +7,17 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
 } from "recharts";
 import unansweredAnalyticsService from "@/services/unanswered-analytics.service";
 import ChartCard, {
   ChartCardError,
   ChartCardSkeleton,
 } from "@/components/ChartCard";
-// Material Icons
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import NoData from "@/components/Analytics/NoData";
 import { UnansweredAnalyticsFilters } from "./page";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import { defaultLocale, locales } from "@/i18n/config";
-import RechartTooltip from "@/components/RechartTooltip";
 
 type InboundDistributionProps = {
   filters: UnansweredAnalyticsFilters;
@@ -45,12 +42,7 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
   }
 
   return (
-    <ChartCard
-      title={t("charts.inboundDistribution")}
-      icon={<GroupOutlinedIcon />}
-      variant="compound"
-      color="primary"
-    >
+    <>
       {!isLoading && data && data.length > 0 && (
         <ResponsiveContainer
           style={{ direction: "ltr" }}
@@ -133,7 +125,7 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
         </ResponsiveContainer>
       )}
       {!isLoading && (!data || data.length === 0) && <NoData />}
-    </ChartCard>
+    </>
   );
 };
 

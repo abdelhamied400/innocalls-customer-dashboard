@@ -79,7 +79,7 @@ const LinkTabs = ({ children }: LinkTabsProps) => {
   return (
     <div className="tabs flex flex-wrap gap-2 items-center">
       {/* Desktop */}
-      <div className="hidden sm:flex gap-2">
+      <div className="hidden sm:flex flex-wrap gap-2">
         {tabItems.map((tab) => (
           <LinkTab key={tab.href} href={tab.href}>
             {tab.label}
@@ -87,7 +87,7 @@ const LinkTabs = ({ children }: LinkTabsProps) => {
         ))}
       </div>
       {/* Mobile */}
-      <div className="flex sm:hidden items-center gap-2 w-full">
+      <div className="flex flex-wrap sm:hidden items-center gap-2 w-full">
         <LinkTab href={activeTab.href}>{activeTab.label}</LinkTab>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

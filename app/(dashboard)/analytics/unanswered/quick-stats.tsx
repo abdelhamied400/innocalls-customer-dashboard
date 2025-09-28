@@ -17,21 +17,29 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
   const t = useTranslations("analytics.unanswered.quickStats");
 
   const { data, isLoading, isRefetching, error, isError } = useLocalizedQuery({
-    queryKey: ["unanswered-quick-stats", filters],
-    queryFn: () => unansweredAnalyticsService.fetchQuickStats(filters),
+    queryKey: [
+      "unanswered-quick-stats",
+      [filters.agents, filters.fromDate, filters.toDate],
+    ],
+    queryFn: () =>
+      unansweredAnalyticsService.fetchQuickStats({
+        ...filters,
+        includeInternalCalls: true,
+      }),
   });
 
   return (
-    <div className="quick-stats grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <div className="quick-stats grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <StatsCard
         title={t("totalUnansweredCalls")}
         value={data?.totalUnansweredCalls || 0}
         icon={<PhoneDisabledIcon fontSize="small" />}
-        color="destructive"
+        color="primary"
         isRefetching={isRefetching}
         isLoading={isLoading}
         isError={isError}
         error={error}
+        variant="subtle"
       />
       <StatsCard
         title={t("externalUnansweredIncoming")}
@@ -42,30 +50,31 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
         isLoading={isLoading}
         isError={isError}
         error={error}
+        variant="subtle"
       />
       <StatsCard
         title={t("externalUnansweredOutgoing")}
         value={data?.totalExternalUnansweredOutgoingCalls || 0}
         icon={<ArrowUpwardIcon fontSize="small" />}
-        color="warning"
+        color="primary"
         isRefetching={isRefetching}
         isLoading={isLoading}
         isError={isError}
         error={error}
+        variant="subtle"
       />
 
-      {filters.includeInternalCalls && (
-        <StatsCard
-          title={t("internalUnansweredCalls")}
-          value={data?.totalInternalUnansweredCalls || 0}
-          icon={<GroupIcon fontSize="small" />}
-          color="info"
-          isRefetching={isRefetching}
-          isLoading={isLoading}
-          isError={isError}
-          error={error}
-        />
-      )}
+      <StatsCard
+        title={t("internalUnansweredCalls")}
+        value={data?.totalInternalUnansweredCalls || 0}
+        icon={<GroupIcon fontSize="small" />}
+        color="primary"
+        isRefetching={isRefetching}
+        isLoading={isLoading}
+        isError={isError}
+        error={error}
+        variant="subtle"
+      />
     </div>
   );
 };

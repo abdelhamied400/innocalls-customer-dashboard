@@ -1295,7 +1295,8 @@
         "inbound": "Incoming",
         "outbound": "Outgoing",
         "unanswered": "Unanswered",
-        "userActivity": "Agents Performance"
+        "userActivity": "Agents Performance",
+        "callReporting": "Call History"
       }
     },
     "unanswered": {
@@ -1917,10 +1918,10 @@
             "placeholder": "Enter to date"
           },
           "date": {
-            "label": "Date Range Search"
+            "label": "Select a date range"
           },
           "agents": {
-            "label": "Select Agents",
+            "label": "Agents",
             "placeholder": "Select agents"
           }
         },
@@ -1949,7 +1950,8 @@
       "actions": {
         "resetFilter": "Reset Filters",
         "applyFilters": "Apply Filters"
-      }
+      },
+      "fromTo": "From {from} to {to}"
     }
   },
   "liveMonitor": {

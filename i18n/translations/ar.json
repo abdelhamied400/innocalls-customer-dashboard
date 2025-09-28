@@ -1308,7 +1308,8 @@
         "inbound": "الواردة",
         "outbound": "الصادرة",
         "unanswered": "غير مجابة",
-        "userActivity": "نشاط المستخدمين"
+        "userActivity": "نشاط المستخدمين",
+        "callReporting": "تاريخ المكالمات"
       }
     },
     "unanswered": {
@@ -1929,10 +1930,10 @@
             "placeholder": "أدخل التاريخ النهائي"
           },
           "date": {
-            "label": "البحث بنطاق التاريخ"
+            "label": "اختر نطاق التاريخ"
           },
           "agents": {
-            "label": "اختر الوكلاء",
+            "label": "الوكلاء",
             "placeholder": "اختر الوكلاء"
           }
         },
@@ -1961,7 +1962,8 @@
       "actions": {
         "resetFilter": "إعادة تعيين",
         "applyFilters": "تطبيق"
-      }
+      },
+      "fromTo": "من {from} إلى {to}"
     }
   },
   "liveMonitor": {
