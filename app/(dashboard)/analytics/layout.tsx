@@ -10,7 +10,7 @@ const AnalyticsLayout = ({ children }: { children: React.ReactNode }) => {
     <div className="h-full w-full">
       <div className="bg-white p-4 rounded-lg">
         <div className="flex flex-col gap-2">
-          <LinkTabs>
+          {/* <LinkTabs>
             <LinkTab href="/analytics/inbound">
               {t("layout.tabs.inbound")}
             </LinkTab>
@@ -23,7 +23,7 @@ const AnalyticsLayout = ({ children }: { children: React.ReactNode }) => {
             <LinkTab href="/analytics/user-activity">
               {t("layout.tabs.userActivity")}
             </LinkTab>
-          </LinkTabs>
+          </LinkTabs> */}
           {children}
         </div>
       </div>
