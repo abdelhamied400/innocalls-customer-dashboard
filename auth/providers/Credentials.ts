@@ -1,4 +1,4 @@
-import { setCookie } from "cookies-next";
+import { getCookie, setCookie } from "cookies-next";
 import { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
@@ -26,6 +26,15 @@ const CredentialsProvider = Credentials({
     const password = credentials.password as string;
     const userType = (credentials.userType || "user") as "user" | "agent";
 
+    const data = await fetch(
+      `${process.env.NEXT_PUBLIC_APP_URL}/api/get-ip`
+    ).then((res) => {
+      if (res.ok) return res.json();
+      throw new Error("Failed to fetch IP");
+    });
+
+    console.log("Attempting login for:", data);
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/v2/auth/login`,
       {
@@ -33,6 +42,7 @@ const CredentialsProvider = Credentials({
         headers: {
           "Content-Type": "application/json",
           "X-User-Type": userType,
+          // "X-Client-IP": ip as string,
         },
         body: JSON.stringify({ email, password, userType }),
       }
@@ -44,8 +54,6 @@ const CredentialsProvider = Credentials({
     }
 
     const res = await response.json();
-
-    console.log(res.organizations);
 
     setCookie("OrganizationId", res.organizations?.[0]?.id || "");
 
