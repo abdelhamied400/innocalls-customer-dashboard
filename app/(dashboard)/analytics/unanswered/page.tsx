@@ -65,7 +65,7 @@ const UnansweredAnalytics = () => {
     schema: unansweredFiltersSchema(tCommon),
   };
 
-  const { values, appliedValues, errors, setValue, reset, apply } =
+  const { values, appliedValues, errors, setValue, reset, apply, applyValues } =
     useFilterManager<UnansweredAnalyticsFilters>(unansweredFilterConfig);
 
   return (
@@ -81,12 +81,10 @@ const UnansweredAnalytics = () => {
               label={tCommon("form.fields.date.label")}
               onApply={apply}
               onReset={() => {
-                setValue(
-                  "fromDate",
-                  unansweredFilterConfig.defaultValues.fromDate
-                );
-                setValue("toDate", unansweredFilterConfig.defaultValues.toDate);
-                apply();
+                applyValues({
+                  fromDate: unansweredFilterConfig.defaultValues.fromDate,
+                  toDate: unansweredFilterConfig.defaultValues.toDate,
+                });
               }}
             >
               <div className="flex flex-col gap-4">
@@ -123,8 +121,9 @@ const UnansweredAnalytics = () => {
               label={tCommon("form.fields.agents.label")}
               onApply={apply}
               onReset={() => {
-                setValue("agents", unansweredFilterConfig.defaultValues.agents);
-                apply();
+                applyValues({
+                  agents: unansweredFilterConfig.defaultValues.agents,
+                });
               }}
             >
               <div className="col-span-1 sm:col-span-2 lg:col-span-3">
@@ -167,23 +166,36 @@ const UnansweredAnalytics = () => {
                   id="includeInternalCalls"
                   checked={values.includeInternalCalls}
                   onCheckedChange={(value) => {
-                    setValue("includeInternalCalls", value);
-                    apply();
+                    applyValues({ includeInternalCalls: value });
                   }}
                 />
                 <Label htmlFor="includeInternalCalls">
                   {t("filters.includeInternalCalls.label")}
                 </Label>
               </div>
-              <div className="px-3">
+              <div className="px-3 flex flex-col gap-4">
                 <InboundDistribution filters={appliedValues} />
                 <InboundUnansweredHourly filters={appliedValues} />
               </div>
             </TabsContent>
 
             <TabsContent value="outbound" className="flex flex-col gap-4">
-              <OutboundDistribution filters={appliedValues} />
-              <OutboundUnansweredHourly filters={appliedValues} />
+              <div className="flex items-center gap-2 border-b p-3">
+                <Switch
+                  id="includeInternalCalls"
+                  checked={values.includeInternalCalls}
+                  onCheckedChange={(value) => {
+                    applyValues({ includeInternalCalls: value });
+                  }}
+                />
+                <Label htmlFor="includeInternalCalls">
+                  {t("filters.includeInternalCalls.label")}
+                </Label>
+              </div>
+              <div className="px-3 flex flex-col gap-4">
+                <OutboundDistribution filters={appliedValues} />
+                <OutboundUnansweredHourly filters={appliedValues} />
+              </div>
             </TabsContent>
           </Tabs>
         </div>

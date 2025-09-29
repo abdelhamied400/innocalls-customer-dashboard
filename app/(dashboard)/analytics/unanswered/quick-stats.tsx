@@ -9,12 +9,15 @@ import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import GroupIcon from "@mui/icons-material/Group";
 import { UnansweredAnalyticsFilters } from "./page";
 import { useTranslations } from "@/providers/TranslationProvider";
+import useLayoutManager from "@/hooks/use-layout-manager";
+import { cn } from "@/lib/utils";
 
 type QuickStatsFilters = {
   filters: UnansweredAnalyticsFilters;
 };
 const QuickStats = ({ filters }: QuickStatsFilters) => {
   const t = useTranslations("analytics.unanswered.quickStats");
+  const { layoutVariant } = useLayoutManager();
 
   const { data, isLoading, isRefetching, error, isError } = useLocalizedQuery({
     queryKey: [
@@ -29,7 +32,12 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
   });
 
   return (
-    <div className="quick-stats grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div
+      className={cn(
+        "quick-stats grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4",
+        layoutVariant === "both-open" && "lg:grid-cols-2"
+      )}
+    >
       <StatsCard
         title={t("totalUnansweredCalls")}
         value={data?.totalUnansweredCalls || 0}

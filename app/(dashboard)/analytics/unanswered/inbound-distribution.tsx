@@ -12,12 +12,14 @@ import unansweredAnalyticsService from "@/services/unanswered-analytics.service"
 import ChartCard, {
   ChartCardError,
   ChartCardSkeleton,
-} from "@/components/ChartCard";
+} from "@/components/ChartCardNew";
 import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import NoData from "@/components/Analytics/NoData";
 import { UnansweredAnalyticsFilters } from "./page";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import { defaultLocale, locales } from "@/i18n/config";
+import { formatDate } from "@/lib/date";
+import ChartCustomTooltip from "@/components/ChartCustomTooltip";
 
 type InboundDistributionProps = {
   filters: UnansweredAnalyticsFilters;
@@ -25,6 +27,7 @@ type InboundDistributionProps = {
 
 const InboundDistribution = ({ filters }: InboundDistributionProps) => {
   const t = useTranslations("analytics.unanswered");
+  const tCommon = useTranslations("analytics.common");
   const localeSlug = useLocale() || defaultLocale;
   const locale = locales[localeSlug];
 
@@ -42,7 +45,46 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
   }
 
   return (
-    <>
+    <ChartCard
+      title={tCommon("fromTo", {
+        from: formatDate(filters.fromDate, {
+          locale: localeSlug,
+        }),
+        to: formatDate(filters.toDate, {
+          locale: localeSlug,
+        }),
+      })}
+      legends={[
+        {
+          label: t("inbound.callDistribution.lineLabels.totalCalls"),
+          color: "#1976D2",
+        },
+        {
+          label: t("inbound.callDistribution.lineLabels.missedTotal"),
+          color: "#757575",
+        },
+        ...(filters.includeInternalCalls
+          ? [
+              {
+                label: t("inbound.callDistribution.lineLabels.inboundInternal"),
+                color: "#43A047",
+              },
+              {
+                label: t("inbound.callDistribution.lineLabels.missedInternal"),
+                color: "#FBC02D",
+              },
+            ]
+          : []),
+        {
+          label: t("inbound.callDistribution.lineLabels.inboundExternal"),
+          color: "#7C3AED",
+        },
+        {
+          label: t("inbound.callDistribution.lineLabels.missedExternal"),
+          color: "#E53935",
+        },
+      ]}
+    >
       {!isLoading && data && data.length > 0 && (
         <ResponsiveContainer
           style={{ direction: "ltr" }}
@@ -63,7 +105,15 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
               axisLine={false}
               allowDecimals={false}
             />
-            <Tooltip contentStyle={{ direction: locale.dir }} />
+            <Tooltip
+              contentStyle={{ direction: locale.dir }}
+              content={(props) => (
+                <ChartCustomTooltip
+                  {...props}
+                  headerDataKeys={["totalCalls", "unansweredCalls"]}
+                />
+              )}
+            />
 
             <Line
               type="monotone"
@@ -125,7 +175,7 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
         </ResponsiveContainer>
       )}
       {!isLoading && (!data || data.length === 0) && <NoData />}
-    </>
+    </ChartCard>
   );
 };
 

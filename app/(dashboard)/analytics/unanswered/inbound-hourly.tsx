@@ -7,25 +7,25 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
 } from "recharts";
 import unansweredAnalyticsService from "@/services/unanswered-analytics.service";
 import ChartCard, {
   ChartCardError,
   ChartCardSkeleton,
-} from "@/components/ChartCard";
-import { GroupIcon } from "lucide-react";
+} from "@/components/ChartCardNew";
 import NoData from "@/components/Analytics/NoData";
 import { UnansweredAnalyticsFilters } from "./page";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
-import RechartTooltip from "@/components/RechartTooltip";
 import { defaultLocale, locales } from "@/i18n/config";
+import { formatDate } from "@/lib/date";
+import ChartCustomTooltip from "@/components/ChartCustomTooltip";
 
 type InboundUnansweredHourlyProps = {
   filters: UnansweredAnalyticsFilters;
 };
 const InboundUnansweredHourly = ({ filters }: InboundUnansweredHourlyProps) => {
   const t = useTranslations("analytics.unanswered");
+  const tCommon = useTranslations("analytics.common");
   const localeSlug = useLocale() || defaultLocale;
   const locale = locales[localeSlug];
 
@@ -45,10 +45,28 @@ const InboundUnansweredHourly = ({ filters }: InboundUnansweredHourlyProps) => {
 
   return (
     <ChartCard
-      title={t("charts.inboundHourlyUnanswered")}
-      icon={<GroupIcon size={20} />}
-      variant="compound"
-      color="success"
+      title={tCommon("fromTo", {
+        from: formatDate(filters.fromDate, {
+          locale: localeSlug,
+        }),
+        to: formatDate(filters.toDate, {
+          locale: localeSlug,
+        }),
+      })}
+      legends={[
+        ...(filters.includeInternalCalls
+          ? [
+              {
+                label: t("common.hourDistribution.internalUnanswered"),
+                color: "#10b981",
+              },
+            ]
+          : []),
+        {
+          label: t("common.hourDistribution.externalUnanswered"),
+          color: "#f59e42",
+        },
+      ]}
     >
       {!isLoading && data && data.length > 0 && (
         <ResponsiveContainer
@@ -59,7 +77,25 @@ const InboundUnansweredHourly = ({ filters }: InboundUnansweredHourlyProps) => {
           <BarChart data={data}>
             <XAxis dataKey="hourOfDay" tickFormatter={(h) => `${h}:00`} />
             <YAxis />
-            <Tooltip contentStyle={{ direction: locale.dir }} />
+            <Tooltip
+              contentStyle={{ direction: locale.dir }}
+              labelFormatter={(label) => `${label}:00`}
+              includeHidden
+              content={(props) => (
+                <ChartCustomTooltip
+                  {...props}
+                  headerDataKeys={["unansweredCalls"]}
+                />
+              )}
+            />
+
+            <Bar
+              dataKey="unansweredCalls"
+              stackId="b"
+              fill="#f59e42"
+              name={t("inbound.callDistribution.lineLabels.missedTotal")}
+              hide
+            />
 
             {filters.includeInternalCalls && (
               <Bar

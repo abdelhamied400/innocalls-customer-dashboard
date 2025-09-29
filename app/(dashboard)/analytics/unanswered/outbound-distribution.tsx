@@ -13,13 +13,15 @@ import {
 import ChartCard, {
   ChartCardError,
   ChartCardSkeleton,
-} from "@/components/ChartCard";
+} from "@/components/ChartCardNew";
 import NoData from "@/components/Analytics/NoData";
 import GroupOutlined from "@mui/icons-material/GroupOutlined";
 import { UnansweredAnalyticsFilters } from "./page";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import RechartTooltip from "@/components/RechartTooltip";
 import { defaultLocale, locales } from "@/i18n/config";
+import { formatDate } from "@/lib/date";
+import ChartCustomTooltip from "@/components/ChartCustomTooltip";
 
 type OutboundDistributionProps = {
   filters: UnansweredAnalyticsFilters;
@@ -27,6 +29,7 @@ type OutboundDistributionProps = {
 
 const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
   const t = useTranslations("analytics.unanswered");
+  const tCommon = useTranslations("analytics.common");
 
   const localeSlug = useLocale() || defaultLocale;
   const locale = locales[localeSlug];
@@ -47,10 +50,52 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
 
   return (
     <ChartCard
-      title={t("charts.outboundDistribution")}
-      icon={<GroupOutlined />}
-      variant="compound"
-      color="primary"
+      title={tCommon("fromTo", {
+        from: formatDate(filters.fromDate, {
+          locale: localeSlug,
+        }),
+        to: formatDate(filters.toDate, {
+          locale: localeSlug,
+        }),
+      })}
+      legends={[
+        {
+          label: t("outbound.callDistribution.lineLabels.totalCalls"),
+          color: "#3B82F6",
+        },
+        {
+          label: t("outbound.callDistribution.lineLabels.unansweredTotal"),
+          color: "#9CA3AF",
+        },
+        ...(filters.includeInternalCalls
+          ? [
+              {
+                label: t(
+                  "outbound.callDistribution.lineLabels.outboundInternal"
+                ),
+                color: "#10B981",
+              },
+            ]
+          : []),
+        {
+          label: t("outbound.callDistribution.lineLabels.outboundExternal"),
+          color: "#6366F1",
+        },
+        ...(filters.includeInternalCalls
+          ? [
+              {
+                label: t(
+                  "outbound.callDistribution.lineLabels.unansweredInternal"
+                ),
+                color: "#F59E0B",
+              },
+            ]
+          : []),
+        {
+          label: t("outbound.callDistribution.lineLabels.unansweredExternal"),
+          color: "#EF4444",
+        },
+      ]}
     >
       {!isLoading && data && data.length > 0 && (
         <ResponsiveContainer
@@ -72,7 +117,15 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
               axisLine={false}
               allowDecimals={false}
             />
-            <Tooltip contentStyle={{ direction: locale.dir }} />
+            <Tooltip
+              contentStyle={{ direction: locale.dir }}
+              content={(props) => (
+                <ChartCustomTooltip
+                  {...props}
+                  headerDataKeys={["totalCalls", "unansweredCalls"]}
+                />
+              )}
+            />
 
             <Line
               type="monotone"

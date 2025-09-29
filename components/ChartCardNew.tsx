@@ -128,27 +128,23 @@ const chartCardIconVariants = cva("transition-colors rounded-full p-1", {
 type ChartCardVariants = VariantProps<typeof chartCardVariants>;
 
 type Legend = { label: React.ReactNode; color: string | undefined };
-type ChartCardProps = PropsWithChildren<
-  ChartCardVariants & {
-    icon: React.ReactNode;
-    title: string;
-    className?: string;
-    isRefetching?: boolean;
-    isLoading?: boolean;
-    error?: unknown;
-    isError?: boolean;
-    canRefetch?: boolean;
-    refetchInterval?: number | false;
-    legends?: Legend[];
-    setRefetchInterval?: (interval: number | false) => void;
-    refetch?: (
-      options?: RefetchOptions
-    ) => Promise<QueryObserverResult<any, Error>>;
-  }
->;
+type ChartCardProps = PropsWithChildren<{
+  title: string;
+  className?: string;
+  isRefetching?: boolean;
+  isLoading?: boolean;
+  error?: unknown;
+  isError?: boolean;
+  canRefetch?: boolean;
+  refetchInterval?: number | false;
+  legends?: Legend[];
+  setRefetchInterval?: (interval: number | false) => void;
+  refetch?: (
+    options?: RefetchOptions
+  ) => Promise<QueryObserverResult<any, Error>>;
+}>;
 
 const ChartCard = ({
-  icon,
   title,
   className = "",
   isRefetching = false,
@@ -160,8 +156,6 @@ const ChartCard = ({
   refetchInterval,
   setRefetchInterval,
   refetch,
-  variant = "default",
-  color = "default",
   legends,
 }: ChartCardProps) => {
   const t = useTranslations("components.statsCard");
@@ -175,39 +169,26 @@ const ChartCard = ({
   }
 
   return (
-    <div
-      className={cn(
-        chartCardVariants({ variant, color }),
-        className,
-        isRefetching && "animate-pulse"
-      )}
-    >
-      <div className="h-full flex flex-col gap-4">
+    <div className={cn(className, isRefetching && "animate-pulse")}>
+      <div className="h-full flex flex-col gap-4 border rounded-xl p-4">
         <div className="flex justify-between items-center gap-1">
-          <div className="flex justify-between flex-wrap items-center flex-1">
-            <div className="flex items-center gap-2">
-              <div className={cn(chartCardIconVariants({ color }))}>
-                {isRefetching ? <Spinner className="size-6" /> : icon}
-              </div>
-              <div className="title-head">
-                <h3 className="text-lg text-gray-500">{title}</h3>
-                <div className="legends flex items-center gap-2 flex-wrap">
-                  {legends &&
-                    legends.map((legend, idx) => (
-                      <span
-                        key={`legend-${idx}`}
-                        className="text-sm flex items-center gap-1"
-                        style={{ color: legend.color }}
-                      >
-                        <span
-                          className={`rounded-full w-2 h-2 block`}
-                          style={{ backgroundColor: legend.color }}
-                        ></span>
-                        {legend.label}
-                      </span>
-                    ))}
-                </div>
-              </div>
+          <div className="title-head flex items-center justify-between gap-2 flex-wrap flex-1">
+            <h3 className="text-lg text-gray-500">{title}</h3>
+            <div className="legends flex items-center gap-2 flex-wrap">
+              {legends &&
+                legends.map((legend, idx) => (
+                  <span
+                    key={`legend-${idx}`}
+                    className="text-sm flex items-center gap-1"
+                    style={{ color: legend.color }}
+                  >
+                    <span
+                      className={`rounded w-4 h-4 block`}
+                      style={{ backgroundColor: legend.color }}
+                    ></span>
+                    {legend.label}
+                  </span>
+                ))}
             </div>
           </div>
           {canRefetch && (
@@ -265,21 +246,13 @@ export const ChartCardError = ({ error }: ChartCardErrorProps) => {
   if (error instanceof AxiosError) {
     const errorMessage = error?.response?.data?.message || error.message;
     return (
-      <ChartCard
-        icon={<XIcon className="text-red-500 group-hover:text-white" />}
-        title={t("errorOccurred")}
-        color="destructive"
-      >
+      <ChartCard title={t("errorOccurred")}>
         <p className="text-red-500">{errorMessage}</p>
       </ChartCard>
     );
   }
   return (
-    <ChartCard
-      icon={<XIcon className="text-red-500 group-hover:text-white" />}
-      title={t("errorOccurred")}
-      color="destructive"
-    >
+    <ChartCard title={t("errorOccurred")}>
       <p className="text-red-500">{t("unknownError")}</p>
     </ChartCard>
   );
@@ -307,11 +280,7 @@ export const ChartCardNoData = () => {
   const t = useTranslations("components.statsCard");
 
   return (
-    <ChartCard
-      icon={<XIcon className="text-gray-500 group-hover:text-white" />}
-      title={t("noDataAvailable")}
-      color="default"
-    >
+    <ChartCard title={t("noDataAvailable")}>
       <p className="text-gray-500">{t("noDataMessage")}</p>
     </ChartCard>
   );
