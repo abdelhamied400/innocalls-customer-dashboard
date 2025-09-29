@@ -52,14 +52,6 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
     <ChartCard
       title={t("charts.outboundDistribution")}
       legends={[
-        {
-          label: t("outbound.callDistribution.lineLabels.totalCalls"),
-          color: "#3B82F6",
-        },
-        {
-          label: t("outbound.callDistribution.lineLabels.unansweredTotal"),
-          color: "#9CA3AF",
-        },
         ...(filters.includeInternalCalls
           ? [
               {

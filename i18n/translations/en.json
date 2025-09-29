@@ -1951,7 +1951,8 @@
         "resetFilter": "Reset Filters",
         "applyFilters": "Apply Filters"
       },
-      "fromTo": "From {from} to {to}"
+      "from": "From",
+      "to": "To"
     }
   },
   "liveMonitor": {

@@ -48,14 +48,6 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
     <ChartCard
       title={t("charts.inboundDistribution")}
       legends={[
-        {
-          label: t("inbound.callDistribution.lineLabels.totalCalls"),
-          color: "#1976D2",
-        },
-        {
-          label: t("inbound.callDistribution.lineLabels.missedTotal"),
-          color: "#757575",
-        },
         ...(filters.includeInternalCalls
           ? [
               {

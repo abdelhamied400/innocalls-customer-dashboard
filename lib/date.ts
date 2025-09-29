@@ -94,8 +94,12 @@ export const formatDurationShort = (
 export const formatDate = (
   date: Date,
   options?: Omit<FormatOptions, "locale"> & { locale: LocaleSlug }
-) =>
-  format(date, "MMM d, yyyy", {
+) => {
+  const formatString =
+    options?.locale === "ar" ? "MMMM d, yyyy" : "MMM d, yyyy";
+
+  return format(date, formatString, {
     ...options,
     locale: options?.locale === "ar" ? arEG : enUS,
   });
+};

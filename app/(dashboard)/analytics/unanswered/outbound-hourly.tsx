@@ -89,6 +89,16 @@ const OutboundUnansweredHourly = ({
               )}
             />
 
+            <Line
+              type="linear"
+              dataKey="unansweredCalls"
+              stroke="#02D995"
+              strokeWidth={2}
+              name={t("inbound.callDistribution.lineLabels.unansweredTotal")}
+              dot={false}
+              hide
+            />
+
             {filters.includeInternalCalls && (
               <Line
                 type="linear"

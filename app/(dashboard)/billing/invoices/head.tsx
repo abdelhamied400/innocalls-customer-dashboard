@@ -112,7 +112,7 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
       hasValidTotalRange = false;
     }
 
-    if (!isValid || !hasValidTotalRange) return;
+    if (!isValid || !hasValidTotalRange) return false;
 
     setFilters((prev) => ({
       ...prev,
@@ -122,6 +122,8 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
       toTotal: toTotal?.trim(),
       status: status || null,
     }));
+
+    return true;
   };
 
   return (

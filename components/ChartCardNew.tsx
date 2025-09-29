@@ -173,7 +173,7 @@ const ChartCard = ({
       <div className="h-full flex flex-col gap-4 border rounded-xl p-4">
         <div className="flex justify-between items-center gap-1">
           <div className="title-head flex items-center justify-between gap-2 flex-wrap flex-1">
-            <h3 className="text-lg text-gray-500">{title}</h3>
+            <h3 className="text-lg text-gray-950">{title}</h3>
             <div className="legends flex items-center gap-2 flex-wrap">
               {legends &&
                 legends.map((legend, idx) => (

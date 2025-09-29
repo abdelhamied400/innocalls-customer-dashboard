@@ -72,7 +72,7 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
       tCommon
     );
 
-    if (!isValidRange) return;
+    if (!isValidRange) return false;
 
     setFilters((prev) => ({
       ...prev,
@@ -86,6 +86,7 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
     }));
 
     table.setPageIndex(0); // Reset to first page on filter change
+    return true;
   };
 
   return (

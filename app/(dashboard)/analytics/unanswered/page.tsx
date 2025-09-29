@@ -91,10 +91,14 @@ const UnansweredAnalytics = () => {
         <div className="filters p-2 border rounded-xl flex items-center justify-between flex-wrap">
           <div className="flex flex-wrap items-center gap-2">
             <FilterBox
-              triggerLabel={tCommon("fromTo", {
-                from: formatDate(values.fromDate),
-                to: formatDate(values.toDate),
-              })}
+              triggerLabel={
+                <p className="font-normal">
+                  {tCommon("from")}{" "}
+                  <b>{formatDate(values.fromDate, { locale: locale })}</b>
+                  {tCommon("to")}{" "}
+                  <b>{formatDate(values.toDate, { locale: locale })}</b>
+                </p>
+              }
               label={tCommon("form.fields.date.label")}
               onApply={apply}
               onReset={() => {

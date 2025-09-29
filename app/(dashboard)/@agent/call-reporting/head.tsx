@@ -108,7 +108,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
       tCommon
     );
 
-    if (!isValid) return;
+    if (!isValid) return false;
 
     setFilters((prev) => ({
       ...prev,
@@ -131,6 +131,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
     }));
 
     table.setPageIndex(0); // Reset to first page on filter change
+    return true;
   };
 
   return (

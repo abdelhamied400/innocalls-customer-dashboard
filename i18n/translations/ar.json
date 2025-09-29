@@ -1963,7 +1963,8 @@
         "resetFilter": "إعادة تعيين",
         "applyFilters": "تطبيق"
       },
-      "fromTo": "من {from} إلى {to}"
+      "from": "من",
+      "to": "إلى"
     }
   },
   "liveMonitor": {

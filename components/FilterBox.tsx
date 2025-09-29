@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { PropsWithChildren, useState } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,10 +12,10 @@ import { useTranslations } from "@/providers/TranslationProvider";
 
 type FilterBoxProps = PropsWithChildren<{
   className?: string;
-  triggerLabel?: string;
+  triggerLabel?: React.ReactNode;
   label?: string;
   onReset?: () => void;
-  onApply?: () => void;
+  onApply?: () => boolean;
   numberOfFilters?: number;
 }>;
 export const FilterBox = ({
@@ -39,9 +39,13 @@ export const FilterBox = ({
 
   const handleApply = () => {
     if (onApply) {
-      onApply();
+      const isApplied = onApply();
+      if (isApplied) {
+        setIsOpen(false);
+      }
+    } else {
+      setIsOpen(false);
     }
-    setIsOpen(false);
   };
 
   return (

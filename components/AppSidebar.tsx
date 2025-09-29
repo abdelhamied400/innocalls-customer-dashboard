@@ -75,68 +75,13 @@ const AppSidebar = () => {
         )}
 
         {Organization?.hasTenant && (
-          <SidebarCollapsibleItem
+          <SidebarItem
             icon={<Timeline />}
             title={t("navigation.analytics")}
-            href={`/analytics`}
+            href={`/analytics/inbound`}
             isNew={true}
             isComingSoon={false}
-          >
-            {session?.userType === "user" && (
-              <SidebarItem
-                icon={<ArrowDownward />}
-                title={t("navigation.inbound")}
-                href={`/analytics/inbound`}
-                isNew={true}
-                isComingSoon={false}
-              />
-            )}
-            {session?.userType === "user" && (
-              <SidebarItem
-                icon={<ArrowUpward />}
-                title={t("navigation.outbound")}
-                href={`/analytics/outbound`}
-                isNew={true}
-                isComingSoon={false}
-              />
-            )}
-            {session?.userType === "user" && (
-              <SidebarItem
-                icon={<CallMissedOutgoing />}
-                title={t("navigation.unanswered")}
-                href={`/analytics/unanswered`}
-                isNew={true}
-                isComingSoon={false}
-              />
-            )}
-            {session?.userType === "user" && (
-              <SidebarItem
-                icon={<PersonSearch />}
-                title={t("navigation.userActivity")}
-                href={`/analytics/agents-performance`}
-                isNew={true}
-                isComingSoon={false}
-              />
-            )}
-
-            {session?.userType === "agent" && (
-              <SidebarItem
-                icon={<PersonSearch />}
-                title={t("navigation.activityAnalysis")}
-                href={`/analytics/activity-reports`}
-                isNew={true}
-                isComingSoon={false}
-              />
-            )}
-
-            <SidebarItem
-              icon={<History />}
-              title={t("navigation.callHistory")}
-              href={`/call-reporting`}
-              isNew={true}
-              isComingSoon={false}
-            />
-          </SidebarCollapsibleItem>
+          />
         )}
 
         {session?.userType === "agent" && (
@@ -193,16 +138,17 @@ const AppSidebar = () => {
           />
         )}
 
-        {session?.userType === "user" && auth?.user?.fullAccessUsageAnalytics && (
-          <SidebarItem
-            icon={<DataUsage />}
-            title={t("navigation.usage")}
-            href={`/usage`}
-            disabled={false}
-            isNew={true}
-            isComingSoon={false}
-          />
-        )}
+        {session?.userType === "user" &&
+          auth?.user?.fullAccessUsageAnalytics && (
+            <SidebarItem
+              icon={<DataUsage />}
+              title={t("navigation.usage")}
+              href={`/usage`}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
+            />
+          )}
 
         {session?.userType === "user" && (
           <SidebarCollapsibleItem
