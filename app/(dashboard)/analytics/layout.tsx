@@ -30,7 +30,7 @@ const AnalyticsLayout = ({ children }: { children: React.ReactNode }) => {
               <CallMissedOutgoing />
               {t("layout.tabs.unanswered")}
             </LinkTab>
-            <LinkTab href="/analytics/user-activity">
+            <LinkTab href="/analytics/agents-performance">
               <SupervisedUserCircle />
               {t("layout.tabs.userActivity")}
             </LinkTab>

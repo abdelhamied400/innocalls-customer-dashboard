@@ -47,7 +47,7 @@ export const FilterBox = ({
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="filter">
+        <Button variant="filter" className="h-auto min-h-9 whitespace-normal">
           {triggerLabel}
           {numberOfFilters > 0 && (
             <Badge className="p-0.5" variant="gray">
@@ -70,7 +70,9 @@ export const FilterBox = ({
           <div className="flex flex-col gap-2 filter-dialog-body">
             <div className="flex flex-col gap-4 px-4 py-2 filter-dialog-content">
               {children || (
-                <p className="text-sm text-gray-500">{t('filter.noFiltersAvailable')}</p>
+                <p className="text-sm text-gray-500">
+                  {t("filter.noFiltersAvailable")}
+                </p>
               )}
             </div>
             <hr className="" />

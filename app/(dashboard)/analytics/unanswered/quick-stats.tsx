@@ -11,6 +11,12 @@ import { UnansweredAnalyticsFilters } from "./page";
 import { useTranslations } from "@/providers/TranslationProvider";
 import useLayoutManager from "@/hooks/use-layout-manager";
 import { cn } from "@/lib/utils";
+import {
+  Call,
+  CallMissed,
+  CallMissedOutgoing,
+  RingVolume,
+} from "@mui/icons-material";
 
 type QuickStatsFilters = {
   filters: UnansweredAnalyticsFilters;
@@ -41,7 +47,7 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
       <StatsCard
         title={t("totalUnansweredCalls")}
         value={data?.totalUnansweredCalls || 0}
-        icon={<PhoneDisabledIcon fontSize="small" />}
+        icon={<RingVolume fontSize="small" />}
         color="primary"
         isRefetching={isRefetching}
         isLoading={isLoading}
@@ -52,7 +58,7 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
       <StatsCard
         title={t("externalUnansweredIncoming")}
         value={data?.totalExternalUnansweredIncomingCalls || 0}
-        icon={<ArrowDownwardIcon fontSize="small" />}
+        icon={<CallMissed fontSize="small" />}
         color="primary"
         isRefetching={isRefetching}
         isLoading={isLoading}
@@ -63,7 +69,7 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
       <StatsCard
         title={t("externalUnansweredOutgoing")}
         value={data?.totalExternalUnansweredOutgoingCalls || 0}
-        icon={<ArrowUpwardIcon fontSize="small" />}
+        icon={<CallMissedOutgoing fontSize="small" />}
         color="primary"
         isRefetching={isRefetching}
         isLoading={isLoading}
@@ -75,7 +81,7 @@ const QuickStats = ({ filters }: QuickStatsFilters) => {
       <StatsCard
         title={t("internalUnansweredCalls")}
         value={data?.totalInternalUnansweredCalls || 0}
-        icon={<GroupIcon fontSize="small" />}
+        icon={<Call fontSize="small" />}
         color="primary"
         isRefetching={isRefetching}
         isLoading={isLoading}

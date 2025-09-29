@@ -2,8 +2,8 @@ import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import React from "react";
 import {
   ResponsiveContainer,
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   Tooltip,
@@ -45,26 +45,19 @@ const InboundUnansweredHourly = ({ filters }: InboundUnansweredHourlyProps) => {
 
   return (
     <ChartCard
-      title={tCommon("fromTo", {
-        from: formatDate(filters.fromDate, {
-          locale: localeSlug,
-        }),
-        to: formatDate(filters.toDate, {
-          locale: localeSlug,
-        }),
-      })}
+      title={t("charts.inboundHourlyUnanswered")}
       legends={[
         ...(filters.includeInternalCalls
           ? [
               {
                 label: t("common.hourDistribution.internalUnanswered"),
-                color: "#10b981",
+                color: "#02D995",
               },
             ]
           : []),
         {
           label: t("common.hourDistribution.externalUnanswered"),
-          color: "#f59e42",
+          color: "#F4592F",
         },
       ]}
     >
@@ -74,7 +67,7 @@ const InboundUnansweredHourly = ({ filters }: InboundUnansweredHourlyProps) => {
           width="100%"
           height={320}
         >
-          <BarChart data={data}>
+          <LineChart data={data}>
             <XAxis dataKey="hourOfDay" tickFormatter={(h) => `${h}:00`} />
             <YAxis />
             <Tooltip
@@ -89,30 +82,26 @@ const InboundUnansweredHourly = ({ filters }: InboundUnansweredHourlyProps) => {
               )}
             />
 
-            <Bar
-              dataKey="unansweredCalls"
-              stackId="b"
-              fill="#f59e42"
-              name={t("inbound.callDistribution.lineLabels.missedTotal")}
-              hide
-            />
-
             {filters.includeInternalCalls && (
-              <Bar
+              <Line
+                type="linear"
                 dataKey="internalUnansweredCalls"
-                stackId="a"
-                fill="#10b981"
+                stroke="#02D995"
+                strokeWidth={2}
                 name={t("common.hourDistribution.internalUnanswered")}
+                dot={false}
               />
             )}
 
-            <Bar
+            <Line
+              type="linear"
               dataKey="externalUnansweredCalls"
-              stackId="a"
-              fill="#f59e42"
+              stroke="#F4592F"
+              strokeWidth={2}
               name={t("common.hourDistribution.externalUnanswered")}
+              dot={false}
             />
-          </BarChart>
+          </LineChart>
         </ResponsiveContainer>
       )}
       {!isLoading && (!data || data.length === 0) && <NoData />}

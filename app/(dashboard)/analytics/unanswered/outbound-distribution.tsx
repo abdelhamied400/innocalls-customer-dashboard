@@ -50,14 +50,7 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
 
   return (
     <ChartCard
-      title={tCommon("fromTo", {
-        from: formatDate(filters.fromDate, {
-          locale: localeSlug,
-        }),
-        to: formatDate(filters.toDate, {
-          locale: localeSlug,
-        }),
-      })}
+      title={t("charts.outboundDistribution")}
       legends={[
         {
           label: t("outbound.callDistribution.lineLabels.totalCalls"),
@@ -73,13 +66,13 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
                 label: t(
                   "outbound.callDistribution.lineLabels.outboundInternal"
                 ),
-                color: "#10B981",
+                color: "#02D995",
               },
             ]
           : []),
         {
           label: t("outbound.callDistribution.lineLabels.outboundExternal"),
-          color: "#6366F1",
+          color: "#F4592F",
         },
         ...(filters.includeInternalCalls
           ? [
@@ -87,13 +80,13 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
                 label: t(
                   "outbound.callDistribution.lineLabels.unansweredInternal"
                 ),
-                color: "#F59E0B",
+                color: "#F6A731",
               },
             ]
           : []),
         {
           label: t("outbound.callDistribution.lineLabels.unansweredExternal"),
-          color: "#EF4444",
+          color: "#2021AD",
         },
       ]}
     >
@@ -119,6 +112,7 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
             />
             <Tooltip
               contentStyle={{ direction: locale.dir }}
+              includeHidden
               content={(props) => (
                 <ChartCustomTooltip
                   {...props}
@@ -128,27 +122,29 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
             />
 
             <Line
-              type="monotone"
+              type="linear"
               dataKey="totalCalls"
               stroke="#3B82F6"
               strokeWidth={2}
               dot={false}
               name={t("outbound.callDistribution.lineLabels.totalCalls")}
+              hide
             />
             <Line
-              type="monotone"
+              type="linear"
               dataKey="unansweredCalls"
               stroke="#9CA3AF"
               strokeWidth={2}
               dot={false}
               name={t("outbound.callDistribution.lineLabels.unansweredTotal")}
+              hide
             />
 
             {filters.includeInternalCalls && (
               <Line
-                type="monotone"
+                type="linear"
                 dataKey="internalCalls"
-                stroke="#10B981"
+                stroke="#02D995"
                 strokeWidth={2}
                 dot={false}
                 name={t(
@@ -158,9 +154,9 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
             )}
 
             <Line
-              type="monotone"
+              type="linear"
               dataKey="externalCalls"
-              stroke="#6366F1"
+              stroke="#F4592F"
               strokeWidth={2}
               dot={false}
               name={t("outbound.callDistribution.lineLabels.outboundExternal")}
@@ -168,9 +164,9 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
 
             {filters.includeInternalCalls && (
               <Line
-                type="monotone"
+                type="linear"
                 dataKey="internalUnansweredCalls"
-                stroke="#F59E0B"
+                stroke="#F6A731"
                 strokeWidth={2}
                 dot={false}
                 name={t(
@@ -180,9 +176,9 @@ const OutboundDistribution = ({ filters }: OutboundDistributionProps) => {
             )}
 
             <Line
-              type="monotone"
+              type="linear"
               dataKey="externalUnansweredCalls"
-              stroke="#EF4444"
+              stroke="#2021AD"
               strokeWidth={2}
               dot={false}
               name={t(

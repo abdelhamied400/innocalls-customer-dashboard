@@ -1,11 +1,18 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { BarChart, CalendarMonth, Clear, Insights } from "@mui/icons-material";
+import React, { useEffect, useState } from "react";
+import {
+  BarChart,
+  CalendarMonth,
+  Clear,
+  Insights,
+  Search,
+} from "@mui/icons-material";
 import StatsDetailedCard from "@/components/StatsDetailedCard";
 import Field from "@/components/ui/field";
 import DatePicker from "@/components/ui/date-picker";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Select from "@/components/select";
 import { useFilterManager } from "@/hooks/useFilterManager";
@@ -19,6 +26,7 @@ import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useVocab } from "@/hooks/useVocab";
 import { FilterBox } from "@/components/FilterBox";
 import { formatDate } from "@/lib/date";
@@ -43,6 +51,7 @@ const UnansweredAnalytics = () => {
   const { extensions } = useVocab();
   const { setPageTitle } = useAppStore();
   const locale = useLocale();
+  const [agentSearch, setAgentSearch] = useState("");
 
   const t = useTranslations("analytics.unanswered");
   const tCommon = useTranslations("analytics.common");
@@ -68,10 +77,18 @@ const UnansweredAnalytics = () => {
   const { values, appliedValues, errors, setValue, reset, apply, applyValues } =
     useFilterManager<UnansweredAnalyticsFilters>(unansweredFilterConfig);
 
+  // Filter extensions based on search
+  const filteredExtensions =
+    extensions?.filter(
+      (ext) =>
+        ext.name.toLowerCase().includes(agentSearch.toLowerCase()) ||
+        ext.ext.toLowerCase().includes(agentSearch.toLowerCase())
+    ) || [];
+
   return (
     <div className="page" id="unanswered-analytics">
       <div className="flex flex-col gap-2">
-        <div className="filters p-2 border rounded-xl flex items-center justify-between">
+        <div className="filters p-2 border rounded-xl flex items-center justify-between flex-wrap">
           <div className="flex flex-wrap items-center gap-2">
             <FilterBox
               triggerLabel={tCommon("fromTo", {
@@ -126,22 +143,64 @@ const UnansweredAnalytics = () => {
                 });
               }}
             >
-              <div className="col-span-1 sm:col-span-2 lg:col-span-3">
-                <Select
-                  className="w-full"
-                  placeholder={tCommon("form.fields.agents.placeholder")}
-                  value={values.agents}
-                  onChange={(value) => setValue("agents", value || [])}
-                  options={extensions?.map((ext) => ({
-                    value: ext.ext,
-                    label: `${ext.name} (${ext.ext})`,
-                  }))}
-                  isMulti
-                  label={tCommon("form.fields.agents.label")}
-                  showSelectedTags={false}
-                  error={errors.agents}
-                  isClearable
-                />
+              <div className="flex flex-col gap-3">
+                <div className="relative">
+                  <Input
+                    placeholder={tCommon("form.fields.agents.placeholder")}
+                    value={agentSearch}
+                    onChange={(e) => setAgentSearch(e.target.value)}
+                    className="pr-10"
+                  />
+                  <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                </div>
+                <div className="flex flex-col gap-2 max-h-48 overflow-y-auto">
+                  {filteredExtensions.map((ext) => (
+                    <div
+                      key={ext.ext}
+                      className="flex items-center gap-2 border-b last:border-0 py-1"
+                    >
+                      <Checkbox
+                        id={`agent-${ext.ext}`}
+                        checked={values.agents.some(
+                          (agent) => agent.value === ext.ext
+                        )}
+                        onCheckedChange={(checked) => {
+                          const isChecked = Boolean(checked);
+                          const newAgents = isChecked
+                            ? [
+                                ...values.agents,
+                                {
+                                  value: ext.ext,
+                                  label: `${ext.name} (${ext.ext})`,
+                                },
+                              ]
+                            : values.agents.filter(
+                                (agent) => agent.value !== ext.ext
+                              );
+                          setValue("agents", newAgents);
+                        }}
+                      />
+                      <Label
+                        htmlFor={`agent-${ext.ext}`}
+                        className="text-sm font-normal"
+                      >
+                        {ext.name} ({ext.ext})
+                      </Label>
+                    </div>
+                  ))}
+                  {filteredExtensions.length === 0 &&
+                    extensions &&
+                    extensions.length > 0 && (
+                      <p className="text-sm text-gray-500">
+                        No agents match your search.
+                      </p>
+                    )}
+                  {extensions?.length === 0 && (
+                    <p className="text-sm text-gray-500">
+                      {tCommon("form.fields.agents.noOptions")}
+                    </p>
+                  )}
+                </div>
               </div>
             </FilterBox>
           </div>

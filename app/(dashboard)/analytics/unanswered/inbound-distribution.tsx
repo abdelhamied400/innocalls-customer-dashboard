@@ -46,14 +46,7 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
 
   return (
     <ChartCard
-      title={tCommon("fromTo", {
-        from: formatDate(filters.fromDate, {
-          locale: localeSlug,
-        }),
-        to: formatDate(filters.toDate, {
-          locale: localeSlug,
-        }),
-      })}
+      title={t("charts.inboundDistribution")}
       legends={[
         {
           label: t("inbound.callDistribution.lineLabels.totalCalls"),
@@ -67,21 +60,25 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
           ? [
               {
                 label: t("inbound.callDistribution.lineLabels.inboundInternal"),
-                color: "#43A047",
-              },
-              {
-                label: t("inbound.callDistribution.lineLabels.missedInternal"),
-                color: "#FBC02D",
+                color: "#02D995",
               },
             ]
           : []),
         {
           label: t("inbound.callDistribution.lineLabels.inboundExternal"),
-          color: "#7C3AED",
+          color: "#F4592F",
         },
+        ...(filters.includeInternalCalls
+          ? [
+              {
+                label: t("inbound.callDistribution.lineLabels.missedInternal"),
+                color: "#F6A731",
+              },
+            ]
+          : []),
         {
           label: t("inbound.callDistribution.lineLabels.missedExternal"),
-          color: "#E53935",
+          color: "#2021AD",
         },
       ]}
     >
@@ -107,6 +104,7 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
             />
             <Tooltip
               contentStyle={{ direction: locale.dir }}
+              includeHidden
               content={(props) => (
                 <ChartCustomTooltip
                   {...props}
@@ -116,27 +114,29 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
             />
 
             <Line
-              type="monotone"
+              type="linear"
               dataKey="totalCalls"
               stroke="#1976D2"
               strokeWidth={2}
               dot={false}
               name={t("inbound.callDistribution.lineLabels.totalCalls")}
+              hide
             />
             <Line
-              type="monotone"
+              type="linear"
               dataKey="unansweredCalls"
               stroke="#757575"
               strokeWidth={2}
               dot={false}
               name={t("inbound.callDistribution.lineLabels.missedTotal")}
+              hide
             />
 
             {filters.includeInternalCalls && (
               <Line
-                type="monotone"
+                type="linear"
                 dataKey="internalCalls"
-                stroke="#43A047"
+                stroke="#02D995"
                 strokeWidth={2}
                 dot={false}
                 name={t("inbound.callDistribution.lineLabels.inboundInternal")}
@@ -144,9 +144,9 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
             )}
 
             <Line
-              type="monotone"
+              type="linear"
               dataKey="externalCalls"
-              stroke="#7C3AED"
+              stroke="#F4592F"
               strokeWidth={2}
               dot={false}
               name={t("inbound.callDistribution.lineLabels.inboundExternal")}
@@ -154,9 +154,9 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
 
             {filters.includeInternalCalls && (
               <Line
-                type="monotone"
+                type="linear"
                 dataKey="internalUnansweredCalls"
-                stroke="#FBC02D"
+                stroke="#F6A731"
                 strokeWidth={2}
                 dot={false}
                 name={t("inbound.callDistribution.lineLabels.missedInternal")}
@@ -164,9 +164,9 @@ const InboundDistribution = ({ filters }: InboundDistributionProps) => {
             )}
 
             <Line
-              type="monotone"
+              type="linear"
               dataKey="externalUnansweredCalls"
-              stroke="#E53935"
+              stroke="#2021AD"
               strokeWidth={2}
               dot={false}
               name={t("inbound.callDistribution.lineLabels.missedExternal")}
