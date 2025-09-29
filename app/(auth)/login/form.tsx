@@ -13,12 +13,28 @@ import Field from "@/components/ui/field";
 import Link from "next/link";
 import { LoginSchema } from "@/validation/Login";
 import { useTranslations } from "@/providers/TranslationProvider";
+import { useEffect, useState } from "react";
 
 const LoginForm = () => {
   const { toast } = useToast();
   const router = useRouter();
   const t = useTranslations("auth.login");
   const tCommon = useTranslations("common");
+  const [clientIp, setClientIp] = useState<string>("");
+
+  useEffect(() => {
+    let isActive = true;
+    (async () => {
+      try {
+        const res = await fetch("/api/get-ip");
+        const data = await res.json();
+        if (isActive && data?.ip) setClientIp(String(data.ip));
+      } catch {}
+    })();
+    return () => {
+      isActive = false;
+    };
+  }, []);
 
   // 1. Define your form.
   const form = useForm({
@@ -41,6 +57,7 @@ const LoginForm = () => {
       email: values.email,
       password: values.password,
       userType: values.userType,
+      clientIp,
       redirect: false,
     });
 
