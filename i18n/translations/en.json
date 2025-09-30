@@ -1304,14 +1304,14 @@
       "subtitle": "View detailed analytics for unanswered calls",
       "dateRangeSearch": "Date Range Search",
       "quickStats": {
-        "totalUnansweredCalls": "Total Unanswered Calls",
-        "externalUnansweredIncoming": "External Unanswered Incoming",
-        "externalUnansweredOutgoing": "External Unanswered Outgoing",
-        "internalUnansweredCalls": "Internal Unanswered Calls"
+        "totalUnansweredCalls": "Total unanswered calls",
+        "externalUnansweredIncoming": "External unanswered incoming",
+        "externalUnansweredOutgoing": "External unanswered outgoing",
+        "internalUnansweredCalls": "Internal unanswered calls"
       },
       "tabs": {
-        "inbound": "Incoming Unanswered",
-        "outbound": "Outgoing Unanswered"
+        "inbound": "Incoming unanswered",
+        "outbound": "Outgoing unanswered"
       },
       "inbound": {
         "callDistribution": {
