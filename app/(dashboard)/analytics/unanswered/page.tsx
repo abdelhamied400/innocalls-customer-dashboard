@@ -88,7 +88,7 @@ const UnansweredAnalytics = () => {
   return (
     <div className="page" id="unanswered-analytics">
       <div className="flex flex-col gap-2">
-        <div className="filters p-2 border rounded-xl flex items-center justify-between flex-wrap">
+        <div className="filters p-2 border rounded-xl flex items-center justify-between flex-wrap gap-2">
           <div className="flex flex-wrap items-center gap-2">
             <FilterBox
               triggerLabel={
@@ -153,9 +153,9 @@ const UnansweredAnalytics = () => {
                     placeholder={tCommon("form.fields.agents.placeholder")}
                     value={agentSearch}
                     onChange={(e) => setAgentSearch(e.target.value)}
-                    className="pr-10"
+                    className="pe-10"
                   />
-                  <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <Search className="absolute end-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 </div>
                 <div className="flex flex-col gap-2 max-h-48 overflow-y-auto">
                   {filteredExtensions.map((ext) => (
