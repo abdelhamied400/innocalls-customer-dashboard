@@ -34,7 +34,7 @@ const AnalyticsLayout = ({ children }: { children: React.ReactNode }) => {
               <SupervisedUserCircle />
               {t("layout.tabs.userActivity")}
             </LinkTab>
-            <LinkTab href="/call-reporting">
+            <LinkTab href="/analytics/call-reporting">
               <History />
               {t("layout.tabs.callReporting")}
             </LinkTab>
