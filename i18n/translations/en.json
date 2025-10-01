@@ -1322,11 +1322,11 @@
             "inboundExternal": "Incoming External",
             "missedInternal": "Missed Internal",
             "missedExternal": "Missed External",
-            "outboundInternal": "Outgoing (Int.)",
-            "outboundExternal": "Outgoing (Ext.)",
-            "unansweredTotal": "Unanswered (Total)",
-            "unansweredInternal": "Unans. (Int.)",
-            "unansweredExternal": "Unans. (Ext.)",
+            "outboundInternal": "Outgoing Internal",
+            "outboundExternal": "Outgoing External",
+            "unansweredTotal": "Total Unanswered",
+            "unansweredInternal": "Unanswered Internal",
+            "unansweredExternal": "Unanswered External",
             "internalUnanswered": "Internal Unanswered",
             "externalUnanswered": "External Unanswered"
           }
@@ -1336,11 +1336,11 @@
         "callDistribution": {
           "lineLabels": {
             "totalCalls": "Total Calls",
-            "unansweredTotal": "Unanswered (Total)",
-            "outboundInternal": "Outgoing (Int.)",
-            "outboundExternal": "Outgoing (Ext.)",
-            "unansweredInternal": "Unans. (Int.)",
-            "unansweredExternal": "Unans. (Ext.)"
+            "unansweredTotal": "Total Unanswered",
+            "outboundInternal": "Outgoing Internal",
+            "outboundExternal": "Outgoing External",
+            "unansweredInternal": "Unanswered Internal",
+            "unansweredExternal": "Unanswered External"
           }
         }
       },
