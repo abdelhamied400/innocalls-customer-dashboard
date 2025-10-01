@@ -1317,11 +1317,11 @@
         "callDistribution": {
           "lineLabels": {
             "totalCalls": "Total Calls",
-            "missedTotal": "Missed (Total)",
-            "inboundInternal": "Incoming (Int.)",
-            "inboundExternal": "Incoming (Ext.)",
-            "missedInternal": "Missed (Int.)",
-            "missedExternal": "Missed (Ext.)",
+            "missedTotal": "Total Missed",
+            "inboundInternal": "Incoming Internal",
+            "inboundExternal": "Incoming External",
+            "missedInternal": "Missed Internal",
+            "missedExternal": "Missed External",
             "outboundInternal": "Outgoing (Int.)",
             "outboundExternal": "Outgoing (Ext.)",
             "unansweredTotal": "Unanswered (Total)",
