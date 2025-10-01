@@ -7,13 +7,16 @@ import PaginatedTablePagination from "@/components/Table/PaginatedTablePaginatio
 import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import analyticsService from "@/services/analytics.service";
-import { ShowChart, TableView } from "@mui/icons-material";
+import { Search, ShowChart, TableView } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import {
   Bar,
   BarChart,
   Brush,
   CartesianGrid,
+  Cell,
+  Pie,
+  PieChart,
   Label as RechartsLabel,
   ResponsiveContainer,
   Tooltip,
@@ -24,11 +27,31 @@ import { Label } from "@/components/ui/label";
 import NoData from "./NoData";
 import { UserActivityFilters } from "./page";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Switch } from "@/components/ui/switch";
 import CallDistributionToolbar from "./call-distribution-toolbar";
-import RechartTooltip from "@/components/RechartTooltip";
 import { defaultLocale, locales } from "@/i18n/config";
+import { Input } from "@/components/ui/input";
+import Field from "@/components/ui/field";
+import {
+  Select,
+  SelectTrigger,
+  SelectItem,
+  SelectContent,
+} from "@/components/ui/select";
+import AgentCallDistributionCard from "@/components/AgentCallDistributionCard";
+import useLayoutManager from "@/hooks/use-layout-manager";
+import usePagination from "@/hooks/use-pagination";
+import { cn } from "@/lib/utils";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationButton,
+  PaginationEllipsis,
+} from "@/components/ui/pagination";
 
 type CallDistributionAnalyticsProps = {
   filters: UserActivityFilters;
@@ -36,266 +59,237 @@ type CallDistributionAnalyticsProps = {
 
 export type CallDistributionFilters = {
   search: string;
+  sortBy: string;
 };
 
 const CallDistributionAnalytics = ({
   filters,
 }: CallDistributionAnalyticsProps) => {
-  const localeSlug = useLocale() || defaultLocale;
-  const locale = locales[localeSlug];
+  const { layoutVariant } = useLayoutManager();
   const t = useTranslations("analytics.userActivity.callDistribution");
   const [includeInternalCalls, setIncludeInternalCalls] = useState(false);
   const [callDistributionFilters, setCallDistributionFilters] =
     useState<CallDistributionFilters>({
       search: "",
+      sortBy: "totalCalls",
     });
 
-  const columns = [
-    {
-      header: t("table.columns.name"),
-      accessorKey: "name",
-    },
-    {
-      header: t("table.columns.ext"),
-      accessorKey: "ext",
-    },
-    {
-      header: t("table.columns.totalCalls"),
-      accessorKey: "totalCalls", // Total Calls Case (Include), Otherwise External Sum
-      //@ts-ignore
-      cell: ({ row }) => {
-        const value = includeInternalCalls
-          ? row.original.totalCalls
-          : (row.original.totalIncomingExternalCalls || 0) +
-            (row.original.totalOutgoingExternalCalls || 0);
-        return value;
-      },
-    },
-    ...(includeInternalCalls
-      ? [
-          {
-            header: t("table.columns.incomingInternal"),
-            accessorKey: "totalIncomingInternalCalls",
-          },
-        ]
-      : []),
-    {
-      header: t("table.columns.incomingExternal"),
-      accessorKey: "totalIncomingExternalCalls",
-    },
-    ...(includeInternalCalls
-      ? [
-          {
-            header: t("table.columns.outgoingInternal"),
-            accessorKey: "totalOutgoingInternalCalls",
-          },
-        ]
-      : []),
-    {
-      header: t("table.columns.outgoingExternal"),
-      accessorKey: "totalOutgoingExternalCalls",
-    },
-    ...(includeInternalCalls
-      ? [
-          {
-            header: t("table.columns.answeredInternalIncoming"),
-            accessorKey: "totalAnsweredIncomingInternalCalls",
-          },
-        ]
-      : []),
-    {
-      header: t("table.columns.answeredExternalIncoming"),
-      accessorKey: "totalAnsweredIncomingExternalCalls",
-    },
-    ...(includeInternalCalls
-      ? [
-          {
-            header: t("table.columns.connectedInternalOutgoing"),
-            accessorKey: "totalAnsweredOutgoingInternalCalls",
-          },
-        ]
-      : []),
-    {
-      header: t("table.columns.connectedExternalOutgoing"),
-      accessorKey: "totalAnsweredOutgoingExternalCalls",
-    },
-  ];
-
   const { data, isLoading } = useLocalizedQuery({
-    queryKey: ["callDistribution", filters],
-    queryFn: () => analyticsService.fetchCallDistributionAnalytics(filters),
+    queryKey: ["callDistribution", filters, { includeInternalCalls }],
+    queryFn: () =>
+      analyticsService.fetchCallDistributionAnalytics({
+        ...filters,
+        includeInternalCalls,
+      }),
   });
+
+  // Filter and sort data locally
+  const filteredAndSortedData = useMemo(() => {
+    if (!data) return [];
+
+    // First filter by search term
+    let filtered = data.filter((agent) => {
+      if (!callDistributionFilters.search) return true;
+      const searchTerm = callDistributionFilters.search.toLowerCase();
+      return agent.name.toLowerCase().includes(searchTerm);
+    });
+
+    // Then sort by selected criteria
+    filtered.sort((a, b) => {
+      switch (callDistributionFilters.sortBy) {
+        case "totalCalls":
+          return b.totalCalls - a.totalCalls;
+        case "answeredCalls":
+          return b.totalConnected - a.totalConnected;
+        default:
+          return 0;
+      }
+    });
+
+    return filtered;
+  }, [data, callDistributionFilters]);
+
+  // Use pagination hook
+  const { pageIndex, pageSize, setPagination, pages } = usePagination({
+    totalItems: filteredAndSortedData.length,
+    perPage: 10,
+    defaultPageIndex: 0,
+  });
+
+  // Calculate current page data
+  const startIndex = pageIndex * pageSize;
+  const endIndex = startIndex + pageSize;
+  const currentPageData = filteredAndSortedData.slice(startIndex, endIndex);
+
+  // Reset to first page when filters change
+  useMemo(() => {
+    setPagination({ pageIndex: 0, pageSize });
+  }, [callDistributionFilters, setPagination, pageSize]);
 
   return (
     <div className="call-distribution-analytics">
-      <Tabs defaultValue="chart" className="w-full">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="includeInternalCalls"
-              checked={includeInternalCalls}
-              onCheckedChange={setIncludeInternalCalls}
+      <div className="flex justify-between items-center flex-wrap border-b p-3">
+        <div className="flex items-center gap-2">
+          <Switch
+            id="includeInternalCalls"
+            checked={includeInternalCalls}
+            onCheckedChange={setIncludeInternalCalls}
+          />
+          <Label htmlFor="includeInternalCalls">
+            {t("actions.includeInternalCalls")}
+          </Label>
+        </div>
+        <div className="flex items-center gap-2">
+          {/* Select SortBy */}
+          <Select
+            value={callDistributionFilters.sortBy}
+            onValueChange={(value) =>
+              setCallDistributionFilters((prev) => ({
+                ...prev,
+                sortBy: value,
+              }))
+            }
+          >
+            <SelectTrigger className="w-auto">
+              <span className="capitalize">
+                {t(`filters.sortBy.${callDistributionFilters.sortBy}`)}
+              </span>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="totalCalls">
+                {t(`filters.sortBy.${"totalCalls"}`)}
+              </SelectItem>
+              <SelectItem value="answeredCalls">
+                {t(`filters.sortBy.${"answeredCalls"}`)}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+          {/* search */}
+          <Field preIcon={<Search />}>
+            <Input
+              placeholder="Search"
+              variant="field"
+              value={callDistributionFilters.search}
+              onChange={(e) =>
+                setCallDistributionFilters((prev) => ({
+                  ...prev,
+                  search: e.target.value,
+                }))
+              }
             />
-            <Label htmlFor="includeInternalCalls">
-              {t("actions.includeInternalCalls")}
-            </Label>
+          </Field>
+        </div>
+      </div>
+
+      <div
+        className={cn(
+          "grid grid-cols-1 lg:grid-cols-2 gap-4 p-3",
+          layoutVariant !== "both-closed" && "lg:grid-cols-1 xl:grid-cols-2"
+        )}
+      >
+        {currentPageData?.map((agent) => (
+          <AgentCallDistributionCard key={agent.ext} agent={agent} />
+        ))}
+      </div>
+
+      {/* Enhanced Pagination */}
+      {filteredAndSortedData.length > 0 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 border-t">
+          {/* Rows per page selector */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">Rows per page</span>
+            <Select
+              value={pageSize.toString()}
+              onValueChange={(value) => {
+                setPagination({ pageIndex: 0, pageSize: Number(value) });
+              }}
+            >
+              <SelectTrigger className="w-[70px] h-8">
+                <span>{pageSize}</span>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="5">5</SelectItem>
+                <SelectItem value="10">10</SelectItem>
+                <SelectItem value="20">20</SelectItem>
+                <SelectItem value="50">50</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
-          <TabsList className="">
-            <TabsTrigger value="chart" className="flex items-center gap-1">
-              <ShowChart />
-            </TabsTrigger>
-            <TabsTrigger value="table" className="flex items-center gap-1">
-              <TableView />
-            </TabsTrigger>
-          </TabsList>
-        </div>
-        <TabsContent value="chart">
-          {isLoading && <ChartCardSkeleton />}
-          {!isLoading && data && (
-            <ChartCard
-              title={t("title")}
-              icon={<ShowChart />}
-              color="primary"
-              legends={[
-                ...(includeInternalCalls
-                  ? [
-                      {
-                        label: t("chart.legends.incomingInternal"),
-                        color: "#8B5CF6",
-                      },
-                    ]
-                  : []),
-                {
-                  label: t("chart.legends.incomingExternal"),
-                  color: "#3B82F6",
-                },
-                ...(includeInternalCalls
-                  ? [
-                      {
-                        label: t("chart.legends.outgoingInternal"),
-                        color: "#F59E42",
-                      },
-                    ]
-                  : []),
-                {
-                  label: t("chart.legends.outgoingExternal"),
-                  color: "#10B981",
-                },
-              ]}
-              variant="compound"
-            >
-              <div className="w-full h-80">
-                {data && data.length > 0 ? (
-                  <ResponsiveContainer
-                    style={{ direction: "ltr" }}
-                    width="100%"
-                    height="100%"
-                  >
-                    <BarChart
-                      data={data}
-                      layout="horizontal"
-                      className="h-full w-full"
-                    >
-                      <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                      <XAxis dataKey="name" type="category" width={120}></XAxis>
-                      <YAxis type="number">
-                        <RechartsLabel
-                          value={t("chart.yAxisLabel")}
-                          angle={-90}
-                          position="insideLeft"
-                          style={{ textAnchor: "middle" }}
-                        />
-                      </YAxis>
-                      <Tooltip
-                        contentStyle={{ direction: locale.dir }}
-                        formatter={(value, name) => {
-                          switch (name) {
-                            case "totalIncomingInternalCalls":
-                              return [
-                                value,
-                                t("chart.legends.incomingInternal"),
-                              ];
-                            case "totalIncomingExternalCalls":
-                              return [
-                                value,
-                                t("chart.legends.incomingExternal"),
-                              ];
-                            case "totalOutgoingInternalCalls":
-                              return [
-                                value,
-                                t("chart.legends.outgoingInternal"),
-                              ];
-                            case "totalOutgoingExternalCalls":
-                              return [
-                                value,
-                                t("chart.legends.outgoingExternal"),
-                              ];
-                            default:
-                              return [value, name];
-                          }
-                        }}
-                        labelFormatter={(label) =>
-                          `${t("chart.tooltipAgent")}: ${label}`
+          {/* Range information */}
+          <div className="text-sm text-gray-600">
+            {filteredAndSortedData.length > 0 && (
+              <span>
+                {startIndex + 1} –{" "}
+                {Math.min(endIndex, filteredAndSortedData.length)} of{" "}
+                {filteredAndSortedData.length}
+              </span>
+            )}
+          </div>
+
+          {/* Pagination controls */}
+          {pages.length > 1 && (
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    onClick={() =>
+                      setPagination({
+                        pageIndex: Math.max(0, pageIndex - 1),
+                        pageSize,
+                      })
+                    }
+                    disabled={pageIndex === 0}
+                  />
+                </PaginationItem>
+
+                {/* Page numbers using hook's pages array */}
+                {pages.map((page, index) => {
+                  if (page === -1) {
+                    // Ellipsis
+                    return (
+                      <PaginationItem key={`ellipsis-${index}`}>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    );
+                  }
+
+                  return (
+                    <PaginationItem key={page}>
+                      <PaginationButton
+                        isActive={pageIndex === page - 1}
+                        onClick={() =>
+                          setPagination({ pageIndex: page - 1, pageSize })
                         }
-                      />
-                      {includeInternalCalls && (
-                        <Bar
-                          dataKey="totalIncomingInternalCalls"
-                          stackId="a"
-                          fill="#8B5CF6"
-                          name={t("chart.legends.incomingInternal")}
-                        />
-                      )}
-                      <Bar
-                        dataKey="totalIncomingExternalCalls"
-                        stackId="a"
-                        fill="#3B82F6"
-                        name={t("chart.legends.incomingExternal")}
-                      />
-                      {includeInternalCalls && (
-                        <Bar
-                          dataKey="totalOutgoingInternalCalls"
-                          stackId="b"
-                          fill="#F59E42"
-                          name={t("chart.legends.outgoingInternal")}
-                        />
-                      )}
-                      <Bar
-                        dataKey="totalOutgoingExternalCalls"
-                        stackId="b"
-                        fill="#10B981"
-                        name={t("chart.legends.outgoingExternal")}
-                      />
-                      <Brush dataKey="name" height={30} stroke="#8884d8" />
-                    </BarChart>
-                  </ResponsiveContainer>
-                ) : (
-                  <NoData />
-                )}
-              </div>
-            </ChartCard>
+                      >
+                        {page}
+                      </PaginationButton>
+                    </PaginationItem>
+                  );
+                })}
+
+                <PaginationItem>
+                  <PaginationNext
+                    onClick={() => {
+                      const totalPages = Math.ceil(
+                        filteredAndSortedData.length / pageSize
+                      );
+                      setPagination({
+                        pageIndex: Math.min(totalPages - 1, pageIndex + 1),
+                        pageSize,
+                      });
+                    }}
+                    disabled={
+                      pageIndex ===
+                      Math.ceil(filteredAndSortedData.length / pageSize) - 1
+                    }
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
           )}
-        </TabsContent>
-        <TabsContent value="table">
-          <PaginatedTable
-            data={data || []}
-            columns={columns}
-            manualPagination={false}
-          >
-            <CallDistributionToolbar
-              filters={callDistributionFilters}
-              setFilters={setCallDistributionFilters}
-            />
-            <PaginatedTableContent>
-              <PaginatedTableHead />
-              {isLoading && <PaginatedTableSkeleton />}
-              {!isLoading && <PaginatedTableBody />}
-            </PaginatedTableContent>
-            {!isLoading && <PaginatedTablePagination />}
-          </PaginatedTable>
-        </TabsContent>
-      </Tabs>
+        </div>
+      )}
     </div>
   );
 };

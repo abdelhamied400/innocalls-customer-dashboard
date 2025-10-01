@@ -16,14 +16,22 @@ export const LinkTab = ({ href, children }: LinkTabProps) => {
   if (href) {
     return (
       <Link href={href}>
-        <Button variant="tab" data-active={active ? true : undefined}>
+        <Button
+          className="h-auto whitespace-normal"
+          variant="tab"
+          data-active={active ? true : undefined}
+        >
           {children}
         </Button>
       </Link>
     );
   }
   return (
-    <Button variant="tab" data-active={active ? true : undefined}>
+    <Button
+      className="h-auto whitespace-normal"
+      variant="tab"
+      data-active={active ? true : undefined}
+    >
       {children}
     </Button>
   );

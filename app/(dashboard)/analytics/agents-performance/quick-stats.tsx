@@ -5,8 +5,12 @@ import StatsCard, {
 } from "@/components/StatsCard";
 import analyticsService from "@/services/analytics.service";
 import {
+  CallMerge,
   EmojiEvents,
+  Info,
   MilitaryTech,
+  PlayForWork,
+  Replay10,
   StackedLineChart,
 } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
@@ -14,6 +18,14 @@ import { UserActivityFilters } from "./page";
 import { useTranslations } from "@/providers/TranslationProvider";
 import StackedStatsRowCard from "@/components/StackedStatsRowCard";
 import StatsRowCard from "@/components/StatsRowCard";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import useLayoutManager from "@/hooks/use-layout-manager";
 
 type QuickStatsProps = {
   filters: UserActivityFilters;
@@ -21,6 +33,7 @@ type QuickStatsProps = {
 
 const QuickStats = ({ filters }: QuickStatsProps) => {
   const t = useTranslations("analytics.userActivity");
+  const { layoutVariant } = useLayoutManager();
 
   const {
     data: quickStatsData,
@@ -34,9 +47,14 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
   });
 
   return (
-    <div className="quick-stats grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+    <div
+      className={cn(
+        "quick-stats grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4",
+        layoutVariant === "both-open" && "xl:grid-cols-2"
+      )}
+    >
       <StatsCard
-        icon={<StackedLineChart className="w-6 h-6" />}
+        icon={<PlayForWork className="w-6 h-6" />}
         title={t("quickStats.topAnsweredIncoming")}
         renderValue={
           <>
@@ -45,80 +63,175 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
                 {t("common.noDataAvailable")}{" "}
               </span>
             )}
-            <StackedStatsRowCard>
-              {quickStatsData?.topAnsweredIncomingAgents.map((agent) => (
-                <StatsRowCard
-                  key={agent.ext}
-                  label={agent.name}
-                  value={agent.answeredIncomingCount}
-                  color="success"
-                />
-              ))}
-            </StackedStatsRowCard>
+            <Popover>
+              <div className="flex justify-between items-center flex-wrap gap-2">
+                <div className="flex items-center flex-wrap gap-2">
+                  <span className="font-bold">
+                    {quickStatsData?.topAnsweredIncomingAgents[0]?.name}
+                  </span>
+                  {(quickStatsData?.topAnsweredIncomingAgents?.length ?? 0) >
+                    1 && (
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="p-0 text-gray-400"
+                      >
+                        <Info />
+                      </Button>
+                    </PopoverTrigger>
+                  )}
+                </div>
+                <span className="font-normal">
+                  {
+                    quickStatsData?.topAnsweredIncomingAgents[0]
+                      ?.answeredIncomingCount
+                  }
+                </span>
+              </div>
+              <PopoverContent side="right">
+                <div className="flex flex-col gap-2">
+                  {quickStatsData?.topAnsweredIncomingAgents.map((agent) => (
+                    <div
+                      className="flex justify-between items-center gap-2 bg-gray-100 p-2 rounded-lg"
+                      key={agent.ext}
+                    >
+                      <span className="font-bold">{agent.name}</span>
+                      <span className="font-normal">
+                        {agent.answeredIncomingCount}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
           </>
         }
-        color="success"
+        color="primary"
         isRefetching={isRefetching}
         isLoading={isLoading}
         isError={isError}
         error={error}
+        variant="subtle"
       />
+
       <StatsCard
-        icon={<MilitaryTech className="w-6 h-6" />}
+        icon={<CallMerge className="w-6 h-6" />}
         title={t("quickStats.topConnectedOutbound")}
         renderValue={
           <>
             {(quickStatsData?.topConnectedOutboundAgents?.length ?? 0) ===
               0 && (
               <span className="text-gray-500">
-                {t("common.noDataAvailable")}
+                {t("common.noDataAvailable")}{" "}
               </span>
             )}
-            <StackedStatsRowCard>
-              {quickStatsData?.topConnectedOutboundAgents.map((agent) => (
-                <StatsRowCard
-                  key={agent.ext}
-                  label={agent.name}
-                  value={agent.connectedOutboundCount}
-                  color="info"
-                />
-              ))}
-            </StackedStatsRowCard>
+            <Popover>
+              <div className="flex justify-between items-center flex-wrap gap-2">
+                <div className="flex items-center flex-wrap gap-2">
+                  <span className="font-bold">
+                    {quickStatsData?.topConnectedOutboundAgents[0]?.name}
+                  </span>
+                  {(quickStatsData?.topConnectedOutboundAgents?.length ?? 0) >
+                    1 && (
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="p-0 text-gray-400"
+                      >
+                        <Info />
+                      </Button>
+                    </PopoverTrigger>
+                  )}
+                </div>
+                <span className="font-normal">
+                  {
+                    quickStatsData?.topConnectedOutboundAgents[0]
+                      .connectedOutboundCount
+                  }
+                </span>
+              </div>
+              <PopoverContent>
+                <div className="flex flex-col gap-2">
+                  {quickStatsData?.topConnectedOutboundAgents.map((agent) => (
+                    <div
+                      className="flex justify-between items-center gap-2 bg-gray-100 p-2 rounded-lg"
+                      key={agent.ext}
+                    >
+                      <span className="font-bold">{agent.name}</span>
+                      <span className="font-normal">
+                        {agent.connectedOutboundCount}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
           </>
         }
-        color="info"
+        color="primary"
         isRefetching={isRefetching}
         isLoading={isLoading}
         isError={isError}
         error={error}
+        variant="subtle"
       />
       <StatsCard
-        icon={<EmojiEvents className="w-6 h-6" />}
+        icon={<Replay10 className="w-6 h-6" />}
         title={t("quickStats.bestSlaAgent")}
         renderValue={
           <>
             {(quickStatsData?.topSlaComplianceAgents?.length ?? 0) === 0 && (
               <span className="text-gray-500">
-                {t("common.noDataAvailable")}
+                {t("common.noDataAvailable")}{" "}
               </span>
             )}
-            <StackedStatsRowCard>
-              {quickStatsData?.topSlaComplianceAgents.map((agent) => (
-                <StatsRowCard
-                  key={agent.ext}
-                  label={agent.name}
-                  value={`${agent.slaPercentage}\u200E%`}
-                  color="warning"
-                />
-              ))}
-            </StackedStatsRowCard>
+            <Popover>
+              <div className="flex justify-between items-center flex-wrap gap-2">
+                <div className="flex items-center flex-wrap gap-2">
+                  <span className="font-bold">
+                    {quickStatsData?.topSlaComplianceAgents[0]?.name}
+                  </span>
+                  {(quickStatsData?.topSlaComplianceAgents?.length ?? 0) >
+                    1 && (
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="p-0 text-gray-400"
+                      >
+                        <Info />
+                      </Button>
+                    </PopoverTrigger>
+                  )}
+                </div>
+                <span className="font-normal">
+                  {`${quickStatsData?.topSlaComplianceAgents[0]?.slaPercentage}\u200E%`}
+                </span>
+              </div>
+              <PopoverContent side="right">
+                <div className="flex flex-col gap-2">
+                  {quickStatsData?.topSlaComplianceAgents.map((agent) => (
+                    <div
+                      className="flex justify-between items-center gap-2 bg-gray-100 p-2 rounded-lg"
+                      key={agent.ext}
+                    >
+                      <span className="font-bold">{agent.name}</span>
+                      <span className="font-normal">{`${agent.slaPercentage}\u200E%`}</span>
+                    </div>
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
           </>
         }
-        color="warning"
+        color="primary"
         isRefetching={isRefetching}
         isLoading={isLoading}
         isError={isError}
         error={error}
+        variant="subtle"
       />
     </div>
   );

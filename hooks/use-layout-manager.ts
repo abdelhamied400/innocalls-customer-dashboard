@@ -33,16 +33,19 @@ export const useLayoutManager = () => {
   // If user doesn't have WebRTC access, force isWebrtcOpen to false
   const isWebrtcOpen = hasWebrtcAccess ? storeWebrtcOpen : false;
   const [isMobile, setIsMobile] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(0);
 
   // Track screen size for responsive behavior
   useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+    const updateScreenSize = () => {
+      const width = window.innerWidth;
+      setScreenWidth(width);
+      setIsMobile(width < 1024); // lg breakpoint
     };
 
-    checkIsMobile();
-    window.addEventListener("resize", checkIsMobile);
-    return () => window.removeEventListener("resize", checkIsMobile);
+    updateScreenSize();
+    window.addEventListener("resize", updateScreenSize);
+    return () => window.removeEventListener("resize", updateScreenSize);
   }, []);
 
   const layoutVariant: LayoutVariant = useMemo<LayoutVariant>(() => {
@@ -106,12 +109,19 @@ export const useLayoutManager = () => {
     isSidebarOpen,
     isWebrtcOpen,
     isMobile,
+    screenWidth,
     // Useful predicates
     isCompact: layoutVariant === "both-closed",
     hasExpandedSidebar: isSidebarOpen,
     hasExpandedWebrtc: isWebrtcOpen,
     shouldUseSidebarSheet: isMobile,
     shouldUseWebrtcSheet: isMobile,
+    // Screen size helpers
+    isSmall: screenWidth < 640, // sm breakpoint
+    isMedium: screenWidth >= 640 && screenWidth < 768, // md breakpoint
+    isLarge: screenWidth >= 768 && screenWidth < 1024, // lg breakpoint
+    isExtraLarge: screenWidth >= 1024 && screenWidth < 1280, // xl breakpoint
+    is2ExtraLarge: screenWidth >= 1280, // 2xl breakpoint
   };
 };
 

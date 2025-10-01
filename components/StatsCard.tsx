@@ -126,9 +126,9 @@ const StatsCard = ({
         )}
       </div>
       <div className="flex flex-col gap-2">
-        <p className={cn(statsCardValueVariants({ color }))}>
+        <div className={cn(statsCardValueVariants({ color }))}>
           {renderValue || value}
-        </p>
+        </div>
         <div className={cn(statsCardInfoVariants({ color }))}>{info}</div>
       </div>
     </div>
