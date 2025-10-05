@@ -5,9 +5,9 @@ import { signOut } from "next-auth/react";
 
 type AuthLayoutProps = PropsWithChildren<object>;
 const AuthLayout = ({ children }: AuthLayoutProps) => {
-  useEffect(() => {
-    signOut({ redirect: false });
-  }, []);
+  // useEffect(() => {
+  //   signOut({ redirect: false });
+  // }, []);
 
   return (
     <div className="layout h-screen" id="auth-layout">
