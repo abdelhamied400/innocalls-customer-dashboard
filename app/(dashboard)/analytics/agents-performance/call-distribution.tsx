@@ -14,7 +14,9 @@ import {
   SelectItem,
   SelectContent,
 } from "@/components/ui/select";
-import AgentCallDistributionCard from "@/components/AgentCallDistributionCard";
+import AgentCallDistributionCard, {
+  AgentCallDistributionCardSkeleton,
+} from "@/components/AgentCallDistributionCard";
 import useLayoutManager from "@/hooks/use-layout-manager";
 import usePagination from "@/hooks/use-pagination";
 import { cn } from "@/lib/utils";
@@ -46,7 +48,7 @@ const CallDistributionAnalytics = ({
   const [callDistributionFilters, setCallDistributionFilters] =
     useState<CallDistributionFilters>({
       search: "",
-      sortBy: "totalCalls",
+      sortBy: "highestAnsweredCalls",
     });
 
   const { data, isLoading } = useLocalizedQuery({
@@ -72,10 +74,10 @@ const CallDistributionAnalytics = ({
     // Then sort by selected criteria
     filtered.sort((a, b) => {
       switch (callDistributionFilters.sortBy) {
-        case "totalCalls":
-          return b.totalCalls - a.totalCalls;
-        case "answeredCalls":
-          return b.totalConnected - a.totalConnected;
+        case "highestAnsweredCalls":
+          return b.totalConnected - a.totalConnected; // Descending (highest first)
+        case "lowestAnsweredCalls":
+          return a.totalConnected - b.totalConnected; // Ascending (lowest first)
         default:
           return 0;
       }
@@ -131,11 +133,11 @@ const CallDistributionAnalytics = ({
               </span>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="totalCalls">
-                {t(`filters.sortBy.${"totalCalls"}`)}
+              <SelectItem value="highestAnsweredCalls">
+                {t(`filters.sortBy.${"highestAnsweredCalls"}`)}
               </SelectItem>
-              <SelectItem value="answeredCalls">
-                {t(`filters.sortBy.${"answeredCalls"}`)}
+              <SelectItem value="lowestAnsweredCalls">
+                {t(`filters.sortBy.${"lowestAnsweredCalls"}`)}
               </SelectItem>
             </SelectContent>
           </Select>
@@ -162,9 +164,13 @@ const CallDistributionAnalytics = ({
           layoutVariant !== "both-closed" && "lg:grid-cols-1 xl:grid-cols-2"
         )}
       >
-        {currentPageData?.map((agent) => (
-          <AgentCallDistributionCard key={agent.ext} agent={agent} />
-        ))}
+        {isLoading
+          ? Array.from({ length: pageSize }).map((_, index) => (
+              <AgentCallDistributionCardSkeleton key={index} />
+            ))
+          : currentPageData?.map((agent) => (
+              <AgentCallDistributionCard key={agent.ext} agent={agent} />
+            ))}
       </div>
 
       {/* Enhanced Pagination */}

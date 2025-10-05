@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from "recharts";
 import Avatar from "./Avatar";
+import { Skeleton } from "./ui/skeleton";
 
 type AgentSlaComplianceCardProps = {
   agent: {
@@ -102,7 +103,7 @@ const AgentSlaComplianceCard = ({ agent }: AgentSlaComplianceCardProps) => {
       </div>
       <div
         className={cn(
-          "flex flex-col items-center gap-4 p-2 border rounded-lg m-2",
+          "body flex flex-col xl:flex-row items-center justify-evenly gap-2 border rounded-lg p-4 m-2",
           layoutVariant !== "both-closed" && "flex-col xl:flex-col 4xl:flex-row"
         )}
       >
@@ -177,6 +178,67 @@ const AgentSlaComplianceCard = ({ agent }: AgentSlaComplianceCardProps) => {
         <div className="details">
           <p className="font-bold text-lg">{agent.answeredCalls}</p>
           <p className="text-gray-600 text-sm">Calls answered within SLA</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const AgentSlaComplianceCardSkeleton = () => {
+  const { layoutVariant } = useLayoutManager();
+
+  return (
+    <div className="card border rounded-lg">
+      <div
+        className={cn(
+          "head flex flex-col sm:flex-row items-center gap-2 p-3",
+          layoutVariant !== "both-closed" && "flex-col sm:flex-col xl:flex-row"
+        )}
+      >
+        <div className={cn("profile flex items-center gap-2 flex-1")}>
+          <Skeleton className="w-8 h-8 rounded-full" />
+          <div className="info flex flex-col gap-1">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-3 w-16" />
+          </div>
+        </div>
+      </div>
+      <div className="global-stats flex flex-col gap-2 p-2 border rounded-lg m-2">
+        <div className="stat flex items-center flex-wrap gap-1 text-gray-600 text-sm">
+          <Skeleton className="w-4 h-4 rounded" />
+          <Skeleton className="h-3 w-20" />
+          <Skeleton className="h-3 w-8" />
+          <Skeleton className="h-3 w-8" />
+        </div>
+        <div className="progress">
+          <Skeleton className="h-[3px] w-full rounded-full" />
+        </div>
+        <div className="flex flex-wrap justify-between items-center gap-2 text-sm">
+          <div className="stat flex items-center flex-wrap gap-1 text-gray-600">
+            <Skeleton className="w-4 h-4 rounded" />
+            <Skeleton className="h-3 w-20" />
+            <Skeleton className="h-3 w-8" />
+            <Skeleton className="h-3 w-8" />
+          </div>
+          <div className="stat flex items-center flex-wrap gap-1 text-gray-600">
+            <Skeleton className="h-3 w-12" />
+            <Skeleton className="h-3 w-16" />
+          </div>
+        </div>
+      </div>
+      <div
+        className={cn(
+          "flex flex-col items-center gap-4 p-2 border rounded-lg m-2",
+          layoutVariant !== "both-closed" && "flex-col xl:flex-col 4xl:flex-row"
+        )}
+      >
+        {/* pie chart skeleton */}
+        <div className="w-48 h-48 flex items-center justify-center">
+          <Skeleton className="w-32 h-32 rounded-full" />
+        </div>
+        <div className="details flex flex-col gap-1">
+          <Skeleton className="h-6 w-16" />
+          <Skeleton className="h-4 w-32" />
         </div>
       </div>
     </div>

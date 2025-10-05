@@ -14,7 +14,9 @@ import {
   SelectItem,
   SelectContent,
 } from "@/components/ui/select";
-import AgentSlaComplianceCard from "@/components/AgentSlaComplianceCard";
+import AgentSlaComplianceCard, {
+  AgentSlaComplianceCardSkeleton,
+} from "@/components/AgentSlaComplianceCard";
 import useLayoutManager from "@/hooks/use-layout-manager";
 import usePagination from "@/hooks/use-pagination";
 import { cn } from "@/lib/utils";
@@ -43,7 +45,7 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
   const [slaComplianceFilters, setSlaComplianceFilters] =
     useState<SlaComplianceFilters>({
       search: "",
-      sortBy: "totalCalls",
+      sortBy: "highestAnsweredCalls",
     });
 
   const { data, isLoading } = useLocalizedQuery({
@@ -65,10 +67,10 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
     // Then sort by selected criteria
     filtered.sort((a, b) => {
       switch (slaComplianceFilters.sortBy) {
-        case "totalCalls":
-          return b.totalCalls - a.totalCalls;
-        case "answeredCalls":
-          return b.answeredCalls - a.answeredCalls;
+        case "highestAnsweredCalls":
+          return b.answeredCalls - a.answeredCalls; // Descending (highest first)
+        case "lowestAnsweredCalls":
+          return a.answeredCalls - b.answeredCalls; // Ascending (lowest first)
         default:
           return 0;
       }
@@ -115,11 +117,11 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
               </span>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="totalCalls">
-                {t(`filters.sortBy.${"totalCalls"}`)}
+              <SelectItem value="highestAnsweredCalls">
+                {t(`filters.sortBy.${"highestAnsweredCalls"}`)}
               </SelectItem>
-              <SelectItem value="answeredCalls">
-                {t(`filters.sortBy.${"answeredCalls"}`)}
+              <SelectItem value="lowestAnsweredCalls">
+                {t(`filters.sortBy.${"lowestAnsweredCalls"}`)}
               </SelectItem>
             </SelectContent>
           </Select>
@@ -146,9 +148,13 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
           layoutVariant !== "both-closed" && "lg:grid-cols-1 xl:grid-cols-2"
         )}
       >
-        {currentPageData?.map((agent) => (
-          <AgentSlaComplianceCard key={agent.ext} agent={agent} />
-        ))}
+        {isLoading
+          ? Array.from({ length: pageSize }).map((_, index) => (
+              <AgentSlaComplianceCardSkeleton key={index} />
+            ))
+          : currentPageData?.map((agent) => (
+              <AgentSlaComplianceCard key={agent.ext} agent={agent} />
+            ))}
       </div>
 
       {/* Enhanced Pagination */}
