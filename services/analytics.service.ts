@@ -60,7 +60,7 @@ type FetchSlaComplianceResponse = Array<{
   callsAnsweredWithinSLA: number;
   ext: string;
   name: string;
-  slaCompliance: string | number;
+  slaCompliance: number;
   totalCalls: number;
 }>;
 
@@ -128,6 +128,9 @@ export default {
         sla: filters.sla,
       },
     });
-    return response.data.responseTimeAnalysis;
+    return response.data.responseTimeAnalysis.map((agent: any) => ({
+      ...agent,
+      slaCompliance: Number(agent.slaCompliance),
+    }));
   },
 };

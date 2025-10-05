@@ -1,36 +1,11 @@
-import ChartCard, { ChartCardSkeleton } from "@/components/ChartCard";
-import PaginatedTable from "@/components/Table/PaginatedTable";
-import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
-import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
-import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
-import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
-import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import analyticsService from "@/services/analytics.service";
-import { Search, ShowChart, TableView } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
-import {
-  Bar,
-  BarChart,
-  Brush,
-  CartesianGrid,
-  Cell,
-  Pie,
-  PieChart,
-  Label as RechartsLabel,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 import { Label } from "@/components/ui/label";
-import NoData from "./NoData";
 import { UserActivityFilters } from "./page";
-import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import { useTranslations } from "@/providers/TranslationProvider";
 import { useState, useMemo } from "react";
 import { Switch } from "@/components/ui/switch";
-import CallDistributionToolbar from "./call-distribution-toolbar";
-import { defaultLocale, locales } from "@/i18n/config";
 import { Input } from "@/components/ui/input";
 import Field from "@/components/ui/field";
 import {

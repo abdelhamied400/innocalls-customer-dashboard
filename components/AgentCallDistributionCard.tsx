@@ -9,6 +9,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
+import Avatar from "./Avatar";
 
 type AgentCallDistributionCardProps = {
   agent: {
@@ -112,9 +113,8 @@ const AgentCallDistributionCard = ({
               "border-e-0 sm:border-e-0 xl:border-e"
           )}
         >
-          <div className="avatar bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center text-gray-600">
-            {agent.name.charAt(0).toUpperCase()}
-          </div>
+          <Avatar name={agent.name} />
+
           <div className="info flex flex-col">
             <span className="name font-medium text-gray-900">{agent.name}</span>
             <span className="ext text-sm text-gray-500">{agent.ext}</span>
@@ -133,8 +133,8 @@ const AgentCallDistributionCard = ({
       </div>
       <div
         className={cn(
-          "body flex flex-col xl:flex-row items-center gap-2",
-          layoutVariant !== "both-closed" && "flex-col xl:flex-col 2xl:flex-row"
+          "body flex flex-col xl:flex-row items-center justify-between 4xl:justify-evenly gap-2",
+          layoutVariant !== "both-closed" && "flex-col xl:flex-col 4xl:flex-row"
         )}
       >
         <div className="chart w-52 lg:w-80 h-52 lg:h-80">
@@ -184,7 +184,7 @@ const AgentCallDistributionCard = ({
             </PieChart>
           </ResponsiveContainer>
         </div>
-        <div className="details flex-1">
+        <div className="details ">
           <div className="flex flex-col gap-2">
             {data.map(
               (entry) =>
