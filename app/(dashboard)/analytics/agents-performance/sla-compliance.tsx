@@ -40,7 +40,6 @@ export type SlaComplianceFilters = {
 const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
   const { layoutVariant } = useLayoutManager();
   const t = useTranslations("analytics.userActivity.slaCompliance");
-  const [includeInternalCalls, setIncludeInternalCalls] = useState(false);
   const [slaComplianceFilters, setSlaComplianceFilters] =
     useState<SlaComplianceFilters>({
       search: "",
@@ -48,12 +47,8 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
     });
 
   const { data, isLoading } = useLocalizedQuery({
-    queryKey: ["slaCompliance", filters, { includeInternalCalls }],
-    queryFn: () =>
-      analyticsService.fetchSlaComplianceAnalytics({
-        ...filters,
-        includeInternalCalls,
-      }),
+    queryKey: ["slaCompliance", filters],
+    queryFn: () => analyticsService.fetchSlaComplianceAnalytics(filters),
   });
 
   // Filter and sort data locally
@@ -102,17 +97,8 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
   return (
     <div className="sla-compliance-analytics">
       <div className="flex justify-between items-center flex-wrap border-b p-3">
-        <div className="flex items-center gap-2">
-          <Switch
-            id="includeInternalCalls"
-            checked={includeInternalCalls}
-            onCheckedChange={setIncludeInternalCalls}
-          />
-          <Label htmlFor="includeInternalCalls">
-            {t("actions.includeInternalCalls")}
-          </Label>
-        </div>
-        <div className="flex items-center gap-2">
+        <div className=""></div>
+        <div className="flex flex-wrap items-center gap-2">
           {/* Select SortBy */}
           <Select
             value={slaComplianceFilters.sortBy}

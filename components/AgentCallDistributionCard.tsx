@@ -108,7 +108,7 @@ const AgentCallDistributionCard = ({
       >
         <div
           className={cn(
-            "profile flex items-center gap-2 flex-1 border-e-0 sm:border-e",
+            "profile flex flex-wrap items-center gap-2 flex-1 border-e-0 sm:border-e",
             layoutVariant !== "both-closed" &&
               "border-e-0 sm:border-e-0 xl:border-e"
           )}
@@ -133,7 +133,7 @@ const AgentCallDistributionCard = ({
       </div>
       <div
         className={cn(
-          "body flex flex-col xl:flex-row items-center justify-between 4xl:justify-evenly gap-2",
+          "body flex flex-col xl:flex-row items-center justify-between 4xl:justify-evenly gap-2 border rounded-lg p-4 m-2",
           layoutVariant !== "both-closed" && "flex-col xl:flex-col 4xl:flex-row"
         )}
       >
@@ -193,7 +193,7 @@ const AgentCallDistributionCard = ({
                     key={entry.name}
                     className="flex flex-col sm:flex-row gap-2"
                   >
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
                       <div
                         className="w-4 h-4 rounded-full"
                         style={{ backgroundColor: entry.color }}

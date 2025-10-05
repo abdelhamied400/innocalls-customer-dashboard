@@ -26,18 +26,20 @@ const AgentSlaComplianceCard = ({ agent }: AgentSlaComplianceCardProps) => {
   const { layoutVariant, screenWidth } = useLayoutManager();
 
   const getCellColor = (slaCompliance: number) => {
-    if (slaCompliance >= 90) return "#02D995"; // Green
-    if (slaCompliance >= 75) return "#F6A731"; // Yellow
+    if (slaCompliance >= 75) return "#02D995"; // Green
+    if (slaCompliance >= 50) return "#F6A731"; // Yellow
+    if (slaCompliance >= 25) return "#F4592F"; // Red
     return "#F4592F"; // Red
   };
 
   const getSlaStatus = (slaCompliance: number) => {
-    if (slaCompliance >= 90) return "GOOD";
-    if (slaCompliance >= 75) return "AVERAGE";
-    return "POOR";
+    if (slaCompliance >= 75) return "Excellent";
+    if (slaCompliance >= 50) return "Good";
+    if (slaCompliance >= 25) return "Poor";
+    return "Very Poor";
   };
 
-  const circleWidth = 30;
+  const circleWidth = screenWidth <= 480 ? 20 : 30;
 
   const innerRadius = useMemo(() => {
     if (screenWidth <= 480) return 25;
@@ -85,7 +87,7 @@ const AgentSlaComplianceCard = ({ agent }: AgentSlaComplianceCardProps) => {
             ></div>
           </div>
         </div>
-        <div className="flex justify-between items-center gap-2 text-sm">
+        <div className="flex flex-wrap justify-between items-center gap-2 text-sm">
           <div className="stat flex items-center flex-wrap gap-1 text-gray-600">
             <div className="bg-[#02D995] w-4 h-4 rounded" />
             <p className="">Connected calls</p>
@@ -150,7 +152,7 @@ const AgentSlaComplianceCard = ({ agent }: AgentSlaComplianceCardProps) => {
                           </tspan>
                           <tspan
                             x={viewBox.cx}
-                            dy="1.5em"
+                            dy={screenWidth <= 1024 ? "-0.5em" : "1.5em"}
                             className="fill-gray-900 text-sm lg:text-xl font-bold"
                           >
                             {agent.slaCompliance}%
@@ -158,7 +160,7 @@ const AgentSlaComplianceCard = ({ agent }: AgentSlaComplianceCardProps) => {
                           <tspan
                             x={viewBox.cx}
                             dy="1.5em"
-                            className="text-sm lg:text-xl font-bold"
+                            className="text-[10px] lg:text-xl font-bold"
                             style={{ fill: getCellColor(agent.slaCompliance) }}
                           >
                             {getSlaStatus(agent.slaCompliance)}

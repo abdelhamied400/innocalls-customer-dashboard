@@ -114,7 +114,7 @@ const CallDistributionAnalytics = ({
             {t("actions.includeInternalCalls")}
           </Label>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {/* Select SortBy */}
           <Select
             value={callDistributionFilters.sortBy}
