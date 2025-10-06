@@ -459,8 +459,8 @@
           "label": "Select Agents"
         },
         "includeInternalCalls": {
-          "triggerLabel": "Include Internal Calls",
-          "label": "Include Internal Calls"
+          "triggerLabel": "Show Internal Calls",
+          "label": "Show Internal Calls"
         }
       },
       "tooltips": {
@@ -1305,29 +1305,29 @@
       "subtitle": "View detailed analytics for unanswered calls",
       "dateRangeSearch": "Date Range Search",
       "quickStats": {
-        "totalUnansweredCalls": "Total Unanswered Calls",
-        "externalUnansweredIncoming": "External Unanswered Incoming",
-        "externalUnansweredOutgoing": "External Unanswered Outgoing",
-        "internalUnansweredCalls": "Internal Unanswered Calls"
+        "totalUnansweredCalls": "Total unanswered calls",
+        "externalUnansweredIncoming": "External unanswered incoming",
+        "externalUnansweredOutgoing": "External unanswered outgoing",
+        "internalUnansweredCalls": "Internal unanswered calls"
       },
       "tabs": {
-        "inbound": "Incoming Unanswered",
-        "outbound": "Outgoing Unanswered"
+        "inbound": "Incoming unanswered",
+        "outbound": "Outgoing unanswered"
       },
       "inbound": {
         "callDistribution": {
           "lineLabels": {
             "totalCalls": "Total Calls",
-            "missedTotal": "Missed (Total)",
-            "inboundInternal": "Incoming (Int.)",
-            "inboundExternal": "Incoming (Ext.)",
-            "missedInternal": "Missed (Int.)",
-            "missedExternal": "Missed (Ext.)",
-            "outboundInternal": "Outgoing (Int.)",
-            "outboundExternal": "Outgoing (Ext.)",
-            "unansweredTotal": "Unanswered (Total)",
-            "unansweredInternal": "Unans. (Int.)",
-            "unansweredExternal": "Unans. (Ext.)",
+            "missedTotal": "Total Missed",
+            "inboundInternal": "Incoming Internal",
+            "inboundExternal": "Incoming External",
+            "missedInternal": "Missed Internal",
+            "missedExternal": "Missed External",
+            "outboundInternal": "Outgoing Internal",
+            "outboundExternal": "Outgoing External",
+            "unansweredTotal": "Total Unanswered",
+            "unansweredInternal": "Unanswered Internal",
+            "unansweredExternal": "Unanswered External",
             "internalUnanswered": "Internal Unanswered",
             "externalUnanswered": "External Unanswered"
           }
@@ -1337,11 +1337,11 @@
         "callDistribution": {
           "lineLabels": {
             "totalCalls": "Total Calls",
-            "unansweredTotal": "Unanswered (Total)",
-            "outboundInternal": "Outgoing (Int.)",
-            "outboundExternal": "Outgoing (Ext.)",
-            "unansweredInternal": "Unans. (Int.)",
-            "unansweredExternal": "Unans. (Ext.)"
+            "unansweredTotal": "Total Unanswered",
+            "outboundInternal": "Outgoing Internal",
+            "outboundExternal": "Outgoing External",
+            "unansweredInternal": "Unanswered Internal",
+            "unansweredExternal": "Unanswered External"
           }
         }
       },
@@ -1360,7 +1360,7 @@
       },
       "filters": {
         "includeInternalCalls": {
-          "label": "Include Internal Calls"
+          "label": "Show Internal Calls"
         }
       }
     },
@@ -1409,7 +1409,7 @@
           "tooltipAgent": "Agent"
         },
         "actions": {
-          "includeInternalCalls": "Include Internal Calls"
+          "includeInternalCalls": "Show Internal Calls"
         }
       },
       "callStats": {
@@ -1599,7 +1599,7 @@
       },
       "filters": {
         "includeInternalCalls": {
-          "label": "Include Internal Calls"
+          "label": "Show Internal Calls"
         }
       }
     },
@@ -1631,7 +1631,7 @@
           "placeholder": "Select team"
         },
         "includeInternalCalls": {
-          "label": "Include Internal Calls"
+          "label": "Show Internal Calls"
         },
         "validation": {
           "team": {
