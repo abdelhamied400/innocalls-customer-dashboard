@@ -28,6 +28,7 @@ import useAppStore from "@/store/app.slice";
 import { FilterBox } from "@/components/FilterBox";
 import { formatDate } from "@/lib/date";
 import AgentsPicker from "@/components/AgentsPicker";
+import { Slider } from "@/components/ui/slider";
 
 type Option = {
   value: string;
@@ -119,24 +120,24 @@ const UserActivityAnalytics = () => {
               onApply={apply}
               onReset={() => {
                 applyValues({
-                  agents: userActivityFilterConfig.defaultValues.agents,
+                  sla: userActivityFilterConfig.defaultValues.sla,
                 });
               }}
             >
-              <Field
-                label={t("form.fields.sla.label")}
-                postIcon={<AccessTime className="text-gray-400" />}
-                error={errors.sla}
-              >
-                <Input
-                  type="number"
-                  variant="field"
-                  className=""
-                  placeholder={t("form.fields.sla.placeholder")}
-                  value={values.sla}
-                  onChange={(e) => setValue("sla", Number(e.target.value))}
-                />
-              </Field>
+              <Slider
+                defaultValue={[10]}
+                max={200}
+                step={1}
+                value={[values.sla]}
+                onValueChange={(value) => setValue("sla", value[0])}
+              />
+              <div className="flex items-center justify-between gap-1 text-sm">
+                <p>{values.sla}</p>
+                <p>200</p>
+              </div>
+              {errors.sla && (
+                <p className="text-sm text-destructive-500">{errors.sla}</p>
+              )}
             </FilterBox>
 
             <FilterBox

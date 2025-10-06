@@ -81,7 +81,13 @@ const AgentCallDistributionCard = ({
     },
     {
       name: "Unanswered",
+      hideDetails: true,
       color: "#EFEFEF",
+      values: {
+        total: agent.totalCalls,
+        unanswered: agent.totalCalls - agent.totalConnected,
+        answered: 0,
+      },
       value: agent.totalCalls - agent.totalConnected,
     },
   ];
@@ -181,38 +187,44 @@ const AgentCallDistributionCard = ({
                   }}
                 />
               </Pie>
-              <Tooltip />
+              <Tooltip
+                formatter={(value: number, _name) =>
+                  `${((value / agent.totalCalls) * 100).toFixed(2)}%`
+                }
+              />
             </PieChart>
           </ResponsiveContainer>
         </div>
         <div className="details ">
           <div className="flex flex-col gap-2">
-            {data.map(
-              (entry) =>
-                entry.values && (
-                  <div
-                    key={entry.name}
-                    className="flex flex-col sm:flex-row gap-2"
-                  >
-                    <div className="flex flex-wrap gap-2">
-                      <div
-                        className="w-4 h-4 rounded-full"
-                        style={{ backgroundColor: entry.color }}
-                      />
-                      <div className="flex flex-col">
-                        <span className="text-gray-700">{entry.name}</span>
-                        <span className="text-gray-700">
-                          {entry.values.unanswered} unconnected calls
-                        </span>
+            {data
+              .filter((entry) => !entry.hideDetails)
+              .map(
+                (entry) =>
+                  entry.values && (
+                    <div
+                      key={entry.name}
+                      className="flex flex-col sm:flex-row gap-2"
+                    >
+                      <div className="flex flex-wrap gap-2">
+                        <div
+                          className="w-4 h-4 rounded-full"
+                          style={{ backgroundColor: entry.color }}
+                        />
+                        <div className="flex flex-col">
+                          <span className="text-gray-700">{entry.name}</span>
+                          <span className="text-gray-700">
+                            {entry.values.unanswered} unconnected calls
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex gap-1">
+                        <p className="font-bold">{entry.values.answered}</p>
+                        <p>Out of {entry.values.total}</p>
                       </div>
                     </div>
-                    <div className="flex gap-1">
-                      <p className="font-bold">{entry.values.answered}</p>
-                      <p>Out of {entry.values.total}</p>
-                    </div>
-                  </div>
-                )
-            )}
+                  )
+              )}
           </div>
         </div>
       </div>
