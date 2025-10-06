@@ -1382,34 +1382,46 @@
       },
       "callDistribution": {
         "title": "Call Distribution",
-        "table": {
-          "columns": {
-            "name": "Name",
-            "ext": "Ext",
-            "totalCalls": "Total Calls",
-            "incomingInternal": "Incoming Internal",
-            "incomingExternal": "Incoming External",
-            "outgoingInternal": "Outgoing Internal",
-            "outgoingExternal": "Outgoing External",
-            "answeredInternalIncoming": "Answered Internal Incoming",
-            "answeredExternalIncoming": "Answered External Incoming",
-            "connectedInternalOutgoing": "Connected Internal Outgoing",
-            "connectedExternalOutgoing": "Connected External Outgoing"
+        "agentCard": {
+          "totalCalls": "Total Calls",
+          "connectedCalls": "Connected Calls",
+          "unconnectedCalls": "Unconnected Calls",
+          "outgoingExternal": "Outgoing External",
+          "incomingExternal": "Incoming External",
+          "outgoingInternal": "Outgoing Internal",
+          "incomingInternal": "Incoming Internal",
+          "outOf": "Out of",
+          "chart": {
+            "answerRate": "Answer Rate",
+            "labels": {
+              "outgoingExternal": "Outgoing External",
+              "incomingExternal": "Incoming External",
+              "outgoingInternal": "Outgoing Internal",
+              "incomingInternal": "Incoming Internal",
+              "unanswered": "Unanswered"
+            }
           }
         },
-        "chart": {
-          "title": "Call Distribution",
-          "legends": {
-            "incomingInternal": "Incoming Internal",
-            "incomingExternal": "Incoming External",
-            "outgoingInternal": "Outgoing Internal",
-            "outgoingExternal": "Outgoing External"
-          },
-          "yAxisLabel": "Number of Calls",
-          "tooltipAgent": "Agent"
-        },
         "actions": {
-          "includeInternalCalls": "Show Internal Calls"
+          "includeInternalCalls": "Show Internal Calls",
+          "search": "Search...",
+          "sortBy": "Sort By",
+          "sorts": {
+            "totalCallsHighest": "highest total calls",
+            "totalCallsLowest": "lowest total calls",
+            "answerRateHighest": "highest answer rate",
+            "answerRateLowest": "lowest answer rate",
+            "connectedCallsHighest": "highest connected calls",
+            "connectedCallsLowest": "lowest connected calls",
+            "connectedOutgoingExternalHighest": "highest connected outgoing external calls",
+            "connectedOutgoingExternalLowest": "lowest connected outgoing external calls",
+            "connectedIncomingExternalHighest": "highest connected incoming external calls",
+            "connectedIncomingExternalLowest": "lowest connected incoming external calls",
+            "connectedOutgoingInternalHighest": "highest connected outgoing internal calls",
+            "connectedOutgoingInternalLowest": "lowest connected outgoing internal calls",
+            "connectedIncomingInternalHighest": "highest connected incoming internal calls",
+            "connectedIncomingInternalLowest": "lowest connected incoming internal calls"
+          }
         }
       },
       "callStats": {
@@ -1441,28 +1453,30 @@
         }
       },
       "slaCompliance": {
-        "title": "SLA Compliance Overview",
-        "table": {
-          "columns": {
-            "ext": "Ext",
-            "name": "Name",
-            "totalIncomingCalls": "Incoming Calls",
-            "answeredCalls": "Answered Calls",
-            "avgResponseTime": "Avg Answer Time",
-            "callsAnsweredWithinSLA": "Calls Answered Within SLA",
-            "slaCompliance": "SLA Compliance (%)"
-          }
-        },
-        "chart": {
-          "legends": {
-            "excellent": "Excellent (90%+)",
-            "good": "Good (70%-89%)",
-            "average": "Average (50%-69%)",
-            "poor": "Poor (30%-49%)",
-            "veryPoor": "Very Poor (<30%)"
+        "agentCard": {
+          "slaStatus": {
+            "excellent": "Excellent",
+            "good": "Good",
+            "poor": "Poor",
+            "veryPoor": "Very Poor"
           },
-          "tooltipLabels": {
-            "slaCompliance": "SLA Compliance (%)"
+          "incomingCalls": "Incoming Calls",
+          "calls": "Calls",
+          "connectedCalls": "Connected Calls",
+          "avgAnswerTime": "Avg Answer Time",
+          "slaCompliance": "SLA Compliance",
+          "callsAnsweredWithinSla": "Calls Answered Within SLA"
+        },
+        "actions": {
+          "search": "Search...",
+          "sortBy": "Sort By",
+          "sorts": {
+            "slaHighestToLowest": "highest SLA",
+            "slaLowestToHighest": "lowest SLA",
+            "connectedCallsHighestToLowest": "highest connected calls",
+            "connectedCallsLowestToHighest": "lowest connected calls",
+            "incomingCallsHighestToLowest": "highest incoming calls",
+            "incomingCallsLowestToHighest": "lowest incoming calls"
           }
         }
       },
@@ -1924,7 +1938,8 @@
           },
           "agents": {
             "label": "Agents",
-            "placeholder": "Select agents"
+            "placeholder": "Select agents",
+            "noOptions":"No agents match your search"
           }
         },
         "validation": {

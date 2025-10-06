@@ -42,6 +42,7 @@ export type SlaComplianceFilters = {
 const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
   const { layoutVariant } = useLayoutManager();
   const t = useTranslations("analytics.userActivity.slaCompliance");
+  const tCommon = useTranslations("common");
   const [slaComplianceFilters, setSlaComplianceFilters] =
     useState<SlaComplianceFilters>({
       search: "",
@@ -120,51 +121,58 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
               }))
             }
           >
-            <SelectTrigger className="w-auto">
+            <SelectTrigger className="w-auto flex items-center gap-0.5">
+              <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
               <span className="capitalize">
                 {slaComplianceFilters.sortBy === "slaHighestToLowest" &&
-                  "SLA (Highest to Lowest)"}
+                  t("actions.sorts.slaHighestToLowest")}
                 {slaComplianceFilters.sortBy === "slaLowestToHighest" &&
-                  "SLA (Lowest to Highest)"}
+                  t("actions.sorts.slaLowestToHighest")}
                 {slaComplianceFilters.sortBy ===
                   "connectedCallsHighestToLowest" &&
-                  "Connected Calls (Highest to Lowest)"}
+                  t("actions.sorts.connectedCallsHighestToLowest")}
                 {slaComplianceFilters.sortBy ===
                   "connectedCallsLowestToHighest" &&
-                  "Connected Calls (Lowest to Highest)"}
+                  t("actions.sorts.connectedCallsLowestToHighest")}
                 {slaComplianceFilters.sortBy ===
                   "incomingCallsHighestToLowest" &&
-                  "Incoming Calls (Highest to Lowest)"}
+                  t("actions.sorts.incomingCallsHighestToLowest")}
                 {slaComplianceFilters.sortBy ===
                   "incomingCallsLowestToHighest" &&
-                  "Incoming Calls (Lowest to Highest)"}
+                  t("actions.sorts.incomingCallsLowestToHighest")}
               </span>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="slaHighestToLowest">
-                SLA (Highest to Lowest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.slaHighestToLowest")}
               </SelectItem>
               <SelectItem value="slaLowestToHighest">
-                SLA (Lowest to Highest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.slaLowestToHighest")}
               </SelectItem>
               <SelectItem value="connectedCallsHighestToLowest">
-                Connected Calls (Highest to Lowest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.connectedCallsHighestToLowest")}
               </SelectItem>
               <SelectItem value="connectedCallsLowestToHighest">
-                Connected Calls (Lowest to Highest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.connectedCallsLowestToHighest")}
               </SelectItem>
               <SelectItem value="incomingCallsHighestToLowest">
-                Incoming Calls (Highest to Lowest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.incomingCallsHighestToLowest")}
               </SelectItem>
               <SelectItem value="incomingCallsLowestToHighest">
-                Incoming Calls (Lowest to Highest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.incomingCallsLowestToHighest")}
               </SelectItem>
             </SelectContent>
           </Select>
           {/* search */}
           <Field preIcon={<Search />}>
             <Input
-              placeholder="Search"
+              placeholder={t("actions.search")}
               variant="field"
               value={slaComplianceFilters.search}
               onChange={(e) =>
@@ -198,7 +206,9 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 border-t">
           {/* Rows per page selector */}
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Rows per page</span>
+            <span className="text-sm text-gray-600">
+              {tCommon("pagination.rowsPerPage")}
+            </span>
             <Select
               value={pageSize.toString()}
               onValueChange={(value) => {
@@ -223,8 +233,8 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
             {filteredAndSortedData.length > 0 && (
               <span>
                 {startIndex + 1} –{" "}
-                {Math.min(endIndex, filteredAndSortedData.length)} of{" "}
-                {filteredAndSortedData.length}
+                {Math.min(endIndex, filteredAndSortedData.length)}{" "}
+                {tCommon("pagination.of")} {filteredAndSortedData.length}
               </span>
             )}
           </div>

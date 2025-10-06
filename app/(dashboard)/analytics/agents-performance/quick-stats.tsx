@@ -33,7 +33,7 @@ type QuickStatsProps = {
 
 const QuickStats = ({ filters }: QuickStatsProps) => {
   const t = useTranslations("analytics.userActivity");
-  const { layoutVariant } = useLayoutManager();
+  const { screenWidth, layoutVariant } = useLayoutManager();
 
   const {
     data: quickStatsData,
@@ -220,7 +220,7 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
                   {`${quickStatsData?.topSlaComplianceAgents[0]?.slaPercentage}\u200E%`}
                 </span>
               </div>
-              <PopoverContent side="right">
+              <PopoverContent side={screenWidth < 640 ? undefined : "right"}>
                 <div className="flex flex-col gap-2">
                   {quickStatsData?.topSlaComplianceAgents.map((agent) => (
                     <div

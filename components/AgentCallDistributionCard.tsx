@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import Avatar from "./Avatar";
 import { Skeleton } from "./ui/skeleton";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type AgentCallDistributionCardProps = {
   agent: {
@@ -37,10 +38,11 @@ const AgentCallDistributionCard = ({
   agent,
 }: AgentCallDistributionCardProps) => {
   const { layoutVariant, screenWidth } = useLayoutManager();
+  const t = useTranslations("analytics.userActivity.callDistribution");
 
   const data = [
     {
-      name: "Outgoing external",
+      name: t("agentCard.chart.labels.outgoingExternal"),
       values: {
         total: agent.totalOutgoingExternalCalls,
         unanswered: agent.unAnsweredOutgoingExternal,
@@ -50,7 +52,7 @@ const AgentCallDistributionCard = ({
       value: agent.totalAnsweredOutgoingExternalCalls,
     },
     {
-      name: "Incoming external",
+      name: t("agentCard.chart.labels.incomingExternal"),
       values: {
         total: agent.totalIncomingExternalCalls,
         unanswered: agent.unAnsweredIncomingExternal,
@@ -60,7 +62,7 @@ const AgentCallDistributionCard = ({
       value: agent.totalAnsweredIncomingExternalCalls,
     },
     {
-      name: "Outgoing internal",
+      name: t("agentCard.chart.labels.outgoingInternal"),
       values: {
         total: agent.totalOutgoingInternalCalls,
         unanswered: agent.unAnsweredOutgoingInternal,
@@ -70,7 +72,7 @@ const AgentCallDistributionCard = ({
       value: agent.totalAnsweredOutgoingInternalCalls,
     },
     {
-      name: "Incoming internal",
+      name: t("agentCard.chart.labels.incomingInternal"),
       values: {
         total: agent.totalIncomingInternalCalls,
         unanswered: agent.unAnsweredIncomingInternal,
@@ -80,7 +82,7 @@ const AgentCallDistributionCard = ({
       value: agent.totalAnsweredIncomingInternalCalls,
     },
     {
-      name: "Unanswered",
+      name: t("agentCard.chart.labels.unanswered"),
       hideDetails: true,
       color: "#EFEFEF",
       values: {
@@ -130,11 +132,11 @@ const AgentCallDistributionCard = ({
         <div className="global-stats flex flex-wrap items-center gap-2 px-2">
           <div className="stat flex flex-col gap-1 px-2 border-e">
             <p className="font-bold">{agent.totalCalls}</p>
-            <p className="text-gray-600">Total Calls</p>
+            <p className="text-gray-600">{t("agentCard.totalCalls")}</p>
           </div>
           <div className="stat flex flex-col gap-1 px-2">
             <p className="font-bold text-success-300">{agent.totalConnected}</p>
-            <p className="text-gray-600">Connected Calls</p>
+            <p className="text-gray-600">{t("agentCard.connectedCalls")}</p>
           </div>
         </div>
       </div>
@@ -172,7 +174,7 @@ const AgentCallDistributionCard = ({
                             dy="-0.5em"
                             className="fill-gray-600 hidden lg:block text-lg font-medium"
                           >
-                            Answer Rate
+                            {t("agentCard.chart.answerRate")}
                           </tspan>
                           <tspan
                             x={viewBox.cx}
@@ -214,13 +216,16 @@ const AgentCallDistributionCard = ({
                         <div className="flex flex-col">
                           <span className="text-gray-700">{entry.name}</span>
                           <span className="text-gray-700">
-                            {entry.values.unanswered} unconnected calls
+                            {entry.values.unanswered}{" "}
+                            {t("agentCard.unconnectedCalls")}
                           </span>
                         </div>
                       </div>
                       <div className="flex gap-1">
                         <p className="font-bold">{entry.values.answered}</p>
-                        <p>Out of {entry.values.total}</p>
+                        <p>
+                          {t("agentCard.outOf")} {entry.values.total}
+                        </p>
                       </div>
                     </div>
                   )

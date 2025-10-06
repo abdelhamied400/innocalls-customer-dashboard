@@ -30,7 +30,7 @@ const ChartCustomTooltip = ({
       }}
     >
       {label && (
-        <p className="font-medium text-gray-900 text-sm mb-2">
+        <p className="font-medium text-black text-sm mb-2">
           {labelFormatter ? labelFormatter(label, payload) : label}
         </p>
       )}
@@ -44,11 +44,11 @@ const ChartCustomTooltip = ({
         .map((entry, index) => (
           <div key={index} className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <span className="text-sm font-bold text-gray-600">
+              <span className="text-sm font-bold text-black">
                 {entry.name || entry.dataKey}
               </span>
             </div>
-            <span className="text-sm font-medium text-gray-900">
+            <span className="text-sm font-medium text-black">
               {typeof entry.value === "number"
                 ? entry.value.toLocaleString()
                 : entry.value}
@@ -76,11 +76,11 @@ const ChartCustomTooltip = ({
                   className="w-3 h-3 rounded-full flex-shrink-0"
                   style={{ backgroundColor: entry.color }}
                 />
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-black">
                   {entry.name || entry.dataKey}
                 </span>
               </div>
-              <span className="text-sm font-medium text-gray-900">
+              <span className="text-sm font-medium text-black">
                 {typeof entry.value === "number"
                   ? entry.value.toLocaleString()
                   : entry.value}

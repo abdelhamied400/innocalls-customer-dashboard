@@ -85,7 +85,7 @@ const AgentsPicker = ({
           extensions &&
           extensions.length > 0 && (
             <p className="text-sm text-gray-500">
-              No agents match your search.
+            {tCommon("form.fields.agents.noOptions")}
             </p>
           )}
         {extensions?.length === 0 && (

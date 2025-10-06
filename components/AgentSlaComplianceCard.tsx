@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import Avatar from "./Avatar";
 import { Skeleton } from "./ui/skeleton";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type AgentSlaComplianceCardProps = {
   agent: {
@@ -25,6 +26,7 @@ type AgentSlaComplianceCardProps = {
 };
 const AgentSlaComplianceCard = ({ agent }: AgentSlaComplianceCardProps) => {
   const { layoutVariant, screenWidth } = useLayoutManager();
+  const t = useTranslations("analytics.userActivity.slaCompliance.agentCard");
 
   const getCellColor = (slaCompliance: number) => {
     if (slaCompliance >= 75) return "#02D995"; // Green
@@ -34,10 +36,10 @@ const AgentSlaComplianceCard = ({ agent }: AgentSlaComplianceCardProps) => {
   };
 
   const getSlaStatus = (slaCompliance: number) => {
-    if (slaCompliance >= 75) return "Excellent";
-    if (slaCompliance >= 50) return "Good";
-    if (slaCompliance >= 25) return "Poor";
-    return "Very Poor";
+    if (slaCompliance >= 75) return t("slaStatus.excellent");
+    if (slaCompliance >= 50) return t("slaStatus.good");
+    if (slaCompliance >= 25) return t("slaStatus.poor");
+    return t("slaStatus.veryPoor");
   };
 
   const circleWidth = screenWidth <= 480 ? 20 : 30;
@@ -72,9 +74,9 @@ const AgentSlaComplianceCard = ({ agent }: AgentSlaComplianceCardProps) => {
       <div className="global-stats flex flex-col gap-2 p-2 border rounded-lg m-2">
         <div className="stat flex items-center flex-wrap gap-1 text-gray-600 text-sm">
           <div className="bg-gray-200 w-4 h-4 rounded" />
-          <p className="">Incoming calls</p>
+          <p className="">{t("incomingCalls")}</p>
           <p className="font-bold">{agent.totalCalls}</p>
-          <p className="">calls</p>
+          <p className="">{t("calls")}</p>
         </div>
         <div className="progress">
           <div className="h-[3px] bg-gray-200 rounded-full overflow-hidden">
@@ -91,13 +93,13 @@ const AgentSlaComplianceCard = ({ agent }: AgentSlaComplianceCardProps) => {
         <div className="flex flex-wrap justify-between items-center gap-2 text-sm">
           <div className="stat flex items-center flex-wrap gap-1 text-gray-600">
             <div className="bg-[#02D995] w-4 h-4 rounded" />
-            <p className="">Connected calls</p>
+            <p className="">{t("connectedCalls")}</p>
             <p className="font-bold">{agent.answeredCalls}</p>
-            <p className="">calls</p>
+            <p className="">{t("calls")}</p>
           </div>
           <div className="stat flex items-center flex-wrap gap-1 text-gray-600">
             <p className="font-bold">{agent.avgResponseTime}</p>
-            <p>Avg Answer time</p>
+            <p>{t("avgAnswerTime")}</p>
           </div>
         </div>
       </div>
@@ -149,7 +151,7 @@ const AgentSlaComplianceCard = ({ agent }: AgentSlaComplianceCardProps) => {
                             dy="-1.5em"
                             className="fill-gray-600 hidden lg:block text-sm font-medium"
                           >
-                            SLA Compliance
+                            {t("slaCompliance")}
                           </tspan>
                           <tspan
                             x={viewBox.cx}
@@ -177,7 +179,7 @@ const AgentSlaComplianceCard = ({ agent }: AgentSlaComplianceCardProps) => {
         </div>
         <div className="details">
           <p className="font-bold text-lg">{agent.answeredCalls}</p>
-          <p className="text-gray-600 text-sm">Calls answered within SLA</p>
+          <p className="text-gray-600 text-sm">{t("callsAnsweredWithinSla")}</p>
         </div>
       </div>
     </div>
