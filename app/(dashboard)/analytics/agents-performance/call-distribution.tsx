@@ -44,6 +44,7 @@ const CallDistributionAnalytics = ({
 }: CallDistributionAnalyticsProps) => {
   const { layoutVariant } = useLayoutManager();
   const t = useTranslations("analytics.userActivity.callDistribution");
+  const tCommon = useTranslations("common");
   const [includeInternalCalls, setIncludeInternalCalls] = useState(false);
   const [callDistributionFilters, setCallDistributionFilters] =
     useState<CallDistributionFilters>({
@@ -176,90 +177,105 @@ const CallDistributionAnalytics = ({
               }))
             }
           >
-            <SelectTrigger className="w-auto">
+            <SelectTrigger className="w-auto flex items-center gap-0.5">
+              <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
               <span className="capitalize">
                 {callDistributionFilters.sortBy === "totalCallsHighest" &&
-                  "Total Calls (Highest to Lowest)"}
+                  t("actions.sorts.totalCallsHighest")}
                 {callDistributionFilters.sortBy === "totalCallsLowest" &&
-                  "Total Calls (Lowest to Highest)"}
+                  t("actions.sorts.totalCallsLowest")}
                 {callDistributionFilters.sortBy === "answerRateHighest" &&
-                  "Answer Rate (Highest to Lowest)"}
+                  t("actions.sorts.answerRateHighest")}
                 {callDistributionFilters.sortBy === "answerRateLowest" &&
-                  "Answer Rate (Lowest to Highest)"}
+                  t("actions.sorts.answerRateLowest")}
                 {callDistributionFilters.sortBy === "connectedCallsHighest" &&
-                  "Connected Calls (Highest to Lowest)"}
+                  t("actions.sorts.connectedCallsHighest")}
                 {callDistributionFilters.sortBy === "connectedCallsLowest" &&
-                  "Connected Calls (Lowest to Highest)"}
+                  t("actions.sorts.connectedCallsLowest")}
                 {callDistributionFilters.sortBy ===
                   "connectedOutgoingExternalHighest" &&
-                  "Connected Outgoing External (Highest to Lowest)"}
+                  t("actions.sorts.connectedOutgoingExternalHighest")}
                 {callDistributionFilters.sortBy ===
                   "connectedOutgoingExternalLowest" &&
-                  "Connected Outgoing External (Lowest to Highest)"}
+                  t("actions.sorts.connectedOutgoingExternalLowest")}
                 {callDistributionFilters.sortBy ===
                   "connectedIncomingExternalHighest" &&
-                  "Connected Incoming External (Highest to Lowest)"}
+                  t("actions.sorts.connectedIncomingExternalHighest")}
                 {callDistributionFilters.sortBy ===
                   "connectedIncomingExternalLowest" &&
-                  "Connected Incoming External (Lowest to Highest)"}
+                  t("actions.sorts.connectedIncomingExternalLowest")}
                 {callDistributionFilters.sortBy ===
                   "connectedOutgoingInternalHighest" &&
-                  "Connected Outgoing Internal (Highest to Lowest)"}
+                  t("actions.sorts.connectedOutgoingInternalHighest")}
                 {callDistributionFilters.sortBy ===
                   "connectedOutgoingInternalLowest" &&
-                  "Connected Outgoing Internal (Lowest to Highest)"}
+                  t("actions.sorts.connectedOutgoingInternalLowest")}
                 {callDistributionFilters.sortBy ===
                   "connectedIncomingInternalHighest" &&
-                  "Connected Incoming Internal (Highest to Lowest)"}
+                  t("actions.sorts.connectedIncomingInternalHighest")}
                 {callDistributionFilters.sortBy ===
                   "connectedIncomingInternalLowest" &&
-                  "Connected Incoming Internal (Lowest to Highest)"}
+                  t("actions.sorts.connectedIncomingInternalLowest")}
               </span>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="totalCallsHighest">
-                Total Calls (Highest to Lowest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.totalCallsHighest")}
               </SelectItem>
               <SelectItem value="totalCallsLowest">
-                Total Calls (Lowest to Highest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.totalCallsLowest")}
               </SelectItem>
               <SelectItem value="answerRateHighest">
-                Answer Rate (Highest to Lowest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.answerRateHighest")}
               </SelectItem>
               <SelectItem value="answerRateLowest">
-                Answer Rate (Lowest to Highest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.answerRateLowest")}
               </SelectItem>
               <SelectItem value="connectedCallsHighest">
-                Connected Calls (Highest to Lowest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.connectedCallsHighest")}
               </SelectItem>
               <SelectItem value="connectedCallsLowest">
-                Connected Calls (Lowest to Highest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.connectedCallsLowest")}
               </SelectItem>
               <SelectItem value="connectedOutgoingExternalHighest">
-                Connected Outgoing External (Highest to Lowest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.connectedOutgoingExternalHighest")}
               </SelectItem>
               <SelectItem value="connectedOutgoingExternalLowest">
-                Connected Outgoing External (Lowest to Highest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.connectedOutgoingExternalLowest")}
               </SelectItem>
               <SelectItem value="connectedIncomingExternalHighest">
-                Connected Incoming External (Highest to Lowest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.connectedIncomingExternalHighest")}
               </SelectItem>
               <SelectItem value="connectedIncomingExternalLowest">
-                Connected Incoming External (Lowest to Highest)
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.connectedIncomingExternalLowest")}
               </SelectItem>
               {includeInternalCalls && (
                 <>
                   <SelectItem value="connectedOutgoingInternalHighest">
-                    Connected Outgoing Internal (Highest to Lowest)
+                    <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                    {t("actions.sorts.connectedOutgoingInternalHighest")}
                   </SelectItem>
                   <SelectItem value="connectedOutgoingInternalLowest">
-                    Connected Outgoing Internal (Lowest to Highest)
+                    <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                    {t("actions.sorts.connectedOutgoingInternalLowest")}
                   </SelectItem>
                   <SelectItem value="connectedIncomingInternalHighest">
-                    Connected Incoming Internal (Highest to Lowest)
+                    <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                    {t("actions.sorts.connectedIncomingInternalHighest")}
                   </SelectItem>
                   <SelectItem value="connectedIncomingInternalLowest">
-                    Connected Incoming Internal (Lowest to Highest)
+                    <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                    {t("actions.sorts.connectedIncomingInternalLowest")}
                   </SelectItem>
                 </>
               )}
@@ -269,7 +285,7 @@ const CallDistributionAnalytics = ({
           {/* search */}
           <Field preIcon={<Search />}>
             <Input
-              placeholder="Search"
+              placeholder={t("actions.search")}
               variant="field"
               value={callDistributionFilters.search}
               onChange={(e) =>
@@ -303,7 +319,9 @@ const CallDistributionAnalytics = ({
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 border-t">
           {/* Rows per page selector */}
           <div className="flex items-center gap-2">
-            <span className="text-sm text-gray-600">Rows per page</span>
+            <span className="text-sm text-gray-600">
+              {tCommon("pagination.rowsPerPage")}
+            </span>
             <Select
               value={pageSize.toString()}
               onValueChange={(value) => {
@@ -328,8 +346,8 @@ const CallDistributionAnalytics = ({
             {filteredAndSortedData.length > 0 && (
               <span>
                 {startIndex + 1} –{" "}
-                {Math.min(endIndex, filteredAndSortedData.length)} of{" "}
-                {filteredAndSortedData.length}
+                {Math.min(endIndex, filteredAndSortedData.length)}{" "}
+                {tCommon("pagination.of")} {filteredAndSortedData.length}
               </span>
             )}
           </div>
