@@ -46,6 +46,12 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
     queryFn: () => analyticsService.fetchQuickStats(filters),
   });
 
+  const topSlaComplianceAgents = quickStatsData?.topSlaComplianceAgents || [];
+  const topAnsweredIncomingAgents =
+    quickStatsData?.topAnsweredIncomingAgents || [];
+  const topConnectedOutboundAgents =
+    quickStatsData?.topConnectedOutboundAgents || [];
+
   return (
     <div
       className={cn(
@@ -177,12 +183,13 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
         error={error}
         variant="subtle"
       />
+
       <StatsCard
         icon={<Replay10 className="w-6 h-6" />}
         title={t("quickStats.bestSlaAgent")}
         renderValue={
           <>
-            {(quickStatsData?.topSlaComplianceAgents?.length ?? 0) === 0 && (
+            {(topSlaComplianceAgents?.length ?? 0) === 0 && (
               <span className="text-gray-500">
                 {t("common.noDataAvailable")}{" "}
               </span>
@@ -191,10 +198,13 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
               <div className="flex justify-between items-center flex-wrap gap-2">
                 <div className="flex items-center flex-wrap gap-2">
                   <span className="font-bold">
-                    {quickStatsData?.topSlaComplianceAgents[0]?.name}
+                    {topSlaComplianceAgents.length > 1
+                      ? t("quickStats.users", {
+                          num: topSlaComplianceAgents.length,
+                        })
+                      : topSlaComplianceAgents[0]?.name}
                   </span>
-                  {(quickStatsData?.topSlaComplianceAgents?.length ?? 0) >
-                    1 && (
+                  {topSlaComplianceAgents.length > 1 && (
                     <PopoverTrigger asChild>
                       <Button
                         variant="ghost"

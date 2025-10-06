@@ -47,19 +47,10 @@ const lastMonth = new Date();
 lastMonth.setDate(today.getDate() - 30);
 
 const UserActivityAnalytics = () => {
-  const { setPageTitle } = useAppStore();
-
   const t = useTranslations("analytics.userActivity");
   const tCommon = useTranslations("analytics.common");
   const tShared = useTranslations("common");
   const locale = useLocale();
-
-  useEffect(() => {
-    setPageTitle(t("title"));
-
-    // Cleanup when component unmounts
-    return () => setPageTitle(null);
-  }, [locale]);
 
   const userActivityFilterConfig = {
     defaultValues: {

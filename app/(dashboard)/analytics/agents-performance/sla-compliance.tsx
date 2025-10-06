@@ -45,7 +45,7 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
   const [slaComplianceFilters, setSlaComplianceFilters] =
     useState<SlaComplianceFilters>({
       search: "",
-      sortBy: "highestAnsweredCalls",
+      sortBy: "slaHighestToLowest",
     });
 
   const { data, isLoading } = useLocalizedQuery({
@@ -61,16 +61,25 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
     let filtered = data.filter((agent) => {
       if (!slaComplianceFilters.search) return true;
       const searchTerm = slaComplianceFilters.search.toLowerCase();
-      return agent.name.toLowerCase().includes(searchTerm);
+      const agentSearchText = `${agent.name} ${agent.ext}`.toLowerCase();
+      return agentSearchText.includes(searchTerm);
     });
 
     // Then sort by selected criteria
     filtered.sort((a, b) => {
       switch (slaComplianceFilters.sortBy) {
-        case "highestAnsweredCalls":
+        case "slaHighestToLowest":
+          return b.slaCompliance - a.slaCompliance; // Descending (highest first)
+        case "slaLowestToHighest":
+          return a.slaCompliance - b.slaCompliance; // Ascending (lowest first)
+        case "connectedCallsHighestToLowest":
           return b.answeredCalls - a.answeredCalls; // Descending (highest first)
-        case "lowestAnsweredCalls":
+        case "connectedCallsLowestToHighest":
           return a.answeredCalls - b.answeredCalls; // Ascending (lowest first)
+        case "incomingCallsHighestToLowest":
+          return b.totalCalls - a.totalCalls; // Descending (highest first)
+        case "incomingCallsLowestToHighest":
+          return a.totalCalls - b.totalCalls; // Ascending (lowest first)
         default:
           return 0;
       }
@@ -113,15 +122,42 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
           >
             <SelectTrigger className="w-auto">
               <span className="capitalize">
-                {t(`filters.sortBy.${slaComplianceFilters.sortBy}`)}
+                {slaComplianceFilters.sortBy === "slaHighestToLowest" &&
+                  "SLA (Highest to Lowest)"}
+                {slaComplianceFilters.sortBy === "slaLowestToHighest" &&
+                  "SLA (Lowest to Highest)"}
+                {slaComplianceFilters.sortBy ===
+                  "connectedCallsHighestToLowest" &&
+                  "Connected Calls (Highest to Lowest)"}
+                {slaComplianceFilters.sortBy ===
+                  "connectedCallsLowestToHighest" &&
+                  "Connected Calls (Lowest to Highest)"}
+                {slaComplianceFilters.sortBy ===
+                  "incomingCallsHighestToLowest" &&
+                  "Incoming Calls (Highest to Lowest)"}
+                {slaComplianceFilters.sortBy ===
+                  "incomingCallsLowestToHighest" &&
+                  "Incoming Calls (Lowest to Highest)"}
               </span>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="highestAnsweredCalls">
-                {t(`filters.sortBy.${"highestAnsweredCalls"}`)}
+              <SelectItem value="slaHighestToLowest">
+                SLA (Highest to Lowest)
               </SelectItem>
-              <SelectItem value="lowestAnsweredCalls">
-                {t(`filters.sortBy.${"lowestAnsweredCalls"}`)}
+              <SelectItem value="slaLowestToHighest">
+                SLA (Lowest to Highest)
+              </SelectItem>
+              <SelectItem value="connectedCallsHighestToLowest">
+                Connected Calls (Highest to Lowest)
+              </SelectItem>
+              <SelectItem value="connectedCallsLowestToHighest">
+                Connected Calls (Lowest to Highest)
+              </SelectItem>
+              <SelectItem value="incomingCallsHighestToLowest">
+                Incoming Calls (Highest to Lowest)
+              </SelectItem>
+              <SelectItem value="incomingCallsLowestToHighest">
+                Incoming Calls (Lowest to Highest)
               </SelectItem>
             </SelectContent>
           </Select>
@@ -177,6 +213,7 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
                 <SelectItem value="10">10</SelectItem>
                 <SelectItem value="20">20</SelectItem>
                 <SelectItem value="50">50</SelectItem>
+                <SelectItem value="100">100</SelectItem>
               </SelectContent>
             </Select>
           </div>

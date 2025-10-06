@@ -42,19 +42,11 @@ lastMonth.setDate(today.getDate() - 30);
 
 const UnansweredAnalytics = () => {
   const { extensions } = useVocab();
-  const { setPageTitle } = useAppStore();
   const locale = useLocale();
 
   const t = useTranslations("analytics.unanswered");
   const tCommon = useTranslations("analytics.common");
   const tShared = useTranslations("common");
-
-  useEffect(() => {
-    setPageTitle(t("title"));
-
-    // Cleanup when component unmounts
-    return () => setPageTitle(null);
-  }, [locale]);
 
   const unansweredFilterConfig = {
     defaultValues: {

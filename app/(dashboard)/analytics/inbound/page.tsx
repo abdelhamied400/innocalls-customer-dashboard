@@ -48,7 +48,6 @@ export type InboundAnalyticsFilters = {
 
 const InboundAnalytics = () => {
   const { extensions, ergs } = useVocab();
-  const { setPageTitle } = useAppStore();
   const { data: auth } = useAuth();
 
   const [currentTab, setCurrentTab] = useState<string>("overview");
@@ -56,13 +55,6 @@ const InboundAnalytics = () => {
   const t = useTranslations("analytics.inbound");
   const tCommon = useTranslations("analytics.common");
   const locale = useLocale();
-
-  useEffect(() => {
-    setPageTitle(t("title"));
-
-    // Cleanup when component unmounts
-    return () => setPageTitle(null);
-  }, [locale]);
 
   const filterByOptions = [
     { value: "all", label: t("filters.filterBy.options.all") },

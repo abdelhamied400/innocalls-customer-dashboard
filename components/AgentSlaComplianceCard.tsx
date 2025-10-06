@@ -30,7 +30,7 @@ const AgentSlaComplianceCard = ({ agent }: AgentSlaComplianceCardProps) => {
     if (slaCompliance >= 75) return "#02D995"; // Green
     if (slaCompliance >= 50) return "#F6A731"; // Yellow
     if (slaCompliance >= 25) return "#F4592F"; // Red
-    return "#F4592F"; // Red
+    return "#E52031"; // Red
   };
 
   const getSlaStatus = (slaCompliance: number) => {
@@ -64,7 +64,7 @@ const AgentSlaComplianceCard = ({ agent }: AgentSlaComplianceCardProps) => {
         <div className={cn("profile flex items-center gap-2 flex-1")}>
           <Avatar name={agent.name} />
           <div className="info flex flex-col">
-            <span className="name font-medium text-gray-900">{agent.name}</span>
+            <span className="name font-bold text-gray-900">{agent.name}</span>
             <span className="ext text-sm text-gray-500">{agent.ext}</span>
           </div>
         </div>

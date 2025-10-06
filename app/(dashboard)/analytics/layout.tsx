@@ -1,7 +1,8 @@
 "use client";
 import LinkTabs, { LinkTab } from "@/components/LinkTabs";
 import hasTenant from "@/containers/hasTenant";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import useAppStore from "@/store/app.slice";
 import {
   ArrowDownward,
   ArrowUpward,
@@ -9,9 +10,19 @@ import {
   History,
   SupervisedUserCircle,
 } from "@mui/icons-material";
+import { useEffect } from "react";
 
 const AnalyticsLayout = ({ children }: { children: React.ReactNode }) => {
   const t = useTranslations("analytics");
+  const { setPageTitle } = useAppStore();
+  const locale = useLocale();
+
+  useEffect(() => {
+    setPageTitle(t("title"));
+
+    // Cleanup when component unmounts
+    return () => setPageTitle(null);
+  }, [locale]);
 
   return (
     <div className="h-full w-full">

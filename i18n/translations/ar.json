@@ -1303,6 +1303,7 @@
     }
   },
   "analytics": {
+    "title": "إحصائيات المكالمات",
     "layout": {
       "tabs": {
         "inbound": "الواردة",
@@ -1382,7 +1383,8 @@
         "topAnsweredIncoming": "الأكثر ردًا على المكالمات الواردة",
         "topConnectedOutbound": "الأكثر اتصالًا بالمكالمات الصادرة",
         "bestSlaAgent": "الأسرع ردًا على المكالمات",
-        "noDataAvailable": "لا توجد بيانات متاحة"
+        "noDataAvailable": "لا توجد بيانات متاحة",
+        "users": "{num} مستخدمين"
       },
       "tabs": {
         "callDistribution": "توزيع المكالمات",

@@ -1290,6 +1290,7 @@
     }
   },
   "analytics": {
+    "title": "Analytics",
     "layout": {
       "tabs": {
         "inbound": "Incoming",
@@ -1371,7 +1372,8 @@
         "topAnsweredIncoming": "Top Answered Incoming",
         "topConnectedOutbound": "Top Connected Outgoing",
         "bestSlaAgent": "Best SLA Agent",
-        "noDataAvailable": "No data available"
+        "noDataAvailable": "No data available",
+        "users": "{num} Users"
       },
       "tabs": {
         "callDistribution": "Call Distribution",

@@ -48,7 +48,7 @@ const CallDistributionAnalytics = ({
   const [callDistributionFilters, setCallDistributionFilters] =
     useState<CallDistributionFilters>({
       search: "",
-      sortBy: "highestAnsweredCalls",
+      sortBy: "totalCallsHighest",
     });
 
   const { data, isLoading } = useLocalizedQuery({
@@ -68,16 +68,65 @@ const CallDistributionAnalytics = ({
     let filtered = data.filter((agent) => {
       if (!callDistributionFilters.search) return true;
       const searchTerm = callDistributionFilters.search.toLowerCase();
-      return agent.name.toLowerCase().includes(searchTerm);
+      const agentSearchText = `${agent.name} ${agent.ext}`.toLowerCase();
+      return agentSearchText.includes(searchTerm);
     });
 
     // Then sort by selected criteria
     filtered.sort((a, b) => {
       switch (callDistributionFilters.sortBy) {
-        case "highestAnsweredCalls":
-          return b.totalConnected - a.totalConnected; // Descending (highest first)
-        case "lowestAnsweredCalls":
-          return a.totalConnected - b.totalConnected; // Ascending (lowest first)
+        case "totalCallsHighest":
+          return b.totalCalls - a.totalCalls;
+        case "totalCallsLowest":
+          return a.totalCalls - b.totalCalls;
+        case "answerRateHighest":
+          return b.answerRate - a.answerRate;
+        case "answerRateLowest":
+          return a.answerRate - b.answerRate;
+        case "connectedCallsHighest":
+          return b.totalConnected - a.totalConnected;
+        case "connectedCallsLowest":
+          return a.totalConnected - b.totalConnected;
+        case "connectedOutgoingExternalHighest":
+          return (
+            b.totalAnsweredOutgoingExternalCalls -
+            a.totalAnsweredOutgoingExternalCalls
+          );
+        case "connectedOutgoingExternalLowest":
+          return (
+            a.totalAnsweredOutgoingExternalCalls -
+            b.totalAnsweredOutgoingExternalCalls
+          );
+        case "connectedIncomingExternalHighest":
+          return (
+            b.totalAnsweredIncomingExternalCalls -
+            a.totalAnsweredIncomingExternalCalls
+          );
+        case "connectedIncomingExternalLowest":
+          return (
+            a.totalAnsweredIncomingExternalCalls -
+            b.totalAnsweredIncomingExternalCalls
+          );
+        case "connectedOutgoingInternalHighest":
+          return (
+            b.totalAnsweredOutgoingInternalCalls -
+            a.totalAnsweredOutgoingInternalCalls
+          );
+        case "connectedOutgoingInternalLowest":
+          return (
+            a.totalAnsweredOutgoingInternalCalls -
+            b.totalAnsweredOutgoingInternalCalls
+          );
+        case "connectedIncomingInternalHighest":
+          return (
+            b.totalAnsweredIncomingInternalCalls -
+            a.totalAnsweredIncomingInternalCalls
+          );
+        case "connectedIncomingInternalLowest":
+          return (
+            a.totalAnsweredIncomingInternalCalls -
+            b.totalAnsweredIncomingInternalCalls
+          );
         default:
           return 0;
       }
@@ -117,7 +166,7 @@ const CallDistributionAnalytics = ({
           </Label>
         </div>
         <div className="flex flex-wrap items-center gap-2">
-          {/* Select SortBy */}
+          {/* Single Sort Select */}
           <Select
             value={callDistributionFilters.sortBy}
             onValueChange={(value) =>
@@ -129,18 +178,94 @@ const CallDistributionAnalytics = ({
           >
             <SelectTrigger className="w-auto">
               <span className="capitalize">
-                {t(`filters.sortBy.${callDistributionFilters.sortBy}`)}
+                {callDistributionFilters.sortBy === "totalCallsHighest" &&
+                  "Total Calls (Highest to Lowest)"}
+                {callDistributionFilters.sortBy === "totalCallsLowest" &&
+                  "Total Calls (Lowest to Highest)"}
+                {callDistributionFilters.sortBy === "answerRateHighest" &&
+                  "Answer Rate (Highest to Lowest)"}
+                {callDistributionFilters.sortBy === "answerRateLowest" &&
+                  "Answer Rate (Lowest to Highest)"}
+                {callDistributionFilters.sortBy === "connectedCallsHighest" &&
+                  "Connected Calls (Highest to Lowest)"}
+                {callDistributionFilters.sortBy === "connectedCallsLowest" &&
+                  "Connected Calls (Lowest to Highest)"}
+                {callDistributionFilters.sortBy ===
+                  "connectedOutgoingExternalHighest" &&
+                  "Connected Outgoing External (Highest to Lowest)"}
+                {callDistributionFilters.sortBy ===
+                  "connectedOutgoingExternalLowest" &&
+                  "Connected Outgoing External (Lowest to Highest)"}
+                {callDistributionFilters.sortBy ===
+                  "connectedIncomingExternalHighest" &&
+                  "Connected Incoming External (Highest to Lowest)"}
+                {callDistributionFilters.sortBy ===
+                  "connectedIncomingExternalLowest" &&
+                  "Connected Incoming External (Lowest to Highest)"}
+                {callDistributionFilters.sortBy ===
+                  "connectedOutgoingInternalHighest" &&
+                  "Connected Outgoing Internal (Highest to Lowest)"}
+                {callDistributionFilters.sortBy ===
+                  "connectedOutgoingInternalLowest" &&
+                  "Connected Outgoing Internal (Lowest to Highest)"}
+                {callDistributionFilters.sortBy ===
+                  "connectedIncomingInternalHighest" &&
+                  "Connected Incoming Internal (Highest to Lowest)"}
+                {callDistributionFilters.sortBy ===
+                  "connectedIncomingInternalLowest" &&
+                  "Connected Incoming Internal (Lowest to Highest)"}
               </span>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="highestAnsweredCalls">
-                {t(`filters.sortBy.${"highestAnsweredCalls"}`)}
+              <SelectItem value="totalCallsHighest">
+                Total Calls (Highest to Lowest)
               </SelectItem>
-              <SelectItem value="lowestAnsweredCalls">
-                {t(`filters.sortBy.${"lowestAnsweredCalls"}`)}
+              <SelectItem value="totalCallsLowest">
+                Total Calls (Lowest to Highest)
               </SelectItem>
+              <SelectItem value="answerRateHighest">
+                Answer Rate (Highest to Lowest)
+              </SelectItem>
+              <SelectItem value="answerRateLowest">
+                Answer Rate (Lowest to Highest)
+              </SelectItem>
+              <SelectItem value="connectedCallsHighest">
+                Connected Calls (Highest to Lowest)
+              </SelectItem>
+              <SelectItem value="connectedCallsLowest">
+                Connected Calls (Lowest to Highest)
+              </SelectItem>
+              <SelectItem value="connectedOutgoingExternalHighest">
+                Connected Outgoing External (Highest to Lowest)
+              </SelectItem>
+              <SelectItem value="connectedOutgoingExternalLowest">
+                Connected Outgoing External (Lowest to Highest)
+              </SelectItem>
+              <SelectItem value="connectedIncomingExternalHighest">
+                Connected Incoming External (Highest to Lowest)
+              </SelectItem>
+              <SelectItem value="connectedIncomingExternalLowest">
+                Connected Incoming External (Lowest to Highest)
+              </SelectItem>
+              {includeInternalCalls && (
+                <>
+                  <SelectItem value="connectedOutgoingInternalHighest">
+                    Connected Outgoing Internal (Highest to Lowest)
+                  </SelectItem>
+                  <SelectItem value="connectedOutgoingInternalLowest">
+                    Connected Outgoing Internal (Lowest to Highest)
+                  </SelectItem>
+                  <SelectItem value="connectedIncomingInternalHighest">
+                    Connected Incoming Internal (Highest to Lowest)
+                  </SelectItem>
+                  <SelectItem value="connectedIncomingInternalLowest">
+                    Connected Incoming Internal (Lowest to Highest)
+                  </SelectItem>
+                </>
+              )}
             </SelectContent>
           </Select>
+
           {/* search */}
           <Field preIcon={<Search />}>
             <Input
@@ -193,6 +318,7 @@ const CallDistributionAnalytics = ({
                 <SelectItem value="10">10</SelectItem>
                 <SelectItem value="20">20</SelectItem>
                 <SelectItem value="50">50</SelectItem>
+                <SelectItem value="100">100</SelectItem>
               </SelectContent>
             </Select>
           </div>

@@ -117,7 +117,7 @@ const AgentCallDistributionCard = ({
           <Avatar name={agent.name} />
 
           <div className="info flex flex-col">
-            <span className="name font-medium text-gray-900">{agent.name}</span>
+            <span className="name font-bold text-gray-900">{agent.name}</span>
             <span className="ext text-sm text-gray-500">{agent.ext}</span>
           </div>
         </div>
