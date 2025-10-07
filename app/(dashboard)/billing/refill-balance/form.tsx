@@ -30,7 +30,7 @@ import { useTranslations } from "@/providers/TranslationProvider";
 
 const RefillBalanceForm = () => {
   const { toast } = useToast();
-  const [clientSecret, setClientSecret] = useState<string>();
+  const [iframeUrl, setIframeUrl] = useState<string>();
   const [currentStep, setCurrentStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
 
@@ -49,9 +49,9 @@ const RefillBalanceForm = () => {
       setSubmitting(true);
       form.reset(form.getValues());
 
-      const res = await billingService.createStripeIntent(Number(data.amount));
-      const clientSecret = res.paymentIntent.clientSecret;
-      setClientSecret(clientSecret);
+      const res = await billingService.getPayTabsIframeUrl(Number(data.amount));
+      console.log(res);
+      setIframeUrl(res.url);
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
@@ -131,7 +131,7 @@ const RefillBalanceForm = () => {
                               return;
                             }
                             field.onChange(Number(value));
-                            setClientSecret(undefined); // Reset client secret when amount changes
+                            setIframeUrl(undefined); // Reset iframe URL when amount changes
                           }}
                         />
                       </Field>
@@ -140,23 +140,17 @@ const RefillBalanceForm = () => {
                 )}
               />
 
-              {!form.formState.isDirty && clientSecret && (
-                <StripeProvider clientSecret={clientSecret}>
-                  <CheckoutForm
-                    clientSecret={clientSecret}
-                    onSuccess={() => {
-                      closeSheetRef.current?.click();
-                      setTimeout(() => {
-                        queryClient.invalidateQueries({
-                          queryKey: ["payment-history"],
-                        });
-                      }, 3000);
-                    }}
-                  />
-                </StripeProvider>
+              {iframeUrl && (
+                <div className="w-full h-[600px]">
+                  <iframe
+                    src={iframeUrl}
+                    title="Payment"
+                    className="w-full h-full border rounded"
+                  ></iframe>
+                </div>
               )}
 
-              {!clientSecret && (
+              {!iframeUrl && (
                 <Button type="submit" disabled={submitting}>
                   {t("actions.refillBalance")}
                 </Button>
