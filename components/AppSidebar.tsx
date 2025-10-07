@@ -84,6 +84,16 @@ const AppSidebar = () => {
           />
         )}
 
+        {session?.userType === "agent" && (
+          <SidebarItem
+            icon={<PersonSearch />}
+            title={t("navigation.activityAnalysis")}
+            href={`/analytics/activity-reports`}
+            isNew={true}
+            isComingSoon={false}
+          />
+        )}
+
         {session?.userType === "agent" && Organization?.hasTenant && (
           <SidebarItem
             icon={<Timeline />}

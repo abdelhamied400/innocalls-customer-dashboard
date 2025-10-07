@@ -75,7 +75,7 @@ const UserActivityAnalytics = () => {
               triggerLabel={
                 <p className="font-normal">
                   {tCommon("from")}{" "}
-                  <b>{formatDate(values.fromDate, { locale: locale })}</b>
+                  <b>{formatDate(values.fromDate, { locale: locale })}</b>{" "}
                   {tCommon("to")}{" "}
                   <b>{formatDate(values.toDate, { locale: locale })}</b>
                 </p>

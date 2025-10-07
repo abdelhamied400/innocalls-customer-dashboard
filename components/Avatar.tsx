@@ -14,7 +14,7 @@ const Avatar = ({ name, className, ...props }: AvatarProps) => {
   return (
     <div
       className={cn(
-        "avatar bg-[#F5EDE3] rounded-full w-8 h-8 flex items-center justify-center text-gray-600 font-medium",
+        "avatar bg-[#F5EDE3] rounded-full w-8 h-8 flex items-center justify-center text-black font-medium",
         className
       )}
       {...props}

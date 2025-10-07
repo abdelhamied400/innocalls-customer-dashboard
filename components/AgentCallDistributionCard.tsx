@@ -185,7 +185,7 @@ const AgentCallDistributionCard = ({
                             dy={screenWidth <= 640 ? "0em" : "1.5em"}
                             className="fill-gray-900 text-sm lg:text-2xl font-bold"
                           >
-                            {agent.answerRate}%
+                            {agent.answerRate} %
                           </tspan>
                         </text>
                       );

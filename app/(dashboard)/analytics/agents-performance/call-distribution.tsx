@@ -155,7 +155,7 @@ const CallDistributionAnalytics = ({
 
   return (
     <div className="call-distribution-analytics">
-      <div className="flex justify-between items-center flex-wrap border-b p-3">
+      <div className="flex justify-between items-center gap-2 flex-wrap border-b p-3">
         <div className="flex items-center gap-2">
           <Switch
             id="includeInternalCalls"
