@@ -310,7 +310,11 @@ const CallDistributionAnalytics = ({
               <AgentCallDistributionCardSkeleton key={index} />
             ))
           : currentPageData?.map((agent) => (
-              <AgentCallDistributionCard key={agent.ext} agent={agent} />
+              <AgentCallDistributionCard
+                key={agent.ext}
+                agent={agent}
+                includeInternalCalls={includeInternalCalls}
+              />
             ))}
       </div>
 

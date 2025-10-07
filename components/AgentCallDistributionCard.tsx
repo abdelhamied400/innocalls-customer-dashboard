@@ -33,9 +33,11 @@ type AgentCallDistributionCardProps = {
     unAnsweredOutgoingExternal: number;
     unAnsweredOutgoingInternal: number;
   };
+  includeInternalCalls?: boolean;
 };
 const AgentCallDistributionCard = ({
   agent,
+  includeInternalCalls = false,
 }: AgentCallDistributionCardProps) => {
   const { layoutVariant, screenWidth } = useLayoutManager();
   const t = useTranslations("analytics.userActivity.callDistribution");
@@ -70,6 +72,7 @@ const AgentCallDistributionCard = ({
       },
       color: "#2021AD",
       value: agent.totalAnsweredOutgoingInternalCalls,
+      hideDetails: !includeInternalCalls,
     },
     {
       name: t("agentCard.chart.labels.incomingInternal"),
@@ -80,6 +83,7 @@ const AgentCallDistributionCard = ({
       },
       color: "#F6A731",
       value: agent.totalAnsweredIncomingInternalCalls,
+      hideDetails: !includeInternalCalls,
     },
     {
       name: t("agentCard.chart.labels.unanswered"),

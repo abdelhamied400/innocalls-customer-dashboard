@@ -74,11 +74,21 @@ const AppSidebar = () => {
           />
         )}
 
-        {Organization?.hasTenant && (
+        {session?.userType === "user" && Organization?.hasTenant && (
           <SidebarItem
             icon={<Timeline />}
             title={t("navigation.analytics")}
             href={`/analytics/inbound`}
+            isNew={true}
+            isComingSoon={false}
+          />
+        )}
+
+        {session?.userType === "agent" && Organization?.hasTenant && (
+          <SidebarItem
+            icon={<Timeline />}
+            title={t("navigation.callHistory")}
+            href={`/call-reporting`}
             isNew={true}
             isComingSoon={false}
           />
