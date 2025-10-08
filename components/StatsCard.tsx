@@ -81,11 +81,11 @@ const StatsCard = ({
       )}
     >
       <div className="flex justify-between items-center gap-1">
-        <div className="flex items-center gap-2">
-          <div className={cn(statsCardIconVariants({ color }))}>
+        <div className="flex flex-col items-start gap-2">
+          <div className={cn(statsCardIconVariants({ variant, color }))}>
             {isRefetching ? <Spinner className="size-6" /> : icon}
           </div>
-          <h3 className="text-lg text-gray-500">{title}</h3>
+          <h3 className="text-base font-light text-gray-500">{title}</h3>
         </div>
         {canRefetch && (
           <DropdownMenu>
@@ -126,9 +126,9 @@ const StatsCard = ({
         )}
       </div>
       <div className="flex flex-col gap-2">
-        <p className={cn(statsCardValueVariants({ color }))}>
+        <div className={cn(statsCardValueVariants({ color }))}>
           {renderValue || value}
-        </p>
+        </div>
         <div className={cn(statsCardInfoVariants({ color }))}>{info}</div>
       </div>
     </div>

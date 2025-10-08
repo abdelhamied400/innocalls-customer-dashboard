@@ -1,8 +1,8 @@
 import React from "react";
 import {
   ResponsiveContainer,
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   Tooltip,
@@ -13,13 +13,15 @@ import unansweredAnalyticsService from "@/services/unanswered-analytics.service"
 import ChartCard, {
   ChartCardError,
   ChartCardSkeleton,
-} from "@/components/ChartCard";
+} from "@/components/ChartCardNew";
 import { GroupOutlined } from "@mui/icons-material";
 import NoData from "@/components/Analytics/NoData";
 import { UnansweredAnalyticsFilters } from "./page";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import RechartTooltip from "@/components/RechartTooltip";
 import { defaultLocale, locales } from "@/i18n/config";
+import { formatDate } from "@/lib/date";
+import ChartCustomTooltip from "@/components/ChartCustomTooltip";
 
 type OutboundUnansweredHourlyProps = {
   filters: UnansweredAnalyticsFilters;
@@ -29,6 +31,7 @@ const OutboundUnansweredHourly = ({
   filters,
 }: OutboundUnansweredHourlyProps) => {
   const t = useTranslations("analytics.unanswered");
+  const tCommon = useTranslations("analytics.common");
 
   const localeSlug = useLocale() || defaultLocale;
   const locale = locales[localeSlug];
@@ -50,9 +53,20 @@ const OutboundUnansweredHourly = ({
   return (
     <ChartCard
       title={t("charts.outboundHourlyUnanswered")}
-      icon={<GroupOutlined />}
-      variant="compound"
-      color="success"
+      legends={[
+        ...(filters.includeInternalCalls
+          ? [
+              {
+                label: t("common.hourDistribution.internalUnanswered"),
+                color: "#02D995",
+              },
+            ]
+          : []),
+        {
+          label: t("common.hourDistribution.externalUnanswered"),
+          color: "#F4592F",
+        },
+      ]}
     >
       {!isLoading && data && data.length > 0 && (
         <ResponsiveContainer
@@ -60,27 +74,51 @@ const OutboundUnansweredHourly = ({
           width="100%"
           height={320}
         >
-          <BarChart data={data}>
+          <LineChart data={data}>
             <XAxis dataKey="hourOfDay" tickFormatter={(h) => `${h}:00`} />
             <YAxis />
-            <Tooltip contentStyle={{ direction: locale.dir }} />
+            <Tooltip
+              contentStyle={{ direction: locale.dir }}
+              labelFormatter={(label) => `${label}:00`}
+              includeHidden
+              content={(props) => (
+                <ChartCustomTooltip
+                  {...props}
+                  headerDataKeys={["unansweredCalls"]}
+                />
+              )}
+            />
+
+            <Line
+              type="linear"
+              dataKey="unansweredCalls"
+              stroke="#02D995"
+              strokeWidth={2}
+              name={t("inbound.callDistribution.lineLabels.unansweredTotal")}
+              dot={false}
+              hide
+            />
 
             {filters.includeInternalCalls && (
-              <Bar
+              <Line
+                type="linear"
                 dataKey="internalUnansweredCalls"
-                stackId="a"
-                fill={"#3b82f6"}
+                stroke="#02D995"
+                strokeWidth={2}
                 name={t("common.hourDistribution.internalUnanswered")}
+                dot={false}
               />
             )}
 
-            <Bar
+            <Line
+              type="linear"
               dataKey="externalUnansweredCalls"
-              stackId="a"
-              fill={"#9CA3AF"}
+              stroke="#F4592F"
+              strokeWidth={2}
               name={t("common.hourDistribution.externalUnanswered")}
+              dot={false}
             />
-          </BarChart>
+          </LineChart>
         </ResponsiveContainer>
       )}
       {!isLoading && (!data || data.length === 0) && <NoData />}

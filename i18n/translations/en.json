@@ -459,8 +459,8 @@
           "label": "Select Agents"
         },
         "includeInternalCalls": {
-          "triggerLabel": "Include Internal Calls",
-          "label": "Include Internal Calls"
+          "triggerLabel": "Show Internal Calls",
+          "label": "Show Internal Calls"
         }
       },
       "tooltips": {
@@ -1290,12 +1290,14 @@
     }
   },
   "analytics": {
+    "title": "Analytics",
     "layout": {
       "tabs": {
         "inbound": "Incoming",
         "outbound": "Outgoing",
         "unanswered": "Unanswered",
-        "userActivity": "Agents Performance"
+        "userActivity": "Agents Performance",
+        "callReporting": "Call History"
       }
     },
     "unanswered": {
@@ -1303,29 +1305,29 @@
       "subtitle": "View detailed analytics for unanswered calls",
       "dateRangeSearch": "Date Range Search",
       "quickStats": {
-        "totalUnansweredCalls": "Total Unanswered Calls",
-        "externalUnansweredIncoming": "External Unanswered Incoming",
-        "externalUnansweredOutgoing": "External Unanswered Outgoing",
-        "internalUnansweredCalls": "Internal Unanswered Calls"
+        "totalUnansweredCalls": "Total unanswered calls",
+        "externalUnansweredIncoming": "External unanswered incoming",
+        "externalUnansweredOutgoing": "External unanswered outgoing",
+        "internalUnansweredCalls": "Internal unanswered calls"
       },
       "tabs": {
-        "inbound": "Incoming Unanswered",
-        "outbound": "Outgoing Unanswered"
+        "inbound": "Incoming unanswered",
+        "outbound": "Outgoing unanswered"
       },
       "inbound": {
         "callDistribution": {
           "lineLabels": {
             "totalCalls": "Total Calls",
-            "missedTotal": "Missed (Total)",
-            "inboundInternal": "Incoming (Int.)",
-            "inboundExternal": "Incoming (Ext.)",
-            "missedInternal": "Missed (Int.)",
-            "missedExternal": "Missed (Ext.)",
-            "outboundInternal": "Outgoing (Int.)",
-            "outboundExternal": "Outgoing (Ext.)",
-            "unansweredTotal": "Unanswered (Total)",
-            "unansweredInternal": "Unans. (Int.)",
-            "unansweredExternal": "Unans. (Ext.)",
+            "missedTotal": "Total Missed",
+            "inboundInternal": "Incoming Internal",
+            "inboundExternal": "Incoming External",
+            "missedInternal": "Missed Internal",
+            "missedExternal": "Missed External",
+            "outboundInternal": "Outgoing Internal",
+            "outboundExternal": "Outgoing External",
+            "unansweredTotal": "Total Unanswered",
+            "unansweredInternal": "Unanswered Internal",
+            "unansweredExternal": "Unanswered External",
             "internalUnanswered": "Internal Unanswered",
             "externalUnanswered": "External Unanswered"
           }
@@ -1335,11 +1337,11 @@
         "callDistribution": {
           "lineLabels": {
             "totalCalls": "Total Calls",
-            "unansweredTotal": "Unanswered (Total)",
-            "outboundInternal": "Outgoing (Int.)",
-            "outboundExternal": "Outgoing (Ext.)",
-            "unansweredInternal": "Unans. (Int.)",
-            "unansweredExternal": "Unans. (Ext.)"
+            "unansweredTotal": "Total Unanswered",
+            "outboundInternal": "Outgoing Internal",
+            "outboundExternal": "Outgoing External",
+            "unansweredInternal": "Unanswered Internal",
+            "unansweredExternal": "Unanswered External"
           }
         }
       },
@@ -1358,7 +1360,7 @@
       },
       "filters": {
         "includeInternalCalls": {
-          "label": "Include Internal Calls"
+          "label": "Show Internal Calls"
         }
       }
     },
@@ -1367,10 +1369,12 @@
       "subtitle": "View detailed analytics for agent performance",
       "dateRangeSearch": "Date Range Search",
       "quickStats": {
+        "title": "Users Details",
         "topAnsweredIncoming": "Top Answered Incoming",
         "topConnectedOutbound": "Top Connected Outgoing",
         "bestSlaAgent": "Best SLA Agent",
-        "noDataAvailable": "No data available"
+        "noDataAvailable": "No data available",
+        "users": "{num} Users"
       },
       "tabs": {
         "callDistribution": "Call Distribution",
@@ -1379,34 +1383,46 @@
       },
       "callDistribution": {
         "title": "Call Distribution",
-        "table": {
-          "columns": {
-            "name": "Name",
-            "ext": "Ext",
-            "totalCalls": "Total Calls",
-            "incomingInternal": "Incoming Internal",
-            "incomingExternal": "Incoming External",
-            "outgoingInternal": "Outgoing Internal",
-            "outgoingExternal": "Outgoing External",
-            "answeredInternalIncoming": "Answered Internal Incoming",
-            "answeredExternalIncoming": "Answered External Incoming",
-            "connectedInternalOutgoing": "Connected Internal Outgoing",
-            "connectedExternalOutgoing": "Connected External Outgoing"
+        "agentCard": {
+          "totalCalls": "Total Calls",
+          "connectedCalls": "Connected Calls",
+          "unconnectedCalls": "Unconnected Calls",
+          "outgoingExternal": "Outgoing External",
+          "incomingExternal": "Incoming External",
+          "outgoingInternal": "Outgoing Internal",
+          "incomingInternal": "Incoming Internal",
+          "outOf": "Out of",
+          "chart": {
+            "answerRate": "Answer Rate",
+            "labels": {
+              "outgoingExternal": "Outgoing External",
+              "incomingExternal": "Incoming External",
+              "outgoingInternal": "Outgoing Internal",
+              "incomingInternal": "Incoming Internal",
+              "unanswered": "Unanswered"
+            }
           }
         },
-        "chart": {
-          "title": "Call Distribution",
-          "legends": {
-            "incomingInternal": "Incoming Internal",
-            "incomingExternal": "Incoming External",
-            "outgoingInternal": "Outgoing Internal",
-            "outgoingExternal": "Outgoing External"
-          },
-          "yAxisLabel": "Number of Calls",
-          "tooltipAgent": "Agent"
-        },
         "actions": {
-          "includeInternalCalls": "Include Internal Calls"
+          "includeInternalCalls": "Show Internal Calls",
+          "search": "Search...",
+          "sortBy": "Sort By",
+          "sorts": {
+            "totalCallsHighest": "highest total calls",
+            "totalCallsLowest": "lowest total calls",
+            "answerRateHighest": "highest answer rate",
+            "answerRateLowest": "lowest answer rate",
+            "connectedCallsHighest": "highest connected calls",
+            "connectedCallsLowest": "lowest connected calls",
+            "connectedOutgoingExternalHighest": "highest connected outgoing external calls",
+            "connectedOutgoingExternalLowest": "lowest connected outgoing external calls",
+            "connectedIncomingExternalHighest": "highest connected incoming external calls",
+            "connectedIncomingExternalLowest": "lowest connected incoming external calls",
+            "connectedOutgoingInternalHighest": "highest connected outgoing internal calls",
+            "connectedOutgoingInternalLowest": "lowest connected outgoing internal calls",
+            "connectedIncomingInternalHighest": "highest connected incoming internal calls",
+            "connectedIncomingInternalLowest": "lowest connected incoming internal calls"
+          }
         }
       },
       "callStats": {
@@ -1438,28 +1454,30 @@
         }
       },
       "slaCompliance": {
-        "title": "SLA Compliance Overview",
-        "table": {
-          "columns": {
-            "ext": "Ext",
-            "name": "Name",
-            "totalIncomingCalls": "Incoming Calls",
-            "answeredCalls": "Answered Calls",
-            "avgResponseTime": "Avg Answer Time",
-            "callsAnsweredWithinSLA": "Calls Answered Within SLA",
-            "slaCompliance": "SLA Compliance (%)"
-          }
-        },
-        "chart": {
-          "legends": {
-            "excellent": "Excellent (90%+)",
-            "good": "Good (70%-89%)",
-            "average": "Average (50%-69%)",
-            "poor": "Poor (30%-49%)",
-            "veryPoor": "Very Poor (<30%)"
+        "agentCard": {
+          "slaStatus": {
+            "excellent": "Excellent",
+            "good": "Good",
+            "poor": "Poor",
+            "veryPoor": "Very Poor"
           },
-          "tooltipLabels": {
-            "slaCompliance": "SLA Compliance (%)"
+          "incomingCalls": "Incoming Calls",
+          "calls": "Calls",
+          "connectedCalls": "Connected Calls",
+          "avgAnswerTime": "Avg Answer Time",
+          "slaCompliance": "SLA Compliance",
+          "callsAnsweredWithinSla": "Calls Answered Within SLA"
+        },
+        "actions": {
+          "search": "Search...",
+          "sortBy": "Sort By",
+          "sorts": {
+            "slaHighestToLowest": "highest SLA",
+            "slaLowestToHighest": "lowest SLA",
+            "connectedCallsHighestToLowest": "highest connected calls",
+            "connectedCallsLowestToHighest": "lowest connected calls",
+            "incomingCallsHighestToLowest": "highest incoming calls",
+            "incomingCallsLowestToHighest": "lowest incoming calls"
           }
         }
       },
@@ -1596,7 +1614,7 @@
       },
       "filters": {
         "includeInternalCalls": {
-          "label": "Include Internal Calls"
+          "label": "Show Internal Calls"
         }
       }
     },
@@ -1628,7 +1646,7 @@
           "placeholder": "Select team"
         },
         "includeInternalCalls": {
-          "label": "Include Internal Calls"
+          "label": "Show Internal Calls"
         },
         "validation": {
           "team": {
@@ -1917,11 +1935,12 @@
             "placeholder": "Enter to date"
           },
           "date": {
-            "label": "Date Range Search"
+            "label": "Select a date range"
           },
           "agents": {
-            "label": "Select Agents",
-            "placeholder": "Select agents"
+            "label": "Agents",
+            "placeholder": "Select agents",
+            "noOptions": "No agents match your search"
           }
         },
         "validation": {
@@ -1949,7 +1968,9 @@
       "actions": {
         "resetFilter": "Reset Filters",
         "applyFilters": "Apply Filters"
-      }
+      },
+      "from": "From",
+      "to": "To"
     }
   },
   "liveMonitor": {

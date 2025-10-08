@@ -62,13 +62,15 @@ const AutoDialerArchivedHead = ({
       },
       -1
     );
-    if (!isValid) return;
+    if (!isValid) return false;
 
     setFilters((prev) => ({
       ...prev,
       fromDate: fromDate ? format(fromDate, "yyyy-MM-dd") : undefined,
       toDate: toDate ? format(toDate, "yyyy-MM-dd") : undefined,
     }));
+
+    return true;
   };
 
   // Reset pagination when filters change
@@ -165,6 +167,7 @@ const AutoDialerArchivedHead = ({
                   ...prev,
                   durationType,
                 }));
+                return true;
               }}
               numberOfFilters={durationType ? 1 : 0}
             >
@@ -204,6 +207,7 @@ const AutoDialerArchivedHead = ({
                     .filter(([_, value]) => value)
                     .map(([key, _]) => key),
                 }));
+                return true;
               }}
               numberOfFilters={Object.keys(status).length}
             >

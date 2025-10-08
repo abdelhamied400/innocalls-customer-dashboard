@@ -1,5 +1,7 @@
-import { differenceInDays, isAfter } from "date-fns";
+import { differenceInDays, format, FormatOptions, isAfter } from "date-fns";
 import { useTranslations } from "@/providers/TranslationProvider";
+import { arEG, enUS } from "date-fns/locale";
+import { LocaleSlug } from "@/i18n/config";
 
 export const isValidDateRange = (
   fromDate?: Date,
@@ -86,4 +88,18 @@ export const formatDurationShort = (
   }
 
   return parts.join(" ");
+};
+
+// Jul 11, 2025
+export const formatDate = (
+  date: Date,
+  options?: Omit<FormatOptions, "locale"> & { locale: LocaleSlug }
+) => {
+  const formatString =
+    options?.locale === "ar" ? "MMMM d, yyyy" : "MMM d, yyyy";
+
+  return format(date, formatString, {
+    ...options,
+    locale: options?.locale === "ar" ? arEG : enUS,
+  });
 };

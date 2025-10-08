@@ -8,6 +8,7 @@ import {
   AccessTime,
   BarChart,
   CalendarMonth,
+  Clear,
   Insights,
   TrendingUpOutlined,
 } from "@mui/icons-material";
@@ -18,14 +19,16 @@ import CallDistributionAnalytics from "./call-distribution";
 import CallStats from "./call-stats";
 import SlaComplianceAnalytics from "./sla-compliance";
 import QuickStats from "./quick-stats";
-import Select from "@/components/select";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useFilterManager } from "@/hooks/useFilterManager";
 import { userActivityFiltersSchema } from "@/validation/userActivityFilters";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
-import { useVocab } from "@/hooks/useVocab";
+import { FilterBox } from "@/components/FilterBox";
+import { formatDate } from "@/lib/date";
+import AgentsPicker from "@/components/AgentsPicker";
+import { Slider } from "@/components/ui/slider";
 
 type Option = {
   value: string;
@@ -37,6 +40,7 @@ export type UserActivityFilters = {
   toDate: Date;
   agents: Option[];
   sla: number;
+  includeInternalCalls?: boolean;
 };
 
 const today = new Date();
@@ -44,19 +48,10 @@ const lastMonth = new Date();
 lastMonth.setDate(today.getDate() - 30);
 
 const UserActivityAnalytics = () => {
-  const { extensions } = useVocab();
-  const { setPageTitle } = useAppStore();
-
   const t = useTranslations("analytics.userActivity");
   const tCommon = useTranslations("analytics.common");
+  const tShared = useTranslations("common");
   const locale = useLocale();
-
-  useEffect(() => {
-    setPageTitle(t("title"));
-
-    // Cleanup when component unmounts
-    return () => setPageTitle(null);
-  }, [locale]);
 
   const userActivityFilterConfig = {
     defaultValues: {
@@ -68,20 +63,32 @@ const UserActivityAnalytics = () => {
     schema: userActivityFiltersSchema(t, tCommon),
   };
 
-  const { values, appliedValues, errors, setValue, reset, apply } =
+  const { values, appliedValues, errors, setValue, reset, apply, applyValues } =
     useFilterManager<UserActivityFilters>(userActivityFilterConfig);
 
   return (
     <div className="page" id="user-activity-analytics">
       <div className="flex flex-col gap-2">
-        <div className="filters">
-          <StatsDetailedCard
-            title={t("title")}
-            icon={<BarChart />}
-            value=""
-            color="primary"
-          >
-            <div className="py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="filters p-2 border rounded-xl flex items-center justify-between flex-wrap gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <FilterBox
+              triggerLabel={
+                <p className="font-normal">
+                  {tCommon("from")}{" "}
+                  <b>{formatDate(values.fromDate, { locale: locale })}</b>{" "}
+                  {tCommon("to")}{" "}
+                  <b>{formatDate(values.toDate, { locale: locale })}</b>
+                </p>
+              }
+              label={tCommon("form.fields.date.label")}
+              onApply={apply}
+              onReset={() => {
+                applyValues({
+                  fromDate: userActivityFilterConfig.defaultValues.fromDate,
+                  toDate: userActivityFilterConfig.defaultValues.toDate,
+                });
+              }}
+            >
               <Field
                 label={tCommon("form.fields.fromDate.label")}
                 postIcon={<CalendarMonth className="text-gray-400" />}
@@ -106,89 +113,80 @@ const UserActivityAnalytics = () => {
                   onChange={(date) => setValue("toDate", date || new Date())}
                 />
               </Field>
-              <Field
-                label={t("form.fields.sla.label")}
-                postIcon={<AccessTime className="text-gray-400" />}
-                error={errors.sla}
-              >
-                <Input
-                  type="number"
-                  variant="field"
-                  className=""
-                  placeholder={t("form.fields.sla.placeholder")}
-                  value={values.sla}
-                  onChange={(e) => setValue("sla", Number(e.target.value))}
-                />
-              </Field>
-              <div className="col-span-1 sm:col-span-2 lg:col-span-3">
-                <Select
-                  className="w-full"
-                  placeholder={tCommon("form.fields.agents.placeholder")}
-                  value={values.agents}
-                  onChange={(value) => setValue("agents", value || [])}
-                  options={extensions?.map((ext) => ({
-                    value: ext.ext,
-                    label: `${ext.name} (${ext.ext})`,
-                  }))}
-                  isMulti
-                  label={tCommon("form.fields.agents.label")}
-                  showSelectedTags={false}
-                  error={errors.agents}
-                  isClearable
-                />
+            </FilterBox>
+            <FilterBox
+              triggerLabel={t("form.fields.sla.label")}
+              label={t("form.fields.sla.label")}
+              onApply={apply}
+              onReset={() => {
+                applyValues({
+                  sla: userActivityFilterConfig.defaultValues.sla,
+                });
+              }}
+            >
+              <Slider
+                defaultValue={[10]}
+                max={200}
+                step={1}
+                value={[values.sla]}
+                onValueChange={(value) => setValue("sla", value[0])}
+              />
+              <div className="flex items-center justify-between gap-1 text-sm">
+                <p>{values.sla}</p>
+                <p>200</p>
               </div>
-            </div>
-            <div className="flex flex-wrap justify-end gap-2">
-              <Button variant="outline" onClick={reset}>
-                {tCommon("actions.resetFilter")}
-              </Button>
-              <Button onClick={apply}>{tCommon("actions.applyFilters")}</Button>
-            </div>
-          </StatsDetailedCard>
+              {errors.sla && (
+                <p className="text-sm text-destructive-500">{errors.sla}</p>
+              )}
+            </FilterBox>
+
+            <FilterBox
+              triggerLabel={tCommon("form.fields.agents.label")}
+              label={tCommon("form.fields.agents.label")}
+              onApply={apply}
+              onReset={() => {
+                applyValues({
+                  agents: userActivityFilterConfig.defaultValues.agents,
+                });
+              }}
+            >
+              <AgentsPicker
+                selectedAgents={values.agents}
+                onAgentsChange={(agents) => setValue("agents", agents)}
+              />
+            </FilterBox>
+          </div>
+          <Button onClick={reset} variant="ghost">
+            <Clear />
+            {tShared("actions.reset")}
+          </Button>
         </div>
         <QuickStats filters={appliedValues} />
-        <StatsDetailedCard
-          title={t("title")}
-          subtitle={t("subtitle")}
-          icon={<Insights />}
-          value=""
-          color="primary"
-        >
+
+        <div className="border rounded-xl">
           <Tabs defaultValue="call-distribution" className="w-full">
-            <TabsList>
+            <TabsList className="p-3 border-b">
               <TabsTrigger
                 value="call-distribution"
                 className="flex items-center gap-1"
               >
-                <BarChart />
                 {t("tabs.callDistribution")}
-              </TabsTrigger>
-              <TabsTrigger
-                value="call-stats"
-                className="flex items-center gap-1"
-              >
-                <TrendingUpOutlined />
-                {t("tabs.callStats")}
               </TabsTrigger>
               <TabsTrigger
                 value="sla-compliance"
                 className="flex items-center gap-1"
               >
-                <AccessTime />
                 {t("tabs.slaCompliance")}
               </TabsTrigger>
             </TabsList>
             <TabsContent value="call-distribution">
               <CallDistributionAnalytics filters={appliedValues} />
             </TabsContent>
-            <TabsContent value="call-stats">
-              <CallStats filters={appliedValues} />
-            </TabsContent>
             <TabsContent value="sla-compliance">
               <SlaComplianceAnalytics filters={appliedValues} />
             </TabsContent>
           </Tabs>
-        </StatsDetailedCard>
+        </div>
       </div>
     </div>
   );

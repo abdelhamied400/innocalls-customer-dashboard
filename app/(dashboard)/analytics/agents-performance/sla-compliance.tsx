@@ -1,165 +1,307 @@
-import ChartCard, { ChartCardSkeleton } from "@/components/ChartCard";
-import PaginatedTable from "@/components/Table/PaginatedTable";
-import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
-import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
-import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
-import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
-import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import analyticsService from "@/services/analytics.service";
-import { ShowChart, TableView } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  Cell,
-  Brush,
-} from "recharts";
+import { Label } from "@/components/ui/label";
 import { UserActivityFilters } from "./page";
-import NoData from "./NoData";
-import { useLocale, useTranslations } from "@/providers/TranslationProvider";
-import { useState } from "react";
-import SlaComplianceToolbar, {
-  SlaComplianceFilters,
-} from "./sla-compliance-toolbar";
-import RechartTooltip from "@/components/RechartTooltip";
-import { defaultLocale, locales } from "@/i18n/config";
+import { useTranslations } from "@/providers/TranslationProvider";
+import { useState, useMemo } from "react";
+import { Switch } from "@/components/ui/switch";
+import { Input } from "@/components/ui/input";
+import Field from "@/components/ui/field";
+import {
+  Select,
+  SelectTrigger,
+  SelectItem,
+  SelectContent,
+} from "@/components/ui/select";
+import AgentSlaComplianceCard, {
+  AgentSlaComplianceCardSkeleton,
+} from "@/components/AgentSlaComplianceCard";
+import useLayoutManager from "@/hooks/use-layout-manager";
+import usePagination from "@/hooks/use-pagination";
+import { cn } from "@/lib/utils";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationButton,
+  PaginationEllipsis,
+} from "@/components/ui/pagination";
 
 type SlaComplianceAnalyticsProps = {
   filters: UserActivityFilters;
 };
 
-const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
-  const localeSlug = useLocale() || defaultLocale;
-  const locale = locales[localeSlug];
-  const t = useTranslations("analytics.userActivity.slaCompliance");
+export type SlaComplianceFilters = {
+  search: string;
+  sortBy: string;
+};
 
+const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
+  const { layoutVariant } = useLayoutManager();
+  const t = useTranslations("analytics.userActivity.slaCompliance");
+  const tCommon = useTranslations("common");
   const [slaComplianceFilters, setSlaComplianceFilters] =
     useState<SlaComplianceFilters>({
       search: "",
+      sortBy: "slaHighestToLowest",
     });
-
-  const columns = [
-    { header: t("table.columns.name"), accessorKey: "name" },
-    { header: t("table.columns.ext"), accessorKey: "ext" },
-    {
-      header: t("table.columns.totalIncomingCalls"),
-      accessorKey: "totalCalls",
-    },
-    {
-      header: t("table.columns.answeredCalls"),
-      accessorKey: "answeredCalls",
-    },
-    {
-      header: t("table.columns.avgResponseTime"),
-      accessorKey: "avgResponseTime",
-    },
-    {
-      header: t("table.columns.callsAnsweredWithinSLA"),
-      accessorKey: "callsAnsweredWithinSLA",
-    },
-    { header: t("table.columns.slaCompliance"), accessorKey: "slaCompliance" },
-  ];
 
   const { data, isLoading } = useLocalizedQuery({
     queryKey: ["slaCompliance", filters],
     queryFn: () => analyticsService.fetchSlaComplianceAnalytics(filters),
   });
 
-  // Helper to get color for SLA compliance
-  function getSlaColor(sla: string | number | null) {
-    const val =
-      sla === null ? 0 : typeof sla === "string" ? parseFloat(sla) : sla;
-    if (val >= 90) return "#22c55e"; // green
-    if (val >= 70) return "#eab308"; // yellow
-    if (val >= 50) return "#f59e42"; // orange
-    if (val >= 30) return "#ef4444"; // red
-    return "#991b1b"; // dark red
-  }
+  // Filter and sort data locally
+  const filteredAndSortedData = useMemo(() => {
+    if (!data) return [];
+
+    // First filter by search term
+    let filtered = data.filter((agent) => {
+      if (!slaComplianceFilters.search) return true;
+      const searchTerm = slaComplianceFilters.search.toLowerCase();
+      const agentSearchText = `${agent.name} ${agent.ext}`.toLowerCase();
+      return agentSearchText.includes(searchTerm);
+    });
+
+    // Then sort by selected criteria
+    filtered.sort((a, b) => {
+      switch (slaComplianceFilters.sortBy) {
+        case "slaHighestToLowest":
+          return b.slaCompliance - a.slaCompliance; // Descending (highest first)
+        case "slaLowestToHighest":
+          return a.slaCompliance - b.slaCompliance; // Ascending (lowest first)
+        case "connectedCallsHighestToLowest":
+          return b.answeredCalls - a.answeredCalls; // Descending (highest first)
+        case "connectedCallsLowestToHighest":
+          return a.answeredCalls - b.answeredCalls; // Ascending (lowest first)
+        case "incomingCallsHighestToLowest":
+          return b.totalCalls - a.totalCalls; // Descending (highest first)
+        case "incomingCallsLowestToHighest":
+          return a.totalCalls - b.totalCalls; // Ascending (lowest first)
+        default:
+          return 0;
+      }
+    });
+
+    return filtered;
+  }, [data, slaComplianceFilters]);
+
+  // Use pagination hook
+  const { pageIndex, pageSize, setPagination, pages } = usePagination({
+    totalItems: filteredAndSortedData.length,
+    perPage: 10,
+    defaultPageIndex: 0,
+  });
+
+  // Calculate current page data
+  const startIndex = pageIndex * pageSize;
+  const endIndex = startIndex + pageSize;
+  const currentPageData = filteredAndSortedData.slice(startIndex, endIndex);
+
+  // Reset to first page when filters change
+  useMemo(() => {
+    setPagination({ pageIndex: 0, pageSize });
+  }, [slaComplianceFilters, setPagination, pageSize]);
 
   return (
     <div className="sla-compliance-analytics">
-      <Tabs defaultValue="chart" className="w-full">
-        <TabsList className="w-full flex justify-end">
-          <TabsTrigger value="chart" className="flex items-center gap-1">
-            <ShowChart />
-          </TabsTrigger>
-          <TabsTrigger value="table" className="flex items-center gap-1">
-            <TableView />
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="chart">
-          {isLoading && <ChartCardSkeleton />}
-          {!isLoading && data && (
-            <ChartCard
-              title={t("title")}
-              icon={<ShowChart />}
-              color="warning"
-              legends={[
-                { label: t("chart.legends.excellent"), color: "#22c55e" },
-                { label: t("chart.legends.good"), color: "#eab308" },
-                { label: t("chart.legends.average"), color: "#f59e42" },
-                { label: t("chart.legends.poor"), color: "#ef4444" },
-                { label: t("chart.legends.veryPoor"), color: "#991b1b" },
-              ]}
-              variant="compound"
-            >
-              {data && data.length > 0 ? (
-                <ResponsiveContainer
-                  style={{ direction: "ltr" }}
-                  width="100%"
-                  height={300}
-                >
-                  <BarChart data={data}>
-                    <XAxis dataKey="name" />
-                    <YAxis domain={[0, 100]} tickFormatter={(v) => `${v}%`} />
-                    <Tooltip
-                      contentStyle={{ direction: locale.dir }}
-                      formatter={(value) => `${value}%`}
-                    />
-                    <Bar
-                      dataKey="slaCompliance"
-                      name={t("chart.tooltipLabels.slaCompliance")}
-                    >
-                      {data.map((entry, index) => (
-                        <Cell
-                          key={`cell-${entry.ext}`}
-                          fill={getSlaColor(Number(entry.slaCompliance))}
-                        />
-                      ))}
-                    </Bar>
-                    <Brush dataKey="name" height={30} stroke="#8884d8" />
-                  </BarChart>
-                </ResponsiveContainer>
-              ) : (
-                <NoData />
-              )}
-            </ChartCard>
-          )}
-        </TabsContent>
-        <TabsContent value="table">
-          <PaginatedTable
-            data={data || []}
-            columns={columns}
-            manualPagination={false}
+      <div className="flex justify-between items-center flex-wrap border-b p-3">
+        <div className=""></div>
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Select SortBy */}
+          <Select
+            value={slaComplianceFilters.sortBy}
+            onValueChange={(value) =>
+              setSlaComplianceFilters((prev) => ({
+                ...prev,
+                sortBy: value,
+              }))
+            }
           >
-            <SlaComplianceToolbar
-              filters={slaComplianceFilters}
-              setFilters={setSlaComplianceFilters}
+            <SelectTrigger className="w-auto flex items-center gap-0.5">
+              <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+              <span className="capitalize">
+                {slaComplianceFilters.sortBy === "slaHighestToLowest" &&
+                  t("actions.sorts.slaHighestToLowest")}
+                {slaComplianceFilters.sortBy === "slaLowestToHighest" &&
+                  t("actions.sorts.slaLowestToHighest")}
+                {slaComplianceFilters.sortBy ===
+                  "connectedCallsHighestToLowest" &&
+                  t("actions.sorts.connectedCallsHighestToLowest")}
+                {slaComplianceFilters.sortBy ===
+                  "connectedCallsLowestToHighest" &&
+                  t("actions.sorts.connectedCallsLowestToHighest")}
+                {slaComplianceFilters.sortBy ===
+                  "incomingCallsHighestToLowest" &&
+                  t("actions.sorts.incomingCallsHighestToLowest")}
+                {slaComplianceFilters.sortBy ===
+                  "incomingCallsLowestToHighest" &&
+                  t("actions.sorts.incomingCallsLowestToHighest")}
+              </span>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="slaHighestToLowest">
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.slaHighestToLowest")}
+              </SelectItem>
+              <SelectItem value="slaLowestToHighest">
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.slaLowestToHighest")}
+              </SelectItem>
+              <SelectItem value="connectedCallsHighestToLowest">
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.connectedCallsHighestToLowest")}
+              </SelectItem>
+              <SelectItem value="connectedCallsLowestToHighest">
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.connectedCallsLowestToHighest")}
+              </SelectItem>
+              <SelectItem value="incomingCallsHighestToLowest">
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.incomingCallsHighestToLowest")}
+              </SelectItem>
+              <SelectItem value="incomingCallsLowestToHighest">
+                <span className="text-gray-500">{t("actions.sortBy")}</span>{" "}
+                {t("actions.sorts.incomingCallsLowestToHighest")}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+          {/* search */}
+          <Field preIcon={<Search />}>
+            <Input
+              placeholder={t("actions.search")}
+              variant="field"
+              value={slaComplianceFilters.search}
+              onChange={(e) =>
+                setSlaComplianceFilters((prev) => ({
+                  ...prev,
+                  search: e.target.value,
+                }))
+              }
             />
-            <PaginatedTableContent>
-              <PaginatedTableHead />
-              {isLoading && <PaginatedTableSkeleton />}
-              {!isLoading && <PaginatedTableBody />}
-            </PaginatedTableContent>
-            {!isLoading && <PaginatedTablePagination />}
-          </PaginatedTable>
-        </TabsContent>
-      </Tabs>
+          </Field>
+        </div>
+      </div>
+
+      <div
+        className={cn(
+          "grid grid-cols-1 lg:grid-cols-2 gap-4 p-3",
+          layoutVariant !== "both-closed" && "lg:grid-cols-1 xl:grid-cols-2"
+        )}
+      >
+        {isLoading
+          ? Array.from({ length: pageSize }).map((_, index) => (
+              <AgentSlaComplianceCardSkeleton key={index} />
+            ))
+          : currentPageData?.map((agent) => (
+              <AgentSlaComplianceCard key={agent.ext} agent={agent} />
+            ))}
+      </div>
+
+      {/* Enhanced Pagination */}
+      {filteredAndSortedData.length > 0 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 border-t">
+          {/* Rows per page selector */}
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">
+              {tCommon("pagination.rowsPerPage")}
+            </span>
+            <Select
+              value={pageSize.toString()}
+              onValueChange={(value) => {
+                setPagination({ pageIndex: 0, pageSize: Number(value) });
+              }}
+            >
+              <SelectTrigger className="w-[70px] h-8">
+                <span>{pageSize}</span>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="5">5</SelectItem>
+                <SelectItem value="10">10</SelectItem>
+                <SelectItem value="20">20</SelectItem>
+                <SelectItem value="50">50</SelectItem>
+                <SelectItem value="100">100</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Range information */}
+          <div className="text-sm text-gray-600">
+            {filteredAndSortedData.length > 0 && (
+              <span>
+                {startIndex + 1} –{" "}
+                {Math.min(endIndex, filteredAndSortedData.length)}{" "}
+                {tCommon("pagination.of")} {filteredAndSortedData.length}
+              </span>
+            )}
+          </div>
+
+          {/* Pagination controls */}
+          {pages.length > 1 && (
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    onClick={() =>
+                      setPagination({
+                        pageIndex: Math.max(0, pageIndex - 1),
+                        pageSize,
+                      })
+                    }
+                    disabled={pageIndex === 0}
+                  />
+                </PaginationItem>
+
+                {/* Page numbers using hook's pages array */}
+                {pages.map((page, index) => {
+                  if (page === -1) {
+                    // Ellipsis
+                    return (
+                      <PaginationItem key={`ellipsis-${index}`}>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    );
+                  }
+
+                  return (
+                    <PaginationItem key={page}>
+                      <PaginationButton
+                        isActive={pageIndex === page - 1}
+                        onClick={() =>
+                          setPagination({ pageIndex: page - 1, pageSize })
+                        }
+                      >
+                        {page}
+                      </PaginationButton>
+                    </PaginationItem>
+                  );
+                })}
+
+                <PaginationItem>
+                  <PaginationNext
+                    onClick={() => {
+                      const totalPages = Math.ceil(
+                        filteredAndSortedData.length / pageSize
+                      );
+                      setPagination({
+                        pageIndex: Math.min(totalPages - 1, pageIndex + 1),
+                        pageSize,
+                      });
+                    }}
+                    disabled={
+                      pageIndex ===
+                      Math.ceil(filteredAndSortedData.length / pageSize) - 1
+                    }
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -74,6 +74,8 @@ const AgentsPerformanceHead = ({
       includeInternalCalls,
     }));
     table.setPageIndex(0); // Reset to first page on filter change
+
+    return true;
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

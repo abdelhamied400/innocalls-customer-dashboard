@@ -1303,11 +1303,13 @@
     }
   },
   "analytics": {
+    "title": "إحصائيات المكالمات",
     "layout": {
       "tabs": {
         "inbound": "الواردة",
         "outbound": "الصادرة",
         "unanswered": "غير مجابة",
+        "callReporting": "تاريخ المكالمات",
         "userActivity": "أداء الوكلاء "
       }
     },
@@ -1378,10 +1380,12 @@
       "title": "إحصائيات أداء الوكلاء",
       "subtitle": "عرض الإحصائيات التفصيلية لأداء الوكلاء",
       "quickStats": {
+        "title": "تفاصيل المستخدمين",
         "topAnsweredIncoming": "الأكثر ردًا على المكالمات الواردة",
         "topConnectedOutbound": "الأكثر اتصالًا بالمكالمات الصادرة",
         "bestSlaAgent": "الأسرع ردًا على المكالمات",
-        "noDataAvailable": "لا توجد بيانات متاحة"
+        "noDataAvailable": "لا توجد بيانات متاحة",
+        "users": "{num} مستخدمين"
       },
       "tabs": {
         "callDistribution": "توزيع المكالمات",
@@ -1390,34 +1394,46 @@
       },
       "callDistribution": {
         "title": "توزيع المكالمات",
-        "table": {
-          "columns": {
-            "name": "الاسم",
-            "ext": "الرقم",
-            "totalCalls": "إجمالي المكالمات",
-            "incomingInternal": "واردة داخلية",
-            "incomingExternal": "واردة خارجية",
-            "outgoingInternal": "صادرة داخلية",
-            "outgoingExternal": "صادرة خارجية",
-            "answeredInternalIncoming": "واردة داخلية مجابة",
-            "answeredExternalIncoming": "واردة خارجية مجابة",
-            "connectedInternalOutgoing": "صادرة داخلية مجابة",
-            "connectedExternalOutgoing": "صادرة خارجية مجابة"
+        "agentCard": {
+          "totalCalls": "إجمالي المكالمات",
+          "connectedCalls": "المكالمات المتصلة",
+          "unconnectedCalls": "المكالمات غير المتصلة",
+          "outgoingExternal": "المكالمات الصادرة الخارجية",
+          "incomingExternal": "المكالمات الواردة الخارجية",
+          "outgoingInternal": "المكالمات الصادرة الداخلية",
+          "incomingInternal": "المكالمات الواردة الداخلية",
+          "outOf": "من أصل",
+          "chart": {
+            "answerRate": "نسبة الإجابة",
+            "labels": {
+              "outgoingExternal": "المكالمات الصادرة الخارجية",
+              "incomingExternal": "المكالمات الواردة الخارجية",
+              "outgoingInternal": "المكالمات الصادرة الداخلية",
+              "incomingInternal": "المكالمات الواردة الداخلية",
+              "unanswered": "غير مُجابة"
+            }
           }
         },
-        "chart": {
-          "title": "توزيع المكالمات",
-          "legends": {
-            "incomingInternal": "واردة داخلية",
-            "incomingExternal": "واردة خارجية",
-            "outgoingInternal": "صادرة داخلية",
-            "outgoingExternal": "صادرة خارجية"
-          },
-          "yAxisLabel": "عدد المكالمات",
-          "tooltipAgent": "الوكيل"
-        },
         "actions": {
-          "includeInternalCalls": "إظهار المكالمات الداخلية"
+          "includeInternalCalls": "إظهار المكالمات الداخلية",
+          "search": "بحث...",
+          "sortBy": "ترتيب حسب",
+          "sorts": {
+            "totalCallsHighest": "أعلى إجمالي مكالمات",
+            "totalCallsLowest": "أقل إجمالي مكالمات",
+            "answerRateHighest": "أعلى نسبة إجابة",
+            "answerRateLowest": "أقل نسبة إجابة",
+            "connectedCallsHighest": "أعلى مكالمات متصلة",
+            "connectedCallsLowest": "أقل مكالمات متصلة",
+            "connectedOutgoingExternalHighest": "أعلى مكالمات صادرة خارجية متصلة",
+            "connectedOutgoingExternalLowest": "أقل مكالمات صادرة خارجية متصلة",
+            "connectedIncomingExternalHighest": "أعلى مكالمات واردة خارجية متصلة",
+            "connectedIncomingExternalLowest": "أقل مكالمات واردة خارجية متصلة",
+            "connectedOutgoingInternalHighest": "أعلى مكالمات صادرة داخلية متصلة",
+            "connectedOutgoingInternalLowest": "أقل مكالمات صادرة داخلية متصلة",
+            "connectedIncomingInternalHighest": "أعلى مكالمات واردة داخلية متصلة",
+            "connectedIncomingInternalLowest": "أقل مكالمات واردة داخلية متصلة"
+          }
         }
       },
       "callStats": {
@@ -1449,28 +1465,30 @@
         }
       },
       "slaCompliance": {
-        "title": "نظرة عامة على المكالمات المجابة في الوقت المحدد",
-        "table": {
-          "columns": {
-            "ext": "الرقم",
-            "name": "الاسم",
-            "totalIncomingCalls": "المكالمات الواردة",
-            "answeredCalls": "المكالمات المجابة",
-            "avgResponseTime": "متوسط وقت الرد",
-            "callsAnsweredWithinSLA": "المكالمات المجابة ضمن الوقت المحدد",
-            "slaCompliance": "نسبة الالتزام بالرد السريع (%)"
-          }
-        },
-        "chart": {
-          "legends": {
-            "excellent": "ممتاز (90%+)",
-            "good": "جيد (70%-89%)",
-            "average": "متوسط (50%-69%)",
-            "poor": "ضعيف (30%-49%)",
-            "veryPoor": "ضعيف جداً (<30%)"
+        "agentCard": {
+          "slaStatus": {
+            "excellent": "ممتاز",
+            "good": "جيد",
+            "poor": "ضعيف",
+            "veryPoor": "ضعيف جداً"
           },
-          "tooltipLabels": {
-            "slaCompliance": "نسبة الالتزام بالرد السريع (%)"
+          "incomingCalls": "المكالمات الواردة",
+          "calls": "مكالمات",
+          "connectedCalls": "المكالمات المتصلة",
+          "avgAnswerTime": "متوسط وقت الرد",
+          "slaCompliance": "مستوى الخدمة",
+          "callsAnsweredWithinSla": "المكالمات المجابة ضمن مستوى الخدمة"
+        },
+        "actions": {
+          "search": "بحث...",
+          "sortBy": "ترتيب حسب",
+          "sorts": {
+            "slaHighestToLowest": "أعلى اتفاقية مستوى خدمة",
+            "slaLowestToHighest": "أقل اتفاقية مستوى خدمة",
+            "connectedCallsHighestToLowest": "أعلى مكالمات متصلة",
+            "connectedCallsLowestToHighest": "أقل مكالمات متصلة",
+            "incomingCallsHighestToLowest": "أعلى مكالمات واردة",
+            "incomingCallsLowestToHighest": "أقل مكالمات واردة"
           }
         }
       },
@@ -1929,11 +1947,12 @@
             "placeholder": "أدخل التاريخ النهائي"
           },
           "date": {
-            "label": "البحث بنطاق التاريخ"
+            "label": "اختر نطاق التاريخ"
           },
           "agents": {
-            "label": "اختر الوكلاء",
-            "placeholder": "اختر الوكلاء"
+            "label": "الوكلاء",
+            "placeholder": "اختر الوكلاء",
+            "noOptions": "لا يوجد وكلاء يطابقون بحثك"
           }
         },
         "validation": {
@@ -1961,7 +1980,9 @@
       "actions": {
         "resetFilter": "إعادة تعيين",
         "applyFilters": "تطبيق"
-      }
+      },
+      "from": "من",
+      "to": "إلى"
     }
   },
   "liveMonitor": {

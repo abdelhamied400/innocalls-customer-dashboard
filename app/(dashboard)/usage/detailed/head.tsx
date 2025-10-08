@@ -104,7 +104,7 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
       tCommon
     );
 
-    if (!isValid) return;
+    if (!isValid) return false;
 
     table.setPageIndex(0);
 
@@ -116,6 +116,8 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
       fromDate: fromDate,
       toDate: toDate,
     }));
+
+    return true;
   };
 
   const exportUsage = async () => {

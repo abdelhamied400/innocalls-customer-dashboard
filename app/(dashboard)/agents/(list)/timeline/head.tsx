@@ -64,6 +64,8 @@ const TimelineHead = ({ filters, setFilters }: TimelineHeadProps) => {
       includeInternalCalls,
     }));
     table.setPageIndex(0); // Reset to first page on filter change
+
+    return true;
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -56,6 +56,7 @@ const RatesHead = ({ filters, setFilters }: RatesHeadProps) => {
       serviceId: serviceId || "1",
     }));
     table.setPageIndex(0); // Reset to first page on filter change
+    return true;
   };
 
   return (

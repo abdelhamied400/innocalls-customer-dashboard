@@ -1,13 +1,12 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { BarChart, CalendarMonth, Insights } from "@mui/icons-material";
+import { BarChart, CalendarMonth, Clear, Insights } from "@mui/icons-material";
 import StatsDetailedCard from "@/components/StatsDetailedCard";
 import Field from "@/components/ui/field";
 import DatePicker from "@/components/ui/date-picker";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TabsContent } from "@radix-ui/react-tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Select from "@/components/select";
 import { useFilterManager } from "@/hooks/useFilterManager";
 import { unansweredFiltersSchema } from "@/validation/unansweredFilters";
@@ -21,6 +20,9 @@ import useAppStore from "@/store/app.slice";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useVocab } from "@/hooks/useVocab";
+import { FilterBox } from "@/components/FilterBox";
+import { formatDate } from "@/lib/date";
+import AgentsPicker from "@/components/AgentsPicker";
 
 type Option = {
   value: string;
@@ -40,18 +42,11 @@ lastMonth.setDate(today.getDate() - 30);
 
 const UnansweredAnalytics = () => {
   const { extensions } = useVocab();
-  const { setPageTitle } = useAppStore();
   const locale = useLocale();
 
   const t = useTranslations("analytics.unanswered");
   const tCommon = useTranslations("analytics.common");
-
-  useEffect(() => {
-    setPageTitle(t("title"));
-
-    // Cleanup when component unmounts
-    return () => setPageTitle(null);
-  }, [locale]);
+  const tShared = useTranslations("common");
 
   const unansweredFilterConfig = {
     defaultValues: {
@@ -63,110 +58,130 @@ const UnansweredAnalytics = () => {
     schema: unansweredFiltersSchema(tCommon),
   };
 
-  const { values, appliedValues, errors, setValue, reset, apply } =
+  const { values, appliedValues, errors, setValue, reset, apply, applyValues } =
     useFilterManager<UnansweredAnalyticsFilters>(unansweredFilterConfig);
 
   return (
     <div className="page" id="unanswered-analytics">
       <div className="flex flex-col gap-2">
-        <div className="filters">
-          <StatsDetailedCard
-            title={t("title")}
-            icon={<BarChart />}
-            value=""
-            color="primary"
-          >
-            <div className="py-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              <Field
-                label={tCommon("form.fields.fromDate.label")}
-                postIcon={<CalendarMonth className="text-gray-400" />}
-                error={errors.fromDate}
-              >
-                <DatePicker
-                  className="min-w-36 flex-1"
-                  placeholder={tCommon("form.fields.fromDate.placeholder")}
-                  value={values.fromDate}
-                  onChange={(date) => setValue("fromDate", date || new Date())}
-                />
-              </Field>
-              <Field
-                label={tCommon("form.fields.toDate.label")}
-                postIcon={<CalendarMonth className="text-gray-400" />}
-                error={errors.toDate}
-              >
-                <DatePicker
-                  className="min-w-36 flex-1"
-                  placeholder={tCommon("form.fields.toDate.placeholder")}
-                  value={values.toDate}
-                  onChange={(date) => setValue("toDate", date || new Date())}
-                />
-              </Field>
-              <div className="col-span-1 sm:col-span-2 lg:col-span-3">
-                <Select
-                  className="w-full"
-                  placeholder={tCommon("form.fields.agents.placeholder")}
-                  value={values.agents}
-                  onChange={(value) => setValue("agents", value || [])}
-                  options={extensions?.map((ext) => ({
-                    value: ext.ext,
-                    label: `${ext.name} (${ext.ext})`,
-                  }))}
-                  isMulti
-                  label={tCommon("form.fields.agents.label")}
-                  showSelectedTags={false}
-                  error={errors.agents}
-                  isClearable
-                />
+        <div className="filters p-2 border rounded-xl flex items-center justify-between flex-wrap gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <FilterBox
+              triggerLabel={
+                <p className="font-normal">
+                  {tCommon("from")}{" "}
+                  <b>{formatDate(values.fromDate, { locale: locale })}</b>
+                  {tCommon("to")}{" "}
+                  <b>{formatDate(values.toDate, { locale: locale })}</b>
+                </p>
+              }
+              label={tCommon("form.fields.date.label")}
+              onApply={apply}
+              onReset={() => {
+                applyValues({
+                  fromDate: unansweredFilterConfig.defaultValues.fromDate,
+                  toDate: unansweredFilterConfig.defaultValues.toDate,
+                });
+              }}
+            >
+              <div className="flex flex-col gap-4">
+                <Field
+                  label={tCommon("form.fields.fromDate.label")}
+                  postIcon={<CalendarMonth className="text-gray-400" />}
+                  error={errors.fromDate}
+                >
+                  <DatePicker
+                    className="min-w-36 flex-1"
+                    placeholder={tCommon("form.fields.fromDate.placeholder")}
+                    value={values.fromDate}
+                    onChange={(date) =>
+                      setValue("fromDate", date || new Date())
+                    }
+                  />
+                </Field>
+                <Field
+                  label={tCommon("form.fields.toDate.label")}
+                  postIcon={<CalendarMonth className="text-gray-400" />}
+                  error={errors.toDate}
+                >
+                  <DatePicker
+                    className="min-w-36 flex-1"
+                    placeholder={tCommon("form.fields.toDate.placeholder")}
+                    value={values.toDate}
+                    onChange={(date) => setValue("toDate", date || new Date())}
+                  />
+                </Field>
               </div>
-
-              <div className="flex items-center space-x-2">
-                <Switch
-                  checked={values.includeInternalCalls}
-                  onCheckedChange={(checked) =>
-                    setValue("includeInternalCalls", checked)
-                  }
-                />
-                <Label htmlFor="includeInternalCalls">
-                  {t("filters.includeInternalCalls.label")}
-                </Label>
-              </div>
-            </div>
-            <div className="flex flex-wrap justify-end gap-2">
-              <Button variant="outline" onClick={reset}>
-                {tCommon("actions.resetFilter")}
-              </Button>
-              <Button onClick={apply}>{tCommon("actions.applyFilters")}</Button>
-            </div>
-          </StatsDetailedCard>
+            </FilterBox>
+            <FilterBox
+              triggerLabel={tCommon("form.fields.agents.label")}
+              label={tCommon("form.fields.agents.label")}
+              onApply={apply}
+              onReset={() => {
+                applyValues({
+                  agents: unansweredFilterConfig.defaultValues.agents,
+                });
+              }}
+            >
+              <AgentsPicker
+                selectedAgents={values.agents}
+                onAgentsChange={(agents) => setValue("agents", agents)}
+              />
+            </FilterBox>
+          </div>
+          <Button onClick={reset} variant="ghost">
+            <Clear />
+            {tShared("actions.reset")}
+          </Button>
         </div>
 
         <QuickStats filters={appliedValues} />
 
         <div className="analytics-tabs">
-          <StatsDetailedCard
-            title={t("title")}
-            subtitle={t("subtitle")}
-            icon={<Insights />}
-            value=""
-            color="primary"
-          >
-            <Tabs defaultValue="inbound" className="w-full">
-              <TabsList>
-                <TabsTrigger value="inbound">{t("tabs.inbound")}</TabsTrigger>
-                <TabsTrigger value="outbound">{t("tabs.outbound")}</TabsTrigger>
-              </TabsList>
+          <Tabs defaultValue="inbound" className="w-full border rounded-xl">
+            <TabsList className="border-b p-3">
+              <TabsTrigger value="inbound">{t("tabs.inbound")}</TabsTrigger>
+              <TabsTrigger value="outbound">{t("tabs.outbound")}</TabsTrigger>
+            </TabsList>
 
-              <TabsContent value="inbound" className="flex flex-col gap-4">
+            <TabsContent value="inbound" className="flex flex-col gap-4">
+              <div className="flex items-center gap-2 border-b p-3">
+                <Switch
+                  id="includeInternalCalls"
+                  checked={values.includeInternalCalls}
+                  onCheckedChange={(value) => {
+                    applyValues({ includeInternalCalls: value });
+                  }}
+                />
+                <Label htmlFor="includeInternalCalls">
+                  {t("filters.includeInternalCalls.label")}
+                </Label>
+              </div>
+              <div className="px-3 flex flex-col gap-4">
                 <InboundDistribution filters={appliedValues} />
                 <InboundUnansweredHourly filters={appliedValues} />
-              </TabsContent>
+              </div>
+            </TabsContent>
 
-              <TabsContent value="outbound" className="flex flex-col gap-4">
+            <TabsContent value="outbound" className="flex flex-col gap-4">
+              <div className="flex items-center gap-2 border-b p-3">
+                <Switch
+                  id="includeInternalCalls"
+                  checked={values.includeInternalCalls}
+                  onCheckedChange={(value) => {
+                    applyValues({ includeInternalCalls: value });
+                  }}
+                />
+                <Label htmlFor="includeInternalCalls">
+                  {t("filters.includeInternalCalls.label")}
+                </Label>
+              </div>
+              <div className="px-3 flex flex-col gap-4">
                 <OutboundDistribution filters={appliedValues} />
                 <OutboundUnansweredHourly filters={appliedValues} />
-              </TabsContent>
-            </Tabs>
-          </StatsDetailedCard>
+              </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>

@@ -64,7 +64,7 @@ const ChargesHead = ({ filters, setFilters }: ChargesHeadProps) => {
       tCommon
     );
 
-    if (!isValid) return;
+    if (!isValid) return false;
 
     setFilters((prev) => ({
       ...prev,
@@ -73,6 +73,7 @@ const ChargesHead = ({ filters, setFilters }: ChargesHeadProps) => {
     }));
 
     table.setPageIndex(0); // Reset to first page on filter change
+    return true;
   };
 
   return (

@@ -129,6 +129,7 @@ const UsersTableHeader = ({ filters, setFilters }: UsersTableHeaderProps) => {
                 { id: "status", value: status.join(",") },
               ]);
               table.setPageIndex(0); // Reset to first page on filter change
+              return true;
             }}
             numberOfFilters={status.length}
           >

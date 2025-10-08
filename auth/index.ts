@@ -8,7 +8,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         const { token: jwt, userType, accessToken, organizations } = user;
-        token.accessToken = jwt;
+        token.jwt = jwt; // Changed from token.accessToken to avoid conflict
         token.userType = userType;
         token.accessToken = accessToken;
         token.organizations = organizations;
@@ -26,5 +26,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days in seconds
   },
 });

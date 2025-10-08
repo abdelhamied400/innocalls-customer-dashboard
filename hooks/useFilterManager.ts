@@ -24,6 +24,12 @@ export const useFilterManager = <T extends Record<string, any>>(
     setValues((prev) => ({ ...prev, [field]: value }));
   };
 
+  // apply multiple values at once
+  const applyValues = (partialValues: Partial<T>) => {
+    setValues((prev) => ({ ...prev, ...partialValues }));
+    setAppliedValues((prev) => ({ ...prev, ...partialValues }));
+  };
+
   const reset = () => {
     setValues(defaultValues);
     setAppliedValues(defaultValues);
@@ -85,5 +91,6 @@ export const useFilterManager = <T extends Record<string, any>>(
     setValue,
     reset,
     apply,
+    applyValues,
   };
 };

@@ -48,13 +48,6 @@ const OutboundAnalytics = () => {
   const t = useTranslations("analytics.outbound");
   const locale = useLocale();
 
-  useEffect(() => {
-    setPageTitle(t("title"));
-
-    // Cleanup when component unmounts
-    return () => setPageTitle(null);
-  }, [locale]);
-
   const outboundFilterConfig = {
     defaultValues: {
       fromDate: lastMonth,

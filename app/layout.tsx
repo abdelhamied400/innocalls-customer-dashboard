@@ -10,12 +10,12 @@ import "@xyflow/react/dist/style.css";
 const poppins = localFont({
   src: "./fonts/Poppins.otf",
   variable: "--font-poppins",
-  weight: "100 900",
+  weight: "100 200 300 400 500 600 700 800 900",
 });
 const cairo = localFont({
   src: "./fonts/Cairo.ttf",
   variable: "--font-cairo",
-  weight: "100 900",
+  weight: "100 200 300 400 500 600 700 800 900",
 });
 
 const fonts: Record<LocaleSlug, NextFontWithVariable> = {

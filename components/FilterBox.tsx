@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { PropsWithChildren, useState } from "react";
+import React, { PropsWithChildren, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,10 +12,10 @@ import { useTranslations } from "@/providers/TranslationProvider";
 
 type FilterBoxProps = PropsWithChildren<{
   className?: string;
-  triggerLabel?: string;
+  triggerLabel?: React.ReactNode;
   label?: string;
   onReset?: () => void;
-  onApply?: () => void;
+  onApply?: () => boolean;
   numberOfFilters?: number;
 }>;
 export const FilterBox = ({
@@ -39,15 +39,19 @@ export const FilterBox = ({
 
   const handleApply = () => {
     if (onApply) {
-      onApply();
+      const isApplied = onApply();
+      if (isApplied) {
+        setIsOpen(false);
+      }
+    } else {
+      setIsOpen(false);
     }
-    setIsOpen(false);
   };
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="filter">
+        <Button variant="filter" className="h-auto min-h-9 whitespace-normal">
           {triggerLabel}
           {numberOfFilters > 0 && (
             <Badge className="p-0.5" variant="gray">
@@ -70,7 +74,9 @@ export const FilterBox = ({
           <div className="flex flex-col gap-2 filter-dialog-body">
             <div className="flex flex-col gap-4 px-4 py-2 filter-dialog-content">
               {children || (
-                <p className="text-sm text-gray-500">{t('filter.noFiltersAvailable')}</p>
+                <p className="text-sm text-gray-500">
+                  {t("filter.noFiltersAvailable")}
+                </p>
               )}
             </div>
             <hr className="" />
