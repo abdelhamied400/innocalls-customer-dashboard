@@ -646,7 +646,7 @@
       "form": {
         "fields": {
           "amount": {
-            "label": "Amount (USD)",
+            "label": "Amount (SAR)",
             "placeholder": "Enter amount..."
           },
           "cardNumber": {
@@ -1939,7 +1939,7 @@
           "agents": {
             "label": "Agents",
             "placeholder": "Select agents",
-            "noOptions":"No agents match your search"
+            "noOptions": "No agents match your search"
           }
         },
         "validation": {

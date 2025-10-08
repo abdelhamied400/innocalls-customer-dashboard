@@ -678,7 +678,7 @@
       "form": {
         "fields": {
           "amount": {
-            "label": "المبلغ (دولار أمريكي)",
+            "label": "المبلغ (ريال سعودي)",
             "placeholder": "أدخل المبلغ..."
           },
           "cardNumber": {
@@ -1951,7 +1951,7 @@
           "agents": {
             "label": "الوكلاء",
             "placeholder": "اختر الوكلاء",
-            "noOptions":"لا يوجد وكلاء يطابقون بحثك"
+            "noOptions": "لا يوجد وكلاء يطابقون بحثك"
           }
         },
         "validation": {

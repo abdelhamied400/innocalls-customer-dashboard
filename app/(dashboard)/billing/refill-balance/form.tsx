@@ -50,7 +50,6 @@ const RefillBalanceForm = () => {
       form.reset(form.getValues());
 
       const res = await billingService.getPayTabsIframeUrl(Number(data.amount));
-      console.log(res);
       setIframeUrl(res.url);
     } catch (error) {
       if (isAxiosError(error)) {
