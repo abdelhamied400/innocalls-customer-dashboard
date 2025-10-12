@@ -120,7 +120,10 @@ export const isValidTransition = (
 
   // Connected but not ready agent can:  become ready for calls
   if (from === AgentActivity.CONNECTED_NOT_READY) {
-    return [AgentActivity.READY_ACCEPT_CALL].includes(to);
+    return [
+      AgentActivity.READY_ACCEPT_CALL,
+      AgentActivity.PORTAL_LOGGED_OUT,
+    ].includes(to);
   }
 
   // For all other activity types, allow any transition (fallback rule)
