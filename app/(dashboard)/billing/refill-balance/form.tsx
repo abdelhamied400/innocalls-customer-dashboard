@@ -27,6 +27,7 @@ import { useForm } from "react-hook-form";
 import CheckoutForm from "./checkout-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "@/providers/TranslationProvider";
+import useAuthStore from "@/store/auth.slice";
 
 const RefillBalanceForm = () => {
   const { toast } = useToast();
@@ -34,14 +35,20 @@ const RefillBalanceForm = () => {
   const [paymentProvider, setPaymentProvider] = useState<string>();
   const [currentStep, setCurrentStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
+  const { Organization } = useAuthStore();
 
   const closeSheetRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
 
   const t = useTranslations("billing.refillBalance");
+  const tCommon = useTranslations("common");
 
   const form = useForm<RefillBalanceSchema>({
-    resolver: zodResolver(refillBalanceSchema(t)),
+    resolver: zodResolver(
+      refillBalanceSchema(t, tCommon, {
+        currency: Organization?.paymentCurrency,
+      })
+    ),
     defaultValues: { amount: 5 },
   });
 
@@ -113,7 +120,9 @@ const RefillBalanceForm = () => {
                   <FormItem>
                     <FormControl>
                       <Field
-                        label={t("form.fields.amount.label")}
+                        label={`${t("form.fields.amount.label")} (${tCommon(
+                          `currencies.${Organization?.paymentCurrency}`
+                        )})`}
                         error={
                           form.formState.errors.amount?.message?.toString() ||
                           ""

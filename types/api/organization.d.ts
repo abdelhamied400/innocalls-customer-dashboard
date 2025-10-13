@@ -7,4 +7,5 @@ export type Organization = {
   enableAfterCallTags: boolean;
   isDemo: boolean;
   allowedBreakTypes: Array<AgentActivity>;
+  paymentCurrency: string;
 };

@@ -79,6 +79,10 @@
         "title": "Forbidden",
         "message": "You don't have permission to access this page."
       }
+    },
+    "currencies": {
+      "sar": "SAR",
+      "usd": "USD"
     }
   },
   "numbers": {
