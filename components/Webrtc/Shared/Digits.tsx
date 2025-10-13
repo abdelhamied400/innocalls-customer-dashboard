@@ -1,15 +1,23 @@
 import { digits } from "@/constants/digits";
 import Digit from "./Digit";
 import { useSip } from "@/providers/webrtc/SipProvider";
+import { handleAddDigit } from "@/lib/dialpad-utils";
+import { useState } from "react";
 
 const Digits = () => {
-  const { setNumber, number } = useSip();
+  const { setNumber, number, setDialCode } = useSip();
+
+  // Track if user manually changed country
+  const [userSelectedCountry, setUserSelectedCountry] = useState(false);
 
   const handleDigitClick = (digit: string) => {
-    if (digit === "+") {
-      setNumber(number.length === 0 ? "+" : number);
-    } else if (/^[0-9#*]$/.test(digit)) {
-      setNumber(number + digit);
+    const result = handleAddDigit(number, digit, userSelectedCountry);
+
+    setNumber(result.processedNumber);
+
+    // Update dial code if country was detected
+    if (result.detectedDialCode) {
+      setDialCode(result.detectedDialCode);
     }
   };
 

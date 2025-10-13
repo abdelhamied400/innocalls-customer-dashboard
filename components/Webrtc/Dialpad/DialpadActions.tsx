@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import { Backspace, Logout, Phone } from "@mui/icons-material";
+import { handleBackspace, handleClearAll } from "@/lib/dialpad-utils";
 
 const DialpadActions = () => {
   const { call, setNumber, number } = useSip();
@@ -10,12 +11,14 @@ const DialpadActions = () => {
     call();
   };
 
-  const handleBackspace = () => {
-    setNumber(number.slice(0, -1));
+  const handleBackspaceClick = () => {
+    const newNumber = handleBackspace(number);
+    setNumber(newNumber);
   };
 
   const handleLongBackspace = () => {
-    setNumber("");
+    const newNumber = handleClearAll();
+    setNumber(newNumber);
   };
 
   return (
@@ -33,7 +36,7 @@ const DialpadActions = () => {
         size="icon"
         variant="ghost"
         className="rounded-full w-16 h-16"
-        onClick={handleBackspace}
+        onClick={handleBackspaceClick}
         onLongPress={handleLongBackspace}
       >
         <Backspace />

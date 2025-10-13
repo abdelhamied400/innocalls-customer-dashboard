@@ -5,8 +5,8 @@ import { useSip } from "@/providers/webrtc/SipProvider";
 import React, { useState } from "react";
 import { CountrySelect } from "./DialpadCountrySelect";
 import { useTranslations } from "@/providers/TranslationProvider";
-import { detectCountryFromNumber } from "@/lib/webrtc";
 import { defaultCountry, webrtcCountries } from "@/constants/countries";
+import { processPhoneNumber } from "@/lib/dialpad-utils";
 
 const DialpadInput = () => {
   const t = useTranslations("webrtc.fields");
@@ -17,23 +17,15 @@ const DialpadInput = () => {
 
   // Handle typing in the input
   const onNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value;
+    const value = e.target.value;
+    const result = processPhoneNumber(value, userSelectedCountry);
 
-    // Allow only leading +, then digits, #, *
-    let rawDigits = value;
-    if (rawDigits.startsWith("+")) {
-      rawDigits = "+" + rawDigits.slice(1).replace(/[^\d#*]/g, "");
-    } else {
-      rawDigits = rawDigits.replace(/[^\d#*]/g, "");
+    setNumber(result.processedNumber);
+
+    // Update dial code if country was detected
+    if (result.detectedDialCode) {
+      setDialCode(result.detectedDialCode);
     }
-
-    // Auto-detect country only if user didn't pick one manually
-    if (!userSelectedCountry) {
-      const detectedDialCode = detectCountryFromNumber(rawDigits);
-      setDialCode(detectedDialCode);
-    }
-
-    setNumber(rawDigits);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
