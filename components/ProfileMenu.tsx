@@ -81,6 +81,7 @@ const ProfileMenu = () => {
         listenToCallEvents: false,
         provider: "",
         allowedBreakTypes: [],
+        paymentCurrency: "SAR",
       });
     }
     const org = auth?.organizations?.find((org) => org.id === orgId);
