@@ -678,7 +678,7 @@
       "form": {
         "fields": {
           "amount": {
-            "label": "المبلغ (ريال سعودي)",
+            "label": "المبلغ",
             "placeholder": "أدخل المبلغ..."
           },
           "cardNumber": {

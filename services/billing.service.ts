@@ -70,8 +70,8 @@ export default {
     });
     return res.data;
   },
-  getPayTabsIframeUrl: async (amount: number) => {
-    const res = await api.post(`/v1/payments/paytabs/link`, {
+  getPaymentReference: async (amount: number) => {
+    const res = await api.post(`/v1/payments/intent`, {
       amount,
     });
     return res.data;

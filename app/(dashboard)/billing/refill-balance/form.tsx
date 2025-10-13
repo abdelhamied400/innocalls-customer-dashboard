@@ -30,7 +30,8 @@ import { useTranslations } from "@/providers/TranslationProvider";
 
 const RefillBalanceForm = () => {
   const { toast } = useToast();
-  const [iframeUrl, setIframeUrl] = useState<string>();
+  const [paymentReference, setPaymentReference] = useState<string>();
+  const [paymentProvider, setPaymentProvider] = useState<string>();
   const [currentStep, setCurrentStep] = useState(0);
   const [submitting, setSubmitting] = useState(false);
 
@@ -49,8 +50,9 @@ const RefillBalanceForm = () => {
       setSubmitting(true);
       form.reset(form.getValues());
 
-      const res = await billingService.getPayTabsIframeUrl(Number(data.amount));
-      setIframeUrl(res.url);
+      const res = await billingService.getPaymentReference(Number(data.amount));
+      setPaymentReference(res.paymentReference);
+      setPaymentProvider(res.paymentProvider);
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
@@ -130,7 +132,7 @@ const RefillBalanceForm = () => {
                               return;
                             }
                             field.onChange(Number(value));
-                            setIframeUrl(undefined); // Reset iframe URL when amount changes
+                            setPaymentReference(undefined); // Reset payment reference when amount changes
                           }}
                         />
                       </Field>
@@ -139,17 +141,33 @@ const RefillBalanceForm = () => {
                 )}
               />
 
-              {iframeUrl && (
+              {paymentReference && paymentProvider === "paytabs" && (
                 <div className="w-full h-[600px]">
                   <iframe
-                    src={iframeUrl}
+                    src={paymentReference}
                     title="Payment"
                     className="w-full h-full border rounded"
                   ></iframe>
                 </div>
               )}
 
-              {!iframeUrl && (
+              {paymentReference && paymentProvider === "stripe" && (
+                <StripeProvider clientSecret={paymentReference}>
+                  <CheckoutForm
+                    clientSecret={paymentReference}
+                    onSuccess={() => {
+                      closeSheetRef.current?.click();
+                      setTimeout(() => {
+                        queryClient.invalidateQueries({
+                          queryKey: ["payment-history"],
+                        });
+                      }, 3000);
+                    }}
+                  />
+                </StripeProvider>
+              )}
+
+              {!paymentReference && (
                 <Button type="submit" disabled={submitting}>
                   {t("actions.refillBalance")}
                 </Button>
