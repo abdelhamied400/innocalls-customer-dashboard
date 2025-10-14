@@ -140,7 +140,55 @@ const CreateUserForm = () => {
               idx={0}
               className="p-4 rounded-xl bg-white h-full flex flex-col gap-2"
             >
-              {/* ...existing code... */}
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Field
+                        label={t("form.fields.name.label")}
+                        error={
+                          form.formState.errors.name?.message?.toString() || ""
+                        }
+                        htmlFor="name"
+                      >
+                        <Input
+                          id="name"
+                          variant="field"
+                          placeholder={t("form.fields.name.placeholder")}
+                          {...field}
+                        />
+                      </Field>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Field
+                        label={t("form.fields.email.label")}
+                        error={
+                          form.formState.errors.email?.message?.toString() || ""
+                        }
+                        htmlFor="email"
+                      >
+                        <Input
+                          id="email"
+                          variant="field"
+                          placeholder={t("form.fields.email.placeholder")}
+                          type="email"
+                          {...field}
+                        />
+                      </Field>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="ext"
@@ -198,7 +246,118 @@ const CreateUserForm = () => {
                   </FormItem>
                 )}
               />
-              {/* ...existing code... */}
+              <FormField
+                control={form.control}
+                name="inbound"
+                render={({ field: { onChange, ...field } }) => (
+                  <FormItem>
+                    <FormControl>
+                      <RadioGroupField
+                        label={t("form.fields.inbound.label")}
+                        htmlFor="inbound"
+                        error={form.formState.errors.inbound?.message?.toString()}
+                      >
+                        <RadioGroup
+                          {...field}
+                          value={field.value?.toString() || "1"}
+                          onValueChange={(value) => {
+                            if (/^\d+$/.test(value)) {
+                              onChange(parseInt(value, 10));
+                            }
+                          }}
+                          className="flex items-center gap-2"
+                        >
+                          <div className="flex items-center space-x-4">
+                            <RadioGroupItem value="1" id="inbound-enable" />
+                            <label htmlFor="inbound-enable">
+                              {t("form.fields.inbound.enable")}
+                            </label>
+                          </div>
+                          <div className="flex items-center space-x-4">
+                            <RadioGroupItem value="0" id="inbound-disable" />
+                            <label htmlFor="inbound-disable">
+                              {t("form.fields.inbound.disable")}
+                            </label>
+                          </div>
+                        </RadioGroup>
+                      </RadioGroupField>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="outbound"
+                render={({ field: { onChange, ...field } }) => (
+                  <FormItem>
+                    <FormControl>
+                      <RadioGroupField
+                        label={t("form.fields.outbound.label")}
+                        htmlFor="outbound"
+                        error={form.formState.errors.outbound?.message?.toString()}
+                      >
+                        <RadioGroup
+                          {...field}
+                          value={field.value?.toString() || "1"}
+                          onValueChange={(value) => {
+                            if (/^\d+$/.test(value)) {
+                              onChange(parseInt(value, 10));
+                            }
+                          }}
+                        >
+                          <div className="flex items-center space-x-4">
+                            <RadioGroupItem value="1" id="outbound-enable" />
+                            <label htmlFor="outbound-enable">
+                              {t("form.fields.outbound.enable")}
+                            </label>
+                            <RadioGroupItem value="0" id="outbound-disable" />
+                            <label htmlFor="outbound-disable">
+                              {t("form.fields.outbound.disable")}
+                            </label>
+                          </div>
+                        </RadioGroup>
+                      </RadioGroupField>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="voicemail"
+                render={({ field: { onChange, ...field } }) => (
+                  <FormItem>
+                    <FormControl>
+                      <RadioGroupField
+                        label={t("form.fields.voicemail.label")}
+                        htmlFor="voicemail"
+                        error={form.formState.errors.voicemail?.message?.toString()}
+                      >
+                        <RadioGroup
+                          {...field}
+                          value={field.value?.toString() || "0"}
+                          onValueChange={(value) => {
+                            if (/^\d+$/.test(value)) {
+                              onChange(parseInt(value, 10));
+                            }
+                          }}
+                        >
+                          <div className="flex items-center space-x-4">
+                            <RadioGroupItem value="1" id="voicemail-enable" />
+                            <label htmlFor="voicemail-enable">
+                              {t("form.fields.voicemail.enable")}
+                            </label>
+                            <RadioGroupItem value="0" id="voicemail-disable" />
+                            <label htmlFor="voicemail-disable">
+                              {t("form.fields.voicemail.disable")}
+                            </label>
+                          </div>
+                        </RadioGroup>
+                      </RadioGroupField>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
               <Button type="submit">{t("actions.submit")}</Button>
             </StepperStep>
           </form>
