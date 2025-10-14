@@ -7,45 +7,34 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useTranslations } from "@/providers/TranslationProvider";
-import { useRouter } from "next/navigation";
-import { PropsWithChildren } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import { PropsWithChildren, useEffect, useState } from "react";
 
 type RefillBalanceLayoutProps = PropsWithChildren<{}>;
 const RefillBalanceLayout = ({ children }: RefillBalanceLayoutProps) => {
   const router = useRouter();
+  const pathname = usePathname();
   const t = useTranslations("billing.refillBalance");
+  const [isOpen, setIsOpen] = useState(true);
 
-  const handleClose = () => {
-    try {
-      const history = window.history;
-      const referrer = document.referrer;
-      const currentOrigin = window.location.origin;
+  const handleOpenChange = (open: boolean) => {
+    if (open) return;
 
-      if (history.length <= 1) {
-        router.push("/billing/charges");
-        return;
-      }
-
-      // Check if referrer exists and matches your site
-      const isSameOrigin =
-        referrer && new URL(referrer).origin === currentOrigin;
-
-      if (isSameOrigin) {
-        router.back();
-      } else {
-        // fallback if user came from external site or direct visit
-        router.push("/billing/charges");
-      }
-    } catch {
-      console.error("Failed to parse referrer URL");
-      // Just in case URL parsing fails
-      router.push("/billing/charges");
-    }
+    // Only handle close action
+    setIsOpen(false);
+    router.replace("/billing/charges");
   };
 
+  useEffect(() => {
+    // Always open when component mounts or when pathname changes to refill-balance
+    if (pathname.includes("refill-balance")) {
+      setIsOpen(true);
+    }
+  }, [pathname]);
+
   return (
-    <div className="refill-balance-layout">
-      <Sheet defaultOpen onOpenChange={handleClose}>
+    <div className="refill-balance-layout" key={pathname}>
+      <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <SheetContent side="bottom" className="h-screen p-0">
           <SheetHeader className="sr-only">
             <SheetTitle>{t("title")}</SheetTitle>
