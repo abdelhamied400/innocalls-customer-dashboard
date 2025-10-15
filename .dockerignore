@@ -8,3 +8,4 @@ Dockerfile
 .dockerignore
 .next
 .env
+.env.local

@@ -84,10 +84,14 @@ export const isValidTransition = (
     return false;
   }
 
-  if (
-    from == AgentActivity.PORTAL_LOGGED_OUT ||
-    from == AgentActivity.DIALPAD_LOGGED_OUT
-  ) {
+  if (from == AgentActivity.DIALPAD_LOGGED_OUT) {
+    return [
+      AgentActivity.READY_ACCEPT_CALL,
+      AgentActivity.PORTAL_LOGGED_OUT,
+    ].includes(to);
+  }
+
+  if (from == AgentActivity.PORTAL_LOGGED_OUT) {
     return [AgentActivity.READY_ACCEPT_CALL].includes(to);
   }
 
