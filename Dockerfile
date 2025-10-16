@@ -10,6 +10,10 @@ RUN npm i -g pm2 \
 
 COPY ./ ./
 
+
+# Build in production mode so .env.production is used
+ENV NODE_ENV=production
+
 RUN npm run build
 
 EXPOSE 3000
