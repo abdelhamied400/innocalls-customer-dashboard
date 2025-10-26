@@ -40,6 +40,7 @@ export const useUaEvents = ({
     updateLastCall,
   } = useWebrtcStore();
   const currentCallId = useRef("");
+  const ringtoneRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     currentCallId.current = lastCall?.callId || "";
@@ -53,28 +54,43 @@ export const useUaEvents = ({
     [setSessionState]
   );
 
+  const stopRingtone = useCallback(() => {
+    const ringtone = ringtoneRef.current;
+    if (!ringtone) return;
+
+    try {
+      ringtone.pause();
+      ringtone.currentTime = 0;
+    } catch (error) {
+      webrtcLogger.warn("Failed to stop ringtone", error);
+    } finally {
+      ringtoneRef.current = null;
+    }
+  }, []);
+
   const handleIncomingCall = useCallback(
     (e: RTCSessionEvent, extension: ExtensionWithCredentials) => {
+      stopRingtone();
       webrtcLogger.info("Incoming call received", { session: e.session });
       const session = e.session;
       const ringtone = document.createElement("audio");
       ringtone.src = "/assets/sound/ringtone.mp3";
       ringtone.load();
+      ringtoneRef.current = ringtone;
 
       const calleeNumber = session.remote_identity?.uri?.user || "Unknown";
       const calleeName = session.remote_identity?.display_name || "Unknown";
 
       session.on("progress", () => {
         webrtcLogger.info("Call is in progress");
-        ringtone
-          .play()
+        ringtoneRef.current
+          ?.play()
           .catch((err) => webrtcLogger.error("Error playing ringtone", err));
         updateSessionState("ringing");
       });
 
       session.on("confirmed", () => {
-        ringtone.pause();
-        ringtone.currentTime = 0;
+        stopRingtone();
         webrtcLogger.info("Call confirmed");
 
         // Log incoming call as answered
@@ -92,8 +108,7 @@ export const useUaEvents = ({
       });
 
       session.on("ended", (event) => {
-        ringtone.pause();
-        ringtone.currentTime = 0;
+        stopRingtone();
         webrtcLogger.info("Call ended", event);
 
         // Check if call was never answered (missed call)
@@ -111,8 +126,7 @@ export const useUaEvents = ({
       });
 
       session.on("failed", (event) => {
-        ringtone.pause();
-        ringtone.currentTime = 0;
+        stopRingtone();
 
         // Log as rejected if call was actively rejected
         if (
@@ -143,7 +157,7 @@ export const useUaEvents = ({
 
       navigate("/incoming-call");
     },
-    [navigate, updateSessionState]
+    [navigate, stopRingtone, updateSessionState]
   );
 
   const handleOutgoingCall = useCallback(
@@ -260,6 +274,7 @@ export const useUaEvents = ({
         });
 
         session.on("ended", (event) => {
+          stopRingtone();
           webrtcLogger.info("Call ended", event);
           navigate("/dialpad");
           setCurrentSession?.(null);
@@ -275,6 +290,7 @@ export const useUaEvents = ({
           });
         });
         session.on("failed", (event) => {
+          stopRingtone();
           webrtcLogger.warn("Call failed", event);
           navigate("/dialpad");
           setCurrentSession?.(null);
@@ -309,6 +325,7 @@ export const useUaEvents = ({
       handleOutgoingCall,
       setCurrentSession,
       navigate,
+      stopRingtone,
       updateSessionState,
     ]
   );
@@ -318,9 +335,10 @@ export const useUaEvents = ({
       userAgent.removeAllListeners(); // or remove specific if needed
       setExtensionState("disconnected");
       updateSessionState(undefined);
+      stopRingtone();
     },
-    [setExtensionState, updateSessionState]
+    [setExtensionState, updateSessionState, stopRingtone]
   );
 
-  return { bindEvents, unbindEvents };
+  return { bindEvents, unbindEvents, stopRingtone };
 };

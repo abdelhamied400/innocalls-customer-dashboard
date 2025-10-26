@@ -59,7 +59,7 @@ if (typeof window !== "undefined") {
 type SipProviderProps = PropsWithChildren<{}>;
 export const SipProvider = ({ children }: SipProviderProps) => {
   const { navigate } = useRouting();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const { data: auth } = useAuth();
 
   const hasAttemptedAutoLogin = useRef(false);
@@ -93,7 +93,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   const [spyingStatus, setSpyingStatus] = useState<SpyingStatus>("spy");
   const [isSpying, setIsSpying] = useState(false);
 
-  const { bindEvents, unbindEvents } = useUaEvents({
+  const { bindEvents, unbindEvents, stopRingtone } = useUaEvents({
     setExtensionState,
     setCurrentSession,
     setSessionState,
@@ -153,24 +153,44 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     login(extension);
   };
 
-  const cleanup = () => {
+  const cleanup = useCallback(() => {
+    stopRingtone();
+
+    if (currentSession) {
+      try {
+        currentSession.terminate();
+      } catch (error) {
+        console.warn("Error terminating active session during cleanup:", error);
+      }
+      setCurrentSession(null);
+    }
+
     if (ua) {
       activeUserAgents.delete(ua);
       ua.stop();
       unbindEvents(ua);
       setUa(null);
-      setExtension(null);
     }
+    setExtension(null);
+    setSessionState(undefined);
+    setSpyingStatus("spy");
+    setIsSpying(false);
     // Reset auto-login flag when user manually logs out
     if (auth?.user?.id) {
       hasAttemptedAutoLogin.current = false;
     }
-  };
+  }, [auth?.user?.id, currentSession, stopRingtone, ua, unbindEvents]);
 
   const logout = () => {
     cleanup();
     navigate("/extensions");
   };
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      cleanup();
+    }
+  }, [status, cleanup]);
 
   const call = useCallback(
     (phoneNumber?: string) => {
