@@ -3,7 +3,7 @@ import { useRouting } from "@/providers/RoutingProvider";
 import { ExtensionState, SessionState, SpyingStatus } from "./types";
 import JsSIP, { C } from "jssip";
 import { RTCSessionEvent } from "jssip/lib/UA";
-import { RTCSession } from "jssip/lib/RTCSession";
+import { CallListener, OutgoingEvent, RTCSession } from "jssip/lib/RTCSession";
 import { ExtensionWithCredentials } from "@/types/api/extension";
 
 import { addCallToLog } from "@/lib/call-log";
@@ -41,6 +41,7 @@ export const useUaEvents = ({
   } = useWebrtcStore();
   const currentCallId = useRef("");
   const ringtoneRef = useRef<HTMLAudioElement | null>(null);
+  const ringingToneRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     currentCallId.current = lastCall?.callId || "";
@@ -183,10 +184,15 @@ export const useUaEvents = ({
 
       updateSessionState("trying");
 
-      session.on("progress", () => {
+      session.on("progress", (e: OutgoingEvent) => {
         webrtcLogger.info("Call is in progress");
         updateSessionState("ringing");
+
+        if (e.response.status_code === 180) {
+          playRingingTone();
+        }
       });
+
       session.on("confirmed", () => {
         webrtcLogger.info("Outgoing call confirmed");
         // Log outgoing call when call is initiated
@@ -219,8 +225,31 @@ export const useUaEvents = ({
     [navigate, updateSessionState]
   );
 
+  const playRingingTone = useCallback(() => {
+    ringingToneRef.current = document.createElement("audio");
+    ringingToneRef.current.src = "/assets/sound/ringing.mp3";
+    ringingToneRef.current.load();
+    ringingToneRef.current.loop = true;
+    ringingToneRef.current
+      .play()
+      .catch((err) => webrtcLogger.error("Error playing ringing tone", err));
+    return ringingToneRef.current;
+  }, []);
+
+  const stopRingingTone = useCallback(() => {
+    if (ringingToneRef.current) {
+      ringingToneRef.current.pause();
+      ringingToneRef.current.currentTime = 0;
+    }
+  }, []);
+
   const bindEvents = useCallback(
     (userAgent: JsSIP.UA, extension: ExtensionWithCredentials) => {
+      const ringingTone = document.createElement("audio");
+      ringingTone.src = "/assets/sound/ringing.mp3";
+      ringingTone.load();
+      ringingTone.loop = true;
+
       userAgent.on("connecting", () => setExtensionState("connecting"));
       userAgent.on("connected", () => setExtensionState("connected"));
       userAgent.on("disconnected", () => setExtensionState("disconnected"));
@@ -266,6 +295,7 @@ export const useUaEvents = ({
 
         session.on("confirmed", () => {
           webrtcLogger.info("Call confirmed");
+          stopRingingTone();
           setCallStartTime?.(Date.now());
           dateNow = new Date();
           updateLastCall({
@@ -275,6 +305,7 @@ export const useUaEvents = ({
 
         session.on("ended", (event) => {
           stopRingtone();
+          stopRingingTone();
           webrtcLogger.info("Call ended", event);
           navigate("/dialpad");
           setCurrentSession?.(null);
@@ -291,8 +322,11 @@ export const useUaEvents = ({
         });
         session.on("failed", (event) => {
           stopRingtone();
+          stopRingingTone();
           webrtcLogger.warn("Call failed", event);
-          navigate("/dialpad");
+          setTimeout(() => {
+            navigate("/dialpad");
+          }, 2000);
           setCurrentSession?.(null);
           updateSessionState("failed");
           setSpyingStatus("spy");
