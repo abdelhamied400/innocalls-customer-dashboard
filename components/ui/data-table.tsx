@@ -134,7 +134,7 @@ const DataTableProvider = <TData, TValue>({
   );
 };
 
-type DataTableProps = PropsWithChildren<{}>;
+type DataTableProps = PropsWithChildren<object>;
 export const DataTable = ({ children }: DataTableProps) => {
   return <Table className="">{children}</Table>;
 };

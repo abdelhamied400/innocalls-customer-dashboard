@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 
-type NumbersLayoutProps = PropsWithChildren<{}>;
+type NumbersLayoutProps = PropsWithChildren<object>;
 const NumbersLayout = ({ children }: NumbersLayoutProps) => {
   return (
     <div className="bg-white rounded-xl p-4 h-full">

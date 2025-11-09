@@ -10,7 +10,7 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import { useRouter } from "next/navigation";
 import { PropsWithChildren } from "react";
 
-type CreateUserLayoutProps = PropsWithChildren<{}>;
+type CreateUserLayoutProps = PropsWithChildren<object>;
 const CreateUserLayout = ({ children }: CreateUserLayoutProps) => {
   const router = useRouter();
   const t = useTranslations("users.create");

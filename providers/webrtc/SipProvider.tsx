@@ -56,7 +56,7 @@ if (typeof window !== "undefined") {
   cleanupAllUserAgents();
 }
 
-type SipProviderProps = PropsWithChildren<{}>;
+type SipProviderProps = PropsWithChildren<object>;
 export const SipProvider = ({ children }: SipProviderProps) => {
   const { navigate } = useRouting();
   const { data: session, status } = useSession();

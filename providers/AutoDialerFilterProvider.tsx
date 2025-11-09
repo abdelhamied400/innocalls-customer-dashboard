@@ -18,7 +18,7 @@ const AutoDialerFilterContext = createContext<AutoDialerFilterContextType>({
   updateFilter: () => {},
 });
 
-type FilterProviderProps = PropsWithChildren<{}>;
+type FilterProviderProps = PropsWithChildren<object>;
 const AutoDialerFilterProvider = ({ children }: FilterProviderProps) => {
   const [filters, setFilters] = useState({
     creationDate: { from: null, to: null },

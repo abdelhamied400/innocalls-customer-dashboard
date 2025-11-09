@@ -9,7 +9,7 @@ import {
 import { useRouter, usePathname } from "next/navigation";
 import { PropsWithChildren, useEffect, useState } from "react";
 
-type RefillBalanceLayoutProps = PropsWithChildren<{}>;
+type RefillBalanceLayoutProps = PropsWithChildren<object>;
 const RefillBalanceLayout = ({ children }: RefillBalanceLayoutProps) => {
   const router = useRouter();
   const pathname = usePathname();

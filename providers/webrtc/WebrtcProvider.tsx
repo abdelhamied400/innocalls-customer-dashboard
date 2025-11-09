@@ -6,7 +6,7 @@ import { SipProvider } from "./SipProvider";
 import { useSession } from "next-auth/react";
 import { useTranslationContext, useTranslations } from "../TranslationProvider";
 
-type WebrtcProviderProps = PropsWithChildren<{}>;
+type WebrtcProviderProps = PropsWithChildren<object>;
 export const WebrtcProvider = ({ children }: WebrtcProviderProps) => {
   const t = useTranslations("common.states");
   const { data: session, status } = useSession();

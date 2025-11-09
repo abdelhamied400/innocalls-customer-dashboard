@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 import { Table } from "../ui/table";
 
-type PaginatedTableContentProps = PropsWithChildren<{}>;
+type PaginatedTableContentProps = PropsWithChildren<object>;
 const PaginatedTableContent = ({ children }: PaginatedTableContentProps) => {
   return (
     <div className="flex-1 overflow-auto">

@@ -5,7 +5,7 @@ import withPermission from "@/containers/withPermission";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 
-type UsageLayoutProps = PropsWithChildren<{}>;
+type UsageLayoutProps = PropsWithChildren<object>;
 const UsageLayout = ({ children }: UsageLayoutProps) => {
   const t = useTranslations("usage");
   const tNav = useTranslations("sidebar.navigation");

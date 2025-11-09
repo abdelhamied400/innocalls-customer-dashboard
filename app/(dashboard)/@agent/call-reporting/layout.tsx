@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
 
-type CallReportingLayoutProps = PropsWithChildren<{}>;
+type CallReportingLayoutProps = PropsWithChildren<object>;
 const CallReportingLayout = ({ children }: CallReportingLayoutProps) => {
   return (
     <div className="bg-white rounded-xl p-4 h-full">

@@ -4,7 +4,7 @@ import ContactsList from "./Contacts/ContactsList";
 import CreateContact from "./Contacts/CreateContact";
 import UpdateContact from "./Contacts/UpdateContact";
 
-type ContactsProvidersProps = PropsWithChildren<{}>;
+type ContactsProvidersProps = PropsWithChildren<object>;
 export const ContactsProviders = ({ children }: ContactsProvidersProps) => {
   return (
     <div className="contacts">

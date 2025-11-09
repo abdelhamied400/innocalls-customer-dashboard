@@ -1,11 +1,11 @@
 import { PropsWithChildren } from "react";
 
-type PopoverCardProps = PropsWithChildren<{}>;
+type PopoverCardProps = PropsWithChildren<object>;
 const PopoverCard = ({ children }: PopoverCardProps) => {
   return <div className="popover-card">{children}</div>;
 };
 
-type PopoverCardHeaderProps = PropsWithChildren<{}>;
+type PopoverCardHeaderProps = PropsWithChildren<object>;
 export const PopoverCardHeader = ({ children }: PopoverCardHeaderProps) => {
   return (
     <div className="popover-card-header bg-gray-100 p-3 border-b flex items-center justify-between">
@@ -14,7 +14,7 @@ export const PopoverCardHeader = ({ children }: PopoverCardHeaderProps) => {
   );
 };
 
-type PopoverCardContentProps = PropsWithChildren<{}>;
+type PopoverCardContentProps = PropsWithChildren<object>;
 export const PopoverCardContent = ({ children }: PopoverCardContentProps) => {
   return (
     <div className="popover-card-content p-3 h-96 overflow-y-auto">

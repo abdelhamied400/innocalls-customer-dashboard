@@ -7,7 +7,7 @@ import {
 import { PropsWithChildren } from "react";
 import { useVocab } from "@/hooks/useVocab";
 
-type VocabProviderProps = PropsWithChildren<{}>;
+type VocabProviderProps = PropsWithChildren<object>;
 const VocabProvider = ({ children }: VocabProviderProps) => {
   const t = useTranslations("common.states");
   const { loading } = useVocab();

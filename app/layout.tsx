@@ -31,16 +31,12 @@ export const metadata: Metadata = {
     "Leading Contact Center Solutions Provider for Call Centers in the Middle East",
 };
 
-type RootLayoutProps = PropsWithChildren<{
-  params: Promise<{ locale: LocaleSlug }>;
-}>;
+type RootLayoutProps = PropsWithChildren;
 
-const RootLayout = async ({ children, params }: RootLayoutProps) => {
-  const { locale } = await params;
-  const localeObj = locales[locale] || locales[defaultLocale];
-
-  // Use the provided locale or fallback to default
-  const targetLocale = locales[locale] ? locale : defaultLocale;
+const RootLayout = ({ children }: RootLayoutProps) => {
+  // Use default locale since we're not using file-based i18n routing
+  const targetLocale = defaultLocale;
+  const localeObj = locales[targetLocale];
 
   return (
     <html lang={targetLocale} dir={localeObj.dir}>

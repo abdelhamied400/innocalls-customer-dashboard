@@ -5,7 +5,7 @@ import { PropsWithChildren, useEffect } from "react";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 
-type UsersLayoutProps = PropsWithChildren<{}>;
+type UsersLayoutProps = PropsWithChildren<object>;
 const UsersLayout = ({ children }: UsersLayoutProps) => {
   const { setPageTitle } = useAppStore();
   const locale = useLocale();

@@ -10,7 +10,7 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import { useRouter } from "next/navigation";
 import { PropsWithChildren } from "react";
 
-type EditUserLayoutProps = PropsWithChildren<{}>;
+type EditUserLayoutProps = PropsWithChildren<object>;
 const EditUserLayout = ({ children }: EditUserLayoutProps) => {
   const router = useRouter();
   const t = useTranslations("users.update");

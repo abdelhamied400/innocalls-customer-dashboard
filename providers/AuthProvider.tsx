@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import useAuth from "@/hooks/useAuth";
 import { PropsWithChildren } from "react";
 
-type AuthProviderProps = PropsWithChildren<{}>;
+type AuthProviderProps = PropsWithChildren<object>;
 const AuthProvider = ({ children }: AuthProviderProps) => {
   const t = useTranslations("common.states");
   const { status } = useSession();
