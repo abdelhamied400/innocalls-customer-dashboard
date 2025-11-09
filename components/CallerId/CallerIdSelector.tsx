@@ -60,15 +60,19 @@ const CallerIdSelector = () => {
   return (
     <div className="w-full caller-ids space-y-2">
       {fields.map((field, index) => {
+        // Watch the current values for this specific row
+        const currentDestination = watch(`callerIds.${index}.destination`);
+        const currentCallerId = watch(`callerIds.${index}.callerId`);
+
         // Include available countries + the currently selected country for this row
         const countriesForThisRow = [
           ...availableCountryOptions,
-          ...countries.filter((c) => c.code === field.destination),
+          ...countries.filter((c) => c.code === currentDestination),
         ];
 
         const selectedCountry =
-          countries.find((c) => c.code === field.destination) || null;
-        const selectedDid = dids.find((d) => d.id === field.callerId) || null;
+          countries.find((c) => c.code === currentDestination) || null;
+        const selectedDid = dids.find((d) => d.id === currentCallerId) || null;
 
         const fieldErrors = errors.callerIds?.[index];
         const countryError = fieldErrors?.destination?.message;
@@ -86,6 +90,7 @@ const CallerIdSelector = () => {
             onRemove={() => remove(index)}
             countryError={countryError}
             didError={didError}
+            shouldShowRemove={callerIds.length > 1}
           />
         );
       })}

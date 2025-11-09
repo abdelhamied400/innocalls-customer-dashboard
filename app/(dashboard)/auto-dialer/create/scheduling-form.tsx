@@ -11,6 +11,7 @@ import {
 } from "@/validation/AutoDialerCreateCampaign";
 import React from "react";
 import { useFormContext } from "react-hook-form";
+import { SmartSelect } from "@/components/SmartSelect";
 
 type DurationType = {
   name: string;
@@ -26,6 +27,9 @@ type SchedulingFormProps = {
 };
 const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
   const form = useFormContext<AutoDialerCreateStep3>();
+  const [selectedTimeZones, setSelectedTimezones] = React.useState<Timezone[]>(
+    []
+  );
 
   const {
     getValues,
@@ -73,16 +77,19 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
           control={control}
           name="durationType"
           render={({ field }) => {
-            const selectedType = durationTypes.find(
-              (type) => type.id === field.value
-            );
+            const selectedType =
+              durationTypes.find((type) => type.id === field.value) || null;
             return (
               <Select
                 {...field}
                 label="Duration Type"
                 options={durationTypes}
                 value={selectedType}
-                onChange={(type) => type && field.onChange(type.id)}
+                onChange={(type: DurationType | DurationType[] | null) => {
+                  if (type && !Array.isArray(type)) {
+                    field.onChange(type.id);
+                  }
+                }}
                 getLabel={(option) => option?.name || ""}
                 getValue={(option) => option?.id || ""}
                 placeholder="Select from the list...."
@@ -114,78 +121,94 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
           )}
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-          <FormField
-            control={control}
-            name="fromTime"
-            render={({ field }) => (
-              <Field
-                label="From Time"
-                labelAlign="center"
-                hint=""
-                error={errors.fromTime?.message}
-                htmlFor="fromTime"
-              >
-                <FormItem className="w-full">
-                  <FormControl>
-                    <DatePicker
-                      placeholder="Select from time..."
-                      id="fromTime"
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              </Field>
-            )}
-          />
-          <FormField
-            control={control}
-            name="toTime"
-            render={({ field }) => (
-              <Field
-                label="To Time"
-                labelAlign="center"
-                hint=""
-                error={errors.toTime?.message}
-                htmlFor="toTime"
-              >
-                <FormItem className="w-full">
-                  <FormControl>
-                    <DatePicker
-                      placeholder="Select to time..."
-                      id="toTime"
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              </Field>
-            )}
-          />
-        </div>
-
-        <FormField
-          control={control}
-          name="timezone"
-          render={({ field }) => {
-            const selectedTimezone = timezones.find(
-              (tz) => tz.id === field.value
-            );
-            return (
-              <Select
-                options={timezones}
-                value={selectedTimezone}
-                onChange={(timezone) => field.onChange(timezone.id)}
-                label="Timezone"
-                placeholder="Choose a timezone"
-                isVirtualized
-                getLabel={(opt) => opt.name}
-                getValue={(opt) => opt.id}
-                error={errors.timezone?.message}
+        {watch("durationType") === "time-limited" && (
+          <>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+              <FormField
+                control={control}
+                name="fromTime"
+                render={({ field }) => (
+                  <Field
+                    label="From Time"
+                    labelAlign="center"
+                    hint=""
+                    error={errors.fromTime?.message}
+                    htmlFor="fromTime"
+                  >
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <DatePicker
+                          placeholder="Select from time..."
+                          id="fromTime"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  </Field>
+                )}
               />
-            );
-          }}
-        />
+              <FormField
+                control={control}
+                name="toTime"
+                render={({ field }) => (
+                  <Field
+                    label="To Time"
+                    labelAlign="center"
+                    hint=""
+                    error={errors.toTime?.message}
+                    htmlFor="toTime"
+                  >
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <DatePicker
+                          placeholder="Select to time..."
+                          id="toTime"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  </Field>
+                )}
+              />
+            </div>
 
+            <FormField
+              control={control}
+              name="timezone"
+              render={({ field }) => {
+                const selectedTimezone = timezones.find(
+                  (tz) => tz.id === field.value
+                );
+                return (
+                  <SmartSelect
+                    label="Select City"
+                    options={timezones}
+                    value={selectedTimezone || null}
+                    onChange={(timezone) => {
+                      if (timezone && !Array.isArray(timezone)) {
+                        field.onChange(timezone.id);
+                      }
+                    }}
+                    getOptionLabel={(o) => o.name}
+                    getOptionValue={(o) => String(o.id)}
+                  />
+                );
+              }}
+            />
+
+            <SmartSelect<Timezone, true>
+              label="Tags"
+              options={timezones}
+              value={selectedTimeZones}
+              onChange={setSelectedTimezones}
+              getOptionLabel={(o) => o.name}
+              getOptionValue={(o) => o.id}
+              isMulti
+              isCreatable
+              menuPortalTarget={document.body}
+            />
+          </>
+        )}
         <Button onClick={handleNext}>Next</Button>
       </div>
     </Form>

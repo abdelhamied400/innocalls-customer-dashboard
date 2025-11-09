@@ -16,6 +16,7 @@ type Props = {
   onRemove: () => void;
   countryError?: string;
   didError?: string;
+  shouldShowRemove: boolean;
 };
 
 /**
@@ -33,6 +34,7 @@ const CallerIdRow = memo(
     onRemove,
     countryError,
     didError,
+    shouldShowRemove,
   }: Props) => {
     return (
       <div className="call-id bg-gray-50 border border-gray-100 p-4 rounded-lg flex items-center gap-4">
@@ -40,7 +42,7 @@ const CallerIdRow = memo(
           <div className="flex flex-col gap-1">
             <Select
               label="Country"
-              options={countries}
+              options={[...countries, ...countries]}
               value={selectedCountry}
               onChange={(country: Country | Country[] | null) => {
                 if (country && !Array.isArray(country)) {
@@ -52,6 +54,7 @@ const CallerIdRow = memo(
               placeholder="Select a country..."
               getLabel={(option) => `${option.emoji} ${option.name}`}
               getValue={(option) => option.code}
+              showSelectedTags={false}
             />
             {countryError && (
               <p className="text-sm text-destructive mt-1">{countryError}</p>
@@ -73,6 +76,7 @@ const CallerIdRow = memo(
               placeholder="Select a DID..."
               getLabel={(option) => option.name}
               getValue={(option) => option.id}
+              showSelectedTags={false}
             />
             {didError && (
               <p className="text-sm text-destructive mt-1">{didError}</p>
@@ -80,15 +84,17 @@ const CallerIdRow = memo(
           </div>
         </div>
 
-        <Button
-          variant="ghost-destructive"
-          size="icon"
-          className="px-3 mt-6"
-          type="button"
-          onClick={onRemove}
-        >
-          <DeleteIcon />
-        </Button>
+        {shouldShowRemove && (
+          <Button
+            variant="ghost-destructive"
+            size="icon"
+            className="px-3 mt-6"
+            type="button"
+            onClick={onRemove}
+          >
+            <DeleteIcon />
+          </Button>
+        )}
       </div>
     );
   }
