@@ -1,91 +1,99 @@
 // components/CallerIdRow.tsx
 import { memo } from "react";
-import { useFormContext } from "react-hook-form";
 import { Button } from "../ui/button";
 import Select from "../select";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
-import {
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
 import { Country } from "@/types/api/country";
 import { Did } from "@/types/api/did";
 
 type Props = {
-  index: number;
   countries: Country[];
   dids: Did[];
-  remove: (index: number) => void;
+  selectedCountry: Country | null;
+  selectedDid: Did | null;
+  onCountryChange: (country: Country | null) => void;
+  onDidChange: (did: Did | null) => void;
+  onRemove: () => void;
+  countryError?: string;
+  didError?: string;
 };
 
-const CallerIdRow = memo(({ index, countries, dids, remove }: Props) => {
-  const { control } = useFormContext();
+/**
+ * Dumb/Presentational Component
+ * Renders a single caller ID row with country and DID selects
+ */
+const CallerIdRow = memo(
+  ({
+    countries,
+    dids,
+    selectedCountry,
+    selectedDid,
+    onCountryChange,
+    onDidChange,
+    onRemove,
+    countryError,
+    didError,
+  }: Props) => {
+    return (
+      <div className="call-id bg-gray-50 border border-gray-100 p-4 rounded-lg flex items-center gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 flex-1 gap-2">
+          <div className="flex flex-col gap-1">
+            <Select
+              label="Country"
+              options={countries}
+              value={selectedCountry}
+              onChange={(country: Country | Country[] | null) => {
+                if (country && !Array.isArray(country)) {
+                  onCountryChange(country);
+                } else if (country === null) {
+                  onCountryChange(null);
+                }
+              }}
+              placeholder="Select a country..."
+              getLabel={(option) => `${option.emoji} ${option.name}`}
+              getValue={(option) => option.code}
+            />
+            {countryError && (
+              <p className="text-sm text-destructive mt-1">{countryError}</p>
+            )}
+          </div>
 
-  return (
-    <div className="call-id bg-gray-50 border border-gray-100 p-4 rounded-lg flex gap-2 items-center">
-      <FormField
-        control={control}
-        name={`callerIds.${index}.destination`}
-        render={({ field }) => {
-          const selectedCountry =
-            countries.find((c) => c.code === field.value) ?? null;
-          return (
-            <FormItem className="flex-1">
-              <FormControl>
-                <Select
-                  label="Country"
-                  options={countries}
-                  value={selectedCountry}
-                  onChange={(country: Country) =>
-                    country && field.onChange(country.code)
-                  }
-                  placeholder="Select a country..."
-                  getLabel={(option) => `${option.emoji} ${option.name}`}
-                  getValue={(option) => option.code}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          );
-        }}
-      />
-      <FormField
-        control={control}
-        name={`callerIds.${index}.callerId`}
-        render={({ field }) => {
-          const selectedDid = dids.find((d) => d.id === field.value) ?? null;
-          return (
-            <FormItem className="flex-1">
-              <FormControl>
-                <Select
-                  {...field}
-                  label="DID"
-                  options={dids}
-                  value={selectedDid}
-                  onChange={(did) => did && field.onChange(did.id)}
-                  placeholder="Select a DID..."
-                  getLabel={(option) => option.name}
-                  getValue={(option) => option.id}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          );
-        }}
-      />
-      <Button
-        variant="ghost-destructive"
-        size="icon"
-        className="px-3 mt-6"
-        type="button"
-        onClick={() => remove(index)}
-      >
-        <DeleteIcon />
-      </Button>
-    </div>
-  );
-});
+          <div className="flex flex-col gap-1">
+            <Select
+              label="DID"
+              options={dids}
+              value={selectedDid}
+              onChange={(did: Did | Did[] | null) => {
+                if (did && !Array.isArray(did)) {
+                  onDidChange(did);
+                } else if (did === null) {
+                  onDidChange(null);
+                }
+              }}
+              placeholder="Select a DID..."
+              getLabel={(option) => option.name}
+              getValue={(option) => option.id}
+            />
+            {didError && (
+              <p className="text-sm text-destructive mt-1">{didError}</p>
+            )}
+          </div>
+        </div>
+
+        <Button
+          variant="ghost-destructive"
+          size="icon"
+          className="px-3 mt-6"
+          type="button"
+          onClick={onRemove}
+        >
+          <DeleteIcon />
+        </Button>
+      </div>
+    );
+  }
+);
+
+CallerIdRow.displayName = "CallerIdRow";
 
 export default CallerIdRow;

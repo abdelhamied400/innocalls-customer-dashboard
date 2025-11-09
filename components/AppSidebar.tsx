@@ -182,9 +182,8 @@ const AppSidebar = () => {
               icon={<RingVolume />}
               title={t("navigation.autoDialer")}
               href={`/auto-dialer`}
-              disabled={true}
-              isNew={false}
-              isComingSoon={true}
+              isNew={true}
+              isComingSoon={false}
             />
             <SidebarItem
               icon={<Quiz />}

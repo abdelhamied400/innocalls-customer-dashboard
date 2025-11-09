@@ -25,9 +25,10 @@ type CallDetailsFormProps = {
 };
 const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
   const form = useFormContext<AutoDialerCreateStep2>();
-  const { data: extensions, isLoading } = useLocalizedQuery(queryExtensions({}));
+  const { data: extensions } = useLocalizedQuery(queryExtensions({}));
 
   const {
+    watch,
     trigger,
     control,
     formState: { errors },
@@ -92,6 +93,38 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
           )}
         />
 
+        {watch("playAnnouncement") && (
+          <FormField
+            control={control}
+            name="announcement"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <FormControl>
+                  <div className="">
+                    {/* <h3>Announcement</h3> */}
+                    <Dropzone
+                      options={{
+                        accept: { "audio/mp3": [".mp3"] },
+                        maxSize: SOUND_SIZE_LIMIT,
+                        multiple: false,
+                        maxFiles: 1,
+                      }}
+                      value={field.value}
+                      onChange={field.onChange}
+                    >
+                      <DropzoneTrigger />
+                      <DropzoneFileList />
+                    </Dropzone>
+                    <p className="text-destructive">
+                      {errors.announcement?.message}
+                    </p>
+                  </div>
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        )}
+
         <hr />
         <FormField
           control={control}
@@ -125,20 +158,13 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
 
         <hr />
 
-        <FormField
-          control={control}
-          name="callerIds"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-start gap-2">
-              <FormControl>
-                <div className="flex-1">
-                  <h3>Caller IDs</h3>
-                  <CallerIdSelector />
-                </div>
-              </FormControl>
-            </FormItem>
+        <div className="flex-1">
+          <h3>Caller IDs</h3>
+          <CallerIdSelector />
+          {errors.callerIds?.message && (
+            <p className="text-destructive mt-2">{errors.callerIds.message}</p>
           )}
-        />
+        </div>
 
         <Button size="lg" onClick={handleNext} type="button">
           Next
