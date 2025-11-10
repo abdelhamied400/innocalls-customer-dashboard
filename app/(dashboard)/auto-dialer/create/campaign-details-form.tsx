@@ -57,7 +57,7 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
               error={errors.campaignName?.message}
               htmlFor="campaignName"
             >
-              <FormItem>
+              <FormItem className="w-full">
                 <FormControl>
                   <Input
                     id="campaignName"

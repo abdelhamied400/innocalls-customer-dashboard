@@ -185,26 +185,22 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
               name="timezone"
               render={({ field }) => {
                 return (
-                  <>
-                    {JSON.stringify(field.value)}
-                    <VirtualizedSelect
-                      label="Select City"
-                      options={timezonesOptions}
-                      placeholder="Select a timezone..."
-                      error={errors.timezone?.message}
-                      value={
-                        timezonesOptions.find(
-                          (tz) => tz.value === field.value
-                        ) || null
-                      }
-                      onChange={(option) => {
-                        const value = option?.value || "";
-                        setValue(`timezone`, value, {
-                          shouldValidate: true,
-                        });
-                      }}
-                    />
-                  </>
+                  <VirtualizedSelect
+                    label="Select City"
+                    options={timezonesOptions}
+                    placeholder="Select a timezone..."
+                    error={errors.timezone?.message}
+                    value={
+                      timezonesOptions.find((tz) => tz.value === field.value) ||
+                      null
+                    }
+                    onChange={(option) => {
+                      const value = option?.value || "";
+                      setValue(`timezone`, value, {
+                        shouldValidate: true,
+                      });
+                    }}
+                  />
                 );
               }}
             />
