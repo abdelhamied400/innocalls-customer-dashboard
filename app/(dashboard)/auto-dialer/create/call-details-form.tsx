@@ -13,12 +13,14 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import Select from "@/components/select";
+import Select from "@/components/Select";
 import { SOUND_SIZE_LIMIT } from "@/constants/file";
 import queryExtensions from "@/queries/queryExtensions";
 import { AutoDialerCreateStep2 } from "@/validation/AutoDialerCreateCampaign";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useFormContext } from "react-hook-form";
+import { timezones } from "@/constants/timezones";
+import Field from "@/components/ui/field";
 
 type CallDetailsFormProps = {
   onNext: () => void;
@@ -131,25 +133,23 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
           name="agents"
           render={({ field }) => {
             return (
-              <FormItem className="flex flex-row items-start gap-2">
+              <FormItem className="flex flex-row items-start gap-2 w-full">
                 <FormControl>
-                  <div className="flex-1">
-                    <h3>Attach Agents</h3>
-                    <div className="w-full">
-                      <Select
-                        options={extensions}
-                        label="Agents"
-                        placeholder="Select from the list...."
-                        error={errors.agents?.message}
-                        value={field.value}
-                        getLabel={(option) => `${option.name} (${option.ext})`}
-                        getValue={(option) => option.id}
-                        onChange={field.onChange}
-                        isMulti
-                        isVirtualized
-                      ></Select>
-                    </div>
-                  </div>
+                  <Select
+                    className="w-full"
+                    label="Agents"
+                    error={errors.agents?.message}
+                    options={
+                      extensions?.map((ext) => ({
+                        label: `${ext.name} (${ext.ext})`,
+                        value: ext.id,
+                      })) || []
+                    }
+                    placeholder="Select from the list...."
+                    value={field.value}
+                    onChange={field.onChange}
+                    isMulti
+                  ></Select>
                 </FormControl>
               </FormItem>
             );

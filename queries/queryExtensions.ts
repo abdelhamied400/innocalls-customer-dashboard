@@ -1,6 +1,6 @@
 import extensionsService from "@/services/extensions.service";
 
-type ExtensionsFilters = {};
+type ExtensionsFilters = object;
 const queryExtensions = (filters: ExtensionsFilters) => {
   return {
     queryKey: ["extensions", filters],

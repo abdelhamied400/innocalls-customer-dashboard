@@ -18,7 +18,7 @@ import { FilterBox } from "@/components/FilterBox";
 import Field from "@/components/ui/field";
 import DatePicker from "@/components/ui/date-picker";
 import { useState } from "react";
-import MultiSelect from "@/components/select";
+import MultiSelect from "@/components/oldselect";
 import { useVocab } from "@/hooks/useVocab";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";

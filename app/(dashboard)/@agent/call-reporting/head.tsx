@@ -5,7 +5,7 @@ import { AgentCallReportingFilters, Option } from "@/types/api/call-reporting";
 import { useState } from "react";
 import Field from "@/components/ui/field";
 import { FilterAltOutlined } from "@mui/icons-material";
-import MultiSelect from "@/components/select";
+import MultiSelect from "@/components/oldselect";
 import {
   Collapsible,
   CollapsibleContent,

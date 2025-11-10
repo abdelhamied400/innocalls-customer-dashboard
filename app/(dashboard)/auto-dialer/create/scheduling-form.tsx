@@ -2,16 +2,16 @@ import { Button } from "@/components/ui/button";
 import DatePicker from "@/components/ui/date-picker";
 import Field from "@/components/ui/field";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import Select from "@/components/select";
+import Select, { Option } from "@/components/Select";
+import VirtualizedSelect from "@/components/VirtualizedSelect";
 import SpinButton from "@/components/ui/spin-button";
-import { Timezone, timezones } from "@/constants/timezones";
+import { timezones } from "@/constants/timezones";
 import {
   AutoDialerCreateStep3,
   AutoDialerCreateStep3Schema,
 } from "@/validation/AutoDialerCreateCampaign";
-import React from "react";
+import React, { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
-import { SmartSelect } from "@/components/SmartSelect";
 
 type DurationType = {
   name: string;
@@ -27,9 +27,16 @@ type SchedulingFormProps = {
 };
 const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
   const form = useFormContext<AutoDialerCreateStep3>();
-  const [selectedTimeZones, setSelectedTimezones] = React.useState<Timezone[]>(
-    []
-  );
+
+  const durationTypesOptions = durationTypes.map((type) => ({
+    label: type.name,
+    value: type.id,
+  }));
+
+  const timezonesOptions = timezones.map((tz) => ({
+    label: tz.name,
+    value: tz.id,
+  }));
 
   const {
     getValues,
@@ -37,6 +44,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
     clearErrors,
     setError,
     control,
+    setValue,
     formState: { errors },
   } = form;
 
@@ -78,20 +86,20 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
           name="durationType"
           render={({ field }) => {
             const selectedType =
-              durationTypes.find((type) => type.id === field.value) || null;
+              durationTypesOptions.find((type) => type.value === field.value) ||
+              null;
             return (
               <Select
                 {...field}
                 label="Duration Type"
-                options={durationTypes}
+                options={durationTypesOptions}
                 value={selectedType}
-                onChange={(type: DurationType | DurationType[] | null) => {
-                  if (type && !Array.isArray(type)) {
-                    field.onChange(type.id);
-                  }
+                onChange={(option) => {
+                  const value = option?.value || "";
+                  setValue(`durationType`, value, {
+                    shouldValidate: true,
+                  });
                 }}
-                getLabel={(option) => option?.name || ""}
-                getValue={(option) => option?.id || ""}
                 placeholder="Select from the list...."
                 error={errors.durationType?.message}
               ></Select>
@@ -176,36 +184,29 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
               control={control}
               name="timezone"
               render={({ field }) => {
-                const selectedTimezone = timezones.find(
-                  (tz) => tz.id === field.value
-                );
                 return (
-                  <SmartSelect
-                    label="Select City"
-                    options={timezones}
-                    value={selectedTimezone || null}
-                    onChange={(timezone) => {
-                      if (timezone && !Array.isArray(timezone)) {
-                        field.onChange(timezone.id);
+                  <>
+                    {JSON.stringify(field.value)}
+                    <VirtualizedSelect
+                      label="Select City"
+                      options={timezonesOptions}
+                      placeholder="Select a timezone..."
+                      error={errors.timezone?.message}
+                      value={
+                        timezonesOptions.find(
+                          (tz) => tz.value === field.value
+                        ) || null
                       }
-                    }}
-                    getOptionLabel={(o) => o.name}
-                    getOptionValue={(o) => String(o.id)}
-                  />
+                      onChange={(option) => {
+                        const value = option?.value || "";
+                        setValue(`timezone`, value, {
+                          shouldValidate: true,
+                        });
+                      }}
+                    />
+                  </>
                 );
               }}
-            />
-
-            <SmartSelect<Timezone, true>
-              label="Tags"
-              options={timezones}
-              value={selectedTimeZones}
-              onChange={setSelectedTimezones}
-              getOptionLabel={(o) => o.name}
-              getOptionValue={(o) => o.id}
-              isMulti
-              isCreatable
-              menuPortalTarget={document.body}
             />
           </>
         )}

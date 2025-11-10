@@ -24,7 +24,7 @@ import InboundAnalyticsAgentPerformance from "./agent-performance";
 import InboundAnalyticsIVRAnalysis from "./ivr-analysis";
 import InboundAnalyticsRepeatedCallers from "./repeated-callers";
 import QuickStats from "./quick-stats";
-import Select from "@/components/select";
+import Select from "@/components/oldselect";
 import InboundAnalyticsDateDistribution from "./date-distribution";
 import InboundAnalyticsQueueAnalysis from "./queue-analysis";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";

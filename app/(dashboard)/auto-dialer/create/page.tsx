@@ -68,7 +68,7 @@ const CreateAutoDialerCampaignSheet = () => {
     // setCurrentStep((step) => step + 1);
 
     console.log(data);
-  });
+  }, console.error);
 
   return (
     <Sheet defaultOpen={true} onOpenChange={() => router.back()}>

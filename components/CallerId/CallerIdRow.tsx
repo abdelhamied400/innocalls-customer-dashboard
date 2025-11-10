@@ -1,18 +1,23 @@
 // components/CallerIdRow.tsx
 import { memo } from "react";
 import { Button } from "../ui/button";
-import Select from "../select";
+import Select from "../Select";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
 import { Country } from "@/types/api/country";
 import { Did } from "@/types/api/did";
 
+type SelectOption = {
+  label: string;
+  value: string;
+};
+
 type Props = {
   countries: Country[];
   dids: Did[];
-  selectedCountry: Country | null;
-  selectedDid: Did | null;
-  onCountryChange: (country: Country | null) => void;
-  onDidChange: (did: Did | null) => void;
+  selectedCountryCode: string;
+  selectedDidId: string;
+  onCountryChange: (countryCode: string) => void;
+  onDidChange: (didId: string) => void;
   onRemove: () => void;
   countryError?: string;
   didError?: string;
@@ -27,8 +32,8 @@ const CallerIdRow = memo(
   ({
     countries,
     dids,
-    selectedCountry,
-    selectedDid,
+    selectedCountryCode,
+    selectedDidId,
     onCountryChange,
     onDidChange,
     onRemove,
@@ -36,52 +41,52 @@ const CallerIdRow = memo(
     didError,
     shouldShowRemove,
   }: Props) => {
+    const countryOptions: SelectOption[] = countries.map((country) => ({
+      label: country.name,
+      value: country.code,
+    }));
+
+    const didOptions: SelectOption[] = dids.map((did) => ({
+      label: did.name,
+      value: did.id,
+    }));
+
+    const selectedCountryOption =
+      countryOptions.find((opt) => opt.value === selectedCountryCode) || null;
+
+    const selectedDidOption =
+      didOptions.find((opt) => opt.value === selectedDidId) || null;
+
     return (
       <div className="call-id bg-gray-50 border border-gray-100 p-4 rounded-lg flex items-center gap-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 flex-1 gap-2">
-          <div className="flex flex-col gap-1">
-            <Select
-              label="Country"
-              options={[...countries, ...countries]}
-              value={selectedCountry}
-              onChange={(country: Country | Country[] | null) => {
-                if (country && !Array.isArray(country)) {
-                  onCountryChange(country);
-                } else if (country === null) {
-                  onCountryChange(null);
-                }
-              }}
-              placeholder="Select a country..."
-              getLabel={(option) => `${option.emoji} ${option.name}`}
-              getValue={(option) => option.code}
-              showSelectedTags={false}
-            />
-            {countryError && (
-              <p className="text-sm text-destructive mt-1">{countryError}</p>
-            )}
-          </div>
+          <Select
+            label="Country"
+            options={countryOptions}
+            value={selectedCountryOption}
+            onChange={(option) => {
+              const value = Array.isArray(option)
+                ? option[0]?.value
+                : option?.value;
+              onCountryChange(value || "");
+            }}
+            placeholder="Select a country..."
+            error={countryError}
+          />
 
-          <div className="flex flex-col gap-1">
-            <Select
-              label="DID"
-              options={dids}
-              value={selectedDid}
-              onChange={(did: Did | Did[] | null) => {
-                if (did && !Array.isArray(did)) {
-                  onDidChange(did);
-                } else if (did === null) {
-                  onDidChange(null);
-                }
-              }}
-              placeholder="Select a DID..."
-              getLabel={(option) => option.name}
-              getValue={(option) => option.id}
-              showSelectedTags={false}
-            />
-            {didError && (
-              <p className="text-sm text-destructive mt-1">{didError}</p>
-            )}
-          </div>
+          <Select
+            label="DID"
+            options={didOptions}
+            value={selectedDidOption}
+            onChange={(option) => {
+              const value = Array.isArray(option)
+                ? option[0]?.value
+                : option?.value;
+              onDidChange(value || "");
+            }}
+            placeholder="Select a DID..."
+            error={didError}
+          />
         </div>
 
         {shouldShowRemove && (

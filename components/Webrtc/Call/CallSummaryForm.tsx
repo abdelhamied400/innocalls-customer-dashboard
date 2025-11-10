@@ -7,7 +7,7 @@ import Field from "@/components/ui/field";
 import { useToast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import MultiSelect from "@/components/select";
+import MultiSelect from "@/components/oldselect";
 import { useMemo, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import webrtcService from "@/services/webrtc.service";

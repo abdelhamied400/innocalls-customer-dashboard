@@ -1,5 +1,5 @@
 import NoData from "@/components/Analytics/NoData";
-import Select from "@/components/select";
+import Select from "@/components/oldselect";
 import StatsCard, { StatsCardSkeleton } from "@/components/StatsCard";
 import StatsDetailedCard from "@/components/StatsDetailedCard";
 import { Button } from "@/components/ui/button";
