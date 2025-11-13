@@ -28,7 +28,7 @@ type DefaultOption = {
 type SelectProps<OptionType> = {
   options: OptionType[];
   value: OptionType | OptionType[] | null;
-  onChange: (value: OptionType | OptionType[] | null) => void;
+  onChange: (value: OptionType | OptionType[] | null | any) => void;
   onCreateOption?: (inputValue: string) => void;
   isMulti?: boolean;
   isVirtualized?: boolean;
