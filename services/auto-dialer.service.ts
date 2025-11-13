@@ -1,5 +1,6 @@
 import { objToQueryString } from "@/lib/utils";
 import api from "./api";
+import { objToFormData } from "@/lib/formData";
 
 type FetchActiveCampaignsResponse = {
   totalPages: number;
@@ -51,6 +52,11 @@ export default {
     const queryString = objToQueryString(filtersObj);
     const res = await api.get(`/auto-dialer/campaigns?${queryString}`);
     return res.data.data;
+  },
+  createCampaign: async (data: object) => {
+    const formData = objToFormData(data);
+    const res = await api.post("auto-dialer/campaigns", formData);
+    return res.data;
   },
   startCampaign: async (campaignId: string) => {
     const res = await api.patch(`/auto-dialer/campaigns/${campaignId}/start`);

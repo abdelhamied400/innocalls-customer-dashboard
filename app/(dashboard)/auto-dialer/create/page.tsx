@@ -29,6 +29,8 @@ import {
 import SchedulingForm from "./scheduling-form";
 import CustomersListForm from "./customers-list-form";
 import { generateUUID } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+import autoDialerService from "@/services/auto-dialer.service";
 
 const steps = [
   "Campaign Details",
@@ -39,6 +41,7 @@ const steps = [
 
 const CreateAutoDialerCampaignSheet = () => {
   const router = useRouter();
+  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(0);
 
   const form = useForm<AutoDialerCreateCampaign>({
@@ -64,11 +67,35 @@ const CreateAutoDialerCampaignSheet = () => {
     },
   });
 
-  const onSubmit = form.handleSubmit((data) => {
-    // setCurrentStep((step) => step + 1);
-
-    console.log(data);
-  }, console.error);
+  const onSubmit = form.handleSubmit(
+    async (data) => {
+      // Submit the form data to create the campaign
+      try {
+        const res = await autoDialerService.createCampaign(data);
+        toast({
+          title: "Campaign Created",
+          description:
+            "The auto dialer campaign has been created successfully.",
+        });
+        // router.back();
+      } catch (error) {
+        toast({
+          title: "Error",
+          description:
+            "There was an error creating the campaign. Please try again.",
+          variant: "destructive",
+        });
+      }
+    },
+    (error) => {
+      console.log(error);
+      toast({
+        title: "Form Error",
+        description: "Please fix the errors in the form before proceeding.",
+        variant: "destructive",
+      });
+    }
+  );
 
   return (
     <Sheet defaultOpen={true} onOpenChange={() => router.back()}>

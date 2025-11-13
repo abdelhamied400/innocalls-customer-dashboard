@@ -35,6 +35,11 @@ const baseColors = {
     "4": "hsl(var(--chart-4))",
     "5": "hsl(var(--chart-5))",
   },
+  stroke: "hsl(var(--stroke))",
+  font: "hsl(var(--font))",
+  icons: "hsl(var(--icons))",
+  "sub-font": "hsl(var(--sub-font))",
+  grey: "hsl(var(--grey))",
 };
 
 export default baseColors;
