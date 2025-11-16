@@ -226,6 +226,10 @@ export const useUaEvents = ({
   );
 
   const playRingingTone = useCallback(() => {
+    if (ringingToneRef.current) {
+      // Already playing
+      return ringingToneRef.current;
+    }
     ringingToneRef.current = document.createElement("audio");
     ringingToneRef.current.src = "/assets/sound/ringing.mp3";
     ringingToneRef.current.load();
