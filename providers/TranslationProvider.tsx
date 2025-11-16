@@ -94,7 +94,7 @@ export const useTranslationContext = () => {
 export const useTranslations = (namespace?: string) => {
   const { locale } = useTranslationContext();
 
-  return (key: string, params?: Record<string, any>) => {
+  return (key: string, params?: Record<string, unknown>) => {
     const fullKey = namespace ? `${namespace}.${key}` : key;
     return getTranslation(locale, fullKey, params);
   };

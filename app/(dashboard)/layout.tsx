@@ -1,11 +1,10 @@
 "use client";
-import React, { PropsWithChildren, useEffect, useState } from "react";
+import React, { PropsWithChildren } from "react";
 import Innortc from "./Innortc";
 import useAuthStore from "@/store/auth.slice";
 import ResponsiveSidebar from "@/components/ResponsiveSidebar";
 import ResponsiveWebrtc from "@/components/ResponsiveWebrtc";
 import AppNavbar from "@/components/AppNavbar";
-import useAppStore from "@/store/app.slice";
 import { getCookie } from "cookies-next/client";
 import { useSession } from "next-auth/react";
 import { useLayoutManager } from "@/hooks/use-layout-manager";
@@ -20,10 +19,6 @@ const DashboardLayout = ({ children, agent }: DashboardLayoutProps) => {
   const { data: session } = useSession();
   const { data: auth } = useAuth();
   const { Organization } = useAuthStore();
-  const [defaultOrganizationId, setDefaultOrganizationId] = useState<
-    string | null
-  >(null);
-  const { isWebrtcOpen, setWebrtcOpen } = useAppStore();
 
   // Use the layout manager hook for clean layout management
   const { getLayoutClasses, shouldUseSidebarSheet } = useLayoutManager();
@@ -34,14 +29,10 @@ const DashboardLayout = ({ children, agent }: DashboardLayoutProps) => {
       auth?.user?.webrtcAccess) ||
     session?.userType === "agent";
 
-  useEffect(() => {
-    const orgId = getCookie("OrganizationId");
-    if (orgId) {
-      setDefaultOrganizationId(orgId as string);
-    } else {
-      setDefaultOrganizationId(null);
-    }
-  }, []);
+  // Get default organization ID from cookie
+  const defaultOrganizationId = getCookie("OrganizationId") as
+    | string
+    | undefined;
 
   return (
     <div

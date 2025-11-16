@@ -16,7 +16,7 @@ import TalkTimeDistribution from "./talk-time-distribution";
 import HourlyDistributionAnalytics from "./hourly-distribution";
 import DateDistributionAnalytics from "./date-distribution";
 import AgentStatsAnalytics from "./agent-stats";
-import Select from "@/components/select";
+import Select from "@/components/oldselect";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 import { Switch } from "@/components/ui/switch";

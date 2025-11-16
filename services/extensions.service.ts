@@ -1,11 +1,12 @@
+import { Extension } from "@/types/api/extension";
 import api from "./api";
 
-type ExtensionsFilter = {};
-const listExtensions = async (filters: ExtensionsFilter) => {
-  const res = await api.get("/extension/list");
-  return res.data;
-};
-
+type ListExtensionsFilters = {};
 export default {
-  listExtensions,
+  listExtensions: async (
+    filters: ListExtensionsFilters
+  ): Promise<Extension[]> => {
+    const res = await api.get("/extension/list", { params: filters });
+    return res.data;
+  },
 };

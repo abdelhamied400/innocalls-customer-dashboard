@@ -33,6 +33,15 @@ export const AutoDialerCreateStep2Schema = z.object({
       message: "File size must be under 70 KB",
     }),
   playAnnouncement: z.boolean().default(false),
+  announcement: z
+    .instanceof(File, { message: "Please upload a valid file" })
+    .refine((file) => file.type === "audio/mpeg", {
+      message: "Only MP3 files are allowed",
+    })
+    .refine((file) => file.size <= 70000000, {
+      message: "File size must be under 70 KB",
+    })
+    .optional(),
   agents: z.array(z.any()).min(1, "At least one agent is required"),
   callerIds: z
     .array(

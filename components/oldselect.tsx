@@ -9,6 +9,9 @@ import ReactSelect, {
   components,
   Props as ReactSelectProps,
   GroupBase,
+  MenuListProps,
+  MultiValue,
+  SingleValue,
 } from "react-select";
 import CreatableReactSelect from "react-select/creatable";
 import { FixedSizeList as List } from "react-window";
@@ -25,7 +28,7 @@ type DefaultOption = {
 type SelectProps<OptionType> = {
   options: OptionType[];
   value: OptionType | OptionType[] | null;
-  onChange: (value: OptionType | OptionType[] | null) => void;
+  onChange: (value: OptionType | OptionType[] | null | any) => void;
   onCreateOption?: (inputValue: string) => void;
   isMulti?: boolean;
   isVirtualized?: boolean;
@@ -54,7 +57,7 @@ type SelectProps<OptionType> = {
 >;
 const { ValueContainer, Placeholder } = components;
 
-const Select = ({
+const Select = <OptionType = DefaultOption,>({
   options,
   value,
   onChange,
@@ -76,19 +79,26 @@ const Select = ({
   badgeClassName,
   portalled = true,
   ...rest
-}: SelectProps<any>) => {
+}: SelectProps<OptionType>) => {
   const t = useTranslations("common.select");
 
   placeholder = placeholder || t("placeholder");
 
-  type OptionType = (typeof options)[number];
   const getOptionLabel =
-    getLabel || ((opt: OptionType) => opt?.label as string);
+    getLabel ||
+    ((opt: OptionType) => (opt as unknown as DefaultOption)?.label as string);
   const getOptionValue =
-    getValue || ((opt: OptionType) => opt?.value as string);
+    getValue ||
+    ((opt: OptionType) => (opt as unknown as DefaultOption)?.value as string);
 
-  const MenuList = (props: any) => {
+  const MenuList = (
+    props: MenuListProps<OptionType, boolean, GroupBase<OptionType>>
+  ) => {
     const { children } = props;
+
+    if (!children || !Array.isArray(children)) {
+      return null;
+    }
 
     const height = Math.min(
       heightPerItem * children.length,
@@ -135,8 +145,16 @@ const Select = ({
           <SelectComponent<OptionType, boolean>
             {...rest}
             options={options}
-            value={value as any}
-            onChange={(val) => onChange(val as any)}
+            value={value}
+            onChange={(val) => {
+              if (isMulti) {
+                onChange(
+                  val ? Array.from(val as MultiValue<OptionType>) : null
+                );
+              } else {
+                onChange(val as SingleValue<OptionType>);
+              }
+            }}
             isMulti={isMulti}
             isDisabled={isDisabled}
             placeholder={placeholder}
@@ -154,7 +172,7 @@ const Select = ({
               styles: { menuPortal: (base) => ({ ...base, zIndex: 9999 }) },
             })}
             classNames={{
-              control: () => "control",
+              control: () => "control min-h-0!",
               valueContainer: () => "value-container",
               indicatorsContainer: () =>
                 "absolute -end-2 top-1/2 -translate-y-1/2 pointer-events-auto",
@@ -231,7 +249,7 @@ const Select = ({
             {value.map((item) => (
               <Badge
                 key={getOptionValue(item)}
-                variant="default"
+                variant="secondary"
                 className={cn("flex items-center gap-1", badgeClassName)}
               >
                 {getOptionLabel(item)}
