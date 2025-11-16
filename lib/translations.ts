@@ -81,7 +81,7 @@ export const getTranslation = (
   const translation = getNestedProperty(messages, key);
 
   if (translation === undefined) {
-    console.warn(`Translation key not found: ${key} for locale: ${locale}`);
+    // console.warn(`Translation key not found: ${key} for locale: ${locale}`);
     // Fallback to default locale
     if (locale !== defaultLocale) {
       const fallbackMessages = translationStore[defaultLocale];

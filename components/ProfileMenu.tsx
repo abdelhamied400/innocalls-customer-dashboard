@@ -60,6 +60,8 @@ const ProfileMenu = () => {
         });
     }
     deleteCookie("OrganizationId");
+    // deleteCookie("authjs.csrf-token");
+    // deleteCookie("__Secure-authjs.session-token");
     await signOut({ redirect: false });
     router.push("/login");
   };

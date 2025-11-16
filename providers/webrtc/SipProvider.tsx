@@ -297,6 +297,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     login,
     bindEvents,
     navigate,
+    breakType,
   ]); // login is now stable due to useCallback with stable dependencies
 
   // Cleanup on unmount and when new instances are created
@@ -316,7 +317,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
   useEffect(() => {
     if (window) {
-      window.onbeforeunload = (event) => {
+      window.onbeforeunload = () => {
         currentSession?.terminate();
         return null;
       };
