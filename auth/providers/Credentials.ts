@@ -26,14 +26,10 @@ const CredentialsProvider = Credentials({
     const email = credentials.email as string;
     const password = credentials.password as string;
     const userType = (credentials.userType || "user") as "user" | "agent";
-    const clientProvidedIp = (credentials as any)?.clientIp as
-      | string
-      | undefined;
+    const clientProvidedIp = credentials?.clientIp as string | undefined;
 
     // Resolve client IP from common proxy headers with safe fallbacks
     const ip = clientProvidedIp ?? "";
-
-    console.log({ clientProvidedIp });
 
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/v2/auth/login`,
