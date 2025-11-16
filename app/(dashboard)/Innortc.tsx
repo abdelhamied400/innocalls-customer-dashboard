@@ -19,7 +19,7 @@ const Innortc = () => {
       if (extensionState === "connected") {
         clearSearchParams();
         console.log("Deep link to call with params:", params);
-        call(params.number);
+        call(params.number.replace(/(?!^\+)[^\d]/g, ""));
       }
     },
     [extensionState]
