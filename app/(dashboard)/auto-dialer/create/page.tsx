@@ -48,20 +48,19 @@ const CreateAutoDialerCampaignSheet = () => {
     mode: "onChange",
     resolver: zodResolver(AutoDialerCreateCampaignSchema),
     defaultValues: {
-      campaignName: "",
+      name: "",
       waitingCustomerCount: 0,
       trialsCount: 1,
       wrapUpTime: 10,
       delayMinutesBetweenTrials: 5,
       hideCallerInfo: false,
       agentCanLogoutAndRejoin: false,
-      playAnnouncement: false,
+      hasAnnouncement: false,
       agents: [],
       callerIds: [
         {
-          id: generateUUID(),
           destination: "",
-          callerId: "",
+          callerNumber: "",
         },
       ],
     },

@@ -55,7 +55,11 @@ export default {
   },
   createCampaign: async (data: object) => {
     const formData = objToFormData(data);
-    const res = await api.post("auto-dialer/campaigns", formData);
+    const res = await api.post("auto-dialer/campaigns", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return res.data;
   },
   startCampaign: async (campaignId: string) => {

@@ -38,7 +38,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
   } = form;
 
   const handleNext = async () => {
-    const isValid = await trigger(["sound", "agents", "callerIds"]);
+    const isValid = await trigger(["loopSoundFile", "agents", "callerIds"]);
 
     if (isValid) {
       clearErrors();
@@ -51,7 +51,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
       <div className="flex flex-col gap-4">
         <FormField
           control={control}
-          name="sound"
+          name="loopSoundFile"
           render={({ field }) => (
             <FormItem className="w-full">
               <FormControl>
@@ -70,7 +70,9 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                     <DropzoneTrigger />
                     <DropzoneFileList />
                   </Dropzone>
-                  <p className="text-destructive">{errors.sound?.message}</p>
+                  <p className="text-destructive">
+                    {errors.loopSoundFile?.message}
+                  </p>
                 </div>
               </FormControl>
             </FormItem>
@@ -79,7 +81,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
 
         <FormField
           control={control}
-          name="playAnnouncement"
+          name="hasAnnouncement"
           render={({ field }) => (
             <FormItem className="flex flex-row items-start gap-2">
               <FormControl>
@@ -95,7 +97,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
           )}
         />
 
-        {watch("playAnnouncement") && (
+        {watch("hasAnnouncement") && (
           <FormField
             control={control}
             name="announcement"
@@ -103,7 +105,6 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
               <FormItem className="w-full">
                 <FormControl>
                   <div className="">
-                    {/* <h3>Announcement</h3> */}
                     <Dropzone
                       options={{
                         accept: { "audio/mp3": [".mp3"] },
@@ -146,8 +147,23 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                       })) || []
                     }
                     placeholder="Select from the list...."
-                    value={field.value}
-                    onChange={field.onChange}
+                    value={
+                      extensions
+                        ? extensions
+                            .filter((ext) =>
+                              Array.isArray(field.value)
+                                ? field.value.includes(ext.id)
+                                : false
+                            )
+                            .map((ext) => ({
+                              label: `${ext.name} (${ext.ext})`,
+                              value: ext.id,
+                            }))
+                        : []
+                    }
+                    onChange={(data) =>
+                      field.onChange(data.map((d) => d.value))
+                    }
                     isMulti
                   ></Select>
                 </FormControl>

@@ -2,7 +2,7 @@ import { CSV_SIZE_LIMIT, fileSizeToString } from "@/constants/file";
 import { z } from "zod";
 
 export const AutoDialerCreateStep1Schema = z.object({
-  campaignName: z.string().min(1, "Campaign name is required"),
+  name: z.string().min(1, "Campaign name is required"),
   waitingCustomerCount: z
     .number()
     .int()
@@ -24,7 +24,7 @@ export const AutoDialerCreateStep1Schema = z.object({
 });
 
 export const AutoDialerCreateStep2Schema = z.object({
-  sound: z
+  loopSoundFile: z
     .instanceof(File, { message: "Please upload a valid file" })
     .refine((file) => file.type === "audio/mpeg", {
       message: "Only MP3 files are allowed",
@@ -32,7 +32,7 @@ export const AutoDialerCreateStep2Schema = z.object({
     .refine((file) => file.size <= 70000000, {
       message: "File size must be under 70 KB",
     }),
-  playAnnouncement: z.boolean().default(false),
+  hasAnnouncement: z.boolean().default(false),
   announcement: z
     .instanceof(File, { message: "Please upload a valid file" })
     .refine((file) => file.type === "audio/mpeg", {
@@ -42,24 +42,23 @@ export const AutoDialerCreateStep2Schema = z.object({
       message: "File size must be under 70 KB",
     })
     .optional(),
-  agents: z.array(z.any()).min(1, "At least one agent is required"),
+  agents: z.array(z.string()).min(1, "At least one agent is required"),
   callerIds: z
     .array(
       z.object({
-        id: z.string(),
         destination: z
           .string({
             required_error: "Destination is required",
           })
           .nonempty("Destination is required"),
-        callerId: z
+        callerNumber: z
           .string({
-            required_error: "Caller ID is required",
+            required_error: "Caller Number is required",
           })
-          .nonempty("Caller ID is required"),
+          .nonempty("Caller Number is required"),
       })
     )
-    .min(1, "At least one caller ID is required"),
+    .min(1, "At least one caller Number is required"),
 });
 
 export const AutoDialerCreateStep3Schema = z.object({

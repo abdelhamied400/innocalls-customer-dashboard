@@ -70,8 +70,10 @@ const CustomersListForm = ({ onNext }: CustomersListFormProps) => {
 
       <ul className="list-disc list-inside space-y-2">
         <li>Ensure all phone numbers include the country code.</li>
-        <li>Do not use "+" or "00" before the code.</li>
-        <li>Set the field type to "number" without decimal points.</li>
+        <li>Do not use &quot;+&quot; or &quot;00&quot; before the code.</li>
+        <li>
+          Set the field type to &quot;number&quot; without decimal points.
+        </li>
       </ul>
 
       <Button className="w-full" onClick={handleNext}>

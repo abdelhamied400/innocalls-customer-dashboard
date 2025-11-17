@@ -30,7 +30,7 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
 
   const handleNext = async () => {
     const isValid = await trigger([
-      "campaignName",
+      "name",
       "waitingCustomerCount",
       "trialsCount",
       "wrapUpTime",
@@ -50,17 +50,17 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
       <div className="flex flex-col gap-4 overflow-auto">
         <FormField
           control={control}
-          name="campaignName"
+          name="name"
           render={({ field }) => (
             <Field
               label="Campaign name"
-              error={errors.campaignName?.message}
-              htmlFor="campaignName"
+              error={errors.name?.message}
+              htmlFor="name"
             >
               <FormItem className="w-full">
                 <FormControl>
                   <Input
-                    id="campaignName"
+                    id="name"
                     variant="field"
                     placeholder="Enter campaign name..."
                     {...field}

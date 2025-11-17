@@ -1,5 +1,4 @@
 // components/CallerIdSelector.tsx
-import { useMemo } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { generateUUID } from "@/lib/utils";
 import { Button } from "../ui/button";
@@ -29,24 +28,10 @@ const CallerIdSelector = () => {
   const callerIds = watch("callerIds");
   const { countries, dids } = useVocab();
 
-  // Calculate available countries (excluding already selected ones)
-  const availableCountries = useMemo(() => {
-    const selectedCodes = new Set(
-      callerIds?.map((c) => c.destination).filter(Boolean) || []
-    );
-    return countries.filter((country) => !selectedCodes.has(country.code));
-  }, [countries, callerIds]);
-
-  const didOptions: SelectOption[] = useMemo(
-    () => dids.map((did) => ({ label: did.name, value: did.id })),
-    [dids]
-  );
-
   const addCaller = () => {
     append({
-      id: generateUUID(),
       destination: "",
-      callerId: "",
+      callerNumber: "",
     });
   };
 
@@ -54,7 +39,7 @@ const CallerIdSelector = () => {
     <div className="w-full caller-ids space-y-2">
       {fields.map((field, index) => {
         const currentDestination = watch(`callerIds.${index}.destination`);
-        const currentCallerId = watch(`callerIds.${index}.callerId`);
+        const currentCallerId = watch(`callerIds.${index}.callerNumber`);
 
         // Include available countries + the currently selected country for this row
         const countryOptions = countries.map((country) => ({
@@ -80,7 +65,7 @@ const CallerIdSelector = () => {
 
         return (
           <div
-            key={field.id}
+            key={`caller-id-${index}`}
             className="call-id bg-gray-50 border border-gray-100 p-4 rounded-lg flex items-center gap-4"
           >
             <div className="grid grid-cols-1 lg:grid-cols-2 flex-1 gap-2">
@@ -104,12 +89,12 @@ const CallerIdSelector = () => {
                 value={selectedDidOption}
                 onChange={(option) => {
                   const value = option?.value || "";
-                  setValue(`callerIds.${index}.callerId`, value, {
+                  setValue(`callerIds.${index}.callerNumber`, value, {
                     shouldValidate: true,
                   });
                 }}
                 placeholder="Select a DID..."
-                error={fieldErrors?.callerId?.message}
+                error={fieldErrors?.callerNumber?.message}
               />
             </div>
 
