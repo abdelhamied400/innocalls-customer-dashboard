@@ -12,6 +12,7 @@ import {
 } from "@/validation/AutoDialerCreateCampaign";
 import React, { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
+import TimePicker from "@/components/ui/time-picker";
 
 type DurationType = {
   name: string;
@@ -145,10 +146,10 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
                   >
                     <FormItem className="w-full">
                       <FormControl>
-                        <DatePicker
-                          placeholder="Select from time..."
-                          id="fromTime"
-                          {...field}
+                        <TimePicker
+                          value={field.value}
+                          onChange={(time) => setValue("fromTime", time)}
+                          placeholder="Select time"
                         />
                       </FormControl>
                     </FormItem>
@@ -168,10 +169,10 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
                   >
                     <FormItem className="w-full">
                       <FormControl>
-                        <DatePicker
-                          placeholder="Select to time..."
-                          id="toTime"
-                          {...field}
+                        <TimePicker
+                          value={field.value}
+                          onChange={(time) => setValue("toTime", time)}
+                          placeholder="Select time"
                         />
                       </FormControl>
                     </FormItem>

@@ -69,13 +69,9 @@ export const AutoDialerCreateStep3Schema = z.object({
     .number()
     .int()
     .min(0, "Max wait time must be greater than or equal to 0"),
-  fromTime: z.date().refine((date) => date > new Date(), {
-    message: "From time must be in the future",
-  }),
-  toTime: z.date().refine((date) => date > new Date(), {
-    message: "To time must be in the future",
-  }),
-  timezone: z.string(),
+  fromTime: z.string().optional(),
+  toTime: z.string().optional(),
+  timezone: z.string().optional(),
 });
 
 export const AutoDialerCreateStep4Schema = z.object({
@@ -98,7 +94,40 @@ export const AutoDialerCreateCampaignSchema = AutoDialerCreateStep1Schema.merge(
   AutoDialerCreateStep2Schema
 )
   .merge(AutoDialerCreateStep3Schema)
-  .merge(AutoDialerCreateStep4Schema);
+  .merge(AutoDialerCreateStep4Schema)
+  .refine(
+    (data) => {
+      if (data.durationType === "time-limited") {
+        return (
+          data.fromTime !== undefined &&
+          data.toTime !== undefined &&
+          data.timezone !== undefined
+        );
+      }
+      return true;
+    },
+    {
+      message:
+        "From time, to time, and timezone are required for time-limited campaigns",
+      path: ["durationType"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (
+        data.durationType === "time-limited" &&
+        data.fromTime &&
+        data.toTime
+      ) {
+        return data.fromTime < data.toTime;
+      }
+      return true;
+    },
+    {
+      message: "To time must be greater than From time",
+      path: ["toTime"],
+    }
+  );
 
 // export types
 export type AutoDialerCreateStep1 = z.infer<typeof AutoDialerCreateStep1Schema>;
