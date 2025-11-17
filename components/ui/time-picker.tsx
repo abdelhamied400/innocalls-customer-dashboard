@@ -83,7 +83,7 @@ const TimePicker = ({
         <Button
           variant={"unstyled"}
           className={cn(
-            "justify-start px-0",
+            "justify-start px-0 w-full",
             !value && "text-muted-foreground",
             className
           )}

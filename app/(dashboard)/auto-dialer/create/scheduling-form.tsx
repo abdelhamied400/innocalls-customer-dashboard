@@ -60,7 +60,44 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
         path: ["toTime"],
         message: "To time must be greater than From time",
       }
-    ).safeParseAsync(getValues());
+    )
+      .refine(
+        (data) => {
+          if (data.durationType === "time-limited" && !data.timezone) {
+            return false;
+          }
+          return true;
+        },
+        {
+          path: ["timezone"],
+          message: "Timezone is required when duration type is time-limited",
+        }
+      )
+      .refine(
+        (data) => {
+          if (data.durationType === "time-limited" && !data.fromTime) {
+            return false;
+          }
+          return true;
+        },
+        {
+          path: ["fromTime"],
+          message: "From time is required when duration type is time-limited",
+        }
+      )
+      .refine(
+        (data) => {
+          if (data.durationType === "time-limited" && !data.toTime) {
+            return false;
+          }
+          return true;
+        },
+        {
+          path: ["toTime"],
+          message: "To time is required when duration type is time-limited",
+        }
+      )
+      .safeParseAsync(getValues());
 
     if (!res.success) {
       setTimeout(() => {

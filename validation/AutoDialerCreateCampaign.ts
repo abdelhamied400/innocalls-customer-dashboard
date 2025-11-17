@@ -95,39 +95,44 @@ export const AutoDialerCreateCampaignSchema = AutoDialerCreateStep1Schema.merge(
 )
   .merge(AutoDialerCreateStep3Schema)
   .merge(AutoDialerCreateStep4Schema)
-  .refine(
-    (data) => {
-      if (data.durationType === "time-limited") {
-        return (
-          data.fromTime !== undefined &&
-          data.toTime !== undefined &&
-          data.timezone !== undefined
-        );
+  .superRefine((data, ctx) => {
+    console.log(data);
+    if (data.durationType === "time-limited") {
+      const hasFromTime = data.fromTime && data.fromTime.trim() !== "";
+      const hasToTime = data.toTime && data.toTime.trim() !== "";
+      const hasTimezone = data.timezone && data.timezone.trim() !== "";
+
+      if (!hasFromTime) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "From time is required when duration type is time-limited",
+          path: ["fromTime"],
+        });
       }
-      return true;
-    },
-    {
-      message:
-        "From time, to time, and timezone are required for time-limited campaigns",
-      path: ["durationType"],
-    }
-  )
-  .refine(
-    (data) => {
-      if (
-        data.durationType === "time-limited" &&
-        data.fromTime &&
-        data.toTime
-      ) {
-        return data.fromTime < data.toTime;
+      if (!hasToTime) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "To time is required when duration type is time-limited",
+          path: ["toTime"],
+        });
       }
-      return true;
-    },
-    {
-      message: "To time must be greater than From time",
-      path: ["toTime"],
+      if (!hasTimezone) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Timezone is required when duration type is time-limited",
+          path: ["timezone"],
+        });
+      }
+      // Check if fromTime < toTime only when both are provided
+      if (hasFromTime && hasToTime && data.fromTime! >= data.toTime!) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "To time must be greater than From time",
+          path: ["toTime"],
+        });
+      }
     }
-  );
+  });
 
 // export types
 export type AutoDialerCreateStep1 = z.infer<typeof AutoDialerCreateStep1Schema>;
