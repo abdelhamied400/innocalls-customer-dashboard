@@ -77,13 +77,9 @@ export const AutoDialerCreateStep3Schema = z.object({
 export const AutoDialerCreateStep4Schema = z.object({
   customers: z
     .instanceof(File, { message: "Please upload a valid file" })
-    .refine(
-      (file) =>
-        ["image/jpeg", "image/png", "application/pdf"].includes(file.type),
-      {
-        message: "Only MP3 files are allowed",
-      }
-    )
+    .refine((file) => ["text/csv"].includes(file.type), {
+      message: "Only CSV files are allowed",
+    })
     .refine((file) => file.size <= CSV_SIZE_LIMIT, {
       message: `File size must be under ${fileSizeToString(CSV_SIZE_LIMIT)}`,
     }),

@@ -28,7 +28,6 @@ import {
 } from "@/validation/AutoDialerCreateCampaign";
 import SchedulingForm from "./scheduling-form";
 import CustomersListForm from "./customers-list-form";
-import { generateUUID } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import autoDialerService from "@/services/auto-dialer.service";
 
@@ -54,9 +53,11 @@ const CreateAutoDialerCampaignSheet = () => {
       wrapUpTime: 10,
       delayMinutesBetweenTrials: 5,
       hideCallerInfo: false,
-      agentCanLogoutAndRejoin: false,
+      agentCanLogoutAndRejoin: true,
       hasAnnouncement: false,
       agents: [],
+      maxWaitTime: 50,
+      durationType: "time-limited",
       callerIds: [
         {
           destination: "",
@@ -110,6 +111,7 @@ const CreateAutoDialerCampaignSheet = () => {
           steps={steps}
           currentStep={currentStep}
           onStepChange={setCurrentStep}
+          enableStepping={false}
           className="h-full flex flex-col"
         >
           <StepperHeader>

@@ -86,4 +86,20 @@ export default {
     const res = await api.patch(`/auto-dialer/campaigns/${campaignId}/archive`);
     return res.data;
   },
+  downloadTemplate: async () => {
+    const res = await api.get(`/auto-dialer/campaigns/template`, {
+      responseType: "blob", // important
+    });
+
+    const blob = new Blob([res.data], { type: "text/csv" });
+    const url = window.URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "template.csv"; // filename
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+    return res.data;
+  },
 };

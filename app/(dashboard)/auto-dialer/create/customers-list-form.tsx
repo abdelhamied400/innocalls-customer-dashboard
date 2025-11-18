@@ -5,6 +5,7 @@ import Dropzone, {
 } from "@/components/ui/dropzone";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { CSV_SIZE_LIMIT } from "@/constants/file";
+import autoDialerService from "@/services/auto-dialer.service";
 import { AutoDialerCreateStep4 } from "@/validation/AutoDialerCreateCampaign";
 import { DownloadIcon } from "lucide-react";
 import { useFormContext } from "react-hook-form";
@@ -29,6 +30,14 @@ const CustomersListForm = ({ onNext }: CustomersListFormProps) => {
     }
   };
 
+  const downloadTemplate = async () => {
+    try {
+      await autoDialerService.downloadTemplate();
+    } catch (error) {
+      console.error("Error downloading template:", error);
+    }
+  };
+
   return (
     <div className="customer-list-form flex flex-col gap-4">
       <FormField
@@ -41,9 +50,7 @@ const CustomersListForm = ({ onNext }: CustomersListFormProps) => {
                 <Dropzone
                   options={{
                     accept: {
-                      "image/jpeg": [".jpg", ".jpeg"],
-                      "image/png": [".png"],
-                      "application/pdf": [".pdf"],
+                      "text/csv": [".csv"],
                     },
                     maxSize: CSV_SIZE_LIMIT,
                     multiple: false,
@@ -63,7 +70,7 @@ const CustomersListForm = ({ onNext }: CustomersListFormProps) => {
       />
 
       <div className="">
-        <Button variant="link" onClick={handleNext}>
+        <Button variant="link" onClick={downloadTemplate} type="button">
           <DownloadIcon /> Download a template
         </Button>
       </div>
