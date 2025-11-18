@@ -1,6 +1,6 @@
 import { Country } from "@/types/api/country";
 import api from "./api";
-import { Tag } from "@/types/api/tag";
+import { FullTag, Tag } from "@/types/api/tag";
 import { Extension } from "@/types/api/extension";
 import { ERG } from "@/types/api/erg";
 
@@ -17,8 +17,12 @@ export default {
     const res = await api.get("/extension/list");
     return res.data;
   },
-  getAllTags: async (): Promise<Tag[]> => {
+  getActiveTags: async (): Promise<Tag[]> => {
     const res = await api.get("/v2/call-tags/active");
+    return res.data.callTags;
+  },
+  getAllTags: async (): Promise<FullTag[]> => {
+    const res = await api.get("/call-tag");
     return res.data.callTags;
   },
   getAllAccounts: async () => {
