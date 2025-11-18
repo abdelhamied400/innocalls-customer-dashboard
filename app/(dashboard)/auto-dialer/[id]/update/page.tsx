@@ -17,7 +17,7 @@ import Stepper, {
 } from "@/components/ui/stepper";
 import { ChevronLeftIcon, X } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import CampaignDetailsForm from "./campaign-details-form";
 import CallDetailsForm from "./call-details-form";
@@ -80,7 +80,8 @@ const UpdateAutoDialerCampaignSheet = () => {
     const actionParam = searchParams.get("action");
 
     if (actionParam === "continue") {
-      setCurrentStep(3);
+      // Use setTimeout to avoid setState during render
+      setTimeout(() => setCurrentStep(3), 0);
     }
   }, [searchParams]);
 
@@ -88,14 +89,14 @@ const UpdateAutoDialerCampaignSheet = () => {
     async (data) => {
       // Submit the form data to update the campaign
       try {
-        const res = await autoDialerService.updateCampaign(id as string, data);
+        await autoDialerService.updateCampaign(id as string, data);
         toast({
           title: "Campaign Updated",
           description:
             "The auto dialer campaign has been updated successfully.",
         });
         // router.back();
-      } catch (error) {
+      } catch {
         toast({
           title: "Error",
           description:

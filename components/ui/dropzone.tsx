@@ -82,15 +82,7 @@ const Dropzone = ({
   );
   const [fakeFilesState, setFakeFilesState] = useState<string[]>(fakeFiles);
 
-  const onDrop = useCallback(
-    (acceptedFiles: File[], fileRejections: FileRejection[]) => {
-      acceptedFiles.forEach((file) => addAcceptedFile(file));
-      fileRejections.forEach((rejection) => addRejectedFile(rejection));
-    },
-    []
-  );
-
-  const addAcceptedFile = (file: File) => {
+  const addAcceptedFile = useCallback((file: File) => {
     const fileWithId = new File([file], file.name, {
       type: file.type,
       lastModified: file.lastModified,
@@ -108,31 +100,39 @@ const Dropzone = ({
     if (onChange) {
       onChange(fileWithId as WithId<File>);
     }
-  };
+  }, [onChange]);
 
-  const addRejectedFile = (rejection: FileRejection) => {
+  const addRejectedFile = useCallback((rejection: FileRejection) => {
     setFileRejections((prev) => [...prev, { ...rejection, id: uuidv4() }]);
     if (onChange) {
       onChange(null);
     }
-  };
+  }, [onChange]);
 
-  const removeFile = (id: string) => {
+  const removeFile = useCallback((id: string) => {
     setAcceptedFiles((prev) => prev.filter((file) => file.id !== id));
     if (onChange) {
       onChange(null);
     }
-  };
+  }, [onChange]);
 
-  const removeRejectedFile = (id: string) => {
+  const removeRejectedFile = useCallback((id: string) => {
     setFileRejections((prev) =>
       prev.filter((rejection) => rejection.id !== id)
     );
-  };
+  }, []);
 
-  const removeFakeFile = (fileName: string) => {
+  const removeFakeFile = useCallback((fileName: string) => {
     setFakeFilesState((prev) => prev.filter((name) => name !== fileName));
-  };
+  }, []);
+
+  const onDrop = useCallback(
+    (acceptedFiles: File[], fileRejections: FileRejection[]) => {
+      acceptedFiles.forEach((file) => addAcceptedFile(file));
+      fileRejections.forEach((rejection) => addRejectedFile(rejection));
+    },
+    [addAcceptedFile, addRejectedFile]
+  );
 
   const { getRootProps, getInputProps } = useDropzone({
     ...options,
@@ -142,8 +142,10 @@ const Dropzone = ({
   // If form value changes from outside (optional, useful for reset)
   useEffect(() => {
     if (value == null) {
-      setAcceptedFiles([]);
-      setFileRejections([]);
+      setTimeout(() => {
+        setAcceptedFiles([]);
+        setFileRejections([]);
+      }, 0);
     }
   }, [value]);
 
@@ -160,8 +162,11 @@ const Dropzone = ({
         enumerable: true,
       });
 
-      setAcceptedFiles([fileWithId as WithId<File>]);
+      setTimeout(() => {
+        setAcceptedFiles([fileWithId as WithId<File>]);
+      }, 0);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
