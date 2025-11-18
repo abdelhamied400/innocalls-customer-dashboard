@@ -17,9 +17,9 @@ import Select from "@/components/Select";
 import { SOUND_SIZE_LIMIT } from "@/constants/file";
 import queryExtensions from "@/queries/queryExtensions";
 import {
-  AutoDialerCreateStep2,
-  AutoDialerCreateStep2Schema,
-} from "@/validation/AutoDialerCreateCampaign";
+  AutoDialerUpdateStep2,
+  AutoDialerUpdateStep2Schema,
+} from "@/validation/AutoDialerUpdateCampaign";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useFormContext } from "react-hook-form";
 
@@ -27,7 +27,7 @@ type CallDetailsFormProps = {
   onNext: () => void;
 };
 const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
-  const form = useFormContext<AutoDialerCreateStep2>();
+  const form = useFormContext<AutoDialerUpdateStep2>();
   const { data: extensions } = useLocalizedQuery(queryExtensions({}));
 
   const {
@@ -40,21 +40,12 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
   } = form;
 
   const handleNext = async () => {
-    const res = await AutoDialerCreateStep2Schema.refine(
-      (data) => {
-        const { hasAnnouncement, mainSoundFile } = data;
-        return !hasAnnouncement || (hasAnnouncement && mainSoundFile);
-      },
-      {
-        path: ["mainSoundFile"],
-        message: "Announcement is required when hasAnnouncement is true",
-      }
-    ).safeParseAsync(getValues());
+    const res = await AutoDialerUpdateStep2Schema.safeParseAsync(getValues());
 
     if (!res.success) {
       setTimeout(() => {
         res.error.issues.forEach((issue) => {
-          setError(issue.path[0] as keyof AutoDialerCreateStep2, {
+          setError(issue.path[0] as keyof AutoDialerUpdateStep2, {
             type: "manual",
             message: issue.message,
           });
@@ -88,6 +79,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                     }}
                     value={field.value}
                     onChange={field.onChange}
+                    fakeFiles={[getValues().loopSoundFileName || ""]}
                   >
                     <DropzoneTrigger />
                     <DropzoneFileList />
@@ -118,7 +110,6 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
             </FormItem>
           )}
         />
-
         {watch("hasAnnouncement") && (
           <FormField
             control={control}
@@ -136,6 +127,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                       }}
                       value={field.value}
                       onChange={field.onChange}
+                      fakeFiles={[getValues().mainSoundFileName || ""]}
                     >
                       <DropzoneTrigger />
                       <DropzoneFileList />

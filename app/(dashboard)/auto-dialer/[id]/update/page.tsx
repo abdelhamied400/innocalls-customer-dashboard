@@ -16,20 +16,23 @@ import Stepper, {
   StepperSteps,
 } from "@/components/ui/stepper";
 import { ChevronLeftIcon, X } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import CampaignDetailsForm from "./campaign-details-form";
 import CallDetailsForm from "./call-details-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  type AutoDialerCreateCampaign,
-  AutoDialerCreateCampaignSchema,
-} from "@/validation/AutoDialerCreateCampaign";
+  type AutoDialerUpdateCampaign,
+  AutoDialerUpdateCampaignSchema,
+} from "@/validation/AutoDialerUpdateCampaign";
 import SchedulingForm from "./scheduling-form";
 import CustomersListForm from "./customers-list-form";
 import { useToast } from "@/hooks/use-toast";
 import autoDialerService from "@/services/auto-dialer.service";
+import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
+import queryExtensions from "@/queries/queryExtensions";
 
 const steps = [
   "Campaign Details",
@@ -38,44 +41,58 @@ const steps = [
   "Customers List",
 ];
 
-const CreateAutoDialerCampaignSheet = () => {
+const UpdateAutoDialerCampaignSheet = () => {
+  const { id } = useParams();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(0);
 
-  const form = useForm<AutoDialerCreateCampaign>({
-    mode: "onChange",
-    resolver: zodResolver(AutoDialerCreateCampaignSchema),
-    defaultValues: {
-      name: "",
-      waitingCustomerCount: 0,
-      trialsCount: 1,
-      wrapUpTime: 10,
-      delayMinutesBetweenTrials: 5,
-      hideCallerInfo: false,
-      agentCanLogoutAndRejoin: true,
-      hasAnnouncement: false,
-      agents: [],
-      maxWaitTime: 50,
-      durationType: "time-limited",
-      callers: [
-        {
-          destination: "",
-          callerNumber: "",
-        },
-      ],
-    },
+  const { data: extensions, isLoading: isExtensionsLoading } =
+    useLocalizedQuery(queryExtensions({}));
+
+  const { data: campaign, isLoading } = useQuery({
+    queryKey: ["auto-dialer-campaign", id],
+    queryFn: () => autoDialerService.getCampaign(id as string),
   });
+
+  const form = useForm<AutoDialerUpdateCampaign>({
+    mode: "onChange",
+    resolver: zodResolver(AutoDialerUpdateCampaignSchema),
+    defaultValues: campaign,
+  });
+
+  useEffect(() => {
+    if (isExtensionsLoading || !extensions || !campaign) return;
+
+    const selectedAgents = campaign?.assignedAgents.map(
+      (ex: number) => `${ex}`
+    );
+
+    form.reset({
+      ...campaign,
+      agents: selectedAgents,
+      hasAnnouncement: !!campaign.mainSoundFileName,
+    });
+  }, [isExtensionsLoading, extensions, campaign, form]);
+
+  useEffect(() => {
+    const actionParam = searchParams.get("action");
+
+    if (actionParam === "continue") {
+      setCurrentStep(3);
+    }
+  }, [searchParams]);
 
   const onSubmit = form.handleSubmit(
     async (data) => {
-      // Submit the form data to create the campaign
+      // Submit the form data to update the campaign
       try {
-        const res = await autoDialerService.createCampaign(data);
+        const res = await autoDialerService.updateCampaign(id as string, data);
         toast({
-          title: "Campaign Created",
+          title: "Campaign Updated",
           description:
-            "The auto dialer campaign has been created successfully.",
+            "The auto dialer campaign has been updated successfully.",
         });
         // router.back();
       } catch (error) {
@@ -101,9 +118,9 @@ const CreateAutoDialerCampaignSheet = () => {
     <Sheet defaultOpen={true} onOpenChange={() => router.back()}>
       <SheetContent side="bottom" className="h-screen p-0">
         <SheetHeader className="sr-only">
-          <SheetTitle>Create Auto Dialer Campaign</SheetTitle>
+          <SheetTitle>Update Auto Dialer Campaign</SheetTitle>
           <SheetDescription>
-            Create a new auto dialer campaign to start calling your leads.
+            Update a new auto dialer campaign to start calling your leads.
           </SheetDescription>
         </SheetHeader>
 
@@ -111,7 +128,6 @@ const CreateAutoDialerCampaignSheet = () => {
           steps={steps}
           currentStep={currentStep}
           onStepChange={setCurrentStep}
-          enableStepping={false}
           className="h-full flex flex-col"
         >
           <StepperHeader>
@@ -135,6 +151,7 @@ const CreateAutoDialerCampaignSheet = () => {
           </StepperHeader>
 
           <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[600px] max-h-[calc(100vh - 200px)] overflow-auto">
+            {isLoading && <div>Loading campaign data...</div>}
             <FormProvider {...form}>
               <form className="h-full" onSubmit={onSubmit}>
                 <StepperStep idx={0} className="p-4 rounded-xl bg-white h-full">
@@ -158,4 +175,4 @@ const CreateAutoDialerCampaignSheet = () => {
   );
 };
 
-export default CreateAutoDialerCampaignSheet;
+export default UpdateAutoDialerCampaignSheet;

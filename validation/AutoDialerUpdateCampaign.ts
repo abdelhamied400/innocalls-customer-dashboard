@@ -1,7 +1,7 @@
 import { CSV_SIZE_LIMIT, fileSizeToString } from "@/constants/file";
 import { z } from "zod";
 
-export const AutoDialerCreateStep1Schema = z.object({
+export const AutoDialerUpdateStep1Schema = z.object({
   name: z.string().min(1, "Campaign name is required"),
   waitingCustomerCount: z
     .number()
@@ -23,7 +23,7 @@ export const AutoDialerCreateStep1Schema = z.object({
   agentCanLogoutAndRejoin: z.boolean().default(false),
 });
 
-export const AutoDialerCreateStep2Schema = z.object({
+export const AutoDialerUpdateStep2Schema = z.object({
   loopSoundFile: z
     .instanceof(File, { message: "Please upload a valid file" })
     .refine((file) => file.type === "audio/mpeg", {
@@ -31,7 +31,8 @@ export const AutoDialerCreateStep2Schema = z.object({
     })
     .refine((file) => file.size <= 70000000, {
       message: "File size must be under 70 KB",
-    }),
+    })
+    .optional(),
   hasAnnouncement: z.boolean().default(false),
   mainSoundFile: z
     .instanceof(File, { message: "Please upload a valid file" })
@@ -61,7 +62,7 @@ export const AutoDialerCreateStep2Schema = z.object({
     .min(1, "At least one caller Number is required"),
 });
 
-export const AutoDialerCreateStep3Schema = z.object({
+export const AutoDialerUpdateStep3Schema = z.object({
   durationType: z.string({
     required_error: "Duration type is required",
   }),
@@ -74,7 +75,7 @@ export const AutoDialerCreateStep3Schema = z.object({
   timezone: z.string().optional(),
 });
 
-export const AutoDialerCreateStep4Schema = z.object({
+export const AutoDialerUpdateStep4Schema = z.object({
   customers: z
     .instanceof(File, { message: "Please upload a valid file" })
     .refine((file) => ["text/csv"].includes(file.type), {
@@ -82,21 +83,67 @@ export const AutoDialerCreateStep4Schema = z.object({
     })
     .refine((file) => file.size <= CSV_SIZE_LIMIT, {
       message: `File size must be under ${fileSizeToString(CSV_SIZE_LIMIT)}`,
-    }),
+    })
+    .optional(),
 });
 
 // join all schemas into one destructured schema
-export const AutoDialerCreateCampaignSchema = AutoDialerCreateStep1Schema.merge(
-  AutoDialerCreateStep2Schema
+export const AutoDialerUpdateCampaignSchema = AutoDialerUpdateStep1Schema.merge(
+  AutoDialerUpdateStep2Schema
 )
-  .merge(AutoDialerCreateStep3Schema)
-  .merge(AutoDialerCreateStep4Schema);
+  .merge(AutoDialerUpdateStep3Schema)
+  .merge(AutoDialerUpdateStep4Schema)
+  .superRefine((data, ctx) => {
+    if (data.durationType === "time-limited") {
+      const hasFromTime = data.fromTime && data.fromTime.trim() !== "";
+      const hasToTime = data.toTime && data.toTime.trim() !== "";
+      const hasTimezone = data.timezone && data.timezone.trim() !== "";
+
+      if (!hasFromTime) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "From time is required when duration type is time-limited",
+          path: ["fromTime"],
+        });
+      }
+      if (!hasToTime) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "To time is required when duration type is time-limited",
+          path: ["toTime"],
+        });
+      }
+      if (!hasTimezone) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "Timezone is required when duration type is time-limited",
+          path: ["timezone"],
+        });
+      }
+      // Check if fromTime < toTime only when both are provided
+      if (hasFromTime && hasToTime && data.fromTime! >= data.toTime!) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: "To time must be greater than From time",
+          path: ["toTime"],
+        });
+      }
+    }
+  });
 
 // export types
-export type AutoDialerCreateStep1 = z.infer<typeof AutoDialerCreateStep1Schema>;
-export type AutoDialerCreateStep2 = z.infer<typeof AutoDialerCreateStep2Schema>;
-export type AutoDialerCreateStep3 = z.infer<typeof AutoDialerCreateStep3Schema>;
-export type AutoDialerCreateStep4 = z.infer<typeof AutoDialerCreateStep4Schema>;
-export type AutoDialerCreateCampaign = z.infer<
-  typeof AutoDialerCreateCampaignSchema
->;
+export type AutoDialerUpdateStep1 = z.infer<typeof AutoDialerUpdateStep1Schema>;
+export type AutoDialerUpdateStep2 = z.infer<
+  typeof AutoDialerUpdateStep2Schema
+> & {
+  loopSoundFileName?: string;
+  mainSoundFileName?: string;
+};
+export type AutoDialerUpdateStep3 = z.infer<typeof AutoDialerUpdateStep3Schema>;
+export type AutoDialerUpdateStep4 = z.infer<typeof AutoDialerUpdateStep4Schema>;
+export type AutoDialerUpdateCampaign = z.infer<
+  typeof AutoDialerUpdateCampaignSchema
+> & {
+  loopSoundFileName?: string;
+  mainSoundFileName?: string;
+};

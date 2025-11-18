@@ -7,13 +7,14 @@ import VirtualizedSelect from "@/components/VirtualizedSelect";
 import SpinButton from "@/components/ui/spin-button";
 import { timezones } from "@/constants/timezones";
 import {
-  AutoDialerCreateStep3,
-  AutoDialerCreateStep3Schema,
-} from "@/validation/AutoDialerCreateCampaign";
+  AutoDialerUpdateStep3,
+  AutoDialerUpdateStep3Schema,
+} from "@/validation/AutoDialerUpdateCampaign";
 import React, { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import TimePicker from "@/components/ui/time-picker";
 import autoDialerService from "@/services/auto-dialer.service";
+import { useParams } from "next/navigation";
 
 type DurationType = {
   name: string;
@@ -28,7 +29,8 @@ type SchedulingFormProps = {
   onNext: () => void;
 };
 const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
-  const form = useFormContext<AutoDialerCreateStep3>();
+  const { id } = useParams();
+  const form = useFormContext<AutoDialerUpdateStep3>();
 
   const durationTypesOptions = durationTypes.map((type) => ({
     label: type.name,
@@ -52,7 +54,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
 
   const handleNext = async () => {
     // validate the form
-    const res = await AutoDialerCreateStep3Schema.refine(
+    const res = await AutoDialerUpdateStep3Schema.refine(
       (data) => {
         const { fromTime, toTime, durationType } = data;
         if (durationType === "time-limited" && fromTime && toTime) {
@@ -106,7 +108,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
     if (!res.success) {
       setTimeout(() => {
         res.error.issues.forEach((issue) => {
-          setError(issue.path[0] as keyof AutoDialerCreateStep3, {
+          setError(issue.path[0] as keyof AutoDialerUpdateStep3, {
             type: "manual",
             message: issue.message,
           });
@@ -120,11 +122,16 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
 
     // sending to server
     try {
-      const res = await autoDialerService.createCampaign(getValues());
-      window.location.href = `/auto-dialer/${res.id}/update?action=continue`;
+      const res = await autoDialerService.updateCampaign(
+        id as string,
+        getValues()
+      );
+      console.log(res);
     } catch (error) {
       console.log("Error creating campaign scheduling:", error);
     }
+
+    onNext();
   };
 
   return (

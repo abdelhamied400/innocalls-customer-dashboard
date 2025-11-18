@@ -18,6 +18,7 @@ import UploadIcon from "@mui/icons-material/Upload";
 import { formatFileSize } from "@/lib/file";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "./button";
+import { Close } from "@mui/icons-material";
 
 // Utility type
 type WithId<T> = T & { id: string };
@@ -39,6 +40,8 @@ interface DropzoneContextType extends Partial<DropzoneState> {
   options?: DropzoneOptions;
   getRootProps: DropzoneState["getRootProps"];
   getInputProps: DropzoneState["getInputProps"];
+  fakeFilesState: string[];
+  removeFakeFile: (fileName: string) => void;
 }
 
 // Create context
@@ -61,6 +64,8 @@ type DropzoneRootProps = {
   options?: DropzoneOptions;
   value?: File | null;
   onChange?: (file: File | null) => void;
+  fakeFiles?: string[];
+  removeFakeFile?: (fileName: string) => void;
 };
 
 // Dropzone Root
@@ -69,11 +74,13 @@ const Dropzone = ({
   options = {},
   value,
   onChange,
+  fakeFiles = [],
 }: DropzoneRootProps) => {
   const [acceptedFiles, setAcceptedFiles] = useState<WithId<File>[]>([]);
   const [fileRejections, setFileRejections] = useState<WithId<FileRejection>[]>(
     []
   );
+  const [fakeFilesState, setFakeFilesState] = useState<string[]>(fakeFiles);
 
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: FileRejection[]) => {
@@ -123,6 +130,10 @@ const Dropzone = ({
     );
   };
 
+  const removeFakeFile = (fileName: string) => {
+    setFakeFilesState((prev) => prev.filter((name) => name !== fileName));
+  };
+
   const { getRootProps, getInputProps } = useDropzone({
     ...options,
     onDrop,
@@ -163,6 +174,8 @@ const Dropzone = ({
         removeFile,
         removeRejectedFile,
         options,
+        fakeFilesState,
+        removeFakeFile,
       }}
     >
       {children}
@@ -256,17 +269,41 @@ export const DropzoneRejectedFile = ({
         type="button"
         onClick={() => removeRejectedFile(rejection.id)}
       >
-        <XIcon />
+        <Close />
+      </Button>
+    </li>
+  );
+};
+
+const DropzoneFakeFile = ({ fileName }: { fileName: string }) => {
+  const { removeFakeFile } = useDropzoneContext();
+
+  return (
+    <li className="flex items-center justify-between gap-2 p-4 bg-gray-50 border rounded-lg">
+      <div className="flex flex-col">
+        <p>{fileName}</p>
+      </div>
+      <Button
+        size="icon"
+        variant="destructive"
+        type="button"
+        onClick={() => removeFakeFile(fileName)}
+      >
+        <Close />
       </Button>
     </li>
   );
 };
 
 export const DropzoneFileList = () => {
-  const { acceptedFiles, fileRejections } = useDropzoneContext();
+  const { acceptedFiles, fileRejections, fakeFilesState } =
+    useDropzoneContext();
 
   return (
     <ul className="flex flex-col gap-2">
+      {fakeFilesState.map((fileName) => (
+        <DropzoneFakeFile key={fileName} fileName={fileName} />
+      ))}
       {acceptedFiles.map((file) => (
         <DropzoneFile key={file.id} file={file} />
       ))}

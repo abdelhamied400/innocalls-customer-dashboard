@@ -1,8 +1,8 @@
 // components/CallerIdSelector.tsx
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { generateUUID } from "@/lib/utils";
-import { Button } from "../ui/button";
-import Select from "../Select";
+import { Button } from "./ui/button";
+import Select from "./Select";
 import PlusIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
 import { AutoDialerCreateStep2 } from "@/validation/AutoDialerCreateCampaign";
@@ -22,10 +22,10 @@ const CallerIdSelector = () => {
   } = useFormContext<AutoDialerCreateStep2>();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "callerIds",
+    name: "callers",
   });
 
-  const callerIds = watch("callerIds");
+  const callers = watch("callers");
   const { countries, dids } = useVocab();
 
   const addCaller = () => {
@@ -35,49 +35,62 @@ const CallerIdSelector = () => {
     });
   };
 
+  // Get selected countries to filter them out from other rows
+  const selectedCountries = callers
+    .map((item) => item.destination)
+    .filter(Boolean);
+
+  const countryOptions = countries.map((country) => ({
+    label: `${country.emoji} ${country.name}`,
+    value: country.code,
+  }));
+
+  const didOptions: SelectOption[] = dids.map((did) => ({
+    label: did.name,
+    value: did.id,
+  }));
+
   return (
     <div className="w-full caller-ids space-y-2">
       {fields.map((field, index) => {
-        const currentDestination = watch(`callerIds.${index}.destination`);
-        const currentCallerId = watch(`callerIds.${index}.callerNumber`);
+        const currentDestination = callers[index]?.destination;
+        const currentCallerId = callers[index]?.callerNumber;
 
-        // Include available countries + the currently selected country for this row
-        const countryOptions = countries.map((country) => ({
-          label: `${country.emoji} ${country.name}`,
-          value: country.code,
-        }));
-        const didOptions: SelectOption[] = dids.map((did) => ({
-          label: did.name,
-          value: did.id,
-        }));
+        // Filter out countries already selected in other rows
+        const availableCountryOptions = countryOptions.filter(
+          (option) =>
+            option.value === currentDestination ||
+            !selectedCountries.includes(option.value)
+        );
 
-        const selectedCountryOption = currentDestination
-          ? countryOptions.find((opt) => opt.value === currentDestination) ||
-            null
-          : null;
-
-        const selectedDidOption = currentCallerId
-          ? didOptions.find((opt) => opt.value === currentCallerId) || null
-          : null;
-
-        const fieldErrors = errors.callerIds?.[index];
-        const shouldShowRemove = callerIds.length > 1;
+        const fieldErrors = errors.callers?.[index];
+        const shouldShowRemove = callers.length > 1;
 
         return (
           <div
-            key={`caller-id-${index}`}
+            key={field.id}
             className="call-id bg-gray-50 border border-gray-100 p-4 rounded-lg flex items-center gap-4"
           >
             <div className="grid grid-cols-1 lg:grid-cols-2 flex-1 gap-2">
               <Select<SelectOption, false>
                 label="Country"
-                options={countryOptions}
-                value={selectedCountryOption}
+                options={availableCountryOptions}
+                menuPlacement="top"
+                value={
+                  currentDestination
+                    ? countryOptions.find(
+                        (opt) => opt.value === currentDestination
+                      ) || null
+                    : null
+                }
                 onChange={(option) => {
-                  const value = option?.value || "";
-                  setValue(`callerIds.${index}.destination`, value, {
-                    shouldValidate: true,
-                  });
+                  setValue(
+                    `callers.${index}.destination`,
+                    option?.value || "",
+                    {
+                      shouldValidate: true,
+                    }
+                  );
                 }}
                 placeholder="Select a country..."
                 error={fieldErrors?.destination?.message}
@@ -86,12 +99,21 @@ const CallerIdSelector = () => {
               <Select<SelectOption, false>
                 label="DID"
                 options={didOptions}
-                value={selectedDidOption}
+                menuPlacement="top"
+                value={
+                  currentCallerId
+                    ? didOptions.find((opt) => opt.value === currentCallerId) ||
+                      null
+                    : null
+                }
                 onChange={(option) => {
-                  const value = option?.value || "";
-                  setValue(`callerIds.${index}.callerNumber`, value, {
-                    shouldValidate: true,
-                  });
+                  setValue(
+                    `callers.${index}.callerNumber`,
+                    option?.value || "",
+                    {
+                      shouldValidate: true,
+                    }
+                  );
                 }}
                 placeholder="Select a DID..."
                 error={fieldErrors?.callerNumber?.message}
