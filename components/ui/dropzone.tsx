@@ -82,39 +82,48 @@ const Dropzone = ({
   );
   const [fakeFilesState, setFakeFilesState] = useState<string[]>(fakeFiles);
 
-  const addAcceptedFile = useCallback((file: File) => {
-    const fileWithId = new File([file], file.name, {
-      type: file.type,
-      lastModified: file.lastModified,
-    });
+  const addAcceptedFile = useCallback(
+    (file: File) => {
+      const fileWithId = new File([file], file.name, {
+        type: file.type,
+        lastModified: file.lastModified,
+      });
 
-    Object.defineProperty(fileWithId, "id", {
-      value: uuidv4(),
-      writable: false,
-      enumerable: true,
-    });
+      Object.defineProperty(fileWithId, "id", {
+        value: uuidv4(),
+        writable: false,
+        enumerable: true,
+      });
 
-    setAcceptedFiles([fileWithId as WithId<File>]);
-    setFileRejections([]);
+      setAcceptedFiles([fileWithId as WithId<File>]);
+      setFileRejections([]);
 
-    if (onChange) {
-      onChange(fileWithId as WithId<File>);
-    }
-  }, [onChange]);
+      if (onChange) {
+        onChange(fileWithId as WithId<File>);
+      }
+    },
+    [onChange]
+  );
 
-  const addRejectedFile = useCallback((rejection: FileRejection) => {
-    setFileRejections((prev) => [...prev, { ...rejection, id: uuidv4() }]);
-    if (onChange) {
-      onChange(null);
-    }
-  }, [onChange]);
+  const addRejectedFile = useCallback(
+    (rejection: FileRejection) => {
+      setFileRejections((prev) => [...prev, { ...rejection, id: uuidv4() }]);
+      if (onChange) {
+        onChange(null);
+      }
+    },
+    [onChange]
+  );
 
-  const removeFile = useCallback((id: string) => {
-    setAcceptedFiles((prev) => prev.filter((file) => file.id !== id));
-    if (onChange) {
-      onChange(null);
-    }
-  }, [onChange]);
+  const removeFile = useCallback(
+    (id: string) => {
+      setAcceptedFiles((prev) => prev.filter((file) => file.id !== id));
+      if (onChange) {
+        onChange(null);
+      }
+    },
+    [onChange]
+  );
 
   const removeRejectedFile = useCallback((id: string) => {
     setFileRejections((prev) =>
