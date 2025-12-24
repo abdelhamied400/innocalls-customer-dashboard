@@ -184,6 +184,7 @@ const AppSidebar = () => {
               href={`/auto-dialer`}
               isNew={true}
               isComingSoon={false}
+              disabled={true}
             />
             <SidebarItem
               icon={<Quiz />}
