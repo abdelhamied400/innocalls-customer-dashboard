@@ -78,7 +78,7 @@ const AppSidebar = () => {
           <SidebarItem
             icon={<Timeline />}
             title={t("navigation.analytics")}
-            href={`/analytics/inbound`}
+            href={`/analytics`}
             isNew={true}
             isComingSoon={false}
           />
@@ -182,8 +182,8 @@ const AppSidebar = () => {
               icon={<RingVolume />}
               title={t("navigation.autoDialer")}
               href={`/auto-dialer`}
-              isNew={true}
-              isComingSoon={false}
+              isNew={false}
+              isComingSoon={true}
               disabled={true}
             />
             <SidebarItem
