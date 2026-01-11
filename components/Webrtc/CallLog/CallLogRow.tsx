@@ -43,7 +43,7 @@ const CallLogRow = ({ number, time, stats, name, onCall }: CallLogRowProps) => {
     <div className="call-log-row bg-gray-100 flex justify-between items-center p-2 rounded-lg hover:bg-gray-200 transition-colors text-sm [&_svg]:size-5">
       <div className="details flex flex-col gap-2">
         <h4 className="text-start">
-          {"\u200E" + number} {name ? `- (${name})` : ""}
+          {"\u200E" + number} {!name || name === number ? "" : `- (${name})`}
         </h4>
         <div className="date-time flex items-center gap-2">
           <div className="date flex items-center">
