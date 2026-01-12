@@ -532,7 +532,8 @@
         "charges": "Charges",
         "paymentHistory": "Payment History",
         "rates": "Rates",
-        "invoices": "Invoices"
+        "invoices": "Invoices",
+        "subscriptions": "Subscriptions"
       },
       "actions": {
         "refillBalance": "Refill Balance"

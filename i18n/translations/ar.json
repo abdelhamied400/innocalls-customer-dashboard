@@ -532,7 +532,8 @@
         "charges": "الرسوم",
         "paymentHistory": "تاريخ الدفع",
         "rates": "الأسعار",
-        "invoices": "الفواتير"
+        "invoices": "الفواتير",
+        "subscriptions": "الاشتراكات"
       },
       "actions": {
         "refillBalance": "إعادة شحن الرصيد"

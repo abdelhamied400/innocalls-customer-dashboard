@@ -5,7 +5,6 @@ import Link from "next/link";
 import { PropsWithChildren, useEffect } from "react";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
-import useRouteWithLocale from "@/hooks/use-route";
 import withPermission from "@/containers/withPermission";
 
 type BillingLayoutProps = PropsWithChildren<{
@@ -35,6 +34,9 @@ const BillingLayout = ({ children, refillSheet }: BillingLayoutProps) => {
           <LinkTab href="/billing/rates">{t("layout.tabs.rates")}</LinkTab>
           <LinkTab href="/billing/invoices">
             {t("layout.tabs.invoices")}
+          </LinkTab>
+          <LinkTab href="/billing/subscription">
+            {t("layout.tabs.subscriptions")}
           </LinkTab>
         </LinkTabs>
         <Link href="/billing/refill-balance">

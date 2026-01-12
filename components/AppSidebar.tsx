@@ -34,6 +34,7 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import { useSession } from "next-auth/react";
 import useAuthStore from "@/store/auth.slice";
 import useAuth from "@/hooks/useAuth";
+import { Payment } from "@mui/icons-material";
 
 const AppSidebar = () => {
   const t = useTranslations("sidebar");
