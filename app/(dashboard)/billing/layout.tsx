@@ -35,9 +35,9 @@ const BillingLayout = ({ children, refillSheet }: BillingLayoutProps) => {
           <LinkTab href="/billing/invoices">
             {t("layout.tabs.invoices")}
           </LinkTab>
-          <LinkTab href="/billing/subscription">
+          {/* <LinkTab href="/billing/subscription">
             {t("layout.tabs.subscriptions")}
-          </LinkTab>
+          </LinkTab> */}
         </LinkTabs>
         <Link href="/billing/refill-balance">
           <Button>{t("layout.actions.refillBalance")}</Button>

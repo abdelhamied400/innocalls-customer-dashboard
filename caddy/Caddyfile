@@ -1,6 +1,15 @@
 :80 {
- route {
+    route {
+        reverse_proxy http://innocalls-new-portal-beta:3000
+    }
+}
 
-        reverse_proxy http://innocalls-new-portal:3000
+platform.beta.innocalls.com {
+    route {
+        reverse_proxy innocalls-new-portal-beta:3000 {
+            header_up Host {host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+        }
     }
 }
