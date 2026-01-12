@@ -13,6 +13,7 @@ import webrtcService from "@/services/webrtc.service";
 import { differenceInSeconds, format, intervalToDuration } from "date-fns";
 import { useSession } from "next-auth/react";
 import { forcePCMA } from "@/lib/webrtc";
+import { processPhoneNumber } from "@/lib/dialpad-utils";
 
 export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
@@ -82,6 +83,8 @@ export const useUaEvents = ({
       const calleeNumber = session.remote_identity?.uri?.user || "Unknown";
       const calleeName = session.remote_identity?.display_name || "Unknown";
 
+      const { processedNumber } = processPhoneNumber(calleeNumber, true);
+
       session.on("progress", () => {
         webrtcLogger.info("Call is in progress");
         ringtoneRef.current
@@ -98,7 +101,7 @@ export const useUaEvents = ({
         addCallToLog(
           {
             type: "incoming",
-            number: calleeNumber,
+            number: processedNumber,
             name: calleeName,
           },
           extension.ext
@@ -117,7 +120,7 @@ export const useUaEvents = ({
           addCallToLog(
             {
               type: "missed",
-              number: calleeNumber,
+              number: processedNumber,
               name: calleeName,
             },
             extension.ext
@@ -137,7 +140,7 @@ export const useUaEvents = ({
           addCallToLog(
             {
               type: "rejected",
-              number: calleeNumber,
+              number: processedNumber,
               name: calleeName,
             },
             extension.ext
@@ -147,7 +150,7 @@ export const useUaEvents = ({
           addCallToLog(
             {
               type: "missed",
-              number: calleeNumber,
+              number: processedNumber,
               name: calleeName,
             },
             extension.ext
@@ -173,11 +176,12 @@ export const useUaEvents = ({
       const connection = session.connection;
 
       const calledNumber = session.remote_identity?.uri?.user || "Unknown";
+      const { processedNumber } = processPhoneNumber(calledNumber, true);
 
       addCallToLog(
         {
           type: "outgoing",
-          number: calledNumber,
+          number: processedNumber,
         },
         extension.ext
       );
