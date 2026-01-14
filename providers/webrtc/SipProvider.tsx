@@ -29,6 +29,7 @@ import CryptoJS from "crypto-js";
 import { webrtcStoppingActivities } from "@/constants/agent-activity";
 import { AgentActivity } from "@/types/webrtc";
 import useAuth from "@/hooks/useAuth";
+import useWebrtcStore from "@/store/webrtc.slice";
 
 const SipContext = createContext<SipContextType | null>(null);
 
@@ -82,6 +83,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   }, [ua]);
 
   const { toast } = useToast();
+  const { setExtension: setExtensionStore } = useWebrtcStore();
 
   const [number, setNumber] = useState<string>("");
   const [dialCode, setDialCode] = useState<string>(defaultCountry.code);
@@ -103,6 +105,8 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
   const login = useCallback(
     (extensionData: ExtensionWithCredentials) => {
+      setExtensionStore(extensionData);
+
       // Use ref to avoid dependency on ua state
       if (uaRef.current) {
         activeUserAgents.delete(uaRef.current);

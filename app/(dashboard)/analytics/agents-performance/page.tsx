@@ -29,6 +29,8 @@ import { FilterBox } from "@/components/FilterBox";
 import { formatDate } from "@/lib/date";
 import AgentsPicker from "@/components/AgentsPicker";
 import { Slider } from "@/components/ui/slider";
+import hasTenant from "@/containers/hasTenant";
+import withPermission from "@/containers/withPermission";
 
 type Option = {
   value: string;
@@ -192,4 +194,6 @@ const UserActivityAnalytics = () => {
   );
 };
 
-export default UserActivityAnalytics;
+export default hasTenant(
+  withPermission(UserActivityAnalytics, "agentsAccessControl")
+);

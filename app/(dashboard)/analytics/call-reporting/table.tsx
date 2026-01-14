@@ -4,7 +4,7 @@ import callReportingService from "@/services/call-reporting.service";
 import { CallReportingFilters } from "@/types/api/call-reporting";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { PaginationState, SortingState } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { columns } from "./columns";
 import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
@@ -78,6 +78,19 @@ const CallReportingTable = () => {
     }
   }, [isError, error, toast]);
 
+  // Track if this is the initial render
+  const isInitialRender = useRef(true);
+
+  useEffect(() => {
+    // Skip reset on initial render
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    // Reset to first page when filters change
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  }, [filters]);
+
   return (
     <div className="h-full flex flex-col">
       <PaginatedTable
@@ -87,9 +100,8 @@ const CallReportingTable = () => {
           totalItems: callReporting?.total || 0,
           totalPages: callReporting?.last_page || 0,
         }}
-        onPaginationChange={(pagination) => {
-          setPagination(pagination);
-        }}
+        paginationState={pagination}
+        onPaginationChange={setPagination}
       >
         <CallReportingHead filters={filters} setFilters={setFilters} />
         <PaginatedTableContent>

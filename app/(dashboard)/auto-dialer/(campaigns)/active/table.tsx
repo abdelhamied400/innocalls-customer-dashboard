@@ -9,7 +9,7 @@ import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PaginationState } from "@tanstack/react-table";
 import { useToast } from "@/hooks/use-toast";
 import { isAxiosError } from "axios";
@@ -50,6 +50,19 @@ const ActiveCampaignsTable = () => {
     }
   }, [isError, error, toast]);
 
+  // Track if this is the initial render
+  const isInitialRender = useRef(true);
+
+  useEffect(() => {
+    // Skip reset on initial render
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    // Reset to first page when filters change
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  }, [filters]);
+
   return (
     <div className="rounded-lg flex-1 flex flex-col overflow-hidden">
       <PaginatedTable
@@ -59,9 +72,8 @@ const ActiveCampaignsTable = () => {
           totalItems: data?.totalItems || 0,
           totalPages: data?.totalPages || 0,
         }}
-        onPaginationChange={(pagination) => {
-          setPagination(pagination);
-        }}
+        paginationState={pagination}
+        onPaginationChange={setPagination}
       >
         <AutoDialerActiveHead filters={filters} setFilters={setFilters} />
         <PaginatedTableContent>

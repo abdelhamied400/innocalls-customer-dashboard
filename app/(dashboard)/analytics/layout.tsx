@@ -1,6 +1,7 @@
 "use client";
 import LinkTabs, { LinkTab } from "@/components/LinkTabs";
 import hasTenant from "@/containers/hasTenant";
+import useAuth from "@/hooks/useAuth";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 import {
@@ -14,6 +15,7 @@ import { useEffect } from "react";
 
 const AnalyticsLayout = ({ children }: { children: React.ReactNode }) => {
   const t = useTranslations("analytics");
+  const { data: auth } = useAuth();
   const { setPageTitle } = useAppStore();
   const locale = useLocale();
 
@@ -41,10 +43,12 @@ const AnalyticsLayout = ({ children }: { children: React.ReactNode }) => {
               <CallMissedOutgoing />
               {t("layout.tabs.unanswered")}
             </LinkTab>
-            <LinkTab href="/analytics/agents-performance">
-              <SupervisedUserCircle />
-              {t("layout.tabs.userActivity")}
-            </LinkTab>
+            {auth?.user?.agentsAccessControl && (
+              <LinkTab href="/analytics/agents-performance">
+                <SupervisedUserCircle />
+                {t("layout.tabs.userActivity")}
+              </LinkTab>
+            )}
             <LinkTab href="/analytics/call-reporting">
               <History />
               {t("layout.tabs.callReporting")}

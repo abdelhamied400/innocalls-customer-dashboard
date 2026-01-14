@@ -54,16 +54,18 @@ const AppSidebar = () => {
           isNew={true}
           isComingSoon={false}
         />
-        {session?.userType === "user" && Organization?.hasTenant && (
-          <SidebarItem
-            icon={<Monitor />}
-            title={t("navigation.liveMonitoring")}
-            href={`/live-monitoring`}
-            disabled={false}
-            isNew={true}
-            isComingSoon={false}
-          />
-        )}
+        {session?.userType === "user" &&
+          Organization?.hasTenant &&
+          auth?.user?.agentsAccessControl && (
+            <SidebarItem
+              icon={<Monitor />}
+              title={t("navigation.liveMonitoring")}
+              href={`/live-monitoring`}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
+            />
+          )}
         {session?.userType === "user" && (
           <SidebarItem
             icon={<SmartToy />}

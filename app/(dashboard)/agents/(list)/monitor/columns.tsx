@@ -7,6 +7,7 @@ import { ColumnDef, RowData } from "@tanstack/react-table";
 import { useTranslations } from "@/providers/TranslationProvider";
 import Image from "next/image";
 import { Tooltip } from "@mui/material";
+import useWebrtcStore from "@/store/webrtc.slice";
 
 // Extend TableMeta to include onSpy
 declare module "@tanstack/react-table" {
@@ -60,31 +61,34 @@ export const columns = (
   {
     accessorKey: "on_call",
     header: t("columns.onCall"),
-    cell: ({ row, table }) => (
-      <div className="on-call flex items-center gap-2">
-        <Badge
-          variant={row.getValue("on_call") ? "default" : "muted"}
-          className="capitalize"
-        >
-          {row.getValue("on_call") ? t("onCall.yes") : t("onCall.no")}
-        </Badge>
-        {!!row.getValue("on_call") && (
-          <Tooltip title={t("tooltips.spy")} arrow>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => table.options.meta?.onSpy?.(row.original.ext)}
-            >
-              <Image
-                src="/assets/icons/incognito.svg"
-                alt="spy"
-                width={24}
-                height={24}
-              />
-            </Button>
-          </Tooltip>
-        )}
-      </div>
-    ),
+    cell: ({ row, table }) => {
+      const { extension } = useWebrtcStore();
+      return (
+        <div className="on-call flex items-center gap-2">
+          <Badge
+            variant={row.getValue("on_call") ? "default" : "muted"}
+            className="capitalize"
+          >
+            {row.getValue("on_call") ? t("onCall.yes") : t("onCall.no")}
+          </Badge>
+          {!!row.getValue("on_call") && extension?.ext !== row.original.ext && (
+            <Tooltip title={t("tooltips.spy")} arrow>
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => table.options.meta?.onSpy?.(row.original.ext)}
+              >
+                <Image
+                  src="/assets/icons/incognito.svg"
+                  alt="spy"
+                  width={24}
+                  height={24}
+                />
+              </Button>
+            </Tooltip>
+          )}
+        </div>
+      );
+    },
   },
 ];

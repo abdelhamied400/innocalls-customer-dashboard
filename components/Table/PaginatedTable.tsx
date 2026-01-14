@@ -32,6 +32,7 @@ type PaginatedTableProps<TData, TValue> = PropsWithChildren<{
     totalItems: number;
     totalPages: number;
   };
+  paginationState?: PaginationState;
   onPaginationChange?: (pagination: PaginationState) => void;
   onSortingChange?: (sorting: SortingState) => void;
   manualPagination?: boolean;
@@ -41,16 +42,40 @@ const PaginatedTable = <TData, TValue>({
   data,
   columns,
   pagination: { totalItems, totalPages } = { totalItems: 0, totalPages: 0 },
+  paginationState: controlledPagination,
   onPaginationChange,
   onSortingChange,
   manualPagination = true,
   children,
   meta,
 }: PaginatedTableProps<TData, TValue>) => {
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+  const [internalPagination, setInternalPagination] = useState<PaginationState>(
+    {
+      pageIndex: 0,
+      pageSize: 10,
+    }
+  );
+
+  const pagination = controlledPagination ?? internalPagination;
+  const handlePaginationChange = (
+    updaterOrValue:
+      | PaginationState
+      | ((old: PaginationState) => PaginationState)
+  ) => {
+    const newPagination =
+      typeof updaterOrValue === "function"
+        ? updaterOrValue(pagination)
+        : updaterOrValue;
+
+    if (controlledPagination) {
+      // Controlled mode: let parent handle state
+      onPaginationChange?.(newPagination);
+    } else {
+      // Uncontrolled mode: update internal state and notify parent
+      setInternalPagination(newPagination);
+      onPaginationChange?.(newPagination);
+    }
+  };
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
@@ -75,21 +100,24 @@ const PaginatedTable = <TData, TValue>({
       rowCount: totalItems,
     }),
     // callbacks
-    onPaginationChange: setPagination,
+    onPaginationChange: handlePaginationChange,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     meta,
   });
 
-  //* watch pagination change
-  useEffect(() => {
-    onPaginationChange?.(pagination);
-  }, [pagination]);
-
   // * watch sorting change
   useEffect(() => {
     onSortingChange?.(sorting);
   }, [sorting]);
+
+  // Sync table pagination when controlled pagination changes from parent
+  useEffect(() => {
+    if (controlledPagination) {
+      table.setPageIndex(controlledPagination.pageIndex);
+      table.setPageSize(controlledPagination.pageSize);
+    }
+  }, [controlledPagination?.pageIndex, controlledPagination?.pageSize]);
 
   return (
     <div className="paginated-table flex-1 flex flex-col overflow-hidden">

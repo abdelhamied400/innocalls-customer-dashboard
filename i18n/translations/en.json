@@ -578,6 +578,7 @@
         "date": "Date",
         "email": "Email",
         "total": "Total",
+        "remaining": "Remaining",
         "status": "Status",
         "actions": "Actions"
       },

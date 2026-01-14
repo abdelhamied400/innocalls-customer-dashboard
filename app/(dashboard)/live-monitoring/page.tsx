@@ -11,9 +11,12 @@ import QueueManagement from "./QueueManagement";
 import hasTenant from "@/containers/hasTenant";
 import useLayoutManager from "@/hooks/use-layout-manager";
 import { cn } from "@/lib/utils";
+import useAuth from "@/hooks/useAuth";
+import withPermission from "@/containers/withPermission";
 
 const LiveMonitoring = () => {
   const { Organization } = useAuthStore();
+  const { data: auth } = useAuth();
   const { setPageTitle } = useAppStore();
   const t = useTranslations("dashboard.containers");
   const { layoutVariant } = useLayoutManager();
@@ -34,7 +37,11 @@ const LiveMonitoring = () => {
           <div
             className={cn(
               "space-y-6",
-              layoutVariant !== "both-open" ? "lg:col-span-7" : "lg:col-span-10"
+              auth?.user?.agentsAccessControl
+                ? layoutVariant !== "both-open"
+                  ? "lg:col-span-7"
+                  : "lg:col-span-10"
+                : "lg:col-span-10"
             )}
           >
             <LiveCalls />
@@ -44,7 +51,7 @@ const LiveMonitoring = () => {
           {/* Sidebar */}
           <div
             className={cn(
-              "",
+              auth?.user?.agentsAccessControl ? "lg:block" : "lg:hidden",
               layoutVariant !== "both-open" ? "lg:col-span-3" : "lg:col-span-10"
             )}
           >
@@ -56,4 +63,4 @@ const LiveMonitoring = () => {
   );
 };
 
-export default hasTenant(LiveMonitoring);
+export default hasTenant(withPermission(LiveMonitoring, "agentsAccessControl"));

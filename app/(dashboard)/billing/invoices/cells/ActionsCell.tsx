@@ -77,7 +77,7 @@ const ActionsCell = ({ row }: Cell<Invoice>) => {
 
   return (
     <div className="flex items-center gap-2">
-      {status === "overdue" && (
+      {["overdue", "partially_paid"].includes(status) && (
         <Tooltip title={t("tooltips.pay")} arrow>
           <Button
             size="icon"

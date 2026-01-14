@@ -1,7 +1,7 @@
 "use client";
 
 import { PaginationState, SortingState } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { columns } from "./columns";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import billingService from "@/services/billing.service";
@@ -87,6 +87,19 @@ const BillingTable = () => {
     }
   }, [isError, error, toast]);
 
+  // Track if this is the initial render
+  const isInitialRender = useRef(true);
+
+  useEffect(() => {
+    // Skip reset on initial render
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    // Reset to first page when filters or sorting change
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  }, [filters, sorting]);
+
   return (
     <div className="h-auto sm:h-full flex flex-col border rounded-xl">
       <PaginatedTable
@@ -96,9 +109,8 @@ const BillingTable = () => {
           totalItems: invoices?.total || 0,
           totalPages: invoices?.last_page || 0,
         }}
-        onPaginationChange={(pagination) => {
-          setPagination(pagination);
-        }}
+        paginationState={pagination}
+        onPaginationChange={setPagination}
         onSortingChange={setSorting}
       >
         <InvoicesHead filters={filters} setFilters={setFilters} />
