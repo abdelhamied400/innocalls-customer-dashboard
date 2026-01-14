@@ -155,10 +155,8 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
                     )}
                   </div>
                   <span className="font-normal">
-                    {
-                      quickStatsData?.topConnectedOutboundAgents[0]
-                        .connectedOutboundCount
-                    }
+                    {quickStatsData?.topConnectedOutboundAgents[0]
+                      ?.connectedOutboundCount || 0}
                   </span>
                 </div>
                 <PopoverContent>
@@ -220,7 +218,10 @@ const QuickStats = ({ filters }: QuickStatsProps) => {
                     )}
                   </div>
                   <span className="font-normal">
-                    {`${quickStatsData?.topSlaComplianceAgents[0]?.slaPercentage}\u200E%`}
+                    {`${
+                      quickStatsData?.topSlaComplianceAgents[0]
+                        ?.slaPercentage || 0
+                    }\u200E%`}
                   </span>
                 </div>
                 <PopoverContent side={screenWidth < 640 ? undefined : "right"}>

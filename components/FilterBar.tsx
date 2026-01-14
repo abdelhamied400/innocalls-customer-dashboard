@@ -42,20 +42,20 @@ export const FilterBar = ({ children, onClear }: FilterBarProps) => {
           <div className="filters flex flex-wrap items-center gap-2">
             {children}
           </div>
-        <div className="flex items-center">
-          {onClear && (
-            <Button
-              variant="ghost"
-              onClick={onClear}
-              className="flex items-center bg-transparent"
-            >
-              <Close className="h-4 w-4" />
-              {t("clear")}
-            </Button>
-          )}
+          <div className="flex items-center">
+            {onClear && (
+              <Button
+                variant="ghost"
+                onClick={onClear}
+                className="flex items-center bg-transparent"
+              >
+                <Close className="h-4 w-4" />
+                {t("clear")}
+              </Button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </FilterBarContext.Provider>
   );
 };

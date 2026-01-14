@@ -1,7 +1,7 @@
 import { useSip } from "@/providers/webrtc/SipProvider";
 import { Button } from "../ui/button";
 import { CallEnd, Phone } from "@mui/icons-material";
-import { SessionDirection } from "jssip/lib/RTCSession";
+import { SessionDirection } from "jssip/src/RTCSession";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { webrtcLogger } from "@/lib/logger";
 
@@ -32,7 +32,7 @@ const IncomingCall = () => {
         remoteAudio.play();
       });
 
-      currentSession.connection.addEventListener("track", (e) => {
+      currentSession.connection.addEventListener("track", (e: any) => {
         webrtcLogger.debug("Track event", e);
         const remoteAudio = document.createElement("audio");
         remoteAudio.srcObject = e.streams && e.streams[0] ? e.streams[0] : null;
