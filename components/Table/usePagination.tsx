@@ -9,16 +9,32 @@ import { useMemo } from "react";
 
 type Options = {
   isManualPagination?: boolean;
+  serverPagination?: {
+    from: number;
+    to: number;
+    total: number;
+  };
 };
 const usePagination = <TData,>(table: Table<TData>, options: Options) => {
   const tablePagination = table.getState().pagination;
+
+  // Use server-provided values when available, otherwise calculate
+  const totalItems =
+    options.serverPagination?.total ??
+    (options.isManualPagination
+      ? table.getRowCount()
+      : table.getFilteredRowModel().rows.length);
+
   const startRowIndex =
+    options.serverPagination?.from ??
     tablePagination.pageIndex * tablePagination.pageSize + 1;
-  const endRowIndex = Math.min(
-    (tablePagination.pageIndex + 1) * tablePagination.pageSize,
-    table.getFilteredRowModel().rows.length
-  );
-  const totalItems = table.getFilteredRowModel().rows.length;
+
+  const endRowIndex =
+    options.serverPagination?.to ??
+    Math.min(
+      (tablePagination.pageIndex + 1) * tablePagination.pageSize,
+      totalItems
+    );
 
   const pages = useMemo(() => {
     const pagesCount = options.isManualPagination

@@ -20,11 +20,12 @@ import usePagination from "./usePagination";
 import { useTranslations } from "@/providers/TranslationProvider";
 
 const PaginatedTablePagination = () => {
-  const { table, pagination } = usePaginatedTable();
+  const { table, pagination, serverPagination } = usePaginatedTable();
   const { startRowIndex, endRowIndex, totalItems, pages } = usePagination(
     table,
     {
       isManualPagination: table.options.manualPagination,
+      serverPagination,
     }
   );
 

@@ -19,6 +19,11 @@ type DataTableContextType<TData, TValue> = {
   data: TData[];
   columns: ColumnDef<TData, TValue>[];
   pagination: PaginationState;
+  serverPagination?: {
+    from: number;
+    to: number;
+    total: number;
+  };
 };
 
 export const PaginatedTableContext = createContext<
@@ -31,6 +36,8 @@ type PaginatedTableProps<TData, TValue> = PropsWithChildren<{
   pagination?: {
     totalItems: number;
     totalPages: number;
+    from?: number;
+    to?: number;
   };
   paginationState?: PaginationState;
   onPaginationChange?: (pagination: PaginationState) => void;
@@ -41,7 +48,10 @@ type PaginatedTableProps<TData, TValue> = PropsWithChildren<{
 const PaginatedTable = <TData, TValue>({
   data,
   columns,
-  pagination: { totalItems, totalPages } = { totalItems: 0, totalPages: 0 },
+  pagination: { totalItems, totalPages, from, to } = {
+    totalItems: 0,
+    totalPages: 0,
+  },
   paginationState: controlledPagination,
   onPaginationChange,
   onSortingChange,
@@ -119,9 +129,17 @@ const PaginatedTable = <TData, TValue>({
     }
   }, [controlledPagination?.pageIndex, controlledPagination?.pageSize]);
 
+  // Build serverPagination object when from/to are provided
+  const serverPagination =
+    manualPagination && from !== undefined && to !== undefined
+      ? { from, to, total: totalItems }
+      : undefined;
+
   return (
     <div className="paginated-table flex-1 flex flex-col overflow-hidden">
-      <PaginatedTableContext value={{ table, data, columns, pagination }}>
+      <PaginatedTableContext
+        value={{ table, data, columns, pagination, serverPagination }}
+      >
         {children}
       </PaginatedTableContext>
     </div>

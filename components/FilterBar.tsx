@@ -9,6 +9,7 @@ import {
 import { Button } from "./ui/button";
 import { Close } from "@mui/icons-material";
 import { useTranslations } from "@/providers/TranslationProvider";
+import { cn } from "@/lib/utils";
 
 type FilterBarContextType = {
   openFilterId: string | null;
@@ -24,8 +25,9 @@ export const useFilterBar = () => {
 
 type FilterBarProps = PropsWithChildren<{
   onClear?: () => void;
+  className?: string;
 }>;
-export const FilterBar = ({ children, onClear }: FilterBarProps) => {
+export const FilterBar = ({ children, onClear, className }: FilterBarProps) => {
   const t = useTranslations("common.actions");
   const [openFilterId, setOpenFilterId] = useState<string | null>(null);
 
@@ -37,7 +39,7 @@ export const FilterBar = ({ children, onClear }: FilterBarProps) => {
     <FilterBarContext.Provider
       value={{ openFilterId, setOpenFilterId, closeFilter }}
     >
-      <div className="border-t px-4 py-3">
+      <div className={cn("border-t px-4 py-3", className)}>
         <div className="flex flex-wrap items-center justify-between">
           <div className="filters flex flex-wrap items-center gap-2">
             {children}

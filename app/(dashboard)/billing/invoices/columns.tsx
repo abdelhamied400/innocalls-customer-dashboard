@@ -46,9 +46,7 @@ export const columns = (): ColumnDef<Invoice>[] => {
     },
     {
       accessorKey: "remaining",
-      header: ({ column }) => (
-        <SortingHead column={column}>{t("columns.remaining")}</SortingHead>
-      ),
+      header: t("columns.remaining"),
       cell: RemainingCell,
     },
     {

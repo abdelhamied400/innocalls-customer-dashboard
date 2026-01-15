@@ -75,6 +75,8 @@ const BillingTable = () => {
         pagination={{
           totalItems: rates.total || 0,
           totalPages: rates.last_page || 0,
+          from: rates.from,
+          to: rates.to,
         }}
         paginationState={pagination}
         onPaginationChange={setPagination}

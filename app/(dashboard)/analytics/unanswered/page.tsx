@@ -23,6 +23,7 @@ import { useVocab } from "@/hooks/useVocab";
 import { FilterBox } from "@/components/FilterBox";
 import { formatDate } from "@/lib/date";
 import AgentsPicker from "@/components/AgentsPicker";
+import { FilterBar } from "@/components/FilterBar";
 
 type Option = {
   value: string;
@@ -66,68 +67,72 @@ const UnansweredAnalytics = () => {
       <div className="flex flex-col gap-2">
         <div className="filters p-2 border rounded-xl flex items-center justify-between flex-wrap gap-2">
           <div className="flex flex-wrap items-center gap-2">
-            <FilterBox
-              triggerLabel={
-                <p className="font-normal">
-                  {tCommon("from")}{" "}
-                  <b>{formatDate(values.fromDate, { locale: locale })}</b>
-                  {tCommon("to")}{" "}
-                  <b>{formatDate(values.toDate, { locale: locale })}</b>
-                </p>
-              }
-              label={tCommon("form.fields.date.label")}
-              onApply={apply}
-              onReset={() => {
-                applyValues({
-                  fromDate: unansweredFilterConfig.defaultValues.fromDate,
-                  toDate: unansweredFilterConfig.defaultValues.toDate,
-                });
-              }}
-            >
-              <div className="flex flex-col gap-4">
-                <Field
-                  label={tCommon("form.fields.fromDate.label")}
-                  postIcon={<CalendarMonth className="text-gray-400" />}
-                  error={errors.fromDate}
-                >
-                  <DatePicker
-                    className="min-w-36 flex-1"
-                    placeholder={tCommon("form.fields.fromDate.placeholder")}
-                    value={values.fromDate}
-                    onChange={(date) =>
-                      setValue("fromDate", date || new Date())
-                    }
-                  />
-                </Field>
-                <Field
-                  label={tCommon("form.fields.toDate.label")}
-                  postIcon={<CalendarMonth className="text-gray-400" />}
-                  error={errors.toDate}
-                >
-                  <DatePicker
-                    className="min-w-36 flex-1"
-                    placeholder={tCommon("form.fields.toDate.placeholder")}
-                    value={values.toDate}
-                    onChange={(date) => setValue("toDate", date || new Date())}
-                  />
-                </Field>
-              </div>
-            </FilterBox>
-            <FilterBox
-              triggerLabel={tCommon("form.fields.agents.label")}
-              label={tCommon("form.fields.agents.label")}
-              onApply={apply}
-              onReset={() => {
-                applyValues({
-                  agents: unansweredFilterConfig.defaultValues.agents,
-                });
-              }}
-            >
-              <AgentsPicker
-                selectedAgents={values.agents}
-                onAgentsChange={(agents) => setValue("agents", agents)}
-              />
-            </FilterBox>
+            <FilterBar className="px-1 py-1 border-0">
+              <FilterBox
+                triggerLabel={
+                  <p className="font-normal">
+                    {tCommon("from")}{" "}
+                    <b>{formatDate(values.fromDate, { locale: locale })}</b>
+                    {tCommon("to")}{" "}
+                    <b>{formatDate(values.toDate, { locale: locale })}</b>
+                  </p>
+                }
+                label={tCommon("form.fields.date.label")}
+                onApply={apply}
+                onReset={() => {
+                  applyValues({
+                    fromDate: unansweredFilterConfig.defaultValues.fromDate,
+                    toDate: unansweredFilterConfig.defaultValues.toDate,
+                  });
+                }}
+              >
+                <div className="flex flex-col gap-4">
+                  <Field
+                    label={tCommon("form.fields.fromDate.label")}
+                    postIcon={<CalendarMonth className="text-gray-400" />}
+                    error={errors.fromDate}
+                  >
+                    <DatePicker
+                      className="min-w-36 flex-1"
+                      placeholder={tCommon("form.fields.fromDate.placeholder")}
+                      value={values.fromDate}
+                      onChange={(date) =>
+                        setValue("fromDate", date || new Date())
+                      }
+                    />
+                  </Field>
+                  <Field
+                    label={tCommon("form.fields.toDate.label")}
+                    postIcon={<CalendarMonth className="text-gray-400" />}
+                    error={errors.toDate}
+                  >
+                    <DatePicker
+                      className="min-w-36 flex-1"
+                      placeholder={tCommon("form.fields.toDate.placeholder")}
+                      value={values.toDate}
+                      onChange={(date) =>
+                        setValue("toDate", date || new Date())
+                      }
+                    />
+                  </Field>
+                </div>
+              </FilterBox>
+              <FilterBox
+                triggerLabel={tCommon("form.fields.agents.label")}
+                label={tCommon("form.fields.agents.label")}
+                onApply={apply}
+                onReset={() => {
+                  applyValues({
+                    agents: unansweredFilterConfig.defaultValues.agents,
+                  });
+                }}
+              >
+                <AgentsPicker
+                  selectedAgents={values.agents}
+                  onAgentsChange={(agents) => setValue("agents", agents)}
+                />
+              </FilterBox>
+            </FilterBar>
           </div>
           <Button onClick={reset} variant="ghost">
             <Clear />

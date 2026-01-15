@@ -99,6 +99,8 @@ const CallReportingTable = () => {
         pagination={{
           totalItems: callReporting?.total || 0,
           totalPages: callReporting?.last_page || 0,
+          from: callReporting?.from,
+          to: callReporting?.to,
         }}
         paginationState={pagination}
         onPaginationChange={setPagination}
