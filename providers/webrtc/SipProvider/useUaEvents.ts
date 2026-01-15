@@ -12,7 +12,7 @@ import useWebrtcStore from "@/store/webrtc.slice";
 import webrtcService from "@/services/webrtc.service";
 import { differenceInSeconds, format, intervalToDuration } from "date-fns";
 import { useSession } from "next-auth/react";
-import { forcePCMA } from "@/lib/webrtc";
+import { forcePCMA, parseAutoDialerCallee } from "@/lib/webrtc";
 import { processPhoneNumber } from "@/lib/dialpad-utils";
 
 export type useUAEventsDeps = {
@@ -81,7 +81,11 @@ export const useUaEvents = ({
       ringtoneRef.current = ringtone;
 
       const calleeNumber = session.remote_identity?.uri?.user || "Unknown";
-      const calleeName = session.remote_identity?.display_name || "Unknown";
+      const displayName = session.remote_identity?.display_name || "Unknown";
+
+      const { name: calleeName } = parseAutoDialerCallee(
+        displayName || calleeNumber || ""
+      );
 
       const { processedNumber } = processPhoneNumber(calleeNumber, true);
 
