@@ -26,6 +26,7 @@ import NoData from "@/components/Analytics/NoData";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import RechartTooltip from "@/components/RechartTooltip";
 import { defaultLocale, locales } from "@/i18n/config";
+import { formatDuration, formatDurationShort } from "@/lib/date";
 
 const colors = [
   "#3B82F6",
@@ -45,6 +46,7 @@ const InboundAnalyticsQueueAnalysis = ({
   filters,
 }: InboundAnalyticsQueueAnalysisProps) => {
   const t = useTranslations("analytics.inbound.queueAnalysis");
+  const tCommon = useTranslations("common");
   const localeSlug = useLocale() || defaultLocale;
   const locale = locales[localeSlug];
 
@@ -193,17 +195,17 @@ const InboundAnalyticsQueueAnalysis = ({
               <div className="flex flex-col gap-2">
                 <StatsRowCard
                   label={t("abandonedAnalysis.avgWaitTime")}
-                  value={abandonedAnalysis.avgWaitTime}
+                  value={formatDuration(abandonedAnalysis.avgWaitTime)}
                   color="primary"
                 />
                 <StatsRowCard
                   label={t("abandonedAnalysis.minWaitTime")}
-                  value={abandonedAnalysis.minWaitTime}
+                  value={formatDuration(abandonedAnalysis.minWaitTime)}
                   color="warning"
                 />
                 <StatsRowCard
                   label={t("abandonedAnalysis.maxWaitTime")}
-                  value={abandonedAnalysis.maxWaitTime}
+                  value={formatDuration(abandonedAnalysis.maxWaitTime)}
                   color="success"
                 />
                 <StatsRowCard
@@ -285,17 +287,17 @@ const InboundAnalyticsQueueAnalysis = ({
               <div className="flex flex-col gap-2">
                 <StatsRowCard
                   label={t("timeoutAnalysis.avgWaitTime")}
-                  value={timeoutAnalysis.avgWaitTime}
+                  value={formatDuration(timeoutAnalysis.avgWaitTime)}
                   color="primary"
                 />
                 <StatsRowCard
                   label={t("timeoutAnalysis.minWaitTime")}
-                  value={timeoutAnalysis.minWaitTime}
+                  value={formatDuration(timeoutAnalysis.minWaitTime)}
                   color="warning"
                 />
                 <StatsRowCard
                   label={t("timeoutAnalysis.maxWaitTime")}
-                  value={timeoutAnalysis.maxWaitTime}
+                  value={formatDuration(timeoutAnalysis.maxWaitTime)}
                   color="success"
                 />
                 <StatsRowCard
@@ -349,12 +351,12 @@ const InboundAnalyticsQueueAnalysis = ({
               >
                 <StatsRowCard
                   label={t("comparison.avgAbandonWait")}
-                  value={`${abandonedAnalysis.avgWaitTime}`}
+                  value={formatDuration(abandonedAnalysis.avgWaitTime)}
                   color="destructive"
                 />
                 <StatsRowCard
                   label={t("comparison.avgTimeoutWait")}
-                  value={`${timeoutAnalysis.avgWaitTime}`}
+                  value={formatDuration(timeoutAnalysis.avgWaitTime)}
                   color="warning"
                 />
                 <StatsRowCard
