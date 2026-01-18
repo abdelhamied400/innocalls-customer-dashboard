@@ -22,6 +22,7 @@ import useAppStore from "@/store/app.slice";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useVocab } from "@/hooks/useVocab";
+import useAuth from "@/hooks/useAuth";
 
 type Option = {
   value: string;
@@ -43,6 +44,7 @@ lastMonth.setDate(today.getDate() - 30);
 const OutboundAnalytics = () => {
   const { extensions } = useVocab();
   const { setPageTitle } = useAppStore();
+  const { data: auth } = useAuth();
 
   const tCommon = useTranslations("analytics.common");
   const t = useTranslations("analytics.outbound");
@@ -167,13 +169,15 @@ const OutboundAnalytics = () => {
                 <BarChart3 />
                 {t("tabs.dateDistribution")}
               </TabsTrigger>
-              <TabsTrigger
-                value="agent-stats"
-                className="flex items-center gap-1"
-              >
-                <Users />
-                {t("tabs.agentStats")}
-              </TabsTrigger>
+              {auth?.user?.agentsAccessControl && (
+                <TabsTrigger
+                  value="agent-stats"
+                  className="flex items-center gap-1"
+                >
+                  <Users />
+                  {t("tabs.agentStats")}
+                </TabsTrigger>
+              )}
             </TabsList>
             <TabsContent value="talk-time-distribution">
               <TalkTimeDistribution filters={appliedValues} />
@@ -184,9 +188,11 @@ const OutboundAnalytics = () => {
             <TabsContent value="date-distribution">
               <DateDistributionAnalytics filters={appliedValues} />
             </TabsContent>
-            <TabsContent value="agent-stats">
-              <AgentStatsAnalytics filters={appliedValues} />
-            </TabsContent>
+            {auth?.user?.agentsAccessControl && (
+              <TabsContent value="agent-stats">
+                <AgentStatsAnalytics filters={appliedValues} />
+              </TabsContent>
+            )}
           </Tabs>
         </StatsDetailedCard>
       </div>

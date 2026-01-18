@@ -248,12 +248,13 @@ const InboundAnalytics = () => {
                 <PieChart />
                 {t("tabs.callDistribution")}
               </TabsTrigger>
-              {appliedValues.filterBy === "team" && (
-                <TabsTrigger value="agents" className="flex items-center gap-1">
-                  <PeopleAlt />
-                  {t("tabs.teamPerformance")}
-                </TabsTrigger>
-              )}
+              {appliedValues.filterBy === "team" &&
+                auth?.user?.agentsAccessControl && (
+                  <TabsTrigger value="agents" className="flex items-center gap-1">
+                    <PeopleAlt />
+                    {t("tabs.teamPerformance")}
+                  </TabsTrigger>
+                )}
               {appliedValues.filterBy === "all" &&
                 auth?.user?.role === "Admin" && (
                   <TabsTrigger value="ivr" className="flex items-center gap-1">
@@ -296,9 +297,11 @@ const InboundAnalytics = () => {
             <TabsContent value="date-distribution">
               <InboundAnalyticsDateDistribution filters={appliedValues} />
             </TabsContent>
-            <TabsContent value="agents">
-              <InboundAnalyticsAgentPerformance filters={appliedValues} />
-            </TabsContent>
+            {auth?.user?.agentsAccessControl && (
+              <TabsContent value="agents">
+                <InboundAnalyticsAgentPerformance filters={appliedValues} />
+              </TabsContent>
+            )}
             <TabsContent value="repeated">
               <InboundAnalyticsRepeatedCallers filters={appliedValues} />
             </TabsContent>

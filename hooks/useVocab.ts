@@ -27,7 +27,7 @@ export function useVocab() {
       queryFn: vocabService.getAllAccounts,
       enabled:
         !!Organization && !!session?.userType && session.userType === "user",
-    }
+    },
   );
   const { data: packages = [], isLoading: packagesLoading } = useLocalizedQuery(
     {
@@ -35,7 +35,7 @@ export function useVocab() {
       queryFn: vocabService.getAllPackages,
       enabled:
         !!Organization && !!session?.userType && session.userType === "user",
-    }
+    },
   );
   const { data: ergs = [], isLoading: ergsLoading } = useLocalizedQuery({
     queryKey: ["ergs"],
@@ -52,7 +52,7 @@ export function useVocab() {
     useLocalizedQuery({
       queryKey: ["extensions"],
       queryFn: vocabService.getAllExtensions,
-      enabled: !!Organization && !!auth?.user?.agentsAccessControl,
+      enabled: !!Organization,
     });
 
   const { data: ip = "", isLoading: ipLoading } = useLocalizedQuery({
