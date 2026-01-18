@@ -54,7 +54,7 @@ const UsageDetailedTable = () => {
       usageService.fetchUsageDetailed(
         pagination.pageIndex + 1,
         pagination.pageSize,
-        filters
+        filters,
       ),
   });
 
@@ -102,6 +102,10 @@ const UsageDetailedTable = () => {
         }}
         paginationState={pagination}
         onPaginationChange={setPagination}
+        serverPagination={{
+          hasNext: data?.hasNext,
+          limit: pagination.pageSize,
+        }}
       >
         <DetailedUsageHead filters={filters} setFilters={setFilters} />
         <PaginatedTableContent>

@@ -14,16 +14,20 @@ import {
 } from "@tanstack/react-table";
 import { createContext, PropsWithChildren, useEffect, useState } from "react";
 
+type ServerPagination = {
+  from?: number;
+  to?: number;
+  total?: number;
+  limit?: number;
+  hasNext?: boolean;
+};
+
 type DataTableContextType<TData, TValue> = {
   table: TanstackTable<TData>;
   data: TData[];
   columns: ColumnDef<TData, TValue>[];
   pagination: PaginationState;
-  serverPagination?: {
-    from: number;
-    to: number;
-    total: number;
-  };
+  serverPagination?: ServerPagination;
 };
 
 export const PaginatedTableContext = createContext<
@@ -44,6 +48,7 @@ type PaginatedTableProps<TData, TValue> = PropsWithChildren<{
   onSortingChange?: (sorting: SortingState) => void;
   manualPagination?: boolean;
   meta?: TableMeta<TData>;
+  serverPagination?: ServerPagination;
 }>;
 const PaginatedTable = <TData, TValue>({
   data,
@@ -58,19 +63,20 @@ const PaginatedTable = <TData, TValue>({
   manualPagination = true,
   children,
   meta,
+  serverPagination: serverPaginationProp,
 }: PaginatedTableProps<TData, TValue>) => {
   const [internalPagination, setInternalPagination] = useState<PaginationState>(
     {
       pageIndex: 0,
       pageSize: 10,
-    }
+    },
   );
 
   const pagination = controlledPagination ?? internalPagination;
   const handlePaginationChange = (
     updaterOrValue:
       | PaginationState
-      | ((old: PaginationState) => PaginationState)
+      | ((old: PaginationState) => PaginationState),
   ) => {
     const newPagination =
       typeof updaterOrValue === "function"
@@ -129,9 +135,10 @@ const PaginatedTable = <TData, TValue>({
     }
   }, [controlledPagination?.pageIndex, controlledPagination?.pageSize]);
 
-  // Build serverPagination object when from/to are provided
-  const serverPagination =
-    manualPagination && from !== undefined && to !== undefined
+  // Build serverPagination object - prefer prop, fallback to from/to/total from pagination
+  const serverPagination: ServerPagination | undefined = serverPaginationProp
+    ? serverPaginationProp
+    : manualPagination && from !== undefined && to !== undefined
       ? { from, to, total: totalItems }
       : undefined;
 
@@ -152,7 +159,7 @@ export const usePaginatedTable = <TData, TValue>() => {
   const context = useContext(
     PaginatedTableContext as React.Context<
       DataTableContextType<TData, TValue> | undefined
-    >
+    >,
   );
   if (!context) {
     throw new Error("usePaginatedTable must be used within a PaginatedTable");
