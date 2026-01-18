@@ -67,7 +67,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
   const [ua, setUa] = useState<JsSIP.UA | null>(null);
   const [extension, setExtension] = useState<ExtensionWithCredentials | null>(
-    null
+    null,
   );
 
   const [currentSession, setCurrentSession] = useState<RTCSession | null>(null);
@@ -123,7 +123,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
       const socket = new JsSIP.WebSocketInterface(SIP_INTERFACE);
       const passwordBytes = CryptoJS.AES.decrypt(
         extensionData.password,
-        DECRYPT_SECRET
+        DECRYPT_SECRET,
       );
       const decryptedPassword = passwordBytes.toString(CryptoJS.enc.Utf8);
 
@@ -142,7 +142,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
       userAgent.start();
       navigate("/dialpad");
     },
-    [bindEvents, navigate] // Removed ua dependency
+    [bindEvents, navigate], // Removed ua dependency
   );
 
   const reconnect = () => {
@@ -200,7 +200,11 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     (phoneNumber?: string) => {
       const calleeNumber = phoneNumber || number;
       if (!ua) {
-        console.error("User agent is not initialized");
+        toast({
+          title: "Error",
+          description: "you may not be logged in, or on a break.",
+          variant: "destructive",
+        });
         return;
       }
       if (!phoneNumber && !number) {
@@ -215,7 +219,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         },
       });
     },
-    [ua, number]
+    [ua, number],
   );
 
   const spy = (extension: string) => {

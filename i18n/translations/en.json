@@ -2204,7 +2204,8 @@
       },
       "messages": {
         "unexpectedError": "An unexpected error occurred.",
-        "error": "Error"
+        "error": "Error",
+        "cannotChangeWhileOnCall": "You cannot change your activity status while on a call."
       },
       "logged_in": "Logged In",
       "logged_out": "Offline",

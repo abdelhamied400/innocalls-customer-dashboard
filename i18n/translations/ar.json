@@ -2218,7 +2218,8 @@
       },
       "messages": {
         "unexpectedError": "حدث خطأ غير متوقع.",
-        "error": "خطأ"
+        "error": "خطأ",
+        "cannotChangeWhileOnCall": "لا يمكنك تغيير حالة نشاطك أثناء المكالمة."
       },
       "logged_in": "تسجيل الدخول",
       "logged_out": "غير متصل",
