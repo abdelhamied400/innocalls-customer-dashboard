@@ -52,7 +52,8 @@ export function useVocab() {
     useLocalizedQuery({
       queryKey: ["extensions"],
       queryFn: vocabService.getAllExtensions,
-      enabled: !!Organization,
+      enabled:
+        !!Organization && !!session?.userType && session.userType === "user",
     });
 
   const { data: ip = "", isLoading: ipLoading } = useLocalizedQuery({
