@@ -1,12 +1,15 @@
 import authService from "@/services/auth.service";
-import { useLocalizedQuery } from "./use-localized-query";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useLocale } from "@/providers/TranslationProvider";
+import useAuthStore from "@/store/auth.slice";
 
 const useAuth = () => {
   const { data: session, status } = useSession();
   const queryClient = useQueryClient();
+  const locale = useLocale();
+  const { Organization } = useAuthStore();
 
   // Clear cached auth data when user becomes unauthenticated
   useEffect(() => {
@@ -18,8 +21,9 @@ const useAuth = () => {
   const userType = session?.userType;
   const userId = (session as any)?.user?.id || (session as any)?.user?.email;
 
-  const userQuery = useLocalizedQuery({
-    queryKey: ["auth", userType, userId].filter(Boolean),
+  // Use useQuery directly to avoid circular dependency with useLocalizedQuery
+  const userQuery = useQuery({
+    queryKey: ["auth", userType, userId, locale, Organization?.id].filter(Boolean),
     queryFn:
       userType === "agent"
         ? authService.fetchAgentProfile
