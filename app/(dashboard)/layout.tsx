@@ -13,7 +13,7 @@ import DevLogger from "@/components/DevLogger";
 import useAuth from "@/hooks/useAuth";
 
 type DashboardLayoutProps = PropsWithChildren<{
-  agent?: React.ReactNode;
+  agent: React.ReactNode;
 }>;
 const DashboardLayout = ({ children, agent }: DashboardLayoutProps) => {
   const { data: session } = useSession();

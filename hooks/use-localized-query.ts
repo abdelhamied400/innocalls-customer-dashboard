@@ -5,6 +5,7 @@ import {
   UseQueryResult,
 } from "@tanstack/react-query";
 import { useLocale } from "@/providers/TranslationProvider";
+import useAuth from "./useAuth";
 
 type QueryFn<T> = (context: { locale: string }) => Promise<T>;
 
@@ -13,13 +14,13 @@ export function useLocalizedQuery<T>(
   queryObject: {
     queryKey: (string | any)[];
     queryFn: () => Promise<T>;
-  } & Omit<UseQueryOptions<T>, "queryKey" | "queryFn">
+  } & Omit<UseQueryOptions<T>, "queryKey" | "queryFn">,
 ): UseQueryResult<T>;
 
 export function useLocalizedQuery<T>(
   key: string,
   queryFn: QueryFn<T>,
-  options?: UseQueryOptions<T>
+  options?: UseQueryOptions<T>,
 ): UseQueryResult<T>;
 
 export function useLocalizedQuery<T>(
@@ -30,15 +31,16 @@ export function useLocalizedQuery<T>(
         queryFn: () => Promise<T>;
       } & Omit<UseQueryOptions<T>, "queryKey" | "queryFn">),
   queryFn?: QueryFn<T>,
-  options?: UseQueryOptions<T>
+  options?: UseQueryOptions<T>,
 ): UseQueryResult<T> {
   const locale = useLocale();
   const { Organization } = useAuthStore();
+  const { data: auth } = useAuth();
 
   if (typeof keyOrObject === "string") {
     // Original pattern: useLocalizedQuery(key, queryFn, options)
     return useQuery({
-      queryKey: [keyOrObject, locale, Organization?.id],
+      queryKey: [keyOrObject, locale, Organization?.id, auth?.user?.id],
       queryFn: () => queryFn!({ locale }),
       ...options,
     });
@@ -46,7 +48,7 @@ export function useLocalizedQuery<T>(
     // New pattern: useLocalizedQuery({ queryKey, queryFn, ...options })
     const { queryKey, queryFn: fn, ...opts } = keyOrObject;
     return useQuery({
-      queryKey: [...queryKey, locale, Organization?.id],
+      queryKey: [...queryKey, locale, Organization?.id, auth?.user?.id],
       queryFn: fn,
       ...opts,
     });

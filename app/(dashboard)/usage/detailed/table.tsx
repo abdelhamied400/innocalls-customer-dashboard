@@ -2,7 +2,7 @@
 
 import { PaginationState, SortingState } from "@tanstack/react-table";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createColumns } from "./columns";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import usageService, { UsageDetailedFilters } from "@/services/usage.service";
@@ -54,7 +54,7 @@ const UsageDetailedTable = () => {
       usageService.fetchUsageDetailed(
         pagination.pageIndex + 1,
         pagination.pageSize,
-        filters
+        filters,
       ),
   });
 
@@ -76,6 +76,19 @@ const UsageDetailedTable = () => {
     }
   }, [isError, error, toast]);
 
+  // Track if this is the initial render
+  const isInitialRender = useRef(true);
+
+  useEffect(() => {
+    // Skip reset on initial render
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    // Reset to first page when filters change
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  }, [filters]);
+
   return (
     <div className="h-full flex flex-col">
       <PaginatedTable
@@ -87,8 +100,11 @@ const UsageDetailedTable = () => {
             ? pagination.pageIndex + 2
             : pagination.pageIndex + 1,
         }}
-        onPaginationChange={(pagination) => {
-          setPagination(pagination);
+        paginationState={pagination}
+        onPaginationChange={setPagination}
+        serverPagination={{
+          hasNext: data?.hasNext,
+          limit: pagination.pageSize,
         }}
       >
         <DetailedUsageHead filters={filters} setFilters={setFilters} />

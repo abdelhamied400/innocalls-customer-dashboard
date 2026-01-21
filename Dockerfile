@@ -10,6 +10,8 @@ RUN npm i -g pm2 \
 
 COPY ./ ./
 
+# Create logs directory for PM2
+RUN mkdir -p ./logs
 
 # Build in production mode so .env.production is used
 ENV NODE_ENV=production

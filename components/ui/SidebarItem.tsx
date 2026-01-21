@@ -27,8 +27,7 @@ const SidebarItem = ({
 
   const isActive = useMemo(() => {
     if (href === `/`) return pathname === `/`;
-    else return pathname.includes(href);
-    //
+    else return pathname.startsWith(href);
   }, [pathname, href]);
 
   const t = useTranslations("components.sidebarItem");

@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef } from "react";
 import { useRouting } from "@/providers/RoutingProvider";
 import { ExtensionState, SessionState, SpyingStatus } from "./types";
 import JsSIP, { C } from "jssip";
-import { RTCSessionEvent } from "jssip/lib/UA";
-import { CallListener, OutgoingEvent, RTCSession } from "jssip/lib/RTCSession";
+import { RTCSessionEvent } from "jssip/src/UA";
+import { CallListener, OutgoingEvent, RTCSession } from "jssip/src/RTCSession";
 import { ExtensionWithCredentials } from "@/types/api/extension";
 
 import { addCallToLog } from "@/lib/call-log";
@@ -12,7 +12,8 @@ import useWebrtcStore from "@/store/webrtc.slice";
 import webrtcService from "@/services/webrtc.service";
 import { differenceInSeconds, format, intervalToDuration } from "date-fns";
 import { useSession } from "next-auth/react";
-import { forcePCMA } from "@/lib/webrtc";
+import { forcePCMA, parseAutoDialerCallee } from "@/lib/webrtc";
+import { processPhoneNumber } from "@/lib/dialpad-utils";
 
 export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
@@ -80,7 +81,13 @@ export const useUaEvents = ({
       ringtoneRef.current = ringtone;
 
       const calleeNumber = session.remote_identity?.uri?.user || "Unknown";
-      const calleeName = session.remote_identity?.display_name || "Unknown";
+      const displayName = session.remote_identity?.display_name || "Unknown";
+
+      const { name: calleeName } = parseAutoDialerCallee(
+        displayName || calleeNumber || ""
+      );
+
+      const { processedNumber } = processPhoneNumber(calleeNumber, true);
 
       session.on("progress", () => {
         webrtcLogger.info("Call is in progress");
@@ -98,7 +105,7 @@ export const useUaEvents = ({
         addCallToLog(
           {
             type: "incoming",
-            number: calleeNumber,
+            number: processedNumber,
             name: calleeName,
           },
           extension.ext
@@ -117,7 +124,7 @@ export const useUaEvents = ({
           addCallToLog(
             {
               type: "missed",
-              number: calleeNumber,
+              number: processedNumber,
               name: calleeName,
             },
             extension.ext
@@ -137,7 +144,7 @@ export const useUaEvents = ({
           addCallToLog(
             {
               type: "rejected",
-              number: calleeNumber,
+              number: processedNumber,
               name: calleeName,
             },
             extension.ext
@@ -147,7 +154,7 @@ export const useUaEvents = ({
           addCallToLog(
             {
               type: "missed",
-              number: calleeNumber,
+              number: processedNumber,
               name: calleeName,
             },
             extension.ext
@@ -173,11 +180,12 @@ export const useUaEvents = ({
       const connection = session.connection;
 
       const calledNumber = session.remote_identity?.uri?.user || "Unknown";
+      const { processedNumber } = processPhoneNumber(calledNumber, true);
 
       addCallToLog(
         {
           type: "outgoing",
-          number: calledNumber,
+          number: processedNumber,
         },
         extension.ext
       );

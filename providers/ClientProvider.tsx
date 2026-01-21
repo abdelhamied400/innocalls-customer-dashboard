@@ -10,7 +10,9 @@ const TestProvider = ({ children }: any) => {
   return (
     <ReactQueryProvider key={Organization?.id}>
       <AuthProvider>
-        <VocabProvider>{children}</VocabProvider>
+        {/* <VocabProvider> */}
+        {children}
+        {/* </VocabProvider> */}
       </AuthProvider>
       <Toaster />
     </ReactQueryProvider>

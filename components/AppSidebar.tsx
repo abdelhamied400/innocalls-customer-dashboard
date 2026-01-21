@@ -34,6 +34,7 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import { useSession } from "next-auth/react";
 import useAuthStore from "@/store/auth.slice";
 import useAuth from "@/hooks/useAuth";
+import { Payment } from "@mui/icons-material";
 
 const AppSidebar = () => {
   const t = useTranslations("sidebar");
@@ -53,16 +54,18 @@ const AppSidebar = () => {
           isNew={true}
           isComingSoon={false}
         />
-        {session?.userType === "user" && Organization?.hasTenant && (
-          <SidebarItem
-            icon={<Monitor />}
-            title={t("navigation.liveMonitoring")}
-            href={`/live-monitoring`}
-            disabled={false}
-            isNew={true}
-            isComingSoon={false}
-          />
-        )}
+        {session?.userType === "user" &&
+          Organization?.hasTenant &&
+          auth?.user?.agentsAccessControl && (
+            <SidebarItem
+              icon={<Monitor />}
+              title={t("navigation.liveMonitoring")}
+              href={`/live-monitoring`}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
+            />
+          )}
         {session?.userType === "user" && (
           <SidebarItem
             icon={<SmartToy />}
@@ -78,7 +81,7 @@ const AppSidebar = () => {
           <SidebarItem
             icon={<Timeline />}
             title={t("navigation.analytics")}
-            href={`/analytics/inbound`}
+            href={`/analytics`}
             isNew={true}
             isComingSoon={false}
           />
@@ -182,8 +185,9 @@ const AppSidebar = () => {
               icon={<RingVolume />}
               title={t("navigation.autoDialer")}
               href={`/auto-dialer`}
-              isNew={true}
-              isComingSoon={false}
+              isNew={false}
+              isComingSoon={true}
+              disabled={true}
             />
             <SidebarItem
               icon={<Quiz />}

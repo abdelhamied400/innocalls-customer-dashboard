@@ -532,7 +532,8 @@
         "charges": "Charges",
         "paymentHistory": "Payment History",
         "rates": "Rates",
-        "invoices": "Invoices"
+        "invoices": "Invoices",
+        "subscriptions": "Subscriptions"
       },
       "actions": {
         "refillBalance": "Refill Balance"
@@ -577,6 +578,7 @@
         "date": "Date",
         "email": "Email",
         "total": "Total",
+        "remaining": "Remaining",
         "status": "Status",
         "actions": "Actions"
       },
@@ -2202,7 +2204,8 @@
       },
       "messages": {
         "unexpectedError": "An unexpected error occurred.",
-        "error": "Error"
+        "error": "Error",
+        "cannotChangeWhileOnCall": "You cannot change your activity status while on a call."
       },
       "logged_in": "Logged In",
       "logged_out": "Offline",

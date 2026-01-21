@@ -1,9 +1,10 @@
 import { useSip } from "@/providers/webrtc/SipProvider";
 import { Button } from "../ui/button";
 import { CallEnd, Phone } from "@mui/icons-material";
-import { SessionDirection } from "jssip/lib/RTCSession";
+import { SessionDirection } from "jssip/src/RTCSession";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { webrtcLogger } from "@/lib/logger";
+import { parseAutoDialerCallee } from "@/lib/webrtc";
 
 const IncomingCall = () => {
   const t = useTranslations("webrtc");
@@ -11,9 +12,13 @@ const IncomingCall = () => {
   const { currentSession } = useSip();
   const number =
     currentSession?.remote_identity?.uri?.user || t("ua.unknownName");
-  const name =
+  const displayName =
     currentSession?.remote_identity?.display_name || t("ua.unknownNumber");
   const direction = currentSession?.direction;
+
+  const { name: calleeName } = parseAutoDialerCallee(
+    displayName || number || ""
+  );
 
   const handleHangup = () => {
     currentSession?.terminate();
@@ -32,7 +37,7 @@ const IncomingCall = () => {
         remoteAudio.play();
       });
 
-      currentSession.connection.addEventListener("track", (e) => {
+      currentSession.connection.addEventListener("track", (e: any) => {
         webrtcLogger.debug("Track event", e);
         const remoteAudio = document.createElement("audio");
         remoteAudio.srcObject = e.streams && e.streams[0] ? e.streams[0] : null;
@@ -51,7 +56,7 @@ const IncomingCall = () => {
             t("direction.incoming")}
         </h4>
         {number && <h4 className="text-center">{number}</h4>}
-        {name && <h2 className="text-center">{name}</h2>}
+        {calleeName && <h2 className="text-center">{calleeName}</h2>}
         <div className="grid grid-cols-2 gap-5 place-items-center">
           <Button
             size="icon"

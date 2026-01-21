@@ -29,6 +29,7 @@ import {
   PaginationButton,
   PaginationEllipsis,
 } from "@/components/ui/pagination";
+import NoData from "./NoData";
 
 type SlaComplianceAnalyticsProps = {
   filters: UserActivityFilters;
@@ -186,20 +187,33 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
         </div>
       </div>
 
-      <div
-        className={cn(
-          "grid grid-cols-1 lg:grid-cols-2 gap-4 p-3",
-          layoutVariant !== "both-closed" && "lg:grid-cols-1 xl:grid-cols-2"
-        )}
-      >
-        {isLoading
-          ? Array.from({ length: pageSize }).map((_, index) => (
-              <AgentSlaComplianceCardSkeleton key={index} />
-            ))
-          : currentPageData?.map((agent) => (
-              <AgentSlaComplianceCard key={agent.ext} agent={agent} />
-            ))}
-      </div>
+      {isLoading ? (
+        <div
+          className={cn(
+            "grid grid-cols-1 lg:grid-cols-2 gap-4 p-3",
+            layoutVariant !== "both-closed" && "lg:grid-cols-1 xl:grid-cols-2"
+          )}
+        >
+          {Array.from({ length: pageSize }).map((_, index) => (
+            <AgentSlaComplianceCardSkeleton key={index} />
+          ))}
+        </div>
+      ) : filteredAndSortedData.length === 0 ? (
+        <div className="flex flex-col items-center justify-center py-12 text-center">
+          <NoData />
+        </div>
+      ) : (
+        <div
+          className={cn(
+            "grid grid-cols-1 lg:grid-cols-2 gap-4 p-3",
+            layoutVariant !== "both-closed" && "lg:grid-cols-1 xl:grid-cols-2"
+          )}
+        >
+          {currentPageData?.map((agent) => (
+            <AgentSlaComplianceCard key={agent.ext} agent={agent} />
+          ))}
+        </div>
+      )}
 
       {/* Enhanced Pagination */}
       {filteredAndSortedData.length > 0 && (

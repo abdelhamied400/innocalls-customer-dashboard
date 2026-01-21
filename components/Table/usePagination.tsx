@@ -7,23 +7,63 @@ import {
 import { Table } from "@tanstack/react-table";
 import { useMemo } from "react";
 
+type ServerPagination = {
+  from?: number;
+  to?: number;
+  total?: number;
+  limit?: number;
+  hasNext?: boolean;
+};
+
 type Options = {
   isManualPagination?: boolean;
+  serverPagination?: ServerPagination;
 };
+
 const usePagination = <TData,>(table: Table<TData>, options: Options) => {
   const tablePagination = table.getState().pagination;
+  const serverPagination = options.serverPagination;
+
+  // Determine page size from server limit or table state
+  const pageSize = serverPagination?.limit ?? tablePagination.pageSize;
+
+  // Get the current page's row count
+  const currentPageRowCount = options.isManualPagination
+    ? table.getRowCount()
+    : table.getFilteredRowModel().rows.length;
+
+  // Check if we're in "hasNext mode" (no total provided, using hasNext instead)
+  const isHasNextMode =
+    serverPagination?.hasNext !== undefined &&
+    serverPagination?.total === undefined;
+
+  // Use server-provided total, or calculate it
+  // In hasNext mode without total, we don't know the real total
+  const totalItems = serverPagination?.total ?? currentPageRowCount;
+
+  // Calculate row indices based on current page
+  const calculatedStart = tablePagination.pageIndex * pageSize + 1;
+  const calculatedEnd =
+    tablePagination.pageIndex * pageSize + currentPageRowCount;
+
   const startRowIndex =
-    tablePagination.pageIndex * tablePagination.pageSize + 1;
-  const endRowIndex = Math.min(
-    (tablePagination.pageIndex + 1) * tablePagination.pageSize,
-    table.getFilteredRowModel().rows.length
-  );
-  const totalItems = table.getFilteredRowModel().rows.length;
+    serverPagination?.from ?? (currentPageRowCount > 0 ? calculatedStart : 0);
+
+  const endRowIndex =
+    serverPagination?.to ?? (currentPageRowCount > 0 ? calculatedEnd : 0);
+
+  // Determine if there's a next page
+  const hasNextPage =
+    serverPagination?.hasNext ??
+    tablePagination.pageIndex + 1 < Math.ceil(totalItems / pageSize);
+
+  // In hasNext mode, we don't show total (it's unknown)
+  const showTotal = !isHasNextMode;
 
   const pages = useMemo(() => {
     const pagesCount = options.isManualPagination
       ? table.getPageCount()
-      : Math.ceil(totalItems / tablePagination.pageSize);
+      : Math.ceil(totalItems / pageSize);
 
     let pages = [];
 
@@ -43,7 +83,7 @@ const usePagination = <TData,>(table: Table<TData>, options: Options) => {
     // Generate pages in the middle
     const middlePages = generatePagesArray(
       tablePagination.pageIndex,
-      pagesCount
+      pagesCount,
     );
     pages = [...pages, ...middlePages];
 
@@ -56,18 +96,16 @@ const usePagination = <TData,>(table: Table<TData>, options: Options) => {
     pages = [...pages, pagesCount - 1, pagesCount];
 
     return pages;
-  }, [
-    totalItems,
-    tablePagination.pageIndex,
-    tablePagination.pageSize,
-    table.getPageCount(),
-  ]);
+  }, [totalItems, tablePagination.pageIndex, pageSize, table.getPageCount()]);
 
   return {
     startRowIndex,
     endRowIndex,
     totalItems,
     pages,
+    pageSize,
+    hasNextPage,
+    showTotal,
   };
 };
 

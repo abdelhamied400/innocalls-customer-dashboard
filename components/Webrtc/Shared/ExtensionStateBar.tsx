@@ -24,7 +24,13 @@ import useAuth from "@/hooks/useAuth";
 const ExtensionStateBar = () => {
   const t = useTranslations("webrtc");
 
-  const { extension, extensionState, reconnect, extensionLoading } = useSip();
+  const {
+    extension,
+    extensionState,
+    reconnect,
+    extensionLoading,
+    currentSession,
+  } = useSip();
   const { data: auth, refetch: refetchUser } = useAuth();
   const { Organization } = useAuthStore();
   const { data: session } = useSession();
@@ -34,10 +40,22 @@ const ExtensionStateBar = () => {
     auth?.user?.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
   const { toast } = useToast();
 
+  // Agent is on a call if there's an active session
+  const isOnCall = !!currentSession;
+
   const handleActivityChange = async (
     activity: AgentActivity,
-    breakType?: AgentActivity
+    breakType?: AgentActivity,
   ) => {
+    if (isOnCall) {
+      toast({
+        title: t("activity.messages.error"),
+        description: t("activity.messages.cannotChangeWhileOnCall"),
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
       await webrtcService.changeAgentState(activity, breakType);
       await refetchUser();
@@ -76,7 +94,7 @@ const ExtensionStateBar = () => {
           "flex items-center justify-between p-4",
           extensionState === "disconnected" && "bg-destructive-200",
           extensionState === "connected" && "bg-success-200",
-          extensionState === "connecting" && "bg-warning-200"
+          extensionState === "connecting" && "bg-warning-200",
         )}
       >
         <p className="">
@@ -154,7 +172,7 @@ const ExtensionStateBar = () => {
                         onClick={() => {
                           handleActivityChange(
                             AgentActivity.BREAK_STARTED,
-                            type
+                            type,
                           );
                         }}
                       >
@@ -163,12 +181,12 @@ const ExtensionStateBar = () => {
                           style={{ backgroundColor: "#eab308" }}
                         />
                         {t(
-                          `activity.breakTypes.${type.toLocaleLowerCase()}`
+                          `activity.breakTypes.${type.toLocaleLowerCase()}`,
                         ) !== `activity.breakTypes.${type.toLocaleLowerCase()}`
                           ? t(`activity.breakTypes.${type.toLocaleLowerCase()}`)
                           : type}
                       </DropdownMenuItem>
-                    )
+                    ),
                   )}
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -199,7 +217,7 @@ const ExtensionStateBar = () => {
                 disabled={
                   !isValidTransition(
                     breakType,
-                    AgentActivity.DIALPAD_LOGGED_OUT
+                    AgentActivity.DIALPAD_LOGGED_OUT,
                   )
                 }
               >

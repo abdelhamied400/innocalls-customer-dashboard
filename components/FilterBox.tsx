@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import React, { PropsWithChildren, useState } from "react";
+import React, { PropsWithChildren, useState, useId } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +9,7 @@ import { ChevronDownIcon } from "lucide-react";
 import { Badge } from "./ui/badge";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "@/providers/TranslationProvider";
+import { useFilterBar } from "./FilterBar";
 
 type FilterBoxProps = PropsWithChildren<{
   className?: string;
@@ -28,7 +29,23 @@ export const FilterBox = ({
   numberOfFilters = 0,
 }: FilterBoxProps) => {
   const t = useTranslations("common");
-  const [isOpen, setIsOpen] = useState(false);
+  const filterId = useId();
+  const filterBarContext = useFilterBar();
+
+  // Fallback to local state if not inside FilterBar context
+  const [localIsOpen, setLocalIsOpen] = useState(false);
+
+  const isOpen = filterBarContext
+    ? filterBarContext.openFilterId === filterId
+    : localIsOpen;
+
+  const setIsOpen = (open: boolean) => {
+    if (filterBarContext) {
+      filterBarContext.setOpenFilterId(open ? filterId : null);
+    } else {
+      setLocalIsOpen(open);
+    }
+  };
 
   const handleReset = () => {
     if (onReset) {

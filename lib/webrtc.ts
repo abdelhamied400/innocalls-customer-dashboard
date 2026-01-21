@@ -153,3 +153,10 @@ export const forcePCMA = (sdp: string) => {
 
   return filtered.join("\r\n");
 };
+
+export const parseAutoDialerCallee = (callee: string) => {
+  let name = callee.split(",")[0];
+  let channelId = callee.split(",")[1];
+
+  return { name, channelId };
+};

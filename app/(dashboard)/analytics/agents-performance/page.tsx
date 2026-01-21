@@ -29,6 +29,9 @@ import { FilterBox } from "@/components/FilterBox";
 import { formatDate } from "@/lib/date";
 import AgentsPicker from "@/components/AgentsPicker";
 import { Slider } from "@/components/ui/slider";
+import hasTenant from "@/containers/hasTenant";
+import withPermission from "@/containers/withPermission";
+import { FilterBar } from "@/components/FilterBar";
 
 type Option = {
   value: string;
@@ -71,90 +74,94 @@ const UserActivityAnalytics = () => {
       <div className="flex flex-col gap-2">
         <div className="filters p-2 border rounded-xl flex items-center justify-between flex-wrap gap-2">
           <div className="flex flex-wrap items-center gap-2">
-            <FilterBox
-              triggerLabel={
-                <p className="font-normal">
-                  {tCommon("from")}{" "}
-                  <b>{formatDate(values.fromDate, { locale: locale })}</b>{" "}
-                  {tCommon("to")}{" "}
-                  <b>{formatDate(values.toDate, { locale: locale })}</b>
-                </p>
-              }
-              label={tCommon("form.fields.date.label")}
-              onApply={apply}
-              onReset={() => {
-                applyValues({
-                  fromDate: userActivityFilterConfig.defaultValues.fromDate,
-                  toDate: userActivityFilterConfig.defaultValues.toDate,
-                });
-              }}
-            >
-              <Field
-                label={tCommon("form.fields.fromDate.label")}
-                postIcon={<CalendarMonth className="text-gray-400" />}
-                error={errors.fromDate}
+            <FilterBar className="px-1 py-1 border-0">
+              <FilterBox
+                triggerLabel={
+                  <p className="font-normal">
+                    {tCommon("from")}{" "}
+                    <b>{formatDate(values.fromDate, { locale: locale })}</b>{" "}
+                    {tCommon("to")}{" "}
+                    <b>{formatDate(values.toDate, { locale: locale })}</b>
+                  </p>
+                }
+                label={tCommon("form.fields.date.label")}
+                onApply={apply}
+                onReset={() => {
+                  applyValues({
+                    fromDate: userActivityFilterConfig.defaultValues.fromDate,
+                    toDate: userActivityFilterConfig.defaultValues.toDate,
+                  });
+                }}
               >
-                <DatePicker
-                  className="min-w-36 flex-1"
-                  placeholder={tCommon("form.fields.fromDate.placeholder")}
-                  value={values.fromDate}
-                  onChange={(date) => setValue("fromDate", date || new Date())}
-                />
-              </Field>
-              <Field
-                label={tCommon("form.fields.toDate.label")}
-                postIcon={<CalendarMonth className="text-gray-400" />}
-                error={errors.toDate}
+                <Field
+                  label={tCommon("form.fields.fromDate.label")}
+                  postIcon={<CalendarMonth className="text-gray-400" />}
+                  error={errors.fromDate}
+                >
+                  <DatePicker
+                    className="min-w-36 flex-1"
+                    placeholder={tCommon("form.fields.fromDate.placeholder")}
+                    value={values.fromDate}
+                    onChange={(date) =>
+                      setValue("fromDate", date || new Date())
+                    }
+                  />
+                </Field>
+                <Field
+                  label={tCommon("form.fields.toDate.label")}
+                  postIcon={<CalendarMonth className="text-gray-400" />}
+                  error={errors.toDate}
+                >
+                  <DatePicker
+                    className="min-w-36 flex-1"
+                    placeholder={tCommon("form.fields.toDate.placeholder")}
+                    value={values.toDate}
+                    onChange={(date) => setValue("toDate", date || new Date())}
+                  />
+                </Field>
+              </FilterBox>
+              <FilterBox
+                triggerLabel={t("form.fields.sla.label")}
+                label={t("form.fields.sla.label")}
+                onApply={apply}
+                onReset={() => {
+                  applyValues({
+                    sla: userActivityFilterConfig.defaultValues.sla,
+                  });
+                }}
               >
-                <DatePicker
-                  className="min-w-36 flex-1"
-                  placeholder={tCommon("form.fields.toDate.placeholder")}
-                  value={values.toDate}
-                  onChange={(date) => setValue("toDate", date || new Date())}
+                <Slider
+                  defaultValue={[10]}
+                  max={200}
+                  step={1}
+                  value={[values.sla]}
+                  onValueChange={(value) => setValue("sla", value[0])}
                 />
-              </Field>
-            </FilterBox>
-            <FilterBox
-              triggerLabel={t("form.fields.sla.label")}
-              label={t("form.fields.sla.label")}
-              onApply={apply}
-              onReset={() => {
-                applyValues({
-                  sla: userActivityFilterConfig.defaultValues.sla,
-                });
-              }}
-            >
-              <Slider
-                defaultValue={[10]}
-                max={200}
-                step={1}
-                value={[values.sla]}
-                onValueChange={(value) => setValue("sla", value[0])}
-              />
-              <div className="flex items-center justify-between gap-1 text-sm">
-                <p>{values.sla}</p>
-                <p>200</p>
-              </div>
-              {errors.sla && (
-                <p className="text-sm text-destructive-500">{errors.sla}</p>
-              )}
-            </FilterBox>
+                <div className="flex items-center justify-between gap-1 text-sm">
+                  <p>{values.sla}</p>
+                  <p>200</p>
+                </div>
+                {errors.sla && (
+                  <p className="text-sm text-destructive-500">{errors.sla}</p>
+                )}
+              </FilterBox>
 
-            <FilterBox
-              triggerLabel={tCommon("form.fields.agents.label")}
-              label={tCommon("form.fields.agents.label")}
-              onApply={apply}
-              onReset={() => {
-                applyValues({
-                  agents: userActivityFilterConfig.defaultValues.agents,
-                });
-              }}
-            >
-              <AgentsPicker
-                selectedAgents={values.agents}
-                onAgentsChange={(agents) => setValue("agents", agents)}
-              />
-            </FilterBox>
+              <FilterBox
+                triggerLabel={tCommon("form.fields.agents.label")}
+                label={tCommon("form.fields.agents.label")}
+                onApply={apply}
+                onReset={() => {
+                  applyValues({
+                    agents: userActivityFilterConfig.defaultValues.agents,
+                  });
+                }}
+              >
+                <AgentsPicker
+                  selectedAgents={values.agents}
+                  onAgentsChange={(agents) => setValue("agents", agents)}
+                />
+              </FilterBox>
+            </FilterBar>
           </div>
           <Button onClick={reset} variant="ghost">
             <Clear />
@@ -192,4 +199,6 @@ const UserActivityAnalytics = () => {
   );
 };
 
-export default UserActivityAnalytics;
+export default hasTenant(
+  withPermission(UserActivityAnalytics, "agentsAccessControl")
+);

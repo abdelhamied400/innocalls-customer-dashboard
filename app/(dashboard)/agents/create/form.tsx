@@ -79,7 +79,9 @@ const CreateUserForm = () => {
       const res = await usersService.createUser(data);
       toast({
         title: t("messages.success"),
-        description: t("messages.successDescription", { name: res.name }),
+        description: t("messages.successDescription", {
+          name: form.getValues("name"),
+        }),
       });
       closeSheetRef.current?.click(); // Close the sheet
       queryClient.invalidateQueries({ queryKey: ["users"] }); // Invalidate the users query to refresh the list
