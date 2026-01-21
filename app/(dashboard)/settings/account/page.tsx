@@ -1,13 +1,9 @@
+import OrganizationDetailsForm from "./organization-details-form";
+
 const AccountSettings = () => {
   return (
-    <div className="page" id="account-settings">
-      <h1 className="py-24">test</h1>
-      <h1 className="py-24">test</h1>
-      <h1 className="py-24">test</h1>
-      <h1 className="py-24">test</h1>
-      <h1 className="py-24">test</h1>
-      <h1 className="py-24">test</h1>
-      <h1 className="py-24">test</h1>
+    <div className="page overflow-y-auto" id="account-settings">
+      <OrganizationDetailsForm />
     </div>
   );
 };

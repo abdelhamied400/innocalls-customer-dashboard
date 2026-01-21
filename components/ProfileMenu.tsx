@@ -30,7 +30,7 @@ import useAuth from "@/hooks/useAuth";
 import { Organization } from "@/types/api/organization";
 
 const ProfileMenu = () => {
-  const { data: session, status, update } = useSession();
+  const { data: session, status } = useSession();
   const { data: auth } = useAuth();
 
   const { Organization, setOrganization } = useAuthStore();
@@ -73,6 +73,7 @@ const ProfileMenu = () => {
 
   useEffect(() => {
     const orgId = getCookie("OrganizationId");
+    console.log(auth?.organizations);
     if (orgId) {
       setOrganization({
         id: orgId,
@@ -182,7 +183,7 @@ const ProfileMenu = () => {
         <DropdownMenuContent>
           <DropdownMenuLabel>{t("organizations")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {session?.organizations?.map((org) => (
+          {auth?.organizations?.map((org) => (
             <DropdownMenuItem
               key={org.name}
               className="flex flex-col items-start gap-0"
