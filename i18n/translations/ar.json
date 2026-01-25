@@ -52,6 +52,10 @@
       "noData": "لا توجد بيانات متاحة",
       "notFound": "لم يتم العثور على بيانات"
     },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
     "filter": {
       "noFiltersAvailable": "لا توجد خيارات تخصيص"
     },
@@ -255,6 +259,13 @@
     }
   },
   "settings": {
+    "layout": {
+      "tabs": {
+        "account": "إعدادات الحساب",
+        "call": "إعدادات المكالمات",
+        "agent": "إعدادات الوكيل"
+      }
+    },
     "account": {
       "organizationInfo": {
         "title": "معلومات المنظمة",
@@ -277,6 +288,38 @@
         },
         "actions": {
           "submit": "حفظ التغييرات"
+        }
+      }
+    },
+    "call": {
+      "callSummary": {
+        "title": "ملخص المكالمة",
+        "enableAfterEveryCall": "قم بتفعيل هذا الخيار لعرض ملخص بعد كل مكالمة.",
+        "enableAfterConnectedCalls": "قم بتفعيل هذا الخيار لعرض ملخص بعد المكالمات المتصلة فقط.",
+        "toggleSuccess": "تم تحديث إعداد ملخص المكالمة بنجاح.",
+        "toggleFailed": "فشل تحديث إعداد ملخص المكالمة."
+      },
+      "tags": {
+        "title": "إدارة الوسوم",
+        "columns": {
+          "nameAR": "الاسم بالعربية",
+          "nameEN": "الاسم بالإنجليزية",
+          "status": "الحالة",
+          "actions": "الإجراءات"
+        },
+        "confirmations": {
+          "disableTitle": "إيقاف وسم \"{name}\"",
+          "disableDescription": "أنت على وشك إيقاف هذا الوسم. هل أنت متأكد أنك تريد إيقاف هذا الوسم؟ يرجى التأكيد للمتابعة.",
+          "enableTitle": "تفعيل وسم \"{name}\"",
+          "enableDescription": "أنت على وشك تفعيل هذا الوسم. هل أنت متأكد أنك تريد تفعيل هذا الوسم؟ يرجى التأكيد للمتابعة.",
+          "cancel": "لا، لا تتابع",
+          "yesDisable": "نعم، أوقفه",
+          "yesEnable": "نعم، فعّله"
+        },
+        "messages": {
+          "tagEnabled": "تم تفعيل الوسم بنجاح.",
+          "tagDisabled": "تم إيقاف الوسم بنجاح.",
+          "toggleFailed": "فشل تحديث حالة الوسم."
         }
       }
     }

@@ -52,6 +52,10 @@
       "noData": "No data available",
       "notFound": "Not found"
     },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
     "filter": {
       "noFiltersAvailable": "No filters available"
     },
@@ -255,6 +259,13 @@
     }
   },
   "settings": {
+    "layout": {
+      "tabs": {
+        "account": "Account Settings",
+        "call": "Call Settings",
+        "agent": "Agent Settings"
+      }
+    },
     "account": {
       "organizationInfo": {
         "title": "Organization Info",
@@ -277,6 +288,38 @@
         },
         "actions": {
           "submit": "Save Changes"
+        }
+      }
+    },
+    "call": {
+      "callSummary": {
+        "title": "Call Summary",
+        "enableAfterEveryCall": "Enable this option to view a summary after every call.",
+        "enableAfterConnectedCalls": "Enable this option to view a summary after just connected calls.",
+        "toggleSuccess": "Call summary setting updated successfully.",
+        "toggleFailed": "Failed to update call summary setting."
+      },
+      "tags": {
+        "title": "Manage Tags",
+        "columns": {
+          "nameAR": "Name in Arabic",
+          "nameEN": "Name in English",
+          "status": "Status",
+          "actions": "Actions"
+        },
+        "confirmations": {
+          "disableTitle": "Stop \"{name}\" tag",
+          "disableDescription": "You are about to stop this tag. Are you sure you want to stop this tag? Please confirm to proceed.",
+          "enableTitle": "Enable \"{name}\" tag",
+          "enableDescription": "You are about to enable this tag. Are you sure you want to enable this tag? Please confirm to proceed.",
+          "cancel": "No, Don't proceed",
+          "yesDisable": "Yes, Stop it",
+          "yesEnable": "Yes, Enable it"
+        },
+        "messages": {
+          "tagEnabled": "Tag enabled successfully.",
+          "tagDisabled": "Tag stopped successfully.",
+          "toggleFailed": "Failed to update tag status."
         }
       }
     }

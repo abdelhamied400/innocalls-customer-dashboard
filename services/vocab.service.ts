@@ -25,6 +25,12 @@ export default {
     const res = await api.get("/call-tag");
     return res.data.callTags;
   },
+  deleteTag: async (id: string): Promise<void> => {
+    await api.delete(`/call-tag/${id}`);
+  },
+  restoreTag: async (id: string): Promise<void> => {
+    await api.patch(`/call-tag/${id}/restore`);
+  },
   getAllAccounts: async () => {
     const res = await api.get("/jera/accounts");
     return res.data;
