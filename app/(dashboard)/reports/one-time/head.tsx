@@ -10,7 +10,9 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Toggle } from "@/components/ui/toggle";
-import { Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Calendar, Plus } from "lucide-react";
+import Link from "next/link";
 import DatePicker from "@/components/ui/date-picker";
 import { isValidDateRange } from "@/lib/date";
 import { useToast } from "@/hooks/use-toast";
@@ -108,6 +110,12 @@ const OneTimeReportHead = ({ filters, setFilters }: OneTimeReportHeadProps) => {
                   <p>{t("tooltips.toggleFilters")}</p>
                 </TooltipContent>
               </Tooltip>
+              <Button asChild>
+                <Link href="/reports/one-time/create-report">
+                  <Plus className="h-4 w-4" />
+                  {t("actions.createReport")}
+                </Link>
+              </Button>
             </div>
           </TooltipProvider>
         </div>

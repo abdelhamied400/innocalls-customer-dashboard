@@ -262,6 +262,20 @@
       },
       "tooltips": {
         "toggleFilters": "انقر لإظهار/إخفاء فلاتر البحث"
+      },
+      "actions": {
+        "createReport": "إنشاء تقرير جديد"
+      },
+      "createReport": {
+        "title": "إنشاء تقرير جديد",
+        "description": "إنشاء تقرير لمرة واحدة جديد",
+        "steps": {
+          "createReport": "إنشاء تقرير لمرة واحدة جديد"
+        },
+        "placeholder": "سيتم تنفيذ نموذج التقرير هنا",
+        "actions": {
+          "close": "إغلاق"
+        }
       }
     },
     "scheduled": {

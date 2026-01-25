@@ -262,6 +262,20 @@
       },
       "tooltips": {
         "toggleFilters": "Click to show/hide search filters"
+      },
+      "actions": {
+        "createReport": "Create New Report"
+      },
+      "createReport": {
+        "title": "Create New Report",
+        "description": "Create a new one-time report",
+        "steps": {
+          "createReport": "Create New One Time Report"
+        },
+        "placeholder": "Report form will be implemented here",
+        "actions": {
+          "close": "Close"
+        }
       }
     },
     "scheduled": {
