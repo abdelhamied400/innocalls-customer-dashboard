@@ -226,7 +226,43 @@
       }
     },
     "oneTime": {
-      "title": "One Time Report"
+      "title": "One Time Report",
+      "columns": {
+        "createdAt": "Creation Date",
+        "report": "Report",
+        "recipients": "Recipients",
+        "actions": "Actions"
+      },
+      "filters": {
+        "creationDate": {
+          "triggerLabel": "Creation Date",
+          "label": "Filter by Creation Date"
+        },
+        "fromDate": {
+          "label": "From",
+          "hint": "DD/MM/YYYY",
+          "placeholder": "Enter from date"
+        },
+        "toDate": {
+          "label": "To",
+          "hint": "DD/MM/YYYY",
+          "placeholder": "Enter to date"
+        }
+      },
+      "messages": {
+        "invalidDateRange": "Invalid date range",
+        "deleteSuccess": "Report deleted successfully",
+        "deleteFailed": "Failed to delete report"
+      },
+      "confirmations": {
+        "deleteTitle": "Delete Report",
+        "deleteDescription": "Are you sure you want to delete this report? This action cannot be undone.",
+        "cancel": "Cancel",
+        "yesDelete": "Yes, Delete"
+      },
+      "tooltips": {
+        "toggleFilters": "Click to show/hide search filters"
+      }
     },
     "scheduled": {
       "title": "Scheduled Report"

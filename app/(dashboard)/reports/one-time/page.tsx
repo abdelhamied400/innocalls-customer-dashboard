@@ -1,13 +1,9 @@
-"use client";
+import OneTimeReportTable from "./table";
 
-import { useTranslations } from "@/providers/TranslationProvider";
-
-const OneTimeReportPage = () => {
-  const t = useTranslations("reports.oneTime");
-
+const OneTimeReportPage = async () => {
   return (
     <div className="page h-full" id="one-time-report">
-      <h1>{t("title")}</h1>
+      <OneTimeReportTable />
     </div>
   );
 };

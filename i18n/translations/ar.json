@@ -226,7 +226,43 @@
       }
     },
     "oneTime": {
-      "title": "تقرير لمرة واحدة"
+      "title": "تقرير لمرة واحدة",
+      "columns": {
+        "createdAt": "تاريخ الإنشاء",
+        "report": "التقرير",
+        "recipients": "المستلمون",
+        "actions": "الإجراءات"
+      },
+      "filters": {
+        "creationDate": {
+          "triggerLabel": "تاريخ الإنشاء",
+          "label": "تصفية حسب تاريخ الإنشاء"
+        },
+        "fromDate": {
+          "label": "من",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل تاريخ البداية"
+        },
+        "toDate": {
+          "label": "إلى",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل تاريخ النهاية"
+        }
+      },
+      "messages": {
+        "invalidDateRange": "نطاق التاريخ غير صالح",
+        "deleteSuccess": "تم حذف التقرير بنجاح",
+        "deleteFailed": "فشل في حذف التقرير"
+      },
+      "confirmations": {
+        "deleteTitle": "حذف التقرير",
+        "deleteDescription": "هل أنت متأكد من رغبتك في حذف هذا التقرير؟ لا يمكن التراجع عن هذا الإجراء.",
+        "cancel": "إلغاء",
+        "yesDelete": "نعم، احذف"
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء فلاتر البحث"
+      }
     },
     "scheduled": {
       "title": "تقرير مجدول"
