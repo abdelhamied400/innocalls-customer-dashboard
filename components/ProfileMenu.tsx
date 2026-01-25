@@ -73,7 +73,6 @@ const ProfileMenu = () => {
 
   useEffect(() => {
     const orgId = getCookie("OrganizationId");
-    console.log(auth?.organizations);
     if (orgId) {
       setOrganization({
         id: orgId,

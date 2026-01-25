@@ -20,7 +20,7 @@ import { useForm } from "react-hook-form";
 const OrganizationDetailsForm = () => {
   const { Organization, setOrganization } = useAuthStore();
   const { toast } = useToast();
-  const { update } = useSession();
+  const { refetch } = useAuth();
 
   const {
     handleSubmit,
@@ -39,7 +39,7 @@ const OrganizationDetailsForm = () => {
         name: data.organizationName,
       });
       setOrganization({
-        ...Organization!,
+        ...(Organization || ({} as Organization)),
         name: data.organizationName,
       });
       toast({
@@ -47,7 +47,7 @@ const OrganizationDetailsForm = () => {
         description: "Organization name updated successfully.",
         variant: "success",
       });
-      await update();
+      refetch();
     } catch (error) {
       console.error("Failed to update organization name:", error);
     }
