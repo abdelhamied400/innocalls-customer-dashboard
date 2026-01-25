@@ -217,6 +217,21 @@
       }
     }
   },
+  "reports": {
+    "title": "التقارير",
+    "layout": {
+      "tabs": {
+        "oneTime": "تقرير لمرة واحدة",
+        "scheduled": "تقرير مجدول"
+      }
+    },
+    "oneTime": {
+      "title": "تقرير لمرة واحدة"
+    },
+    "scheduled": {
+      "title": "تقرير مجدول"
+    }
+  },
   "notFound": {
     "title": "هذه الصفحة غير موجودة",
     "message": "الصفحة التي تبحث عنها غير موجودة."
@@ -743,6 +758,7 @@
       "postCallSurvey": "استطلاع ما بعد المكالمة",
       "aiVoiceAgents": "وكلاء الصوت الذكي",
       "analytics": "إحصائيات المكالمات",
+      "reports": "التقارير",
       "inbound": "الواردة",
       "outbound": "الصادرة",
       "unanswered": "غير المجابة",

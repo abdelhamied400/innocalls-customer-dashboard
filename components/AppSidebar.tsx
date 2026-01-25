@@ -87,6 +87,16 @@ const AppSidebar = () => {
           />
         )}
 
+        {session?.userType === "user" && Organization?.hasTenant && (
+          <SidebarItem
+            icon={<Assessment />}
+            title={t("navigation.reports")}
+            href={`/reports`}
+            isNew={true}
+            isComingSoon={false}
+          />
+        )}
+
         {session?.userType === "agent" && (
           <SidebarItem
             icon={<PersonSearch />}

@@ -217,6 +217,21 @@
       }
     }
   },
+  "reports": {
+    "title": "Reports",
+    "layout": {
+      "tabs": {
+        "oneTime": "One Time Report",
+        "scheduled": "Scheduled Report"
+      }
+    },
+    "oneTime": {
+      "title": "One Time Report"
+    },
+    "scheduled": {
+      "title": "Scheduled Report"
+    }
+  },
   "notFound": {
     "title": "Page Not Found",
     "message": "The page you are looking for does not exist."
@@ -735,6 +750,7 @@
       "postCallSurvey": "Post Call Survey",
       "aiVoiceAgents": "AI Voice Agents",
       "analytics": "Analytics",
+      "reports": "Reports",
       "inbound": "Incoming",
       "outbound": "Outgoing",
       "unanswered": "Unanswered",
