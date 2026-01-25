@@ -215,6 +215,70 @@
       "actions": {
         "submit": "Reset Password"
       }
+    },
+    "updatePassword": {
+      "title": "Update Password",
+      "form": {
+        "fields": {
+          "currentPassword": {
+            "label": "Current Password",
+            "placeholder": "Enter current password..."
+          },
+          "newPassword": {
+            "label": "New Password",
+            "placeholder": "Enter new password..."
+          },
+          "confirmPassword": {
+            "label": "Confirm Password",
+            "placeholder": "Confirm new password..."
+          }
+        },
+        "validation": {
+          "currentPassword": {
+            "required": "Current password is required"
+          },
+          "confirmPassword": {
+            "mismatch": "Passwords do not match"
+          }
+        }
+      },
+      "messages": {
+        "resetSuccess": "Password Updated",
+        "resetSuccessDescription": "Your password has been updated successfully.",
+        "resetFailed": "Error",
+        "defaultErrorDescription": "An error occurred while updating your password."
+      },
+      "actions": {
+        "submit": "Save Changes"
+      },
+      "hint": "*Click 'Save Changes' to make sure your updates are saved"
+    }
+  },
+  "settings": {
+    "account": {
+      "organizationInfo": {
+        "title": "Organization Info",
+        "form": {
+          "fields": {
+            "organizationName": {
+              "label": "Organization Name",
+              "placeholder": "Enter organization name"
+            }
+          },
+          "validation": {
+            "organizationName": {
+              "required": "Organization name is required"
+            }
+          }
+        },
+        "messages": {
+          "success": "Success",
+          "successDescription": "Organization name updated successfully."
+        },
+        "actions": {
+          "submit": "Save Changes"
+        }
+      }
     }
   },
   "notFound": {

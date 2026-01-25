@@ -5,6 +5,7 @@ import Field from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import useAuth from "@/hooks/useAuth";
+import { useTranslations } from "@/providers/TranslationProvider";
 import organizationsService from "@/services/organizations.service";
 import useAuthStore from "@/store/auth.slice";
 import { Organization } from "@/types/api/organization";
@@ -13,14 +14,13 @@ import {
   OrganizationDetailsSchema,
 } from "@/validation/OrganizationDetails";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getCookie } from "cookies-next/client";
-import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 
 const OrganizationDetailsForm = () => {
   const { Organization, setOrganization } = useAuthStore();
   const { toast } = useToast();
   const { refetch } = useAuth();
+  const t = useTranslations("settings.account.organizationInfo");
 
   const {
     handleSubmit,
@@ -43,8 +43,8 @@ const OrganizationDetailsForm = () => {
         name: data.organizationName,
       });
       toast({
-        title: "Success",
-        description: "Organization name updated successfully.",
+        title: t("messages.success"),
+        description: t("messages.successDescription"),
         variant: "success",
       });
       refetch();
@@ -57,23 +57,23 @@ const OrganizationDetailsForm = () => {
     <div className="border p-4 rounded-lg">
       <div className="grid grid-cols-5 gap-2">
         <div className="col-span-2">
-          <h4>Organization Info</h4>
+          <h4>{t("title")}</h4>
         </div>
         <div className="col-span-3">
           <form onSubmit={onSubmit} className="space-y-4">
             <Field
-              label="Organization Name"
+              label={t("form.fields.organizationName.label")}
               htmlFor="organizationName"
               error={errors.organizationName?.message}
             >
               <Input
                 id="organizationName"
-                placeholder="Enter organization name"
+                placeholder={t("form.fields.organizationName.placeholder")}
                 variant="field"
                 {...register("organizationName")}
               />
             </Field>
-            <Button type="submit">Save Changes</Button>
+            <Button type="submit">{t("actions.submit")}</Button>
           </form>
         </div>
       </div>

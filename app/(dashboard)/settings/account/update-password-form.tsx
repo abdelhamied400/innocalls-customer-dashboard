@@ -4,6 +4,8 @@ import Field from "@/components/ui/field";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { clientSignout } from "@/lib/auth";
+import { apiLogger } from "@/lib/logger";
 import { useTranslations } from "@/providers/TranslationProvider";
 import authService from "@/services/auth.service";
 import { UpdatePasswordSchema } from "@/validation/UpdatePassword";
@@ -42,6 +44,8 @@ const UpdatePasswordForm = () => {
           title: t("messages.resetSuccess"),
           description: t("messages.resetSuccessDescription"),
         });
+        apiLogger.info("Unauthorized! Logging out...");
+        await clientSignout();
       } catch (error) {
         if (isAxiosError(error)) {
           toast({
@@ -69,7 +73,7 @@ const UpdatePasswordForm = () => {
         <div className="border p-4 rounded-lg">
           <div className="grid grid-cols-5 gap-2">
             <div className="col-span-2">
-              <h4>Update Password</h4>
+              <h4>{t("title")}</h4>
             </div>
             <div className="col-span-3 flex flex-col gap-2">
               <FormField
@@ -79,14 +83,16 @@ const UpdatePasswordForm = () => {
                   <FormItem>
                     <FormControl>
                       <Field
-                        label={t("form.fields.password.label")}
+                        label={t("form.fields.currentPassword.label")}
                         error={errors.currentPassword?.message}
                         htmlFor="currentPassword"
                       >
                         <Input
                           id="currentPassword"
                           variant="field"
-                          placeholder={t("form.fields.password.label")}
+                          placeholder={t(
+                            "form.fields.currentPassword.placeholder",
+                          )}
                           type="password"
                           {...field}
                         />
@@ -102,14 +108,14 @@ const UpdatePasswordForm = () => {
                   <FormItem>
                     <FormControl>
                       <Field
-                        label={t("form.fields.password.label")}
+                        label={t("form.fields.newPassword.label")}
                         error={errors.newPassword?.message}
                         htmlFor="newPassword"
                       >
                         <Input
                           id="newPassword"
                           variant="field"
-                          placeholder={t("form.fields.password.label")}
+                          placeholder={t("form.fields.newPassword.placeholder")}
                           type="password"
                           {...field}
                         />
@@ -126,14 +132,16 @@ const UpdatePasswordForm = () => {
                   <FormItem>
                     <FormControl>
                       <Field
-                        label={t("form.fields.password.label")}
+                        label={t("form.fields.confirmPassword.label")}
                         error={errors.confirmedPassword?.message}
                         htmlFor="confirmedPassword"
                       >
                         <Input
                           id="confirmedPassword"
                           variant="field"
-                          placeholder={t("form.fields.password.label")}
+                          placeholder={t(
+                            "form.fields.confirmPassword.placeholder",
+                          )}
                           type="password"
                           {...field}
                         />
@@ -147,7 +155,7 @@ const UpdatePasswordForm = () => {
         </div>
 
         <div className="flex items-center justify-between gap-2">
-          <p>*Click ‘Save Changes’ to make sure your updates are saved</p>
+          <p>{t("hint")}</p>
           <Button
             className="py-6"
             size="lg"

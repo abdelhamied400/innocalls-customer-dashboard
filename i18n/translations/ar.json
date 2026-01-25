@@ -215,6 +215,70 @@
       "actions": {
         "submit": "إعادة تعيين كلمة المرور"
       }
+    },
+    "updatePassword": {
+      "title": "تحديث كلمة المرور",
+      "form": {
+        "fields": {
+          "currentPassword": {
+            "label": "كلمة المرور الحالية",
+            "placeholder": "أدخل كلمة المرور الحالية..."
+          },
+          "newPassword": {
+            "label": "كلمة المرور الجديدة",
+            "placeholder": "أدخل كلمة المرور الجديدة..."
+          },
+          "confirmPassword": {
+            "label": "تأكيد كلمة المرور",
+            "placeholder": "تأكيد كلمة المرور الجديدة..."
+          }
+        },
+        "validation": {
+          "currentPassword": {
+            "required": "كلمة المرور الحالية مطلوبة"
+          },
+          "confirmPassword": {
+            "mismatch": "كلمات المرور غير متطابقة"
+          }
+        }
+      },
+      "messages": {
+        "resetSuccess": "تم تحديث كلمة المرور",
+        "resetSuccessDescription": "تم تحديث كلمة المرور بنجاح.",
+        "resetFailed": "خطأ",
+        "defaultErrorDescription": "حدث خطأ أثناء تحديث كلمة المرور."
+      },
+      "actions": {
+        "submit": "حفظ التغييرات"
+      },
+      "hint": "*انقر على 'حفظ التغييرات' للتأكد من حفظ التحديثات"
+    }
+  },
+  "settings": {
+    "account": {
+      "organizationInfo": {
+        "title": "معلومات المنظمة",
+        "form": {
+          "fields": {
+            "organizationName": {
+              "label": "اسم المنظمة",
+              "placeholder": "أدخل اسم المنظمة"
+            }
+          },
+          "validation": {
+            "organizationName": {
+              "required": "اسم المنظمة مطلوب"
+            }
+          }
+        },
+        "messages": {
+          "success": "نجاح",
+          "successDescription": "تم تحديث اسم المنظمة بنجاح."
+        },
+        "actions": {
+          "submit": "حفظ التغييرات"
+        }
+      }
     }
   },
   "notFound": {
