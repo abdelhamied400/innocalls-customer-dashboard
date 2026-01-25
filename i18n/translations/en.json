@@ -321,6 +321,39 @@
           "tagDisabled": "Tag stopped successfully.",
           "toggleFailed": "Failed to update tag status."
         }
+      },
+      "editTag": {
+        "title": "Edit Tag",
+        "description": "Edit the tag details",
+        "form": {
+          "fields": {
+            "nameAR": {
+              "label": "Name in Arabic",
+              "placeholder": "Enter name in Arabic"
+            },
+            "nameEN": {
+              "label": "Name in English",
+              "placeholder": "Enter name in English"
+            }
+          },
+          "validation": {
+            "nameAR": {
+              "required": "Name in Arabic is required"
+            },
+            "nameEN": {
+              "required": "Name in English is required"
+            }
+          }
+        },
+        "messages": {
+          "updateSuccess": "Tag updated successfully.",
+          "updateFailed": "Failed to update tag.",
+          "tagNotFound": "Tag not found."
+        },
+        "actions": {
+          "save": "Save Changes",
+          "close": "Close"
+        }
       }
     }
   },

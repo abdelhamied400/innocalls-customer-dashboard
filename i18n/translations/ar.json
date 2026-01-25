@@ -321,6 +321,39 @@
           "tagDisabled": "تم إيقاف الوسم بنجاح.",
           "toggleFailed": "فشل تحديث حالة الوسم."
         }
+      },
+      "editTag": {
+        "title": "تعديل الوسم",
+        "description": "تعديل تفاصيل الوسم",
+        "form": {
+          "fields": {
+            "nameAR": {
+              "label": "الاسم بالعربية",
+              "placeholder": "أدخل الاسم بالعربية"
+            },
+            "nameEN": {
+              "label": "الاسم بالإنجليزية",
+              "placeholder": "أدخل الاسم بالإنجليزية"
+            }
+          },
+          "validation": {
+            "nameAR": {
+              "required": "الاسم بالعربية مطلوب"
+            },
+            "nameEN": {
+              "required": "الاسم بالإنجليزية مطلوب"
+            }
+          }
+        },
+        "messages": {
+          "updateSuccess": "تم تحديث الوسم بنجاح.",
+          "updateFailed": "فشل تحديث الوسم.",
+          "tagNotFound": "الوسم غير موجود."
+        },
+        "actions": {
+          "save": "حفظ التغييرات",
+          "close": "إغلاق"
+        }
       }
     }
   },

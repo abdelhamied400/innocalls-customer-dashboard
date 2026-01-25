@@ -20,6 +20,7 @@ import { FullTag } from "@/types/api/tag";
 import { Edit, Pause, PlayArrow } from "@mui/icons-material";
 import { useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
+import Link from "next/link";
 import { useState } from "react";
 
 type TagActionsCellProps = {
@@ -78,9 +79,11 @@ const TagActionsCell = ({ tag }: TagActionsCellProps) => {
 
   return (
     <div className="flex gap-2">
-      <Button variant="ghost" size="icon" className="text-gray-400">
-        <Edit />
-      </Button>
+      <Link href={`/settings/call/edit-tag?id=${tag.id}`}>
+        <Button variant="ghost" size="icon" className="text-gray-400">
+          <Edit />
+        </Button>
+      </Link>
 
       <AlertDialog>
         <AlertDialogTrigger asChild>

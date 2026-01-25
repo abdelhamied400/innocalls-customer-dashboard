@@ -31,6 +31,18 @@ export default {
   restoreTag: async (id: string): Promise<void> => {
     await api.patch(`/call-tag/${id}/restore`);
   },
+  updateTag: async (
+    id: string,
+    data: { nameAR: string; nameEN: string },
+    isDeleted: boolean
+  ): Promise<void> => {
+    await api.put(`/call-tag/${id}`, {
+      id,
+      isDeleted,
+      nameAR: data.nameAR,
+      nameEN: data.nameEN,
+    });
+  },
   getAllAccounts: async () => {
     const res = await api.get("/jera/accounts");
     return res.data;

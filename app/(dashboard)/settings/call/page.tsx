@@ -42,7 +42,11 @@ const CallSettings = () => {
 
   return (
     <div className="page h-full" id="call-settings">
-      <Accordion type="multiple" className="flex flex-col h-full gap-2">
+      <Accordion
+        type="multiple"
+        defaultValue={["manage-tags"]}
+        className="flex flex-col h-full gap-2"
+      >
         <AccordionItem value="call-summary" className="border rounded-lg">
           <AccordionTrigger className="p-4">
             {t("callSummary.title")}
