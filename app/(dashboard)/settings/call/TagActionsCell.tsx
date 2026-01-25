@@ -40,13 +40,24 @@ const TagActionsCell = ({ tag }: TagActionsCellProps) => {
       } else {
         await vocabService.deleteTag(tag.id);
       }
-      await queryClient.invalidateQueries({ queryKey: ["tags"] });
+
+      // Optimistic update
+      queryClient.setQueryData<FullTag[]>(["tags"], (oldData) => {
+        if (!oldData) return oldData;
+        return oldData.map((t) =>
+          t.id === tag.id ? { ...t, isDeleted: !tag.isDeleted } : t
+        );
+      });
+
       toast({
         title: tag.isDeleted
           ? t("messages.tagEnabled")
           : t("messages.tagDisabled"),
         variant: "success",
       });
+
+      // Refetch in background to ensure data consistency
+      queryClient.invalidateQueries({ queryKey: ["tags"] });
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
