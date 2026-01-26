@@ -43,6 +43,9 @@ export default {
       nameEN: data.nameEN,
     });
   },
+  createTag: async (data: { nameAR: string; nameEN: string }): Promise<void> => {
+    await api.post("/call-tag", data);
+  },
   getAllAccounts: async () => {
     const res = await api.get("/jera/accounts");
     return res.data;

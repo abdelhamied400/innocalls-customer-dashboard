@@ -307,6 +307,16 @@
           "status": "الحالة",
           "actions": "الإجراءات"
         },
+        "actions": {
+          "create": "إنشاء وسم جديد"
+        },
+        "filters": {
+          "status": {
+            "label": "الحالة",
+            "selectLabel": "اختر من القائمة",
+            "all": "جميع الوسوم"
+          }
+        },
         "confirmations": {
           "disableTitle": "إيقاف وسم \"{name}\"",
           "disableDescription": "أنت على وشك إيقاف هذا الوسم. هل أنت متأكد أنك تريد إيقاف هذا الوسم؟ يرجى التأكيد للمتابعة.",
@@ -354,13 +364,46 @@
           "save": "حفظ التغييرات",
           "close": "إغلاق"
         }
+      },
+      "createTag": {
+        "title": "إنشاء وسم جديد",
+        "description": "إنشاء وسم جديد",
+        "form": {
+          "fields": {
+            "nameAR": {
+              "label": "الاسم بالعربية",
+              "placeholder": "أدخل الاسم بالعربية"
+            },
+            "nameEN": {
+              "label": "الاسم بالإنجليزية",
+              "placeholder": "أدخل الاسم بالإنجليزية"
+            }
+          },
+          "validation": {
+            "nameAR": {
+              "required": "الاسم بالعربية مطلوب"
+            },
+            "nameEN": {
+              "required": "الاسم بالإنجليزية مطلوب"
+            }
+          }
+        },
+        "messages": {
+          "createSuccess": "تم إنشاء الوسم بنجاح.",
+          "createFailed": "فشل إنشاء الوسم."
+        },
+        "actions": {
+          "create": "إنشاء",
+          "close": "إغلاق"
+        }
       }
     },
     "agent": {
       "breaks": {
         "title": "جميع الاستراحات",
         "columns": {
-          "breakType": "نوع الاستراحة",
+          "nameAR": "الاسم بالعربية",
+          "nameEN": "الاسم بالإنجليزية",
           "actions": "الإجراءات"
         },
         "actions": {

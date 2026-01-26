@@ -9,12 +9,12 @@ export const columns = (
 ): ColumnDef<BreakType>[] => {
   return [
     {
-      accessorKey: "breakType",
-      header: t("settings.agent.breaks.columns.breakType"),
-      cell: ({ row }) => {
-        const locale = localStorage.getItem("app-locale") || "en";
-        return locale === "ar" ? row.original.nameAR : row.original.nameEN;
-      },
+      accessorKey: "nameAR",
+      header: t("settings.agent.breaks.columns.nameAR"),
+    },
+    {
+      accessorKey: "nameEN",
+      header: t("settings.agent.breaks.columns.nameEN"),
     },
     {
       accessorKey: "actions",

@@ -42,6 +42,9 @@ export const columns = (
           : t("common.status.active")}
       </Badge>
     ),
+    filterFn: (row, id, value) => {
+      return row.original.isDeleted === value;
+    },
   },
   {
     accessorKey: "actions",

@@ -1,5 +1,6 @@
 export type BreakType = {
   id: string;
+  name: string;
   nameAR: string;
   nameEN: string;
   isDeleted: boolean;

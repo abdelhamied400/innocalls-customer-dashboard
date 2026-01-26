@@ -10,8 +10,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { webrtcStoppingActivities } from "@/constants/agent-activity";
-import useAuthStore from "@/store/auth.slice";
 import webrtcService from "@/services/webrtc.service";
+import breakTypesService from "@/services/break-types.service";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -20,6 +20,7 @@ import { AgentActivity } from "@/types/webrtc";
 import { isAxiosError } from "axios";
 import { useToast } from "@/hooks/use-toast";
 import useAuth from "@/hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
 
 const ExtensionStateBar = () => {
   const t = useTranslations("webrtc");
@@ -32,9 +33,14 @@ const ExtensionStateBar = () => {
     currentSession,
   } = useSip();
   const { data: auth, refetch: refetchUser } = useAuth();
-  const { Organization } = useAuthStore();
   const { data: session } = useSession();
   const { onActivityChange } = useSip();
+
+  const { data: availableBreakTypes = [] } = useQuery({
+    queryKey: ["agent-available-break-types"],
+    queryFn: breakTypesService.getAgentAvailableBreakTypes,
+    enabled: session?.userType === "agent",
+  });
 
   const breakType =
     auth?.user?.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
@@ -165,29 +171,23 @@ const ExtensionStateBar = () => {
                   </DropdownMenuItem>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  {Organization?.allowedBreakTypes.map(
-                    (type: AgentActivity) => (
-                      <DropdownMenuItem
-                        key={type}
-                        onClick={() => {
-                          handleActivityChange(
-                            AgentActivity.BREAK_STARTED,
-                            type,
-                          );
-                        }}
-                      >
-                        <span
-                          className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
-                          style={{ backgroundColor: "#eab308" }}
-                        />
-                        {t(
-                          `activity.breakTypes.${type.toLocaleLowerCase()}`,
-                        ) !== `activity.breakTypes.${type.toLocaleLowerCase()}`
-                          ? t(`activity.breakTypes.${type.toLocaleLowerCase()}`)
-                          : type}
-                      </DropdownMenuItem>
-                    ),
-                  )}
+                  {availableBreakTypes.map((breakType) => (
+                    <DropdownMenuItem
+                      key={breakType.id}
+                      onClick={() => {
+                        handleActivityChange(
+                          AgentActivity.BREAK_STARTED,
+                          breakType.id as AgentActivity,
+                        );
+                      }}
+                    >
+                      <span
+                        className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
+                        style={{ backgroundColor: "#eab308" }}
+                      />
+                      {breakType.name}
+                    </DropdownMenuItem>
+                  ))}
                 </DropdownMenuContent>
               </DropdownMenu>
               <DropdownMenuItem

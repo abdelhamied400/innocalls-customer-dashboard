@@ -7,8 +7,8 @@ const AgentSettings = () => {
   const t = useTranslations("settings.agent");
 
   return (
-    <div className="page h-full" id="agent-settings">
-      <div className="border rounded-lg h-full">
+    <div className="page overflow-y-auto" id="agent-settings">
+      <div className="border rounded-lg">
         <BreakTypesTable />
       </div>
     </div>

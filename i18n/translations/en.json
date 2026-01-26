@@ -307,6 +307,16 @@
           "status": "Status",
           "actions": "Actions"
         },
+        "actions": {
+          "create": "Create New Tag"
+        },
+        "filters": {
+          "status": {
+            "label": "Status",
+            "selectLabel": "Select from the list",
+            "all": "All Tags"
+          }
+        },
         "confirmations": {
           "disableTitle": "Stop \"{name}\" tag",
           "disableDescription": "You are about to stop this tag. Are you sure you want to stop this tag? Please confirm to proceed.",
@@ -320,6 +330,38 @@
           "tagEnabled": "Tag enabled successfully.",
           "tagDisabled": "Tag stopped successfully.",
           "toggleFailed": "Failed to update tag status."
+        }
+      },
+      "createTag": {
+        "title": "Create New Tag",
+        "description": "Create a new tag",
+        "form": {
+          "fields": {
+            "nameAR": {
+              "label": "Name in Arabic",
+              "placeholder": "Enter name in Arabic"
+            },
+            "nameEN": {
+              "label": "Name in English",
+              "placeholder": "Enter name in English"
+            }
+          },
+          "validation": {
+            "nameAR": {
+              "required": "Name in Arabic is required"
+            },
+            "nameEN": {
+              "required": "Name in English is required"
+            }
+          }
+        },
+        "messages": {
+          "createSuccess": "Tag created successfully.",
+          "createFailed": "Failed to create tag."
+        },
+        "actions": {
+          "create": "Create Tag",
+          "close": "Close"
         }
       },
       "editTag": {
@@ -360,7 +402,8 @@
       "breaks": {
         "title": "All Breaks",
         "columns": {
-          "breakType": "Break Type",
+          "nameAR": "Name in Arabic",
+          "nameEN": "Name in English",
           "actions": "Actions"
         },
         "actions": {

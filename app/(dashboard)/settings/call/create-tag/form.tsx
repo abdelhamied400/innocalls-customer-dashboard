@@ -15,31 +15,34 @@ import Stepper, {
 import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "@/providers/TranslationProvider";
 import vocabService from "@/services/vocab.service";
-import { FullTag } from "@/types/api/tag";
-import { EditTagSchema, EditTagFormValues } from "@/validation/EditTag";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { ChevronLeftIcon, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 
-type EditTagFormProps = {
-  tag: FullTag;
-};
+const createTagSchema = (t: (key: string) => string) =>
+  z.object({
+    nameAR: z.string().min(1, t("form.validation.nameAR.required")),
+    nameEN: z.string().min(1, t("form.validation.nameEN.required")),
+  });
 
-const EditTagForm = ({ tag }: EditTagFormProps) => {
+type CreateTagFormValues = z.infer<ReturnType<typeof createTagSchema>>;
+
+const CreateTagForm = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const closeSheetRef = useRef<HTMLButtonElement>(null);
   const [currentStep, setCurrentStep] = useState(0);
-  const t = useTranslations("settings.call.editTag");
+  const t = useTranslations("settings.call.createTag");
 
-  const form = useForm<EditTagFormValues>({
-    resolver: zodResolver(EditTagSchema(t)),
+  const form = useForm<CreateTagFormValues>({
+    resolver: zodResolver(createTagSchema(t)),
     defaultValues: {
-      nameAR: tag.nameAR,
-      nameEN: tag.nameEN,
+      nameAR: "",
+      nameEN: "",
     },
   });
 
@@ -49,34 +52,25 @@ const EditTagForm = ({ tag }: EditTagFormProps) => {
 
   const onSubmit = form.handleSubmit(async (data) => {
     try {
-      await vocabService.updateTag(tag.id, data, tag.isDeleted);
-
-      // Optimistic update
-      queryClient.setQueryData<FullTag[]>(["tags"], (oldData) => {
-        if (!oldData) return oldData;
-        return oldData.map((t) =>
-          t.id === tag.id ? { ...t, nameAR: data.nameAR, nameEN: data.nameEN } : t
-        );
-      });
+      await vocabService.createTag(data);
 
       toast({
-        title: t("messages.updateSuccess"),
+        title: t("messages.createSuccess"),
         variant: "success",
       });
 
-      // Close sheet and refetch
       closeSheetRef.current?.click();
       queryClient.invalidateQueries({ queryKey: ["tags"] });
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
-          title: t("messages.updateFailed"),
+          title: t("messages.createFailed"),
           description: error.response?.data?.message,
           variant: "destructive",
         });
       } else {
         toast({
-          title: t("messages.updateFailed"),
+          title: t("messages.createFailed"),
           variant: "destructive",
         });
       }
@@ -167,7 +161,7 @@ const EditTagForm = ({ tag }: EditTagFormProps) => {
                 disabled={isSubmitting}
                 loading={isSubmitting}
               >
-                {t("actions.save")}
+                {t("actions.create")}
               </Button>
             </StepperStep>
           </form>
@@ -177,4 +171,4 @@ const EditTagForm = ({ tag }: EditTagFormProps) => {
   );
 };
 
-export default EditTagForm;
+export default CreateTagForm;

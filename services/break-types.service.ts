@@ -36,4 +36,9 @@ export default {
   restoreBreakType: async (id: string): Promise<void> => {
     await api.patch(`/v1/break-types/${id}/restore`);
   },
+
+  getAgentAvailableBreakTypes: async (): Promise<BreakType[]> => {
+    const res = await api.get("/v1/break-types/agent/available");
+    return res.data.breakTypes;
+  },
 };
