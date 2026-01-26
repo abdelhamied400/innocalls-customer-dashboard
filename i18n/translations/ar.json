@@ -52,6 +52,10 @@
       "noData": "لا توجد بيانات متاحة",
       "notFound": "لم يتم العثور على بيانات"
     },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
     "filter": {
       "noFiltersAvailable": "لا توجد خيارات تخصيص"
     },
@@ -214,6 +218,277 @@
       },
       "actions": {
         "submit": "إعادة تعيين كلمة المرور"
+      }
+    },
+    "updatePassword": {
+      "title": "تحديث كلمة المرور",
+      "form": {
+        "fields": {
+          "currentPassword": {
+            "label": "كلمة المرور الحالية",
+            "placeholder": "أدخل كلمة المرور الحالية..."
+          },
+          "newPassword": {
+            "label": "كلمة المرور الجديدة",
+            "placeholder": "أدخل كلمة المرور الجديدة..."
+          },
+          "confirmPassword": {
+            "label": "تأكيد كلمة المرور",
+            "placeholder": "تأكيد كلمة المرور الجديدة..."
+          }
+        },
+        "validation": {
+          "currentPassword": {
+            "required": "كلمة المرور الحالية مطلوبة"
+          },
+          "confirmPassword": {
+            "mismatch": "كلمات المرور غير متطابقة"
+          }
+        }
+      },
+      "messages": {
+        "resetSuccess": "تم تحديث كلمة المرور",
+        "resetSuccessDescription": "تم تحديث كلمة المرور بنجاح.",
+        "resetFailed": "خطأ",
+        "defaultErrorDescription": "حدث خطأ أثناء تحديث كلمة المرور."
+      },
+      "actions": {
+        "submit": "حفظ التغييرات"
+      },
+      "hint": "*انقر على 'حفظ التغييرات' للتأكد من حفظ التحديثات"
+    }
+  },
+  "settings": {
+    "layout": {
+      "tabs": {
+        "account": "إعدادات الحساب",
+        "call": "إعدادات المكالمات",
+        "agent": "إعدادات الوكيل"
+      }
+    },
+    "account": {
+      "organizationInfo": {
+        "title": "معلومات المنظمة",
+        "form": {
+          "fields": {
+            "organizationName": {
+              "label": "اسم المنظمة",
+              "placeholder": "أدخل اسم المنظمة"
+            }
+          },
+          "validation": {
+            "organizationName": {
+              "required": "اسم المنظمة مطلوب"
+            }
+          }
+        },
+        "messages": {
+          "success": "نجاح",
+          "successDescription": "تم تحديث اسم المنظمة بنجاح."
+        },
+        "actions": {
+          "submit": "حفظ التغييرات"
+        }
+      }
+    },
+    "call": {
+      "callSummary": {
+        "title": "ملخص المكالمة",
+        "enableAfterEveryCall": "قم بتفعيل هذا الخيار لعرض ملخص بعد كل مكالمة.",
+        "enableAfterConnectedCalls": "قم بتفعيل هذا الخيار لعرض ملخص بعد المكالمات المتصلة فقط.",
+        "toggleSuccess": "تم تحديث إعداد ملخص المكالمة بنجاح.",
+        "toggleFailed": "فشل تحديث إعداد ملخص المكالمة."
+      },
+      "tags": {
+        "title": "إدارة الوسوم",
+        "columns": {
+          "nameAR": "الاسم بالعربية",
+          "nameEN": "الاسم بالإنجليزية",
+          "status": "الحالة",
+          "actions": "الإجراءات"
+        },
+        "actions": {
+          "create": "إنشاء وسم جديد"
+        },
+        "filters": {
+          "status": {
+            "label": "الحالة",
+            "selectLabel": "اختر من القائمة",
+            "all": "جميع الوسوم"
+          }
+        },
+        "confirmations": {
+          "disableTitle": "إيقاف وسم \"{name}\"",
+          "disableDescription": "أنت على وشك إيقاف هذا الوسم. هل أنت متأكد أنك تريد إيقاف هذا الوسم؟ يرجى التأكيد للمتابعة.",
+          "enableTitle": "تفعيل وسم \"{name}\"",
+          "enableDescription": "أنت على وشك تفعيل هذا الوسم. هل أنت متأكد أنك تريد تفعيل هذا الوسم؟ يرجى التأكيد للمتابعة.",
+          "cancel": "لا، لا تتابع",
+          "yesDisable": "نعم، أوقفه",
+          "yesEnable": "نعم، فعّله"
+        },
+        "messages": {
+          "tagEnabled": "تم تفعيل الوسم بنجاح.",
+          "tagDisabled": "تم إيقاف الوسم بنجاح.",
+          "toggleFailed": "فشل تحديث حالة الوسم."
+        }
+      },
+      "editTag": {
+        "title": "تعديل الوسم",
+        "description": "تعديل تفاصيل الوسم",
+        "form": {
+          "fields": {
+            "nameAR": {
+              "label": "الاسم بالعربية",
+              "placeholder": "أدخل الاسم بالعربية"
+            },
+            "nameEN": {
+              "label": "الاسم بالإنجليزية",
+              "placeholder": "أدخل الاسم بالإنجليزية"
+            }
+          },
+          "validation": {
+            "nameAR": {
+              "required": "الاسم بالعربية مطلوب"
+            },
+            "nameEN": {
+              "required": "الاسم بالإنجليزية مطلوب"
+            }
+          }
+        },
+        "messages": {
+          "updateSuccess": "تم تحديث الوسم بنجاح.",
+          "updateFailed": "فشل تحديث الوسم.",
+          "tagNotFound": "الوسم غير موجود."
+        },
+        "actions": {
+          "save": "حفظ التغييرات",
+          "close": "إغلاق"
+        }
+      },
+      "createTag": {
+        "title": "إنشاء وسم جديد",
+        "description": "إنشاء وسم جديد",
+        "form": {
+          "fields": {
+            "nameAR": {
+              "label": "الاسم بالعربية",
+              "placeholder": "أدخل الاسم بالعربية"
+            },
+            "nameEN": {
+              "label": "الاسم بالإنجليزية",
+              "placeholder": "أدخل الاسم بالإنجليزية"
+            }
+          },
+          "validation": {
+            "nameAR": {
+              "required": "الاسم بالعربية مطلوب"
+            },
+            "nameEN": {
+              "required": "الاسم بالإنجليزية مطلوب"
+            }
+          }
+        },
+        "messages": {
+          "createSuccess": "تم إنشاء الوسم بنجاح.",
+          "createFailed": "فشل إنشاء الوسم."
+        },
+        "actions": {
+          "create": "إنشاء",
+          "close": "إغلاق"
+        }
+      }
+    },
+    "agent": {
+      "breaks": {
+        "title": "جميع الاستراحات",
+        "columns": {
+          "nameAR": "الاسم بالعربية",
+          "nameEN": "الاسم بالإنجليزية",
+          "actions": "الإجراءات"
+        },
+        "actions": {
+          "create": "إنشاء استراحة جديدة"
+        },
+        "confirmations": {
+          "deleteTitle": "حذف استراحة \"{name}\"",
+          "deleteDescription": "هل أنت متأكد من رغبتك في حذف نوع الاستراحة هذا؟ لا يمكن التراجع عن هذا الإجراء.",
+          "restoreTitle": "استعادة استراحة \"{name}\"",
+          "restoreDescription": "هل أنت متأكد من رغبتك في استعادة نوع الاستراحة هذا؟",
+          "cancel": "إلغاء",
+          "yesDelete": "نعم، احذف",
+          "yesRestore": "نعم، استعد"
+        },
+        "messages": {
+          "deleteSuccess": "تم حذف نوع الاستراحة بنجاح.",
+          "deleteFailed": "فشل حذف نوع الاستراحة.",
+          "restoreSuccess": "تم استعادة نوع الاستراحة بنجاح.",
+          "restoreFailed": "فشل استعادة نوع الاستراحة."
+        },
+        "createBreak": {
+          "title": "إنشاء استراحة جديدة",
+          "description": "إنشاء نوع استراحة جديد",
+          "form": {
+            "fields": {
+              "nameAR": {
+                "label": "الاسم بالعربية",
+                "placeholder": "أدخل الاسم بالعربية"
+              },
+              "nameEN": {
+                "label": "الاسم بالإنجليزية",
+                "placeholder": "أدخل الاسم بالإنجليزية"
+              }
+            },
+            "validation": {
+              "nameAR": {
+                "required": "الاسم بالعربية مطلوب"
+              },
+              "nameEN": {
+                "required": "الاسم بالإنجليزية مطلوب"
+              }
+            }
+          },
+          "messages": {
+            "createSuccess": "تم إنشاء نوع الاستراحة بنجاح.",
+            "createFailed": "فشل إنشاء نوع الاستراحة."
+          },
+          "actions": {
+            "create": "إنشاء الاستراحة",
+            "close": "إغلاق"
+          }
+        },
+        "editBreak": {
+          "title": "تعديل الاستراحة",
+          "description": "تعديل تفاصيل نوع الاستراحة",
+          "form": {
+            "fields": {
+              "nameAR": {
+                "label": "الاسم بالعربية",
+                "placeholder": "أدخل الاسم بالعربية"
+              },
+              "nameEN": {
+                "label": "الاسم بالإنجليزية",
+                "placeholder": "أدخل الاسم بالإنجليزية"
+              }
+            },
+            "validation": {
+              "nameAR": {
+                "required": "الاسم بالعربية مطلوب"
+              },
+              "nameEN": {
+                "required": "الاسم بالإنجليزية مطلوب"
+              }
+            }
+          },
+          "messages": {
+            "updateSuccess": "تم تحديث نوع الاستراحة بنجاح.",
+            "updateFailed": "فشل تحديث نوع الاستراحة.",
+            "breakNotFound": "نوع الاستراحة غير موجود."
+          },
+          "actions": {
+            "save": "حفظ التغييرات",
+            "close": "إغلاق"
+          }
+        }
       }
     }
   },

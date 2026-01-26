@@ -27,7 +27,7 @@ export default {
         headers: {
           "X-User-Type": userType,
         },
-      }
+      },
     );
 
     return res.data;
@@ -42,7 +42,7 @@ export default {
         headers: {
           "X-User-Type": userType,
         },
-      }
+      },
     );
 
     return res.data;
@@ -57,7 +57,7 @@ export default {
         headers: {
           "X-User-Type": userType,
         },
-      }
+      },
     );
 
     return res.data;
@@ -73,5 +73,25 @@ export default {
       organizations: [res.data.organization],
       permissions: [],
     };
+  },
+  updateUserPassword: async (
+    currentPassword: string,
+    newPassword: string,
+  ): Promise<void> => {
+    await api.patch("/user/change-password", {
+      currentPassword: currentPassword,
+      confirmedPassword: newPassword,
+      newPassword: newPassword,
+    });
+  },
+  updateAgentPassword: async (
+    currentPassword: string,
+    newPassword: string,
+  ): Promise<void> => {
+    await api.patch("/agent/change-password", {
+      currentPassword: currentPassword,
+      confirmedPassword: newPassword,
+      newPassword: newPassword,
+    });
   },
 };

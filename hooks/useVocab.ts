@@ -18,7 +18,7 @@ export function useVocab() {
     });
   const { data: tags = [], isLoading: tagsLoading } = useLocalizedQuery({
     queryKey: ["tags"],
-    queryFn: vocabService.getAllTags,
+    queryFn: vocabService.getActiveTags,
     enabled: status === "authenticated" && !!Organization?.hasTenant,
   });
   const { data: accounts = [], isLoading: accountsLoading } = useLocalizedQuery(

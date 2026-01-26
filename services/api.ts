@@ -59,7 +59,7 @@ api.interceptors.response.use(
       apiLogger.error("Error:", error.message);
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 export default api;
