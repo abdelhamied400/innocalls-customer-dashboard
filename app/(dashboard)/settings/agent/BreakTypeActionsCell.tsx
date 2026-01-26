@@ -1,0 +1,186 @@
+"use client";
+
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+  AlertDialogX,
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { useTranslations } from "@/providers/TranslationProvider";
+import breakTypesService from "@/services/break-types.service";
+import { BreakType } from "@/types/api/break-type";
+import { Delete, Edit, Restore } from "@mui/icons-material";
+import { useQueryClient } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
+import Link from "next/link";
+import { useState } from "react";
+
+type BreakTypeActionsCellProps = {
+  breakType: BreakType;
+};
+
+const BreakTypeActionsCell = ({ breakType }: BreakTypeActionsCellProps) => {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isRestoring, setIsRestoring] = useState(false);
+  const t = useTranslations("settings.agent.breaks");
+
+  const handleDelete = async () => {
+    try {
+      setIsDeleting(true);
+      await breakTypesService.deleteBreakType(breakType.id);
+
+      // Optimistic update
+      queryClient.setQueryData<BreakType[]>(["break-types"], (oldData) => {
+        if (!oldData) return oldData;
+        return oldData.map((bt) =>
+          bt.id === breakType.id ? { ...bt, isDeleted: true } : bt
+        );
+      });
+
+      toast({
+        title: t("messages.deleteSuccess"),
+        variant: "success",
+      });
+
+      queryClient.invalidateQueries({ queryKey: ["break-types"] });
+    } catch (error) {
+      if (isAxiosError(error)) {
+        toast({
+          title: t("messages.deleteFailed"),
+          description: error.response?.data?.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: t("messages.deleteFailed"),
+          variant: "destructive",
+        });
+      }
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  const handleRestore = async () => {
+    try {
+      setIsRestoring(true);
+      await breakTypesService.restoreBreakType(breakType.id);
+
+      // Optimistic update
+      queryClient.setQueryData<BreakType[]>(["break-types"], (oldData) => {
+        if (!oldData) return oldData;
+        return oldData.map((bt) =>
+          bt.id === breakType.id ? { ...bt, isDeleted: false } : bt
+        );
+      });
+
+      toast({
+        title: t("messages.restoreSuccess"),
+        variant: "success",
+      });
+
+      queryClient.invalidateQueries({ queryKey: ["break-types"] });
+    } catch (error) {
+      if (isAxiosError(error)) {
+        toast({
+          title: t("messages.restoreFailed"),
+          description: error.response?.data?.message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: t("messages.restoreFailed"),
+          variant: "destructive",
+        });
+      }
+    } finally {
+      setIsRestoring(false);
+    }
+  };
+
+  return (
+    <div className="flex gap-2">
+      <Link href={`/settings/agent/edit-break?id=${breakType.id}`}>
+        <Button variant="ghost" size="icon" className="text-gray-400">
+          <Edit />
+        </Button>
+      </Link>
+
+      {breakType.isDeleted ? (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="ghost-success"
+              size="icon"
+              disabled={isRestoring}
+              loading={isRestoring}
+            >
+              <Restore />
+            </Button>
+          </AlertDialogTrigger>
+
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                {t("confirmations.restoreTitle", { name: breakType.nameEN })}
+              </AlertDialogTitle>
+              <AlertDialogX />
+              <AlertDialogDescription>
+                {t("confirmations.restoreDescription")}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t("confirmations.cancel")}</AlertDialogCancel>
+              <AlertDialogAction onClick={handleRestore}>
+                {t("confirmations.yesRestore")}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      ) : (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="ghost-destructive"
+              size="icon"
+              disabled={isDeleting}
+              loading={isDeleting}
+            >
+              <Delete />
+            </Button>
+          </AlertDialogTrigger>
+
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                {t("confirmations.deleteTitle", { name: breakType.nameEN })}
+              </AlertDialogTitle>
+              <AlertDialogX />
+              <AlertDialogDescription>
+                {t("confirmations.deleteDescription")}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t("confirmations.cancel")}</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete}>
+                {t("confirmations.yesDelete")}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
+    </div>
+  );
+};
+
+export default BreakTypeActionsCell;

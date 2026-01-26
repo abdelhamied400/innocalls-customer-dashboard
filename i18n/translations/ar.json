@@ -355,6 +355,98 @@
           "close": "إغلاق"
         }
       }
+    },
+    "agent": {
+      "breaks": {
+        "title": "جميع الاستراحات",
+        "columns": {
+          "breakType": "نوع الاستراحة",
+          "actions": "الإجراءات"
+        },
+        "actions": {
+          "create": "إنشاء استراحة جديدة"
+        },
+        "confirmations": {
+          "deleteTitle": "حذف استراحة \"{name}\"",
+          "deleteDescription": "هل أنت متأكد من رغبتك في حذف نوع الاستراحة هذا؟ لا يمكن التراجع عن هذا الإجراء.",
+          "restoreTitle": "استعادة استراحة \"{name}\"",
+          "restoreDescription": "هل أنت متأكد من رغبتك في استعادة نوع الاستراحة هذا؟",
+          "cancel": "إلغاء",
+          "yesDelete": "نعم، احذف",
+          "yesRestore": "نعم، استعد"
+        },
+        "messages": {
+          "deleteSuccess": "تم حذف نوع الاستراحة بنجاح.",
+          "deleteFailed": "فشل حذف نوع الاستراحة.",
+          "restoreSuccess": "تم استعادة نوع الاستراحة بنجاح.",
+          "restoreFailed": "فشل استعادة نوع الاستراحة."
+        },
+        "createBreak": {
+          "title": "إنشاء استراحة جديدة",
+          "description": "إنشاء نوع استراحة جديد",
+          "form": {
+            "fields": {
+              "nameAR": {
+                "label": "الاسم بالعربية",
+                "placeholder": "أدخل الاسم بالعربية"
+              },
+              "nameEN": {
+                "label": "الاسم بالإنجليزية",
+                "placeholder": "أدخل الاسم بالإنجليزية"
+              }
+            },
+            "validation": {
+              "nameAR": {
+                "required": "الاسم بالعربية مطلوب"
+              },
+              "nameEN": {
+                "required": "الاسم بالإنجليزية مطلوب"
+              }
+            }
+          },
+          "messages": {
+            "createSuccess": "تم إنشاء نوع الاستراحة بنجاح.",
+            "createFailed": "فشل إنشاء نوع الاستراحة."
+          },
+          "actions": {
+            "create": "إنشاء الاستراحة",
+            "close": "إغلاق"
+          }
+        },
+        "editBreak": {
+          "title": "تعديل الاستراحة",
+          "description": "تعديل تفاصيل نوع الاستراحة",
+          "form": {
+            "fields": {
+              "nameAR": {
+                "label": "الاسم بالعربية",
+                "placeholder": "أدخل الاسم بالعربية"
+              },
+              "nameEN": {
+                "label": "الاسم بالإنجليزية",
+                "placeholder": "أدخل الاسم بالإنجليزية"
+              }
+            },
+            "validation": {
+              "nameAR": {
+                "required": "الاسم بالعربية مطلوب"
+              },
+              "nameEN": {
+                "required": "الاسم بالإنجليزية مطلوب"
+              }
+            }
+          },
+          "messages": {
+            "updateSuccess": "تم تحديث نوع الاستراحة بنجاح.",
+            "updateFailed": "فشل تحديث نوع الاستراحة.",
+            "breakNotFound": "نوع الاستراحة غير موجود."
+          },
+          "actions": {
+            "save": "حفظ التغييرات",
+            "close": "إغلاق"
+          }
+        }
+      }
     }
   },
   "notFound": {
