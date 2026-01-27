@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/sheet";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { useRouter, usePathname } from "next/navigation";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useState } from "react";
 
 type CreateTagLayoutProps = PropsWithChildren<object>;
 
@@ -17,7 +17,8 @@ const CreateTagLayout = ({ children }: CreateTagLayoutProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const t = useTranslations("settings.call.createTag");
-  const [isOpen, setIsOpen] = useState(true);
+  const isActive = pathname.includes("create-tag");
+  const [isOpen, setIsOpen] = useState(isActive);
 
   const handleOpenChange = (open: boolean) => {
     if (open) return;
@@ -26,14 +27,10 @@ const CreateTagLayout = ({ children }: CreateTagLayoutProps) => {
     router.replace("/settings/call");
   };
 
-  useEffect(() => {
-    if (pathname.includes("create-tag")) {
-      setIsOpen(true);
-    }
-  }, [pathname]);
+  if (!isActive) return null;
 
   return (
-    <div className="create-tag-layout" key={pathname}>
+    <div className="create-tag-layout">
       <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <SheetContent side="bottom" className="h-screen p-0">
           <SheetHeader className="sr-only">

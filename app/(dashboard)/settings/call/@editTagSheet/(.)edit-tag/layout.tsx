@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/sheet";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { useRouter, usePathname } from "next/navigation";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useState } from "react";
 
 type EditTagLayoutProps = PropsWithChildren<object>;
 
@@ -17,7 +17,8 @@ const EditTagLayout = ({ children }: EditTagLayoutProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const t = useTranslations("settings.call.editTag");
-  const [isOpen, setIsOpen] = useState(true);
+  const isActive = pathname.includes("edit-tag");
+  const [isOpen, setIsOpen] = useState(isActive);
 
   const handleOpenChange = (open: boolean) => {
     if (open) return;
@@ -26,14 +27,10 @@ const EditTagLayout = ({ children }: EditTagLayoutProps) => {
     router.replace("/settings/call");
   };
 
-  useEffect(() => {
-    if (pathname.includes("edit-tag")) {
-      setIsOpen(true);
-    }
-  }, [pathname]);
+  if (!isActive) return null;
 
   return (
-    <div className="edit-tag-layout" key={pathname}>
+    <div className="edit-tag-layout">
       <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <SheetContent side="bottom" className="h-screen p-0">
           <SheetHeader className="sr-only">
