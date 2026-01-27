@@ -1,0 +1,83 @@
+/* Scrollbar */
+::-webkit-scrollbar {
+  @apply w-2 h-2 rounded-full;
+}
+
+::-webkit-scrollbar-track {
+  @apply rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400;
+}
+
+/* Input */
+@layer base {
+  .spin-button input[type="number"]::-webkit-inner-spin-button,
+  .spin-button input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+/* Select */
+.multi-select .field .control,
+.select .field .control {
+  @apply ring-0 bg-transparent border-0 shadow-none p-0;
+}
+
+.multi-select .field .value-container,
+.select .field .value-container {
+  @apply p-0 m-0;
+}
+
+/* Spinner */
+.app-spinner .square {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  background-color: #4b9cdb;
+  animation: loadingG 1.5s cubic-bezier(0.17, 0.37, 0.43, 0.67) infinite;
+}
+
+@keyframes loadingG {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(70px, 0) rotate(360deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+/* Gradient Animation */
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background: linear-gradient(
+    120deg,
+    #fef2f2,
+    #fbcfe8,
+    #fef9c3,
+    #fbcfe8,
+    #fef2f2
+  );
+  background-size: 400% 400%;
+  animation: gradientMove 30s ease-in-out infinite;
+}
