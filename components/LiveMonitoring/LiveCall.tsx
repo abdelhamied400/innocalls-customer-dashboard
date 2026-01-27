@@ -12,6 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import useWebrtcStore from "@/store/webrtc.slice";
 
 interface LiveCallProps {
   from: string;
@@ -28,13 +29,14 @@ const getExtensionNumber = (phoneNumber: string): string => {
 const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
   const t = useTranslations("liveMonitor.liveCalls.callCard");
 
+  const { extension } = useWebrtcStore();
   const { toast } = useToast();
   const { spy, extensionState } = useSip();
   const { setWebrtcOpen } = useAppStore();
 
   // Convert timestamp to seconds from now
   const startTime = Math.floor(
-    Math.floor((Date.now() - new Date(timestamp * 1000).getTime()) / 1000)
+    Math.floor((Date.now() - new Date(timestamp * 1000).getTime()) / 1000),
   );
 
   const handleSpy = (extension: string) => {
@@ -69,31 +71,33 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
           {" "}
           {"\u200E" + getAutoDialerCall(from)}
         </div>
-        {getExtensionNumber(from) && (
-          <TooltipProvider>
-            <div className="flex justify-end">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => handleSpy(getExtensionNumber(from))}
-                  >
-                    <Image
-                      src="/assets/icons/incognito.svg"
-                      alt="spy"
-                      width={24}
-                      height={24}
-                    />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{t("tooltips.spy")}</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
-          </TooltipProvider>
-        )}
+        {getExtensionNumber(from) &&
+          extension?.ext !== getExtensionNumber(from) &&
+          extension?.ext !== getExtensionNumber(to) && (
+            <TooltipProvider>
+              <div className="flex justify-end">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      onClick={() => handleSpy(getExtensionNumber(from))}
+                    >
+                      <Image
+                        src="/assets/icons/incognito.svg"
+                        alt="spy"
+                        width={24}
+                        height={24}
+                      />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t("tooltips.spy")}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+            </TooltipProvider>
+          )}
       </div>
       <div className="from bg-white border p-2 rounded-lg">
         <div className="flex items-center gap-2">
@@ -104,31 +108,33 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
           {" "}
           {"\u200E" + getAutoDialerCall(to)}
         </div>
-        {getExtensionNumber(to) && (
-          <TooltipProvider>
-            <div className="flex justify-end">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    size="icon"
-                    variant="ghost"
-                    onClick={() => handleSpy(getExtensionNumber(to))}
-                  >
-                    <Image
-                      src="/assets/icons/incognito.svg"
-                      alt="spy"
-                      width={24}
-                      height={24}
-                    />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>{t("tooltips.spy")}</p>
-                </TooltipContent>
-              </Tooltip>
-            </div>
-          </TooltipProvider>
-        )}
+        {getExtensionNumber(to) &&
+          extension?.ext !== getExtensionNumber(to) &&
+          extension?.ext !== getExtensionNumber(from) && (
+            <TooltipProvider>
+              <div className="flex justify-end">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      onClick={() => handleSpy(getExtensionNumber(to))}
+                    >
+                      <Image
+                        src="/assets/icons/incognito.svg"
+                        alt="spy"
+                        width={24}
+                        height={24}
+                      />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t("tooltips.spy")}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </div>
+            </TooltipProvider>
+          )}
       </div>
       <hr />
       {(getExtensionNumber(from) || getExtensionNumber(to)) && (
