@@ -25,8 +25,8 @@ import { z } from "zod";
 
 const createTagSchema = (t: (key: string) => string) =>
   z.object({
-    nameAR: z.string().min(1, t("form.validation.nameAR.required")),
-    nameEN: z.string().min(1, t("form.validation.nameEN.required")),
+    nameAR: z.string().trim().min(1, t("form.validation.nameAR.required")),
+    nameEN: z.string().trim().min(1, t("form.validation.nameEN.required")),
   });
 
 type CreateTagFormValues = z.infer<ReturnType<typeof createTagSchema>>;

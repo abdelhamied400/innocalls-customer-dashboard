@@ -241,6 +241,14 @@
           "currentPassword": {
             "required": "Current password is required"
           },
+          "newPassword": {
+            "minLength": "Password must be at least {min} characters long",
+            "maxLength": "Password must be no more than {max} characters long",
+            "uppercase": "Password must contain at least one uppercase letter",
+            "lowercase": "Password must contain at least one lowercase letter",
+            "number": "Password must contain at least one number",
+            "specialChar": "Password must contain at least one special character"
+          },
           "confirmPassword": {
             "mismatch": "Passwords do not match"
           }
@@ -301,6 +309,7 @@
       },
       "tags": {
         "title": "Manage Tags",
+        "subtitle": "All Tags",
         "columns": {
           "nameAR": "Name in Arabic",
           "nameEN": "Name in English",
@@ -308,7 +317,10 @@
           "actions": "Actions"
         },
         "actions": {
-          "create": "Create New Tag"
+          "create": "Create New Tag",
+          "edit": "Edit",
+          "enable": "Enable",
+          "disable": "Disable"
         },
         "filters": {
           "status": {
@@ -407,7 +419,10 @@
           "actions": "Actions"
         },
         "actions": {
-          "create": "Create New Break"
+          "create": "Create New Break",
+          "edit": "Edit",
+          "delete": "Delete",
+          "restore": "Restore"
         },
         "confirmations": {
           "deleteTitle": "Delete \"{name}\" break",

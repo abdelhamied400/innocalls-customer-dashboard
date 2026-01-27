@@ -13,6 +13,12 @@ import {
   AlertDialogX,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "@/providers/TranslationProvider";
 import vocabService from "@/services/vocab.service";
@@ -46,7 +52,7 @@ const TagActionsCell = ({ tag }: TagActionsCellProps) => {
       queryClient.setQueryData<FullTag[]>(["tags"], (oldData) => {
         if (!oldData) return oldData;
         return oldData.map((t) =>
-          t.id === tag.id ? { ...t, isDeleted: !tag.isDeleted } : t
+          t.id === tag.id ? { ...t, isDeleted: !tag.isDeleted } : t,
         );
       });
 
@@ -78,50 +84,64 @@ const TagActionsCell = ({ tag }: TagActionsCellProps) => {
   };
 
   return (
-    <div className="flex gap-2">
-      <Link href={`/settings/call/edit-tag?id=${tag.id}`}>
-        <Button variant="ghost" size="icon" className="text-gray-400">
-          <Edit />
-        </Button>
-      </Link>
+    <TooltipProvider>
+      <div className="flex gap-2">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link href={`/settings/call/edit-tag?id=${tag.id}`}>
+              <Button variant="ghost" size="icon" className="text-gray-400">
+                <Edit />
+              </Button>
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent>{t("actions.edit")}</TooltipContent>
+        </Tooltip>
 
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button
-            variant={tag.isDeleted ? "ghost-success" : "ghost-warning"}
-            size="icon"
-            disabled={isToggling}
-            loading={isToggling}
-          >
-            {tag.isDeleted ? <PlayArrow /> : <Pause />}
-          </Button>
-        </AlertDialogTrigger>
+        <AlertDialog>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant={tag.isDeleted ? "ghost-success" : "ghost-warning"}
+                  size="icon"
+                  disabled={isToggling}
+                  loading={isToggling}
+                >
+                  {tag.isDeleted ? <PlayArrow /> : <Pause />}
+                </Button>
+              </AlertDialogTrigger>
+            </TooltipTrigger>
+            <TooltipContent>
+              {tag.isDeleted ? t("actions.enable") : t("actions.disable")}
+            </TooltipContent>
+          </Tooltip>
 
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              {tag.isDeleted
-                ? t("confirmations.enableTitle", { name: tag.nameEN })
-                : t("confirmations.disableTitle", { name: tag.nameEN })}
-            </AlertDialogTitle>
-            <AlertDialogX />
-            <AlertDialogDescription>
-              {tag.isDeleted
-                ? t("confirmations.enableDescription")
-                : t("confirmations.disableDescription")}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>{t("confirmations.cancel")}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleToggle}>
-              {tag.isDeleted
-                ? t("confirmations.yesEnable")
-                : t("confirmations.yesDisable")}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                {tag.isDeleted
+                  ? t("confirmations.enableTitle", { name: tag.nameEN })
+                  : t("confirmations.disableTitle", { name: tag.nameEN })}
+              </AlertDialogTitle>
+              <AlertDialogX />
+              <AlertDialogDescription>
+                {tag.isDeleted
+                  ? t("confirmations.enableDescription")
+                  : t("confirmations.disableDescription")}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t("confirmations.cancel")}</AlertDialogCancel>
+              <AlertDialogAction onClick={handleToggle}>
+                {tag.isDeleted
+                  ? t("confirmations.yesEnable")
+                  : t("confirmations.yesDisable")}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    </TooltipProvider>
   );
 };
 
