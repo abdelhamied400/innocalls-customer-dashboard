@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/sheet";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { useRouter, usePathname } from "next/navigation";
-import { PropsWithChildren, useState } from "react";
+import { PropsWithChildren, useState, useEffect } from "react";
 
 type CreateTagLayoutProps = PropsWithChildren<object>;
 
@@ -19,6 +19,12 @@ const CreateTagLayout = ({ children }: CreateTagLayoutProps) => {
   const t = useTranslations("settings.call.createTag");
   const isActive = pathname.includes("create-tag");
   const [isOpen, setIsOpen] = useState(isActive);
+
+  useEffect(() => {
+    if (isActive) {
+      setIsOpen(true);
+    }
+  }, [isActive]);
 
   const handleOpenChange = (open: boolean) => {
     if (open) return;
