@@ -286,7 +286,8 @@
           },
           "validation": {
             "organizationName": {
-              "required": "اسم المنظمة مطلوب"
+              "required": "اسم المنظمة مطلوب",
+              "firstTwoCharsAlphabetic": "يجب أن يكون أول حرفين أبجديين"
             }
           }
         },
@@ -360,10 +361,12 @@
           },
           "validation": {
             "nameAR": {
-              "required": "الاسم بالعربية مطلوب"
+              "required": "الاسم بالعربية مطلوب",
+              "firstTwoCharsAlphabetic": "يجب أن يكون أول حرفين أبجديين"
             },
             "nameEN": {
-              "required": "الاسم بالإنجليزية مطلوب"
+              "required": "الاسم بالإنجليزية مطلوب",
+              "firstTwoCharsAlphabetic": "يجب أن يكون أول حرفين أبجديين"
             }
           }
         },
@@ -393,10 +396,12 @@
           },
           "validation": {
             "nameAR": {
-              "required": "الاسم بالعربية مطلوب"
+              "required": "الاسم بالعربية مطلوب",
+              "firstTwoCharsAlphabetic": "يجب أن يكون أول حرفين أبجديين"
             },
             "nameEN": {
-              "required": "الاسم بالإنجليزية مطلوب"
+              "required": "الاسم بالإنجليزية مطلوب",
+              "firstTwoCharsAlphabetic": "يجب أن يكون أول حرفين أبجديين"
             }
           }
         },
@@ -455,10 +460,12 @@
             },
             "validation": {
               "nameAR": {
-                "required": "الاسم بالعربية مطلوب"
+                "required": "الاسم بالعربية مطلوب",
+                "firstTwoCharsAlphabetic": "يجب أن يكون أول حرفين أبجديين"
               },
               "nameEN": {
-                "required": "الاسم بالإنجليزية مطلوب"
+                "required": "الاسم بالإنجليزية مطلوب",
+                "firstTwoCharsAlphabetic": "يجب أن يكون أول حرفين أبجديين"
               }
             }
           },
@@ -487,10 +494,12 @@
             },
             "validation": {
               "nameAR": {
-                "required": "الاسم بالعربية مطلوب"
+                "required": "الاسم بالعربية مطلوب",
+                "firstTwoCharsAlphabetic": "يجب أن يكون أول حرفين أبجديين"
               },
               "nameEN": {
-                "required": "الاسم بالإنجليزية مطلوب"
+                "required": "الاسم بالإنجليزية مطلوب",
+                "firstTwoCharsAlphabetic": "يجب أن يكون أول حرفين أبجديين"
               }
             }
           },

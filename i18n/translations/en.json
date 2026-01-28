@@ -286,7 +286,8 @@
           },
           "validation": {
             "organizationName": {
-              "required": "Organization name is required"
+              "required": "Organization name is required",
+              "firstTwoCharsAlphabetic": "First two characters must be alphabetic"
             }
           }
         },
@@ -360,10 +361,12 @@
           },
           "validation": {
             "nameAR": {
-              "required": "Name in Arabic is required"
+              "required": "Name in Arabic is required",
+              "firstTwoCharsAlphabetic": "First two characters must be alphabetic"
             },
             "nameEN": {
-              "required": "Name in English is required"
+              "required": "Name in English is required",
+              "firstTwoCharsAlphabetic": "First two characters must be alphabetic"
             }
           }
         },
@@ -392,10 +395,12 @@
           },
           "validation": {
             "nameAR": {
-              "required": "Name in Arabic is required"
+              "required": "Name in Arabic is required",
+              "firstTwoCharsAlphabetic": "First two characters must be alphabetic"
             },
             "nameEN": {
-              "required": "Name in English is required"
+              "required": "Name in English is required",
+              "firstTwoCharsAlphabetic": "First two characters must be alphabetic"
             }
           }
         },
@@ -455,10 +460,12 @@
             },
             "validation": {
               "nameAR": {
-                "required": "Name in Arabic is required"
+                "required": "Name in Arabic is required",
+                "firstTwoCharsAlphabetic": "First two characters must be alphabetic"
               },
               "nameEN": {
-                "required": "Name in English is required"
+                "required": "Name in English is required",
+                "firstTwoCharsAlphabetic": "First two characters must be alphabetic"
               }
             }
           },
@@ -487,10 +494,12 @@
             },
             "validation": {
               "nameAR": {
-                "required": "Name in Arabic is required"
+                "required": "Name in Arabic is required",
+                "firstTwoCharsAlphabetic": "First two characters must be alphabetic"
               },
               "nameEN": {
-                "required": "Name in English is required"
+                "required": "Name in English is required",
+                "firstTwoCharsAlphabetic": "First two characters must be alphabetic"
               }
             }
           },
