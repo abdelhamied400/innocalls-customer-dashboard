@@ -8,11 +8,7 @@ export const OrganizationDetailsSchema = (
     organizationName: z
       .string()
       .trim()
-      .min(1, t("form.validation.organizationName.required"))
-      .refine(
-        (val) => /^[a-zA-Z]{2}/.test(val),
-        t("form.validation.organizationName.firstTwoCharsAlphabetic"),
-      ),
+      .min(2, t("form.validation.organizationName.minTwoChars")),
   });
 
 export type OrganizationDetailsFormValues = z.infer<

@@ -6,19 +6,11 @@ export const EditBreakSchema = (t: ReturnType<typeof useTranslations>) =>
     nameAR: z
       .string()
       .trim()
-      .min(1, t("form.validation.nameAR.required"))
-      .refine(
-        (val) => /^[a-zA-Z\u0600-\u06FF]{2}/.test(val),
-        t("form.validation.nameAR.firstTwoCharsAlphabetic"),
-      ),
+      .min(2, t("form.validation.nameAR.minTwoChars")),
     nameEN: z
       .string()
       .trim()
-      .min(1, t("form.validation.nameEN.required"))
-      .refine(
-        (val) => /^[a-zA-Z]{2}/.test(val),
-        t("form.validation.nameEN.firstTwoCharsAlphabetic"),
-      ),
+      .min(2, t("form.validation.nameEN.minTwoChars")),
   });
 
 export type EditBreakFormValues = z.infer<ReturnType<typeof EditBreakSchema>>;
