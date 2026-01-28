@@ -27,7 +27,7 @@ const OrganizationDetailsForm = () => {
     formState: { errors },
     register,
   } = useForm<OrganizationDetailsFormValues>({
-    resolver: zodResolver(OrganizationDetailsSchema),
+    resolver: zodResolver(OrganizationDetailsSchema(t)),
     defaultValues: {
       organizationName: Organization?.name || "",
     },
@@ -48,8 +48,13 @@ const OrganizationDetailsForm = () => {
         variant: "success",
       });
       refetch();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to update organization name:", error);
+      toast({
+        title: t("messages.error"),
+        description: error.response?.data?.message,
+        variant: "destructive",
+      });
     }
   });
 
