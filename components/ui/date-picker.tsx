@@ -39,7 +39,7 @@ const DatePicker = ({
           )}
           {...props}
         >
-          {value ? format(value, "dd/MM/yyyy") : <span>{placeholder}</span>}
+          {value ? format(value, "dd/MM/yyyy") : <span className="font-normal text-sm">{placeholder}</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 w-auto">

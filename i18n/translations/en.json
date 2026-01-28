@@ -233,6 +233,13 @@
         "recipients": "Recipients",
         "actions": "Actions"
       },
+      "cells": {
+        "recipients": {
+          "count": "{count} recipients",
+          "dialogTitle": "Recipients",
+          "dialogDescription": "List of all recipients for this report"
+        }
+      },
       "filters": {
         "creationDate": {
           "triggerLabel": "Creation Date",
@@ -272,14 +279,230 @@
         "steps": {
           "createReport": "Create New One Time Report"
         },
-        "placeholder": "Report form will be implemented here",
+        "form": {
+          "fields": {
+            "report": {
+              "label": "Report",
+              "placeholder": "Select report type",
+              "options": {
+                "agent": "Agent Report",
+                "admin": "Admin Report"
+              }
+            },
+            "recipients": {
+              "label": "Recipients",
+              "placeholder": "Enter email and press Enter"
+            },
+            "fromDate": {
+              "label": "From Date",
+              "placeholder": "Select from date"
+            },
+            "toDate": {
+              "label": "To Date",
+              "placeholder": "Select to date"
+            },
+            "type": {
+              "label": "Type",
+              "placeholder": "Select type",
+              "options": {
+                "perQueue": "Per Queue"
+              }
+            },
+            "queue": {
+              "label": "Queue",
+              "placeholder": "Select queue"
+            }
+          }
+        },
         "actions": {
-          "close": "Close"
+          "close": "Close",
+          "submit": "Generate Report"
+        },
+        "success": {
+          "title": "Report has been generated successfully!",
+          "subtitle": "It will be sent to your email shortly.",
+          "backToReports": "Back to Reports Table",
+          "backToDashboard": "Back to Dashboard"
         }
       }
     },
     "scheduled": {
-      "title": "Scheduled Report"
+      "title": "Scheduled Report",
+      "columns": {
+        "createdAt": "Creation Date",
+        "name": "Name",
+        "scheduled": "Scheduled",
+        "status": "Status",
+        "nextGeneration": "Next Generation",
+        "recipients": "Recipients",
+        "actions": "Actions"
+      },
+      "cells": {
+        "recipients": {
+          "count": "{count} recipients",
+          "dialogTitle": "Recipients",
+          "dialogDescription": "List of all recipients for this report"
+        },
+        "scheduled": {
+          "daily": "Daily",
+          "weekly": "Weekly",
+          "monthly": "Monthly"
+        },
+        "status": {
+          "active": "Active",
+          "inactive": "Inactive"
+        }
+      },
+      "filters": {
+        "creationDate": {
+          "triggerLabel": "Creation Date",
+          "label": "Filter by Creation Date"
+        },
+        "fromDate": {
+          "label": "From",
+          "hint": "DD/MM/YYYY",
+          "placeholder": "Enter from date"
+        },
+        "toDate": {
+          "label": "To",
+          "hint": "DD/MM/YYYY",
+          "placeholder": "Enter to date"
+        },
+        "scheduled": {
+          "triggerLabel": "Scheduled",
+          "label": "Filter by Schedule",
+          "options": {
+            "daily": "Daily",
+            "weekly": "Weekly",
+            "monthly": "Monthly"
+          }
+        },
+        "status": {
+          "triggerLabel": "Status",
+          "label": "Filter by Status",
+          "options": {
+            "active": "Active",
+            "inactive": "Inactive"
+          }
+        }
+      },
+      "messages": {
+        "invalidDateRange": "Invalid date range",
+        "deleteSuccess": "Report deleted successfully",
+        "deleteFailed": "Failed to delete report",
+        "generateSuccess": "Report generated successfully",
+        "generateFailed": "Failed to generate report",
+        "activateSuccess": "Report activated successfully",
+        "activateFailed": "Failed to activate report",
+        "deactivateSuccess": "Report deactivated successfully",
+        "deactivateFailed": "Failed to deactivate report"
+      },
+      "confirmations": {
+        "deleteTitle": "Delete Report",
+        "deleteDescription": "Are you sure you want to delete this scheduled report? This action cannot be undone.",
+        "cancel": "Cancel",
+        "yesDelete": "Yes, Delete"
+      },
+      "tooltips": {
+        "toggleFilters": "Click to show/hide search filters"
+      },
+      "actions": {
+        "createReport": "Create New Report",
+        "viewHistory": "View History",
+        "generateNow": "Generate Now",
+        "activate": "Activate",
+        "deactivate": "Deactivate"
+      },
+      "createReport": {
+        "title": "Create Scheduled Report",
+        "description": "Create a new scheduled report",
+        "steps": {
+          "details": "Create New Scheduled Report",
+          "schedule": "Schedule"
+        },
+        "form": {
+          "fields": {
+            "reportName": {
+              "label": "Report Name",
+              "placeholder": "Enter report name"
+            },
+            "recipients": {
+              "label": "Recipients",
+              "placeholder": "Enter email and press Enter"
+            },
+            "emailSubject": {
+              "label": "Email Subject",
+              "placeholder": "Enter email subject"
+            },
+            "report": {
+              "label": "Report",
+              "placeholder": "Select report type",
+              "options": {
+                "agent": "Agent Report",
+                "admin": "Admin Report"
+              }
+            },
+            "type": {
+              "label": "Type",
+              "placeholder": "Select type",
+              "options": {
+                "perQueue": "Per Queue"
+              }
+            },
+            "queue": {
+              "label": "Queue",
+              "placeholder": "Select queue"
+            },
+            "timezone": {
+              "label": "Timezone",
+              "placeholder": "Select timezone"
+            },
+            "frequency": {
+              "label": "Frequency",
+              "placeholder": "Select frequency",
+              "options": {
+                "daily": "Daily",
+                "weekly": "Weekly",
+                "monthly": "Monthly"
+              }
+            },
+            "days": {
+              "label": "Days",
+              "options": {
+                "sat": "Sat",
+                "sun": "Sun",
+                "mon": "Mon",
+                "tue": "Tue",
+                "wed": "Wed",
+                "thu": "Thu",
+                "fri": "Fri"
+              }
+            },
+            "monthDay": {
+              "label": "Day of Month",
+              "placeholder": "Select day"
+            },
+            "atTime": {
+              "label": "At"
+            }
+          },
+          "nextGeneration": {
+            "title": "Next Generation",
+            "at": "at"
+          }
+        },
+        "actions": {
+          "close": "Close",
+          "next": "Next",
+          "submit": "Generate Scheduled Report"
+        },
+        "success": {
+          "title": "Report has been scheduled successfully!",
+          "subtitle": "It will be generated according to your schedule.",
+          "backToReports": "Back to Reports Table",
+          "backToDashboard": "Back to Dashboard"
+        }
+      }
     }
   },
   "notFound": {

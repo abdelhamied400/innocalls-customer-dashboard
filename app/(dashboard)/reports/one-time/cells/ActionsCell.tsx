@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { OneTimeReport } from "@/types/api/report";
-import { Delete } from "@mui/icons-material";
+import { DeleteOutline } from "@mui/icons-material";
 import { useQueryClient } from "@tanstack/react-query";
 import { CellContext } from "@tanstack/react-table";
 import { useState } from "react";
@@ -60,12 +60,12 @@ const ActionsCell = ({ row }: CellContext<OneTimeReport, unknown>) => {
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button
-            variant="ghost-destructive"
+            variant="ghost"
             size="icon"
             disabled={isDeleting}
             loading={isDeleting}
           >
-            <Delete />
+            <DeleteOutline className="text-gray-500" />
           </Button>
         </AlertDialogTrigger>
 

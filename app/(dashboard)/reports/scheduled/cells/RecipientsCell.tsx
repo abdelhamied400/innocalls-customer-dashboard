@@ -10,13 +10,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useTranslations } from "@/providers/TranslationProvider";
-import { OneTimeReport } from "@/types/api/report";
+import { ScheduledReport } from "@/types/api/report";
 import { CellContext } from "@tanstack/react-table";
 import { useState } from "react";
 
-const RecipientsCell = ({ row }: CellContext<OneTimeReport, unknown>) => {
+const RecipientsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
   const recipients = row.original.recipients;
-  const t = useTranslations("reports.oneTime.cells.recipients");
+  const t = useTranslations("reports.scheduled.cells.recipients");
   const [open, setOpen] = useState(false);
 
   if (recipients.length === 0) {

@@ -94,7 +94,7 @@ const Select = <
                 <Components.ValueContainer {...innerProps}>
                   <div className="flex items-center w-full relative">
                     {showPlaceholder && (
-                      <span className="text-muted-foreground absolute pointer-events-none">
+                      <span className="text-muted-foreground font-normal text-sm absolute pointer-events-none">
                         {placeholder}
                       </span>
                     )}

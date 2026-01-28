@@ -233,6 +233,13 @@
         "recipients": "المستلمون",
         "actions": "الإجراءات"
       },
+      "cells": {
+        "recipients": {
+          "count": "{count} مستلمين",
+          "dialogTitle": "المستلمون",
+          "dialogDescription": "قائمة جميع المستلمين لهذا التقرير"
+        }
+      },
       "filters": {
         "creationDate": {
           "triggerLabel": "تاريخ الإنشاء",
@@ -272,14 +279,230 @@
         "steps": {
           "createReport": "إنشاء تقرير لمرة واحدة جديد"
         },
-        "placeholder": "سيتم تنفيذ نموذج التقرير هنا",
+        "form": {
+          "fields": {
+            "report": {
+              "label": "التقرير",
+              "placeholder": "اختر نوع التقرير",
+              "options": {
+                "agent": "تقرير الوكيل",
+                "admin": "تقرير المسؤول"
+              }
+            },
+            "recipients": {
+              "label": "المستلمون",
+              "placeholder": "أدخل البريد الإلكتروني واضغط Enter"
+            },
+            "fromDate": {
+              "label": "من تاريخ",
+              "placeholder": "اختر تاريخ البداية"
+            },
+            "toDate": {
+              "label": "إلى تاريخ",
+              "placeholder": "اختر تاريخ النهاية"
+            },
+            "type": {
+              "label": "النوع",
+              "placeholder": "اختر النوع",
+              "options": {
+                "perQueue": "لكل قائمة انتظار"
+              }
+            },
+            "queue": {
+              "label": "قائمة الانتظار",
+              "placeholder": "اختر قائمة الانتظار"
+            }
+          }
+        },
         "actions": {
-          "close": "إغلاق"
+          "close": "إغلاق",
+          "submit": "إنشاء التقرير"
+        },
+        "success": {
+          "title": "تم إنشاء التقرير بنجاح!",
+          "subtitle": "سيتم إرساله إلى بريدك الإلكتروني قريباً.",
+          "backToReports": "العودة إلى جدول التقارير",
+          "backToDashboard": "العودة إلى لوحة التحكم"
         }
       }
     },
     "scheduled": {
-      "title": "تقرير مجدول"
+      "title": "التقارير المجدولة",
+      "columns": {
+        "createdAt": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "scheduled": "الجدولة",
+        "status": "الحالة",
+        "nextGeneration": "الإنشاء التالي",
+        "recipients": "المستلمون",
+        "actions": "الإجراءات"
+      },
+      "cells": {
+        "recipients": {
+          "count": "{count} مستلمين",
+          "dialogTitle": "المستلمون",
+          "dialogDescription": "قائمة جميع المستلمين لهذا التقرير"
+        },
+        "scheduled": {
+          "daily": "يومي",
+          "weekly": "أسبوعي",
+          "monthly": "شهري"
+        },
+        "status": {
+          "active": "نشط",
+          "inactive": "غير نشط"
+        }
+      },
+      "filters": {
+        "creationDate": {
+          "triggerLabel": "تاريخ الإنشاء",
+          "label": "تصفية حسب تاريخ الإنشاء"
+        },
+        "fromDate": {
+          "label": "من",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل تاريخ البداية"
+        },
+        "toDate": {
+          "label": "إلى",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل تاريخ النهاية"
+        },
+        "scheduled": {
+          "triggerLabel": "الجدولة",
+          "label": "تصفية حسب الجدولة",
+          "options": {
+            "daily": "يومي",
+            "weekly": "أسبوعي",
+            "monthly": "شهري"
+          }
+        },
+        "status": {
+          "triggerLabel": "الحالة",
+          "label": "تصفية حسب الحالة",
+          "options": {
+            "active": "نشط",
+            "inactive": "غير نشط"
+          }
+        }
+      },
+      "messages": {
+        "invalidDateRange": "نطاق التاريخ غير صالح",
+        "deleteSuccess": "تم حذف التقرير بنجاح",
+        "deleteFailed": "فشل في حذف التقرير",
+        "generateSuccess": "تم إنشاء التقرير بنجاح",
+        "generateFailed": "فشل في إنشاء التقرير",
+        "activateSuccess": "تم تفعيل التقرير بنجاح",
+        "activateFailed": "فشل في تفعيل التقرير",
+        "deactivateSuccess": "تم إلغاء تفعيل التقرير بنجاح",
+        "deactivateFailed": "فشل في إلغاء تفعيل التقرير"
+      },
+      "confirmations": {
+        "deleteTitle": "حذف التقرير",
+        "deleteDescription": "هل أنت متأكد من حذف هذا التقرير المجدول؟ لا يمكن التراجع عن هذا الإجراء.",
+        "cancel": "إلغاء",
+        "yesDelete": "نعم، حذف"
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء فلاتر البحث"
+      },
+      "actions": {
+        "createReport": "إنشاء تقرير جديد",
+        "viewHistory": "عرض السجل",
+        "generateNow": "إنشاء الآن",
+        "activate": "تفعيل",
+        "deactivate": "إلغاء التفعيل"
+      },
+      "createReport": {
+        "title": "إنشاء تقرير مجدول",
+        "description": "إنشاء تقرير مجدول جديد",
+        "steps": {
+          "details": "إنشاء تقرير مجدول جديد",
+          "schedule": "الجدولة"
+        },
+        "form": {
+          "fields": {
+            "reportName": {
+              "label": "اسم التقرير",
+              "placeholder": "أدخل اسم التقرير"
+            },
+            "recipients": {
+              "label": "المستلمون",
+              "placeholder": "أدخل البريد الإلكتروني واضغط Enter"
+            },
+            "emailSubject": {
+              "label": "موضوع البريد",
+              "placeholder": "أدخل موضوع البريد"
+            },
+            "report": {
+              "label": "التقرير",
+              "placeholder": "اختر نوع التقرير",
+              "options": {
+                "agent": "تقرير الوكيل",
+                "admin": "تقرير المسؤول"
+              }
+            },
+            "type": {
+              "label": "النوع",
+              "placeholder": "اختر النوع",
+              "options": {
+                "perQueue": "لكل قائمة انتظار"
+              }
+            },
+            "queue": {
+              "label": "قائمة الانتظار",
+              "placeholder": "اختر قائمة الانتظار"
+            },
+            "timezone": {
+              "label": "المنطقة الزمنية",
+              "placeholder": "اختر المنطقة الزمنية"
+            },
+            "frequency": {
+              "label": "التكرار",
+              "placeholder": "اختر التكرار",
+              "options": {
+                "daily": "يومي",
+                "weekly": "أسبوعي",
+                "monthly": "شهري"
+              }
+            },
+            "days": {
+              "label": "الأيام",
+              "options": {
+                "sat": "السبت",
+                "sun": "الأحد",
+                "mon": "الإثنين",
+                "tue": "الثلاثاء",
+                "wed": "الأربعاء",
+                "thu": "الخميس",
+                "fri": "الجمعة"
+              }
+            },
+            "monthDay": {
+              "label": "يوم الشهر",
+              "placeholder": "اختر اليوم"
+            },
+            "atTime": {
+              "label": "في"
+            }
+          },
+          "nextGeneration": {
+            "title": "الإنشاء التالي",
+            "at": "في"
+          }
+        },
+        "actions": {
+          "close": "إغلاق",
+          "next": "التالي",
+          "submit": "إنشاء التقرير المجدول"
+        },
+        "success": {
+          "title": "تم جدولة التقرير بنجاح!",
+          "subtitle": "سيتم إنشاؤه وفقاً لجدولك.",
+          "backToReports": "العودة إلى جدول التقارير",
+          "backToDashboard": "العودة إلى لوحة التحكم"
+        }
+      }
     }
   },
   "notFound": {

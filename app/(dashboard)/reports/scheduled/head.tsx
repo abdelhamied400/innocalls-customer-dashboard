@@ -1,6 +1,6 @@
 "use client";
 
-import { OneTimeReportFilters } from "@/types/api/report";
+import { ScheduledReportFilters } from "@/types/api/report";
 import { useState } from "react";
 import Field from "@/components/ui/field";
 import { FilterAltOutlined, Search } from "@mui/icons-material";
@@ -27,15 +27,17 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
-type OneTimeReportHeadProps = {
-  filters: OneTimeReportFilters;
-  setFilters: React.Dispatch<React.SetStateAction<OneTimeReportFilters>>;
+type ScheduledReportHeadProps = {
+  filters: ScheduledReportFilters;
+  setFilters: React.Dispatch<React.SetStateAction<ScheduledReportFilters>>;
 };
 
-const OneTimeReportHead = ({ filters, setFilters }: OneTimeReportHeadProps) => {
+const ScheduledReportHead = ({ filters, setFilters }: ScheduledReportHeadProps) => {
   const { toast } = useToast();
-  const t = useTranslations("reports.oneTime");
+  const t = useTranslations("reports.scheduled");
   const tCommon = useTranslations("common");
 
   const { table } = usePaginatedTable();
@@ -43,8 +45,10 @@ const OneTimeReportHead = ({ filters, setFilters }: OneTimeReportHeadProps) => {
   const [fromDate, setFromDate] = useState<Date | undefined>(filters.fromDate);
   const [toDate, setToDate] = useState<Date | undefined>(filters.toDate);
   const [search, setSearch] = useState<string>(filters.search || "");
+  const [scheduled, setScheduled] = useState<string>(filters.scheduled || "");
+  const [status, setStatus] = useState<string>(filters.status || "");
 
-  const applyFilters = () => {
+  const applyDateFilters = () => {
     if (fromDate && toDate) {
       const isValid = isValidDateRange(
         fromDate,
@@ -85,7 +89,7 @@ const OneTimeReportHead = ({ filters, setFilters }: OneTimeReportHeadProps) => {
 
   return (
     <Collapsible>
-      <div className="one-time-report-table-head flex flex-wrap items-center justify-between p-4">
+      <div className="scheduled-report-table-head flex flex-wrap items-center justify-between p-4">
         <h2>{t("title")}</h2>
         <div className="flex flex-wrap items-center gap-2">
           <TooltipProvider>
@@ -112,7 +116,7 @@ const OneTimeReportHead = ({ filters, setFilters }: OneTimeReportHeadProps) => {
                 </TooltipContent>
               </Tooltip>
               <Button asChild>
-                <Link href="/reports/one-time/create-report">
+                <Link href="/reports/scheduled/create-report">
                   <Plus className="h-4 w-4" />
                   {t("actions.createReport")}
                 </Link>
@@ -128,10 +132,13 @@ const OneTimeReportHead = ({ filters, setFilters }: OneTimeReportHeadProps) => {
             setFromDate(undefined);
             setToDate(undefined);
             setSearch("");
+            setScheduled("");
+            setStatus("");
             table.setGlobalFilter("");
             table.setPageIndex(0);
           }}
         >
+          {/* Creation Date Filter */}
           <FilterBox
             triggerLabel={t("filters.creationDate.triggerLabel")}
             label={t("filters.creationDate.label")}
@@ -145,7 +152,7 @@ const OneTimeReportHead = ({ filters, setFilters }: OneTimeReportHeadProps) => {
               setToDate(undefined);
               table.setPageIndex(0);
             }}
-            onApply={applyFilters}
+            onApply={applyDateFilters}
             numberOfFilters={(fromDate ? 1 : 0) + (toDate ? 1 : 0)}
           >
             <Field
@@ -173,10 +180,90 @@ const OneTimeReportHead = ({ filters, setFilters }: OneTimeReportHeadProps) => {
               />
             </Field>
           </FilterBox>
+
+          {/* Scheduled Filter */}
+          <FilterBox
+            triggerLabel={t("filters.scheduled.triggerLabel")}
+            label={t("filters.scheduled.label")}
+            onReset={() => {
+              setScheduled("");
+              setFilters((prev) => ({
+                ...prev,
+                scheduled: undefined,
+              }));
+              table.setPageIndex(0);
+            }}
+            onApply={() => {
+              setFilters((prev) => ({
+                ...prev,
+                scheduled: scheduled as ScheduledReportFilters["scheduled"],
+              }));
+              table.setColumnFilters((prev) => [
+                ...prev.filter((col) => col.id !== "scheduled"),
+                ...(scheduled ? [{ id: "scheduled", value: scheduled }] : []),
+              ]);
+              table.setPageIndex(0);
+              return true;
+            }}
+            numberOfFilters={scheduled ? 1 : 0}
+          >
+            <RadioGroup value={scheduled} onValueChange={setScheduled}>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="daily" id="daily" />
+                <Label htmlFor="daily">{t("filters.scheduled.options.daily")}</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="weekly" id="weekly" />
+                <Label htmlFor="weekly">{t("filters.scheduled.options.weekly")}</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="monthly" id="monthly" />
+                <Label htmlFor="monthly">{t("filters.scheduled.options.monthly")}</Label>
+              </div>
+            </RadioGroup>
+          </FilterBox>
+
+          {/* Status Filter */}
+          <FilterBox
+            triggerLabel={t("filters.status.triggerLabel")}
+            label={t("filters.status.label")}
+            onReset={() => {
+              setStatus("");
+              setFilters((prev) => ({
+                ...prev,
+                status: undefined,
+              }));
+              table.setPageIndex(0);
+            }}
+            onApply={() => {
+              setFilters((prev) => ({
+                ...prev,
+                status: status as ScheduledReportFilters["status"],
+              }));
+              table.setColumnFilters((prev) => [
+                ...prev.filter((col) => col.id !== "status"),
+                ...(status ? [{ id: "status", value: status }] : []),
+              ]);
+              table.setPageIndex(0);
+              return true;
+            }}
+            numberOfFilters={status ? 1 : 0}
+          >
+            <RadioGroup value={status} onValueChange={setStatus}>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="active" id="active" />
+                <Label htmlFor="active">{t("filters.status.options.active")}</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="inactive" id="inactive" />
+                <Label htmlFor="inactive">{t("filters.status.options.inactive")}</Label>
+              </div>
+            </RadioGroup>
+          </FilterBox>
         </FilterBar>
       </CollapsibleContent>
     </Collapsible>
   );
 };
 
-export default OneTimeReportHead;
+export default ScheduledReportHead;

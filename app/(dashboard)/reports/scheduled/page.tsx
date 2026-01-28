@@ -1,13 +1,9 @@
-"use client";
+import ScheduledReportTable from "./table";
 
-import { useTranslations } from "@/providers/TranslationProvider";
-
-const ScheduledReportPage = () => {
-  const t = useTranslations("reports.scheduled");
-
+const ScheduledReportPage = async () => {
   return (
     <div className="page h-full" id="scheduled-report">
-      <h1>{t("title")}</h1>
+      <ScheduledReportTable />
     </div>
   );
 };
