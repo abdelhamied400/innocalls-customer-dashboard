@@ -30,6 +30,7 @@ import { webrtcStoppingActivities } from "@/constants/agent-activity";
 import { AgentActivity } from "@/types/webrtc";
 import useAuth from "@/hooks/useAuth";
 import useWebrtcStore from "@/store/webrtc.slice";
+import MicrophoneAccessModal from "@/components/Webrtc/MicrophoneAccessModal";
 
 const SipContext = createContext<SipContextType | null>(null);
 
@@ -94,6 +95,14 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
   const [spyingStatus, setSpyingStatus] = useState<SpyingStatus>("spy");
   const [isSpying, setIsSpying] = useState(false);
+  const [showMicModal, setShowMicModal] = useState(false);
+
+  // Show microphone access modal when user denies media access
+  useEffect(() => {
+    if (sessionState === "user_denied_media") {
+      setShowMicModal(true);
+    }
+  }, [sessionState]);
 
   const { bindEvents, unbindEvents, stopRingtone } = useUaEvents({
     setExtensionState,
@@ -358,6 +367,10 @@ export const SipProvider = ({ children }: SipProviderProps) => {
       }}
     >
       {children}
+      <MicrophoneAccessModal
+        open={showMicModal}
+        onClose={() => setShowMicModal(false)}
+      />
     </SipContext.Provider>
   );
 };

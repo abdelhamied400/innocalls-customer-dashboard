@@ -17,6 +17,7 @@ export type SessionState =
   | "rejected"
   | "canceled"
   | "busy"
+  | "user_denied_media"
   | undefined;
 
 export type SipContextType = {

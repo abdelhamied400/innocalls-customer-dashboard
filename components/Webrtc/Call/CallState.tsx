@@ -21,7 +21,8 @@ const CallState = ({ state }: CallStateProps) => {
             state === "ringing" && "bg-primary-500",
             state === "trying" && "bg-indigo-500",
             state === "ended" && "bg-warning-500",
-            state === "failed" && "bg-destructive-500"
+            state === "user_denied_media" && "bg-pink-500",
+            state === "failed" && "bg-destructive-500",
           )}
         ></div>
         <p
@@ -30,7 +31,8 @@ const CallState = ({ state }: CallStateProps) => {
             state === "ringing" && "text-primary-500",
             state === "trying" && "text-indigo-500",
             state === "ended" && "text-warning-500",
-            state === "failed" && "text-destructive-500"
+            state === "user_denied_media" && "text-pink-500",
+            state === "failed" && "text-destructive-500",
           )}
         >
           {t(`${state}`)}

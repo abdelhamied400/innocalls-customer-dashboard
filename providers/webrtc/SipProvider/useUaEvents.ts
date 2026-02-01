@@ -361,6 +361,9 @@ export const useUaEvents = ({
           } else if (failStatus === C.causes.SIP_FAILURE_CODE) {
             updateLastCall({ status: "Unanswered" });
             updateSessionState("missed");
+          } else if (failStatus === C.causes.USER_DENIED_MEDIA_ACCESS) {
+            updateLastCall({ status: "Failed" });
+            updateSessionState("user_denied_media");
           } else {
             updateLastCall({ status: "Failed" });
             updateSessionState("failed");

@@ -2538,7 +2538,21 @@
       "ringing": "Ringing",
       "trying": "Trying",
       "ended": "Ended",
-      "failed": "Failed"
+      "failed": "Failed",
+      "user_denied_media": "Microphone Access Denied",
+      "user_denied_media_description": "Please enable microphone access in your browser settings to make calls."
+    },
+    "microphoneAccess": {
+      "title": "Microphone Access Required",
+      "description": "To make calls, you need to allow microphone access in your browser.",
+      "steps": {
+        "title": "How to enable microphone:",
+        "step1": "Click the lock/site settings icon in your browser's address bar",
+        "step2": "Find 'Microphone' in the permissions list",
+        "step3": "Change the setting to 'Allow'",
+        "step4": "Refresh the page and try again"
+      },
+      "dismiss": "Got it"
     },
     "ua": {
       "unknownName": "Unknown",
