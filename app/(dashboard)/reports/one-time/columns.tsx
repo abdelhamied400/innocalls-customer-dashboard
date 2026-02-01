@@ -3,8 +3,9 @@
 import { OneTimeReport } from "@/types/api/report";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { ColumnDef } from "@tanstack/react-table";
-import ActionsCell from "./cells/ActionsCell";
 import RecipientsCell from "./cells/RecipientsCell";
+import { Badge } from "@/components/ui/badge";
+import SortingHead from "@/components/SortingHead";
 
 export const columns = (): ColumnDef<OneTimeReport>[] => {
   const t = useTranslations("reports.oneTime.columns");
@@ -12,21 +13,34 @@ export const columns = (): ColumnDef<OneTimeReport>[] => {
   return [
     {
       accessorKey: "createdAt",
-      header: t("createdAt"),
+      header: ({ column }) => (
+        <SortingHead column={column}>{t("createdAt")}</SortingHead>
+      ),
     },
     {
-      accessorKey: "report",
-      header: t("report"),
+      accessorKey: "name",
+      header: ({ column }) => (
+        <SortingHead column={column}>{t("name")}</SortingHead>
+      ),
+    },
+    {
+      accessorKey: "status",
+      header: t("status"),
+      cell: ({ row }) => {
+        const status = row.original.status;
+        const variant =
+          status === "completed"
+            ? "success"
+            : status === "failed"
+              ? "destructive"
+              : "warning";
+        return <Badge variant={variant}>{status}</Badge>;
+      },
     },
     {
       accessorKey: "recipients",
       header: t("recipients"),
       cell: RecipientsCell,
-    },
-    {
-      accessorKey: "actions",
-      header: t("actions"),
-      cell: ActionsCell,
     },
   ];
 };

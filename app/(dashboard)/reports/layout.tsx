@@ -18,22 +18,20 @@ const ReportsLayout = ({ children }: { children: React.ReactNode }) => {
   }, [locale]);
 
   return (
-    <div className="h-full w-full">
-      <div className="bg-white p-4 rounded-lg h-full">
-        <div className="flex flex-col gap-2 h-full">
-          <LinkTabs>
-            <LinkTab href="/reports/one-time">
-              {t("layout.tabs.oneTime")}
-            </LinkTab>
-            <LinkTab href="/reports/scheduled">
-              {t("layout.tabs.scheduled")}
-            </LinkTab>
-          </LinkTabs>
+    <div className="h-full w-full overflow-hidden">
+      <div className="bg-white p-4 rounded-lg h-full flex flex-col">
+        <LinkTabs>
+          <LinkTab href="/reports/one-time">
+            {t("layout.tabs.oneTime")}
+          </LinkTab>
+          <LinkTab href="/reports/scheduled">
+            {t("layout.tabs.scheduled")}
+          </LinkTab>
+        </LinkTabs>
 
-          <hr />
+        <hr className="my-2" />
 
-          {children}
-        </div>
+        <div className="flex-1 overflow-hidden">{children}</div>
       </div>
     </div>
   );

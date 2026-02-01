@@ -30,6 +30,11 @@ import {
   PlayArrow,
   ToggleOn,
   ToggleOff,
+  Edit,
+  Visibility,
+  PlayCircle,
+  Block,
+  Autorenew,
 } from "@mui/icons-material";
 import { useQueryClient } from "@tanstack/react-query";
 import { CellContext } from "@tanstack/react-table";
@@ -51,10 +56,13 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
       // await reportsService.deleteScheduledReport(report.id);
 
       // Optimistic update
-      queryClient.setQueryData<ScheduledReport[]>(["scheduled-reports"], (oldData) => {
-        if (!oldData) return oldData;
-        return oldData.filter((r) => r.id !== report.id);
-      });
+      queryClient.setQueryData<ScheduledReport[]>(
+        ["scheduled-reports"],
+        (oldData) => {
+          if (!oldData) return oldData;
+          return oldData.filter((r) => r.id !== report.id);
+        },
+      );
 
       toast({
         title: t("messages.deleteSuccess"),
@@ -105,24 +113,31 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
       // await reportsService.toggleScheduledReportStatus(report.id);
 
       // Optimistic update
-      queryClient.setQueryData<ScheduledReport[]>(["scheduled-reports"], (oldData) => {
-        if (!oldData) return oldData;
-        return oldData.map((r) =>
-          r.id === report.id
-            ? { ...r, status: isActive ? "inactive" : "active" }
-            : r
-        );
-      });
+      queryClient.setQueryData<ScheduledReport[]>(
+        ["scheduled-reports"],
+        (oldData) => {
+          if (!oldData) return oldData;
+          return oldData.map((r) =>
+            r.id === report.id
+              ? { ...r, status: isActive ? "inactive" : "active" }
+              : r,
+          );
+        },
+      );
 
       toast({
-        title: isActive ? t("messages.deactivateSuccess") : t("messages.activateSuccess"),
+        title: isActive
+          ? t("messages.deactivateSuccess")
+          : t("messages.activateSuccess"),
         variant: "success",
       });
 
       queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
     } catch (error) {
       toast({
-        title: isActive ? t("messages.deactivateFailed") : t("messages.activateFailed"),
+        title: isActive
+          ? t("messages.deactivateFailed")
+          : t("messages.activateFailed"),
         variant: "destructive",
       });
     }
@@ -131,12 +146,8 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
   return (
     <div className="flex gap-1">
       {/* Edit Button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        onClick={handleEdit}
-      >
-        <EditOutlined className="text-gray-500" />
+      <Button variant="ghost-info" size="icon" onClick={handleEdit}>
+        <Edit className="text-info-500" />
       </Button>
 
       {/* Delete Button */}
@@ -148,13 +159,15 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
             disabled={isDeleting}
             loading={isDeleting}
           >
-            <DeleteOutline className="text-gray-500" />
+            <DeleteOutline className="text-neutral-500" />
           </Button>
         </AlertDialogTrigger>
 
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t("confirmations.deleteTitle")}</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t("confirmations.deleteTitle")}
+            </AlertDialogTitle>
             <AlertDialogX />
             <AlertDialogDescription>
               {t("confirmations.deleteDescription")}
@@ -172,29 +185,38 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
       {/* More Dropdown */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
+          <Button variant="unstyled" size="icon">
             <MoreVert className="text-gray-500" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={handleViewHistory}>
-            <History className="mr-2 h-4 w-4" />
-            {t("actions.viewHistory")}
+          <DropdownMenuItem
+            className="p-3 border-b rounded-none text-base font-semibold flex items-center gap-2"
+            onClick={handleViewHistory}
+          >
+            <Visibility className="text-icons" />
+            <span>{t("actions.viewHistory")}</span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleGenerateNow}>
-            <PlayArrow className="mr-2 h-4 w-4" />
-            {t("actions.generateNow")}
+          <DropdownMenuItem
+            className="p-3 border-b rounded-none text-base font-semibold flex items-center gap-2"
+            onClick={handleGenerateNow}
+          >
+            <PlayCircle className="text-icons" />
+            <span>{t("actions.generateNow")}</span>
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleToggleStatus}>
+          <DropdownMenuItem
+            className="p-3 rounded-none text-base font-semibold flex items-center gap-2"
+            onClick={handleToggleStatus}
+          >
             {isActive ? (
               <>
-                <ToggleOff className="mr-2 h-4 w-4" />
-                {t("actions.deactivate")}
+                <Block className="text-icons" />
+                <span>{t("actions.deactivate")}</span>
               </>
             ) : (
               <>
-                <ToggleOn className="mr-2 h-4 w-4" />
-                {t("actions.activate")}
+                <Autorenew className="text-icons" />
+                <span>{t("actions.activate")}</span>
               </>
             )}
           </DropdownMenuItem>

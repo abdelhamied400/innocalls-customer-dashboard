@@ -42,7 +42,7 @@ const OneTimeReportHead = ({ filters, setFilters }: OneTimeReportHeadProps) => {
 
   const [fromDate, setFromDate] = useState<Date | undefined>(filters.fromDate);
   const [toDate, setToDate] = useState<Date | undefined>(filters.toDate);
-  const [search, setSearch] = useState<string>(filters.search || "");
+  const [name, setName] = useState<string>(filters.name || "");
 
   const applyFilters = () => {
     if (fromDate && toDate) {
@@ -73,13 +73,12 @@ const OneTimeReportHead = ({ filters, setFilters }: OneTimeReportHeadProps) => {
     return true;
   };
 
-  const handleSearchChange = (value: string) => {
-    setSearch(value);
+  const handleNameChange = (value: string) => {
+    setName(value);
     setFilters((prev) => ({
       ...prev,
-      search: value,
+      name: value,
     }));
-    table.setGlobalFilter(value);
     table.setPageIndex(0);
   };
 
@@ -94,8 +93,8 @@ const OneTimeReportHead = ({ filters, setFilters }: OneTimeReportHeadProps) => {
                 <Search className="absolute start-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <Input
                   placeholder={tCommon("search.placeholder")}
-                  value={search}
-                  onChange={(e) => handleSearchChange(e.target.value)}
+                  value={name}
+                  onChange={(e) => handleNameChange(e.target.value)}
                   className="ps-9 w-[200px]"
                 />
               </div>
@@ -127,8 +126,7 @@ const OneTimeReportHead = ({ filters, setFilters }: OneTimeReportHeadProps) => {
             setFilters({});
             setFromDate(undefined);
             setToDate(undefined);
-            setSearch("");
-            table.setGlobalFilter("");
+            setName("");
             table.setPageIndex(0);
           }}
         >

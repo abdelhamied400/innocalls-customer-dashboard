@@ -229,7 +229,9 @@
       "title": "One Time Report",
       "columns": {
         "createdAt": "Creation Date",
+        "name": "Name",
         "report": "Report",
+        "status": "Status",
         "recipients": "Recipients",
         "actions": "Actions"
       },
@@ -237,7 +239,8 @@
         "recipients": {
           "count": "{count} recipients",
           "dialogTitle": "Recipients",
-          "dialogDescription": "List of all recipients for this report"
+          "dialogDescription": "List of all recipients for this report",
+          "sheetTitle": "Agent report recipients"
         }
       },
       "filters": {
@@ -258,8 +261,15 @@
       },
       "messages": {
         "invalidDateRange": "Invalid date range",
+        "dateRangeExceeds30Days": "Date range cannot exceed 30 days",
+        "queueRequired": "Queue is required for this report type",
+        "invalidExtensionsFormat": "Extensions must be comma-separated numbers (e.g., 101,102,103)",
+        "invalidSla": "SLA must be a number greater than 0",
         "deleteSuccess": "Report deleted successfully",
-        "deleteFailed": "Failed to delete report"
+        "deleteFailed": "Failed to delete report",
+        "error": "Error",
+        "fillRequiredFields": "Please fill in all required fields",
+        "unknownError": "An unknown error occurred"
       },
       "confirmations": {
         "deleteTitle": "Delete Report",
@@ -311,6 +321,49 @@
             "queue": {
               "label": "Queue",
               "placeholder": "Select queue"
+            },
+            "extensions": {
+              "label": "Extensions",
+              "placeholder": "Select extensions"
+            },
+            "sla": {
+              "label": "SLA (seconds)",
+              "placeholder": "e.g., 30",
+              "hint": "Service Level Agreement threshold in seconds"
+            },
+            "includeInternalCalls": {
+              "label": "Include Internal Calls"
+            }
+          },
+          "validation": {
+            "report": {
+              "required": "Please select a report type"
+            },
+            "recipients": {
+              "required": "Please add at least one recipient",
+              "invalidEmail": "Invalid email address",
+              "duplicate": "This email is already added"
+            },
+            "fromDate": {
+              "required": "From date is required",
+              "invalid": "Invalid date"
+            },
+            "toDate": {
+              "required": "To date is required",
+              "invalid": "Invalid date"
+            },
+            "dateRange": {
+              "invalid": "To date must be after from date",
+              "exceeds30Days": "Date range cannot exceed 30 days"
+            },
+            "queue": {
+              "required": "Queue is required for this report type"
+            },
+            "extensions": {
+              "invalid": "Extensions must be comma-separated numbers (e.g., 101,102,103)"
+            },
+            "sla": {
+              "invalid": "SLA must be a number greater than 0"
             }
           }
         },
@@ -341,7 +394,8 @@
         "recipients": {
           "count": "{count} recipients",
           "dialogTitle": "Recipients",
-          "dialogDescription": "List of all recipients for this report"
+          "dialogDescription": "List of all recipients for this report",
+          "sheetTitle": "Agent report recipients"
         },
         "scheduled": {
           "daily": "Daily",

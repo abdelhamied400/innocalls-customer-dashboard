@@ -7,6 +7,7 @@ import ActionsCell from "./cells/ActionsCell";
 import RecipientsCell from "./cells/RecipientsCell";
 import ScheduledCell from "./cells/ScheduledCell";
 import StatusCell from "./cells/StatusCell";
+import NextGenerationCell from "./cells/NextGenerationCell";
 
 export const columns = (): ColumnDef<ScheduledReport>[] => {
   const t = useTranslations("reports.scheduled.columns");
@@ -33,6 +34,7 @@ export const columns = (): ColumnDef<ScheduledReport>[] => {
     {
       accessorKey: "nextGeneration",
       header: t("nextGeneration"),
+      cell: NextGenerationCell,
     },
     {
       accessorKey: "recipients",

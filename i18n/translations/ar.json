@@ -229,7 +229,9 @@
       "title": "تقرير لمرة واحدة",
       "columns": {
         "createdAt": "تاريخ الإنشاء",
+        "name": "الاسم",
         "report": "التقرير",
+        "status": "الحالة",
         "recipients": "المستلمون",
         "actions": "الإجراءات"
       },
@@ -237,7 +239,8 @@
         "recipients": {
           "count": "{count} مستلمين",
           "dialogTitle": "المستلمون",
-          "dialogDescription": "قائمة جميع المستلمين لهذا التقرير"
+          "dialogDescription": "قائمة جميع المستلمين لهذا التقرير",
+          "sheetTitle": "مستلمو تقرير الوكيل"
         }
       },
       "filters": {
@@ -258,8 +261,15 @@
       },
       "messages": {
         "invalidDateRange": "نطاق التاريخ غير صالح",
+        "dateRangeExceeds30Days": "لا يمكن أن يتجاوز نطاق التاريخ 30 يومًا",
+        "queueRequired": "قائمة الانتظار مطلوبة لهذا النوع من التقارير",
+        "invalidExtensionsFormat": "يجب أن تكون التحويلات أرقام مفصولة بفواصل (مثال: 101,102,103)",
+        "invalidSla": "يجب أن يكون SLA رقمًا أكبر من 0",
         "deleteSuccess": "تم حذف التقرير بنجاح",
-        "deleteFailed": "فشل في حذف التقرير"
+        "deleteFailed": "فشل في حذف التقرير",
+        "error": "خطأ",
+        "fillRequiredFields": "يرجى ملء جميع الحقول المطلوبة",
+        "unknownError": "حدث خطأ غير معروف"
       },
       "confirmations": {
         "deleteTitle": "حذف التقرير",
@@ -311,6 +321,49 @@
             "queue": {
               "label": "قائمة الانتظار",
               "placeholder": "اختر قائمة الانتظار"
+            },
+            "extensions": {
+              "label": "التحويلات",
+              "placeholder": "اختر التحويلات"
+            },
+            "sla": {
+              "label": "SLA (بالثواني)",
+              "placeholder": "مثال: 30",
+              "hint": "عتبة اتفاقية مستوى الخدمة بالثواني"
+            },
+            "includeInternalCalls": {
+              "label": "تضمين المكالمات الداخلية"
+            }
+          },
+          "validation": {
+            "report": {
+              "required": "يرجى اختيار نوع التقرير"
+            },
+            "recipients": {
+              "required": "يرجى إضافة مستلم واحد على الأقل",
+              "invalidEmail": "عنوان بريد إلكتروني غير صالح",
+              "duplicate": "هذا البريد الإلكتروني مضاف مسبقاً"
+            },
+            "fromDate": {
+              "required": "تاريخ البداية مطلوب",
+              "invalid": "تاريخ غير صالح"
+            },
+            "toDate": {
+              "required": "تاريخ النهاية مطلوب",
+              "invalid": "تاريخ غير صالح"
+            },
+            "dateRange": {
+              "invalid": "يجب أن يكون تاريخ النهاية بعد تاريخ البداية",
+              "exceeds30Days": "لا يمكن أن يتجاوز نطاق التاريخ 30 يومًا"
+            },
+            "queue": {
+              "required": "قائمة الانتظار مطلوبة لهذا النوع من التقارير"
+            },
+            "extensions": {
+              "invalid": "يجب أن تكون التحويلات أرقام مفصولة بفواصل (مثال: 101,102,103)"
+            },
+            "sla": {
+              "invalid": "يجب أن يكون SLA رقمًا أكبر من 0"
             }
           }
         },
@@ -341,7 +394,8 @@
         "recipients": {
           "count": "{count} مستلمين",
           "dialogTitle": "المستلمون",
-          "dialogDescription": "قائمة جميع المستلمين لهذا التقرير"
+          "dialogDescription": "قائمة جميع المستلمين لهذا التقرير",
+          "sheetTitle": "مستلمو تقرير الوكيل"
         },
         "scheduled": {
           "daily": "يومي",
