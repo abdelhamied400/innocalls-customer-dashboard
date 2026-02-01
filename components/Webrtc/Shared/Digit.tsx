@@ -17,14 +17,12 @@ const Digit = ({ digit, onClick, onLongPress }: DigitProps) => {
 
   return (
     <Button
-      className="digit bg-gray-200 rounded-full flex flex-col gap-0 items-center justify-center w-16 h-16 select-none"
+      className="digit cursor-pointer bg-gray-200 rounded-full flex flex-col gap-0 items-center justify-center w-16 h-16 select-none"
       variant="unstyled"
       onClick={handleClick}
       onLongPress={onLongPress}
     >
-      <h2 className="text-3xl font-normal leading-8 font-code">
-        {digit.number}
-      </h2>
+      <h2 className="text-3xl font-normal leading-8">{digit.number}</h2>
       <p className="text-xs text-gray-500">{digit.alt}</p>
     </Button>
   );
