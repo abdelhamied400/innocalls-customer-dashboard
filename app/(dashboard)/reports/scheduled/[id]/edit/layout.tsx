@@ -11,9 +11,9 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import { useRouter } from "next/navigation";
 import { PropsWithChildren, useState } from "react";
 
-const CreateReportLayout = ({ children }: PropsWithChildren) => {
+const EditReportLayout = ({ children }: PropsWithChildren) => {
   const router = useRouter();
-  const t = useTranslations("reports.scheduled.createReport");
+  const t = useTranslations("reports.scheduled.editReport");
   const [isOpen, setIsOpen] = useState(true);
 
   const handleOpenChange = (open: boolean) => {
@@ -37,4 +37,4 @@ const CreateReportLayout = ({ children }: PropsWithChildren) => {
   );
 };
 
-export default CreateReportLayout;
+export default EditReportLayout;

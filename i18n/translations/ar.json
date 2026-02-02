@@ -465,6 +465,7 @@
         "createReport": "إنشاء تقرير جديد",
         "viewHistory": "عرض السجل",
         "generateNow": "إنشاء الآن",
+        "generating": "جاري الإنشاء...",
         "activate": "تفعيل",
         "deactivate": "إلغاء التفعيل"
       },
@@ -483,7 +484,8 @@
             },
             "recipients": {
               "label": "المستلمون",
-              "placeholder": "أدخل البريد الإلكتروني واضغط Enter"
+              "placeholder": "أدخل البريد الإلكتروني واضغط Enter",
+              "hint": "اكتب عنوان البريد الإلكتروني واضغط \"Enter\" لإضافته."
             },
             "emailSubject": {
               "label": "موضوع البريد",
@@ -493,20 +495,55 @@
               "label": "التقرير",
               "placeholder": "اختر نوع التقرير",
               "options": {
-                "agent": "تقرير الوكيل",
-                "admin": "تقرير المسؤول"
+                "outboundSummary": "ملخص الصادر",
+                "outboundAgentStats": "إحصائيات وكيل الصادر",
+                "outboundDateDistribution": "توزيع تاريخ الصادر",
+                "outboundHourlyDistribution": "التوزيع الساعي للصادر",
+                "inboundAgentSummary": "ملخص وكيل الوارد",
+                "inboundAgentDateDistribution": "توزيع تاريخ وكيل الوارد",
+                "inboundAgentHourlyDistribution": "التوزيع الساعي لوكيل الوارد",
+                "inboundQueueSummary": "ملخص قائمة الوارد",
+                "inboundQueueDateDistribution": "توزيع تاريخ قائمة الوارد",
+                "inboundQueueHourlyDistribution": "التوزيع الساعي لقائمة الوارد",
+                "inboundQueueAgentPerformance": "أداء وكيل قائمة الوارد",
+                "inboundQueueRepeatedCallers": "المتصلون المتكررون في قائمة الوارد",
+                "unansweredSummary": "ملخص غير المجاب",
+                "agentSummary": "ملخص الوكيل",
+                "agentCallDistribution": "توزيع مكالمات الوكيل",
+                "agentSlaCompliance": "التزام الوكيل باتفاقية مستوى الخدمة"
               }
             },
-            "type": {
-              "label": "النوع",
-              "placeholder": "اختر النوع",
+            "dateRangeStart": {
+              "label": "بداية نطاق التاريخ",
+              "placeholder": "اختر تاريخ البداية"
+            },
+            "dateRangeEnd": {
+              "label": "نهاية نطاق التاريخ",
+              "placeholder": "اختر تاريخ النهاية"
+            },
+            "dateRange": {
               "options": {
-                "perQueue": "لكل قائمة انتظار"
+                "today": "اليوم",
+                "previousDay": "اليوم السابق",
+                "previousWeek": "الأسبوع السابق",
+                "previousMonth": "الشهر السابق"
               }
             },
             "queue": {
               "label": "قائمة الانتظار",
               "placeholder": "اختر قائمة الانتظار"
+            },
+            "extensions": {
+              "label": "التحويلات",
+              "placeholder": "اختر التحويلات"
+            },
+            "sla": {
+              "label": "SLA (بالثواني)",
+              "placeholder": "مثال: 30",
+              "hint": "عتبة اتفاقية مستوى الخدمة بالثواني"
+            },
+            "includeInternalCalls": {
+              "label": "تضمين المكالمات الداخلية"
             },
             "timezone": {
               "label": "المنطقة الزمنية",
@@ -538,12 +575,56 @@
               "placeholder": "اختر اليوم"
             },
             "atTime": {
-              "label": "في"
+              "label": "في",
+              "placeholder": "اختر الوقت"
             }
           },
           "nextGeneration": {
             "title": "الإنشاء التالي",
             "at": "في"
+          },
+          "validation": {
+            "name": {
+              "required": "اسم التقرير مطلوب"
+            },
+            "recipients": {
+              "required": "يرجى إضافة مستلم واحد على الأقل",
+              "invalidEmail": "عنوان بريد إلكتروني غير صالح",
+              "duplicate": "هذا البريد الإلكتروني مضاف مسبقاً"
+            },
+            "emailSubject": {
+              "required": "موضوع البريد مطلوب"
+            },
+            "report": {
+              "required": "يرجى اختيار نوع التقرير"
+            },
+            "dateRangeStart": {
+              "required": "بداية نطاق التاريخ مطلوبة"
+            },
+            "dateRangeEnd": {
+              "required": "نهاية نطاق التاريخ مطلوبة"
+            },
+            "queue": {
+              "required": "قائمة الانتظار مطلوبة لهذا النوع من التقارير"
+            },
+            "sla": {
+              "invalid": "يجب أن يكون SLA رقمًا أكبر من 0"
+            },
+            "timezone": {
+              "required": "المنطقة الزمنية مطلوبة"
+            },
+            "frequency": {
+              "required": "التكرار مطلوب"
+            },
+            "daysOfWeek": {
+              "required": "يرجى اختيار يوم واحد على الأقل"
+            },
+            "dayOfMonth": {
+              "required": "يرجى اختيار يوم من الشهر"
+            },
+            "time": {
+              "required": "الوقت مطلوب"
+            }
           }
         },
         "actions": {
@@ -556,6 +637,28 @@
           "subtitle": "سيتم إنشاؤه وفقاً لجدولك.",
           "backToReports": "العودة إلى جدول التقارير",
           "backToDashboard": "العودة إلى لوحة التحكم"
+        },
+        "messages": {
+          "createSuccess": "تم جدولة التقرير بنجاح",
+          "createFailed": "فشل في إنشاء التقرير المجدول",
+          "validationError": "يرجى ملء جميع الحقول المطلوبة"
+        }
+      },
+      "editReport": {
+        "title": "تعديل التقرير المجدول",
+        "description": "تعديل إعدادات التقرير المجدول",
+        "actions": {
+          "update": "تحديث التقرير"
+        },
+        "success": {
+          "title": "تم تحديث التقرير بنجاح!",
+          "subtitle": "تم حفظ التغييرات.",
+          "backToReports": "العودة إلى جدول التقارير",
+          "backToDashboard": "العودة إلى لوحة التحكم"
+        },
+        "messages": {
+          "updateSuccess": "تم تحديث التقرير بنجاح",
+          "updateFailed": "فشل في تحديث التقرير"
         }
       }
     }

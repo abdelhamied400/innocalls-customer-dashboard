@@ -22,7 +22,7 @@ export const columns = (): ColumnDef<ScheduledReport>[] => {
       header: t("name"),
     },
     {
-      accessorKey: "scheduled",
+      accessorKey: "frequency",
       header: t("scheduled"),
       cell: ScheduledCell,
     },
@@ -32,7 +32,7 @@ export const columns = (): ColumnDef<ScheduledReport>[] => {
       cell: StatusCell,
     },
     {
-      accessorKey: "nextGeneration",
+      accessorKey: "nextGenerationAtLocal",
       header: t("nextGeneration"),
       cell: NextGenerationCell,
     },

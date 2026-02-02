@@ -45,7 +45,7 @@ const ScheduledReportHead = ({ filters, setFilters }: ScheduledReportHeadProps) 
   const [fromDate, setFromDate] = useState<Date | undefined>(filters.fromDate);
   const [toDate, setToDate] = useState<Date | undefined>(filters.toDate);
   const [search, setSearch] = useState<string>(filters.search || "");
-  const [scheduled, setScheduled] = useState<string>(filters.scheduled || "");
+  const [frequency, setFrequency] = useState<string>(filters.frequency || "");
   const [status, setStatus] = useState<string>(filters.status || "");
 
   const applyDateFilters = () => {
@@ -132,9 +132,10 @@ const ScheduledReportHead = ({ filters, setFilters }: ScheduledReportHeadProps) 
             setFromDate(undefined);
             setToDate(undefined);
             setSearch("");
-            setScheduled("");
+            setFrequency("");
             setStatus("");
             table.setGlobalFilter("");
+            table.setColumnFilters([]);
             table.setPageIndex(0);
           }}
         >
@@ -181,33 +182,36 @@ const ScheduledReportHead = ({ filters, setFilters }: ScheduledReportHeadProps) 
             </Field>
           </FilterBox>
 
-          {/* Scheduled Filter */}
+          {/* Frequency Filter */}
           <FilterBox
             triggerLabel={t("filters.scheduled.triggerLabel")}
             label={t("filters.scheduled.label")}
             onReset={() => {
-              setScheduled("");
+              setFrequency("");
               setFilters((prev) => ({
                 ...prev,
-                scheduled: undefined,
+                frequency: undefined,
               }));
+              table.setColumnFilters((prev) =>
+                prev.filter((col) => col.id !== "frequency")
+              );
               table.setPageIndex(0);
             }}
             onApply={() => {
               setFilters((prev) => ({
                 ...prev,
-                scheduled: scheduled as ScheduledReportFilters["scheduled"],
+                frequency: frequency as ScheduledReportFilters["frequency"],
               }));
               table.setColumnFilters((prev) => [
-                ...prev.filter((col) => col.id !== "scheduled"),
-                ...(scheduled ? [{ id: "scheduled", value: scheduled }] : []),
+                ...prev.filter((col) => col.id !== "frequency"),
+                ...(frequency ? [{ id: "frequency", value: frequency }] : []),
               ]);
               table.setPageIndex(0);
               return true;
             }}
-            numberOfFilters={scheduled ? 1 : 0}
+            numberOfFilters={frequency ? 1 : 0}
           >
-            <RadioGroup value={scheduled} onValueChange={setScheduled}>
+            <RadioGroup value={frequency} onValueChange={setFrequency}>
               <div className="flex items-center gap-2">
                 <RadioGroupItem value="daily" id="daily" />
                 <Label htmlFor="daily">{t("filters.scheduled.options.daily")}</Label>
@@ -233,6 +237,9 @@ const ScheduledReportHead = ({ filters, setFilters }: ScheduledReportHeadProps) 
                 ...prev,
                 status: undefined,
               }));
+              table.setColumnFilters((prev) =>
+                prev.filter((col) => col.id !== "status")
+              );
               table.setPageIndex(0);
             }}
             onApply={() => {

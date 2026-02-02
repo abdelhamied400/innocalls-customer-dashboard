@@ -104,6 +104,8 @@ const Select = <
               );
             },
           }}
+          menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+          menuPosition="fixed"
           styles={{
             control: (base) => ({
               ...base,
@@ -126,6 +128,10 @@ const Select = <
             placeholder: (base) => ({
               ...base,
               display: "none", // hide react-select's internal placeholder
+            }),
+            menuPortal: (base) => ({
+              ...base,
+              zIndex: 9999,
             }),
           }}
           onChange={onChange}

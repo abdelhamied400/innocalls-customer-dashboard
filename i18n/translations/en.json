@@ -465,6 +465,7 @@
         "createReport": "Create New Report",
         "viewHistory": "View History",
         "generateNow": "Generate Now",
+        "generating": "Generating...",
         "activate": "Activate",
         "deactivate": "Deactivate"
       },
@@ -483,7 +484,8 @@
             },
             "recipients": {
               "label": "Recipients",
-              "placeholder": "Enter email and press Enter"
+              "placeholder": "Enter email and press Enter",
+              "hint": "Type the email address and press \"Enter\" to add it."
             },
             "emailSubject": {
               "label": "Email Subject",
@@ -493,20 +495,55 @@
               "label": "Report",
               "placeholder": "Select report type",
               "options": {
-                "agent": "Agent Report",
-                "admin": "Admin Report"
+                "outboundSummary": "Outbound Summary",
+                "outboundAgentStats": "Outbound Agent Stats",
+                "outboundDateDistribution": "Outbound Date Distribution",
+                "outboundHourlyDistribution": "Outbound Hourly Distribution",
+                "inboundAgentSummary": "Inbound Agent Summary",
+                "inboundAgentDateDistribution": "Inbound Agent Date Distribution",
+                "inboundAgentHourlyDistribution": "Inbound Agent Hourly Distribution",
+                "inboundQueueSummary": "Inbound Queue Summary",
+                "inboundQueueDateDistribution": "Inbound Queue Date Distribution",
+                "inboundQueueHourlyDistribution": "Inbound Queue Hourly Distribution",
+                "inboundQueueAgentPerformance": "Inbound Queue Agent Performance",
+                "inboundQueueRepeatedCallers": "Inbound Queue Repeated Callers",
+                "unansweredSummary": "Unanswered Summary",
+                "agentSummary": "Agent Summary",
+                "agentCallDistribution": "Agent Call Distribution",
+                "agentSlaCompliance": "Agent SLA Compliance"
               }
             },
-            "type": {
-              "label": "Type",
-              "placeholder": "Select type",
+            "dateRangeStart": {
+              "label": "Date Range Start",
+              "placeholder": "Select start date"
+            },
+            "dateRangeEnd": {
+              "label": "Date Range End",
+              "placeholder": "Select end date"
+            },
+            "dateRange": {
               "options": {
-                "perQueue": "Per Queue"
+                "today": "Today",
+                "previousDay": "Previous Day",
+                "previousWeek": "Previous Week",
+                "previousMonth": "Previous Month"
               }
             },
             "queue": {
               "label": "Queue",
               "placeholder": "Select queue"
+            },
+            "extensions": {
+              "label": "Extensions",
+              "placeholder": "Select extensions"
+            },
+            "sla": {
+              "label": "SLA (seconds)",
+              "placeholder": "e.g., 30",
+              "hint": "Service Level Agreement threshold in seconds"
+            },
+            "includeInternalCalls": {
+              "label": "Include Internal Calls"
             },
             "timezone": {
               "label": "Timezone",
@@ -538,12 +575,56 @@
               "placeholder": "Select day"
             },
             "atTime": {
-              "label": "At"
+              "label": "At",
+              "placeholder": "Select time"
             }
           },
           "nextGeneration": {
             "title": "Next Generation",
             "at": "at"
+          },
+          "validation": {
+            "name": {
+              "required": "Report name is required"
+            },
+            "recipients": {
+              "required": "Please add at least one recipient",
+              "invalidEmail": "Invalid email address",
+              "duplicate": "This email is already added"
+            },
+            "emailSubject": {
+              "required": "Email subject is required"
+            },
+            "report": {
+              "required": "Please select a report type"
+            },
+            "dateRangeStart": {
+              "required": "Date range start is required"
+            },
+            "dateRangeEnd": {
+              "required": "Date range end is required"
+            },
+            "queue": {
+              "required": "Queue is required for this report type"
+            },
+            "sla": {
+              "invalid": "SLA must be a number greater than 0"
+            },
+            "timezone": {
+              "required": "Timezone is required"
+            },
+            "frequency": {
+              "required": "Frequency is required"
+            },
+            "daysOfWeek": {
+              "required": "Please select at least one day"
+            },
+            "dayOfMonth": {
+              "required": "Please select a day of month"
+            },
+            "time": {
+              "required": "Time is required"
+            }
           }
         },
         "actions": {
@@ -556,6 +637,28 @@
           "subtitle": "It will be generated according to your schedule.",
           "backToReports": "Back to Reports Table",
           "backToDashboard": "Back to Dashboard"
+        },
+        "messages": {
+          "createSuccess": "Report scheduled successfully",
+          "createFailed": "Failed to create scheduled report",
+          "validationError": "Please fill in all required fields"
+        }
+      },
+      "editReport": {
+        "title": "Edit Scheduled Report",
+        "description": "Edit scheduled report settings",
+        "actions": {
+          "update": "Update Report"
+        },
+        "success": {
+          "title": "Report updated successfully!",
+          "subtitle": "Your changes have been saved.",
+          "backToReports": "Back to Reports Table",
+          "backToDashboard": "Back to Dashboard"
+        },
+        "messages": {
+          "updateSuccess": "Report updated successfully",
+          "updateFailed": "Failed to update report"
         }
       }
     }

@@ -25,7 +25,11 @@ export type ReportType =
   | "agent_call_distribution"
   | "agent_sla_compliance";
 
-export type OneTimeReportStatus = "pending" | "processing" | "completed" | "failed";
+export type OneTimeReportStatus =
+  | "pending"
+  | "processing"
+  | "completed"
+  | "failed";
 
 export type OneTimeReportConfig = {
   fromDate: string;
@@ -85,23 +89,79 @@ export type OneTimeReportResponse = {
   report: OneTimeReport;
 };
 
-export type ScheduledReportSchedule = "daily" | "weekly" | "monthly";
+export type ScheduledReportFrequency = "daily" | "weekly" | "monthly";
 export type ScheduledReportStatus = "active" | "inactive";
+
+export type ScheduledReportConfig = {
+  dateRangeStart: string;
+  dateRangeEnd: string;
+  includeInternalCalls?: boolean;
+  extensions?: string[];
+  timezone?: string;
+  sla?: number;
+  queue?: string;
+};
 
 export type ScheduledReport = {
   id: string;
-  createdAt: string;
   name: string;
-  scheduled: ScheduledReportSchedule;
-  status: ScheduledReportStatus;
-  nextGeneration: string;
   recipients: string[];
+  emailSubject: string;
+  report: ReportType;
+  reportConfig: ScheduledReportConfig;
+  timezone: string;
+  frequency: ScheduledReportFrequency;
+  time: string;
+  daysOfWeek?: number[];
+  dayOfMonth?: number;
+  nextGenerationAt: string;
+  nextGenerationAtLocal: string;
+  lastGeneratedAtLocal: string | null;
+  status: ScheduledReportStatus;
+  createdAt: string;
 };
 
 export type ScheduledReportFilters = {
   search?: string;
   fromDate?: Date;
   toDate?: Date;
-  scheduled?: ScheduledReportSchedule;
+  frequency?: ScheduledReportFrequency;
   status?: ScheduledReportStatus;
 };
+
+export type ScheduledReportListResponse = {
+  data: ScheduledReport[];
+  pagination: {
+    page: number;
+    perPage: number;
+    total: number;
+    totalPages: number;
+  };
+};
+
+export type ScheduledReportResponse = {
+  report: ScheduledReport;
+};
+
+export type CreateScheduledReportPayload = {
+  name: string;
+  recipients: string[];
+  emailSubject: string;
+  report: ReportType;
+  reportConfig: {
+    dateRangeStart: string;
+    dateRangeEnd: string;
+    includeInternalCalls?: boolean;
+    extensions?: string;
+    sla?: number;
+    queue?: string;
+  };
+  timezone: string;
+  frequency: ScheduledReportFrequency;
+  time: string;
+  daysOfWeek?: number[];
+  dayOfMonth?: number;
+};
+
+export type UpdateScheduledReportPayload =
+  Partial<CreateScheduledReportPayload>;

@@ -24,12 +24,7 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import { ScheduledReport } from "@/types/api/report";
 import {
   DeleteOutline,
-  EditOutlined,
   MoreVert,
-  History,
-  PlayArrow,
-  ToggleOn,
-  ToggleOff,
   Edit,
   Visibility,
   PlayCircle,
@@ -39,6 +34,8 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { CellContext } from "@tanstack/react-table";
 import { useState } from "react";
+import scheduledReportsService from "@/services/scheduled-reports.service";
+import Link from "next/link";
 
 const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
   const { toast } = useToast();
@@ -49,20 +46,13 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
   const report = row.original;
   const isActive = report.status === "active";
 
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isToggling, setIsToggling] = useState(false);
+
   const handleDelete = async () => {
     try {
       setIsDeleting(true);
-      // TODO: Call delete API when available
-      // await reportsService.deleteScheduledReport(report.id);
-
-      // Optimistic update
-      queryClient.setQueryData<ScheduledReport[]>(
-        ["scheduled-reports"],
-        (oldData) => {
-          if (!oldData) return oldData;
-          return oldData.filter((r) => r.id !== report.id);
-        },
-      );
+      await scheduledReportsService.delete(report.id);
 
       toast({
         title: t("messages.deleteSuccess"),
@@ -80,11 +70,6 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
     }
   };
 
-  const handleEdit = () => {
-    // TODO: Navigate to edit page or open edit modal
-    console.log("Edit report:", report.id);
-  };
-
   const handleViewHistory = () => {
     // TODO: Navigate to history page or open history modal
     console.log("View history:", report.id);
@@ -92,8 +77,8 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
 
   const handleGenerateNow = async () => {
     try {
-      // TODO: Call generate API when available
-      // await reportsService.generateScheduledReport(report.id);
+      setIsGenerating(true);
+      await scheduledReportsService.generateNow(report.id);
 
       toast({
         title: t("messages.generateSuccess"),
@@ -104,26 +89,19 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
         title: t("messages.generateFailed"),
         variant: "destructive",
       });
+    } finally {
+      setIsGenerating(false);
     }
   };
 
   const handleToggleStatus = async () => {
     try {
-      // TODO: Call toggle status API when available
-      // await reportsService.toggleScheduledReportStatus(report.id);
-
-      // Optimistic update
-      queryClient.setQueryData<ScheduledReport[]>(
-        ["scheduled-reports"],
-        (oldData) => {
-          if (!oldData) return oldData;
-          return oldData.map((r) =>
-            r.id === report.id
-              ? { ...r, status: isActive ? "inactive" : "active" }
-              : r,
-          );
-        },
-      );
+      setIsToggling(true);
+      if (isActive) {
+        await scheduledReportsService.deactivate(report.id);
+      } else {
+        await scheduledReportsService.activate(report.id);
+      }
 
       toast({
         title: isActive
@@ -140,14 +118,18 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
           : t("messages.activateFailed"),
         variant: "destructive",
       });
+    } finally {
+      setIsToggling(false);
     }
   };
 
   return (
     <div className="flex gap-1">
       {/* Edit Button */}
-      <Button variant="ghost-info" size="icon" onClick={handleEdit}>
-        <Edit className="text-info-500" />
+      <Button variant="ghost-info" size="icon" asChild>
+        <Link href={`/reports/scheduled/${report.id}/edit`}>
+          <Edit className="text-info-500" />
+        </Link>
       </Button>
 
       {/* Delete Button */}
@@ -200,13 +182,15 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
           <DropdownMenuItem
             className="p-3 border-b rounded-none text-base font-semibold flex items-center gap-2"
             onClick={handleGenerateNow}
+            disabled={isGenerating}
           >
             <PlayCircle className="text-icons" />
-            <span>{t("actions.generateNow")}</span>
+            <span>{isGenerating ? t("actions.generating") : t("actions.generateNow")}</span>
           </DropdownMenuItem>
           <DropdownMenuItem
             className="p-3 rounded-none text-base font-semibold flex items-center gap-2"
             onClick={handleToggleStatus}
+            disabled={isToggling}
           >
             {isActive ? (
               <>

@@ -7,7 +7,7 @@ import { ScheduledReport } from "@/types/api/report";
 import { CellContext } from "@tanstack/react-table";
 
 const ScheduledCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
-  const scheduled = row.original.scheduled;
+  const frequency = row.original.frequency;
   const t = useTranslations("reports.scheduled.cells.scheduled");
 
   const classMap: Record<string, string> = {
@@ -17,8 +17,8 @@ const ScheduledCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
   };
 
   return (
-    <Badge className={cn("rounded-lg border-0", classMap[scheduled])}>
-      {t(scheduled)}
+    <Badge className={cn("rounded-lg border-0", classMap[frequency])}>
+      {t(frequency)}
     </Badge>
   );
 };
