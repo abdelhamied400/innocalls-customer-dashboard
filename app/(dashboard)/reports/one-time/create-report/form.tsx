@@ -15,8 +15,8 @@ import Stepper, {
   StepperSteps,
 } from "@/components/ui/stepper";
 import { useTranslations } from "@/providers/TranslationProvider";
-import { HourglassEmpty } from "@mui/icons-material";
-import { Calendar, ChevronLeftIcon, Loader2, X } from "lucide-react";
+import { CalendarToday, HourglassEmpty } from "@mui/icons-material";
+import { ChevronLeftIcon, Loader2, X } from "lucide-react";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
@@ -169,6 +169,7 @@ const CreateReportForm = () => {
         description: t("success.subtitle"),
       });
       setIsSuccess(true);
+      setCurrentStep(1);
     } catch (error) {
       if (isAxiosError(error)) {
         toast({
@@ -227,11 +228,12 @@ const CreateReportForm = () => {
             <div className="flex flex-col gap-2 w-full mt-4">
               <Button
                 className="w-full"
+                size="lg"
                 onClick={() => closeSheetRef.current?.click()}
               >
                 {t("success.backToReports")}
               </Button>
-              <Button asChild variant="link" className="w-full">
+              <Button asChild variant="link" className="w-full" size="lg">
                 <Link href="/">{t("success.backToDashboard")}</Link>
               </Button>
             </div>
@@ -254,6 +256,10 @@ const CreateReportForm = () => {
                     <FormItem>
                       <FormControl>
                         <Select
+                          classNames={{
+                            valueContainer: () => "font-semibold",
+                            menuList: () => "font-semibold",
+                          }}
                           label={t("form.fields.report.label")}
                           options={REPORT_OPTIONS.map((opt) => ({
                             label: opt.label,
@@ -282,11 +288,13 @@ const CreateReportForm = () => {
                   label={t("form.fields.recipients.label")}
                   htmlFor="recipients"
                   error={emailError || errors.recipients?.message}
+                  hint={t("form.fields.recipients.hint")}
                 >
                   <Input
                     id="recipients"
                     variant="field"
                     type="email"
+                    className="font-semibold placeholder:font-normal"
                     placeholder={t("form.fields.recipients.placeholder")}
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
@@ -322,7 +330,7 @@ const CreateReportForm = () => {
                             label={t("form.fields.fromDate.label")}
                             htmlFor="fromDate"
                             postIcon={
-                              <Calendar className="text-gray-400 h-4 w-4" />
+                              <CalendarToday className="text-gray-400 h-4 w-4" />
                             }
                             error={errors.fromDate?.message}
                           >
@@ -350,7 +358,7 @@ const CreateReportForm = () => {
                             label={t("form.fields.toDate.label")}
                             htmlFor="toDate"
                             postIcon={
-                              <Calendar className="text-gray-400 h-4 w-4" />
+                              <CalendarToday className="text-gray-400 h-4 w-4" />
                             }
                             error={errors.toDate?.message}
                           >
@@ -377,6 +385,10 @@ const CreateReportForm = () => {
                       <FormItem>
                         <FormControl>
                           <Select
+                            classNames={{
+                              valueContainer: () => "font-semibold",
+                              menuList: () => "font-semibold",
+                            }}
                             label={t("form.fields.queue.label")}
                             options={
                               ergs?.map((erg) => ({
@@ -431,6 +443,10 @@ const CreateReportForm = () => {
                           <FormControl>
                             <Select
                               label={t("form.fields.extensions.label")}
+                              classNames={{
+                                valueContainer: () => "font-semibold",
+                                menuList: () => "font-semibold",
+                              }}
                               options={
                                 vocabExtensions?.map((ext) => ({
                                   label: `${ext.name} (${ext.ext})`,
@@ -477,6 +493,7 @@ const CreateReportForm = () => {
                             <Input
                               id="sla"
                               variant="field"
+                              className="font-semibold placeholder:font-normal"
                               type="number"
                               min={1}
                               placeholder={t("form.fields.sla.placeholder")}

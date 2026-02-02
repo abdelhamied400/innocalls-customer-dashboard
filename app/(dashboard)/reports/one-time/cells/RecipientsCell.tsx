@@ -35,19 +35,22 @@ const RecipientsCell = ({ row }: CellContext<OneTimeReport, unknown>) => {
           {t("count", { count: recipients.length })}
         </button>
       </SheetTrigger>
-      <SheetContent>
-        <SheetHeader className="flex flex-row items-center justify-between">
-          <SheetTitle>{t("sheetTitle")}</SheetTitle>
+      <SheetContent className="p-0">
+        <SheetHeader className="flex flex-row items-center justify-between border-b px-6 py-4">
+          <SheetTitle className="font-bold">{t("sheetTitle")}</SheetTitle>
           <SheetClose className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
             <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
           </SheetClose>
         </SheetHeader>
-        <div className="flex flex-col gap-2 mt-4 max-h-[calc(100vh-120px)] overflow-y-auto">
+        <div className="flex flex-col gap-2 px-6 py-4 max-h-[calc(100vh-120px)] overflow-y-auto">
           {recipients.map((recipient, index) => (
-            <Badge key={index} variant="secondary" className="w-fit">
+            <div
+              key={index}
+              className="bg-[#efefef] px-4 py-2 rounded-lg font-bold"
+            >
               {recipient}
-            </Badge>
+            </div>
           ))}
         </div>
       </SheetContent>

@@ -301,7 +301,8 @@
             },
             "recipients": {
               "label": "Recipients",
-              "placeholder": "Enter email and press Enter"
+              "placeholder": "Enter email and press Enter",
+              "hint": "Type the email address and press \"Enter\" to add it."
             },
             "fromDate": {
               "label": "From Date",

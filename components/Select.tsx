@@ -22,7 +22,7 @@ export type Option = {
 
 type SelectProps<
   OptionType extends Option = Option,
-  IsMulti extends boolean = false
+  IsMulti extends boolean = false,
 > = {
   options: OptionType[];
   isMulti?: IsMulti;
@@ -38,7 +38,7 @@ type SelectProps<
 
 const Select = <
   OptionType extends Option = Option,
-  IsMulti extends boolean = false
+  IsMulti extends boolean = false,
 >({
   options,
   isSearchable = true,
@@ -53,7 +53,7 @@ const Select = <
   const onRemoveOption = (val: OptionType) => {
     if (isMulti && props.value && Array.isArray(props.value)) {
       const newValue = props.value.filter(
-        (option: OptionType) => option.value !== val.value
+        (option: OptionType) => option.value !== val.value,
       ) as readonly OptionType[];
       if (onChange) {
         onChange(
@@ -61,7 +61,7 @@ const Select = <
           {
             action: "remove-value",
             removedValue: val,
-          } as ActionMeta<OptionType>
+          } as ActionMeta<OptionType>,
         );
       }
     }
