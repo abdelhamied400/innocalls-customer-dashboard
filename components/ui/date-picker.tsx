@@ -52,6 +52,7 @@ const DatePicker = ({
           mode="single"
           selected={value}
           onSelect={onChange}
+          disabled={{ after: new Date() }}
         />
       </PopoverContent>
     </Popover>
