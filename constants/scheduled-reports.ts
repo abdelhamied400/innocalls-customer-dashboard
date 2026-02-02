@@ -1,4 +1,4 @@
-import { WeekDay } from "./types";
+import { WeekDay } from "@/types/scheduled-report-form";
 
 export const WEEK_DAYS: WeekDay[] = [
   "sat",

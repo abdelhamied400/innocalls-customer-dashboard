@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useTranslations } from "@/providers/TranslationProvider";
 import Image from "next/image";
 import Link from "next/link";
-import { SuccessViewProps } from "./types";
+import { SuccessViewProps } from "@/types/scheduled-report-form";
 
 const SuccessView = ({ onBackToReports }: SuccessViewProps) => {
   const t = useTranslations("reports.scheduled.createReport");

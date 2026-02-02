@@ -19,7 +19,7 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import { X } from "lucide-react";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { ReportType } from "@/types/api/report";
-import { ReportDetailsStepProps } from "./types";
+import { ReportDetailsStepProps } from "@/types/scheduled-report-form";
 
 const ReportDetailsStep = ({
   form,

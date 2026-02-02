@@ -27,8 +27,8 @@ import createScheduledReportSchema, {
   CreateScheduledReportSchema,
 } from "@/validation/CreateScheduledReport";
 import { Form } from "@/components/ui/form";
-import { WeekDay } from "./types";
-import { DAY_MAP } from "./constants";
+import { WeekDay } from "@/types/scheduled-report-form";
+import { DAY_MAP } from "@/constants/scheduled-reports";
 import ReportDetailsStep from "./report-details-step";
 import ScheduleStep from "./schedule-step";
 import SuccessView from "./success-view";

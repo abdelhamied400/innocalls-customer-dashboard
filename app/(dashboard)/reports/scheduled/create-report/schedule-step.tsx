@@ -12,8 +12,8 @@ import { Loader2 } from "lucide-react";
 import { useMemo } from "react";
 import { format, addDays, setHours, setMinutes, setDate } from "date-fns";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
-import { ScheduleStepProps, WeekDay } from "./types";
-import { WEEK_DAYS, DAY_MAP, TIME_OPTIONS, MONTH_DAY_OPTIONS } from "./constants";
+import { ScheduleStepProps, WeekDay } from "@/types/scheduled-report-form";
+import { WEEK_DAYS, DAY_MAP, TIME_OPTIONS, MONTH_DAY_OPTIONS } from "@/constants/scheduled-reports";
 
 const ScheduleStep = ({ form, onSubmit, isSubmitting }: ScheduleStepProps) => {
   const t = useTranslations("reports.scheduled.createReport");
