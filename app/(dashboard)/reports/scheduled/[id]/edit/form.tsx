@@ -367,11 +367,7 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
     }
 
     if (showExtensions && extensions.trim()) {
-      // Convert comma-separated string to array for API
-      reportConfig.extensions = extensions
-        .split(",")
-        .map((ext) => ext.trim())
-        .filter(Boolean);
+      reportConfig.extensions = extensions;
     }
 
     if (showQueue && queue) {
