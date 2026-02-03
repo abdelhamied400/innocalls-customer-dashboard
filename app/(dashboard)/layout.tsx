@@ -14,8 +14,13 @@ import useAuth from "@/hooks/useAuth";
 
 type DashboardLayoutProps = PropsWithChildren<{
   agent: React.ReactNode;
+  navbarTitle: React.ReactNode;
 }>;
-const DashboardLayout = ({ children, agent }: DashboardLayoutProps) => {
+const DashboardLayout = ({
+  children,
+  agent,
+  navbarTitle,
+}: DashboardLayoutProps) => {
   const { data: session } = useSession();
   const { data: auth } = useAuth();
   const { Organization } = useAuthStore();
@@ -49,7 +54,7 @@ const DashboardLayout = ({ children, agent }: DashboardLayoutProps) => {
         </div>
 
         <div className={getLayoutClasses.navbar}>
-          <AppNavbar />
+          <AppNavbar navbarTitle={navbarTitle} />
         </div>
 
         <div className={getLayoutClasses.mainContent}>
