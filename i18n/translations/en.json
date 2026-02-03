@@ -660,6 +660,11 @@
           "updateSuccess": "Report updated successfully",
           "updateFailed": "Failed to update report"
         }
+      },
+      "history": {
+        "title": "Report History",
+        "description": "View generation history for this scheduled report",
+        "noHistory": "No generation history available for this report."
       }
     }
   },

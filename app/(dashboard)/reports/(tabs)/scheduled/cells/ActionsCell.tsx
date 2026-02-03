@@ -36,8 +36,10 @@ import { CellContext } from "@tanstack/react-table";
 import { useState } from "react";
 import scheduledReportsService from "@/services/scheduled-reports.service";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
+  const router = useRouter();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isDeleting, setIsDeleting] = useState(false);
@@ -71,8 +73,7 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
   };
 
   const handleViewHistory = () => {
-    // TODO: Navigate to history page or open history modal
-    console.log("View history:", report.id);
+    router.push(`/reports/scheduled/${report.id}/history`);
   };
 
   const handleGenerateNow = async () => {
