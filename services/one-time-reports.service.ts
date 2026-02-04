@@ -20,6 +20,7 @@ export default {
     limit,
     filters,
   }: FetchOneTimeReportsParams): Promise<OneTimeReportListResponse> => {
+    await new Promise((resolve) => setTimeout(resolve, 2500));
     const params: Record<string, string | number> = {
       page,
       limit,
@@ -51,12 +52,14 @@ export default {
 
   fetchById: async (id: string): Promise<OneTimeReport> => {
     const res = await api.get<OneTimeReportResponse>(
-      `/v1/reports/one-time/${id}`
+      `/v1/reports/one-time/${id}`,
     );
     return res.data.report;
   },
 
-  create: async (payload: CreateOneTimeReportPayload): Promise<OneTimeReport> => {
+  create: async (
+    payload: CreateOneTimeReportPayload,
+  ): Promise<OneTimeReport> => {
     const res = await api.post("/v1/reports/one-time", payload);
     return res.data;
   },

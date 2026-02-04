@@ -491,8 +491,14 @@
       "confirmations": {
         "deleteTitle": "Delete Report",
         "deleteDescription": "Are you sure you want to delete this scheduled report? This action cannot be undone.",
+        "activateTitle": "Activate Report",
+        "activateDescription": "Are you sure you want to activate \"{name}\"? This report will start generating according to its schedule.",
+        "deactivateTitle": "Deactivate Report",
+        "deactivateDescription": "Are you sure you want to deactivate \"{name}\"? This report will stop generating until reactivated.",
         "cancel": "Cancel",
-        "yesDelete": "Yes, Delete"
+        "yesDelete": "Yes, Delete",
+        "yesActivate": "Yes, Activate",
+        "yesDeactivate": "Yes, Deactivate"
       },
       "tooltips": {
         "toggleFilters": "Click to show/hide search filters"
@@ -629,7 +635,9 @@
               "duplicate": "This email is already added"
             },
             "emailSubject": {
-              "required": "Email subject is required"
+              "required": "Email subject is required",
+              "minLength": "Email subject must be at least 2 characters",
+              "maxLength": "Email subject must be at most 200 characters"
             },
             "report": {
               "required": "Please select a report type"
@@ -711,7 +719,7 @@
         },
         "columns": {
           "scheduledFor": "Scheduled For",
-          "completedAt": "Completed At",
+          "reportName": "Report Name",
           "status": "Status",
           "recipients": "Recipients"
         },

@@ -9,6 +9,7 @@ const createOneTimeReportSchema = (t: ReturnType<typeof useTranslations>) =>
     .object({
       name: z
         .string()
+        .trim()
         .min(2, t("form.validation.name.minLength"))
         .max(200, t("form.validation.name.maxLength")),
       report: z.string().min(1, t("form.validation.report.required")),
@@ -34,7 +35,7 @@ const createOneTimeReportSchema = (t: ReturnType<typeof useTranslations>) =>
             const num = parseInt(val, 10);
             return !isNaN(num) && num >= 1;
           },
-          { message: t("form.validation.sla.invalid") }
+          { message: t("form.validation.sla.invalid") },
         ),
       includeInternalCalls: z.boolean().optional().default(false),
     })
@@ -61,7 +62,10 @@ const createOneTimeReportSchema = (t: ReturnType<typeof useTranslations>) =>
       }
 
       // Validate queue is required for inbound queue reports
-      if (shouldShowQueue(reportType) && (!data.queue || data.queue.trim() === "")) {
+      if (
+        shouldShowQueue(reportType) &&
+        (!data.queue || data.queue.trim() === "")
+      ) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: t("form.validation.queue.required"),

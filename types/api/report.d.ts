@@ -127,6 +127,8 @@ export type ScheduledReportFilters = {
   toDate?: Date;
   frequency?: ScheduledReportFrequency;
   status?: ScheduledReportStatus;
+  sortBy?: string;
+  sortOrder?: "asc" | "desc";
 };
 
 export type ScheduledReportListResponse = {

@@ -1,7 +1,7 @@
 "use client";
 
 import { ScheduledReportFilters } from "@/types/api/report";
-import { PaginationState } from "@tanstack/react-table";
+import { PaginationState, SortingState } from "@tanstack/react-table";
 import { useState } from "react";
 import { columns } from "./columns";
 import PaginatedTable from "@/components/Table/PaginatedTable";
@@ -14,7 +14,10 @@ import PaginatedTablePagination from "@/components/Table/PaginatedTablePaginatio
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import scheduledReportsService from "@/services/scheduled-reports.service";
 
-export const defaultFilters: ScheduledReportFilters = {};
+export const defaultFilters: ScheduledReportFilters = {
+  sortBy: "createdAt",
+  sortOrder: "desc",
+};
 
 const ScheduledReportTable = () => {
   const [filters, setFilters] = useState<ScheduledReportFilters>({
@@ -25,6 +28,23 @@ const ScheduledReportTable = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const handleSortingChange = (sorting: SortingState) => {
+    if (sorting.length > 0) {
+      const { id, desc } = sorting[0];
+      // Only allow sorting by createdAt, name, or nextGenerationDate
+      if (id === "createdAt" || id === "name" || id === "nextGenerationDate") {
+        // Map column accessor to API sort key
+        const sortBy = id === "nextGenerationDate" ? "nextGenerationAt" : id;
+        setFilters((prev) => ({
+          ...prev,
+          sortBy,
+          sortOrder: desc ? "desc" : "asc",
+        }));
+        setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+      }
+    }
+  };
 
   const { data: response, isLoading } = useLocalizedQuery({
     queryKey: ["scheduled-reports", pagination.pageIndex, pagination.pageSize, filters],
@@ -54,6 +74,7 @@ const ScheduledReportTable = () => {
         }}
         paginationState={pagination}
         onPaginationChange={setPagination}
+        onSortingChange={handleSortingChange}
       >
         <ScheduledReportHead filters={filters} setFilters={setFilters} />
         <PaginatedTableContent>

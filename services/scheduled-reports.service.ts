@@ -47,6 +47,14 @@ export default {
       params.status = filters.status;
     }
 
+    if (filters?.sortBy) {
+      params.sortBy = filters.sortBy;
+    }
+
+    if (filters?.sortOrder) {
+      params.sortOrder = filters.sortOrder;
+    }
+
     const res = await api.get("/v1/reports/scheduled", { params });
     return res.data;
   },

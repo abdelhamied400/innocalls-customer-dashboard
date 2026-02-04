@@ -491,8 +491,14 @@
       "confirmations": {
         "deleteTitle": "حذف التقرير",
         "deleteDescription": "هل أنت متأكد من حذف هذا التقرير المجدول؟ لا يمكن التراجع عن هذا الإجراء.",
+        "activateTitle": "تفعيل التقرير",
+        "activateDescription": "هل أنت متأكد من تفعيل \"{name}\"؟ سيبدأ هذا التقرير في الإنشاء وفقاً لجدوله الزمني.",
+        "deactivateTitle": "إلغاء تفعيل التقرير",
+        "deactivateDescription": "هل أنت متأكد من إلغاء تفعيل \"{name}\"؟ سيتوقف هذا التقرير عن الإنشاء حتى يتم إعادة تفعيله.",
         "cancel": "إلغاء",
-        "yesDelete": "نعم، حذف"
+        "yesDelete": "نعم، حذف",
+        "yesActivate": "نعم، تفعيل",
+        "yesDeactivate": "نعم، إلغاء التفعيل"
       },
       "tooltips": {
         "toggleFilters": "انقر لإظهار/إخفاء فلاتر البحث"
@@ -629,7 +635,9 @@
               "duplicate": "هذا البريد الإلكتروني مضاف مسبقاً"
             },
             "emailSubject": {
-              "required": "موضوع البريد مطلوب"
+              "required": "موضوع البريد مطلوب",
+              "minLength": "يجب أن يكون موضوع البريد حرفين على الأقل",
+              "maxLength": "يجب ألا يتجاوز موضوع البريد 200 حرف"
             },
             "report": {
               "required": "يرجى اختيار نوع التقرير"
@@ -711,7 +719,7 @@
         },
         "columns": {
           "scheduledFor": "مجدول في",
-          "completedAt": "اكتمل في",
+          "reportName": "اسم التقرير",
           "status": "الحالة",
           "recipients": "المستلمون"
         },

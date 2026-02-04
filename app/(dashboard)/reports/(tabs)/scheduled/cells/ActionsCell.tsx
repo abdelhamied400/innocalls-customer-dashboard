@@ -43,6 +43,7 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isToggleDialogOpen, setIsToggleDialogOpen] = useState(false);
   const t = useTranslations("reports.scheduled");
 
   const report = row.original;
@@ -125,6 +126,7 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
       });
     } finally {
       setIsToggling(false);
+      setIsToggleDialogOpen(false);
     }
   };
 
@@ -194,7 +196,10 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
           </DropdownMenuItem>
           <DropdownMenuItem
             className="p-3 rounded-none text-base font-semibold flex items-center gap-2"
-            onClick={handleToggleStatus}
+            onClick={(e) => {
+              e.preventDefault();
+              setIsToggleDialogOpen(true);
+            }}
             disabled={isToggling}
           >
             {isActive ? (
@@ -211,6 +216,33 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {/* Activate/Deactivate Confirmation Dialog */}
+      <AlertDialog open={isToggleDialogOpen} onOpenChange={setIsToggleDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {isActive
+                ? t("confirmations.deactivateTitle")
+                : t("confirmations.activateTitle")}
+            </AlertDialogTitle>
+            <AlertDialogX />
+            <AlertDialogDescription>
+              {isActive
+                ? t("confirmations.deactivateDescription", { name: report.name })
+                : t("confirmations.activateDescription", { name: report.name })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("confirmations.cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleToggleStatus} disabled={isToggling}>
+              {isActive
+                ? t("confirmations.yesDeactivate")
+                : t("confirmations.yesActivate")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

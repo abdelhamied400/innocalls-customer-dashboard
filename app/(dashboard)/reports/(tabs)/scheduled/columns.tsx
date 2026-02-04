@@ -16,7 +16,9 @@ export const columns = (): ColumnDef<ScheduledReport>[] => {
   return [
     {
       accessorKey: "createdAt",
-      header: t("createdAt"),
+      header: ({ column }) => (
+        <SortingHead column={column}>{t("createdAt")}</SortingHead>
+      ),
     },
     {
       accessorKey: "name",
@@ -26,9 +28,7 @@ export const columns = (): ColumnDef<ScheduledReport>[] => {
     },
     {
       accessorKey: "frequency",
-      header: ({ column }) => (
-        <SortingHead column={column}>{t("scheduled")}</SortingHead>
-      ),
+      header: t("scheduled"),
       cell: ScheduledCell,
     },
     {
@@ -37,8 +37,10 @@ export const columns = (): ColumnDef<ScheduledReport>[] => {
       cell: StatusCell,
     },
     {
-      accessorKey: "nextGenerationAtLocal",
-      header: t("nextGeneration"),
+      accessorKey: "nextGenerationDate",
+      header: ({ column }) => (
+        <SortingHead column={column}>{t("nextGeneration")}</SortingHead>
+      ),
       cell: NextGenerationCell,
     },
     {
