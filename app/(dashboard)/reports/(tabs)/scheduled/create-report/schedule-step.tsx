@@ -194,42 +194,76 @@ const ScheduleStep = ({ form, onSubmit, isSubmitting }: ScheduleStepProps) => {
           </div>
         )}
 
-        {/* Monthly: Day number select */}
+        {/* Monthly: Day and Time side by side */}
         {frequency === "monthly" && (
-          <FormField
-            control={control}
-            name="dayOfMonth"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Select
-                    classNames={{
-                      valueContainer: () => "font-semibold",
-                      menuList: () => "font-semibold",
-                    }}
-                    label={t("form.fields.monthDay.label")}
-                    options={MONTH_DAY_OPTIONS}
-                    value={
-                      field.value
-                        ? MONTH_DAY_OPTIONS.find(
-                            (opt) => opt.value === field.value,
-                          )
-                        : null
-                    }
-                    onChange={(option) =>
-                      field.onChange(option?.value?.toString() || "")
-                    }
-                    placeholder={t("form.fields.monthDay.placeholder")}
-                    error={errors.dayOfMonth?.message}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <FormField
+                control={control}
+                name="dayOfMonth"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Select
+                        classNames={{
+                          valueContainer: () => "font-semibold",
+                          menuList: () => "font-semibold",
+                        }}
+                        label={t("form.fields.monthDay.label")}
+                        options={MONTH_DAY_OPTIONS}
+                        value={
+                          field.value
+                            ? MONTH_DAY_OPTIONS.find(
+                                (opt) => opt.value === field.value,
+                              )
+                            : null
+                        }
+                        onChange={(option) =>
+                          field.onChange(option?.value?.toString() || "")
+                        }
+                        placeholder={t("form.fields.monthDay.placeholder")}
+                        error={errors.dayOfMonth?.message}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div className="flex-1">
+              <FormField
+                control={control}
+                name="time"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Select
+                        classNames={{
+                          valueContainer: () => "font-semibold",
+                          menuList: () => "font-semibold",
+                        }}
+                        label={t("form.fields.atTime.label")}
+                        options={TIME_OPTIONS}
+                        value={
+                          field.value
+                            ? TIME_OPTIONS.find((opt) => opt.value === field.value)
+                            : null
+                        }
+                        onChange={(option) =>
+                          field.onChange(option?.value?.toString() || "")
+                        }
+                        placeholder={t("form.fields.atTime.placeholder")}
+                        error={errors.time?.message}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
         )}
 
-        {/* At Time */}
-        {frequency && (
+        {/* At Time - for daily and weekly */}
+        {frequency && frequency !== "monthly" && (
           <FormField
             control={control}
             name="time"

@@ -243,6 +243,11 @@
           "sheetTitle": "مستلمو تقرير الوكيل"
         }
       },
+      "status": {
+        "completed": "مكتمل",
+        "failed": "فشل",
+        "pending": "قيد الانتظار"
+      },
       "filters": {
         "creationDate": {
           "triggerLabel": "تاريخ الإنشاء",

@@ -15,7 +15,11 @@ import Stepper, {
   StepperSteps,
 } from "@/components/ui/stepper";
 import { useTranslations } from "@/providers/TranslationProvider";
-import { CalendarToday, HourglassEmpty } from "@mui/icons-material";
+import {
+  ArrowBackIos,
+  CalendarToday,
+  HourglassEmpty,
+} from "@mui/icons-material";
 import { ChevronLeftIcon, Loader2, X } from "lucide-react";
 import Link from "next/link";
 import { useRef, useState } from "react";
@@ -198,7 +202,7 @@ const CreateReportForm = () => {
     >
       <StepperHeader>
         <StepperPrevious>
-          <ChevronLeftIcon />
+          <ArrowBackIos className="rtl:rotate-180" />
         </StepperPrevious>
 
         <div className="flex flex-1 justify-center gap-2">

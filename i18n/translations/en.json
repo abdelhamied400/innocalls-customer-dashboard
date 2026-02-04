@@ -243,6 +243,11 @@
           "sheetTitle": "Agent report recipients"
         }
       },
+      "status": {
+        "completed": "Completed",
+        "failed": "Failed",
+        "pending": "Pending"
+      },
       "filters": {
         "creationDate": {
           "triggerLabel": "Creation Date",

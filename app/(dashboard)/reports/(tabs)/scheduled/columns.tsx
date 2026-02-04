@@ -8,6 +8,7 @@ import RecipientsCell from "./cells/RecipientsCell";
 import ScheduledCell from "./cells/ScheduledCell";
 import StatusCell from "./cells/StatusCell";
 import NextGenerationCell from "./cells/NextGenerationCell";
+import SortingHead from "@/components/SortingHead";
 
 export const columns = (): ColumnDef<ScheduledReport>[] => {
   const t = useTranslations("reports.scheduled.columns");
@@ -19,11 +20,15 @@ export const columns = (): ColumnDef<ScheduledReport>[] => {
     },
     {
       accessorKey: "name",
-      header: t("name"),
+      header: ({ column }) => (
+        <SortingHead column={column}>{t("name")}</SortingHead>
+      ),
     },
     {
       accessorKey: "frequency",
-      header: t("scheduled"),
+      header: ({ column }) => (
+        <SortingHead column={column}>{t("scheduled")}</SortingHead>
+      ),
       cell: ScheduledCell,
     },
     {

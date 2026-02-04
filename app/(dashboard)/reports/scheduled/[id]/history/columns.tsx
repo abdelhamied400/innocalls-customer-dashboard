@@ -17,11 +17,11 @@ export const columns = (): ColumnDef<ScheduledReportHistoryItem>[] => {
       header: t("scheduledFor"),
       cell: ScheduledForCell,
     },
-    {
-      accessorKey: "completedAt",
-      header: t("completedAt"),
-      cell: CompletedAtCell,
-    },
+    // {
+    //   accessorKey: "completedAt",
+    //   header: t("completedAt"),
+    //   cell: CompletedAtCell,
+    // },
     {
       accessorKey: "status",
       header: t("status"),

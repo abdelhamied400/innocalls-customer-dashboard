@@ -24,8 +24,10 @@ import {
   shouldShowSla,
 } from "@/constants/reports";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
-import { ArrowBackIos, CheckCircleOutline } from "@mui/icons-material";
-import { ChevronLeftIcon, X } from "lucide-react";
+import { ArrowBackIos } from "@mui/icons-material";
+import { X } from "lucide-react";
+import Image from "next/image";
+import { TIME_OPTIONS, MONTH_DAY_OPTIONS } from "@/constants/scheduled-reports";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
@@ -179,11 +181,6 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
     },
   ];
 
-  const monthDayOptions: Option[] = Array.from({ length: 31 }, (_, i) => ({
-    label: String(i + 1),
-    value: String(i + 1),
-  }));
-
   const handleReportChange = (option: Option | null) => {
     setSelectedReport(option);
     // Reset conditional fields when report type changes
@@ -280,7 +277,7 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
 
       // Set day of month for monthly frequency
       if (report.frequency === "monthly" && report.dayOfMonth) {
-        const monthDayOption = monthDayOptions.find(
+        const monthDayOption = MONTH_DAY_OPTIONS.find(
           (o) => o.value === String(report.dayOfMonth),
         );
         if (monthDayOption) setMonthDay(monthDayOption);
@@ -506,18 +503,19 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
       <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[600px] max-h-[calc(100vh-200px)] overflow-auto">
         {isSuccess ? (
           <div className="p-8 rounded-xl bg-white flex flex-col items-center justify-center gap-4 text-center">
-            <div className="w-48 h-48 flex justify-center items-center border rounded-full bg-success-100">
-              <CheckCircleOutline className="h-16 w-16 text-success-500" />
-            </div>
+            <Image
+              src="/assets/icons/report-generated.svg"
+              alt="Report Updated"
+              width={80}
+              height={80}
+            />
             <h2 className="text-xl font-semibold">{t("success.title")}</h2>
             <p className="text-muted-foreground">{t("success.subtitle")}</p>
             <div className="flex flex-col gap-2 w-full mt-4">
-              <Button asChild className="w-full">
-                <Link href={backUrl}>
-                  {t("success.backToReports")}
-                </Link>
+              <Button asChild className="w-full" size="lg">
+                <Link href={backUrl}>{t("success.backToReports")}</Link>
               </Button>
-              <Button asChild variant="outline" className="w-full">
+              <Button asChild variant="link" className="w-full" size="lg">
                 <Link href="/">{t("success.backToDashboard")}</Link>
               </Button>
             </div>
@@ -759,36 +757,53 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
                   </div>
                 )}
 
-                {/* Monthly: Day number select */}
+                {/* Monthly: Day and Time side by side */}
                 {frequency?.value === "monthly" && (
-                  <Select
-                    label={tCreate("form.fields.monthDay.label")}
-                    options={monthDayOptions}
-                    value={monthDay}
-                    onChange={(option) => setMonthDay(option)}
-                    placeholder={tCreate("form.fields.monthDay.placeholder")}
-                  />
+                  <div className="flex gap-4">
+                    <div className="flex-1">
+                      <Select
+                        label={tCreate("form.fields.monthDay.label")}
+                        options={MONTH_DAY_OPTIONS}
+                        value={monthDay}
+                        onChange={(option) => setMonthDay(option)}
+                        placeholder={tCreate(
+                          "form.fields.monthDay.placeholder",
+                        )}
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <Select
+                        label={tCreate("form.fields.atTime.label")}
+                        options={TIME_OPTIONS}
+                        value={
+                          TIME_OPTIONS.find((opt) => opt.value === atTime) ||
+                          null
+                        }
+                        onChange={(option) =>
+                          setAtTime(option?.value || "10:00")
+                        }
+                        placeholder={tCreate("form.fields.atTime.placeholder")}
+                      />
+                    </div>
+                  </div>
                 )}
 
-                {/* At Time */}
-                {frequency && (
-                  <Field
+                {/* At Time - for daily and weekly */}
+                {frequency && frequency.value !== "monthly" && (
+                  <Select
                     label={tCreate("form.fields.atTime.label")}
-                    htmlFor="editAtTime"
-                  >
-                    <Input
-                      id="editAtTime"
-                      variant="field"
-                      type="time"
-                      value={atTime}
-                      onChange={(e) => setAtTime(e.target.value)}
-                    />
-                  </Field>
+                    options={TIME_OPTIONS}
+                    value={
+                      TIME_OPTIONS.find((opt) => opt.value === atTime) || null
+                    }
+                    onChange={(option) => setAtTime(option?.value || "10:00")}
+                    placeholder={tCreate("form.fields.atTime.placeholder")}
+                  />
                 )}
 
                 {/* Next Generation Card */}
                 {frequency && (
-                  <div className="p-4 rounded-lg border bg-gray-50 mt-4">
+                  <div className="p-4 rounded-lg border bg-info-200 mt-4">
                     <h4 className="font-semibold text-sm text-muted-foreground mb-2">
                       {tCreate("form.nextGeneration.title")}
                     </h4>

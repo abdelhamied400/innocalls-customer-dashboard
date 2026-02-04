@@ -130,8 +130,6 @@ const VirtualizedSelect = <
               );
             },
           }}
-          menuPortalTarget={typeof document !== "undefined" ? document.body : null}
-          menuPosition="fixed"
           styles={{
             control: (base) => ({
               ...base,
@@ -155,7 +153,7 @@ const VirtualizedSelect = <
               ...base,
               display: "none", // hide react-select's internal placeholder
             }),
-            menuPortal: (base) => ({
+            menu: (base) => ({
               ...base,
               zIndex: 9999,
             }),

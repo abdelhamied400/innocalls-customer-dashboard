@@ -34,7 +34,7 @@ export const columns = (): ColumnDef<OneTimeReport>[] => {
             : status === "failed"
               ? "destructive"
               : "warning";
-        return <Badge variant={variant}>{status}</Badge>;
+        return <Badge variant={variant}>{t(`status.${status}`)}</Badge>;
       },
     },
     {
