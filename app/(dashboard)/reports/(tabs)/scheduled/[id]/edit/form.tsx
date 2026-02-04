@@ -23,13 +23,22 @@ import {
   shouldShowQueue,
   shouldShowSla,
 } from "@/constants/reports";
-import { useTranslations } from "@/providers/TranslationProvider";
-import { CheckCircleOutline } from "@mui/icons-material";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import { ArrowBackIos, CheckCircleOutline } from "@mui/icons-material";
 import { ChevronLeftIcon, X } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
-import { format, addDays, setHours, setMinutes, setDate, parse } from "date-fns";
+import {
+  format,
+  addDays,
+  setHours,
+  setMinutes,
+  setDate,
+  parse,
+  isValid,
+} from "date-fns";
+import { arEG, enUS } from "date-fns/locale";
 import scheduledReportsService from "@/services/scheduled-reports.service";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
@@ -56,9 +65,13 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
   const [isInitialized, setIsInitialized] = useState(false);
   const t = useTranslations("reports.scheduled.editReport");
   const tCreate = useTranslations("reports.scheduled.createReport");
+  const locale = useLocale();
+  const dateLocale = locale === "ar" ? arEG : enUS;
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const backUrl = searchParams.get("from") || "/reports/scheduled";
   const { extensions: vocabExtensions, ergs } = useVocab();
 
   // Fetch report data
@@ -105,15 +118,27 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
   // Date range start options: today, previous_day, previous_week, previous_month
   const dateRangeStartOptions: Option[] = [
     { label: tCreate("form.fields.dateRange.options.today"), value: "today" },
-    { label: tCreate("form.fields.dateRange.options.previousDay"), value: "previous_day" },
-    { label: tCreate("form.fields.dateRange.options.previousWeek"), value: "previous_week" },
-    { label: tCreate("form.fields.dateRange.options.previousMonth"), value: "previous_month" },
+    {
+      label: tCreate("form.fields.dateRange.options.previousDay"),
+      value: "previous_day",
+    },
+    {
+      label: tCreate("form.fields.dateRange.options.previousWeek"),
+      value: "previous_week",
+    },
+    {
+      label: tCreate("form.fields.dateRange.options.previousMonth"),
+      value: "previous_month",
+    },
   ];
 
   // Date range end options: today, previous_day
   const dateRangeEndOptions: Option[] = [
     { label: tCreate("form.fields.dateRange.options.today"), value: "today" },
-    { label: tCreate("form.fields.dateRange.options.previousDay"), value: "previous_day" },
+    {
+      label: tCreate("form.fields.dateRange.options.previousDay"),
+      value: "previous_day",
+    },
   ];
 
   // Queue options from vocab
@@ -123,7 +148,7 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
         label: erg.name,
         value: erg.name,
       })) || [],
-    [ergs]
+    [ergs],
   );
 
   // Extension options from vocab
@@ -133,7 +158,7 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
         label: `${ext.name} (${ext.ext})`,
         value: ext.ext,
       })) || [],
-    [vocabExtensions]
+    [vocabExtensions],
   );
 
   const timezoneOptions = useMemo(
@@ -142,13 +167,16 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
         label: tz.name,
         value: tz.id,
       })),
-    []
+    [],
   );
 
   const frequencyOptions: Option[] = [
     { label: tCreate("form.fields.frequency.options.daily"), value: "daily" },
     { label: tCreate("form.fields.frequency.options.weekly"), value: "weekly" },
-    { label: tCreate("form.fields.frequency.options.monthly"), value: "monthly" },
+    {
+      label: tCreate("form.fields.frequency.options.monthly"),
+      value: "monthly",
+    },
   ];
 
   const monthDayOptions: Option[] = Array.from({ length: 31 }, (_, i) => ({
@@ -171,7 +199,9 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
       setReportName(report.name);
       setRecipients(report.recipients);
       setEmailSubject(report.emailSubject);
-      setIncludeInternalCalls(report.reportConfig?.includeInternalCalls ?? false);
+      setIncludeInternalCalls(
+        report.reportConfig?.includeInternalCalls ?? false,
+      );
 
       // Set report type
       const reportOption = reportOptions.find((o) => o.value === report.report);
@@ -179,25 +209,28 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
 
       // Set date range
       const dateRangeStartOption = dateRangeStartOptions.find(
-        (o) => o.value === report.reportConfig?.dateRangeStart
+        (o) => o.value === report.reportConfig?.dateRangeStart,
       );
       if (dateRangeStartOption) setDateRangeStart(dateRangeStartOption);
 
       const dateRangeEndOption = dateRangeEndOptions.find(
-        (o) => o.value === report.reportConfig?.dateRangeEnd
+        (o) => o.value === report.reportConfig?.dateRangeEnd,
       );
       if (dateRangeEndOption) setDateRangeEnd(dateRangeEndOption);
 
       // Set queue
       if (report.reportConfig?.queue) {
         const queueOption = queueOptions.find(
-          (o) => o.value === report.reportConfig?.queue
+          (o) => o.value === report.reportConfig?.queue,
         );
         if (queueOption) setQueue(queueOption);
       }
 
       // Set extensions (convert array to comma-separated string)
-      if (report.reportConfig?.extensions && report.reportConfig.extensions.length > 0) {
+      if (
+        report.reportConfig?.extensions &&
+        report.reportConfig.extensions.length > 0
+      ) {
         setExtensions(report.reportConfig.extensions.join(","));
       }
 
@@ -208,13 +241,13 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
 
       // Set timezone
       const timezoneOption = timezoneOptions.find(
-        (o) => o.value === report.timezone
+        (o) => o.value === report.timezone,
       );
       if (timezoneOption) setTimezone(timezoneOption);
 
       // Set frequency
       const frequencyOption = frequencyOptions.find(
-        (o) => o.value === report.frequency
+        (o) => o.value === report.frequency,
       );
       if (frequencyOption) setFrequency(frequencyOption);
 
@@ -248,7 +281,7 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
       // Set day of month for monthly frequency
       if (report.frequency === "monthly" && report.dayOfMonth) {
         const monthDayOption = monthDayOptions.find(
-          (o) => o.value === String(report.dayOfMonth)
+          (o) => o.value === String(report.dayOfMonth),
         );
         if (monthDayOption) setMonthDay(monthDayOption);
       }
@@ -275,7 +308,7 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
 
   const handleDayToggle = (day: WeekDay) => {
     setSelectedDays((prev) =>
-      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day]
+      prev.includes(day) ? prev.filter((d) => d !== day) : [...prev, day],
     );
   };
 
@@ -314,9 +347,12 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
       }
       if (daysUntilNext === 7)
         daysUntilNext = Math.min(
-          ...selectedDayNumbers.map((d) => (d - currentDay + 7) % 7 || 7)
+          ...selectedDayNumbers.map((d) => (d - currentDay + 7) % 7 || 7),
         );
-      nextDate = addDays(setHours(setMinutes(now, minutes), hours), daysUntilNext);
+      nextDate = addDays(
+        setHours(setMinutes(now, minutes), hours),
+        daysUntilNext,
+      );
     } else if (frequency?.value === "monthly" && monthDay) {
       const targetDay = parseInt(monthDay.value as string);
       nextDate = setDate(setHours(setMinutes(now, minutes), hours), targetDay);
@@ -338,7 +374,13 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!selectedReport || !timezone || !frequency || !dateRangeStart || !dateRangeEnd) {
+    if (
+      !selectedReport ||
+      !timezone ||
+      !frequency ||
+      !dateRangeStart ||
+      !dateRangeEnd
+    ) {
       toast({
         title: tCreate("messages.validationError"),
         variant: "destructive",
@@ -407,7 +449,9 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
       });
 
       queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
-      queryClient.invalidateQueries({ queryKey: ["scheduled-report", reportId] });
+      queryClient.invalidateQueries({
+        queryKey: ["scheduled-report", reportId],
+      });
       setIsSuccess(true);
     } catch (error) {
       toast({
@@ -438,7 +482,7 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
     >
       <StepperHeader>
         <StepperPrevious>
-          <ChevronLeftIcon />
+          <ArrowBackIos className="rtl:rotate-180" />
         </StepperPrevious>
 
         <div className="flex flex-1 justify-center gap-2">
@@ -452,7 +496,7 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
         <Button
           size="icon"
           variant="unstyled"
-          onClick={() => router.push("/reports/scheduled")}
+          onClick={() => router.push(backUrl)}
         >
           <X className="h-4 w-4" />
           <span className="sr-only">{tCreate("actions.close")}</span>
@@ -469,7 +513,9 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
             <p className="text-muted-foreground">{t("success.subtitle")}</p>
             <div className="flex flex-col gap-2 w-full mt-4">
               <Button asChild className="w-full">
-                <Link href="/reports/scheduled">{t("success.backToReports")}</Link>
+                <Link href={backUrl}>
+                  {t("success.backToReports")}
+                </Link>
               </Button>
               <Button asChild variant="outline" className="w-full">
                 <Link href="/">{t("success.backToDashboard")}</Link>
@@ -539,7 +585,9 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
                   <Input
                     id="emailSubject"
                     variant="field"
-                    placeholder={tCreate("form.fields.emailSubject.placeholder")}
+                    placeholder={tCreate(
+                      "form.fields.emailSubject.placeholder",
+                    )}
                     value={emailSubject}
                     onChange={(e) => setEmailSubject(e.target.value)}
                   />
@@ -560,7 +608,9 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
                   options={dateRangeStartOptions}
                   value={dateRangeStart}
                   onChange={(option) => setDateRangeStart(option)}
-                  placeholder={tCreate("form.fields.dateRangeStart.placeholder")}
+                  placeholder={tCreate(
+                    "form.fields.dateRangeStart.placeholder",
+                  )}
                 />
 
                 {/* Date Range End */}
@@ -584,32 +634,38 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
                 )}
 
                 {/* Extensions Select */}
-                {showExtensions && (() => {
-                  // Parse comma-separated string to array for multi-select
-                  const selectedValues = extensions
-                    ? extensions.split(",").map((v) => v.trim()).filter(Boolean)
-                    : [];
-                  const selectedOptions = extensionOptions.filter((opt) =>
-                    selectedValues.includes(String(opt.value))
-                  );
+                {showExtensions &&
+                  (() => {
+                    // Parse comma-separated string to array for multi-select
+                    const selectedValues = extensions
+                      ? extensions
+                          .split(",")
+                          .map((v) => v.trim())
+                          .filter(Boolean)
+                      : [];
+                    const selectedOptions = extensionOptions.filter((opt) =>
+                      selectedValues.includes(String(opt.value)),
+                    );
 
-                  return (
-                    <Select
-                      label={tCreate("form.fields.extensions.label")}
-                      options={extensionOptions}
-                      value={selectedOptions}
-                      onChange={(options) => {
-                        // Convert array of options to comma-separated string
-                        const values = Array.isArray(options)
-                          ? options.map((opt: any) => opt.value).join(",")
-                          : "";
-                        setExtensions(values);
-                      }}
-                      placeholder={tCreate("form.fields.extensions.placeholder")}
-                      isMulti
-                    />
-                  );
-                })()}
+                    return (
+                      <Select
+                        label={tCreate("form.fields.extensions.label")}
+                        options={extensionOptions}
+                        value={selectedOptions}
+                        onChange={(options) => {
+                          // Convert array of options to comma-separated string
+                          const values = Array.isArray(options)
+                            ? options.map((opt: any) => opt.value).join(",")
+                            : "";
+                          setExtensions(values);
+                        }}
+                        placeholder={tCreate(
+                          "form.fields.extensions.placeholder",
+                        )}
+                        isMulti
+                      />
+                    );
+                  })()}
 
                 {/* SLA Input */}
                 {showSla && (
@@ -640,7 +696,10 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
                         setIncludeInternalCalls(checked === true)
                       }
                     />
-                    <Label htmlFor="editIncludeInternalCalls" className="cursor-pointer">
+                    <Label
+                      htmlFor="editIncludeInternalCalls"
+                      className="cursor-pointer"
+                    >
                       {tCreate("form.fields.includeInternalCalls.label")}
                     </Label>
                   </div>
@@ -688,7 +747,10 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
                             checked={selectedDays.includes(day)}
                             onCheckedChange={() => handleDayToggle(day)}
                           />
-                          <Label htmlFor={`edit-${day}`} className="cursor-pointer">
+                          <Label
+                            htmlFor={`edit-${day}`}
+                            className="cursor-pointer"
+                          >
                             {tCreate(`form.fields.days.options.${day}`)}
                           </Label>
                         </div>
@@ -731,9 +793,19 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
                       {tCreate("form.nextGeneration.title")}
                     </h4>
                     <p className="text-lg font-medium">
-                      {format(nextGeneration, "d MMM yyyy")}{" "}
-                      {tCreate("form.nextGeneration.at")}{" "}
-                      {format(nextGeneration, "h:mm a")}
+                      {isValid(nextGeneration) ? (
+                        <>
+                          {format(nextGeneration, "d MMM yyyy", {
+                            locale: dateLocale,
+                          })}{" "}
+                          {tCreate("form.nextGeneration.at")}{" "}
+                          {format(nextGeneration, "h:mm a", {
+                            locale: dateLocale,
+                          })}
+                        </>
+                      ) : (
+                        "-"
+                      )}
                     </p>
                   </div>
                 )}

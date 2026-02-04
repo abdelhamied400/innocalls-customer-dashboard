@@ -653,6 +653,7 @@
         "success": {
           "title": "Report updated successfully!",
           "subtitle": "Your changes have been saved.",
+          "backToHistory": "Back to History",
           "backToReports": "Back to Reports Table",
           "backToDashboard": "Back to Dashboard"
         },
@@ -664,7 +665,28 @@
       "history": {
         "title": "Report History",
         "description": "View generation history for this scheduled report",
-        "noHistory": "No generation history available for this report."
+        "noHistory": "No generation history available for this report.",
+        "scheduleInfo": {
+          "title": "Schedule Info",
+          "timezone": "Time Zone",
+          "generatorDays": "Generator Days",
+          "generatorTime": "Generator Time",
+          "dayOfMonth": "{day} of each month"
+        },
+        "columns": {
+          "scheduledFor": "Scheduled For",
+          "completedAt": "Completed At",
+          "status": "Status",
+          "recipients": "Recipients"
+        },
+        "cells": {
+          "status": {
+            "completed": "Completed",
+            "failed": "Failed",
+            "pending": "Pending",
+            "processing": "Processing"
+          }
+        }
       }
     }
   },

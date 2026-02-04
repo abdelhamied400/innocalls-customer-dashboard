@@ -114,7 +114,7 @@ export type ScheduledReport = {
   time: string;
   daysOfWeek?: number[];
   dayOfMonth?: number;
-  nextGenerationAt: string;
+  nextGenerationDate: string;
   nextGenerationAtLocal: string;
   lastGeneratedAtLocal: string | null;
   status: ScheduledReportStatus;
@@ -165,3 +165,30 @@ export type CreateScheduledReportPayload = {
 
 export type UpdateScheduledReportPayload =
   Partial<CreateScheduledReportPayload>;
+
+export type ScheduledReportHistoryStatus = "completed" | "failed" | "pending" | "processing";
+
+export type ScheduledReportHistoryItem = {
+  id: string;
+  reportName?: string;
+  scheduledFor: {
+    date: string;
+    time: string;
+  };
+  completedAt: {
+    date: string;
+    time: string;
+  };
+  status: ScheduledReportHistoryStatus;
+  recipients: string[];
+};
+
+export type ScheduledReportHistoryResponse = {
+  data: ScheduledReportHistoryItem[];
+  pagination: {
+    page: number;
+    perPage: number;
+    total: number;
+    totalPages: number;
+  };
+};

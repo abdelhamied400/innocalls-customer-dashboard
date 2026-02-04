@@ -7,16 +7,19 @@ import Select from "@/components/Select";
 import VirtualizedSelect from "@/components/VirtualizedSelect";
 import { StepperStep } from "@/components/ui/stepper";
 import { timezones } from "@/constants/timezones";
-import { useTranslations } from "@/providers/TranslationProvider";
+import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import { Loader2 } from "lucide-react";
 import { useMemo } from "react";
-import { format, addDays, setHours, setMinutes, setDate } from "date-fns";
+import { format, addDays, setHours, setMinutes, setDate, isValid } from "date-fns";
+import { arEG, enUS } from "date-fns/locale";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { ScheduleStepProps, WeekDay } from "@/types/scheduled-report-form";
 import { WEEK_DAYS, DAY_MAP, TIME_OPTIONS, MONTH_DAY_OPTIONS } from "@/constants/scheduled-reports";
 
 const ScheduleStep = ({ form, onSubmit, isSubmitting }: ScheduleStepProps) => {
   const t = useTranslations("reports.scheduled.createReport");
+  const locale = useLocale();
+  const dateLocale = locale === "ar" ? arEG : enUS;
 
   const {
     control,
@@ -264,8 +267,15 @@ const ScheduleStep = ({ form, onSubmit, isSubmitting }: ScheduleStepProps) => {
               {t("form.nextGeneration.title")}
             </h3>
             <p className="font-medium">
-              {format(nextGeneration, "d MMM yyyy")}{" "}
-              {t("form.nextGeneration.at")} {format(nextGeneration, "h:mm a")}
+              {isValid(nextGeneration) ? (
+                <>
+                  {format(nextGeneration, "d MMM yyyy", { locale: dateLocale })}{" "}
+                  {t("form.nextGeneration.at")}{" "}
+                  {format(nextGeneration, "h:mm a", { locale: dateLocale })}
+                </>
+              ) : (
+                "-"
+              )}
             </p>
           </div>
         )}

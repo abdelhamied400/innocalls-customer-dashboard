@@ -653,6 +653,7 @@
         "success": {
           "title": "تم تحديث التقرير بنجاح!",
           "subtitle": "تم حفظ التغييرات.",
+          "backToHistory": "العودة إلى السجل",
           "backToReports": "العودة إلى جدول التقارير",
           "backToDashboard": "العودة إلى لوحة التحكم"
         },
@@ -664,7 +665,28 @@
       "history": {
         "title": "سجل التقرير",
         "description": "عرض سجل إنشاء هذا التقرير المجدول",
-        "noHistory": "لا يوجد سجل إنشاء متاح لهذا التقرير."
+        "noHistory": "لا يوجد سجل إنشاء متاح لهذا التقرير.",
+        "scheduleInfo": {
+          "title": "معلومات الجدولة",
+          "timezone": "المنطقة الزمنية",
+          "generatorDays": "أيام التوليد",
+          "generatorTime": "وقت التوليد",
+          "dayOfMonth": "{day} من كل شهر"
+        },
+        "columns": {
+          "scheduledFor": "مجدول في",
+          "completedAt": "اكتمل في",
+          "status": "الحالة",
+          "recipients": "المستلمون"
+        },
+        "cells": {
+          "status": {
+            "completed": "مكتمل",
+            "failed": "فشل",
+            "pending": "قيد الانتظار",
+            "processing": "قيد المعالجة"
+          }
+        }
       }
     }
   },

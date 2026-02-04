@@ -8,13 +8,14 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useTranslations } from "@/providers/TranslationProvider";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { PropsWithChildren, useState, useEffect } from "react";
 
 type EditReportLayoutProps = PropsWithChildren<object>;
 
 const EditReportLayout = ({ children }: EditReportLayoutProps) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const pathname = usePathname();
   const t = useTranslations("reports.scheduled.editReport");
   const isActive = pathname.includes("/edit");
@@ -30,6 +31,12 @@ const EditReportLayout = ({ children }: EditReportLayoutProps) => {
     if (open) return;
 
     setIsOpen(false);
+
+    if (searchParams.get("from")) {
+      router.replace(searchParams.get("from")!);
+      return;
+    }
+
     router.replace("/reports/scheduled");
   };
 

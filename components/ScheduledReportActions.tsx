@@ -1,5 +1,14 @@
-"use client";
-
+import scheduledReportsService from "@/services/scheduled-reports.service";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Autorenew,
+  Block,
+  DeleteOutline,
+  Edit,
+  MoreVert,
+  PlayCircle,
+} from "@mui/icons-material";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,46 +21,33 @@ import {
   AlertDialogTrigger,
   AlertDialogX,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useToast } from "@/hooks/use-toast";
-import { useTranslations } from "@/providers/TranslationProvider";
-import { ScheduledReport } from "@/types/api/report";
-import {
-  DeleteOutline,
-  MoreVert,
-  Edit,
-  Visibility,
-  PlayCircle,
-  Block,
-  Autorenew,
-} from "@mui/icons-material";
 import { useQueryClient } from "@tanstack/react-query";
-import { CellContext } from "@tanstack/react-table";
-import { useState } from "react";
-import scheduledReportsService from "@/services/scheduled-reports.service";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
+import { ScheduledReport } from "@/types/api/report";
+import { useTranslations } from "@/providers/TranslationProvider";
 
-const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
-  const router = useRouter();
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-  const [isDeleting, setIsDeleting] = useState(false);
-  const t = useTranslations("reports.scheduled");
-
-  const report = row.original;
-  const isActive = report.status === "active";
-
+const ScheduledReportActions = ({
+  report,
+}: {
+  report: ScheduledReport | undefined;
+}) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isToggling, setIsToggling] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const { toast } = useToast();
+  const t = useTranslations("reports.scheduled");
 
   const handleDelete = async () => {
+    if (!report) return;
     try {
       setIsDeleting(true);
       await scheduledReportsService.delete(report.id);
@@ -62,6 +58,7 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
       });
 
       queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
+      router.push("/reports/scheduled");
     } catch (error) {
       toast({
         title: t("messages.deleteFailed"),
@@ -72,11 +69,8 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
     }
   };
 
-  const handleViewHistory = () => {
-    router.push(`/reports/scheduled/${report.id}/history`);
-  };
-
   const handleGenerateNow = async () => {
+    if (!report) return;
     try {
       setIsGenerating(true);
       await scheduledReportsService.generateNow(report.id);
@@ -100,27 +94,33 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
   };
 
   const handleToggleStatus = async () => {
+    if (!report) return;
     try {
       setIsToggling(true);
-      if (isActive) {
+      if (report.status === "active") {
         await scheduledReportsService.deactivate(report.id);
       } else {
         await scheduledReportsService.activate(report.id);
       }
 
       toast({
-        title: isActive
-          ? t("messages.deactivateSuccess")
-          : t("messages.activateSuccess"),
+        title:
+          report.status === "active"
+            ? t("messages.deactivateSuccess")
+            : t("messages.activateSuccess"),
         variant: "success",
       });
 
       queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
+      queryClient.invalidateQueries({
+        queryKey: ["scheduled-report", report.id],
+      });
     } catch (error) {
       toast({
-        title: isActive
-          ? t("messages.deactivateFailed")
-          : t("messages.activateFailed"),
+        title:
+          report.status === "active"
+            ? t("messages.deactivateFailed")
+            : t("messages.activateFailed"),
         variant: "destructive",
       });
     } finally {
@@ -129,13 +129,15 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
   };
 
   return (
-    <div className="flex gap-1">
+    <div className="flex items-center gap-2">
       {/* Edit Button */}
-      <Button variant="ghost-info" size="icon" asChild>
-        <Link href={`/reports/scheduled/${report.id}/edit`}>
+      <a
+        href={`/reports/scheduled/${report?.id}/edit?from=/reports/scheduled/${report?.id}/history`}
+      >
+        <Button variant="ghost-info" size="icon">
           <Edit className="text-info-500" />
-        </Link>
-      </Button>
+        </Button>
+      </a>
 
       {/* Delete Button */}
       <AlertDialog>
@@ -179,25 +181,22 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
         <DropdownMenuContent align="end">
           <DropdownMenuItem
             className="p-3 border-b rounded-none text-base font-semibold flex items-center gap-2"
-            onClick={handleViewHistory}
-          >
-            <Visibility className="text-icons" />
-            <span>{t("actions.viewHistory")}</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="p-3 border-b rounded-none text-base font-semibold flex items-center gap-2"
             onClick={handleGenerateNow}
             disabled={isGenerating}
           >
             <PlayCircle className="text-icons" />
-            <span>{isGenerating ? t("actions.generating") : t("actions.generateNow")}</span>
+            <span>
+              {isGenerating
+                ? t("actions.generating")
+                : t("actions.generateNow")}
+            </span>
           </DropdownMenuItem>
           <DropdownMenuItem
             className="p-3 rounded-none text-base font-semibold flex items-center gap-2"
             onClick={handleToggleStatus}
             disabled={isToggling}
           >
-            {isActive ? (
+            {report?.status === "active" ? (
               <>
                 <Block className="text-icons" />
                 <span>{t("actions.deactivate")}</span>
@@ -215,4 +214,4 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
   );
 };
 
-export default ActionsCell;
+export default ScheduledReportActions;
