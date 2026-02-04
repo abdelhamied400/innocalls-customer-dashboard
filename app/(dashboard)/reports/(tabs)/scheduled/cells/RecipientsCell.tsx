@@ -46,9 +46,12 @@ const RecipientsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
         </SheetHeader>
         <div className="flex flex-col gap-2 mt-4 max-h-[calc(100vh-120px)] overflow-y-auto">
           {recipients.map((recipient, index) => (
-            <Badge key={index} variant="secondary" className="w-fit">
+            <div
+              key={index}
+              className="bg-[#efefef] px-4 py-2 rounded-lg font-bold"
+            >
               {recipient}
-            </Badge>
+            </div>
           ))}
         </div>
       </SheetContent>
