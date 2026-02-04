@@ -84,15 +84,16 @@ const HistoryPage = ({ params }: HistoryPageProps) => {
               <div className="property flex-1 border-e">
                 <p className="text-muted-foreground">{t("scheduleInfo.generatorDays")}</p>
                 <p className="font-bold">
-                  {report?.daysOfWeek?.map((day) => WEEK_DAYS[day].charAt(0).toUpperCase() + WEEK_DAYS[day].slice(1)).join("/")}
+                  {report?.daysOfWeek?.map((day) => t(`scheduleInfo.weekDays.${WEEK_DAYS[day]}`)).join("/")}
                 </p>
               </div>
             )}
             {report?.frequency === "monthly" && (
               <div className="property flex-1 border-e">
                 <p className="text-muted-foreground">{t("scheduleInfo.generatorDays")}</p>
-                <p className="font-bold">
-                  {t("scheduleInfo.dayOfMonth", { day: report?.dayOfMonth })}
+                <p>
+                  <span className="font-bold">{report?.dayOfMonth}</span>{" "}
+                  {t("scheduleInfo.dayOfMonthSuffix")}
                 </p>
               </div>
             )}

@@ -41,6 +41,7 @@ const ScheduledReportActions = ({
   const [isGenerating, setIsGenerating] = useState(false);
   const [isToggling, setIsToggling] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isToggleDialogOpen, setIsToggleDialogOpen] = useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
   const { toast } = useToast();
@@ -125,6 +126,7 @@ const ScheduledReportActions = ({
       });
     } finally {
       setIsToggling(false);
+      setIsToggleDialogOpen(false);
     }
   };
 
@@ -193,7 +195,10 @@ const ScheduledReportActions = ({
           </DropdownMenuItem>
           <DropdownMenuItem
             className="p-3 rounded-none text-base font-semibold flex items-center gap-2"
-            onClick={handleToggleStatus}
+            onClick={(e) => {
+              e.preventDefault();
+              setIsToggleDialogOpen(true);
+            }}
             disabled={isToggling}
           >
             {report?.status === "active" ? (
@@ -210,6 +215,33 @@ const ScheduledReportActions = ({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
+      {/* Activate/Deactivate Confirmation Dialog */}
+      <AlertDialog open={isToggleDialogOpen} onOpenChange={setIsToggleDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {report?.status === "active"
+                ? t("confirmations.deactivateTitle")
+                : t("confirmations.activateTitle")}
+            </AlertDialogTitle>
+            <AlertDialogX />
+            <AlertDialogDescription>
+              {report?.status === "active"
+                ? t("confirmations.deactivateDescription", { name: report?.name })
+                : t("confirmations.activateDescription", { name: report?.name })}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>{t("confirmations.cancel")}</AlertDialogCancel>
+            <AlertDialogAction onClick={handleToggleStatus} disabled={isToggling}>
+              {report?.status === "active"
+                ? t("confirmations.yesDeactivate")
+                : t("confirmations.yesActivate")}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

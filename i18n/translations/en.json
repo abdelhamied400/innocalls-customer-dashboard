@@ -715,7 +715,16 @@
           "timezone": "Time Zone",
           "generatorDays": "Generator Days",
           "generatorTime": "Generator Time",
-          "dayOfMonth": "{day} of each month"
+          "dayOfMonthSuffix": "of each month",
+          "weekDays": {
+            "sat": "Sat",
+            "sun": "Sun",
+            "mon": "Mon",
+            "tue": "Tue",
+            "wed": "Wed",
+            "thu": "Thu",
+            "fri": "Fri"
+          }
         },
         "columns": {
           "scheduledFor": "Scheduled For",

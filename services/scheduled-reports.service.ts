@@ -28,7 +28,7 @@ export default {
     };
 
     if (filters?.search) {
-      params.search = filters.search;
+      params.name = filters.search;
     }
 
     if (filters?.fromDate) {
