@@ -36,34 +36,41 @@ export const AGENT_REPORTS: ReportType[] = [
   "agent_sla_compliance",
 ];
 
-// Report type options for select dropdown
-export const REPORT_OPTIONS = [
+// Report type values for select dropdown
+export const REPORT_TYPE_VALUES: ReportType[] = [
   // Outbound Reports
-  { label: "Outbound Summary", value: "outbound_summary" },
-  { label: "Outbound Agent Stats", value: "outbound_agent_stats" },
-  { label: "Outbound Date Distribution", value: "outbound_date_distribution" },
-  { label: "Outbound Hourly Distribution", value: "outbound_hourly_distribution" },
+  "outbound_summary",
+  "outbound_agent_stats",
+  "outbound_date_distribution",
+  "outbound_hourly_distribution",
   // Inbound Agent Reports
-  { label: "Inbound Agent Summary", value: "inbound_agent_summary" },
-  { label: "Inbound Agent Date Distribution", value: "inbound_agent_date_distribution" },
-  { label: "Inbound Agent Hourly Distribution", value: "inbound_agent_hourly_distribution" },
+  "inbound_agent_summary",
+  "inbound_agent_date_distribution",
+  "inbound_agent_hourly_distribution",
   // Inbound Queue Reports
-  { label: "Inbound Queue Summary", value: "inbound_queue_summary" },
-  { label: "Inbound Queue Date Distribution", value: "inbound_queue_date_distribution" },
-  { label: "Inbound Queue Hourly Distribution", value: "inbound_queue_hourly_distribution" },
-  { label: "Inbound Queue Agent Performance", value: "inbound_queue_agent_performance" },
-  { label: "Inbound Queue Repeated Callers", value: "inbound_queue_repeated_callers" },
+  "inbound_queue_summary",
+  "inbound_queue_date_distribution",
+  "inbound_queue_hourly_distribution",
+  "inbound_queue_agent_performance",
+  "inbound_queue_repeated_callers",
   // Unanswered Reports
-  { label: "Unanswered Summary", value: "unanswered_summary" },
-  { label: "Inbound Unanswered Date Distribution", value: "inbound_unanswered_date_distribution" },
-  { label: "Inbound Unanswered Hourly Distribution", value: "inbound_unanswered_hourly_distribution" },
-  { label: "Outbound Unanswered Date Distribution", value: "outbound_unanswered_date_distribution" },
-  { label: "Outbound Unanswered Hourly Distribution", value: "outbound_unanswered_hourly_distribution" },
+  "unanswered_summary",
+  "inbound_unanswered_date_distribution",
+  "inbound_unanswered_hourly_distribution",
+  "outbound_unanswered_date_distribution",
+  "outbound_unanswered_hourly_distribution",
   // Agent Reports
-  { label: "Agent Summary", value: "agent_summary" },
-  { label: "Agent Call Distribution", value: "agent_call_distribution" },
-  { label: "Agent SLA Compliance", value: "agent_sla_compliance" },
-] as const;
+  "agent_summary",
+  "agent_call_distribution",
+  "agent_sla_compliance",
+];
+
+// Legacy export for backward compatibility - will be removed
+// Use useReportOptions hook instead for translated labels
+export const REPORT_OPTIONS = REPORT_TYPE_VALUES.map((value) => ({
+  label: value,
+  value,
+}));
 
 // Helper functions to determine which fields to show
 export const shouldShowIncludeInternalCalls = (reportType: ReportType | undefined): boolean => {

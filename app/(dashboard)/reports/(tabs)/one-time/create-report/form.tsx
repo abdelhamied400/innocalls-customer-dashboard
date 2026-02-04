@@ -36,7 +36,6 @@ import createOneTimeReportSchema, {
   CreateOneTimeReportSchema,
 } from "@/validation/CreateOneTimeReport";
 import {
-  REPORT_OPTIONS,
   shouldShowIncludeInternalCalls,
   shouldShowExtensions,
   shouldShowQueue,
@@ -44,6 +43,7 @@ import {
 } from "@/constants/reports";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { useVocab } from "@/hooks/useVocab";
+import { useReportOptions } from "@/hooks/useReportOptions";
 import Image from "next/image";
 
 const CreateReportForm = () => {
@@ -56,10 +56,12 @@ const CreateReportForm = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const { extensions: vocabExtensions, ergs } = useVocab();
+  const reportOptions = useReportOptions();
 
   const form = useForm<CreateOneTimeReportSchema>({
     resolver: zodResolver(createOneTimeReportSchema(t)),
     defaultValues: {
+      name: "",
       report: "",
       recipients: [],
       fromDate: undefined,
@@ -91,7 +93,7 @@ const CreateReportForm = () => {
   const handleAddRecipient = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && emailInput.trim()) {
       e.preventDefault();
-      const email = emailInput.trim();
+      const email = emailInput.trim().toLowerCase();
       // Email validation regex
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -101,7 +103,7 @@ const CreateReportForm = () => {
         return;
       }
 
-      if (recipients.includes(email)) {
+      if (recipients.some((r) => r.toLowerCase() === email)) {
         setEmailError(t("form.validation.recipients.duplicate"));
         setTimeout(() => setEmailError(null), 2000);
         return;
@@ -155,12 +157,12 @@ const CreateReportForm = () => {
         reportConfig.sla = parseInt(data.sla, 10);
       }
 
-      const reportOption = REPORT_OPTIONS.find(
+      const reportOption = reportOptions.find(
         (opt) => opt.value === reportValue,
       );
 
       await oneTimeReportsService.create({
-        name: reportValue,
+        name: data.name,
         recipients: data.recipients,
         emailSubject: reportOption?.label || reportValue,
         report: reportValue,
@@ -252,6 +254,32 @@ const CreateReportForm = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col gap-4"
               >
+                {/* Name Input */}
+                <FormField
+                  control={control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Field
+                          label={t("form.fields.name.label")}
+                          htmlFor="name"
+                          error={errors.name?.message}
+                        >
+                          <Input
+                            id="name"
+                            variant="field"
+                            className="font-semibold placeholder:font-normal"
+                            placeholder={t("form.fields.name.placeholder")}
+                            maxLength={200}
+                            {...field}
+                          />
+                        </Field>
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
                 {/* Report Select */}
                 <FormField
                   control={control}
@@ -265,13 +293,10 @@ const CreateReportForm = () => {
                             menuList: () => "font-semibold",
                           }}
                           label={t("form.fields.report.label")}
-                          options={REPORT_OPTIONS.map((opt) => ({
-                            label: opt.label,
-                            value: opt.value,
-                          }))}
+                          options={reportOptions}
                           value={
                             field.value
-                              ? REPORT_OPTIONS.find(
+                              ? reportOptions.find(
                                   (opt) => opt.value === field.value,
                                 )
                               : null

@@ -15,7 +15,14 @@ type CreateReportLayoutProps = PropsWithChildren<object>;
 const CreateReportLayout = ({ children }: CreateReportLayoutProps) => {
   const router = useRouter();
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(true);
+  const isActive = pathname.includes("create-report");
+  const [isOpen, setIsOpen] = useState(isActive);
+
+  useEffect(() => {
+    if (isActive) {
+      setIsOpen(true);
+    }
+  }, [isActive]);
 
   const handleOpenChange = (open: boolean) => {
     if (open) return;
@@ -24,27 +31,21 @@ const CreateReportLayout = ({ children }: CreateReportLayoutProps) => {
     router.replace("/reports/one-time");
   };
 
-  useEffect(() => {
-    if (pathname.includes("create-report")) {
-      setIsOpen(true);
-    }
-  }, [pathname]);
+  if (!isActive) return null;
 
   return (
-    <div className="create-report-layout" key={pathname}>
-      <Sheet open={isOpen} onOpenChange={handleOpenChange}>
-        <SheetContent side="bottom" className="h-screen p-0">
-          <SheetHeader className="sr-only">
-            <SheetTitle>Create New Report</SheetTitle>
-            <SheetDescription>
-              Create a new one-time report
-            </SheetDescription>
-          </SheetHeader>
+    <Sheet open={isOpen} onOpenChange={handleOpenChange}>
+      <SheetContent side="bottom" className="h-screen p-0">
+        <SheetHeader className="sr-only">
+          <SheetTitle>Create New Report</SheetTitle>
+          <SheetDescription>
+            Create a new one-time report
+          </SheetDescription>
+        </SheetHeader>
 
-          {children}
-        </SheetContent>
-      </Sheet>
-    </div>
+        {children}
+      </SheetContent>
+    </Sheet>
   );
 };
 

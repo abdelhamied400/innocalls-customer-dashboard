@@ -225,6 +225,28 @@
         "scheduled": "تقرير مجدول"
       }
     },
+    "reportTypes": {
+      "outbound_summary": "ملخص المكالمات الصادرة",
+      "outbound_agent_stats": "إحصائيات وكلاء المكالمات الصادرة",
+      "outbound_date_distribution": "توزيع المكالمات الصادرة حسب التاريخ",
+      "outbound_hourly_distribution": "توزيع المكالمات الصادرة حسب الساعة",
+      "inbound_agent_summary": "ملخص وكلاء المكالمات الواردة",
+      "inbound_agent_date_distribution": "توزيع وكلاء المكالمات الواردة حسب التاريخ",
+      "inbound_agent_hourly_distribution": "توزيع وكلاء المكالمات الواردة حسب الساعة",
+      "inbound_queue_summary": "ملخص قوائم الانتظار الواردة",
+      "inbound_queue_date_distribution": "توزيع قوائم الانتظار الواردة حسب التاريخ",
+      "inbound_queue_hourly_distribution": "توزيع قوائم الانتظار الواردة حسب الساعة",
+      "inbound_queue_agent_performance": "أداء وكلاء قوائم الانتظار الواردة",
+      "inbound_queue_repeated_callers": "المتصلين المتكررين لقوائم الانتظار الواردة",
+      "unanswered_summary": "ملخص المكالمات غير المجابة",
+      "inbound_unanswered_date_distribution": "توزيع المكالمات الواردة غير المجابة حسب التاريخ",
+      "inbound_unanswered_hourly_distribution": "توزيع المكالمات الواردة غير المجابة حسب الساعة",
+      "outbound_unanswered_date_distribution": "توزيع المكالمات الصادرة غير المجابة حسب التاريخ",
+      "outbound_unanswered_hourly_distribution": "توزيع المكالمات الصادرة غير المجابة حسب الساعة",
+      "agent_summary": "ملخص الوكلاء",
+      "agent_call_distribution": "توزيع مكالمات الوكلاء",
+      "agent_sla_compliance": "التزام الوكلاء بمستوى الخدمة"
+    },
     "oneTime": {
       "title": "تقرير لمرة واحدة",
       "columns": {
@@ -235,18 +257,19 @@
         "recipients": "المستلمون",
         "actions": "الإجراءات"
       },
+      "statusValues": {
+        "completed": "مكتمل",
+        "failed": "فشل",
+        "pending": "قيد الانتظار",
+        "processing": "قيد المعالجة"
+      },
       "cells": {
         "recipients": {
           "count": "{count} مستلمين",
           "dialogTitle": "المستلمون",
           "dialogDescription": "قائمة جميع المستلمين لهذا التقرير",
-          "sheetTitle": "مستلمو تقرير الوكيل"
+          "sheetTitle": "مستلمو {name}"
         }
-      },
-      "status": {
-        "completed": "مكتمل",
-        "failed": "فشل",
-        "pending": "قيد الانتظار"
       },
       "filters": {
         "creationDate": {
@@ -296,6 +319,10 @@
         },
         "form": {
           "fields": {
+            "name": {
+              "label": "اسم التقرير",
+              "placeholder": "أدخل اسم التقرير"
+            },
             "report": {
               "label": "التقرير",
               "placeholder": "اختر نوع التقرير",
@@ -342,6 +369,10 @@
             }
           },
           "validation": {
+            "name": {
+              "minLength": "يجب أن يكون اسم التقرير حرفين على الأقل",
+              "maxLength": "يجب أن لا يتجاوز اسم التقرير 200 حرف"
+            },
             "report": {
               "required": "يرجى اختيار نوع التقرير"
             },
@@ -401,7 +432,7 @@
           "count": "{count} مستلمين",
           "dialogTitle": "المستلمون",
           "dialogDescription": "قائمة جميع المستلمين لهذا التقرير",
-          "sheetTitle": "مستلمو تقرير الوكيل"
+          "sheetTitle": "مستلمو {name}"
         },
         "scheduled": {
           "daily": "يومي",

@@ -225,6 +225,28 @@
         "scheduled": "Scheduled Report"
       }
     },
+    "reportTypes": {
+      "outbound_summary": "Outbound Summary",
+      "outbound_agent_stats": "Outbound Agent Stats",
+      "outbound_date_distribution": "Outbound Date Distribution",
+      "outbound_hourly_distribution": "Outbound Hourly Distribution",
+      "inbound_agent_summary": "Inbound Agent Summary",
+      "inbound_agent_date_distribution": "Inbound Agent Date Distribution",
+      "inbound_agent_hourly_distribution": "Inbound Agent Hourly Distribution",
+      "inbound_queue_summary": "Inbound Queue Summary",
+      "inbound_queue_date_distribution": "Inbound Queue Date Distribution",
+      "inbound_queue_hourly_distribution": "Inbound Queue Hourly Distribution",
+      "inbound_queue_agent_performance": "Inbound Queue Agent Performance",
+      "inbound_queue_repeated_callers": "Inbound Queue Repeated Callers",
+      "unanswered_summary": "Unanswered Summary",
+      "inbound_unanswered_date_distribution": "Inbound Unanswered Date Distribution",
+      "inbound_unanswered_hourly_distribution": "Inbound Unanswered Hourly Distribution",
+      "outbound_unanswered_date_distribution": "Outbound Unanswered Date Distribution",
+      "outbound_unanswered_hourly_distribution": "Outbound Unanswered Hourly Distribution",
+      "agent_summary": "Agent Summary",
+      "agent_call_distribution": "Agent Call Distribution",
+      "agent_sla_compliance": "Agent SLA Compliance"
+    },
     "oneTime": {
       "title": "One Time Report",
       "columns": {
@@ -235,18 +257,19 @@
         "recipients": "Recipients",
         "actions": "Actions"
       },
+      "statusValues": {
+        "completed": "Completed",
+        "failed": "Failed",
+        "pending": "Pending",
+        "processing": "Processing"
+      },
       "cells": {
         "recipients": {
           "count": "{count} recipients",
           "dialogTitle": "Recipients",
           "dialogDescription": "List of all recipients for this report",
-          "sheetTitle": "Agent report recipients"
+          "sheetTitle": "{name} Recipients"
         }
-      },
-      "status": {
-        "completed": "Completed",
-        "failed": "Failed",
-        "pending": "Pending"
       },
       "filters": {
         "creationDate": {
@@ -296,6 +319,10 @@
         },
         "form": {
           "fields": {
+            "name": {
+              "label": "Report Name",
+              "placeholder": "Enter report name"
+            },
             "report": {
               "label": "Report",
               "placeholder": "Select report type",
@@ -342,6 +369,10 @@
             }
           },
           "validation": {
+            "name": {
+              "minLength": "Report name must be at least 2 characters",
+              "maxLength": "Report name must be at most 200 characters"
+            },
             "report": {
               "required": "Please select a report type"
             },
@@ -401,7 +432,7 @@
           "count": "{count} recipients",
           "dialogTitle": "Recipients",
           "dialogDescription": "List of all recipients for this report",
-          "sheetTitle": "Agent report recipients"
+          "sheetTitle": "{name} Recipients"
         },
         "scheduled": {
           "daily": "Daily",

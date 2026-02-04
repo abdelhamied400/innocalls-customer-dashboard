@@ -1,8 +1,8 @@
 "use client";
 
-import { OneTimeReportFilters } from "@/types/api/report";
+import { OneTimeReportFilters, OneTimeReportStatus } from "@/types/api/report";
 import { PaginationState, SortingState } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { columns } from "./columns";
 import PaginatedTable from "@/components/Table/PaginatedTable";
 import OneTimeReportHead from "./head";
@@ -13,6 +13,8 @@ import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import oneTimeReportsService from "@/services/one-time-reports.service";
+
+const PROCESSING_STATUSES: OneTimeReportStatus[] = ["pending", "processing"];
 
 const defaultFilters: OneTimeReportFilters = {
   sortBy: "createdAt",
@@ -44,6 +46,8 @@ const OneTimeReportTable = () => {
     }
   };
 
+  const [hasProcessingRecords, setHasProcessingRecords] = useState(false);
+
   const { data: response, isLoading } = useLocalizedQuery({
     queryKey: ["one-time-reports", pagination.pageIndex, pagination.pageSize, filters],
     queryFn: () =>
@@ -52,10 +56,19 @@ const OneTimeReportTable = () => {
         limit: pagination.pageSize,
         filters,
       }),
+    refetchInterval: hasProcessingRecords ? 30000 : false,
   });
 
   const data = response?.data ?? [];
   const paginationData = response?.pagination;
+
+  // Update processing status flag when data changes
+  useEffect(() => {
+    const hasProcessing = data.some((report) =>
+      PROCESSING_STATUSES.includes(report.status)
+    );
+    setHasProcessingRecords(hasProcessing);
+  }, [data]);
 
   return (
     <div className="h-full flex flex-col">

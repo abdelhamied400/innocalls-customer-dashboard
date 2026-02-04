@@ -4,7 +4,7 @@ import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useTranslations } from "@/providers/TranslationProvider";
 import scheduledReportsService from "@/services/scheduled-reports.service";
 import { PaginationState } from "@tanstack/react-table";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { columns } from "./columns";
 import PaginatedTable from "@/components/Table/PaginatedTable";
 import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
@@ -14,6 +14,9 @@ import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import ScheduledReportActions from "@/components/ScheduledReportActions";
 import { WEEK_DAYS } from "@/constants/scheduled-reports";
+import { ScheduledReportHistoryStatus } from "@/types/api/report";
+
+const PROCESSING_STATUSES: ScheduledReportHistoryStatus[] = ["pending", "processing"];
 
 type HistoryPageProps = {
   params: Promise<{
@@ -29,6 +32,8 @@ const HistoryPage = ({ params }: HistoryPageProps) => {
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const [hasProcessingRecords, setHasProcessingRecords] = useState(false);
 
   const { data: report } = useLocalizedQuery({
     queryKey: ["scheduled-report", id],
@@ -48,10 +53,19 @@ const HistoryPage = ({ params }: HistoryPageProps) => {
         pagination.pageIndex + 1,
         pagination.pageSize,
       ),
+    refetchInterval: hasProcessingRecords ? 30000 : false,
   });
 
   const data = response?.data ?? [];
   const paginationData = response?.pagination;
+
+  // Update processing status flag when data changes
+  useEffect(() => {
+    const hasProcessing = data.some((item) =>
+      PROCESSING_STATUSES.includes(item.status)
+    );
+    setHasProcessingRecords(hasProcessing);
+  }, [data]);
 
   return (
     <div className="page h-full" id="scheduled-report-history">

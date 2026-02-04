@@ -9,13 +9,13 @@ import { Label } from "@/components/ui/label";
 import Select from "@/components/Select";
 import { StepperStep } from "@/components/ui/stepper";
 import {
-  REPORT_OPTIONS,
   shouldShowIncludeInternalCalls,
   shouldShowExtensions,
   shouldShowQueue,
   shouldShowSla,
 } from "@/constants/reports";
 import { useTranslations } from "@/providers/TranslationProvider";
+import { useReportOptions } from "@/hooks/useReportOptions";
 import { X } from "lucide-react";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { ReportType } from "@/types/api/report";
@@ -32,6 +32,7 @@ const ReportDetailsStep = ({
   extensionOptions,
 }: ReportDetailsStepProps) => {
   const t = useTranslations("reports.scheduled.createReport");
+  const reportOptions = useReportOptions();
 
   const {
     control,
@@ -87,7 +88,7 @@ const ReportDetailsStep = ({
   const handleAddRecipient = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && emailInput.trim()) {
       e.preventDefault();
-      const email = emailInput.trim();
+      const email = emailInput.trim().toLowerCase();
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       if (!emailRegex.test(email)) {
@@ -96,7 +97,7 @@ const ReportDetailsStep = ({
         return;
       }
 
-      if (recipients.includes(email)) {
+      if (recipients.some((r) => r.toLowerCase() === email)) {
         setEmailError(t("form.validation.recipients.duplicate"));
         setTimeout(() => setEmailError(null), 2000);
         return;
@@ -216,13 +217,10 @@ const ReportDetailsStep = ({
                     menuList: () => "font-semibold",
                   }}
                   label={t("form.fields.report.label")}
-                  options={REPORT_OPTIONS.map((opt) => ({
-                    label: opt.label,
-                    value: opt.value,
-                  }))}
+                  options={reportOptions}
                   value={
                     field.value
-                      ? REPORT_OPTIONS.find((opt) => opt.value === field.value)
+                      ? reportOptions.find((opt) => opt.value === field.value)
                       : null
                   }
                   onChange={(option) =>

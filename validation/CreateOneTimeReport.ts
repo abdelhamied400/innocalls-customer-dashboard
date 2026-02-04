@@ -7,6 +7,10 @@ import { ReportType } from "@/types/api/report";
 const createOneTimeReportSchema = (t: ReturnType<typeof useTranslations>) =>
   z
     .object({
+      name: z
+        .string()
+        .min(2, t("form.validation.name.minLength"))
+        .max(200, t("form.validation.name.maxLength")),
       report: z.string().min(1, t("form.validation.report.required")),
       recipients: z
         .array(z.string().email(t("form.validation.recipients.invalidEmail")))

@@ -17,13 +17,13 @@ import Stepper, {
 } from "@/components/ui/stepper";
 import { timezones } from "@/constants/timezones";
 import {
-  REPORT_OPTIONS,
   shouldShowIncludeInternalCalls,
   shouldShowExtensions,
   shouldShowQueue,
   shouldShowSla,
 } from "@/constants/reports";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import { useReportOptions } from "@/hooks/useReportOptions";
 import { ArrowBackIos } from "@mui/icons-material";
 import { X } from "lucide-react";
 import Image from "next/image";
@@ -75,6 +75,7 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
   const searchParams = useSearchParams();
   const backUrl = searchParams.get("from") || "/reports/scheduled";
   const { extensions: vocabExtensions, ergs } = useVocab();
+  const reportOptions = useReportOptions();
 
   // Fetch report data
   const { data: report, isLoading } = useLocalizedQuery({
@@ -110,12 +111,6 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
   const showExtensions = shouldShowExtensions(reportType);
   const showQueue = shouldShowQueue(reportType);
   const showSla = shouldShowSla(reportType);
-
-  // Options - Report types from constants
-  const reportOptions: Option[] = REPORT_OPTIONS.map((opt) => ({
-    label: opt.label,
-    value: opt.value,
-  }));
 
   // Date range start options: today, previous_day, previous_week, previous_month
   const dateRangeStartOptions: Option[] = [
@@ -290,9 +285,9 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
   const handleAddRecipient = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && emailInput.trim()) {
       e.preventDefault();
-      const email = emailInput.trim();
+      const email = emailInput.trim().toLowerCase();
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (emailRegex.test(email) && !recipients.includes(email)) {
+      if (emailRegex.test(email) && !recipients.some((r) => r.toLowerCase() === email)) {
         setRecipients([...recipients, email]);
         setEmailInput("");
       }

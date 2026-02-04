@@ -8,24 +8,24 @@ import { Badge } from "@/components/ui/badge";
 import SortingHead from "@/components/SortingHead";
 
 export const columns = (): ColumnDef<OneTimeReport>[] => {
-  const t = useTranslations("reports.oneTime.columns");
+  const t = useTranslations("reports.oneTime");
 
   return [
     {
       accessorKey: "createdAt",
       header: ({ column }) => (
-        <SortingHead column={column}>{t("createdAt")}</SortingHead>
+        <SortingHead column={column}>{t("columns.createdAt")}</SortingHead>
       ),
     },
     {
       accessorKey: "name",
       header: ({ column }) => (
-        <SortingHead column={column}>{t("name")}</SortingHead>
+        <SortingHead column={column}>{t("columns.name")}</SortingHead>
       ),
     },
     {
       accessorKey: "status",
-      header: t("status"),
+      header: t("columns.status"),
       cell: ({ row }) => {
         const status = row.original.status;
         const variant =
@@ -34,12 +34,12 @@ export const columns = (): ColumnDef<OneTimeReport>[] => {
             : status === "failed"
               ? "destructive"
               : "warning";
-        return <Badge variant={variant}>{t(`status.${status}`)}</Badge>;
+        return <Badge variant={variant}>{t(`statusValues.${status}`)}</Badge>;
       },
     },
     {
       accessorKey: "recipients",
-      header: t("recipients"),
+      header: t("columns.recipients"),
       cell: RecipientsCell,
     },
   ];

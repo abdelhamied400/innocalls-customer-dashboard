@@ -17,6 +17,7 @@ import { useState } from "react";
 
 const RecipientsCell = ({ row }: CellContext<OneTimeReport, unknown>) => {
   const recipients = row.original.recipients;
+  const reportName = row.original.name;
   const t = useTranslations("reports.oneTime.cells.recipients");
   const [open, setOpen] = useState(false);
 
@@ -37,7 +38,7 @@ const RecipientsCell = ({ row }: CellContext<OneTimeReport, unknown>) => {
       </SheetTrigger>
       <SheetContent className="p-0">
         <SheetHeader className="flex flex-row items-center justify-between border-b px-6 py-4">
-          <SheetTitle className="font-bold">{t("sheetTitle")}</SheetTitle>
+          <SheetTitle className="font-bold">{t("sheetTitle", { name: reportName })}</SheetTitle>
           <SheetClose className="rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
             <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
