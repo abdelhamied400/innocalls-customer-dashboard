@@ -23,6 +23,7 @@ export type ScheduleStepProps = {
   form: UseFormReturn<CreateScheduledReportSchema>;
   onSubmit: (data: CreateScheduledReportSchema) => Promise<void>;
   isSubmitting: boolean;
+  submitButtonText?: string;
 };
 
 export type SuccessViewProps = {

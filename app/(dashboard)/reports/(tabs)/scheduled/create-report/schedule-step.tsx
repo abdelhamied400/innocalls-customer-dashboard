@@ -16,7 +16,7 @@ import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { ScheduleStepProps, WeekDay } from "@/types/scheduled-report-form";
 import { WEEK_DAYS, DAY_MAP, TIME_OPTIONS, MONTH_DAY_OPTIONS } from "@/constants/scheduled-reports";
 
-const ScheduleStep = ({ form, onSubmit, isSubmitting }: ScheduleStepProps) => {
+const ScheduleStep = ({ form, onSubmit, isSubmitting, submitButtonText }: ScheduleStepProps) => {
   const t = useTranslations("reports.scheduled.createReport");
   const locale = useLocale();
   const dateLocale = locale === "ar" ? arEG : enUS;
@@ -316,7 +316,7 @@ const ScheduleStep = ({ form, onSubmit, isSubmitting }: ScheduleStepProps) => {
 
         <Button type="submit" className="w-full mt-4" disabled={isSubmitting}>
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {t("actions.submit")}
+          {submitButtonText || t("actions.submit")}
         </Button>
       </form>
     </StepperStep>
