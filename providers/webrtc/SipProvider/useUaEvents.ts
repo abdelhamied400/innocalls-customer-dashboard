@@ -3,7 +3,7 @@ import { useRouting } from "@/providers/RoutingProvider";
 import { ExtensionState, SessionState, SpyingStatus } from "./types";
 import JsSIP, { C } from "jssip";
 import { RTCSessionEvent } from "jssip/src/UA";
-import { CallListener, OutgoingEvent, RTCSession } from "jssip/src/RTCSession";
+import { CallListener, OutgoingEvent, RTCSession } from "jssip/lib/RTCSession";
 import { ExtensionWithCredentials } from "@/types/api/extension";
 
 import { addCallToLog } from "@/lib/call-log";

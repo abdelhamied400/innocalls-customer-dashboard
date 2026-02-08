@@ -14,6 +14,7 @@ import { Close } from "@mui/icons-material";
 import React from "react";
 import { cn } from "@/lib/utils";
 import Field from "./ui/field";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 export type Option = {
   label: string;
@@ -52,6 +53,9 @@ const Select = <
   noOptionsMessage,
   ...props
 }: SelectProps<OptionType, IsMulti>) => {
+  const tCommon = useTranslations("common");
+  const noOptionsDefaultMessage = tCommon("select.noOptionsMessage");
+
   const onRemoveOption = (val: OptionType) => {
     if (isMulti && props.value && Array.isArray(props.value)) {
       const newValue = props.value.filter(
@@ -138,7 +142,11 @@ const Select = <
               maxHeight: 200,
             }),
           }}
-          noOptionsMessage={noOptionsMessage ? () => noOptionsMessage : undefined}
+          noOptionsMessage={
+            noOptionsMessage
+              ? () => noOptionsMessage
+              : () => noOptionsDefaultMessage
+          }
           onChange={onChange}
           {...props}
         />

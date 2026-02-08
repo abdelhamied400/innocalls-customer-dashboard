@@ -1,7 +1,7 @@
 import { useSip } from "@/providers/webrtc/SipProvider";
 import { Button } from "../ui/button";
 import { CallEnd, Phone } from "@mui/icons-material";
-import { SessionDirection } from "jssip/src/RTCSession";
+import { SessionDirection } from "jssip/lib/RTCSession";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { webrtcLogger } from "@/lib/logger";
 import { parseAutoDialerCallee } from "@/lib/webrtc";
@@ -17,7 +17,7 @@ const IncomingCall = () => {
   const direction = currentSession?.direction;
 
   const { name: calleeName } = parseAutoDialerCallee(
-    displayName || number || ""
+    displayName || number || "",
   );
 
   const handleHangup = () => {

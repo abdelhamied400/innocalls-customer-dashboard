@@ -20,7 +20,7 @@ import type {
 
 import JsSIP from "jssip";
 import { useUaEvents } from "./SipProvider/useUaEvents";
-import { RTCSession } from "jssip/src/RTCSession";
+import { RTCSession } from "jssip/lib/RTCSession";
 import { defaultCountry } from "@/constants/countries";
 import { useToast } from "@/hooks/use-toast";
 import { useSession } from "next-auth/react";
