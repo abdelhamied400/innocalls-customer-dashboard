@@ -15,7 +15,9 @@ import { CellContext } from "@tanstack/react-table";
 import { X } from "lucide-react";
 import { useState } from "react";
 
-const RecipientsCell = ({ row }: CellContext<ScheduledReportHistoryItem, unknown>) => {
+const RecipientsCell = ({
+  row,
+}: CellContext<ScheduledReportHistoryItem, unknown>) => {
   const recipients = row.original.recipients;
   const reportName = row.original.reportName;
   const t = useTranslations("reports.scheduled.cells.recipients");
@@ -46,9 +48,12 @@ const RecipientsCell = ({ row }: CellContext<ScheduledReportHistoryItem, unknown
         </SheetHeader>
         <div className="flex flex-col gap-2 mt-4 max-h-[calc(100vh-120px)] overflow-y-auto">
           {recipients.map((recipient, index) => (
-            <Badge key={index} variant="secondary" className="w-fit">
+            <div
+              key={index}
+              className="bg-[#efefef] px-4 py-2 rounded-lg font-bold"
+            >
               {recipient}
-            </Badge>
+            </div>
           ))}
         </div>
       </SheetContent>

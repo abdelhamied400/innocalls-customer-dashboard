@@ -31,9 +31,10 @@ type SelectProps<
   className?: string;
   label?: string;
   error?: string;
+  noOptionsMessage?: string;
 } & Omit<
   ReactSelectProps<OptionType, IsMulti, GroupBase<OptionType>>,
-  "options"
+  "options" | "noOptionsMessage"
 >;
 
 const Select = <
@@ -48,6 +49,7 @@ const Select = <
   onChange,
   label,
   error,
+  noOptionsMessage,
   ...props
 }: SelectProps<OptionType, IsMulti>) => {
   const onRemoveOption = (val: OptionType) => {
@@ -136,6 +138,7 @@ const Select = <
               maxHeight: 200,
             }),
           }}
+          noOptionsMessage={noOptionsMessage ? () => noOptionsMessage : undefined}
           onChange={onChange}
           {...props}
         />

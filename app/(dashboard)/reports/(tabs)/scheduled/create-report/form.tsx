@@ -171,9 +171,11 @@ const CreateReportForm = () => {
 
       queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
       setIsSuccess(true);
-    } catch (error) {
+    } catch (error: any) {
+      const backendMessage = error?.response?.data?.message;
       toast({
         title: t("messages.createFailed"),
+        description: backendMessage,
         variant: "destructive",
       });
     }
@@ -192,7 +194,7 @@ const CreateReportForm = () => {
     >
       <StepperHeader>
         <StepperPrevious>
-          <ChevronLeftIcon />
+          <ChevronLeftIcon className="rtl:rotate-180" />
         </StepperPrevious>
 
         <div className="flex flex-1 justify-center gap-2">

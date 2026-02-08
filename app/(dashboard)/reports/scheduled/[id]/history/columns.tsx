@@ -5,7 +5,8 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import { ColumnDef } from "@tanstack/react-table";
 import StatusCell from "./cells/StatusCell";
 import RecipientsCell from "./cells/RecipientsCell";
-import ScheduledForCell from "./cells/ScheduledForCell";
+import GeneratedAtCell from "./cells/GeneratedAtCell";
+import SortingHead from "@/components/SortingHead";
 
 export const columns = (): ColumnDef<ScheduledReportHistoryItem>[] => {
   const t = useTranslations("reports.scheduled.history.columns");
@@ -13,12 +14,16 @@ export const columns = (): ColumnDef<ScheduledReportHistoryItem>[] => {
   return [
     {
       accessorKey: "reportName",
-      header: t("reportName"),
+      header: ({ column }) => (
+        <SortingHead column={column}>{t("reportName")}</SortingHead>
+      ),
     },
     {
-      accessorKey: "scheduledFor",
-      header: t("scheduledFor"),
-      cell: ScheduledForCell,
+      accessorKey: "generatedAt",
+      header: ({ column }) => (
+        <SortingHead column={column}>{t("generatedAt")}</SortingHead>
+      ),
+      cell: GeneratedAtCell,
     },
     {
       accessorKey: "status",

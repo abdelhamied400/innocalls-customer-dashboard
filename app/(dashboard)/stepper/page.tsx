@@ -25,7 +25,7 @@ const StepperDemo = () => {
       >
         <StepperHeader className="flex lg:flex-row flex-col flex-wrap items-center gap-4 lg:gap-36 p-4">
           <StepperPrevious>
-            <ChevronLeftIcon />
+            <ChevronLeftIcon className="rtl:rotate-180" />
           </StepperPrevious>
           <div className="flex lg:flex-row flex-col flex-1 items-center gap-2 steps-titles">
             {steps.map((step, idx) => (

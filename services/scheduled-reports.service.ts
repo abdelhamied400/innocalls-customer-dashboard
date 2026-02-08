@@ -102,10 +102,15 @@ export default {
   fetchHistory: async (
     id: string,
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
+    sortBy?: string,
+    sortOrder?: "asc" | "desc"
   ): Promise<ScheduledReportHistoryResponse> => {
+    const params: Record<string, string | number> = { page, limit };
+    if (sortBy) params.sortBy = sortBy;
+    if (sortOrder) params.sortOrder = sortOrder;
     const res = await api.get(`/v1/reports/scheduled/${id}/history`, {
-      params: { page, limit },
+      params,
     });
     return res.data;
   },

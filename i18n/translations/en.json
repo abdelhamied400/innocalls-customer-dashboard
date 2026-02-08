@@ -627,7 +627,9 @@
           },
           "validation": {
             "name": {
-              "required": "Report name is required"
+              "required": "Report name is required",
+              "minLength": "Report name must be at least 2 characters",
+              "maxLength": "Report name must be at most 200 characters"
             },
             "recipients": {
               "required": "Please add at least one recipient",
@@ -647,6 +649,9 @@
             },
             "dateRangeEnd": {
               "required": "Date range end is required"
+            },
+            "dateRange": {
+              "endBeforeStart": "End date cannot be before start date"
             },
             "queue": {
               "required": "Queue is required for this report type"
@@ -727,7 +732,7 @@
           }
         },
         "columns": {
-          "scheduledFor": "Scheduled For",
+          "generatedAt": "Generated At",
           "reportName": "Report Name",
           "status": "Status",
           "recipients": "Recipients"

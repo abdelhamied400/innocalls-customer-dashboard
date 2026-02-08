@@ -32,7 +32,9 @@ const ReportDetailsStep = ({
   extensionOptions,
 }: ReportDetailsStepProps) => {
   const t = useTranslations("reports.scheduled.createReport");
+  const tCommon = useTranslations("common");
   const reportOptions = useReportOptions();
+  const noOptionsMessage = tCommon("select.noOptionsMessage");
 
   const {
     control,
@@ -77,12 +79,21 @@ const ReportDetailsStep = ({
   ];
 
   const handleReportChange = (value: string) => {
+    const newReportType = value as ReportType;
     setValue("report", value);
-    // Reset conditional fields when report type changes
-    setValue("includeInternalCalls", false);
-    setValue("extensions", "");
-    setValue("queue", "");
-    setValue("sla", "");
+    // Reset conditional fields only if the new report type doesn't support them
+    if (!shouldShowIncludeInternalCalls(newReportType)) {
+      setValue("includeInternalCalls", false);
+    }
+    if (!shouldShowExtensions(newReportType)) {
+      setValue("extensions", "");
+    }
+    if (!shouldShowQueue(newReportType)) {
+      setValue("queue", "");
+    }
+    if (!shouldShowSla(newReportType)) {
+      setValue("sla", "");
+    }
   };
 
   const handleAddRecipient = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -228,6 +239,7 @@ const ReportDetailsStep = ({
                   }
                   placeholder={t("form.fields.report.placeholder")}
                   error={errors.report?.message}
+                  noOptionsMessage={noOptionsMessage}
                 />
               </FormControl>
             </FormItem>
@@ -260,6 +272,7 @@ const ReportDetailsStep = ({
                   }
                   placeholder={t("form.fields.dateRangeStart.placeholder")}
                   error={errors.dateRangeStart?.message}
+                  noOptionsMessage={noOptionsMessage}
                 />
               </FormControl>
             </FormItem>
@@ -292,6 +305,7 @@ const ReportDetailsStep = ({
                   }
                   placeholder={t("form.fields.dateRangeEnd.placeholder")}
                   error={errors.dateRangeEnd?.message}
+                  noOptionsMessage={noOptionsMessage}
                 />
               </FormControl>
             </FormItem>
@@ -323,6 +337,7 @@ const ReportDetailsStep = ({
                     }
                     placeholder={t("form.fields.queue.placeholder")}
                     error={errors.queue?.message}
+                    noOptionsMessage={noOptionsMessage}
                   />
                 </FormControl>
               </FormItem>
@@ -368,6 +383,7 @@ const ReportDetailsStep = ({
                       placeholder={t("form.fields.extensions.placeholder")}
                       error={errors.extensions?.message}
                       isMulti
+                      noOptionsMessage={noOptionsMessage}
                     />
                   </FormControl>
                 </FormItem>

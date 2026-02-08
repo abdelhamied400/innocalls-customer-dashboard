@@ -88,6 +88,29 @@ const createScheduledReportSchema = (t: ReturnType<typeof useTranslations>) =>
           path: ["dayOfMonth"],
         });
       }
+
+      // Validate date range: end date cannot be before start date
+      if (data.dateRangeStart && data.dateRangeEnd) {
+        const dateOrder: Record<string, number> = {
+          previous_month: 0,
+          previous_week: 1,
+          previous_day: 2,
+          today: 3,
+        };
+        const startOrder = dateOrder[data.dateRangeStart];
+        const endOrder = dateOrder[data.dateRangeEnd];
+        if (
+          startOrder !== undefined &&
+          endOrder !== undefined &&
+          endOrder < startOrder
+        ) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: t("form.validation.dateRange.endBeforeStart"),
+            path: ["dateRangeEnd"],
+          });
+        }
+      }
     });
 
 export type CreateScheduledReportSchema = z.infer<

@@ -116,6 +116,7 @@ export type ScheduledReport = {
   dayOfMonth?: number;
   nextGenerationDate: string;
   nextGenerationAtLocal: string;
+  formattedNextGenerationDate: string;
   lastGeneratedAtLocal: string | null;
   status: ScheduledReportStatus;
   createdAt: string;
@@ -168,11 +169,19 @@ export type CreateScheduledReportPayload = {
 export type UpdateScheduledReportPayload =
   Partial<CreateScheduledReportPayload>;
 
-export type ScheduledReportHistoryStatus = "completed" | "failed" | "pending" | "processing";
+export type ScheduledReportHistoryStatus =
+  | "completed"
+  | "failed"
+  | "pending"
+  | "processing";
 
 export type ScheduledReportHistoryItem = {
   id: string;
   reportName?: string;
+  generatedAt: {
+    date: string;
+    time: string;
+  };
   scheduledFor: {
     date: string;
     time: string;

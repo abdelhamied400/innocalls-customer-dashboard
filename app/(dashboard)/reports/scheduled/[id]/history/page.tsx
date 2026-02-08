@@ -3,7 +3,7 @@
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useTranslations } from "@/providers/TranslationProvider";
 import scheduledReportsService from "@/services/scheduled-reports.service";
-import { PaginationState } from "@tanstack/react-table";
+import { PaginationState, SortingState } from "@tanstack/react-table";
 import { use, useEffect, useState } from "react";
 import { columns } from "./columns";
 import PaginatedTable from "@/components/Table/PaginatedTable";
@@ -33,7 +33,21 @@ const HistoryPage = ({ params }: HistoryPageProps) => {
     pageSize: 10,
   });
 
+  const [sortBy, setSortBy] = useState<string | undefined>();
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc" | undefined>();
+
   const [hasProcessingRecords, setHasProcessingRecords] = useState(false);
+
+  const handleSortingChange = (sorting: SortingState) => {
+    if (sorting.length > 0) {
+      const { id, desc } = sorting[0];
+      if (id === "reportName" || id === "generatedAt") {
+        setSortBy(id);
+        setSortOrder(desc ? "desc" : "asc");
+        setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+      }
+    }
+  };
 
   const { data: report } = useLocalizedQuery({
     queryKey: ["scheduled-report", id],
@@ -46,12 +60,16 @@ const HistoryPage = ({ params }: HistoryPageProps) => {
       id,
       pagination.pageIndex,
       pagination.pageSize,
+      sortBy,
+      sortOrder,
     ],
     queryFn: () =>
       scheduledReportsService.fetchHistory(
         id,
         pagination.pageIndex + 1,
         pagination.pageSize,
+        sortBy,
+        sortOrder,
       ),
     refetchInterval: hasProcessingRecords ? 30000 : false,
   });
@@ -123,6 +141,7 @@ const HistoryPage = ({ params }: HistoryPageProps) => {
             }}
             paginationState={pagination}
             onPaginationChange={setPagination}
+            onSortingChange={handleSortingChange}
           >
             <PaginatedTableContent>
               <PaginatedTableHead />

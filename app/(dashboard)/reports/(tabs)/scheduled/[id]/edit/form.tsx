@@ -245,9 +245,11 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
       queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
       queryClient.invalidateQueries({ queryKey: ["scheduled-report", reportId] });
       setIsSuccess(true);
-    } catch (error) {
+    } catch (error: any) {
+      const backendMessage = error?.response?.data?.message;
       toast({
         title: t("messages.updateFailed"),
+        description: backendMessage,
         variant: "destructive",
       });
     }

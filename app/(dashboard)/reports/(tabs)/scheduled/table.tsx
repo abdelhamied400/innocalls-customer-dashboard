@@ -32,10 +32,10 @@ const ScheduledReportTable = () => {
   const handleSortingChange = (sorting: SortingState) => {
     if (sorting.length > 0) {
       const { id, desc } = sorting[0];
-      // Only allow sorting by createdAt, name, or nextGenerationDate
-      if (id === "createdAt" || id === "name" || id === "nextGenerationDate") {
+      // Only allow sorting by createdAt, name, or nextGenerationAtLocal
+      if (id === "createdAt" || id === "name" || id === "nextGenerationAtLocal") {
         // Map column accessor to API sort key
-        const sortBy = id === "nextGenerationDate" ? "nextGenerationAt" : id;
+        const sortBy = id === "nextGenerationAtLocal" ? "nextGenerationAt" : id;
         setFilters((prev) => ({
           ...prev,
           sortBy,

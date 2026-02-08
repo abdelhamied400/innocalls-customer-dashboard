@@ -47,7 +47,7 @@ const RefillBalanceForm = () => {
     resolver: zodResolver(
       refillBalanceSchema(t, tCommon, {
         currency: Organization?.paymentCurrency,
-      })
+      }),
     ),
     defaultValues: { amount: 5 },
   });
@@ -90,7 +90,7 @@ const RefillBalanceForm = () => {
     >
       <StepperHeader>
         <StepperPrevious>
-          <ChevronLeftIcon />
+          <ChevronLeftIcon className="rtl:rotate-180" />
         </StepperPrevious>
 
         <div className="flex flex-1 justify-center gap-2">
@@ -121,7 +121,7 @@ const RefillBalanceForm = () => {
                     <FormControl>
                       <Field
                         label={`${t("form.fields.amount.label")} (${tCommon(
-                          `currencies.${Organization?.paymentCurrency}`
+                          `currencies.${Organization?.paymentCurrency}`,
                         )})`}
                         error={
                           form.formState.errors.amount?.message?.toString() ||

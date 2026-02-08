@@ -14,12 +14,14 @@ import { format, addDays, setHours, setMinutes, setDate, isValid } from "date-fn
 import { arEG, enUS } from "date-fns/locale";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { ScheduleStepProps, WeekDay } from "@/types/scheduled-report-form";
-import { WEEK_DAYS, DAY_MAP, TIME_OPTIONS, MONTH_DAY_OPTIONS } from "@/constants/scheduled-reports";
+import { WEEK_DAYS, DAY_MAP, MONTH_DAY_OPTIONS } from "@/constants/scheduled-reports";
 
 const ScheduleStep = ({ form, onSubmit, isSubmitting, submitButtonText }: ScheduleStepProps) => {
   const t = useTranslations("reports.scheduled.createReport");
+  const tCommon = useTranslations("common");
   const locale = useLocale();
   const dateLocale = locale === "ar" ? arEG : enUS;
+  const noOptionsMessage = tCommon("select.noOptionsMessage");
 
   const {
     control,
@@ -42,6 +44,15 @@ const ScheduleStep = ({ form, onSubmit, isSubmitting, submitButtonText }: Schedu
       })),
     [],
   );
+
+  const timeOptions = useMemo(() => {
+    return Array.from({ length: 24 }, (_, i) => {
+      const date = setHours(setMinutes(new Date(), 0), i);
+      const label = format(date, "h:mm a", { locale: dateLocale });
+      const value = `${i.toString().padStart(2, "0")}:00`;
+      return { label, value };
+    });
+  }, [dateLocale]);
 
   const frequencyOptions = [
     { label: t("form.fields.frequency.options.daily"), value: "daily" },
@@ -132,6 +143,7 @@ const ScheduleStep = ({ form, onSubmit, isSubmitting, submitButtonText }: Schedu
                   }
                   placeholder={t("form.fields.timezone.placeholder")}
                   error={errors.timezone?.message}
+                  noOptionsMessage={noOptionsMessage}
                 />
               </FormControl>
             </FormItem>
@@ -162,6 +174,7 @@ const ScheduleStep = ({ form, onSubmit, isSubmitting, submitButtonText }: Schedu
                   }
                   placeholder={t("form.fields.frequency.placeholder")}
                   error={errors.frequency?.message}
+                  noOptionsMessage={noOptionsMessage}
                 />
               </FormControl>
             </FormItem>
@@ -223,6 +236,7 @@ const ScheduleStep = ({ form, onSubmit, isSubmitting, submitButtonText }: Schedu
                         }
                         placeholder={t("form.fields.monthDay.placeholder")}
                         error={errors.dayOfMonth?.message}
+                        noOptionsMessage={noOptionsMessage}
                       />
                     </FormControl>
                   </FormItem>
@@ -242,10 +256,10 @@ const ScheduleStep = ({ form, onSubmit, isSubmitting, submitButtonText }: Schedu
                           menuList: () => "font-semibold",
                         }}
                         label={t("form.fields.atTime.label")}
-                        options={TIME_OPTIONS}
+                        options={timeOptions}
                         value={
                           field.value
-                            ? TIME_OPTIONS.find((opt) => opt.value === field.value)
+                            ? timeOptions.find((opt) => opt.value === field.value)
                             : null
                         }
                         onChange={(option) =>
@@ -253,6 +267,7 @@ const ScheduleStep = ({ form, onSubmit, isSubmitting, submitButtonText }: Schedu
                         }
                         placeholder={t("form.fields.atTime.placeholder")}
                         error={errors.time?.message}
+                        noOptionsMessage={noOptionsMessage}
                       />
                     </FormControl>
                   </FormItem>
@@ -276,10 +291,10 @@ const ScheduleStep = ({ form, onSubmit, isSubmitting, submitButtonText }: Schedu
                       menuList: () => "font-semibold",
                     }}
                     label={t("form.fields.atTime.label")}
-                    options={TIME_OPTIONS}
+                    options={timeOptions}
                     value={
                       field.value
-                        ? TIME_OPTIONS.find((opt) => opt.value === field.value)
+                        ? timeOptions.find((opt) => opt.value === field.value)
                         : null
                     }
                     onChange={(option) =>
@@ -287,6 +302,7 @@ const ScheduleStep = ({ form, onSubmit, isSubmitting, submitButtonText }: Schedu
                     }
                     placeholder={t("form.fields.atTime.placeholder")}
                     error={errors.time?.message}
+                    noOptionsMessage={noOptionsMessage}
                   />
                 </FormControl>
               </FormItem>
