@@ -20,7 +20,6 @@ export default {
     limit,
     filters,
   }: FetchOneTimeReportsParams): Promise<OneTimeReportListResponse> => {
-    await new Promise((resolve) => setTimeout(resolve, 2500));
     const params: Record<string, string | number> = {
       page,
       limit,
