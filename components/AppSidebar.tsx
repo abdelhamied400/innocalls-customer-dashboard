@@ -288,9 +288,9 @@ const AppSidebar = () => {
             icon={<Settings />}
             title={t("navigation.settings")}
             href={`/settings`}
-            disabled={true}
-            isNew={false}
-            isComingSoon={true}
+            disabled={false}
+            isNew={true}
+            isComingSoon={false}
           />
         )}
 

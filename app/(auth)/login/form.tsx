@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import Field from "@/components/ui/field";
@@ -18,6 +18,7 @@ import { useEffect, useState } from "react";
 const LoginForm = () => {
   const { toast } = useToast();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const t = useTranslations("auth.login");
   const tCommon = useTranslations("common");
   const [clientIp, setClientIp] = useState<string>("");
@@ -72,7 +73,8 @@ const LoginForm = () => {
         title: t("messages.loginSuccess"),
         description: t("messages.loginSuccessDescription"),
       });
-      router.push("/");
+      const redirectTo = searchParams.get("next") || "/";
+      router.push(redirectTo);
     }
   });
 

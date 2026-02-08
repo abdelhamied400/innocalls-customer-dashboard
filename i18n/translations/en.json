@@ -52,6 +52,10 @@
       "noData": "No data available",
       "notFound": "Not found"
     },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
     "filter": {
       "noFiltersAvailable": "No filters available"
     },
@@ -214,6 +218,277 @@
       },
       "actions": {
         "submit": "Reset Password"
+      }
+    },
+    "updatePassword": {
+      "title": "Update Password",
+      "form": {
+        "fields": {
+          "currentPassword": {
+            "label": "Current Password",
+            "placeholder": "Enter current password..."
+          },
+          "newPassword": {
+            "label": "New Password",
+            "placeholder": "Enter new password..."
+          },
+          "confirmPassword": {
+            "label": "Confirm Password",
+            "placeholder": "Confirm new password..."
+          }
+        },
+        "validation": {
+          "currentPassword": {
+            "required": "Current password is required"
+          },
+          "confirmPassword": {
+            "mismatch": "Passwords do not match"
+          }
+        }
+      },
+      "messages": {
+        "resetSuccess": "Password Updated",
+        "resetSuccessDescription": "Your password has been updated successfully.",
+        "resetFailed": "Error",
+        "defaultErrorDescription": "An error occurred while updating your password."
+      },
+      "actions": {
+        "submit": "Save Changes"
+      },
+      "hint": "*Click 'Save Changes' to make sure your updates are saved"
+    }
+  },
+  "settings": {
+    "layout": {
+      "tabs": {
+        "account": "Account Settings",
+        "call": "Call Settings",
+        "agent": "Agent Settings"
+      }
+    },
+    "account": {
+      "organizationInfo": {
+        "title": "Organization Info",
+        "form": {
+          "fields": {
+            "organizationName": {
+              "label": "Organization Name",
+              "placeholder": "Enter organization name"
+            }
+          },
+          "validation": {
+            "organizationName": {
+              "required": "Organization name is required"
+            }
+          }
+        },
+        "messages": {
+          "success": "Success",
+          "successDescription": "Organization name updated successfully."
+        },
+        "actions": {
+          "submit": "Save Changes"
+        }
+      }
+    },
+    "call": {
+      "callSummary": {
+        "title": "Call Summary",
+        "enableAfterEveryCall": "Enable this option to view a summary after every call.",
+        "enableAfterConnectedCalls": "Enable this option to view a summary after just connected calls.",
+        "toggleSuccess": "Call summary setting updated successfully.",
+        "toggleFailed": "Failed to update call summary setting."
+      },
+      "tags": {
+        "title": "Manage Tags",
+        "columns": {
+          "nameAR": "Name in Arabic",
+          "nameEN": "Name in English",
+          "status": "Status",
+          "actions": "Actions"
+        },
+        "actions": {
+          "create": "Create New Tag"
+        },
+        "filters": {
+          "status": {
+            "label": "Status",
+            "selectLabel": "Select from the list",
+            "all": "All Tags"
+          }
+        },
+        "confirmations": {
+          "disableTitle": "Stop \"{name}\" tag",
+          "disableDescription": "You are about to stop this tag. Are you sure you want to stop this tag? Please confirm to proceed.",
+          "enableTitle": "Enable \"{name}\" tag",
+          "enableDescription": "You are about to enable this tag. Are you sure you want to enable this tag? Please confirm to proceed.",
+          "cancel": "No, Don't proceed",
+          "yesDisable": "Yes, Stop it",
+          "yesEnable": "Yes, Enable it"
+        },
+        "messages": {
+          "tagEnabled": "Tag enabled successfully.",
+          "tagDisabled": "Tag stopped successfully.",
+          "toggleFailed": "Failed to update tag status."
+        }
+      },
+      "createTag": {
+        "title": "Create New Tag",
+        "description": "Create a new tag",
+        "form": {
+          "fields": {
+            "nameAR": {
+              "label": "Name in Arabic",
+              "placeholder": "Enter name in Arabic"
+            },
+            "nameEN": {
+              "label": "Name in English",
+              "placeholder": "Enter name in English"
+            }
+          },
+          "validation": {
+            "nameAR": {
+              "required": "Name in Arabic is required"
+            },
+            "nameEN": {
+              "required": "Name in English is required"
+            }
+          }
+        },
+        "messages": {
+          "createSuccess": "Tag created successfully.",
+          "createFailed": "Failed to create tag."
+        },
+        "actions": {
+          "create": "Create Tag",
+          "close": "Close"
+        }
+      },
+      "editTag": {
+        "title": "Edit Tag",
+        "description": "Edit the tag details",
+        "form": {
+          "fields": {
+            "nameAR": {
+              "label": "Name in Arabic",
+              "placeholder": "Enter name in Arabic"
+            },
+            "nameEN": {
+              "label": "Name in English",
+              "placeholder": "Enter name in English"
+            }
+          },
+          "validation": {
+            "nameAR": {
+              "required": "Name in Arabic is required"
+            },
+            "nameEN": {
+              "required": "Name in English is required"
+            }
+          }
+        },
+        "messages": {
+          "updateSuccess": "Tag updated successfully.",
+          "updateFailed": "Failed to update tag.",
+          "tagNotFound": "Tag not found."
+        },
+        "actions": {
+          "save": "Save Changes",
+          "close": "Close"
+        }
+      }
+    },
+    "agent": {
+      "breaks": {
+        "title": "All Breaks",
+        "columns": {
+          "nameAR": "Name in Arabic",
+          "nameEN": "Name in English",
+          "actions": "Actions"
+        },
+        "actions": {
+          "create": "Create New Break"
+        },
+        "confirmations": {
+          "deleteTitle": "Delete \"{name}\" break",
+          "deleteDescription": "Are you sure you want to delete this break type? This action cannot be undone.",
+          "restoreTitle": "Restore \"{name}\" break",
+          "restoreDescription": "Are you sure you want to restore this break type?",
+          "cancel": "Cancel",
+          "yesDelete": "Yes, Delete",
+          "yesRestore": "Yes, Restore"
+        },
+        "messages": {
+          "deleteSuccess": "Break type deleted successfully.",
+          "deleteFailed": "Failed to delete break type.",
+          "restoreSuccess": "Break type restored successfully.",
+          "restoreFailed": "Failed to restore break type."
+        },
+        "createBreak": {
+          "title": "Create New Break",
+          "description": "Create a new break type",
+          "form": {
+            "fields": {
+              "nameAR": {
+                "label": "Name in Arabic",
+                "placeholder": "Enter name in Arabic"
+              },
+              "nameEN": {
+                "label": "Name in English",
+                "placeholder": "Enter name in English"
+              }
+            },
+            "validation": {
+              "nameAR": {
+                "required": "Name in Arabic is required"
+              },
+              "nameEN": {
+                "required": "Name in English is required"
+              }
+            }
+          },
+          "messages": {
+            "createSuccess": "Break type created successfully.",
+            "createFailed": "Failed to create break type."
+          },
+          "actions": {
+            "create": "Create Break",
+            "close": "Close"
+          }
+        },
+        "editBreak": {
+          "title": "Edit Break",
+          "description": "Edit break type details",
+          "form": {
+            "fields": {
+              "nameAR": {
+                "label": "Name in Arabic",
+                "placeholder": "Enter name in Arabic"
+              },
+              "nameEN": {
+                "label": "Name in English",
+                "placeholder": "Enter name in English"
+              }
+            },
+            "validation": {
+              "nameAR": {
+                "required": "Name in Arabic is required"
+              },
+              "nameEN": {
+                "required": "Name in English is required"
+              }
+            }
+          },
+          "messages": {
+            "updateSuccess": "Break type updated successfully.",
+            "updateFailed": "Failed to update break type.",
+            "breakNotFound": "Break type not found."
+          },
+          "actions": {
+            "save": "Save Changes",
+            "close": "Close"
+          }
+        }
       }
     }
   },
