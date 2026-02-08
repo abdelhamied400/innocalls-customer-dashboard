@@ -16,7 +16,10 @@ import ScheduledReportActions from "@/components/ScheduledReportActions";
 import { WEEK_DAYS } from "@/constants/scheduled-reports";
 import { ScheduledReportHistoryStatus } from "@/types/api/report";
 
-const PROCESSING_STATUSES: ScheduledReportHistoryStatus[] = ["pending", "processing"];
+const PROCESSING_STATUSES: ScheduledReportHistoryStatus[] = [
+  "pending",
+  "processing",
+];
 
 type HistoryPageProps = {
   params: Promise<{
@@ -80,7 +83,7 @@ const HistoryPage = ({ params }: HistoryPageProps) => {
   // Update processing status flag when data changes
   useEffect(() => {
     const hasProcessing = data.some((item) =>
-      PROCESSING_STATUSES.includes(item.status)
+      PROCESSING_STATUSES.includes(item.status),
     );
     setHasProcessingRecords(hasProcessing);
   }, [data]);
@@ -95,20 +98,28 @@ const HistoryPage = ({ params }: HistoryPageProps) => {
           </div>
           <div className="border rounded-lg p-4 flex items-center gap-2">
             <div className="property flex-1 border-e">
-              <p className="text-muted-foreground">{t("scheduleInfo.timezone")}</p>
+              <p className="text-muted-foreground">
+                {t("scheduleInfo.timezone")}
+              </p>
               <p className="font-bold">{report?.timezone}</p>
             </div>
             {report?.frequency === "weekly" && (
               <div className="property flex-1 border-e">
-                <p className="text-muted-foreground">{t("scheduleInfo.generatorDays")}</p>
+                <p className="text-muted-foreground">
+                  {t("scheduleInfo.generatorDays")}
+                </p>
                 <p className="font-bold">
-                  {report?.daysOfWeek?.map((day) => t(`scheduleInfo.weekDays.${WEEK_DAYS[day]}`)).join("/")}
+                  {report?.daysOfWeek
+                    ?.map((day) => t(`scheduleInfo.weekDays.${WEEK_DAYS[day]}`))
+                    .join("/")}
                 </p>
               </div>
             )}
             {report?.frequency === "monthly" && (
               <div className="property flex-1 border-e">
-                <p className="text-muted-foreground">{t("scheduleInfo.generatorDays")}</p>
+                <p className="text-muted-foreground">
+                  {t("scheduleInfo.generatorDays")}
+                </p>
                 <p>
                   <span className="font-bold">{report?.dayOfMonth}</span>{" "}
                   {t("scheduleInfo.dayOfMonthSuffix")}
@@ -116,7 +127,9 @@ const HistoryPage = ({ params }: HistoryPageProps) => {
               </div>
             )}
             <div className="property flex-1">
-              <p className="text-muted-foreground">{t("scheduleInfo.generatorTime")}</p>
+              <p className="text-muted-foreground">
+                {t("scheduleInfo.generatorTime")}
+              </p>
               <p className="font-bold">{report?.time}</p>
             </div>
           </div>

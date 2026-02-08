@@ -32,6 +32,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { ScheduledReport } from "@/types/api/report";
 import { useTranslations } from "@/providers/TranslationProvider";
+import { isAxiosError } from "axios";
 
 const ScheduledReportActions = ({
   report,
@@ -85,8 +86,11 @@ const ScheduledReportActions = ({
         queryKey: ["scheduled-report-history", report.id],
       });
     } catch (error) {
+      const errorMessage = isAxiosError(error)
+        ? error.response?.data?.message || error.message
+        : t("messages.generateFailed");
       toast({
-        title: t("messages.generateFailed"),
+        title: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -217,7 +221,10 @@ const ScheduledReportActions = ({
       </DropdownMenu>
 
       {/* Activate/Deactivate Confirmation Dialog */}
-      <AlertDialog open={isToggleDialogOpen} onOpenChange={setIsToggleDialogOpen}>
+      <AlertDialog
+        open={isToggleDialogOpen}
+        onOpenChange={setIsToggleDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
@@ -228,13 +235,20 @@ const ScheduledReportActions = ({
             <AlertDialogX />
             <AlertDialogDescription>
               {report?.status === "active"
-                ? t("confirmations.deactivateDescription", { name: report?.name })
-                : t("confirmations.activateDescription", { name: report?.name })}
+                ? t("confirmations.deactivateDescription", {
+                    name: report?.name,
+                  })
+                : t("confirmations.activateDescription", {
+                    name: report?.name,
+                  })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>{t("confirmations.cancel")}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleToggleStatus} disabled={isToggling}>
+            <AlertDialogAction
+              onClick={handleToggleStatus}
+              disabled={isToggling}
+            >
               {report?.status === "active"
                 ? t("confirmations.yesDeactivate")
                 : t("confirmations.yesActivate")}
