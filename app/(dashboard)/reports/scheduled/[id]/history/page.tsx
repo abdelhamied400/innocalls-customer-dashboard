@@ -136,7 +136,7 @@ const HistoryPage = ({ params }: HistoryPageProps) => {
         <div className="bg-white p-4 rounded-lg flex-1 flex flex-col">
           <PaginatedTable
             data={data}
-            columns={columns()}
+            columns={columns(t)}
             pagination={{
               totalItems: paginationData?.total ?? 0,
               totalPages: paginationData?.totalPages ?? 1,

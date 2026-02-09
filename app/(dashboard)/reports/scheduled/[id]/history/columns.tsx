@@ -8,32 +8,32 @@ import RecipientsCell from "./cells/RecipientsCell";
 import GeneratedAtCell from "./cells/GeneratedAtCell";
 import SortingHead from "@/components/SortingHead";
 
-export const columns = (): ColumnDef<ScheduledReportHistoryItem>[] => {
-  const t = useTranslations("reports.scheduled.history.columns");
-
+export const columns = (
+  t: ReturnType<typeof useTranslations>
+): ColumnDef<ScheduledReportHistoryItem>[] => {
   return [
     {
       accessorKey: "name",
       header: ({ column }) => (
-        <SortingHead column={column}>{t("reportName")}</SortingHead>
+        <SortingHead column={column}>{t("columns.reportName")}</SortingHead>
       ),
       cell: ({ row }) => row.original.reportName,
     },
     {
       accessorKey: "generatedAt",
       header: ({ column }) => (
-        <SortingHead column={column}>{t("generatedAt")}</SortingHead>
+        <SortingHead column={column}>{t("columns.generatedAt")}</SortingHead>
       ),
       cell: GeneratedAtCell,
     },
     {
       accessorKey: "status",
-      header: t("status"),
+      header: t("columns.status"),
       cell: StatusCell,
     },
     {
       accessorKey: "recipients",
-      header: t("recipients"),
+      header: t("columns.recipients"),
       cell: RecipientsCell,
     },
   ];
