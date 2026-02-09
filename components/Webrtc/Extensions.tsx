@@ -3,13 +3,12 @@ import webrtcService from "@/services/webrtc.service";
 import { Extension } from "@/types/api/extension";
 import ExtensionRow from "./Extensions/ExtensionRow";
 import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useVocab } from "@/hooks/useVocab";
 
 const Extensions = () => {
   const { extensions } = useVocab();
   const { login, setExtension } = useSip();
-  const { toast } = useToast();
   const [loading, setLoading] = useState(false);
 
   const onExtensionLogin = async (extension: Extension) => {
@@ -25,10 +24,8 @@ const Extensions = () => {
       });
     } catch (error) {
       console.error("Error during extension login:", error);
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "Failed to login to extension. Please try again.",
-        variant: "destructive",
       });
     } finally {
       setLoading(false);

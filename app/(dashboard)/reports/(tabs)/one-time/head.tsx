@@ -15,7 +15,7 @@ import { Calendar, Plus } from "lucide-react";
 import Link from "next/link";
 import DatePicker from "@/components/ui/date-picker";
 import { isValidDateRange } from "@/lib/date";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
@@ -34,7 +34,6 @@ type OneTimeReportHeadProps = {
 };
 
 const OneTimeReportHead = ({ filters, setFilters }: OneTimeReportHeadProps) => {
-  const { toast } = useToast();
   const t = useTranslations("reports.oneTime");
   const tCommon = useTranslations("common");
 
@@ -50,10 +49,8 @@ const OneTimeReportHead = ({ filters, setFilters }: OneTimeReportHeadProps) => {
         fromDate,
         toDate,
         (message) => {
-          toast({
-            title: t("messages.invalidDateRange"),
+          toast.error(t("messages.invalidDateRange"), {
             description: message,
-            variant: "destructive",
           });
         },
         -1,

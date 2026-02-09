@@ -19,7 +19,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useTranslations } from "@/providers/TranslationProvider";
 import breakTypesService from "@/services/break-types.service";
 import { BreakType } from "@/types/api/break-type";
@@ -34,7 +34,6 @@ type BreakTypeActionsCellProps = {
 };
 
 const BreakTypeActionsCell = ({ breakType }: BreakTypeActionsCellProps) => {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
@@ -53,24 +52,16 @@ const BreakTypeActionsCell = ({ breakType }: BreakTypeActionsCellProps) => {
         );
       });
 
-      toast({
-        title: t("messages.deleteSuccess"),
-        variant: "success",
-      });
+      toast.success(t("messages.deleteSuccess"));
 
       queryClient.invalidateQueries({ queryKey: ["break-types"] });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: t("messages.deleteFailed"),
+        toast.error(t("messages.deleteFailed"), {
           description: error.response?.data?.message,
-          variant: "destructive",
         });
       } else {
-        toast({
-          title: t("messages.deleteFailed"),
-          variant: "destructive",
-        });
+        toast.error(t("messages.deleteFailed"));
       }
     } finally {
       setIsDeleting(false);
@@ -90,24 +81,16 @@ const BreakTypeActionsCell = ({ breakType }: BreakTypeActionsCellProps) => {
         );
       });
 
-      toast({
-        title: t("messages.restoreSuccess"),
-        variant: "success",
-      });
+      toast.success(t("messages.restoreSuccess"));
 
       queryClient.invalidateQueries({ queryKey: ["break-types"] });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: t("messages.restoreFailed"),
+        toast.error(t("messages.restoreFailed"), {
           description: error.response?.data?.message,
-          variant: "destructive",
         });
       } else {
-        toast({
-          title: t("messages.restoreFailed"),
-          variant: "destructive",
-        });
+        toast.error(t("messages.restoreFailed"));
       }
     } finally {
       setIsRestoring(false);

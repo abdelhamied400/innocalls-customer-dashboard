@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Field from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import useAuth from "@/hooks/useAuth";
 import { useTranslations } from "@/providers/TranslationProvider";
 import organizationsService from "@/services/organizations.service";
@@ -18,7 +18,6 @@ import { useForm } from "react-hook-form";
 
 const OrganizationDetailsForm = () => {
   const { Organization, setOrganization } = useAuthStore();
-  const { toast } = useToast();
   const { refetch } = useAuth();
   const t = useTranslations("settings.account.organizationInfo");
 
@@ -42,18 +41,14 @@ const OrganizationDetailsForm = () => {
         ...(Organization || ({} as Organization)),
         name: data.organizationName,
       });
-      toast({
-        title: t("messages.success"),
+      toast.success(t("messages.success"), {
         description: t("messages.successDescription"),
-        variant: "success",
       });
       refetch();
     } catch (error: any) {
       console.error("Failed to update organization name:", error);
-      toast({
-        title: t("messages.error"),
+      toast.error(t("messages.error"), {
         description: error.response?.data?.message,
-        variant: "destructive",
       });
     }
   });

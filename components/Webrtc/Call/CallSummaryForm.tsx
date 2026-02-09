@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import Field from "@/components/ui/field";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import MultiSelect from "@/components/oldselect";
@@ -27,7 +27,6 @@ interface CallSummaryFormProps {
 const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
   const t = useTranslations("webrtc.summary");
 
-  const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { lastCall, setCallSummaryModalOpen, clearLastCall } = useWebrtcStore();
   const { tags } = useVocab();
@@ -66,18 +65,14 @@ const CallSummaryForm = ({ initialData }: CallSummaryFormProps) => {
           ) || "",
         status: lastCall.status || "Answered",
       });
-      toast({
-        title: t("form.submit.success.title"),
+      toast.info(t("form.submit.success.title"), {
         description: t("form.submit.success.description"),
-        variant: "default",
       });
       form.reset();
       setCallSummaryModalOpen(false);
     } catch (error) {
-      toast({
-        title: t("form.submit.failed.title"),
+      toast.error(t("form.submit.failed.title"), {
         description: t("form.submit.failed.description"),
-        variant: "destructive",
       });
     } finally {
       setIsSubmitting(false);

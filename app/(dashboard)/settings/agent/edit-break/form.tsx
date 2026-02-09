@@ -12,7 +12,7 @@ import Stepper, {
   StepperStep,
   StepperSteps,
 } from "@/components/ui/stepper";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useTranslations } from "@/providers/TranslationProvider";
 import breakTypesService from "@/services/break-types.service";
 import { BreakType } from "@/types/api/break-type";
@@ -29,7 +29,6 @@ type EditBreakFormProps = {
 };
 
 const EditBreakForm = ({ breakType }: EditBreakFormProps) => {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const closeSheetRef = useRef<HTMLButtonElement>(null);
   const [currentStep, setCurrentStep] = useState(0);
@@ -61,25 +60,17 @@ const EditBreakForm = ({ breakType }: EditBreakFormProps) => {
         );
       });
 
-      toast({
-        title: t("messages.updateSuccess"),
-        variant: "success",
-      });
+      toast.success(t("messages.updateSuccess"));
 
       closeSheetRef.current?.click();
       queryClient.invalidateQueries({ queryKey: ["break-types"] });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: t("messages.updateFailed"),
+        toast.error(t("messages.updateFailed"), {
           description: error.response?.data?.message,
-          variant: "destructive",
         });
       } else {
-        toast({
-          title: t("messages.updateFailed"),
-          variant: "destructive",
-        });
+        toast.error(t("messages.updateFailed"));
       }
     }
   });

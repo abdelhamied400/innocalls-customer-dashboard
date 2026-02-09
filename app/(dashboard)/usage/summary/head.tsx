@@ -15,7 +15,7 @@ import DatePicker from "@/components/ui/date-picker";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { isValidDateRange } from "@/lib/date";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
@@ -51,7 +51,6 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
   const [groupBy, setGroupBy] = useState<string[]>([]);
   const [summaryBy, setSummaryBy] = useState<string>("");
 
-  const { toast } = useToast();
   const { table } = usePaginatedTable();
   const t = useTranslations("usage.summary");
   const tUsageCommon = useTranslations("usage.common");
@@ -62,10 +61,8 @@ const UsageSummaryHead = ({ filters, setFilters }: UsageSummaryHeadProps) => {
       fromDate,
       toDate,
       (message) => {
-        toast({
-          title: t("messages.invalidDateRange"),
+        toast.error(t("messages.invalidDateRange"), {
           description: message,
-          variant: "destructive",
         });
       },
       30,

@@ -12,7 +12,7 @@ import Stepper, {
   StepperStep,
   StepperSteps,
 } from "@/components/ui/stepper";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import StripeProvider from "@/providers/StripeProvider";
 import billingService from "@/services/billing.service";
 import {
@@ -30,7 +30,6 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import useAuthStore from "@/store/auth.slice";
 
 const RefillBalanceForm = () => {
-  const { toast } = useToast();
   const [paymentReference, setPaymentReference] = useState<string>();
   const [paymentProvider, setPaymentProvider] = useState<string>();
   const [currentStep, setCurrentStep] = useState(0);
@@ -62,18 +61,12 @@ const RefillBalanceForm = () => {
       setPaymentProvider(res.paymentProvider);
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          variant: "destructive",
-          title: t("messages.refillError"),
-          description:
-            error.response?.data?.message || t("messages.unknownError"),
+        toast.error(t("messages.refillError"), {
+          description: error.response?.data?.message || t("messages.unknownError"),
         });
       } else {
-        toast({
-          variant: "destructive",
-          title: t("messages.refillError"),
-          description:
-            error instanceof Error ? error.message : t("messages.unknownError"),
+        toast.error(t("messages.refillError"), {
+          description: error instanceof Error ? error.message : t("messages.unknownError"),
         });
       }
     } finally {

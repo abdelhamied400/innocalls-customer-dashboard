@@ -18,7 +18,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useMemo, useEffect } from "react";
 import { format, parse } from "date-fns";
 import scheduledReportsService from "@/services/scheduled-reports.service";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   ReportType,
@@ -49,7 +49,6 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
   const [emailError, setEmailError] = useState<string | null>(null);
   const t = useTranslations("reports.scheduled.editReport");
   const tCreate = useTranslations("reports.scheduled.createReport");
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -237,20 +236,15 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
     try {
       await scheduledReportsService.update(reportId, payload);
 
-      toast({
-        title: t("messages.updateSuccess"),
-        variant: "success",
-      });
+      toast.success(t("messages.updateSuccess"));
 
       queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
       queryClient.invalidateQueries({ queryKey: ["scheduled-report", reportId] });
       setIsSuccess(true);
     } catch (error: any) {
       const backendMessage = error?.response?.data?.message;
-      toast({
-        title: t("messages.updateFailed"),
+      toast.error(t("messages.updateFailed"), {
         description: backendMessage,
-        variant: "destructive",
       });
     }
   };

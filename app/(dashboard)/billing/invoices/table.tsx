@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { columns } from "./columns";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import billingService from "@/services/billing.service";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useTranslations } from "@/providers/TranslationProvider";
 import PaginatedTable from "@/components/Table/PaginatedTable";
 import InvoicesHead from "./head";
@@ -33,7 +33,6 @@ export const defaultFilters: InvoicesFilters = {
 };
 
 const BillingTable = () => {
-  const { toast } = useToast();
   const t = useTranslations("billing.invoices");
 
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -71,18 +70,13 @@ const BillingTable = () => {
   useEffect(() => {
     if (isError) {
       if (isAxiosError(error)) {
-        toast({
-          title: "Error",
-          description:
-            error.response?.data?.message || t("messages.unknownError"),
-          variant: "destructive",
+        toast.error("Error", {
+          description: error.response?.data?.message || t("messages.unknownError"),
         });
         return;
       }
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: t("messages.unknownError"),
-        variant: "destructive",
       });
     }
   }, [isError, error, toast]);

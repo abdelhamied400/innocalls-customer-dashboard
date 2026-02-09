@@ -19,7 +19,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useTranslations } from "@/providers/TranslationProvider";
 import vocabService from "@/services/vocab.service";
 import { FullTag } from "@/types/api/tag";
@@ -34,7 +34,6 @@ type TagActionsCellProps = {
 };
 
 const TagActionsCell = ({ tag }: TagActionsCellProps) => {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isToggling, setIsToggling] = useState(false);
   const t = useTranslations("settings.call.tags");
@@ -56,27 +55,19 @@ const TagActionsCell = ({ tag }: TagActionsCellProps) => {
         );
       });
 
-      toast({
-        title: tag.isDeleted
+      toast.success(tag.isDeleted
           ? t("messages.tagEnabled")
-          : t("messages.tagDisabled"),
-        variant: "success",
-      });
+          : t("messages.tagDisabled"));
 
       // Refetch in background to ensure data consistency
       queryClient.invalidateQueries({ queryKey: ["tags"] });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: t("messages.toggleFailed"),
+        toast.error(t("messages.toggleFailed"), {
           description: error.response?.data?.message,
-          variant: "destructive",
         });
       } else {
-        toast({
-          title: t("messages.toggleFailed"),
-          variant: "destructive",
-        });
+        toast.error(t("messages.toggleFailed"));
       }
     } finally {
       setIsToggling(false);

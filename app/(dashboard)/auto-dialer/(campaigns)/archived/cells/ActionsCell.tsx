@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import autoDialerService from "@/services/auto-dialer.service";
 import Link from "next/link";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -19,31 +19,23 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [isArchiving, setIsArchiving] = useState(false);
   const queryClient = useQueryClient();
-  const { toast } = useToast();
 
   const downloadReport = async () => {
     try {
       setIsDownloading(true);
       await autoDialerService.downloadReport(row.original.id);
-      toast({
-        title: "Download started",
-        description:
-          "Your report is being Processed. You will receive an email with the download link once it's ready.",
-        variant: "success",
+      toast.success("Download started", {
+        description: "Your report is being Processed. You will receive an email with the download link once it's ready.",
       });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: "Error",
+        toast.error("Error", {
           description: error.response?.data?.message || "An error occurred",
-          variant: "destructive",
         });
         return;
       }
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "An error occurred while downloading the report.",
-        variant: "destructive",
       });
     } finally {
       setIsDownloading(false);

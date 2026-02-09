@@ -74,19 +74,17 @@ const HistoryPage = ({ params }: HistoryPageProps) => {
         sortBy,
         sortOrder,
       ),
-    refetchInterval: hasProcessingRecords ? 30000 : false,
+    refetchInterval: (query) => {
+      const data = query.state.data?.data ?? [];
+      const hasProcessing = data.some((item) =>
+        PROCESSING_STATUSES.includes(item.status),
+      );
+      return hasProcessing ? 30000 : false;
+    },
   });
 
   const data = response?.data ?? [];
   const paginationData = response?.pagination;
-
-  // Update processing status flag when data changes
-  useEffect(() => {
-    const hasProcessing = data.some((item) =>
-      PROCESSING_STATUSES.includes(item.status),
-    );
-    setHasProcessingRecords(hasProcessing);
-  }, [data]);
 
   return (
     <div className="page h-full" id="scheduled-report-history">

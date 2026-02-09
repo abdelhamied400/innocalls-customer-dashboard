@@ -27,7 +27,7 @@ import editUserSchema, {
   type EditUserSubmitSchema,
 } from "@/validation/EditUser";
 import usersService from "@/services/users.service";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 import { User } from "../../(list)/columns";
@@ -39,7 +39,6 @@ type EditUserFormProps = {
 const EditUserForm = ({ initialUser }: EditUserFormProps) => {
   const queryClient = useQueryClient();
   const [currentStep, setCurrentStep] = useState(0);
-  const { toast } = useToast();
   const closeSheetRef = useRef<HTMLButtonElement>(null);
   const t = useTranslations("users");
   const commonT = useTranslations("common");
@@ -67,8 +66,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
       }
 
       const res = await usersService.editUser(submitData);
-      toast({
-        title: t("update.messages.success"),
+      toast.info(t("update.messages.success"), {
         description: t("update.messages.successDescription", {
           name: res.name,
         }),
@@ -78,18 +76,12 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
       queryClient.invalidateQueries({ queryKey: ["user", initialUser.id] });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          variant: "destructive",
-          title: t("update.messages.error"),
-          description:
-            error.response?.data?.message || t("update.messages.unknownError"),
+        toast.error(t("update.messages.error"), {
+          description: error.response?.data?.message || t("update.messages.unknownError"),
         });
       } else {
-        toast({
-          variant: "destructive",
-          title: t("update.messages.error"),
-          description:
-            error instanceof Error
+        toast.error(t("update.messages.error"), {
+          description: error instanceof Error
               ? error.message
               : t("update.messages.unknownError"),
         });

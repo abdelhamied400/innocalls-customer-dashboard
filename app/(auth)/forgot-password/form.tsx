@@ -5,7 +5,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import Field from "@/components/ui/field";
 import authService from "@/services/auth.service";
 import { AxiosError } from "axios";
@@ -14,7 +14,6 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import Link from "next/link";
 
 const ForgotPasswordForm = () => {
-  const { toast } = useToast();
   const t = useTranslations("auth.forgotPassword");
 
   // 1. Define your form.
@@ -33,25 +32,19 @@ const ForgotPasswordForm = () => {
   const onSubmit = form.handleSubmit(async (data) => {
     try {
       await authService.forgotPassword(data.email);
-      toast({
-        title: t("messages.emailSent"),
+      toast.info(t("messages.emailSent"), {
         description: t("messages.emailSentDescription"),
       });
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast({
-          title: t("messages.couldNotSendEmail"),
-
+        toast.error(t("messages.couldNotSendEmail"), {
           description: error.response?.data.message,
-          variant: "destructive",
         });
         return;
       }
 
-      toast({
-        title: t("messages.somethingWentWrong"),
+      toast.error(t("messages.somethingWentWrong"), {
         description: t("messages.defaultErrorDescription"),
-        variant: "destructive",
       });
     }
   });

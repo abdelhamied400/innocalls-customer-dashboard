@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { ScheduledReport } from "@/types/api/report";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { isAxiosError } from "axios";
@@ -45,7 +45,6 @@ const ScheduledReportActions = ({
   const [isToggleDialogOpen, setIsToggleDialogOpen] = useState(false);
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { toast } = useToast();
   const t = useTranslations("reports.scheduled");
 
   const handleDelete = async () => {
@@ -54,18 +53,12 @@ const ScheduledReportActions = ({
       setIsDeleting(true);
       await scheduledReportsService.delete(report.id);
 
-      toast({
-        title: t("messages.deleteSuccess"),
-        variant: "success",
-      });
+      toast.success(t("messages.deleteSuccess"));
 
       queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
       router.push("/reports/scheduled");
     } catch (error) {
-      toast({
-        title: t("messages.deleteFailed"),
-        variant: "destructive",
-      });
+      toast.error(t("messages.deleteFailed"));
     } finally {
       setIsDeleting(false);
     }
@@ -77,10 +70,7 @@ const ScheduledReportActions = ({
       setIsGenerating(true);
       await scheduledReportsService.generateNow(report.id);
 
-      toast({
-        title: t("messages.generateSuccess"),
-        variant: "success",
-      });
+      toast.success(t("messages.generateSuccess"));
 
       queryClient.invalidateQueries({
         queryKey: ["scheduled-report-history", report.id],
@@ -89,10 +79,7 @@ const ScheduledReportActions = ({
       const errorMessage = isAxiosError(error)
         ? error.response?.data?.message || error.message
         : t("messages.generateFailed");
-      toast({
-        title: errorMessage,
-        variant: "destructive",
-      });
+      toast.error(errorMessage);
     } finally {
       setIsGenerating(false);
     }
@@ -108,26 +95,18 @@ const ScheduledReportActions = ({
         await scheduledReportsService.activate(report.id);
       }
 
-      toast({
-        title:
-          report.status === "active"
+      toast.success(report.status === "active"
             ? t("messages.deactivateSuccess")
-            : t("messages.activateSuccess"),
-        variant: "success",
-      });
+            : t("messages.activateSuccess"));
 
       queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
       queryClient.invalidateQueries({
         queryKey: ["scheduled-report", report.id],
       });
     } catch (error) {
-      toast({
-        title:
-          report.status === "active"
+      toast.error(report.status === "active"
             ? t("messages.deactivateFailed")
-            : t("messages.activateFailed"),
-        variant: "destructive",
-      });
+            : t("messages.activateFailed"));
     } finally {
       setIsToggling(false);
       setIsToggleDialogOpen(false);

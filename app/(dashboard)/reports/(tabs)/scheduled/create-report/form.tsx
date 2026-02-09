@@ -13,7 +13,7 @@ import { ChevronLeftIcon, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useMemo } from "react";
 import scheduledReportsService from "@/services/scheduled-reports.service";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   CreateScheduledReportPayload,
@@ -39,7 +39,6 @@ const CreateReportForm = () => {
   const [emailInput, setEmailInput] = useState("");
   const [emailError, setEmailError] = useState<string | null>(null);
   const t = useTranslations("reports.scheduled.createReport");
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const router = useRouter();
   const { extensions: vocabExtensions, ergs } = useVocab();
@@ -164,19 +163,14 @@ const CreateReportForm = () => {
     try {
       await scheduledReportsService.create(payload);
 
-      toast({
-        title: t("messages.createSuccess"),
-        variant: "success",
-      });
+      toast.success(t("messages.createSuccess"));
 
       queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
       setIsSuccess(true);
     } catch (error: any) {
       const backendMessage = error?.response?.data?.message;
-      toast({
-        title: t("messages.createFailed"),
+      toast.error(t("messages.createFailed"), {
         description: backendMessage,
-        variant: "destructive",
       });
     }
   };

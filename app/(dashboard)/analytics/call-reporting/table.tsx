@@ -6,7 +6,7 @@ import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { PaginationState, SortingState } from "@tanstack/react-table";
 import { useEffect, useRef, useState } from "react";
 import { columns } from "./columns";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import PaginatedTable from "@/components/Table/PaginatedTable";
 import CallReportingHead from "./head";
@@ -28,7 +28,6 @@ const defaultFilters: CallReportingFilters = {
 };
 
 const CallReportingTable = () => {
-  const { toast } = useToast();
 
   const t = useTranslations("callReporting.messages");
 
@@ -66,10 +65,8 @@ const CallReportingTable = () => {
       } else {
         message = error?.message;
       }
-      toast({
-        title: t("errorFetchingData"),
+      toast.error(t("errorFetchingData"), {
         description: message,
-        variant: "destructive",
       });
       setFilters(defaultFilters);
       setTimeout(() => {

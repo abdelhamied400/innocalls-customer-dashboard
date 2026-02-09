@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/collapsible";
 import { Toggle } from "@/components/ui/toggle";
 import DatePicker from "@/components/ui/date-picker";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isValidDateRange } from "@/lib/date";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
@@ -47,7 +47,6 @@ const PaymentHistoryHead = ({
   const tCommon = useTranslations("common");
   const tBillingCommon = useTranslations("billing.common");
 
-  const { toast } = useToast();
   const { table } = usePaginatedTable();
 
   const [fromDate, setFromDate] = useState<Date>(defaultFromDate);
@@ -58,10 +57,8 @@ const PaymentHistoryHead = ({
       fromDate,
       toDate,
       (message) => {
-        toast({
-          title: tBillingCommon("messages.invalidDateRange"),
+        toast.error(tBillingCommon("messages.invalidDateRange"), {
           description: message,
-          variant: "destructive",
         });
       },
       90,

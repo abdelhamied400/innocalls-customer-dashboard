@@ -19,7 +19,7 @@ interface TranslationContextType {
 }
 
 const TranslationContext = createContext<TranslationContextType | undefined>(
-  undefined
+  undefined,
 );
 
 interface TranslationProviderProps {
@@ -32,7 +32,7 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
   initialLocale,
 }) => {
   const [locale, setLocaleState] = useState<LocaleSlug>(
-    initialLocale || defaultLocale
+    initialLocale || defaultLocale,
   );
   const [isLoading, setIsLoading] = useState(true);
 
@@ -84,7 +84,7 @@ export const useTranslationContext = () => {
   const context = useContext(TranslationContext);
   if (context === undefined) {
     throw new Error(
-      "useTranslationContext must be used within a TranslationProvider"
+      "useTranslationContext must be used within a TranslationProvider",
     );
   }
   return context;

@@ -12,12 +12,11 @@ import TagsTable from "./table";
 import useAuthStore from "@/store/auth.slice";
 import { Organization } from "@/types/api/organization";
 import settingsService from "@/services/settings.service";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 const CallSettings = () => {
   const t = useTranslations("settings.call");
   const { Organization, setOrganization } = useAuthStore();
-  const { toast } = useToast();
 
   const handleToggleAfterCallSummary = async (checked: boolean) => {
     try {
@@ -28,15 +27,9 @@ const CallSettings = () => {
         enableAfterCallTags: checked,
       });
 
-      toast({
-        title: t("callSummary.toggleSuccess"),
-        variant: "success",
-      });
+      toast.success(t("callSummary.toggleSuccess"));
     } catch (error) {
-      toast({
-        title: t("callSummary.toggleFailed"),
-        variant: "destructive",
-      });
+      toast.error(t("callSummary.toggleFailed"));
     }
   };
 

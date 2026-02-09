@@ -13,7 +13,7 @@ import {
   AlertDialogX,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { OneTimeReport } from "@/types/api/report";
 import { DeleteOutline } from "@mui/icons-material";
@@ -22,7 +22,6 @@ import { CellContext } from "@tanstack/react-table";
 import { useState } from "react";
 
 const ActionsCell = ({ row }: CellContext<OneTimeReport, unknown>) => {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isDeleting, setIsDeleting] = useState(false);
   const t = useTranslations("reports.oneTime");
@@ -39,17 +38,11 @@ const ActionsCell = ({ row }: CellContext<OneTimeReport, unknown>) => {
         return oldData.filter((report) => report.id !== row.original.id);
       });
 
-      toast({
-        title: t("messages.deleteSuccess"),
-        variant: "success",
-      });
+      toast.success(t("messages.deleteSuccess"));
 
       queryClient.invalidateQueries({ queryKey: ["one-time-reports"] });
     } catch (error) {
-      toast({
-        title: t("messages.deleteFailed"),
-        variant: "destructive",
-      });
+      toast.error(t("messages.deleteFailed"));
     } finally {
       setIsDeleting(false);
     }

@@ -24,7 +24,7 @@ import { ChevronLeftIcon, Loader2, X } from "lucide-react";
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import oneTimeReportsService from "@/services/one-time-reports.service";
 import { format } from "date-fns";
@@ -54,7 +54,6 @@ const CreateReportForm = () => {
   const t = useTranslations("reports.oneTime.createReport");
   const closeSheetRef = useRef<HTMLButtonElement>(null);
   const queryClient = useQueryClient();
-  const { toast } = useToast();
   const { extensions: vocabExtensions, ergs } = useVocab();
   const reportOptions = useReportOptions();
 
@@ -170,26 +169,19 @@ const CreateReportForm = () => {
       });
 
       queryClient.invalidateQueries({ queryKey: ["one-time-reports"] });
-      toast({
-        title: t("success.title"),
+      toast.info(t("success.title"), {
         description: t("success.subtitle"),
       });
       setIsSuccess(true);
       setCurrentStep(1);
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          variant: "destructive",
-          title: t("messages.error"),
-          description:
-            error.response?.data?.message || t("messages.unknownError"),
+        toast.error(t("messages.error"), {
+          description: error.response?.data?.message || t("messages.unknownError"),
         });
       } else {
-        toast({
-          variant: "destructive",
-          title: t("messages.error"),
-          description:
-            error instanceof Error ? error.message : t("messages.unknownError"),
+        toast.error(t("messages.error"), {
+          description: error instanceof Error ? error.message : t("messages.unknownError"),
         });
       }
     }

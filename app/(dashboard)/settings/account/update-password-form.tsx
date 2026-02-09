@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import Field from "@/components/ui/field";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { clientSignout } from "@/lib/auth";
 import { apiLogger } from "@/lib/logger";
 import { useTranslations } from "@/providers/TranslationProvider";
@@ -14,7 +14,6 @@ import { isAxiosError } from "axios";
 import { useForm } from "react-hook-form";
 
 const UpdatePasswordForm = () => {
-  const { toast } = useToast();
   const t = useTranslations("auth.updatePassword");
   const tCommon = useTranslations("common");
 
@@ -40,26 +39,21 @@ const UpdatePasswordForm = () => {
           values.currentPassword,
           values.newPassword,
         );
-        toast({
-          title: t("messages.resetSuccess"),
+        toast.info(t("messages.resetSuccess"), {
           description: t("messages.resetSuccessDescription"),
         });
         apiLogger.info("Unauthorized! Logging out...");
         await clientSignout("/login");
       } catch (error) {
         if (isAxiosError(error)) {
-          toast({
-            title: t("messages.resetFailed"),
+          toast.error(t("messages.resetFailed"), {
             description: error.response?.data.message,
-            variant: "destructive",
           });
           return;
         }
         // Handle other types of errors
-        toast({
-          title: t("messages.resetFailed"),
+        toast.error(t("messages.resetFailed"), {
           description: t("messages.defaultErrorDescription"),
-          variant: "destructive",
         });
       }
     },

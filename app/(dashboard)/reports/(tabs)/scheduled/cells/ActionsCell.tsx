@@ -19,7 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { ScheduledReport } from "@/types/api/report";
 import {
@@ -40,7 +40,6 @@ import { useRouter } from "next/navigation";
 
 const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
   const router = useRouter();
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const [isDeleting, setIsDeleting] = useState(false);
   const [isToggleDialogOpen, setIsToggleDialogOpen] = useState(false);
@@ -57,17 +56,11 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
       setIsDeleting(true);
       await scheduledReportsService.delete(report.id);
 
-      toast({
-        title: t("messages.deleteSuccess"),
-        variant: "success",
-      });
+      toast.success(t("messages.deleteSuccess"));
 
       queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
     } catch (error) {
-      toast({
-        title: t("messages.deleteFailed"),
-        variant: "destructive",
-      });
+      toast.error(t("messages.deleteFailed"));
     } finally {
       setIsDeleting(false);
     }
@@ -82,19 +75,13 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
       setIsGenerating(true);
       await scheduledReportsService.generateNow(report.id);
 
-      toast({
-        title: t("messages.generateSuccess"),
-        variant: "success",
-      });
+      toast.success(t("messages.generateSuccess"));
 
       queryClient.invalidateQueries({
         queryKey: ["scheduled-report-history", report.id],
       });
     } catch (error) {
-      toast({
-        title: t("messages.generateFailed"),
-        variant: "destructive",
-      });
+      toast.error(t("messages.generateFailed"));
     } finally {
       setIsGenerating(false);
     }
@@ -109,21 +96,15 @@ const ActionsCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
         await scheduledReportsService.activate(report.id);
       }
 
-      toast({
-        title: isActive
+      toast.success(isActive
           ? t("messages.deactivateSuccess")
-          : t("messages.activateSuccess"),
-        variant: "success",
-      });
+          : t("messages.activateSuccess"));
 
       queryClient.invalidateQueries({ queryKey: ["scheduled-reports"] });
     } catch (error) {
-      toast({
-        title: isActive
+      toast.error(isActive
           ? t("messages.deactivateFailed")
-          : t("messages.activateFailed"),
-        variant: "destructive",
-      });
+          : t("messages.activateFailed"));
     } finally {
       setIsToggling(false);
       setIsToggleDialogOpen(false);

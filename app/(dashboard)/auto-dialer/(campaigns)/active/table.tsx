@@ -11,11 +11,10 @@ import PaginatedTablePagination from "@/components/Table/PaginatedTablePaginatio
 import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
 import { useEffect, useRef, useState } from "react";
 import { PaginationState } from "@tanstack/react-table";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
 
 const ActiveCampaignsTable = () => {
-  const { toast } = useToast();
   const [filters, setFilters] = useState({});
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -35,17 +34,13 @@ const ActiveCampaignsTable = () => {
   useEffect(() => {
     if (isError) {
       if (isAxiosError(error)) {
-        toast({
-          title: "Error",
+        toast.error("Error", {
           description: error.response?.data?.message || "An error occurred",
-          variant: "destructive",
         });
         return;
       }
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "An error occurred",
-        variant: "destructive",
       });
     }
   }, [isError, error, toast]);

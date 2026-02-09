@@ -1,5 +1,5 @@
 "use client";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import ReactQueryProvider from "./ReactQueryProvider";
 import VocabProvider from "./VocabProvider";
 import useAuthStore from "@/store/auth.slice";

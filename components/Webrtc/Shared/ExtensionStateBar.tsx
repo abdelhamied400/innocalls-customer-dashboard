@@ -18,7 +18,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { isValidTransition } from "@/lib/webrtc";
 import { AgentActivity } from "@/types/webrtc";
 import { isAxiosError } from "axios";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import useAuth from "@/hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 
@@ -44,7 +44,6 @@ const ExtensionStateBar = () => {
 
   const breakType =
     auth?.user?.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
-  const { toast } = useToast();
 
   // Agent is on a call if there's an active session
   const isOnCall = !!currentSession;
@@ -54,10 +53,8 @@ const ExtensionStateBar = () => {
     breakType?: AgentActivity,
   ) => {
     if (isOnCall) {
-      toast({
-        title: t("activity.messages.error"),
+      toast.error(t("activity.messages.error"), {
         description: t("activity.messages.cannotChangeWhileOnCall"),
-        variant: "destructive",
       });
       return;
     }
@@ -69,16 +66,12 @@ const ExtensionStateBar = () => {
     } catch (error) {
       if (isAxiosError(error)) {
         const errorMessage = error.response?.data?.message || error.message;
-        toast({
-          title: t("activity.messages.error"),
+        toast.error(t("activity.messages.error"), {
           description: errorMessage,
-          variant: "destructive",
         });
       } else {
-        toast({
-          title: t("activity.messages.error"),
+        toast.error(t("activity.messages.error"), {
           description: t("activity.messages.unexpectedError"),
-          variant: "destructive",
         });
       }
     } finally {

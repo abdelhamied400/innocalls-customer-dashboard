@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { createColumns } from "./columns";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import usageService, { UsageDetailedFilters } from "@/services/usage.service";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import PaginatedTable from "@/components/Table/PaginatedTable";
 import DetailedUsageHead from "./head";
@@ -32,7 +32,6 @@ export const defaultFilters: UsageDetailedFilters = {
 };
 
 const UsageDetailedTable = () => {
-  const { toast } = useToast();
   const t = useTranslations("usage.detailed");
   const tCommon = useTranslations("usage.common");
 
@@ -67,10 +66,8 @@ const UsageDetailedTable = () => {
       } else {
         message = error?.message || t("messages.errorDescription");
       }
-      toast({
-        title: t("messages.error"),
+      toast.error(t("messages.error"), {
         description: message,
-        variant: "destructive",
       });
       setFilters(defaultFilters);
     }
