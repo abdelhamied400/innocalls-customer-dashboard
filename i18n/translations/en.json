@@ -1022,8 +1022,8 @@
           }
         },
         "columns": {
-          "generatedAt": "Generated At",
-          "reportName": "Report Name",
+          "generatedAt": "Generation Date",
+          "reportName": "Name",
           "status": "Status",
           "recipients": "Recipients"
         },

@@ -1022,8 +1022,8 @@
           }
         },
         "columns": {
-          "generatedAt": "تم الإنشاء في",
-          "reportName": "اسم التقرير",
+          "generatedAt": "تاريخ الإنشاء",
+          "reportName": "الاسم",
           "status": "الحالة",
           "recipients": "المستلمون"
         },
