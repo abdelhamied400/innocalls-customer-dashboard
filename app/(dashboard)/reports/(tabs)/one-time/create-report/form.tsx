@@ -122,12 +122,20 @@ const CreateReportForm = () => {
   };
 
   const handleReportChange = (value: string) => {
+    const newReportType = value as ReportType;
     setValue("report", value);
-    // Reset conditional fields when report type changes
-    setValue("includeInternalCalls", false);
-    setValue("extensions", "");
-    setValue("queue", "");
-    setValue("sla", "");
+    if (!shouldShowIncludeInternalCalls(newReportType)) {
+      setValue("includeInternalCalls", false);
+    }
+    if (!shouldShowExtensions(newReportType)) {
+      setValue("extensions", "");
+    }
+    if (!shouldShowQueue(newReportType)) {
+      setValue("queue", "");
+    }
+    if (!shouldShowSla(newReportType)) {
+      setValue("sla", "");
+    }
   };
 
   const onSubmit = async (data: CreateOneTimeReportSchema) => {
