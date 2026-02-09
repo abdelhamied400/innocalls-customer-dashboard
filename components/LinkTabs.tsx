@@ -1,19 +1,19 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 interface LinkTabProps {
   href?: string;
   children: React.ReactNode;
+  disabled?: boolean;
 }
 
-export const LinkTab = ({ href, children }: LinkTabProps) => {
+export const LinkTab = ({ href, children, disabled }: LinkTabProps) => {
   const pathname = usePathname();
   const active = href ? href === pathname : false;
 
-  if (href) {
+  if (href && !disabled) {
     return (
       <Link href={href}>
         <Button
@@ -31,6 +31,7 @@ export const LinkTab = ({ href, children }: LinkTabProps) => {
       className="h-auto whitespace-normal"
       variant="tab"
       data-active={active ? true : undefined}
+      disabled={disabled}
     >
       {children}
     </Button>
@@ -40,6 +41,7 @@ export const LinkTab = ({ href, children }: LinkTabProps) => {
 interface Tab {
   label: React.ReactNode;
   href: string;
+  disabled?: boolean;
 }
 
 interface LinkTabsProps {
@@ -69,7 +71,8 @@ const LinkTabs = ({ children }: LinkTabsProps) => {
         ) {
           const href = child.props.href || "";
           const label = child.props.children;
-          return { href, label };
+          const disabled = child.props.disabled;
+          return { href, label, disabled };
         }
         return { href: "", label: "" };
       })
@@ -89,14 +92,14 @@ const LinkTabs = ({ children }: LinkTabsProps) => {
       {/* Desktop */}
       <div className="hidden sm:flex flex-wrap gap-2">
         {tabItems.map((tab) => (
-          <LinkTab key={tab.href} href={tab.href}>
+          <LinkTab key={tab.href} href={tab.href} disabled={tab.disabled}>
             {tab.label}
           </LinkTab>
         ))}
       </div>
       {/* Mobile */}
       <div className="flex flex-wrap sm:hidden items-center gap-2 w-full">
-        <LinkTab href={activeTab.href}>{activeTab.label}</LinkTab>
+        <LinkTab href={activeTab.href} disabled={activeTab.disabled}>{activeTab.label}</LinkTab>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="tab" size="icon">
@@ -107,8 +110,8 @@ const LinkTabs = ({ children }: LinkTabsProps) => {
             {tabItems
               .filter((tab) => tab.href !== activeTab.href)
               .map((tab) => (
-                <DropdownMenuItem key={tab.href} asChild>
-                  <Link href={tab.href}>{tab.label}</Link>
+                <DropdownMenuItem key={tab.href} disabled={tab.disabled} asChild={!tab.disabled}>
+                  {tab.disabled ? <span>{tab.label}</span> : <Link href={tab.href}>{tab.label}</Link>}
                 </DropdownMenuItem>
               ))}
           </DropdownMenuContent>

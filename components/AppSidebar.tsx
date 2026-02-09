@@ -34,13 +34,13 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import { useSession } from "next-auth/react";
 import useAuthStore from "@/store/auth.slice";
 import useAuth from "@/hooks/useAuth";
-import { Payment } from "@mui/icons-material";
 
 const AppSidebar = () => {
   const t = useTranslations("sidebar");
   const { data: session } = useSession();
   const { data: auth } = useAuth();
   const { Organization } = useAuthStore();
+  const isPending = Organization?.status === "pending";
 
   return (
     <Sidebar>
@@ -50,7 +50,7 @@ const AppSidebar = () => {
           icon={<DashboardCustomize />}
           title={t("navigation.dashboard")}
           href={`/`}
-          disabled={false}
+          disabled={isPending}
           isNew={true}
           isComingSoon={false}
         />
@@ -61,7 +61,7 @@ const AppSidebar = () => {
               icon={<Monitor />}
               title={t("navigation.liveMonitoring")}
               href={`/live-monitoring`}
-              disabled={false}
+              disabled={isPending}
               isNew={true}
               isComingSoon={false}
             />
@@ -82,6 +82,7 @@ const AppSidebar = () => {
             icon={<Timeline />}
             title={t("navigation.analytics")}
             href={`/analytics`}
+            disabled={isPending}
             isNew={true}
             isComingSoon={false}
           />
@@ -92,6 +93,7 @@ const AppSidebar = () => {
             icon={<Assessment />}
             title={t("navigation.reports")}
             href={`/reports`}
+            disabled={isPending}
             isNew={true}
             isComingSoon={false}
           />
@@ -102,6 +104,7 @@ const AppSidebar = () => {
             icon={<PersonSearch />}
             title={t("navigation.activityAnalysis")}
             href={`/analytics/activity-reports`}
+            disabled={isPending}
             isNew={true}
             isComingSoon={false}
           />
@@ -112,6 +115,7 @@ const AppSidebar = () => {
             icon={<Timeline />}
             title={t("navigation.callHistory")}
             href={`/call-reporting`}
+            disabled={isPending}
             isNew={true}
             isComingSoon={false}
           />
@@ -141,7 +145,7 @@ const AppSidebar = () => {
             icon={<Phone />}
             title={t("navigation.numbers")}
             href={`/numbers`}
-            disabled={false}
+            disabled={isPending}
             isNew={true}
             isComingSoon={false}
           />
@@ -154,7 +158,7 @@ const AppSidebar = () => {
               icon={<Users />}
               title={t("navigation.users")}
               href={`/agents`}
-              disabled={false}
+              disabled={isPending}
               isNew={true}
               isComingSoon={false}
             />
@@ -177,7 +181,7 @@ const AppSidebar = () => {
               icon={<DataUsage />}
               title={t("navigation.usage")}
               href={`/usage`}
-              disabled={false}
+              disabled={isPending}
               isNew={true}
               isComingSoon={false}
             />
@@ -288,7 +292,7 @@ const AppSidebar = () => {
             icon={<Settings />}
             title={t("navigation.settings")}
             href={`/settings`}
-            disabled={false}
+            disabled={isPending}
             isNew={true}
             isComingSoon={false}
           />

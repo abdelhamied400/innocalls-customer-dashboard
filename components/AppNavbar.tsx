@@ -12,7 +12,7 @@ const AppNavbar = ({ navbarTitle }: AppNavbarProps) => {
   return (
     <nav className="navbar">
       <div className="flex justify-between items-center gap-8 px-4 border-b-2 h-24">
-        {navbarTitle}
+        <div>{navbarTitle}</div>
         <div className="flex items-center gap-4 actions">
           <LocaleSwitcher />
           <ProfileMenu />
