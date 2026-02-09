@@ -10,6 +10,7 @@ import React, {
 import { LocaleSlug, defaultLocale } from "@/i18n/config";
 import { loadTranslations, getTranslation } from "@/lib/translations";
 import { getStoredLocale, setStoredLocale } from "@/lib/locale-storage";
+import { arEG, enUS } from "date-fns/locale";
 import "@/lib/preload-translations"; // Pre-load translations
 
 interface TranslationContextType {
@@ -104,4 +105,15 @@ export const useTranslations = (namespace?: string) => {
 export const useLocale = () => {
   const { locale } = useTranslationContext();
   return locale;
+};
+
+export const dateFnsLocales = {
+  en: enUS,
+  ar: arEG,
+};
+export const defaultDateFnsLocale = enUS;
+
+export const useDateFnsLocale = () => {
+  const { locale } = useTranslationContext();
+  return dateFnsLocales[locale] || defaultDateFnsLocale;
 };

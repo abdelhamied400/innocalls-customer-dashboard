@@ -1,16 +1,23 @@
+import { useDateFnsLocale } from "@/providers/TranslationProvider";
 import { ScheduledReport } from "@/types/api/report";
-import { useLocale } from "@/providers/TranslationProvider";
 import { CellContext } from "@tanstack/react-table";
-import { format, parseISO } from "date-fns";
-import { arEG, enUS } from "date-fns/locale";
+import { parse, format } from "date-fns";
 
 const NextGenerationCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
   const { formattedNextGenerationDate, time } = row.original;
+  const locale = useDateFnsLocale();
+  // Parse the time (using today’s date as base)
+  const parsed = parse(time, "HH:mm", new Date());
+
+  // Format to 12-hour time
+  const time12 = format(parsed, "h:mm a", {
+    locale,
+  });
 
   return (
     <div className="flex flex-col font-normal">
       <span>{formattedNextGenerationDate}</span>
-      <span className="text-muted-foreground text-sm">{time}</span>
+      <span className="text-muted-foreground text-sm">{time12}</span>
     </div>
   );
 };
