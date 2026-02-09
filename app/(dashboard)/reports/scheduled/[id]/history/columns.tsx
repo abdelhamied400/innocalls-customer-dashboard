@@ -13,10 +13,11 @@ export const columns = (): ColumnDef<ScheduledReportHistoryItem>[] => {
 
   return [
     {
-      accessorKey: "reportName",
+      accessorKey: "name",
       header: ({ column }) => (
         <SortingHead column={column}>{t("reportName")}</SortingHead>
       ),
+      cell: ({ row }) => row.original.reportName,
     },
     {
       accessorKey: "generatedAt",

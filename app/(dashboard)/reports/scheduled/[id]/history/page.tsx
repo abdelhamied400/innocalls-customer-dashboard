@@ -44,7 +44,7 @@ const HistoryPage = ({ params }: HistoryPageProps) => {
   const handleSortingChange = (sorting: SortingState) => {
     if (sorting.length > 0) {
       const { id, desc } = sorting[0];
-      if (id === "reportName" || id === "generatedAt") {
+      if (id === "name" || id === "generatedAt") {
         setSortBy(id);
         setSortOrder(desc ? "desc" : "asc");
         setPagination((prev) => ({ ...prev, pageIndex: 0 }));
