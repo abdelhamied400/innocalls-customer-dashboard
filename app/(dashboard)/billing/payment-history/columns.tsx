@@ -16,17 +16,16 @@ export type PaymentHistory = {
   };
 };
 
-export const columns = (): ColumnDef<PaymentHistory>[] => {
-  const t = useTranslations("billing.paymentHistory.columns");
-
-  return [
-    {
-      accessorKey: "id",
-      header: t("refNo"),
-    },
-    {
-      accessorKey: "datetime",
-      header: t("date"),
+export const columns = (
+  t: ReturnType<typeof useTranslations>
+): ColumnDef<PaymentHistory>[] => [
+  {
+    accessorKey: "id",
+    header: t("columns.refNo"),
+  },
+  {
+    accessorKey: "datetime",
+    header: t("columns.date"),
       cell: ({ row }) => (
         <div className="datetime-cell font-normal">
           <p>{row.original.datetime.date}</p>
@@ -36,7 +35,7 @@ export const columns = (): ColumnDef<PaymentHistory>[] => {
     },
     {
       accessorKey: "amount",
-      header: t("amount"),
+      header: t("columns.amount"),
       cell: ({ row }) => {
         const amount = row.getValue("amount") as number;
         const currency = row.original.currency as string;
@@ -50,7 +49,6 @@ export const columns = (): ColumnDef<PaymentHistory>[] => {
     },
     {
       accessorKey: "description",
-      header: t("description"),
+      header: t("columns.description"),
     },
   ];
-};

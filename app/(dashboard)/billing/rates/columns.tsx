@@ -12,25 +12,24 @@ export type Rate = {
   sourceName: string;
 };
 
-export const columns = (): ColumnDef<Rate>[] => {
-  const t = useTranslations("billing.rates.columns");
-
-  return [
-    {
-      accessorKey: "sourceCode",
-      header: t("sourceCode"),
-    },
-    {
-      accessorKey: "destinationName",
-      header: t("destinationName"),
-    },
-    {
-      accessorKey: "destinationCode",
-      header: t("destinationCode"),
-    },
-    {
-      accessorKey: "rate",
-      header: t("rate"),
+export const columns = (
+  t: ReturnType<typeof useTranslations>
+): ColumnDef<Rate>[] => [
+  {
+    accessorKey: "sourceCode",
+    header: t("columns.sourceCode"),
+  },
+  {
+    accessorKey: "destinationName",
+    header: t("columns.destinationName"),
+  },
+  {
+    accessorKey: "destinationCode",
+    header: t("columns.destinationCode"),
+  },
+  {
+    accessorKey: "rate",
+    header: t("columns.rate"),
       cell: ({ row }) => {
         const rate = row.getValue("rate") as string;
         const currency = row.original.currency as string;
@@ -43,4 +42,3 @@ export const columns = (): ColumnDef<Rate>[] => {
       },
     },
   ];
-};

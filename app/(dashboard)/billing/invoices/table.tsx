@@ -98,7 +98,7 @@ const BillingTable = () => {
     <div className="h-auto sm:h-full flex flex-col border rounded-xl">
       <PaginatedTable
         data={invoices?.data || []}
-        columns={columns()}
+        columns={columns(t)}
         pagination={{
           totalItems: invoices?.total || 0,
           totalPages: invoices?.last_page || 0,

@@ -98,7 +98,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Download "{row.original.name}" campaign results report</p>
+            <p>Download &quot;{row.original.name}&quot; campaign results report</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -124,7 +124,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Archive "{row.original.name}" campaign</p>
+                <p>Archive &quot;{row.original.name}&quot; campaign</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

@@ -47,7 +47,7 @@ const UsageSummaryTable = ({}) => {
     retry: 0,
   });
 
-  const columns = createColumns(data.columns);
+  const columns = createColumns(data.columns, t);
 
   useEffect(() => {
     if (isError) {

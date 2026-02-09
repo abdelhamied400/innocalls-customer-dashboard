@@ -114,13 +114,13 @@ export const PhoneHistoryTableBody = ({
                 // Custom cell renderer
                 const cell =
                   typeof col.cell === "function"
-                    ? //@ts-ignore
+                    ? //@ts-expect-error -- dynamic cell renderer
                       col.cell({ row: { original: row } })
-                    : //@ts-ignore
+                    : //@ts-expect-error -- dynamic accessor key
                       row[col.accessorKey as keyof PhoneHistoryItem];
 
                 return (
-                  //@ts-ignore
+                  //@ts-expect-error -- dynamic key from column def
                   <td key={col.id || col.accessorKey || idx}>{cell}</td>
                 );
               })}

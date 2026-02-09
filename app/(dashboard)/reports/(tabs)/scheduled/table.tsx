@@ -13,6 +13,7 @@ import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import scheduledReportsService from "@/services/scheduled-reports.service";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 export const defaultFilters: ScheduledReportFilters = {
   sortBy: "createdAt",
@@ -20,6 +21,7 @@ export const defaultFilters: ScheduledReportFilters = {
 };
 
 const ScheduledReportTable = () => {
+  const t = useTranslations("reports.scheduled");
   const [filters, setFilters] = useState<ScheduledReportFilters>({
     ...defaultFilters,
   });
@@ -63,7 +65,7 @@ const ScheduledReportTable = () => {
     <div className="h-full flex flex-col">
       <PaginatedTable
         data={data}
-        columns={columns()}
+        columns={columns(t)}
         pagination={{
           totalItems: paginationData?.total ?? 0,
           totalPages: paginationData?.totalPages ?? 1,

@@ -29,6 +29,7 @@ const defaultFilters: CallReportingFilters = {
 
 const CallReportingTable = () => {
 
+  const tCallReporting = useTranslations("callReporting");
   const t = useTranslations("callReporting.messages");
 
   const [filters, setFilters] = useState<CallReportingFilters>({
@@ -92,7 +93,7 @@ const CallReportingTable = () => {
     <div className="h-full flex flex-col">
       <PaginatedTable
         data={callReporting?.data || []}
-        columns={columns()}
+        columns={columns(tCallReporting)}
         pagination={{
           totalItems: callReporting?.total || 0,
           totalPages: callReporting?.last_page || 0,

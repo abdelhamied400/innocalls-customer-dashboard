@@ -32,6 +32,7 @@ export const defaultFilters: AgentCallReportingFilters = {
 
 const CallReportingTable = ({}: CallReportingTableProps) => {
 
+  const tCallReporting = useTranslations("callReporting");
   const t = useTranslations("callReporting.messages");
 
   const [filters, setFilters] =
@@ -94,7 +95,7 @@ const CallReportingTable = ({}: CallReportingTableProps) => {
     <div className="h-full flex flex-col">
       <PaginatedTable
         data={callReporting?.rows || []}
-        columns={columns()}
+        columns={columns(tCallReporting)}
         pagination={{
           totalItems: callReporting?.totalItems || 0,
           totalPages: callReporting?.totalPages || 0,

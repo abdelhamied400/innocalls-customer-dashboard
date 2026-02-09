@@ -67,7 +67,7 @@ const CallDistributionAnalytics = ({
     if (!data) return [];
 
     // First filter by search term
-    let filtered = data.filter((agent) => {
+    const filtered = data.filter((agent) => {
       if (!callDistributionFilters.search) return true;
       const searchTerm = callDistributionFilters.search.toLowerCase();
       const agentSearchText = `${agent.name} ${agent.ext}`.toLowerCase();

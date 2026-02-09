@@ -155,8 +155,8 @@ export const forcePCMA = (sdp: string) => {
 };
 
 export const parseAutoDialerCallee = (callee: string) => {
-  let name = callee.split(",")[0];
-  let channelId = callee.split(",")[1];
+  const name = callee.split(",")[0];
+  const channelId = callee.split(",")[1];
 
   return { name, channelId };
 };

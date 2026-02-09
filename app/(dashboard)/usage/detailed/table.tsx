@@ -90,7 +90,7 @@ const UsageDetailedTable = () => {
     <div className="h-full flex flex-col">
       <PaginatedTable
         data={data?.list || []}
-        columns={createColumns(data.columns)}
+        columns={createColumns(data.columns, t)}
         pagination={{
           totalItems: data?.list?.length || 0,
           totalPages: data?.hasNext

@@ -13,6 +13,7 @@ import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import oneTimeReportsService from "@/services/one-time-reports.service";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const PROCESSING_STATUSES: OneTimeReportStatus[] = ["pending", "processing"];
 
@@ -22,6 +23,7 @@ const defaultFilters: OneTimeReportFilters = {
 };
 
 const OneTimeReportTable = () => {
+  const t = useTranslations("reports.oneTime");
   const [filters, setFilters] = useState<OneTimeReportFilters>({
     ...defaultFilters,
   });
@@ -74,7 +76,7 @@ const OneTimeReportTable = () => {
     <div className="h-full flex flex-col">
       <PaginatedTable
         data={data}
-        columns={columns()}
+        columns={columns(t)}
         pagination={{
           totalItems: paginationData?.total ?? 0,
           totalPages: paginationData?.totalPages ?? 1,
