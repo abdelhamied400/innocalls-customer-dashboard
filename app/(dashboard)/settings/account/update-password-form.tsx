@@ -45,7 +45,7 @@ const UpdatePasswordForm = () => {
           description: t("messages.resetSuccessDescription"),
         });
         apiLogger.info("Unauthorized! Logging out...");
-        await clientSignout();
+        await clientSignout("/login");
       } catch (error) {
         if (isAxiosError(error)) {
           toast({

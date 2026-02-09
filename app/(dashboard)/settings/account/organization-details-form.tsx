@@ -27,7 +27,7 @@ const OrganizationDetailsForm = () => {
     formState: { errors },
     register,
   } = useForm<OrganizationDetailsFormValues>({
-    resolver: zodResolver(OrganizationDetailsSchema),
+    resolver: zodResolver(OrganizationDetailsSchema(t)),
     defaultValues: {
       organizationName: Organization?.name || "",
     },
@@ -48,19 +48,24 @@ const OrganizationDetailsForm = () => {
         variant: "success",
       });
       refetch();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to update organization name:", error);
+      toast({
+        title: t("messages.error"),
+        description: error.response?.data?.message,
+        variant: "destructive",
+      });
     }
   });
 
   return (
-    <div className="border p-4 rounded-lg">
-      <div className="grid grid-cols-5 gap-2">
-        <div className="col-span-2">
-          <h4>{t("title")}</h4>
-        </div>
-        <div className="col-span-3">
-          <form onSubmit={onSubmit} className="space-y-4">
+    <form onSubmit={onSubmit} className="space-y-4">
+      <div className="border p-4 rounded-lg">
+        <div className="grid grid-cols-5 gap-2">
+          <div className="col-span-2">
+            <h4>{t("title")}</h4>
+          </div>
+          <div className="col-span-3">
             <Field
               label={t("form.fields.organizationName.label")}
               htmlFor="organizationName"
@@ -73,11 +78,15 @@ const OrganizationDetailsForm = () => {
                 {...register("organizationName")}
               />
             </Field>
-            <Button type="submit">{t("actions.submit")}</Button>
-          </form>
+          </div>
         </div>
       </div>
-    </div>
+      <div className="flex justify-end">
+        <Button className="py-6" size="lg" type="submit">
+          {t("actions.submit")}
+        </Button>
+      </div>
+    </form>
   );
 };
 

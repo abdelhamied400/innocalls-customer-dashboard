@@ -15,21 +15,16 @@ import Stepper, {
 import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "@/providers/TranslationProvider";
 import breakTypesService from "@/services/break-types.service";
+import {
+  CreateBreakFormValues,
+  CreateBreakSchema,
+} from "@/validation/CreateBreak";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { ChevronLeftIcon, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-const createBreakSchema = (t: (key: string) => string) =>
-  z.object({
-    nameAR: z.string().min(1, t("form.validation.nameAR.required")),
-    nameEN: z.string().min(1, t("form.validation.nameEN.required")),
-  });
-
-type CreateBreakFormValues = z.infer<ReturnType<typeof createBreakSchema>>;
 
 const CreateBreakForm = () => {
   const { toast } = useToast();
@@ -39,7 +34,7 @@ const CreateBreakForm = () => {
   const t = useTranslations("settings.agent.breaks.createBreak");
 
   const form = useForm<CreateBreakFormValues>({
-    resolver: zodResolver(createBreakSchema(t)),
+    resolver: zodResolver(CreateBreakSchema(t)),
     defaultValues: {
       nameAR: "",
       nameEN: "",

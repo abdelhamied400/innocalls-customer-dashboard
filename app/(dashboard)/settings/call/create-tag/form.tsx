@@ -15,21 +15,13 @@ import Stepper, {
 import { useToast } from "@/hooks/use-toast";
 import { useTranslations } from "@/providers/TranslationProvider";
 import vocabService from "@/services/vocab.service";
+import { CreateTagFormValues, CreateTagSchema } from "@/validation/CreateTag";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { ChevronLeftIcon, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-const createTagSchema = (t: (key: string) => string) =>
-  z.object({
-    nameAR: z.string().min(1, t("form.validation.nameAR.required")),
-    nameEN: z.string().min(1, t("form.validation.nameEN.required")),
-  });
-
-type CreateTagFormValues = z.infer<ReturnType<typeof createTagSchema>>;
 
 const CreateTagForm = () => {
   const { toast } = useToast();
@@ -39,7 +31,7 @@ const CreateTagForm = () => {
   const t = useTranslations("settings.call.createTag");
 
   const form = useForm<CreateTagFormValues>({
-    resolver: zodResolver(createTagSchema(t)),
+    resolver: zodResolver(CreateTagSchema(t)),
     defaultValues: {
       nameAR: "",
       nameEN: "",

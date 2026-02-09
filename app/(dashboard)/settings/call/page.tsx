@@ -69,7 +69,9 @@ const CallSettings = () => {
           value="manage-tags"
           className="border rounded-lg data-[state=open]:flex-1 flex flex-col"
         >
-          <AccordionTrigger className="p-4">{t("tags.title")}</AccordionTrigger>
+          <AccordionTrigger className="p-4 font-medium">
+            {t("tags.title")}
+          </AccordionTrigger>
           <AccordionContent className="px-4 py-2 flex flex-col gap-2 h-[calc(100vh-380px)] overflow-y-auto">
             <TagsTable />
           </AccordionContent>
