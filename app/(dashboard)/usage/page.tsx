@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const Usage = () => {
   const router = useRouter();
@@ -12,4 +13,4 @@ const Usage = () => {
   return null; // This component redirects to the summary page
 };
 
-export default Usage;
+export default withActiveOrganization(Usage);

@@ -1,4 +1,9 @@
+"use client";
+
+import { use } from "react";
+
 import EditReportForm from "./form";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 type EditReportPageProps = {
   params: Promise<{
@@ -6,8 +11,8 @@ type EditReportPageProps = {
   }>;
 };
 
-const EditReportPage = async ({ params }: EditReportPageProps) => {
-  const { id } = await params;
+const EditReportPage = ({ params }: EditReportPageProps) => {
+  const { id } = use(params);
 
   return (
     <div className="page h-full" id="edit-scheduled-report">
@@ -16,4 +21,4 @@ const EditReportPage = async ({ params }: EditReportPageProps) => {
   );
 };
 
-export default EditReportPage;
+export default withActiveOrganization(EditReportPage);

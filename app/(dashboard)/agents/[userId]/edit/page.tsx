@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import usersService from "@/services/users.service";
 import EditUserForm from "./form";
 import Spinner from "@/components/ui/spinner";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const EditUser = () => {
   const { userId } = useParams<{ userId: string }>();
@@ -39,4 +40,4 @@ const EditUser = () => {
   );
 };
 
-export default EditUser;
+export default withActiveOrganization(EditUser);

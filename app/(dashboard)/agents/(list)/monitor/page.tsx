@@ -1,4 +1,7 @@
+"use client";
+
 import MonitorUsersTable from "./table";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 type MonitorUsersProps = {
   searchParams: Promise<{
@@ -8,7 +11,7 @@ type MonitorUsersProps = {
     sorting: string;
   }>;
 };
-const MonitorUsers = async ({ searchParams }: MonitorUsersProps) => {
+const MonitorUsers = ({ searchParams }: MonitorUsersProps) => {
   return (
     <div className="page h-full" id="users">
       <MonitorUsersTable />
@@ -16,4 +19,4 @@ const MonitorUsers = async ({ searchParams }: MonitorUsersProps) => {
   );
 };
 
-export default MonitorUsers;
+export default withActiveOrganization(MonitorUsers);

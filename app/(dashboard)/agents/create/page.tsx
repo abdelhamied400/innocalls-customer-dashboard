@@ -1,6 +1,9 @@
-import CreateUserForm from "./form";
+"use client";
 
-const CreateUser = async () => {
+import CreateUserForm from "./form";
+import withActiveOrganization from "@/containers/withActiveOrganization";
+
+const CreateUser = () => {
   return (
     <div className="page" id="create-user">
       <CreateUserForm />
@@ -8,4 +11,4 @@ const CreateUser = async () => {
   );
 };
 
-export default CreateUser;
+export default withActiveOrganization(CreateUser);

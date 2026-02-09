@@ -23,6 +23,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useVocab } from "@/hooks/useVocab";
 import useAuth from "@/hooks/useAuth";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 type Option = {
   value: string;
@@ -200,4 +201,4 @@ const OutboundAnalytics = () => {
   );
 };
 
-export default OutboundAnalytics;
+export default withActiveOrganization(OutboundAnalytics);

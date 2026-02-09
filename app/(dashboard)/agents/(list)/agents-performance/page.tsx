@@ -1,4 +1,7 @@
+"use client";
+
 import AgentsPerformanceTable from "./table";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const AgentsPerformance = () => {
   return (
@@ -8,4 +11,4 @@ const AgentsPerformance = () => {
   );
 };
 
-export default AgentsPerformance;
+export default withActiveOrganization(AgentsPerformance);

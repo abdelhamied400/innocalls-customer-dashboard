@@ -4,6 +4,7 @@ import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import AgentStats from "./AgentStats";
 import useAppStore from "@/store/app.slice";
 import { useEffect } from "react";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const AgentDashboard = () => {
   const t = useTranslations("sidebar.navigation");
@@ -21,4 +22,4 @@ const AgentDashboard = () => {
   );
 };
 
-export default AgentDashboard;
+export default withActiveOrganization(AgentDashboard);

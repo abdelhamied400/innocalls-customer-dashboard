@@ -1,6 +1,9 @@
-import UsageSummaryTable from "./table";
+"use client";
 
-const UsageSummary = async () => {
+import UsageSummaryTable from "./table";
+import withActiveOrganization from "@/containers/withActiveOrganization";
+
+const UsageSummary = () => {
   return (
     <div className="page h-full" id="charges">
       <UsageSummaryTable />
@@ -8,4 +11,4 @@ const UsageSummary = async () => {
   );
 };
 
-export default UsageSummary;
+export default withActiveOrganization(UsageSummary);

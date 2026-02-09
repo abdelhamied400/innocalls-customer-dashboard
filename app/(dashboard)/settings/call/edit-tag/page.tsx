@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import EditTagForm from "./form";
 import Spinner from "@/components/ui/spinner";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const EditTag = () => {
   const searchParams = useSearchParams();
@@ -42,4 +43,4 @@ const EditTag = () => {
   );
 };
 
-export default EditTag;
+export default withActiveOrganization(EditTag);

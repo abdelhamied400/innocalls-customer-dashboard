@@ -29,6 +29,7 @@ import {
 import SchedulingForm from "./scheduling-form";
 import CustomersListForm from "./customers-list-form";
 import { generateUUID } from "@/lib/utils";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const steps = [
   "Campaign Details",
@@ -130,4 +131,4 @@ const CreateAutoDialerCampaignSheet = () => {
   );
 };
 
-export default CreateAutoDialerCampaignSheet;
+export default withActiveOrganization(CreateAutoDialerCampaignSheet);

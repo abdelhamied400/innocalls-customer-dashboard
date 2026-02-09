@@ -1,6 +1,9 @@
-import ScheduledReportTable from "./table";
+"use client";
 
-const ScheduledReportPage = async () => {
+import ScheduledReportTable from "./table";
+import withActiveOrganization from "@/containers/withActiveOrganization";
+
+const ScheduledReportPage = () => {
   return (
     <div className="page h-full overflow-hidden" id="scheduled-report">
       <ScheduledReportTable />
@@ -8,4 +11,4 @@ const ScheduledReportPage = async () => {
   );
 };
 
-export default ScheduledReportPage;
+export default withActiveOrganization(ScheduledReportPage);

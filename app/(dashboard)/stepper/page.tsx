@@ -11,6 +11,7 @@ import Stepper, {
 } from "@/components/ui/stepper";
 import { ChevronLeftIcon } from "lucide-react";
 import { useState } from "react";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const StepperDemo = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -67,4 +68,4 @@ const StepperDemo = () => {
   );
 };
 
-export default StepperDemo;
+export default withActiveOrganization(StepperDemo);
