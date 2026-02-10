@@ -19,7 +19,7 @@ const CallSettings = () => {
   const t = useTranslations("settings.call");
   const { Organization, setOrganization } = useAuthStore();
 
-  const handleToggleAfterCallSummary = (checked: boolean) => {
+  const handleToggleAfterCallSummary = async (checked: boolean) => {
     try {
       await settingsService.toggleAfterCallSummary();
 
