@@ -23,6 +23,8 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { autoDialerCampaignActiveStatuses } from "@/constants/auto-dialer";
+import { useTranslations } from "@/providers/TranslationProvider";
+import useDebounce from "@/hooks/use-debounce";
 
 type AutoDialerActiveHeadProps = {
   filters: Record<string, string>;
@@ -32,19 +34,27 @@ const AutoDialerActiveHead = ({
   filters,
   setFilters,
 }: AutoDialerActiveHeadProps) => {
+  const t = useTranslations("autoDialer");
   const { table } = usePaginatedTable();
   const [fromDate, setFromDate] = useState<Date>();
   const [toDate, setToDate] = useState<Date>();
   const [durationType, setDurationType] = useState<string>();
   const [status, setStatus] = useState<Record<string, string>>({});
+  const [searchTerm, setSearchTerm] = useState(filters.name || "");
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    setSearchTerm(value);
+  };
+
+  useEffect(() => {
+    if (debouncedSearchTerm === (filters.name || "")) return;
     setFilters((prev) => ({
       ...prev,
-      name: value,
+      name: debouncedSearchTerm || undefined,
     }));
-  };
+  }, [debouncedSearchTerm, filters.name, setFilters]);
 
   const applyFilters = () => {
     const isValid = isValidDateRange(
@@ -78,14 +88,14 @@ const AutoDialerActiveHead = ({
     <Collapsible>
       <div className="table-head">
         <div className="flex justify-between items-center gap-4 p-3">
-          <h3>Active Campaigns</h3>
+          <h3>{t("activeCampaigns.title")}</h3>
           <div className="flex items-center gap-4 actions">
             <Field preIcon={<Search className="text-muted-foreground" />}>
               <Input
-                placeholder="search by name..."
+                placeholder={t("activeCampaigns.search")}
                 type="search"
                 variant="field"
-                value={filters.name || ""}
+                value={searchTerm}
                 onChange={handleSearchChange}
               />
             </Field>
@@ -95,7 +105,7 @@ const AutoDialerActiveHead = ({
               </Toggle>
             </CollapsibleTrigger>
             <Link className={cn(buttonVariants())} href="/auto-dialer/create">
-              Create new campaign
+              {t("activeCampaigns.create")}
             </Link>
           </div>
         </div>
@@ -106,12 +116,15 @@ const AutoDialerActiveHead = ({
               setToDate(undefined);
               setDurationType(undefined);
               setStatus({});
+              setSearchTerm("");
               setFilters({});
             }}
           >
             <FilterBox
-              triggerLabel="Creation Date"
-              label="Select a date range"
+              triggerLabel={t(
+                "activeCampaigns.filters.creationDate.placeholder",
+              )}
+              label={t("activeCampaigns.filters.creationDate.label")}
               onReset={() => {
                 setFromDate(undefined);
                 setToDate(undefined);
@@ -125,25 +138,29 @@ const AutoDialerActiveHead = ({
               numberOfFilters={(fromDate ? 1 : 0) + (toDate ? 1 : 0)}
             >
               <Field
-                label="From"
-                hint="DD/MM/YYYY"
+                label={t("activeCampaigns.filters.creationDate.from.label")}
+                hint={t("activeCampaigns.filters.creationDate.from.hint")}
                 postIcon={<CalendarToday className="text-gray-400" />}
               >
                 <DatePicker
                   className="flex-1"
-                  placeholder="Enter from date"
+                  placeholder={t(
+                    "activeCampaigns.filters.creationDate.from.placeholder",
+                  )}
                   value={fromDate}
                   onChange={(date) => setFromDate(date || undefined)}
                 />
               </Field>
               <Field
-                label="To"
-                hint="DD/MM/YYYY"
+                label={t("activeCampaigns.filters.creationDate.to.label")}
+                hint={t("activeCampaigns.filters.creationDate.to.hint")}
                 postIcon={<CalendarToday className="text-gray-400" />}
               >
                 <DatePicker
                   className="flex-1"
-                  placeholder="Enter to date"
+                  placeholder={t(
+                    "activeCampaigns.filters.creationDate.to.placeholder",
+                  )}
                   value={toDate}
                   onChange={(date) => setToDate(date || undefined)}
                 />
@@ -151,8 +168,10 @@ const AutoDialerActiveHead = ({
             </FilterBox>
             {/* duration type */}
             <FilterBox
-              triggerLabel="Duration Type"
-              label="Select duration type"
+              triggerLabel={t(
+                "activeCampaigns.filters.durationType.placeholder",
+              )}
+              label={t("activeCampaigns.filters.durationType.label")}
               onReset={() => {
                 setDurationType(undefined);
                 setFilters((prev) => ({
@@ -176,22 +195,30 @@ const AutoDialerActiveHead = ({
               >
                 <div className="flex items-center gap-2">
                   <RadioGroupItem value="time-limited" id="time-limited" />
-                  <Label htmlFor="time-limited">Time Limited</Label>
+                  <Label htmlFor="time-limited">
+                    {t(
+                      "activeCampaigns.filters.durationType.options.timeLimited",
+                    )}
+                  </Label>
                 </div>
                 <div className="flex items-center gap-2">
                   <RadioGroupItem
                     value="agent-availability"
                     id="agent-availability"
                   />
-                  <Label htmlFor="agent-availability">Agent Availability</Label>
+                  <Label htmlFor="agent-availability">
+                    {t(
+                      "activeCampaigns.filters.durationType.options.agentAvailability",
+                    )}
+                  </Label>
                 </div>
               </RadioGroup>
             </FilterBox>
             {/* status */}
 
             <FilterBox
-              triggerLabel="Status"
-              label="Select campaign status"
+              triggerLabel={t("activeCampaigns.filters.status.placeholder")}
+              label={t("activeCampaigns.filters.status.label")}
               onReset={() => {
                 setStatus({});
                 setFilters((prev) => ({
@@ -203,14 +230,14 @@ const AutoDialerActiveHead = ({
                 setFilters((prev) => ({
                   ...prev,
                   statuses: Object.entries(status)
-                    .filter(([_, value]) => value)
-                    .map(([key, _]) => key),
+                    .filter(([, value]) => value)
+                    .map(([key]) => key),
                 }));
                 return true;
               }}
               numberOfFilters={Object.keys(status).length}
             >
-              {autoDialerCampaignActiveStatuses.map((s) => (
+              {autoDialerCampaignActiveStatuses(t).map((s) => (
                 <div className="flex items-center gap-2" key={s.value}>
                   <Checkbox
                     id={s.value}

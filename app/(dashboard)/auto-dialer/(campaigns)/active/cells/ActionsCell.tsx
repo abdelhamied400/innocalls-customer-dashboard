@@ -4,7 +4,6 @@ import {
   Pause as PauseIcon,
   PlayArrow as PlayIcon,
   Stop as SquareIcon,
-  Download as DownloadIcon,
   Edit as EditIcon,
   Visibility as EyeIcon,
   Autorenew as HalfCircleSpinner,
@@ -27,6 +26,12 @@ import {
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 
 type ActionsCellProps = Cell<AutoDialerCampaignCols>;
 const ActionsCell = ({ row }: ActionsCellProps) => {
@@ -139,7 +144,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
     <div className="flex items-center gap-4">
       {row.original.isDraft &&
         ["customers-inserted", "corrupted-ignored"].includes(
-          row.original.status
+          row.original.status,
         ) && (
           <AlertDialog>
             <AlertDialogTrigger asChild>
@@ -268,9 +273,25 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
         <EyeIcon />
       </Button>
 
-      <Button variant="unstyled" size="icon">
-        <EllipsisVerticalIcon />
-      </Button>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="unstyled" size="icon">
+            <EllipsisVerticalIcon />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem>
+            <EyeIcon className="mr-2" />
+            View Details
+          </DropdownMenuItem>
+          {row.original.isDraft && (
+            <DropdownMenuItem>
+              <EditIcon className="mr-2" />
+              Edit Campaign
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
     </div>
   );
 };

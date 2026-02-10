@@ -2994,7 +2994,19 @@
       },
       "statuses": {
         "created": "Created",
-        "paused": "Paused"
+        "schedule-customers": "Scheduling customers",
+        "verifying-customers": "Verifying customers",
+        "verification-failed": "Verification failed",
+        "corrupted-ignored": "Corrupted ignored",
+        "customers-inserted": "Customers inserted",
+        "in-progress": "In progress",
+        "active": "Active",
+        "paused": "Paused",
+        "started": "Started"
+      },
+      "durationTypes": {
+        "time-limited": "Time Limited",
+        "agent-availability": "Agent Availability"
       }
     }
   },

@@ -1,6 +1,6 @@
 "use client";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
-import { columns } from "./columns";
+import { AutoDialerCampaignCols, columns } from "./columns";
 import AutoDialerService from "@/services/auto-dialer.service";
 import PaginatedTable from "@/components/Table/PaginatedTable";
 import AutoDialerActiveHead from "./head";
@@ -9,18 +9,24 @@ import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { PaginationState } from "@tanstack/react-table";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const ActiveCampaignsTable = () => {
+  const t = useTranslations("autoDialer");
   const [filters, setFilters] = useState({});
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
-  const { data, isLoading, isError, error } = useLocalizedQuery({
+  const { data, isLoading, isError, error } = useLocalizedQuery<{
+    totalPages: number;
+    totalItems: number;
+    campaigns: AutoDialerCampaignCols[];
+  }>({
     queryKey: ["auto-dialer-active-campaigns", filters, pagination],
     queryFn: async () =>
       await AutoDialerService.fetchActiveCampaigns({
@@ -43,26 +49,18 @@ const ActiveCampaignsTable = () => {
         description: "An error occurred",
       });
     }
-  }, [isError, error, toast]);
+  }, [isError, error]);
 
-  // Track if this is the initial render
-  const isInitialRender = useRef(true);
-
-  useEffect(() => {
-    // Skip reset on initial render
-    if (isInitialRender.current) {
-      isInitialRender.current = false;
-      return;
-    }
-    // Reset to first page when filters change
+  const handleFiltersChange = (nextFilters: typeof filters) => {
+    setFilters(nextFilters);
     setPagination((prev) => ({ ...prev, pageIndex: 0 }));
-  }, [filters]);
+  };
 
   return (
     <div className="rounded-lg flex-1 flex flex-col overflow-hidden">
       <PaginatedTable
         data={data?.campaigns || []}
-        columns={columns}
+        columns={columns(t)}
         pagination={{
           totalItems: data?.totalItems || 0,
           totalPages: data?.totalPages || 0,
@@ -70,7 +68,10 @@ const ActiveCampaignsTable = () => {
         paginationState={pagination}
         onPaginationChange={setPagination}
       >
-        <AutoDialerActiveHead filters={filters} setFilters={setFilters} />
+        <AutoDialerActiveHead
+          filters={filters}
+          setFilters={handleFiltersChange}
+        />
         <PaginatedTableContent>
           <PaginatedTableHead />
           {isLoading && <PaginatedTableSkeleton />}

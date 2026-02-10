@@ -2952,6 +2952,78 @@
       }
     }
   },
+  "autoDialer": {
+    "tabs": {
+      "active": "الحملات النشطة",
+      "finished": "الحملات المنتهية",
+      "archived": "الحملات المؤرشفة"
+    },
+    "activeCampaigns": {
+      "title": "الحملات النشطة",
+      "search": "بحث...",
+      "filters": {
+        "shared": {
+          "reset": "إعادة تعيين",
+          "apply": "تطبيق",
+          "clear": "مسح"
+        },
+        "creationDate": {
+          "label": "تاريخ الإنشاء",
+          "placeholder": "اختر نطاق التاريخ",
+          "from": {
+            "label": "من",
+            "placeholder": "أدخل التاريخ من",
+            "hint": "يوم/شهر/سنة"
+          },
+          "to": {
+            "label": "إلى",
+            "placeholder": "أدخل التاريخ إلى",
+            "hint": "يوم/شهر/سنة"
+          }
+        },
+        "durationType": {
+          "label": "نوع المدة",
+          "placeholder": "اختر نوع المدة",
+          "options": {
+            "timeLimited": "محدود بالوقت",
+            "agentAvailability": "توفر الوكيل"
+          }
+        },
+        "status": {
+          "label": "الحالة",
+          "placeholder": "اختر الحالة",
+          "options": {
+            "scheduled": "مجدولة",
+            "inProgress": "قيد التنفيذ"
+          }
+        }
+      },
+      "create": "إنشاء حملة",
+      "columns": {
+        "creationDate": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "durationType": "نوع المدة",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "statuses": {
+        "created": "تم الإنشاء",
+        "schedule-customers": "جدولة العملاء",
+        "verifying-customers": "التحقق من العملاء",
+        "verification-failed": "فشل التحقق",
+        "corrupted-ignored": "تم تجاهل التالف",
+        "customers-inserted": "تم إدراج العملاء",
+        "in-progress": "قيد التنفيذ",
+        "active": "نشطة",
+        "paused": "متوقفة مؤقتاً",
+        "started": "بدأت"
+      },
+      "durationTypes": {
+        "time-limited": "محدود بالوقت",
+        "agent-availability": "توفر الوكيل"
+      }
+    }
+  },
   "webrtc": {
     "contacts": {
       "title": "جهات الاتصال",

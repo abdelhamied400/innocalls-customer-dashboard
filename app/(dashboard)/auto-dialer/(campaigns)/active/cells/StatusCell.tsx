@@ -14,25 +14,27 @@ import { Cell } from "@/types/cell";
 import { cn } from "@/lib/utils";
 import { AutoDialerCampaignActiveStatus } from "@/constants/auto-dialer";
 import { ReactNode } from "react";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const classNames: Record<AutoDialerCampaignActiveStatus, string> = {
-  created: "bg-green-100 text-green-600 hover:bg-green-200",
-  "schedule-customers": "bg-blue-100 text-blue-600 hover:bg-blue-200",
-  "verifying-customers": "bg-yellow-100 text-yellow-600 hover:bg-yellow-200",
-  "verification-failed": "bg-red-100 text-red-600 hover:bg-red-200",
-  "corrupted-ignored": "bg-purple-100 text-purple-600 hover:bg-purple-200",
-  "customers-inserted": "bg-orange-100 text-orange-600 hover:bg-orange-200",
-  "in-progress": "bg-teal-100 text-teal-600 hover:bg-teal-200",
-  active: "bg-pink-100 text-pink-600 hover:bg-pink-200",
-  paused: "bg-indigo-100 text-indigo-600 hover:bg-indigo-200",
-  started: "bg-cyan-100 text-cyan-600 hover:bg-cyan-200",
+  created: "bg-green-200 text-green-600 hover:bg-green-200",
+  "schedule-customers": "bg-blue-200 text-blue-600 hover:bg-blue-200",
+  "verifying-customers": "bg-yellow-200 text-yellow-600 hover:bg-yellow-200",
+  "verification-failed": "bg-red-200 text-red-600 hover:bg-red-200",
+  "corrupted-ignored": "bg-purple-200 text-purple-600 hover:bg-purple-200",
+  "customers-inserted": "bg-orange-200 text-orange-600 hover:bg-orange-200",
+  "in-progress": "bg-teal-200 text-teal-600 hover:bg-teal-200",
+  active: "bg-primary-200 text-primary-600 hover:bg-primary-200",
+  paused: "bg-warning-200 text-warning-500 hover:bg-warning-200",
+  started: "bg-cyan-200 text-cyan-600 hover:bg-cyan-200",
 };
 
 type StatusCellProps = Cell<AutoDialerCampaignCols, ReactNode>;
 const StatusCell = ({ cell }: StatusCellProps) => {
   const status = cell.getValue() as AutoDialerCampaignActiveStatus;
+  const t = useTranslations("autoDialer");
   return (
-    <Badge className={cn(classNames[status])}>
+    <Badge className={cn("border-0", classNames[status])}>
       <span className="flex items-center gap-2">
         {status === "created" && <CheckCircleIcon />}
         {status === "schedule-customers" && <ArrowRightCircleIcon />}
@@ -54,13 +56,11 @@ const StatusCell = ({ cell }: StatusCellProps) => {
           </div>
         )}
         {status === "active" && (
-          <PlayIcon className="text-pink-600 animate-pulse" />
+          <PlayIcon className="text-primary-600 animate-pulse" />
         )}
-        {status === "paused" && (
-          <PauseIcon className="text-indigo-600 animate-pulse" />
-        )}
+        {status === "paused" && <PauseIcon className="text-warning-500" />}
 
-        {cell.renderValue()}
+        {t("activeCampaigns.statuses." + status)}
       </span>
     </Badge>
   );

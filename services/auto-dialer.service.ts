@@ -1,21 +1,26 @@
 import { objToQueryString } from "@/lib/utils";
 import api from "./api";
 import { objToFormData } from "@/lib/formData";
+import { AutoDialerCampaignActiveStatus } from "@/constants/auto-dialer";
 
 type FetchActiveCampaignsResponse = {
   totalPages: number;
   totalItems: number;
   campaigns: {
+    agentCanLogoutAndRejoin: boolean;
+    assignedAgents: number[];
     createdAt: string;
+    durationType: "time-limited" | "agent-availability";
+    id: string;
+    isDraft: boolean;
     name: string;
-    durationType: string;
-    status: string;
+    status: AutoDialerCampaignActiveStatus;
   }[];
 };
 
 export default {
   fetchActiveCampaigns: async (
-    filters?: any
+    filters?: any,
   ): Promise<FetchActiveCampaignsResponse> => {
     const filtersObj = {
       ...filters,
@@ -28,7 +33,7 @@ export default {
     return res.data.data;
   },
   fetchFinishedCampaigns: async (
-    filters?: any
+    filters?: any,
   ): Promise<FetchActiveCampaignsResponse> => {
     const filtersObj = {
       ...filters,
@@ -41,7 +46,7 @@ export default {
     return res.data.data;
   },
   fetchArchivedCampaigns: async (
-    filters?: any
+    filters?: any,
   ): Promise<FetchActiveCampaignsResponse> => {
     const filtersObj = {
       ...filters,
