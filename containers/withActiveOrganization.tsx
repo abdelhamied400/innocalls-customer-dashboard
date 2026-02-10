@@ -1,7 +1,7 @@
 import useAuthStore from "@/store/auth.slice";
 import { redirect } from "next/navigation";
 
-const withActiveOrganization = (Component: React.ComponentType) => {
+const withActiveOrganization = (Component: React.ComponentType<any>) => {
   return function WithActiveOrganization(props: any) {
     const { Organization } = useAuthStore();
 
