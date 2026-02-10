@@ -13,12 +13,13 @@ import useAuthStore from "@/store/auth.slice";
 import { Organization } from "@/types/api/organization";
 import settingsService from "@/services/settings.service";
 import { toast } from "sonner";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const CallSettings = () => {
   const t = useTranslations("settings.call");
   const { Organization, setOrganization } = useAuthStore();
 
-  const handleToggleAfterCallSummary = async (checked: boolean) => {
+  const handleToggleAfterCallSummary = (checked: boolean) => {
     try {
       await settingsService.toggleAfterCallSummary();
 
@@ -74,4 +75,4 @@ const CallSettings = () => {
   );
 };
 
-export default CallSettings;
+export default withActiveOrganization(CallSettings);

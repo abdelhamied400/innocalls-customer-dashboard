@@ -13,6 +13,7 @@ import useLayoutManager from "@/hooks/use-layout-manager";
 import { cn } from "@/lib/utils";
 import useAuth from "@/hooks/useAuth";
 import withPermission from "@/containers/withPermission";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const LiveMonitoring = () => {
   const { Organization } = useAuthStore();
@@ -63,4 +64,4 @@ const LiveMonitoring = () => {
   );
 };
 
-export default hasTenant(withPermission(LiveMonitoring, "agentsAccessControl"));
+export default withActiveOrganization(hasTenant(withPermission(LiveMonitoring, "agentsAccessControl")));

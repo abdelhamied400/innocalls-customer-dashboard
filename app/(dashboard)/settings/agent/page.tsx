@@ -2,6 +2,7 @@
 
 import { useTranslations } from "@/providers/TranslationProvider";
 import BreakTypesTable from "./table";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const AgentSettings = () => {
   const t = useTranslations("settings.agent");
@@ -15,4 +16,4 @@ const AgentSettings = () => {
   );
 };
 
-export default AgentSettings;
+export default withActiveOrganization(AgentSettings);

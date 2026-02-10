@@ -32,6 +32,7 @@ import { Slider } from "@/components/ui/slider";
 import hasTenant from "@/containers/hasTenant";
 import withPermission from "@/containers/withPermission";
 import { FilterBar } from "@/components/FilterBar";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 type Option = {
   value: string;
@@ -199,6 +200,6 @@ const UserActivityAnalytics = () => {
   );
 };
 
-export default hasTenant(
+export default withActiveOrganization(hasTenant(
   withPermission(UserActivityAnalytics, "agentsAccessControl")
-);
+));

@@ -1,4 +1,7 @@
+"use client";
+
 import CreateReportForm from "./form";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const CreateReportPage = () => {
   return (
@@ -8,4 +11,4 @@ const CreateReportPage = () => {
   );
 };
 
-export default CreateReportPage;
+export default withActiveOrganization(CreateReportPage);

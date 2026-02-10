@@ -15,6 +15,7 @@ import PaginatedTablePagination from "@/components/Table/PaginatedTablePaginatio
 import ScheduledReportActions from "@/components/ScheduledReportActions";
 import { WEEK_DAYS } from "@/constants/scheduled-reports";
 import { ScheduledReportHistoryStatus } from "@/types/api/report";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const PROCESSING_STATUSES: ScheduledReportHistoryStatus[] = [
   "pending",
@@ -172,4 +173,4 @@ const HistoryPage = ({ params }: HistoryPageProps) => {
   );
 };
 
-export default HistoryPage;
+export default withActiveOrganization(HistoryPage);

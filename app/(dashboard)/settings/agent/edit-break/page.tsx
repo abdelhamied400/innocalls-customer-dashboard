@@ -13,6 +13,7 @@ import Stepper, {
   StepperPrevious,
 } from "@/components/ui/stepper";
 import { ChevronLeftIcon, X } from "lucide-react";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const EditBreakPage = () => {
   const searchParams = useSearchParams();
@@ -100,4 +101,4 @@ const EditBreakPage = () => {
   );
 };
 
-export default EditBreakPage;
+export default withActiveOrganization(EditBreakPage);

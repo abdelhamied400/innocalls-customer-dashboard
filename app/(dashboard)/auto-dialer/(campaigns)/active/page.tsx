@@ -3,6 +3,7 @@ import useAppStore from "@/store/app.slice";
 import AutoDialerActiveCampaignsTable from "./table";
 import { useEffect } from "react";
 import { useTranslations } from "@/providers/TranslationProvider";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 type AutoDialerActiveCampaignsProps = object;
 const AutoDialerActiveCampaigns = ({}: AutoDialerActiveCampaignsProps) => {
@@ -22,4 +23,4 @@ const AutoDialerActiveCampaigns = ({}: AutoDialerActiveCampaignsProps) => {
   );
 };
 
-export default AutoDialerActiveCampaigns;
+export default withActiveOrganization(AutoDialerActiveCampaigns);

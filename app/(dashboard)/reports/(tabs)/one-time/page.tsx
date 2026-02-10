@@ -1,6 +1,9 @@
-import OneTimeReportTable from "./table";
+"use client";
 
-const OneTimeReportPage = async () => {
+import OneTimeReportTable from "./table";
+import withActiveOrganization from "@/containers/withActiveOrganization";
+
+const OneTimeReportPage = () => {
   return (
     <div className="page h-full overflow-hidden" id="one-time-report">
       <OneTimeReportTable />
@@ -8,4 +11,4 @@ const OneTimeReportPage = async () => {
   );
 };
 
-export default OneTimeReportPage;
+export default withActiveOrganization(OneTimeReportPage);

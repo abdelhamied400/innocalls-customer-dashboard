@@ -1,6 +1,9 @@
-import ChargesTable from "./table";
+"use client";
 
-const Charges = async () => {
+import ChargesTable from "./table";
+import withActiveOrganization from "@/containers/withActiveOrganization";
+
+const Charges = () => {
   return (
     <div className="page h-full" id="charges">
       <ChargesTable />
@@ -8,4 +11,4 @@ const Charges = async () => {
   );
 };
 
-export default Charges;
+export default withActiveOrganization(Charges);

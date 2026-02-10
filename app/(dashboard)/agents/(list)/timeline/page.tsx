@@ -1,4 +1,7 @@
+"use client";
+
 import TimelineTable from "./table";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const Timeline = () => {
   return (
@@ -8,4 +11,4 @@ const Timeline = () => {
   );
 };
 
-export default Timeline;
+export default withActiveOrganization(Timeline);

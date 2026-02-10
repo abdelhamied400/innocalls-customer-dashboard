@@ -1,5 +1,8 @@
+"use client";
+
 import OrganizationDetailsForm from "./organization-details-form";
 import UpdatePasswordForm from "./update-password-form";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const AccountSettings = () => {
   return (
@@ -12,4 +15,4 @@ const AccountSettings = () => {
   );
 };
 
-export default AccountSettings;
+export default withActiveOrganization(AccountSettings);

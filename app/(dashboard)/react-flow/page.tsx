@@ -1,4 +1,7 @@
+"use client";
+
 import { ReactFlow, Background, Controls } from "@xyflow/react";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 const edges = [{ id: "1-2", source: "1", target: "2" }];
 
 const nodes = [
@@ -26,4 +29,4 @@ const Flow = () => {
   );
 };
 
-export default Flow;
+export default withActiveOrganization(Flow);

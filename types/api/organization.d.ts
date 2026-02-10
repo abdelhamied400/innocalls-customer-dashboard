@@ -8,4 +8,5 @@ export type Organization = {
   isDemo: boolean;
   allowedBreakTypes: Array<AgentActivity>;
   paymentCurrency: string;
+  status: "active" | "pending";
 };
