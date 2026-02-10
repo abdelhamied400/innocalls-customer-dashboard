@@ -1,6 +1,6 @@
 import { Country } from "@/types/api/country";
 import api from "./api";
-import { Tag } from "@/types/api/tag";
+import { FullTag, Tag } from "@/types/api/tag";
 import { Extension } from "@/types/api/extension";
 import { ERG } from "@/types/api/erg";
 
@@ -17,9 +17,34 @@ export default {
     const res = await api.get("/extension/list");
     return res.data;
   },
-  getAllTags: async (): Promise<Tag[]> => {
+  getActiveTags: async (): Promise<Tag[]> => {
     const res = await api.get("/v2/call-tags/active");
     return res.data.callTags;
+  },
+  getAllTags: async (): Promise<FullTag[]> => {
+    const res = await api.get("/call-tag");
+    return res.data.callTags;
+  },
+  deleteTag: async (id: string): Promise<void> => {
+    await api.delete(`/call-tag/${id}`);
+  },
+  restoreTag: async (id: string): Promise<void> => {
+    await api.patch(`/call-tag/${id}/restore`);
+  },
+  updateTag: async (
+    id: string,
+    data: { nameAR: string; nameEN: string },
+    isDeleted: boolean
+  ): Promise<void> => {
+    await api.put(`/call-tag/${id}`, {
+      id,
+      isDeleted,
+      nameAR: data.nameAR,
+      nameEN: data.nameEN,
+    });
+  },
+  createTag: async (data: { nameAR: string; nameEN: string }): Promise<void> => {
+    await api.post("/call-tag", data);
   },
   getAllAccounts: async () => {
     const res = await api.get("/jera/accounts");

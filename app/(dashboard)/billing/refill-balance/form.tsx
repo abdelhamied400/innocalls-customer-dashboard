@@ -12,7 +12,7 @@ import Stepper, {
   StepperStep,
   StepperSteps,
 } from "@/components/ui/stepper";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import StripeProvider from "@/providers/StripeProvider";
 import billingService from "@/services/billing.service";
 import {
@@ -30,7 +30,6 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import useAuthStore from "@/store/auth.slice";
 
 const RefillBalanceForm = () => {
-  const { toast } = useToast();
   const [paymentReference, setPaymentReference] = useState<string>();
   const [paymentProvider, setPaymentProvider] = useState<string>();
   const [currentStep, setCurrentStep] = useState(0);
@@ -47,7 +46,7 @@ const RefillBalanceForm = () => {
     resolver: zodResolver(
       refillBalanceSchema(t, tCommon, {
         currency: Organization?.paymentCurrency,
-      })
+      }),
     ),
     defaultValues: { amount: 5 },
   });
@@ -62,18 +61,12 @@ const RefillBalanceForm = () => {
       setPaymentProvider(res.paymentProvider);
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          variant: "destructive",
-          title: t("messages.refillError"),
-          description:
-            error.response?.data?.message || t("messages.unknownError"),
+        toast.error(t("messages.refillError"), {
+          description: error.response?.data?.message || t("messages.unknownError"),
         });
       } else {
-        toast({
-          variant: "destructive",
-          title: t("messages.refillError"),
-          description:
-            error instanceof Error ? error.message : t("messages.unknownError"),
+        toast.error(t("messages.refillError"), {
+          description: error instanceof Error ? error.message : t("messages.unknownError"),
         });
       }
     } finally {
@@ -90,7 +83,7 @@ const RefillBalanceForm = () => {
     >
       <StepperHeader>
         <StepperPrevious>
-          <ChevronLeftIcon />
+          <ChevronLeftIcon className="rtl:rotate-180" />
         </StepperPrevious>
 
         <div className="flex flex-1 justify-center gap-2">
@@ -121,7 +114,7 @@ const RefillBalanceForm = () => {
                     <FormControl>
                       <Field
                         label={`${t("form.fields.amount.label")} (${tCommon(
-                          `currencies.${Organization?.paymentCurrency}`
+                          `currencies.${Organization?.paymentCurrency}`,
                         )})`}
                         error={
                           form.formState.errors.amount?.message?.toString() ||

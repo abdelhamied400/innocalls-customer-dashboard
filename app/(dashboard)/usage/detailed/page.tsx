@@ -1,6 +1,9 @@
-import UsageDetailedTable from "./table";
+"use client";
 
-const UsageDetailed = async () => {
+import UsageDetailedTable from "./table";
+import withActiveOrganization from "@/containers/withActiveOrganization";
+
+const UsageDetailed = () => {
   return (
     <div className="page h-full" id="usage-detailed">
       <UsageDetailedTable />
@@ -8,4 +11,4 @@ const UsageDetailed = async () => {
   );
 };
 
-export default UsageDetailed;
+export default withActiveOrganization(UsageDetailed);

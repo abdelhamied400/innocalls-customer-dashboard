@@ -24,6 +24,7 @@ import TalkTimeDistribution from "./talk-time-distribution";
 import WaitTimeDistribution from "./wait-time-distribution";
 import HourlyCallDistribution from "./hourly-call-distribution";
 import useAppStore from "@/store/app.slice";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 export type ActivityReportsFilters = {
   fromDate: Date;
@@ -173,4 +174,4 @@ const ActivityReports = () => {
   );
 };
 
-export default ActivityReports;
+export default withActiveOrganization(ActivityReports);

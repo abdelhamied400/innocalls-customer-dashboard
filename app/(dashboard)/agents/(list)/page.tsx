@@ -1,4 +1,7 @@
+"use client";
+
 import UsersTable from "./table";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 type UsersProps = {
   searchParams: Promise<{
@@ -6,7 +9,7 @@ type UsersProps = {
     pageSize: string;
   }>;
 };
-const Users = async ({ searchParams }: UsersProps) => {
+const Users = ({ searchParams }: UsersProps) => {
   return (
     <div className="page h-full" id="users">
       <UsersTable />
@@ -14,4 +17,4 @@ const Users = async ({ searchParams }: UsersProps) => {
   );
 };
 
-export default Users;
+export default withActiveOrganization(Users);

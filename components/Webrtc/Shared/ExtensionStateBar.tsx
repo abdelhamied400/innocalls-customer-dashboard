@@ -10,34 +10,55 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { webrtcStoppingActivities } from "@/constants/agent-activity";
-import useAuthStore from "@/store/auth.slice";
 import webrtcService from "@/services/webrtc.service";
+import breakTypesService from "@/services/break-types.service";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
 import { useSession } from "next-auth/react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { isValidTransition } from "@/lib/webrtc";
 import { AgentActivity } from "@/types/webrtc";
 import { isAxiosError } from "axios";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import useAuth from "@/hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
 
 const ExtensionStateBar = () => {
   const t = useTranslations("webrtc");
 
-  const { extension, extensionState, reconnect, extensionLoading } = useSip();
+  const {
+    extension,
+    extensionState,
+    reconnect,
+    extensionLoading,
+    currentSession,
+  } = useSip();
   const { data: auth, refetch: refetchUser } = useAuth();
-  const { Organization } = useAuthStore();
   const { data: session } = useSession();
   const { onActivityChange } = useSip();
 
+  const { data: availableBreakTypes = [] } = useQuery({
+    queryKey: ["agent-available-break-types"],
+    queryFn: breakTypesService.getAgentAvailableBreakTypes,
+    enabled: session?.userType === "agent",
+  });
+
   const breakType =
     auth?.user?.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
-  const { toast } = useToast();
+
+  // Agent is on a call if there's an active session
+  const isOnCall = !!currentSession;
 
   const handleActivityChange = async (
     activity: AgentActivity,
-    breakType?: AgentActivity
+    breakType?: AgentActivity,
   ) => {
+    if (isOnCall) {
+      toast.error(t("activity.messages.error"), {
+        description: t("activity.messages.cannotChangeWhileOnCall"),
+      });
+      return;
+    }
+
     try {
       await webrtcService.changeAgentState(activity, breakType);
       await refetchUser();
@@ -45,16 +66,12 @@ const ExtensionStateBar = () => {
     } catch (error) {
       if (isAxiosError(error)) {
         const errorMessage = error.response?.data?.message || error.message;
-        toast({
-          title: t("activity.messages.error"),
+        toast.error(t("activity.messages.error"), {
           description: errorMessage,
-          variant: "destructive",
         });
       } else {
-        toast({
-          title: t("activity.messages.error"),
+        toast.error(t("activity.messages.error"), {
           description: t("activity.messages.unexpectedError"),
-          variant: "destructive",
         });
       }
     } finally {
@@ -76,7 +93,7 @@ const ExtensionStateBar = () => {
           "flex items-center justify-between p-4",
           extensionState === "disconnected" && "bg-destructive-200",
           extensionState === "connected" && "bg-success-200",
-          extensionState === "connecting" && "bg-warning-200"
+          extensionState === "connecting" && "bg-warning-200",
         )}
       >
         <p className="">
@@ -147,29 +164,23 @@ const ExtensionStateBar = () => {
                   </DropdownMenuItem>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  {Organization?.allowedBreakTypes.map(
-                    (type: AgentActivity) => (
-                      <DropdownMenuItem
-                        key={type}
-                        onClick={() => {
-                          handleActivityChange(
-                            AgentActivity.BREAK_STARTED,
-                            type
-                          );
-                        }}
-                      >
-                        <span
-                          className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
-                          style={{ backgroundColor: "#eab308" }}
-                        />
-                        {t(
-                          `activity.breakTypes.${type.toLocaleLowerCase()}`
-                        ) !== `activity.breakTypes.${type.toLocaleLowerCase()}`
-                          ? t(`activity.breakTypes.${type.toLocaleLowerCase()}`)
-                          : type}
-                      </DropdownMenuItem>
-                    )
-                  )}
+                  {availableBreakTypes.map((breakType) => (
+                    <DropdownMenuItem
+                      key={breakType.id}
+                      onClick={() => {
+                        handleActivityChange(
+                          AgentActivity.BREAK_STARTED,
+                          breakType.id as AgentActivity,
+                        );
+                      }}
+                    >
+                      <span
+                        className="inline-block w-2.5 h-2.5 mr-2 rounded-full"
+                        style={{ backgroundColor: "#eab308" }}
+                      />
+                      {breakType.name}
+                    </DropdownMenuItem>
+                  ))}
                 </DropdownMenuContent>
               </DropdownMenu>
               <DropdownMenuItem
@@ -199,7 +210,7 @@ const ExtensionStateBar = () => {
                 disabled={
                   !isValidTransition(
                     breakType,
-                    AgentActivity.DIALPAD_LOGGED_OUT
+                    AgentActivity.DIALPAD_LOGGED_OUT,
                   )
                 }
               >

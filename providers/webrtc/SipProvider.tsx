@@ -22,13 +22,14 @@ import JsSIP from "jssip";
 import { useUaEvents } from "./SipProvider/useUaEvents";
 import { RTCSession } from "jssip/lib/RTCSession";
 import { defaultCountry } from "@/constants/countries";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import webrtcService from "@/services/webrtc.service";
 import CryptoJS from "crypto-js";
 import { webrtcStoppingActivities } from "@/constants/agent-activity";
 import { AgentActivity } from "@/types/webrtc";
 import useAuth from "@/hooks/useAuth";
+import useWebrtcStore from "@/store/webrtc.slice";
 
 const SipContext = createContext<SipContextType | null>(null);
 
@@ -66,7 +67,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
   const [ua, setUa] = useState<JsSIP.UA | null>(null);
   const [extension, setExtension] = useState<ExtensionWithCredentials | null>(
-    null
+    null,
   );
 
   const [currentSession, setCurrentSession] = useState<RTCSession | null>(null);
@@ -81,7 +82,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     uaRef.current = ua;
   }, [ua]);
 
-  const { toast } = useToast();
+  const { setExtension: setExtensionStore } = useWebrtcStore();
 
   const [number, setNumber] = useState<string>("");
   const [dialCode, setDialCode] = useState<string>(defaultCountry.code);
@@ -103,6 +104,8 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
   const login = useCallback(
     (extensionData: ExtensionWithCredentials) => {
+      setExtensionStore(extensionData);
+
       // Use ref to avoid dependency on ua state
       if (uaRef.current) {
         activeUserAgents.delete(uaRef.current);
@@ -119,7 +122,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
       const socket = new JsSIP.WebSocketInterface(SIP_INTERFACE);
       const passwordBytes = CryptoJS.AES.decrypt(
         extensionData.password,
-        DECRYPT_SECRET
+        DECRYPT_SECRET,
       );
       const decryptedPassword = passwordBytes.toString(CryptoJS.enc.Utf8);
 
@@ -138,7 +141,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
       userAgent.start();
       navigate("/dialpad");
     },
-    [bindEvents, navigate] // Removed ua dependency
+    [bindEvents, navigate], // Removed ua dependency
   );
 
   const reconnect = () => {
@@ -196,7 +199,9 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     (phoneNumber?: string) => {
       const calleeNumber = phoneNumber || number;
       if (!ua) {
-        console.error("User agent is not initialized");
+        toast.error("Error", {
+          description: "you may not be logged in, or on a break.",
+        });
         return;
       }
       if (!phoneNumber && !number) {
@@ -211,25 +216,21 @@ export const SipProvider = ({ children }: SipProviderProps) => {
         },
       });
     },
-    [ua, number]
+    [ua, number],
   );
 
   const spy = (extension: string) => {
     if (!ua) {
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "WebRTC is not initialized",
-        variant: "destructive",
       });
       return;
     }
 
     // check if already on call
     if (!!currentSession) {
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "You are already on a call.",
-        variant: "destructive",
       });
       return;
     }

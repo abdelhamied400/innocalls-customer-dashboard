@@ -24,7 +24,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -36,7 +36,6 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
   const [isFinishing, setIsFinishing] = useState(false);
 
   const queryClient = useQueryClient();
-  const { toast } = useToast();
 
   const refetchCampaigns = async () => {
     await queryClient.invalidateQueries({
@@ -49,24 +48,18 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       setIsStarting(true);
       await autoDialerService.startCampaign(row.original.id);
       refetchCampaigns();
-      toast({
-        title: "Campaign started",
+      toast.success("Campaign started", {
         description: "The campaign has been successfully started.",
-        variant: "success",
       });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: "Campaign start failed",
+        toast.error("Campaign start failed", {
           description: error.response?.data?.message || "An error occurred",
-          variant: "destructive",
         });
         return;
       }
-      toast({
-        title: "Campaign start failed",
+      toast.error("Campaign start failed", {
         description: "An error occurred while starting the campaign.",
-        variant: "destructive",
       });
     } finally {
       setIsStarting(false);
@@ -78,24 +71,18 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       setIsPausing(true);
       await autoDialerService.pauseCampaign(row.original.id);
       refetchCampaigns();
-      toast({
-        title: "Campaign paused",
+      toast.success("Campaign paused", {
         description: "The campaign has been successfully paused.",
-        variant: "success",
       });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: "Campaign pause failed",
+        toast.error("Campaign pause failed", {
           description: error.response?.data?.message || "An error occurred",
-          variant: "destructive",
         });
         return;
       }
-      toast({
-        title: "Campaign pause failed",
+      toast.error("Campaign pause failed", {
         description: "An error occurred while pausing the campaign.",
-        variant: "destructive",
       });
     } finally {
       setIsPausing(false);
@@ -107,24 +94,18 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       setIsResuming(true);
       await autoDialerService.resumeCampaign(row.original.id);
       refetchCampaigns();
-      toast({
-        title: "Campaign resumed",
+      toast.success("Campaign resumed", {
         description: "The campaign has been successfully resumed.",
-        variant: "success",
       });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: "Campaign resume failed",
+        toast.error("Campaign resume failed", {
           description: error.response?.data?.message || "An error occurred",
-          variant: "destructive",
         });
         return;
       }
-      toast({
-        title: "Campaign resume failed",
+      toast.error("Campaign resume failed", {
         description: "An error occurred while resuming the campaign.",
-        variant: "destructive",
       });
     } finally {
       setIsResuming(false);
@@ -136,24 +117,18 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       setIsFinishing(true);
       await autoDialerService.finishCampaign(row.original.id);
       refetchCampaigns();
-      toast({
-        title: "Campaign finished",
+      toast.success("Campaign finished", {
         description: "The campaign has been successfully finished.",
-        variant: "success",
       });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: "Campaign finish failed",
+        toast.error("Campaign finish failed", {
           description: error.response?.data?.message || "An error occurred",
-          variant: "destructive",
         });
         return;
       }
-      toast({
-        title: "Campaign finish failed",
+      toast.error("Campaign finish failed", {
         description: "An error occurred while finishing the campaign.",
-        variant: "destructive",
       });
     } finally {
       setIsFinishing(false);

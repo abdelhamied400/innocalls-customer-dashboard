@@ -1,0 +1,52 @@
+"use client";
+
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
+import { useRouter, usePathname } from "next/navigation";
+import { PropsWithChildren, useState, useEffect } from "react";
+
+type EditBreakLayoutProps = PropsWithChildren<object>;
+
+const EditBreakLayout = ({ children }: EditBreakLayoutProps) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const isActive = pathname.includes("edit-break");
+  const [isOpen, setIsOpen] = useState(isActive);
+
+  useEffect(() => {
+    if (isActive) {
+      setIsOpen(true);
+    }
+  }, [isActive]);
+
+  const handleOpenChange = (open: boolean) => {
+    if (open) return;
+
+    setIsOpen(false);
+    router.replace("/settings/agent");
+  };
+
+  if (!isActive) return null;
+
+  return (
+    <div className="edit-break-layout">
+      <Sheet open={isOpen} onOpenChange={handleOpenChange}>
+        <SheetContent side="bottom" className="h-screen p-0">
+          <SheetHeader className="sr-only">
+            <SheetTitle>Edit Break</SheetTitle>
+            <SheetDescription>Edit break type</SheetDescription>
+          </SheetHeader>
+
+          {children}
+        </SheetContent>
+      </Sheet>
+    </div>
+  );
+};
+
+export default EditBreakLayout;

@@ -45,7 +45,7 @@ const DataTable = () => {
     <div className="h-auto sm:h-full flex flex-col border rounded-xl">
       <PaginatedTable
         data={data}
-        columns={columns()}
+        columns={columns(t)}
         manualPagination={false}
         onPaginationChange={setPagination}
         onSortingChange={setSorting}

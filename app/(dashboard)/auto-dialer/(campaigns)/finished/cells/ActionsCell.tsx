@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import autoDialerService from "@/services/auto-dialer.service";
 import Link from "next/link";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 import {
@@ -31,31 +31,23 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [isArchiving, setIsArchiving] = useState(false);
   const queryClient = useQueryClient();
-  const { toast } = useToast();
 
   const downloadReport = async () => {
     try {
       setIsDownloading(true);
       await autoDialerService.downloadReport(row.original.id);
-      toast({
-        title: "Download started",
-        description:
-          "Your report is being Processed. You will receive an email with the download link once it's ready.",
-        variant: "success",
+      toast.success("Download started", {
+        description: "Your report is being Processed. You will receive an email with the download link once it's ready.",
       });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: "Error",
+        toast.error("Error", {
           description: error.response?.data?.message || "An error occurred",
-          variant: "destructive",
         });
         return;
       }
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "An error occurred while downloading the report.",
-        variant: "destructive",
       });
     } finally {
       setIsDownloading(false);
@@ -72,24 +64,18 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       await queryClient.invalidateQueries({
         queryKey: ["auto-dialer-archived-campaigns"],
       });
-      toast({
-        title: "Campaign Archived",
+      toast.success("Campaign Archived", {
         description: "The campaign has been successfully archived.",
-        variant: "success",
       });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: "Error",
+        toast.error("Error", {
           description: error.response?.data?.message || "An error occurred",
-          variant: "destructive",
         });
         return;
       }
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "An error occurred while archiving the campaign.",
-        variant: "destructive",
       });
     } finally {
       setIsArchiving(false);
@@ -112,7 +98,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Download "{row.original.name}" campaign results report</p>
+            <p>Download &quot;{row.original.name}&quot; campaign results report</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -138,7 +124,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Archive "{row.original.name}" campaign</p>
+                <p>Archive &quot;{row.original.name}&quot; campaign</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

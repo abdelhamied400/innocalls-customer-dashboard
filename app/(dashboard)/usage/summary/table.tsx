@@ -5,7 +5,7 @@ import { PaginationButton } from "@/components/ui/pagination";
 import { createColumns } from "./columns";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import usageService, { UsageSummaryFilters } from "@/services/usage.service";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import PaginatedTable from "@/components/Table/PaginatedTable";
 import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
@@ -30,7 +30,6 @@ const defaultFilters = {
 };
 
 const UsageSummaryTable = ({}) => {
-  const { toast } = useToast();
   const t = useTranslations("usage.summary");
   const tCommon = useTranslations("usage.common");
 
@@ -48,7 +47,7 @@ const UsageSummaryTable = ({}) => {
     retry: 0,
   });
 
-  const columns = createColumns(data.columns);
+  const columns = createColumns(data.columns, t);
 
   useEffect(() => {
     if (isError) {
@@ -60,10 +59,8 @@ const UsageSummaryTable = ({}) => {
       } else {
         message = error?.message || t("messages.errorDescription");
       }
-      toast({
-        title: t("messages.error"),
+      toast.error(t("messages.error"), {
         description: message,
-        variant: "destructive",
       });
       setFilters(defaultFilters);
       setTimeout(() => {

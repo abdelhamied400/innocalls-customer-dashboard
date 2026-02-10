@@ -10,7 +10,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import Field from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import webrtcService from "@/services/webrtc.service";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
@@ -29,7 +29,6 @@ const UpdateContact = () => {
 
   const { navigate, getParams } = useRouting();
   const queryClient = useQueryClient();
-  const { toast } = useToast();
   const [contact, setContact] = useState<Contact | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -47,10 +46,8 @@ const UpdateContact = () => {
   useEffect(() => {
     const loadContact = async () => {
       if (!contactId) {
-        toast({
-          title: t("messages.error"),
+        toast.error(t("messages.error"), {
           description: t("error.contactIdMissing"),
-          variant: "destructive",
         });
         navigate("/contacts/list");
         return;
@@ -76,10 +73,8 @@ const UpdateContact = () => {
           }
         }
       } catch (error) {
-        toast({
-          title: t("messages.error"),
+        toast.error(t("messages.error"), {
           description: t("messages.failedToLoadContact"),
-          variant: "destructive",
         });
         navigate("/contacts/list");
       } finally {
@@ -92,10 +87,8 @@ const UpdateContact = () => {
 
   const onSubmit = form.handleSubmit(async (data) => {
     if (!contactId) {
-      toast({
-        title: t("messages.error"),
+      toast.error(t("messages.error"), {
         description: t("error.contactIdMissing"),
-        variant: "destructive",
       });
       return;
     }
@@ -105,26 +98,19 @@ const UpdateContact = () => {
       await queryClient.invalidateQueries({
         queryKey: ["contacts-list"],
       });
-      toast({
-        title: t("messages.contactUpdated"),
+      toast.success(t("messages.contactUpdated"), {
         description: t("messages.contactUpdatedDescription"),
-        variant: "success",
       });
       navigate("/contacts/list");
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: t("messages.error"),
-          description:
-            error.response?.data?.message ||
+        toast.error(t("messages.error"), {
+          description: error.response?.data?.message ||
             t("messages.failedToUpdateContact"),
-          variant: "destructive",
         });
       } else {
-        toast({
-          title: t("messages.error"),
+        toast.error(t("messages.error"), {
           description: t("messages.unexpectedError"),
-          variant: "destructive",
         });
       }
     }

@@ -9,6 +9,7 @@ import QuickStats from "@/containers/user/QuickStats";
 import PerformanceStats from "@/containers/user/PerformanceStats";
 import { useVocab } from "@/hooks/useVocab";
 import useAuth from "@/hooks/useAuth";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const Dashboard = () => {
   const { Organization } = useAuthStore();
@@ -41,4 +42,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default withActiveOrganization(Dashboard);

@@ -2,11 +2,11 @@
 
 import { PaginationState, SortingState } from "@tanstack/react-table";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createColumns } from "./columns";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import usageService, { UsageDetailedFilters } from "@/services/usage.service";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import PaginatedTable from "@/components/Table/PaginatedTable";
 import DetailedUsageHead from "./head";
@@ -32,7 +32,6 @@ export const defaultFilters: UsageDetailedFilters = {
 };
 
 const UsageDetailedTable = () => {
-  const { toast } = useToast();
   const t = useTranslations("usage.detailed");
   const tCommon = useTranslations("usage.common");
 
@@ -54,7 +53,7 @@ const UsageDetailedTable = () => {
       usageService.fetchUsageDetailed(
         pagination.pageIndex + 1,
         pagination.pageSize,
-        filters
+        filters,
       ),
   });
 
@@ -67,28 +66,42 @@ const UsageDetailedTable = () => {
       } else {
         message = error?.message || t("messages.errorDescription");
       }
-      toast({
-        title: t("messages.error"),
+      toast.error(t("messages.error"), {
         description: message,
-        variant: "destructive",
       });
       setFilters(defaultFilters);
     }
   }, [isError, error, toast]);
 
+  // Track if this is the initial render
+  const isInitialRender = useRef(true);
+
+  useEffect(() => {
+    // Skip reset on initial render
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    // Reset to first page when filters change
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  }, [filters]);
+
   return (
     <div className="h-full flex flex-col">
       <PaginatedTable
         data={data?.list || []}
-        columns={createColumns(data.columns)}
+        columns={createColumns(data.columns, t)}
         pagination={{
           totalItems: data?.list?.length || 0,
           totalPages: data?.hasNext
             ? pagination.pageIndex + 2
             : pagination.pageIndex + 1,
         }}
-        onPaginationChange={(pagination) => {
-          setPagination(pagination);
+        paginationState={pagination}
+        onPaginationChange={setPagination}
+        serverPagination={{
+          hasNext: data?.hasNext,
+          limit: pagination.pageSize,
         }}
       >
         <DetailedUsageHead filters={filters} setFilters={setFilters} />

@@ -20,13 +20,12 @@ import usePagination from "./usePagination";
 import { useTranslations } from "@/providers/TranslationProvider";
 
 const PaginatedTablePagination = () => {
-  const { table, pagination } = usePaginatedTable();
-  const { startRowIndex, endRowIndex, totalItems, pages } = usePagination(
-    table,
-    {
+  const { table, pagination, serverPagination } = usePaginatedTable();
+  const { startRowIndex, endRowIndex, totalItems, pages, showTotal } =
+    usePagination(table, {
       isManualPagination: table.options.manualPagination,
-    }
-  );
+      serverPagination,
+    });
 
   const t = useTranslations("common.pagination");
 
@@ -91,7 +90,7 @@ const PaginatedTablePagination = () => {
         </Select>
         <p className="text-sm">
           {startRowIndex}-{endRowIndex}
-          {totalItems ? ` ${t("of")} ${totalItems}` : ""}
+          {showTotal && totalItems ? ` ${t("of")} ${totalItems}` : ""}
         </p>
       </div>
     </div>

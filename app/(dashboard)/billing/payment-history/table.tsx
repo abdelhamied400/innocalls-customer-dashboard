@@ -1,11 +1,11 @@
 "use client";
 
 import { PaginationState, SortingState } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { columns } from "./columns";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import billingService from "@/services/billing.service";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { useTranslations } from "@/providers/TranslationProvider";
 import PaginatedTable from "@/components/Table/PaginatedTable";
@@ -28,7 +28,6 @@ fromDate.setDate(fromDate.getDate() - 30);
 const toDate = new Date();
 
 const BillingTable = () => {
-  const { toast } = useToast();
 
   const t = useTranslations("billing.paymentHistory");
 
@@ -69,24 +68,37 @@ const BillingTable = () => {
 
   useEffect(() => {
     if (isError && error instanceof AxiosError) {
-      toast({
-        title: t("messages.error"),
-        description:
-          error.response?.data?.message || t("messages.errorDescription"),
-        variant: "destructive",
+      toast.error(t("messages.error"), {
+        description: error.response?.data?.message || t("messages.errorDescription"),
       });
     }
   }, [isError, error]);
+
+  // Track if this is the initial render
+  const isInitialRender = useRef(true);
+
+  useEffect(() => {
+    // Skip reset on initial render
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    // Reset to first page when filters or sorting change
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  }, [filters, sorting]);
 
   return (
     <div className="h-auto sm:h-full flex flex-col border rounded-xl">
       <PaginatedTable
         data={paymentHistory.data || []}
-        columns={columns()}
+        columns={columns(t)}
         pagination={{
           totalItems: paymentHistory.total || 0,
           totalPages: paymentHistory.last_page || 0,
+          from: paymentHistory.from,
+          to: paymentHistory.to,
         }}
+        paginationState={pagination}
         onPaginationChange={setPagination}
         onSortingChange={setSorting}
       >

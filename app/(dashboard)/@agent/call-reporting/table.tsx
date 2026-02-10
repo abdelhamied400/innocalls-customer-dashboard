@@ -7,9 +7,9 @@ import {
 } from "@/types/api/call-reporting";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { PaginationState, SortingState } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { columns } from "./columns";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import PaginatedTable from "@/components/Table/PaginatedTable";
 import CallReportingHead from "./head";
@@ -31,8 +31,8 @@ export const defaultFilters: AgentCallReportingFilters = {
 };
 
 const CallReportingTable = ({}: CallReportingTableProps) => {
-  const { toast } = useToast();
 
+  const tCallReporting = useTranslations("callReporting");
   const t = useTranslations("callReporting.messages");
 
   const [filters, setFilters] =
@@ -68,10 +68,8 @@ const CallReportingTable = ({}: CallReportingTableProps) => {
       } else {
         message = error?.message;
       }
-      toast({
-        title: t("errorFetchingData"),
+      toast.error(t("errorFetchingData"), {
         description: message,
-        variant: "destructive",
       });
       setFilters(defaultFilters);
       setTimeout(() => {
@@ -80,18 +78,32 @@ const CallReportingTable = ({}: CallReportingTableProps) => {
     }
   }, [isError, error, toast]);
 
+  // Track if this is the initial render
+  const isInitialRender = useRef(true);
+
+  useEffect(() => {
+    // Skip reset on initial render
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    // Reset to first page when filters change
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  }, [filters]);
+
   return (
     <div className="h-full flex flex-col">
       <PaginatedTable
         data={callReporting?.rows || []}
-        columns={columns()}
+        columns={columns(tCallReporting)}
         pagination={{
           totalItems: callReporting?.totalItems || 0,
           totalPages: callReporting?.totalPages || 0,
+          from: callReporting?.from,
+          to: callReporting?.to,
         }}
-        onPaginationChange={(pagination) => {
-          setPagination(pagination);
-        }}
+        paginationState={pagination}
+        onPaginationChange={setPagination}
       >
         <CallReportingHead filters={filters} setFilters={setFilters} />
         <PaginatedTableContent>

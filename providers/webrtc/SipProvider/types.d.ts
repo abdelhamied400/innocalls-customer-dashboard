@@ -13,6 +13,10 @@ export type SessionState =
   | "answered"
   | "ended"
   | "failed"
+  | "missed"
+  | "rejected"
+  | "canceled"
+  | "busy"
   | undefined;
 
 export type SipContextType = {

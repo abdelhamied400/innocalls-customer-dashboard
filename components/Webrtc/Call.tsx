@@ -5,11 +5,16 @@ import CallActions from "./Call/CallActions";
 import CallDirection from "./Call/CallDirection";
 import CallState from "./Call/CallState";
 import { cn } from "@/lib/utils";
+import { parseAutoDialerCallee } from "@/lib/webrtc";
 
 const Call = () => {
   const { currentSession, sessionState, isSpying, spyingStatus } = useSip();
   const number = currentSession?.remote_identity?.uri?.user.replace("*199", "");
-  const name = currentSession?.remote_identity?.display_name;
+  const displayName = currentSession?.remote_identity?.display_name;
+
+  const { name: calleeName } = parseAutoDialerCallee(
+    displayName || number || ""
+  );
 
   const handleHangup = () => {
     currentSession?.terminate();
@@ -41,7 +46,7 @@ const Call = () => {
           </div>
         )}
         {number && <h4 className="text-center"> {"\u200E" + number}</h4>}
-        {name && <h2 className="text-center">{name}</h2>}
+        {calleeName && <h2 className="text-center">{calleeName}</h2>}
         {/* if session status is confirmed */}
         <CallState state={sessionState} />
 

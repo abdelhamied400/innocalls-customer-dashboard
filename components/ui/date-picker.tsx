@@ -33,11 +33,15 @@ const DatePicker = ({
           className={cn(
             "justify-start px-0",
             !value && "text-muted-foreground",
-            className
+            className,
           )}
           {...props}
         >
-          {value ? format(value, "dd/MM/yyyy") : <span>{placeholder}</span>}
+          {value ? (
+            format(value, "dd/MM/yyyy")
+          ) : (
+            <span className="font-normal text-sm">{placeholder}</span>
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="p-0 w-auto">
@@ -46,6 +50,7 @@ const DatePicker = ({
           mode="single"
           selected={value}
           onSelect={onChange}
+          disabled={{ after: new Date() }}
         />
       </PopoverContent>
     </Popover>

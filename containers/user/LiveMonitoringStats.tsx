@@ -241,7 +241,7 @@ const LiveMonitoringStats = () => {
     if (cleaned.length === 11 && cleaned.startsWith("1")) {
       return `+1 (${cleaned.slice(1, 4)}) ${cleaned.slice(
         4,
-        7
+        7,
       )}-${cleaned.slice(7)}`;
     }
     return phone;
@@ -480,7 +480,7 @@ const LiveMonitoringStats = () => {
                 }
                 title="Avg Talk Time"
                 value={formatTime(
-                  data.performance.averageTalkTime?.value || 240
+                  data.performance.averageTalkTime?.value || 240,
                 )}
                 info={
                   <p className="text-sm text-purple-600">
@@ -565,13 +565,13 @@ const LiveMonitoringStats = () => {
                         data.queues as Record<
                           string,
                           { inProgressCalls: any[]; waitingCalls: any[] }
-                        >
+                        >,
                       ).reduce(
                         (total, queue) =>
                           total +
                           queue.inProgressCalls.length +
                           queue.waitingCalls.length,
-                        0
+                        0,
                       )}
                     </div>
                   </div>
@@ -596,12 +596,12 @@ const LiveMonitoringStats = () => {
                               {queueType === "Support"
                                 ? "🛠️"
                                 : queueType === "Sales"
-                                ? "💰"
-                                : queueType === "Technical"
-                                ? "⚙️"
-                                : queueType === "Billing"
-                                ? "💳"
-                                : "📞"}
+                                  ? "💰"
+                                  : queueType === "Technical"
+                                    ? "⚙️"
+                                    : queueType === "Billing"
+                                      ? "💳"
+                                      : "📞"}
                             </span>
                           </div>
                           <div>
@@ -621,8 +621,8 @@ const LiveMonitoringStats = () => {
                               queue.serviceLevel >= 90
                                 ? "text-green-600"
                                 : queue.serviceLevel >= 80
-                                ? "text-yellow-600"
-                                : "text-red-600"
+                                  ? "text-yellow-600"
+                                  : "text-red-600"
                             }`}
                           >
                             {queue.serviceLevel.toFixed(0)}%
@@ -793,7 +793,7 @@ const LiveMonitoringStats = () => {
                                       </div>
                                     </div>
                                   </div>
-                                )
+                                ),
                               )}
                             </div>
                           ) : (
@@ -856,7 +856,7 @@ const LiveMonitoringStats = () => {
                         </div>
                       </div>
                     </div>
-                  )
+                  ),
                 )}
               </div>
             </div>
@@ -1132,7 +1132,7 @@ const LiveMonitoringStats = () => {
                       Offline (
                       {
                         data.agents.filter(
-                          (agent) => agent.status === "offline"
+                          (agent) => agent.status === "offline",
                         ).length
                       }
                       )

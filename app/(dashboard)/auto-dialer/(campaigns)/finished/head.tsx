@@ -17,7 +17,7 @@ import { FilterBox } from "@/components/FilterBox";
 import { useEffect, useState } from "react";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
 import { isValidDateRange } from "@/lib/date";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -31,7 +31,6 @@ const AutoDialerFinishedHead = ({
   filters,
   setFilters,
 }: AutoDialerFinishedHeadProps) => {
-  const { toast } = useToast();
   const { table } = usePaginatedTable();
   const [fromDate, setFromDate] = useState<Date>();
   const [toDate, setToDate] = useState<Date>();
@@ -51,10 +50,8 @@ const AutoDialerFinishedHead = ({
       fromDate,
       toDate,
       (message) => {
-        toast({
-          title: "Invalid Date Range",
+        toast.error("Invalid Date Range", {
           description: message,
-          variant: "destructive",
         });
       },
       -1

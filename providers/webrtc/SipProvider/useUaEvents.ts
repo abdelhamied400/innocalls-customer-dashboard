@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { useRouting } from "@/providers/RoutingProvider";
 import { ExtensionState, SessionState, SpyingStatus } from "./types";
 import JsSIP, { C } from "jssip";
-import { RTCSessionEvent } from "jssip/lib/UA";
+import { RTCSessionEvent } from "jssip/src/UA";
 import { CallListener, OutgoingEvent, RTCSession } from "jssip/lib/RTCSession";
 import { ExtensionWithCredentials } from "@/types/api/extension";
 
@@ -12,7 +12,8 @@ import useWebrtcStore from "@/store/webrtc.slice";
 import webrtcService from "@/services/webrtc.service";
 import { differenceInSeconds, format, intervalToDuration } from "date-fns";
 import { useSession } from "next-auth/react";
-import { forcePCMA } from "@/lib/webrtc";
+import { forcePCMA, parseAutoDialerCallee } from "@/lib/webrtc";
+import { processPhoneNumber } from "@/lib/dialpad-utils";
 
 export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
@@ -52,7 +53,7 @@ export const useUaEvents = ({
     (state: SessionState | undefined) => {
       setSessionState?.(state);
     },
-    [setSessionState]
+    [setSessionState],
   );
 
   const stopRingtone = useCallback(() => {
@@ -80,7 +81,13 @@ export const useUaEvents = ({
       ringtoneRef.current = ringtone;
 
       const calleeNumber = session.remote_identity?.uri?.user || "Unknown";
-      const calleeName = session.remote_identity?.display_name || "Unknown";
+      const displayName = session.remote_identity?.display_name || "Unknown";
+
+      const { name: calleeName } = parseAutoDialerCallee(
+        displayName || calleeNumber || "",
+      );
+
+      const { processedNumber } = processPhoneNumber(calleeNumber, true);
 
       session.on("progress", () => {
         webrtcLogger.info("Call is in progress");
@@ -98,10 +105,10 @@ export const useUaEvents = ({
         addCallToLog(
           {
             type: "incoming",
-            number: calleeNumber,
+            number: processedNumber,
             name: calleeName,
           },
-          extension.ext
+          extension.ext,
         );
 
         updateSessionState("answered");
@@ -117,10 +124,10 @@ export const useUaEvents = ({
           addCallToLog(
             {
               type: "missed",
-              number: calleeNumber,
+              number: processedNumber,
               name: calleeName,
             },
-            extension.ext
+            extension.ext,
           );
         }
         updateSessionState("ended");
@@ -137,28 +144,30 @@ export const useUaEvents = ({
           addCallToLog(
             {
               type: "rejected",
-              number: calleeNumber,
+              number: processedNumber,
               name: calleeName,
             },
-            extension.ext
+            extension.ext,
           );
+          updateSessionState("rejected");
         } else {
           // Otherwise log as missed
           addCallToLog(
             {
               type: "missed",
-              number: calleeNumber,
+              number: processedNumber,
               name: calleeName,
             },
-            extension.ext
+            extension.ext,
           );
+          updateSessionState("missed");
         }
-        updateSessionState("failed");
+        // updateSessionState("failed");
       });
 
       navigate("/incoming-call");
     },
-    [navigate, stopRingtone, updateSessionState]
+    [navigate, stopRingtone, updateSessionState],
   );
 
   const handleOutgoingCall = useCallback(
@@ -173,13 +182,14 @@ export const useUaEvents = ({
       const connection = session.connection;
 
       const calledNumber = session.remote_identity?.uri?.user || "Unknown";
+      const { processedNumber } = processPhoneNumber(calledNumber, true);
 
       addCallToLog(
         {
           type: "outgoing",
-          number: calledNumber,
+          number: processedNumber,
         },
-        extension.ext
+        extension.ext,
       );
 
       updateSessionState("trying");
@@ -222,7 +232,7 @@ export const useUaEvents = ({
       navigate("/call");
       updateSessionState("trying");
     },
-    [navigate, updateSessionState]
+    [navigate, updateSessionState],
   );
 
   const playRingingTone = useCallback(() => {
@@ -311,8 +321,10 @@ export const useUaEvents = ({
           stopRingtone();
           stopRingingTone();
           webrtcLogger.info("Call ended", event);
-          navigate("/dialpad");
-          setCurrentSession?.(null);
+          setTimeout(() => {
+            navigate("/dialpad");
+            setCurrentSession?.(null);
+          }, 2000);
           updateSessionState("ended");
           setSpyingStatus("spy");
           setIsSpying(false);
@@ -330,23 +342,28 @@ export const useUaEvents = ({
           webrtcLogger.warn("Call failed", event);
           setTimeout(() => {
             navigate("/dialpad");
+            setCurrentSession?.(null);
           }, 2000);
-          setCurrentSession?.(null);
-          updateSessionState("failed");
+          // updateSessionState("failed");
           setSpyingStatus("spy");
           setIsSpying(false);
 
           const failStatus = event.cause;
           if (failStatus === C.causes.BUSY) {
             updateLastCall({ status: "Busy" });
+            updateSessionState("busy");
           } else if (failStatus === C.causes.CANCELED) {
             updateLastCall({ status: "Unanswered" });
+            updateSessionState("canceled");
           } else if (failStatus === C.causes.REJECTED) {
             updateLastCall({ status: "Busy" });
+            updateSessionState("rejected");
           } else if (failStatus === C.causes.SIP_FAILURE_CODE) {
             updateLastCall({ status: "Unanswered" });
+            updateSessionState("missed");
           } else {
             updateLastCall({ status: "Failed" });
+            updateSessionState("failed");
           }
         });
 
@@ -365,7 +382,7 @@ export const useUaEvents = ({
       navigate,
       stopRingtone,
       updateSessionState,
-    ]
+    ],
   );
 
   const unbindEvents = useCallback(
@@ -375,7 +392,7 @@ export const useUaEvents = ({
       updateSessionState(undefined);
       stopRingtone();
     },
-    [setExtensionState, updateSessionState, stopRingtone]
+    [setExtensionState, updateSessionState, stopRingtone],
   );
 
   return { bindEvents, unbindEvents, stopRingtone };

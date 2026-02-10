@@ -4,7 +4,7 @@ import { locales, LocaleSlug, defaultLocale } from "@/i18n/config";
 import MainProvider from "@/providers/MainProvider";
 import { NextFontWithVariable } from "next/dist/compiled/@next/font";
 import localFont from "next/font/local";
-import "@/styles/main.scss";
+import "@/styles/main.css";
 import "@xyflow/react/dist/style.css";
 
 const poppins = localFont({

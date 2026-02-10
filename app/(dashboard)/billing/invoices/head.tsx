@@ -11,7 +11,7 @@ import {
 import { Toggle } from "@/components/ui/toggle";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { isValidDateRange } from "@/lib/date";
@@ -39,7 +39,6 @@ type InvoiceHeadProps = {
   setFilters: React.Dispatch<React.SetStateAction<InvoicesFilters>>;
 };
 const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
-  const { toast } = useToast();
   const [fromDate, setFromDate] = useState<Date | undefined>(undefined);
   const [toDate, setToDate] = useState<Date | undefined>(undefined);
   const [fromTotal, setFromTotal] = useState<string | undefined>();
@@ -68,10 +67,8 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
       fromDate,
       toDate,
       (message) => {
-        toast({
-          title: tBillingCommon("messages.invalidDateRange"),
+        toast.error(tBillingCommon("messages.invalidDateRange"), {
           description: message,
-          variant: "destructive",
         });
       },
       -1
@@ -82,10 +79,8 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
     if (fromTotal) {
       const fromTotalNum = parseFloat(fromTotal);
       if (isNaN(fromTotalNum) || fromTotalNum < 0) {
-        toast({
-          title: t("messages.invalidAmountRange"),
+        toast.error(t("messages.invalidAmountRange"), {
           description: t("filters.validation.fromTotal.invalid"),
-          variant: "destructive",
         });
         hasValidTotalRange = false;
       }
@@ -94,20 +89,16 @@ const InvoicesHead = ({ filters, setFilters }: InvoiceHeadProps) => {
     if (toTotal) {
       const toTotalNum = parseFloat(toTotal);
       if (isNaN(toTotalNum) || toTotalNum < 0) {
-        toast({
-          title: t("messages.invalidAmountRange"),
+        toast.error(t("messages.invalidAmountRange"), {
           description: t("filters.validation.toTotal.invalid"),
-          variant: "destructive",
         });
         hasValidTotalRange = false;
       }
     }
 
     if (fromTotal && toTotal && parseFloat(fromTotal) > parseFloat(toTotal)) {
-      toast({
-        title: t("messages.invalidAmountRange"),
+      toast.error(t("messages.invalidAmountRange"), {
         description: t("filters.validation.toTotal.isGreaterThanFrom"),
-        variant: "destructive",
       });
       hasValidTotalRange = false;
     }

@@ -6,7 +6,7 @@ export default {
   getChargesList: async (
     pageIndex: number,
     pageSize: number,
-    filters: Object
+    filters: object
   ) => {
     const queryString = objToQueryString(filters);
     const res = await api.get(
@@ -17,7 +17,7 @@ export default {
   getPaymentsList: async (
     pageIndex: number,
     pageSize: number,
-    filters: Object
+    filters: object
   ) => {
     const queryString = objToQueryString(filters);
     const res = await api.get(
@@ -28,7 +28,7 @@ export default {
   getRatesList: async (
     pageIndex: number,
     pageSize: number,
-    filters: Object
+    filters: object
   ) => {
     const queryString = objToQueryString(filters);
     const res = await api.get(
@@ -39,7 +39,7 @@ export default {
   getInvoicesList: async (
     pageIndex: number,
     pageSize: number,
-    filters: Object,
+    filters: object,
     sorting: SortingState
   ) => {
     const queryString = objToQueryString(filters);

@@ -52,6 +52,10 @@
       "noData": "لا توجد بيانات متاحة",
       "notFound": "لم يتم العثور على بيانات"
     },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
     "filter": {
       "noFiltersAvailable": "لا توجد خيارات تخصيص"
     },
@@ -214,6 +218,823 @@
       },
       "actions": {
         "submit": "إعادة تعيين كلمة المرور"
+      }
+    },
+    "updatePassword": {
+      "title": "تحديث كلمة المرور",
+      "form": {
+        "fields": {
+          "currentPassword": {
+            "label": "كلمة المرور الحالية",
+            "placeholder": "أدخل كلمة المرور الحالية..."
+          },
+          "newPassword": {
+            "label": "كلمة المرور الجديدة",
+            "placeholder": "أدخل كلمة المرور الجديدة..."
+          },
+          "confirmPassword": {
+            "label": "تأكيد كلمة المرور",
+            "placeholder": "أعد إدخال كلمة المرور الجديدة..."
+          }
+        },
+        "validation": {
+          "currentPassword": {
+            "required": "كلمة المرور الحالية مطلوبة"
+          },
+          "newPassword": {
+            "minLength": "يجب أن تتكون كلمة المرور من {min} أحرف على الأقل",
+            "maxLength": "يجب ألا تزيد كلمة المرور عن {max} حرف",
+            "uppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
+            "lowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
+            "number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
+            "specialChar": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل"
+          },
+          "confirmPassword": {
+            "mismatch": "كلمات المرور غير متطابقة"
+          }
+        }
+      },
+      "messages": {
+        "resetSuccess": "تم تحديث كلمة المرور",
+        "resetSuccessDescription": "تم تحديث كلمة المرور بنجاح.",
+        "resetFailed": "خطأ",
+        "defaultErrorDescription": "حدث خطأ أثناء تحديث كلمة المرور."
+      },
+      "actions": {
+        "submit": "حفظ التغييرات"
+      },
+      "hint": "*انقر على 'حفظ التغييرات' للتأكد من حفظ تحديثاتك"
+    }
+  },
+  "settings": {
+    "layout": {
+      "tabs": {
+        "account": "إعدادات الحساب",
+        "call": "إعدادات المكالمات",
+        "agent": "إعدادات الوكيل"
+      }
+    },
+    "account": {
+      "organizationInfo": {
+        "title": "معلومات المنظمة",
+        "form": {
+          "fields": {
+            "organizationName": {
+              "label": "اسم المنظمة",
+              "placeholder": "أدخل اسم المنظمة"
+            }
+          },
+          "validation": {
+            "organizationName": {
+              "minTwoChars": "يجب أن يكون اسم المنظمة حرفين على الأقل"
+            }
+          }
+        },
+        "messages": {
+          "success": "نجاح",
+          "successDescription": "تم تحديث اسم المنظمة بنجاح."
+        },
+        "actions": {
+          "submit": "حفظ التغييرات"
+        }
+      }
+    },
+    "call": {
+      "callSummary": {
+        "title": "ملخص المكالمة",
+        "enableAfterEveryCall": "قم بتفعيل هذا الخيار لعرض ملخص بعد كل مكالمة.",
+        "enableAfterConnectedCalls": "قم بتفعيل هذا الخيار لعرض ملخص بعد المكالمات المتصلة فقط.",
+        "toggleSuccess": "تم تحديث إعداد ملخص المكالمة بنجاح.",
+        "toggleFailed": "فشل تحديث إعداد ملخص المكالمة."
+      },
+      "tags": {
+        "title": "إدارة الوسوم",
+        "subtitle": "جميع الوسوم",
+        "columns": {
+          "nameAR": "الاسم بالعربية",
+          "nameEN": "الاسم بالإنجليزية",
+          "status": "الحالة",
+          "actions": "الإجراءات"
+        },
+        "actions": {
+          "create": "إنشاء وسم جديد",
+          "edit": "تعديل",
+          "enable": "تفعيل",
+          "disable": "إيقاف"
+        },
+        "filters": {
+          "status": {
+            "label": "الحالة",
+            "selectLabel": "اختر من القائمة",
+            "all": "جميع الوسوم"
+          }
+        },
+        "confirmations": {
+          "disableTitle": "إيقاف وسم \"{name}\"",
+          "disableDescription": "أنت على وشك إيقاف هذا الوسم. هل أنت متأكد أنك تريد إيقاف هذا الوسم؟ يرجى التأكيد للمتابعة.",
+          "enableTitle": "تفعيل وسم \"{name}\"",
+          "enableDescription": "أنت على وشك تفعيل هذا الوسم. هل أنت متأكد أنك تريد تفعيل هذا الوسم؟ يرجى التأكيد للمتابعة.",
+          "cancel": "لا، لا تتابع",
+          "yesDisable": "نعم، أوقفه",
+          "yesEnable": "نعم، فعّله"
+        },
+        "messages": {
+          "tagEnabled": "تم تفعيل الوسم بنجاح.",
+          "tagDisabled": "تم إيقاف الوسم بنجاح.",
+          "toggleFailed": "فشل تحديث حالة الوسم."
+        }
+      },
+      "editTag": {
+        "title": "تعديل الوسم",
+        "description": "تعديل تفاصيل الوسم",
+        "form": {
+          "fields": {
+            "nameAR": {
+              "label": "الاسم بالعربية",
+              "placeholder": "أدخل الاسم بالعربية"
+            },
+            "nameEN": {
+              "label": "الاسم بالإنجليزية",
+              "placeholder": "أدخل الاسم بالإنجليزية"
+            }
+          },
+          "validation": {
+            "nameAR": {
+              "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
+            },
+            "nameEN": {
+              "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
+            }
+          }
+        },
+        "messages": {
+          "updateSuccess": "تم تحديث الوسم بنجاح.",
+          "updateFailed": "فشل تحديث الوسم.",
+          "tagNotFound": "الوسم غير موجود."
+        },
+        "actions": {
+          "save": "حفظ التغييرات",
+          "close": "إغلاق"
+        }
+      },
+      "createTag": {
+        "title": "إنشاء وسم جديد",
+        "description": "إنشاء وسم جديد",
+        "form": {
+          "fields": {
+            "nameAR": {
+              "label": "الاسم بالعربية",
+              "placeholder": "أدخل الاسم بالعربية"
+            },
+            "nameEN": {
+              "label": "الاسم بالإنجليزية",
+              "placeholder": "أدخل الاسم بالإنجليزية"
+            }
+          },
+          "validation": {
+            "nameAR": {
+              "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
+            },
+            "nameEN": {
+              "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
+            }
+          }
+        },
+        "messages": {
+          "createSuccess": "تم إنشاء الوسم بنجاح.",
+          "createFailed": "فشل إنشاء الوسم."
+        },
+        "actions": {
+          "create": "إنشاء",
+          "close": "إغلاق"
+        }
+      }
+    },
+    "agent": {
+      "breaks": {
+        "title": "جميع الاستراحات",
+        "columns": {
+          "nameAR": "الاسم بالعربية",
+          "nameEN": "الاسم بالإنجليزية",
+          "actions": "الإجراءات"
+        },
+        "actions": {
+          "create": "إنشاء استراحة جديدة",
+          "edit": "تعديل",
+          "delete": "حذف",
+          "restore": "استعادة"
+        },
+        "confirmations": {
+          "deleteTitle": "حذف استراحة \"{name}\"",
+          "deleteDescription": "هل أنت متأكد من رغبتك في حذف نوع الاستراحة هذا؟ لا يمكن التراجع عن هذا الإجراء.",
+          "restoreTitle": "استعادة استراحة \"{name}\"",
+          "restoreDescription": "هل أنت متأكد من رغبتك في استعادة نوع الاستراحة هذا؟",
+          "cancel": "إلغاء",
+          "yesDelete": "نعم، احذف",
+          "yesRestore": "نعم، استعد"
+        },
+        "messages": {
+          "deleteSuccess": "تم حذف نوع الاستراحة بنجاح.",
+          "deleteFailed": "فشل حذف نوع الاستراحة.",
+          "restoreSuccess": "تم استعادة نوع الاستراحة بنجاح.",
+          "restoreFailed": "فشل استعادة نوع الاستراحة."
+        },
+        "createBreak": {
+          "title": "إنشاء استراحة جديدة",
+          "description": "إنشاء نوع استراحة جديد",
+          "form": {
+            "fields": {
+              "nameAR": {
+                "label": "الاسم بالعربية",
+                "placeholder": "أدخل الاسم بالعربية"
+              },
+              "nameEN": {
+                "label": "الاسم بالإنجليزية",
+                "placeholder": "أدخل الاسم بالإنجليزية"
+              }
+            },
+            "validation": {
+              "nameAR": {
+                "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
+              },
+              "nameEN": {
+                "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
+              }
+            }
+          },
+          "messages": {
+            "createSuccess": "تم إنشاء نوع الاستراحة بنجاح.",
+            "createFailed": "فشل إنشاء نوع الاستراحة."
+          },
+          "actions": {
+            "create": "إنشاء الاستراحة",
+            "close": "إغلاق"
+          }
+        },
+        "editBreak": {
+          "title": "تعديل الاستراحة",
+          "description": "تعديل تفاصيل نوع الاستراحة",
+          "form": {
+            "fields": {
+              "nameAR": {
+                "label": "الاسم بالعربية",
+                "placeholder": "أدخل الاسم بالعربية"
+              },
+              "nameEN": {
+                "label": "الاسم بالإنجليزية",
+                "placeholder": "أدخل الاسم بالإنجليزية"
+              }
+            },
+            "validation": {
+              "nameAR": {
+                "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
+              },
+              "nameEN": {
+                "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
+              }
+            }
+          },
+          "messages": {
+            "updateSuccess": "تم تحديث نوع الاستراحة بنجاح.",
+            "updateFailed": "فشل تحديث نوع الاستراحة.",
+            "breakNotFound": "نوع الاستراحة غير موجود."
+          },
+          "actions": {
+            "save": "حفظ التغييرات",
+            "close": "إغلاق"
+          }
+        }
+      }
+    }
+  },
+  "reports": {
+    "title": "التقارير",
+    "layout": {
+      "tabs": {
+        "oneTime": "تقرير لمرة واحدة",
+        "scheduled": "تقرير مجدول"
+      }
+    },
+    "reportTypes": {
+      "outbound_summary": "ملخص المكالمات الصادرة",
+      "outbound_agent_stats": "إحصائيات وكلاء المكالمات الصادرة",
+      "outbound_date_distribution": "توزيع المكالمات الصادرة حسب التاريخ",
+      "outbound_hourly_distribution": "توزيع المكالمات الصادرة حسب الساعة",
+      "inbound_agent_summary": "ملخص وكلاء المكالمات الواردة",
+      "inbound_agent_date_distribution": "توزيع وكلاء المكالمات الواردة حسب التاريخ",
+      "inbound_agent_hourly_distribution": "توزيع وكلاء المكالمات الواردة حسب الساعة",
+      "inbound_queue_summary": "ملخص قوائم الانتظار الواردة",
+      "inbound_queue_date_distribution": "توزيع قوائم الانتظار الواردة حسب التاريخ",
+      "inbound_queue_hourly_distribution": "توزيع قوائم الانتظار الواردة حسب الساعة",
+      "inbound_queue_agent_performance": "أداء وكلاء قوائم الانتظار الواردة",
+      "inbound_queue_repeated_callers": "المتصلين المتكررين لقوائم الانتظار الواردة",
+      "unanswered_summary": "ملخص المكالمات غير المجابة",
+      "inbound_unanswered_date_distribution": "توزيع المكالمات الواردة غير المجابة حسب التاريخ",
+      "inbound_unanswered_hourly_distribution": "توزيع المكالمات الواردة غير المجابة حسب الساعة",
+      "outbound_unanswered_date_distribution": "توزيع المكالمات الصادرة غير المجابة حسب التاريخ",
+      "outbound_unanswered_hourly_distribution": "توزيع المكالمات الصادرة غير المجابة حسب الساعة",
+      "agent_summary": "ملخص الوكلاء",
+      "agent_call_distribution": "توزيع مكالمات الوكلاء",
+      "agent_sla_compliance": "التزام الوكلاء بمستوى الخدمة"
+    },
+    "oneTime": {
+      "title": "تقرير لمرة واحدة",
+      "columns": {
+        "createdAt": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "report": "التقرير",
+        "status": "الحالة",
+        "recipients": "المستلمون",
+        "actions": "الإجراءات"
+      },
+      "statusValues": {
+        "completed": "مكتمل",
+        "failed": "فشل",
+        "pending": "قيد الانتظار",
+        "processing": "قيد المعالجة"
+      },
+      "cells": {
+        "recipients": {
+          "count": "{count} مستلمين",
+          "dialogTitle": "المستلمون",
+          "dialogDescription": "قائمة جميع المستلمين لهذا التقرير",
+          "sheetTitle": "مستلمو {name}"
+        }
+      },
+      "filters": {
+        "creationDate": {
+          "triggerLabel": "تاريخ الإنشاء",
+          "label": "تصفية حسب تاريخ الإنشاء"
+        },
+        "fromDate": {
+          "label": "من",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل تاريخ البداية"
+        },
+        "toDate": {
+          "label": "إلى",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل تاريخ النهاية"
+        }
+      },
+      "messages": {
+        "invalidDateRange": "نطاق التاريخ غير صالح",
+        "dateRangeExceeds30Days": "لا يمكن أن يتجاوز نطاق التاريخ 30 يومًا",
+        "queueRequired": "قائمة الانتظار مطلوبة لهذا النوع من التقارير",
+        "invalidExtensionsFormat": "يجب أن تكون التحويلات أرقام مفصولة بفواصل (مثال: 101,102,103)",
+        "invalidSla": "يجب أن يكون SLA رقمًا أكبر من 0",
+        "deleteSuccess": "تم حذف التقرير بنجاح",
+        "deleteFailed": "فشل في حذف التقرير",
+        "error": "خطأ",
+        "fillRequiredFields": "يرجى ملء جميع الحقول المطلوبة",
+        "unknownError": "حدث خطأ غير معروف"
+      },
+      "confirmations": {
+        "deleteTitle": "حذف التقرير",
+        "deleteDescription": "هل أنت متأكد من رغبتك في حذف هذا التقرير؟ لا يمكن التراجع عن هذا الإجراء.",
+        "cancel": "إلغاء",
+        "yesDelete": "نعم، احذف"
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء فلاتر البحث"
+      },
+      "actions": {
+        "createReport": "إنشاء تقرير جديد"
+      },
+      "createReport": {
+        "title": "إنشاء تقرير جديد",
+        "description": "إنشاء تقرير لمرة واحدة جديد",
+        "steps": {
+          "createReport": "إنشاء تقرير لمرة واحدة جديد"
+        },
+        "form": {
+          "fields": {
+            "name": {
+              "label": "اسم التقرير",
+              "placeholder": "أدخل اسم التقرير"
+            },
+            "report": {
+              "label": "التقرير",
+              "placeholder": "اختر نوع التقرير",
+              "options": {
+                "agent": "تقرير الوكيل",
+                "admin": "تقرير المسؤول"
+              }
+            },
+            "recipients": {
+              "label": "المستلمون",
+              "placeholder": "أدخل البريد الإلكتروني واضغط Enter",
+              "hint": "اكتب عنوان البريد الإلكتروني واضغط \"Enter\" لإضافته."
+            },
+            "fromDate": {
+              "label": "من تاريخ",
+              "placeholder": "اختر تاريخ البداية"
+            },
+            "toDate": {
+              "label": "إلى تاريخ",
+              "placeholder": "اختر تاريخ النهاية"
+            },
+            "type": {
+              "label": "النوع",
+              "placeholder": "اختر النوع",
+              "options": {
+                "perQueue": "لكل قائمة انتظار"
+              }
+            },
+            "queue": {
+              "label": "قائمة الانتظار",
+              "placeholder": "اختر قائمة الانتظار"
+            },
+            "extensions": {
+              "label": "التحويلات",
+              "placeholder": "اختر التحويلات"
+            },
+            "sla": {
+              "label": "SLA (بالثواني)",
+              "placeholder": "مثال: 30",
+              "hint": "عتبة اتفاقية مستوى الخدمة بالثواني"
+            },
+            "includeInternalCalls": {
+              "label": "تضمين المكالمات الداخلية"
+            }
+          },
+          "validation": {
+            "name": {
+              "minLength": "يجب أن يكون اسم التقرير حرفين على الأقل",
+              "maxLength": "يجب أن لا يتجاوز اسم التقرير 200 حرف"
+            },
+            "report": {
+              "required": "يرجى اختيار نوع التقرير"
+            },
+            "recipients": {
+              "required": "يرجى إضافة مستلم واحد على الأقل",
+              "invalidEmail": "عنوان بريد إلكتروني غير صالح",
+              "duplicate": "هذا البريد الإلكتروني مضاف مسبقاً"
+            },
+            "fromDate": {
+              "required": "تاريخ البداية مطلوب",
+              "invalid": "تاريخ غير صالح"
+            },
+            "toDate": {
+              "required": "تاريخ النهاية مطلوب",
+              "invalid": "تاريخ غير صالح"
+            },
+            "dateRange": {
+              "invalid": "يجب أن يكون تاريخ النهاية بعد تاريخ البداية",
+              "exceeds30Days": "لا يمكن أن يتجاوز نطاق التاريخ 30 يومًا"
+            },
+            "queue": {
+              "required": "قائمة الانتظار مطلوبة لهذا النوع من التقارير"
+            },
+            "extensions": {
+              "invalid": "يجب أن تكون التحويلات أرقام مفصولة بفواصل (مثال: 101,102,103)"
+            },
+            "sla": {
+              "invalid": "يجب أن يكون SLA رقمًا أكبر من 0"
+            }
+          }
+        },
+        "actions": {
+          "close": "إغلاق",
+          "submit": "إنشاء التقرير"
+        },
+        "success": {
+          "title": "تم إنشاء التقرير بنجاح!",
+          "subtitle": "سيتم إرساله إلى بريدك الإلكتروني قريباً.",
+          "backToReports": "العودة إلى جدول التقارير",
+          "backToDashboard": "العودة إلى لوحة التحكم"
+        }
+      }
+    },
+    "scheduled": {
+      "title": "التقارير المجدولة",
+      "columns": {
+        "createdAt": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "scheduled": "الجدولة",
+        "status": "الحالة",
+        "nextGeneration": "الإنشاء التالي",
+        "recipients": "المستلمون",
+        "actions": "الإجراءات"
+      },
+      "cells": {
+        "recipients": {
+          "count": "{count} مستلمين",
+          "dialogTitle": "المستلمون",
+          "dialogDescription": "قائمة جميع المستلمين لهذا التقرير",
+          "sheetTitle": "مستلمو {name}"
+        },
+        "scheduled": {
+          "daily": "يومي",
+          "weekly": "أسبوعي",
+          "monthly": "شهري"
+        },
+        "status": {
+          "active": "نشط",
+          "inactive": "غير نشط"
+        }
+      },
+      "filters": {
+        "creationDate": {
+          "triggerLabel": "تاريخ الإنشاء",
+          "label": "تصفية حسب تاريخ الإنشاء"
+        },
+        "fromDate": {
+          "label": "من",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل تاريخ البداية"
+        },
+        "toDate": {
+          "label": "إلى",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل تاريخ النهاية"
+        },
+        "scheduled": {
+          "triggerLabel": "الجدولة",
+          "label": "تصفية حسب الجدولة",
+          "options": {
+            "daily": "يومي",
+            "weekly": "أسبوعي",
+            "monthly": "شهري"
+          }
+        },
+        "status": {
+          "triggerLabel": "الحالة",
+          "label": "تصفية حسب الحالة",
+          "options": {
+            "active": "نشط",
+            "inactive": "غير نشط"
+          }
+        }
+      },
+      "messages": {
+        "invalidDateRange": "نطاق التاريخ غير صالح",
+        "deleteSuccess": "تم حذف التقرير بنجاح",
+        "deleteFailed": "فشل في حذف التقرير",
+        "generateSuccess": "تم إنشاء التقرير بنجاح",
+        "generateFailed": "فشل في إنشاء التقرير",
+        "activateSuccess": "تم تفعيل التقرير بنجاح",
+        "activateFailed": "فشل في تفعيل التقرير",
+        "deactivateSuccess": "تم إلغاء تفعيل التقرير بنجاح",
+        "deactivateFailed": "فشل في إلغاء تفعيل التقرير"
+      },
+      "confirmations": {
+        "deleteTitle": "حذف التقرير",
+        "deleteDescription": "هل أنت متأكد من حذف هذا التقرير المجدول؟ لا يمكن التراجع عن هذا الإجراء.",
+        "activateTitle": "تفعيل التقرير",
+        "activateDescription": "هل أنت متأكد من تفعيل \"{name}\"؟ سيبدأ هذا التقرير في الإنشاء وفقاً لجدوله الزمني.",
+        "deactivateTitle": "إلغاء تفعيل التقرير",
+        "deactivateDescription": "هل أنت متأكد من إلغاء تفعيل \"{name}\"؟ سيتوقف هذا التقرير عن الإنشاء حتى يتم إعادة تفعيله.",
+        "cancel": "إلغاء",
+        "yesDelete": "نعم، حذف",
+        "yesActivate": "نعم، تفعيل",
+        "yesDeactivate": "نعم، إلغاء التفعيل"
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء فلاتر البحث"
+      },
+      "actions": {
+        "createReport": "إنشاء تقرير جديد",
+        "viewHistory": "عرض السجل",
+        "generateNow": "إنشاء الآن",
+        "generating": "جاري الإنشاء...",
+        "activate": "تفعيل",
+        "deactivate": "إلغاء التفعيل"
+      },
+      "createReport": {
+        "title": "إنشاء تقرير مجدول",
+        "description": "إنشاء تقرير مجدول جديد",
+        "steps": {
+          "details": "إنشاء تقرير مجدول جديد",
+          "schedule": "الجدولة"
+        },
+        "form": {
+          "fields": {
+            "reportName": {
+              "label": "اسم التقرير",
+              "placeholder": "أدخل اسم التقرير"
+            },
+            "recipients": {
+              "label": "المستلمون",
+              "placeholder": "أدخل البريد الإلكتروني واضغط Enter",
+              "hint": "اكتب عنوان البريد الإلكتروني واضغط \"Enter\" لإضافته."
+            },
+            "emailSubject": {
+              "label": "موضوع البريد",
+              "placeholder": "أدخل موضوع البريد"
+            },
+            "report": {
+              "label": "التقرير",
+              "placeholder": "اختر نوع التقرير",
+              "options": {
+                "outboundSummary": "ملخص الصادر",
+                "outboundAgentStats": "إحصائيات وكيل الصادر",
+                "outboundDateDistribution": "توزيع تاريخ الصادر",
+                "outboundHourlyDistribution": "التوزيع الساعي للصادر",
+                "inboundAgentSummary": "ملخص وكيل الوارد",
+                "inboundAgentDateDistribution": "توزيع تاريخ وكيل الوارد",
+                "inboundAgentHourlyDistribution": "التوزيع الساعي لوكيل الوارد",
+                "inboundQueueSummary": "ملخص قائمة الوارد",
+                "inboundQueueDateDistribution": "توزيع تاريخ قائمة الوارد",
+                "inboundQueueHourlyDistribution": "التوزيع الساعي لقائمة الوارد",
+                "inboundQueueAgentPerformance": "أداء وكيل قائمة الوارد",
+                "inboundQueueRepeatedCallers": "المتصلون المتكررون في قائمة الوارد",
+                "unansweredSummary": "ملخص غير المجاب",
+                "agentSummary": "ملخص الوكيل",
+                "agentCallDistribution": "توزيع مكالمات الوكيل",
+                "agentSlaCompliance": "التزام الوكيل باتفاقية مستوى الخدمة"
+              }
+            },
+            "dateRangeStart": {
+              "label": "بداية نطاق التاريخ",
+              "placeholder": "اختر تاريخ البداية"
+            },
+            "dateRangeEnd": {
+              "label": "نهاية نطاق التاريخ",
+              "placeholder": "اختر تاريخ النهاية"
+            },
+            "dateRange": {
+              "options": {
+                "today": "اليوم",
+                "previousDay": "اليوم السابق",
+                "previousWeek": "الأسبوع السابق",
+                "previousMonth": "الشهر السابق"
+              }
+            },
+            "queue": {
+              "label": "قائمة الانتظار",
+              "placeholder": "اختر قائمة الانتظار"
+            },
+            "extensions": {
+              "label": "التحويلات",
+              "placeholder": "اختر التحويلات"
+            },
+            "sla": {
+              "label": "SLA (بالثواني)",
+              "placeholder": "مثال: 30",
+              "hint": "عتبة اتفاقية مستوى الخدمة بالثواني"
+            },
+            "includeInternalCalls": {
+              "label": "تضمين المكالمات الداخلية"
+            },
+            "timezone": {
+              "label": "المنطقة الزمنية",
+              "placeholder": "اختر المنطقة الزمنية"
+            },
+            "frequency": {
+              "label": "التكرار",
+              "placeholder": "اختر التكرار",
+              "options": {
+                "daily": "يومي",
+                "weekly": "أسبوعي",
+                "monthly": "شهري"
+              }
+            },
+            "days": {
+              "label": "الأيام",
+              "options": {
+                "sat": "السبت",
+                "sun": "الأحد",
+                "mon": "الإثنين",
+                "tue": "الثلاثاء",
+                "wed": "الأربعاء",
+                "thu": "الخميس",
+                "fri": "الجمعة"
+              }
+            },
+            "monthDay": {
+              "label": "يوم الشهر",
+              "placeholder": "اختر اليوم"
+            },
+            "atTime": {
+              "label": "في",
+              "placeholder": "اختر الوقت"
+            }
+          },
+          "nextGeneration": {
+            "title": "الإنشاء التالي",
+            "at": "في"
+          },
+          "validation": {
+            "name": {
+              "required": "اسم التقرير مطلوب",
+              "minLength": "يجب أن يكون اسم التقرير حرفين على الأقل",
+              "maxLength": "يجب ألا يتجاوز اسم التقرير 200 حرف"
+            },
+            "recipients": {
+              "required": "يرجى إضافة مستلم واحد على الأقل",
+              "invalidEmail": "عنوان بريد إلكتروني غير صالح",
+              "duplicate": "هذا البريد الإلكتروني مضاف مسبقاً"
+            },
+            "emailSubject": {
+              "required": "موضوع البريد مطلوب",
+              "minLength": "يجب أن يكون موضوع البريد حرفين على الأقل",
+              "maxLength": "يجب ألا يتجاوز موضوع البريد 200 حرف"
+            },
+            "report": {
+              "required": "يرجى اختيار نوع التقرير"
+            },
+            "dateRangeStart": {
+              "required": "بداية نطاق التاريخ مطلوبة"
+            },
+            "dateRangeEnd": {
+              "required": "نهاية نطاق التاريخ مطلوبة"
+            },
+            "dateRange": {
+              "endBeforeStart": "لا يمكن أن يكون تاريخ النهاية قبل تاريخ البداية"
+            },
+            "queue": {
+              "required": "قائمة الانتظار مطلوبة لهذا النوع من التقارير"
+            },
+            "sla": {
+              "invalid": "يجب أن يكون SLA رقمًا أكبر من 0"
+            },
+            "timezone": {
+              "required": "المنطقة الزمنية مطلوبة"
+            },
+            "frequency": {
+              "required": "التكرار مطلوب"
+            },
+            "daysOfWeek": {
+              "required": "يرجى اختيار يوم واحد على الأقل"
+            },
+            "dayOfMonth": {
+              "required": "يرجى اختيار يوم من الشهر"
+            },
+            "time": {
+              "required": "الوقت مطلوب"
+            }
+          }
+        },
+        "actions": {
+          "close": "إغلاق",
+          "next": "التالي",
+          "submit": "إنشاء التقرير المجدول"
+        },
+        "success": {
+          "title": "تم جدولة التقرير بنجاح!",
+          "subtitle": "سيتم إنشاؤه وفقاً لجدولك.",
+          "backToReports": "العودة إلى جدول التقارير",
+          "backToDashboard": "العودة إلى لوحة التحكم"
+        },
+        "messages": {
+          "createSuccess": "تم جدولة التقرير بنجاح",
+          "createFailed": "فشل في إنشاء التقرير المجدول",
+          "validationError": "يرجى ملء جميع الحقول المطلوبة"
+        }
+      },
+      "editReport": {
+        "title": "تعديل التقرير المجدول",
+        "description": "تعديل إعدادات التقرير المجدول",
+        "actions": {
+          "update": "تحديث التقرير"
+        },
+        "success": {
+          "title": "تم تحديث التقرير بنجاح!",
+          "subtitle": "تم حفظ التغييرات.",
+          "backToHistory": "العودة إلى السجل",
+          "backToReports": "العودة إلى جدول التقارير",
+          "backToDashboard": "العودة إلى لوحة التحكم"
+        },
+        "messages": {
+          "updateSuccess": "تم تحديث التقرير بنجاح",
+          "updateFailed": "فشل في تحديث التقرير"
+        }
+      },
+      "history": {
+        "title": "سجل التقرير",
+        "description": "عرض سجل إنشاء هذا التقرير المجدول",
+        "noHistory": "لا يوجد سجل إنشاء متاح لهذا التقرير.",
+        "scheduleInfo": {
+          "title": "معلومات الجدولة",
+          "timezone": "المنطقة الزمنية",
+          "generatorDays": "أيام التوليد",
+          "generatorTime": "وقت التوليد",
+          "dayOfMonthSuffix": "من كل شهر",
+          "weekDays": {
+            "sat": "السبت",
+            "sun": "الأحد",
+            "mon": "الإثنين",
+            "tue": "الثلاثاء",
+            "wed": "الأربعاء",
+            "thu": "الخميس",
+            "fri": "الجمعة"
+          }
+        },
+        "columns": {
+          "generatedAt": "تاريخ الإنشاء",
+          "reportName": "الاسم",
+          "status": "الحالة",
+          "recipients": "المستلمون"
+        },
+        "cells": {
+          "status": {
+            "completed": "مكتمل",
+            "failed": "فشل",
+            "pending": "قيد الانتظار",
+            "processing": "قيد المعالجة"
+          }
+        }
       }
     }
   },
@@ -532,7 +1353,8 @@
         "charges": "الرسوم",
         "paymentHistory": "تاريخ الدفع",
         "rates": "الأسعار",
-        "invoices": "الفواتير"
+        "invoices": "الفواتير",
+        "subscriptions": "الاشتراكات"
       },
       "actions": {
         "refillBalance": "إعادة شحن الرصيد"
@@ -577,6 +1399,7 @@
         "date": "التاريخ",
         "email": "البريد الإلكتروني",
         "total": "الإجمالي",
+        "remaining": "المتبقي",
         "status": "الحالة",
         "actions": "الإجراءات"
       },
@@ -741,6 +1564,7 @@
       "postCallSurvey": "استطلاع ما بعد المكالمة",
       "aiVoiceAgents": "وكلاء الصوت الذكي",
       "analytics": "إحصائيات المكالمات",
+      "reports": "التقارير",
       "inbound": "الواردة",
       "outbound": "الصادرة",
       "unanswered": "غير المجابة",
@@ -2216,7 +3040,8 @@
       },
       "messages": {
         "unexpectedError": "حدث خطأ غير متوقع.",
-        "error": "خطأ"
+        "error": "خطأ",
+        "cannotChangeWhileOnCall": "لا يمكنك تغيير حالة نشاطك أثناء المكالمة."
       },
       "logged_in": "تسجيل الدخول",
       "logged_out": "غير متصل",

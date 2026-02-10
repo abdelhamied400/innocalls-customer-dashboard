@@ -1,11 +1,11 @@
 "use client";
 
 import { PaginationState, SortingState } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { columns } from "./columns";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import billingService from "@/services/billing.service";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useTranslations } from "@/providers/TranslationProvider";
 import PaginatedTable from "@/components/Table/PaginatedTable";
 import InvoicesHead from "./head";
@@ -33,7 +33,6 @@ export const defaultFilters: InvoicesFilters = {
 };
 
 const BillingTable = () => {
-  const { toast } = useToast();
   const t = useTranslations("billing.invoices");
 
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -71,34 +70,43 @@ const BillingTable = () => {
   useEffect(() => {
     if (isError) {
       if (isAxiosError(error)) {
-        toast({
-          title: "Error",
-          description:
-            error.response?.data?.message || t("messages.unknownError"),
-          variant: "destructive",
+        toast.error("Error", {
+          description: error.response?.data?.message || t("messages.unknownError"),
         });
         return;
       }
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: t("messages.unknownError"),
-        variant: "destructive",
       });
     }
   }, [isError, error, toast]);
+
+  // Track if this is the initial render
+  const isInitialRender = useRef(true);
+
+  useEffect(() => {
+    // Skip reset on initial render
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    // Reset to first page when filters or sorting change
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  }, [filters, sorting]);
 
   return (
     <div className="h-auto sm:h-full flex flex-col border rounded-xl">
       <PaginatedTable
         data={invoices?.data || []}
-        columns={columns()}
+        columns={columns(t)}
         pagination={{
           totalItems: invoices?.total || 0,
           totalPages: invoices?.last_page || 0,
+          from: invoices?.from,
+          to: invoices?.to,
         }}
-        onPaginationChange={(pagination) => {
-          setPagination(pagination);
-        }}
+        paginationState={pagination}
+        onPaginationChange={setPagination}
         onSortingChange={setSorting}
       >
         <InvoicesHead filters={filters} setFilters={setFilters} />

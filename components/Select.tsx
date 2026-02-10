@@ -14,6 +14,7 @@ import { Close } from "@mui/icons-material";
 import React from "react";
 import { cn } from "@/lib/utils";
 import Field from "./ui/field";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 export type Option = {
   label: string;
@@ -22,7 +23,7 @@ export type Option = {
 
 type SelectProps<
   OptionType extends Option = Option,
-  IsMulti extends boolean = false
+  IsMulti extends boolean = false,
 > = {
   options: OptionType[];
   isMulti?: IsMulti;
@@ -31,14 +32,15 @@ type SelectProps<
   className?: string;
   label?: string;
   error?: string;
+  noOptionsMessage?: string;
 } & Omit<
   ReactSelectProps<OptionType, IsMulti, GroupBase<OptionType>>,
-  "options"
+  "options" | "noOptionsMessage"
 >;
 
 const Select = <
   OptionType extends Option = Option,
-  IsMulti extends boolean = false
+  IsMulti extends boolean = false,
 >({
   options,
   isSearchable = true,
@@ -48,12 +50,16 @@ const Select = <
   onChange,
   label,
   error,
+  noOptionsMessage,
   ...props
 }: SelectProps<OptionType, IsMulti>) => {
+  const tCommon = useTranslations("common");
+  const noOptionsDefaultMessage = tCommon("select.noOptionsMessage");
+
   const onRemoveOption = (val: OptionType) => {
     if (isMulti && props.value && Array.isArray(props.value)) {
       const newValue = props.value.filter(
-        (option: OptionType) => option.value !== val.value
+        (option: OptionType) => option.value !== val.value,
       ) as readonly OptionType[];
       if (onChange) {
         onChange(
@@ -61,7 +67,7 @@ const Select = <
           {
             action: "remove-value",
             removedValue: val,
-          } as ActionMeta<OptionType>
+          } as ActionMeta<OptionType>,
         );
       }
     }
@@ -94,7 +100,7 @@ const Select = <
                 <Components.ValueContainer {...innerProps}>
                   <div className="flex items-center w-full relative">
                     {showPlaceholder && (
-                      <span className="text-muted-foreground absolute pointer-events-none">
+                      <span className="text-muted-foreground font-normal text-sm absolute pointer-events-none">
                         {placeholder}
                       </span>
                     )}
@@ -127,7 +133,20 @@ const Select = <
               ...base,
               display: "none", // hide react-select's internal placeholder
             }),
+            menu: (base) => ({
+              ...base,
+              zIndex: 9999,
+            }),
+            menuList: (base) => ({
+              ...base,
+              maxHeight: 200,
+            }),
           }}
+          noOptionsMessage={
+            noOptionsMessage
+              ? () => noOptionsMessage
+              : () => noOptionsDefaultMessage
+          }
           onChange={onChange}
           {...props}
         />

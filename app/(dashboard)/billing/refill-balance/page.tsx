@@ -1,4 +1,7 @@
+"use client";
+
 import RefillBalanceForm from "./form";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const RefillBalance = () => {
   return (
@@ -8,4 +11,4 @@ const RefillBalance = () => {
   );
 };
 
-export default RefillBalance;
+export default withActiveOrganization(RefillBalance);

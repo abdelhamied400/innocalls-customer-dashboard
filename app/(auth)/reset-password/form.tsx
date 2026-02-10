@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import Field from "@/components/ui/field";
 import authService from "@/services/auth.service";
 import { ResetPasswordSchema } from "@/validation/ResetPassword";
@@ -17,7 +17,6 @@ type ResetPasswordFormProps = {
   token: string;
 };
 const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
-  const { toast } = useToast();
   const router = useRouter();
   const t = useTranslations("auth.resetPassword");
   const tCommon = useTranslations("common");
@@ -39,25 +38,20 @@ const ResetPasswordForm = ({ token }: ResetPasswordFormProps) => {
     try {
       // Call your API to reset the password
       await authService.resetPassword(token, values.password);
-      toast({
-        title: t("messages.resetSuccess"),
+      toast.info(t("messages.resetSuccess"), {
         description: t("messages.resetSuccessDescription"),
       });
       router.push("/login");
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast({
-          title: t("messages.resetFailed"),
+        toast.error(t("messages.resetFailed"), {
           description: error.response?.data.message,
-          variant: "destructive",
         });
         return;
       }
       // Handle other types of errors
-      toast({
-        title: t("messages.resetFailed"),
+      toast.error(t("messages.resetFailed"), {
         description: t("messages.defaultErrorDescription"),
-        variant: "destructive",
       });
     }
   });

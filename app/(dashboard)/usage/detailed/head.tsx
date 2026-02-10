@@ -29,7 +29,7 @@ import DatePicker from "@/components/ui/date-picker";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { isValidDateRange } from "@/lib/date";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { isAxiosError } from "axios";
@@ -52,7 +52,6 @@ type DetailedUsageHeadProps = {
 };
 
 const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
-  const { toast } = useToast();
   const { packages, accounts } = useVocab();
   const { table } = usePaginatedTable();
 
@@ -94,10 +93,8 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
       fromDate,
       toDate,
       (message) => {
-        toast({
-          title: t("messages.invalidDateRange"),
+        toast.error(t("messages.invalidDateRange"), {
           description: message,
-          variant: "destructive",
         });
       },
       30, // max 30 days range
@@ -124,8 +121,7 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
     try {
       setIsExporting(true);
       await usageService.exportUsageDetailed(filters);
-      toast({
-        title: t("messages.exportStarted"),
+      toast.info(t("messages.exportStarted"), {
         description: t("messages.exportStartedDescription"),
       });
     } catch (error) {
@@ -133,10 +129,8 @@ const DetailedUsageHead = ({ filters, setFilters }: DetailedUsageHeadProps) => {
       if (isAxiosError(error)) {
         message = error?.response?.data.message || t("messages.exportError");
       }
-      toast({
-        title: t("messages.exportError"),
+      toast.error(t("messages.exportError"), {
         description: message,
-        variant: "destructive",
       });
       console.error("Export error:", error);
     } finally {

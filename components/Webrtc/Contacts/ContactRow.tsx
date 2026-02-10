@@ -6,7 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useRouting } from "@/providers/RoutingProvider";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import webrtcService from "@/services/webrtc.service";
@@ -26,28 +26,23 @@ type ContactRowProps = {
 const ContactRow = ({ contact }: ContactRowProps) => {
   const t = useTranslations("webrtc.contacts");
 
-  const { toast } = useToast();
   const { navigate } = useRouting();
   const { call } = useSip();
   const queryClient = useQueryClient();
 
   const handleStartCall = () => {
     if (!contact.phone) {
-      toast({
-        title: t("messages.error"),
+      toast.error(t("messages.error"), {
         description: t("form.validation.phone.required"),
-        variant: "destructive",
       });
       return;
     }
     call(contact.phone);
-    toast({
-      title: t("actions.calling"),
+    toast.success(t("actions.calling"), {
       description: t("messages.callingDescription", {
         name: contact.name,
         phone: contact.phone,
       }),
-      variant: "success",
     });
   };
 
@@ -62,27 +57,20 @@ const ContactRow = ({ contact }: ContactRowProps) => {
       await queryClient.invalidateQueries({
         queryKey: ["contacts-list"],
       });
-      toast({
-        title: t("messages.contactDeleted"),
+      toast.success(t("messages.contactDeleted"), {
         description: t("messages.contactDeletedDescription", {
           name: contact.name,
         }),
-        variant: "success",
       });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: t("messages.error"),
-          description:
-            error.response?.data?.message ||
+        toast.error(t("messages.error"), {
+          description: error.response?.data?.message ||
             t("messages.failedToDeleteContact"),
-          variant: "destructive",
         });
       } else {
-        toast({
-          title: t("messages.error"),
+        toast.error(t("messages.error"), {
           description: t("messages.unexpectedError"),
-          variant: "destructive",
         });
       }
     }

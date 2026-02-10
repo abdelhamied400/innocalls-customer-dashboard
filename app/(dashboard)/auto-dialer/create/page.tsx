@@ -28,7 +28,8 @@ import {
 } from "@/validation/AutoDialerCreateCampaign";
 import SchedulingForm from "./scheduling-form";
 import CustomersListForm from "./customers-list-form";
-import { useToast } from "@/hooks/use-toast";
+import withActiveOrganization from "@/containers/withActiveOrganization";
+import { toast } from "sonner";
 import autoDialerService from "@/services/auto-dialer.service";
 
 const steps = [
@@ -40,7 +41,6 @@ const steps = [
 
 const CreateAutoDialerCampaignSheet = () => {
   const router = useRouter();
-  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(0);
 
   const form = useForm<AutoDialerCreateCampaign>({
@@ -72,29 +72,24 @@ const CreateAutoDialerCampaignSheet = () => {
       // Submit the form data to create the campaign
       try {
         const res = await autoDialerService.createCampaign(data);
-        toast({
-          title: "Campaign Created",
+        toast("Campaign Created", {
           description:
             "The auto dialer campaign has been created successfully.",
         });
         // router.back();
       } catch (error) {
-        toast({
-          title: "Error",
+        toast.error("Error", {
           description:
             "There was an error creating the campaign. Please try again.",
-          variant: "destructive",
         });
       }
     },
     (error) => {
       console.log(error);
-      toast({
-        title: "Form Error",
+      toast.error("Form Error", {
         description: "Please fix the errors in the form before proceeding.",
-        variant: "destructive",
       });
-    }
+    },
   );
 
   return (
@@ -116,7 +111,7 @@ const CreateAutoDialerCampaignSheet = () => {
         >
           <StepperHeader>
             <StepperPrevious>
-              <ChevronLeftIcon />
+              <ChevronLeftIcon className="rtl:rotate-180" />
             </StepperPrevious>
 
             <div className="flex flex-1 justify-center gap-2">
@@ -158,4 +153,4 @@ const CreateAutoDialerCampaignSheet = () => {
   );
 };
 
-export default CreateAutoDialerCampaignSheet;
+export default withActiveOrganization(CreateAutoDialerCampaignSheet);

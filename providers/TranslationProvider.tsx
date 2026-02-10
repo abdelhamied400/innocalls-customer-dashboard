@@ -10,6 +10,7 @@ import React, {
 import { LocaleSlug, defaultLocale } from "@/i18n/config";
 import { loadTranslations, getTranslation } from "@/lib/translations";
 import { getStoredLocale, setStoredLocale } from "@/lib/locale-storage";
+import { arEG, enUS } from "date-fns/locale";
 import "@/lib/preload-translations"; // Pre-load translations
 
 interface TranslationContextType {
@@ -19,7 +20,7 @@ interface TranslationContextType {
 }
 
 const TranslationContext = createContext<TranslationContextType | undefined>(
-  undefined
+  undefined,
 );
 
 interface TranslationProviderProps {
@@ -32,7 +33,7 @@ export const TranslationProvider: React.FC<TranslationProviderProps> = ({
   initialLocale,
 }) => {
   const [locale, setLocaleState] = useState<LocaleSlug>(
-    initialLocale || defaultLocale
+    initialLocale || defaultLocale,
   );
   const [isLoading, setIsLoading] = useState(true);
 
@@ -84,7 +85,7 @@ export const useTranslationContext = () => {
   const context = useContext(TranslationContext);
   if (context === undefined) {
     throw new Error(
-      "useTranslationContext must be used within a TranslationProvider"
+      "useTranslationContext must be used within a TranslationProvider",
     );
   }
   return context;
@@ -104,4 +105,15 @@ export const useTranslations = (namespace?: string) => {
 export const useLocale = () => {
   const { locale } = useTranslationContext();
   return locale;
+};
+
+export const dateFnsLocales = {
+  en: enUS,
+  ar: arEG,
+};
+export const defaultDateFnsLocale = enUS;
+
+export const useDateFnsLocale = () => {
+  const { locale } = useTranslationContext();
+  return dateFnsLocales[locale] || defaultDateFnsLocale;
 };

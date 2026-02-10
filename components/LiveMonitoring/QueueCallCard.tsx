@@ -3,7 +3,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import React from "react";
 import Timer from "../ui/timer";
 import { Button } from "../ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import useAppStore from "@/store/app.slice";
 import Image from "next/image";
@@ -64,17 +64,14 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
   );
 
   const statusClasses = statusColorVariants({ color });
-  const { toast } = useToast();
   const { extensionState, spy } = useSip();
   const { setWebrtcOpen } = useAppStore();
 
   const handleSpy = () => {
     setWebrtcOpen(true);
     if (extensionState !== "connected") {
-      toast({
-        title: t("error"),
+      toast.error(t("error"), {
         description: t("sipConnectionError"),
-        variant: "destructive",
       });
       return;
     }

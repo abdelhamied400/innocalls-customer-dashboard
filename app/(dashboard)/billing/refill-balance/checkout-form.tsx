@@ -3,7 +3,7 @@ import CountrySelect from "@/components/CountrySelect";
 import { Button } from "@/components/ui/button";
 import Field from "@/components/ui/field";
 import { CountryOption } from "@/constants/countries";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { paymentLogger } from "@/lib/logger";
 import {
   CardNumberElement,
@@ -19,7 +19,6 @@ type CheckoutFormProps = { clientSecret: string; onSuccess?: () => void };
 const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
   const stripe = useStripe();
   const elements = useElements();
-  const { toast } = useToast();
   const t = useTranslations("billing.refillBalance");
 
   const [selectedCountry, setSelectedCountry] = useState<CountryOption>();
@@ -50,17 +49,14 @@ const CheckoutForm = ({ clientSecret, onSuccess }: CheckoutFormProps) => {
 
     if (result.error) {
       paymentLogger.error("[Payment error]", result.error.message);
-      toast({
-        variant: "destructive",
-        title: t("messages.paymentFailed"),
+      toast.error(t("messages.paymentFailed"), {
         description: result.error.message,
       });
       // Show error to customer
     } else {
       if (result.paymentIntent.status === "succeeded") {
         paymentLogger.info("[Payment succeeded]", result.paymentIntent);
-        toast({
-          title: t("messages.paymentSuccess"),
+        toast.info(t("messages.paymentSuccess"), {
           description: t("messages.paymentSuccessDescription"),
         });
         onSuccess?.();

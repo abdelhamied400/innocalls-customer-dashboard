@@ -11,30 +11,17 @@ const translationStore: Record<LocaleSlug, Record<string, any>> = {
 export const loadTranslations = async (locale: LocaleSlug) => {
   if (Object.keys(translationStore[locale]).length === 0) {
     try {
-      // Use require for server-side loading to avoid dynamic imports during build
-      if (typeof window === "undefined") {
-        // Server-side loading
-        const translations = require(`@/i18n/translations/${locale}.json`);
-        translationStore[locale] = translations;
-      } else {
-        // Client-side loading
-        const translations = await import(`@/i18n/translations/${locale}.json`);
-        translationStore[locale] = translations.default;
-      }
+      const translations = await import(`@/i18n/translations/${locale}.json`);
+      translationStore[locale] = translations.default;
     } catch (error) {
       console.error(`Failed to load translations for locale: ${locale}`, error);
       // Fallback to default locale if loading fails
       if (locale !== defaultLocale) {
         try {
-          if (typeof window === "undefined") {
-            const fallbackTranslations = require(`@/i18n/translations/${defaultLocale}.json`);
-            translationStore[locale] = fallbackTranslations;
-          } else {
-            const fallbackTranslations = await import(
-              `@/i18n/translations/${defaultLocale}.json`
-            );
-            translationStore[locale] = fallbackTranslations.default;
-          }
+          const fallbackTranslations = await import(
+            `@/i18n/translations/${defaultLocale}.json`
+          );
+          translationStore[locale] = fallbackTranslations.default;
         } catch (fallbackError) {
           console.error(
             `Failed to load fallback translations for locale: ${defaultLocale}`,
