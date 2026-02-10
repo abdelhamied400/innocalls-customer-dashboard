@@ -2938,6 +2938,66 @@
       }
     }
   },
+  "autoDialer": {
+    "tabs": {
+      "active": "Active Campaigns",
+      "finished": "Finished Campaigns",
+      "archived": "Archived Campaigns"
+    },
+    "activeCampaigns": {
+      "title": "Active Campaigns",
+      "search": "Search...",
+      "filters": {
+        "shared": {
+          "reset": "Reset",
+          "apply": "Apply",
+          "clear": "Clear"
+        },
+        "creationDate": {
+          "label": "Creation Date",
+          "placeholder": "Select a date range",
+          "from": {
+            "label": "From",
+            "placeholder": "Enter from date",
+            "hint": "DD/MM/YYYY"
+          },
+          "to": {
+            "label": "To",
+            "placeholder": "Enter to date",
+            "hint": "DD/MM/YYYY"
+          }
+        },
+        "durationType": {
+          "label": "Duration Type",
+          "placeholder": "Select duration type",
+          "options": {
+            "timeLimited": "Time Limited",
+            "agentAvailability": "Agent Availability"
+          }
+        },
+        "status": {
+          "label": "Status",
+          "placeholder": "Select status",
+          "options": {
+            "scheduled": "Scheduled",
+            "inProgress": "In Progress"
+          }
+        }
+      },
+      "create": "Create Campaign",
+      "columns": {
+        "creationDate": "Creation Date",
+        "name": "Name",
+        "durationType": "Duration Type",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "statuses": {
+        "created": "Created",
+        "paused": "Paused"
+      }
+    }
+  },
   "webrtc": {
     "contacts": {
       "title": "Contacts",

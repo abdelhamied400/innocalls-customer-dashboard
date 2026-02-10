@@ -12,9 +12,7 @@ import { Toggle } from "@/components/ui/toggle";
 import { format } from "date-fns";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import SearchIcon from "@mui/icons-material/Search";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import CalendarIcon from "@mui/icons-material/CalendarToday";
+import { Search, FilterAltOutlined, CalendarToday } from "@mui/icons-material";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { useEffect, useState } from "react";
@@ -57,7 +55,7 @@ const AutoDialerActiveHead = ({
           description: message,
         });
       },
-      -1
+      -1,
     );
     if (!isValid) return false;
 
@@ -74,7 +72,7 @@ const AutoDialerActiveHead = ({
   // This ensures that when filters are applied, the table starts from the first page
   useEffect(() => {
     table.setPageIndex(0);
-  }, [filters]);
+  }, [filters, table]);
 
   return (
     <Collapsible>
@@ -82,7 +80,7 @@ const AutoDialerActiveHead = ({
         <div className="flex justify-between items-center gap-4 p-3">
           <h3>Active Campaigns</h3>
           <div className="flex items-center gap-4 actions">
-            <Field preIcon={<SearchIcon className="text-muted-foreground" />}>
+            <Field preIcon={<Search className="text-muted-foreground" />}>
               <Input
                 placeholder="search by name..."
                 type="search"
@@ -92,8 +90,8 @@ const AutoDialerActiveHead = ({
               />
             </Field>
             <CollapsibleTrigger asChild>
-              <Toggle pressed={true} className="rounded-full">
-                <FilterAltIcon />
+              <Toggle pressed={true} className="rounded-full bg-transparent">
+                <FilterAltOutlined />
               </Toggle>
             </CollapsibleTrigger>
             <Link className={cn(buttonVariants())} href="/auto-dialer/create">
@@ -129,7 +127,7 @@ const AutoDialerActiveHead = ({
               <Field
                 label="From"
                 hint="DD/MM/YYYY"
-                postIcon={<CalendarIcon className="text-gray-400" />}
+                postIcon={<CalendarToday className="text-gray-400" />}
               >
                 <DatePicker
                   className="flex-1"
@@ -141,7 +139,7 @@ const AutoDialerActiveHead = ({
               <Field
                 label="To"
                 hint="DD/MM/YYYY"
-                postIcon={<CalendarIcon className="text-gray-400" />}
+                postIcon={<CalendarToday className="text-gray-400" />}
               >
                 <DatePicker
                   className="flex-1"

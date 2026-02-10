@@ -10,7 +10,7 @@ import Spinner from "./spinner";
 const LONG_PRESS_DURATION = 300;
 
 const buttonVariants = cva(
-  "inline-flex justify-center items-center gap-2 disabled:opacity-50 rounded-lg focus-visible:ring-1 focus-visible:ring-ring font-semibold text-sm whitespace-nowrap transition-colors disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-5 focus-visible:outline-none",
+  "cursor-pointer inline-flex justify-center items-center gap-2 disabled:opacity-50 rounded-lg focus-visible:ring-1 focus-visible:ring-ring font-semibold text-sm whitespace-nowrap transition-colors disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-5 focus-visible:outline-none",
   {
     variants: {
       variant: {
