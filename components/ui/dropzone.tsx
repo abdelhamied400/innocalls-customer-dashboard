@@ -12,7 +12,6 @@ import {
   FileRejection,
   ErrorCode,
 } from "react-dropzone";
-import XIcon from "@mui/icons-material/X";
 import UploadIcon from "@mui/icons-material/Upload";
 
 import { formatFileSize } from "@/lib/file";
@@ -46,7 +45,7 @@ interface DropzoneContextType extends Partial<DropzoneState> {
 
 // Create context
 const DropzoneContext = createContext<DropzoneContextType | undefined>(
-  undefined
+  undefined,
 );
 
 // Hook
@@ -78,7 +77,7 @@ const Dropzone = ({
 }: DropzoneRootProps) => {
   const [acceptedFiles, setAcceptedFiles] = useState<WithId<File>[]>([]);
   const [fileRejections, setFileRejections] = useState<WithId<FileRejection>[]>(
-    []
+    [],
   );
   const [fakeFilesState, setFakeFilesState] = useState<string[]>(fakeFiles);
 
@@ -102,7 +101,7 @@ const Dropzone = ({
         onChange(fileWithId as WithId<File>);
       }
     },
-    [onChange]
+    [onChange],
   );
 
   const addRejectedFile = useCallback(
@@ -112,7 +111,7 @@ const Dropzone = ({
         onChange(null);
       }
     },
-    [onChange]
+    [onChange],
   );
 
   const removeFile = useCallback(
@@ -122,12 +121,12 @@ const Dropzone = ({
         onChange(null);
       }
     },
-    [onChange]
+    [onChange],
   );
 
   const removeRejectedFile = useCallback((id: string) => {
     setFileRejections((prev) =>
-      prev.filter((rejection) => rejection.id !== id)
+      prev.filter((rejection) => rejection.id !== id),
     );
   }, []);
 
@@ -140,7 +139,7 @@ const Dropzone = ({
       acceptedFiles.forEach((file) => addAcceptedFile(file));
       fileRejections.forEach((rejection) => addRejectedFile(rejection));
     },
-    [addAcceptedFile, addRejectedFile]
+    [addAcceptedFile, addRejectedFile],
   );
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -248,7 +247,7 @@ export const DropzoneFile = ({ file }: FileProps) => {
         type="button"
         onClick={() => removeFile(file.id)}
       >
-        <XIcon />
+        <Close />
       </Button>
     </li>
   );

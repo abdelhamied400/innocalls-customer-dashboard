@@ -86,9 +86,6 @@ const CreateAutoDialerCampaignSheet = () => {
     },
     (error) => {
       console.log(error);
-      toast.error("Form Error", {
-        description: "Please fix the errors in the form before proceeding.",
-      });
     },
   );
 

@@ -17,7 +17,7 @@ import Stepper, {
 } from "@/components/ui/stepper";
 import { ChevronLeftIcon, X } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import CampaignDetailsForm from "./campaign-details-form";
 import CallDetailsForm from "./call-details-form";
@@ -46,6 +46,8 @@ const UpdateAutoDialerCampaignSheet = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
+  const [isOpen, setIsOpen] = useState(true);
+  const allowCloseRef = useRef(false);
 
   const { data: extensions, isLoading: isExtensionsLoading } =
     useLocalizedQuery(queryExtensions({}));
@@ -93,7 +95,8 @@ const UpdateAutoDialerCampaignSheet = () => {
           description:
             "The auto dialer campaign has been updated successfully.",
         });
-        // router.back();
+        // Close the sheet which will trigger router.back()
+        setIsOpen(false);
       } catch {
         toast.error("Error", {
           description:
@@ -103,15 +106,33 @@ const UpdateAutoDialerCampaignSheet = () => {
     },
     (error) => {
       console.log(error);
-      toast.error("Form Error", {
-        description: "Please fix the errors in the form before proceeding.",
-      });
     },
   );
 
   return (
-    <Sheet defaultOpen={true} onOpenChange={() => router.back()}>
-      <SheetContent side="bottom" className="h-screen p-0">
+    <Sheet
+      open={isOpen}
+      onOpenChange={(newOpen) => {
+        // Only allow closing when newOpen is false AND isOpen is true
+        // This prevents external click from closing the sheet
+        if (!newOpen && isOpen) {
+          setIsOpen(false);
+          router.back();
+        }
+      }}
+    >
+      <SheetContent
+        side="bottom"
+        className="h-screen p-0"
+        onPointerDownOutside={(event) => {
+          // Prevent closing on outside click
+          event.preventDefault();
+        }}
+        onInteractOutside={(event) => {
+          // Prevent closing on escape key press
+          event.preventDefault();
+        }}
+      >
         <SheetHeader className="sr-only">
           <SheetTitle>Update Auto Dialer Campaign</SheetTitle>
           <SheetDescription>

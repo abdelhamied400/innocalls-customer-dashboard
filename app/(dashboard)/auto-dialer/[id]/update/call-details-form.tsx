@@ -166,8 +166,8 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                         ? extensions
                             .filter((ext) =>
                               Array.isArray(field.value)
-                                ? field.value.includes(ext.id)
-                                : false
+                                ? field.value.includes(ext.ext)
+                                : false,
                             )
                             .map((ext) => ({
                               label: `${ext.name} (${ext.ext})`,

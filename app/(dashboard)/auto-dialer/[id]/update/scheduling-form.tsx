@@ -10,11 +10,9 @@ import {
   AutoDialerUpdateStep3,
   AutoDialerUpdateStep3Schema,
 } from "@/validation/AutoDialerUpdateCampaign";
-import React, { useMemo } from "react";
+import React from "react";
 import { useFormContext } from "react-hook-form";
 import TimePicker from "@/components/ui/time-picker";
-import autoDialerService from "@/services/auto-dialer.service";
-import { useParams } from "next/navigation";
 
 type DurationType = {
   name: string;
@@ -29,7 +27,6 @@ type SchedulingFormProps = {
   onNext: () => void;
 };
 const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
-  const { id } = useParams();
   const form = useFormContext<AutoDialerUpdateStep3>();
 
   const durationTypesOptions = durationTypes.map((type) => ({
@@ -53,57 +50,8 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
   } = form;
 
   const handleNext = async () => {
-    // validate the form
-    const res = await AutoDialerUpdateStep3Schema.refine(
-      (data) => {
-        const { fromTime, toTime, durationType } = data;
-        if (durationType === "time-limited" && fromTime && toTime) {
-          return fromTime < toTime;
-        }
-        return true;
-      },
-      {
-        path: ["toTime"],
-        message: "To time must be greater than From time",
-      }
-    )
-      .refine(
-        (data) => {
-          if (data.durationType === "time-limited" && !data.timezone) {
-            return false;
-          }
-          return true;
-        },
-        {
-          path: ["timezone"],
-          message: "Timezone is required when duration type is time-limited",
-        }
-      )
-      .refine(
-        (data) => {
-          if (data.durationType === "time-limited" && !data.fromTime) {
-            return false;
-          }
-          return true;
-        },
-        {
-          path: ["fromTime"],
-          message: "From time is required when duration type is time-limited",
-        }
-      )
-      .refine(
-        (data) => {
-          if (data.durationType === "time-limited" && !data.toTime) {
-            return false;
-          }
-          return true;
-        },
-        {
-          path: ["toTime"],
-          message: "To time is required when duration type is time-limited",
-        }
-      )
-      .safeParseAsync(getValues());
+    // Validate using the schema from validation folder
+    const res = await AutoDialerUpdateStep3Schema.safeParseAsync(getValues());
 
     if (!res.success) {
       setTimeout(() => {
@@ -114,23 +62,10 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
           });
         });
       }, 0);
-
       return;
     }
 
     clearErrors();
-
-    // sending to server
-    try {
-      const res = await autoDialerService.updateCampaign(
-        id as string,
-        getValues()
-      );
-      console.log(res);
-    } catch (error) {
-      console.log("Error creating campaign scheduling:", error);
-    }
-
     onNext();
   };
 
@@ -262,7 +197,9 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
             />
           </>
         )}
-        <Button onClick={handleNext}>Next</Button>
+        <Button type="button" onClick={handleNext}>
+          Next
+        </Button>
       </div>
     </Form>
   );

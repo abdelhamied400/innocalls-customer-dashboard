@@ -8,6 +8,7 @@ import { CSV_SIZE_LIMIT } from "@/constants/file";
 import autoDialerService from "@/services/auto-dialer.service";
 import { AutoDialerUpdateStep4 } from "@/validation/AutoDialerUpdateCampaign";
 import { DownloadIcon } from "lucide-react";
+import { useParams } from "next/navigation";
 import { useFormContext } from "react-hook-form";
 
 type CustomersListFormProps = {
@@ -15,9 +16,11 @@ type CustomersListFormProps = {
 };
 const CustomersListForm = ({ onNext }: CustomersListFormProps) => {
   const form = useFormContext<AutoDialerUpdateStep4>();
+  const { id } = useParams();
 
   const {
     trigger,
+    getValues,
     control,
     formState: { errors },
   } = form;
@@ -26,7 +29,15 @@ const CustomersListForm = ({ onNext }: CustomersListFormProps) => {
     const isValid = await trigger(["customers"]);
 
     if (isValid) {
-      // Proceed to the next step
+      try {
+        const res = await autoDialerService.updateCampaign(
+          id as string,
+          getValues(),
+        );
+        console.log(res);
+      } catch (error) {
+        console.log("Error creating campaign scheduling:", error);
+      }
     }
   };
 

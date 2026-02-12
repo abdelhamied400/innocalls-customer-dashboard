@@ -2,7 +2,7 @@ import { CSV_SIZE_LIMIT, fileSizeToString } from "@/constants/file";
 import { z } from "zod";
 
 export const AutoDialerUpdateStep1Schema = z.object({
-  name: z.string().min(1, "Campaign name is required"),
+  name: z.string().trim().min(1, "Campaign name is required"),
   waitingCustomerCount: z
     .number()
     .int()
@@ -57,7 +57,7 @@ export const AutoDialerUpdateStep2Schema = z.object({
             required_error: "Caller Number is required",
           })
           .nonempty("Caller Number is required"),
-      })
+      }),
     )
     .min(1, "At least one caller Number is required"),
 });
@@ -89,7 +89,7 @@ export const AutoDialerUpdateStep4Schema = z.object({
 
 // join all schemas into one destructured schema
 export const AutoDialerUpdateCampaignSchema = AutoDialerUpdateStep1Schema.merge(
-  AutoDialerUpdateStep2Schema
+  AutoDialerUpdateStep2Schema,
 )
   .merge(AutoDialerUpdateStep3Schema)
   .merge(AutoDialerUpdateStep4Schema)

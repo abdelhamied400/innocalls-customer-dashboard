@@ -36,8 +36,8 @@ const SheetOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
-      "fixed inset-0 z-50 bg-black/80  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
-      className
+      "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      className,
     )}
     {...props}
     ref={ref}
@@ -61,13 +61,15 @@ const sheetVariants = cva(
     defaultVariants: {
       side: "right",
     },
-  }
+  },
 );
 
 interface SheetContentProps
-  extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
+  extends
+    React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
     VariantProps<typeof sheetVariants> {
   hasOverlay?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
 const SheetContent = React.forwardRef<
@@ -75,8 +77,15 @@ const SheetContent = React.forwardRef<
   SheetContentProps
 >(
   (
-    { side = "right", className, children, hasOverlay = true, ...props },
-    ref
+    {
+      side = "right",
+      className,
+      children,
+      hasOverlay = true,
+      onOpenChange,
+      ...props
+    },
+    ref,
   ) => {
     const locale = useLocale() as LocaleSlug;
     const { dir } = locales[locale];
@@ -97,13 +106,13 @@ const SheetContent = React.forwardRef<
 
     return (
       <SheetPortal>
-        {hasOverlay && <SheetOverlay />}
+        {hasOverlay && <SheetOverlay onClick={() => onOpenChange?.(false)} />}
         <SheetPrimitive.Content
           ref={ref}
           className={cn(
             "overflow-y-auto h-[100dvh] max-h-[100dvh]",
             sheetVariants({ side: directionalSide }),
-            className
+            className,
           )}
           {...props}
         >
@@ -111,7 +120,7 @@ const SheetContent = React.forwardRef<
         </SheetPrimitive.Content>
       </SheetPortal>
     );
-  }
+  },
 );
 SheetContent.displayName = SheetPrimitive.Content.displayName;
 
@@ -123,7 +132,7 @@ const SheetHeader = ({
   <div
     className={cn(
       "flex flex-col space-y-2 text-center sm:text-left",
-      className
+      className,
     )}
     {...props}
   >
@@ -139,7 +148,7 @@ const SheetFooter = ({
   <div
     className={cn(
       "flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2",
-      className
+      className,
     )}
     {...props}
   />
