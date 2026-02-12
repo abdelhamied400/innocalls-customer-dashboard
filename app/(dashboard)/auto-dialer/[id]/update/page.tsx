@@ -28,7 +28,7 @@ import {
 } from "@/validation/AutoDialerUpdateCampaign";
 import SchedulingForm from "./scheduling-form";
 import CustomersListForm from "./customers-list-form";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import autoDialerService from "@/services/auto-dialer.service";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
@@ -45,7 +45,6 @@ const UpdateAutoDialerCampaignSheet = () => {
   const { id } = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { toast } = useToast();
   const [currentStep, setCurrentStep] = useState(0);
 
   const { data: extensions, isLoading: isExtensionsLoading } =
@@ -66,7 +65,7 @@ const UpdateAutoDialerCampaignSheet = () => {
     if (isExtensionsLoading || !extensions || !campaign) return;
 
     const selectedAgents = campaign?.assignedAgents.map(
-      (ex: number) => `${ex}`
+      (ex: number) => `${ex}`,
     );
 
     form.reset({
@@ -90,29 +89,24 @@ const UpdateAutoDialerCampaignSheet = () => {
       // Submit the form data to update the campaign
       try {
         await autoDialerService.updateCampaign(id as string, data);
-        toast({
-          title: "Campaign Updated",
+        toast("Campaign Updated", {
           description:
             "The auto dialer campaign has been updated successfully.",
         });
         // router.back();
       } catch {
-        toast({
-          title: "Error",
+        toast.error("Error", {
           description:
             "There was an error creating the campaign. Please try again.",
-          variant: "destructive",
         });
       }
     },
     (error) => {
       console.log(error);
-      toast({
-        title: "Form Error",
+      toast.error("Form Error", {
         description: "Please fix the errors in the form before proceeding.",
-        variant: "destructive",
       });
-    }
+    },
   );
 
   return (

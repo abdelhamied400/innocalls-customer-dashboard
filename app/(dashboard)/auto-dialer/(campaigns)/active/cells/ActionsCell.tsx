@@ -32,6 +32,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
+import Link from "next/link";
 
 type ActionsCellProps = Cell<AutoDialerCampaignCols>;
 const ActionsCell = ({ row }: ActionsCellProps) => {
@@ -286,8 +287,10 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </DropdownMenuItem>
           {row.original.isDraft && (
             <DropdownMenuItem>
-              <EditIcon className="mr-2" />
-              Edit Campaign
+              <Link href={`/auto-dialer/${row.original.id}/update`}>
+                <EditIcon className="mr-2" />
+                Edit Campaign
+              </Link>
             </DropdownMenuItem>
           )}
         </DropdownMenuContent>

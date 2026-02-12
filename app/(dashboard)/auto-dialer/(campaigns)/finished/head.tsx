@@ -22,6 +22,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { autoDialerCampaignFinishedStatuses } from "@/constants/auto-dialer";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type AutoDialerFinishedHeadProps = {
   filters: Record<string, string>;
@@ -31,6 +32,7 @@ const AutoDialerFinishedHead = ({
   filters,
   setFilters,
 }: AutoDialerFinishedHeadProps) => {
+  const t = useTranslations("autoDialerCampaigns");
   const { table } = usePaginatedTable();
   const [fromDate, setFromDate] = useState<Date>();
   const [toDate, setToDate] = useState<Date>();
@@ -54,7 +56,7 @@ const AutoDialerFinishedHead = ({
           description: message,
         });
       },
-      -1
+      -1,
     );
     if (!isValid) return false;
 
@@ -204,7 +206,7 @@ const AutoDialerFinishedHead = ({
               }}
               numberOfFilters={Object.keys(status).length}
             >
-              {autoDialerCampaignFinishedStatuses.map((s) => (
+              {autoDialerCampaignFinishedStatuses(t).map((s) => (
                 <div className="flex items-center gap-2" key={s.value}>
                   <Checkbox
                     id={s.value}

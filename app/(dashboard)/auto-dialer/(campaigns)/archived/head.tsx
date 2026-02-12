@@ -17,7 +17,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import CalendarIcon from "@mui/icons-material/CalendarToday";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
 import { isValidDateRange } from "@/lib/date";
 import { toast } from "sonner";
@@ -25,6 +25,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { autoDialerCampaignArchivedStatuses } from "@/constants/auto-dialer";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type AutoDialerArchivedHeadProps = {
   filters: Record<string, string>;
@@ -35,6 +36,7 @@ const AutoDialerArchivedHead = ({
   setFilters,
 }: AutoDialerArchivedHeadProps) => {
   const { table } = usePaginatedTable();
+  const t = useTranslations("autoDialerCampaigns");
   const [fromDate, setFromDate] = useState<Date>();
   const [toDate, setToDate] = useState<Date>();
   const [durationType, setDurationType] = useState<string>();
@@ -57,7 +59,7 @@ const AutoDialerArchivedHead = ({
           description: message,
         });
       },
-      -1
+      -1,
     );
     if (!isValid) return false;
 
@@ -208,7 +210,7 @@ const AutoDialerArchivedHead = ({
               }}
               numberOfFilters={Object.keys(status).length}
             >
-              {autoDialerCampaignArchivedStatuses.map((s) => (
+              {autoDialerCampaignArchivedStatuses(t).map((s) => (
                 <div className="flex items-center gap-2" key={s.value}>
                   <Checkbox
                     id={s.value}
