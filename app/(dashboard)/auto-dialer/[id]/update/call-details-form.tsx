@@ -44,7 +44,8 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
   } = form;
 
   const handleNext = async () => {
-    const res = await AutoDialerUpdateStep2Schema(t).safeParseAsync(getValues());
+    const res =
+      await AutoDialerUpdateStep2Schema(t).safeParseAsync(getValues());
 
     if (!res.success) {
       setTimeout(() => {
@@ -170,7 +171,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                         ? extensions
                             .filter((ext) =>
                               Array.isArray(field.value)
-                                ? field.value.includes(ext.ext)
+                                ? field.value.includes(ext.id)
                                 : false,
                             )
                             .map((ext) => ({

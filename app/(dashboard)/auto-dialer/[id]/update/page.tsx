@@ -38,6 +38,7 @@ import { useTranslations } from "@/providers/TranslationProvider";
 
 const UpdateAutoDialerCampaignSheet = () => {
   const { id } = useParams();
+  const campaignId = Array.isArray(id) ? id[0] : id;
   const t = useTranslations("autoDialer.updateCampaign");
   const steps = [
     t("steps.details.title"),
@@ -49,19 +50,46 @@ const UpdateAutoDialerCampaignSheet = () => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [isOpen, setIsOpen] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const { data: extensions, isLoading: isExtensionsLoading } =
     useLocalizedQuery(queryExtensions({}));
 
   const { data: campaign, isLoading } = useQuery({
-    queryKey: ["auto-dialer-campaign", id],
-    queryFn: () => autoDialerService.getCampaign(id as string),
+    queryKey: ["auto-dialer-campaign", campaignId],
+    queryFn: () => autoDialerService.getCampaign(campaignId as string),
+    enabled: isMounted && !!campaignId,
   });
 
   const form = useForm<AutoDialerUpdateCampaign>({
     mode: "onChange",
     resolver: zodResolver(AutoDialerUpdateCampaignSchema(t)),
-    defaultValues: campaign,
+    defaultValues: {
+      name: "",
+      waitingCustomerCount: 0,
+      trialsCount: 1,
+      wrapUpTime: 10,
+      delayMinutesBetweenTrials: 5,
+      hideCallerInfo: false,
+      agentCanLogoutAndRejoin: false,
+      hasAnnouncement: false,
+      agents: [],
+      maxWaitTime: 0,
+      durationType: "time-limited",
+      callers: [
+        {
+          destination: "",
+          callerNumber: "",
+        },
+      ],
+      fromTime: "",
+      toTime: "",
+      timezone: "",
+    },
   });
 
   useEffect(() => {
@@ -171,13 +199,13 @@ const UpdateAutoDialerCampaignSheet = () => {
           </StepperHeader>
 
           <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[600px] max-h-[calc(100vh - 200px)] overflow-auto">
-            {isLoading && <div>{t("loading")}</div>}
-            {!isLoading && !campaign && (
+            {(!isMounted || isLoading) && <div>{t("loading")}</div>}
+            {isMounted && !isLoading && !campaign && (
               <div className="text-center text-muted-foreground">
                 {t("notFound")}
               </div>
             )}
-            {!isLoading && campaign && (
+            {isMounted && !isLoading && campaign && (
               <FormProvider {...form}>
                 <form className="h-full" onSubmit={onSubmit}>
                   <StepperStep

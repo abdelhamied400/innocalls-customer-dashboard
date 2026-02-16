@@ -52,9 +52,10 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
 
   const handleNext = async () => {
     // Validate using the schema from validation folder
-    const res = await AutoDialerUpdateStep3Schema(tValidation).safeParseAsync(
-      getValues(),
-    );
+    const res =
+      await AutoDialerUpdateStep3Schema(tValidation).safeParseAsync(
+        getValues(),
+      );
 
     if (!res.success) {
       setTimeout(() => {
@@ -180,9 +181,9 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
               render={({ field }) => {
                 return (
                   <VirtualizedSelect
-                    label={t("timezone.label")}
+                    label={t("timeZone.label")}
                     options={timezonesOptions}
-                    placeholder={t("timezone.placeholder")}
+                    placeholder={t("timeZone.placeholder")}
                     error={errors.timezone?.message}
                     value={
                       timezonesOptions.find((tz) => tz.value === field.value) ||
