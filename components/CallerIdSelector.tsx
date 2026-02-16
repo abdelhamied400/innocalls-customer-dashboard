@@ -7,6 +7,7 @@ import PlusIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
 import { AutoDialerCreateStep2 } from "@/validation/AutoDialerCreateCampaign";
 import { useVocab } from "@/hooks/useVocab";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type SelectOption = {
   label: string;
@@ -14,6 +15,7 @@ type SelectOption = {
 };
 
 const CallerIdSelector = () => {
+  const t = useTranslations("common.callerIdSelector");
   const {
     control,
     watch,
@@ -60,7 +62,7 @@ const CallerIdSelector = () => {
         const availableCountryOptions = countryOptions.filter(
           (option) =>
             option.value === currentDestination ||
-            !selectedCountries.includes(option.value)
+            !selectedCountries.includes(option.value),
         );
 
         const fieldErrors = errors.callers?.[index];
@@ -73,13 +75,13 @@ const CallerIdSelector = () => {
           >
             <div className="grid grid-cols-1 lg:grid-cols-2 flex-1 gap-2">
               <Select<SelectOption, false>
-                label="Country"
+                label={t("country.label")}
                 options={availableCountryOptions}
                 menuPlacement="top"
                 value={
                   currentDestination
                     ? countryOptions.find(
-                        (opt) => opt.value === currentDestination
+                        (opt) => opt.value === currentDestination,
                       ) || null
                     : null
                 }
@@ -89,15 +91,15 @@ const CallerIdSelector = () => {
                     option?.value || "",
                     {
                       shouldValidate: true,
-                    }
+                    },
                   );
                 }}
-                placeholder="Select a country..."
+                placeholder={t("country.placeholder")}
                 error={fieldErrors?.destination?.message}
               />
 
               <Select<SelectOption, false>
-                label="DID"
+                label={t("DID.label")}
                 options={didOptions}
                 menuPlacement="top"
                 value={
@@ -112,10 +114,10 @@ const CallerIdSelector = () => {
                     option?.value || "",
                     {
                       shouldValidate: true,
-                    }
+                    },
                   );
                 }}
-                placeholder="Select a DID..."
+                placeholder={t("DID.placeholder")}
                 error={fieldErrors?.callerNumber?.message}
               />
             </div>
@@ -137,7 +139,7 @@ const CallerIdSelector = () => {
 
       <Button variant="link" onClick={addCaller} type="button">
         <PlusIcon />
-        Add Caller
+        {t("addCaller")}
       </Button>
     </div>
   );

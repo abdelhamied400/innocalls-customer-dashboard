@@ -80,6 +80,19 @@ export default {
     });
     return res.data;
   },
+  updateCampaignCustomersFile: async (campaignId: string, data: object) => {
+    const formData = objToFormData(data);
+    const res = await api.post(
+      `auto-dialer/campaigns/${campaignId}/file`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      },
+    );
+    return res.data;
+  },
   startCampaign: async (campaignId: string) => {
     const res = await api.patch(`/auto-dialer/campaigns/${campaignId}/start`);
     return res.data;

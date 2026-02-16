@@ -18,17 +18,10 @@ import { formatFileSize } from "@/lib/file";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "./button";
 import { Close } from "@mui/icons-material";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 // Utility type
 type WithId<T> = T & { id: string };
-
-// Errors
-const errors: Record<ErrorCode, string> = {
-  "file-invalid-type": "Invalid file type",
-  "file-too-large": "File is too large",
-  "file-too-small": "File is too small",
-  "too-many-files": "Too many files",
-};
 
 // Context type
 interface DropzoneContextType extends Partial<DropzoneState> {
@@ -198,6 +191,7 @@ const Dropzone = ({
 
 // Components
 export const DropzoneTrigger = () => {
+  const t = useTranslations("common.dropzone");
   const { getRootProps, getInputProps, options } = useDropzoneContext();
   const acceptedTypes = Object.values(options?.accept || {})
     .map((types) => types.map((type) => type.replace(/^\./, "")).join(", "))
@@ -213,13 +207,13 @@ export const DropzoneTrigger = () => {
         <div className="text-gray-500 flex flex-col items-center">
           <div className="flex flex-wrap gap-1">
             <UploadIcon />
-            <p className="font-bold">Drag File Here</p>
-            <p>Or</p>
-            <p className="text-primary font-bold">Browse Files</p>
+            <p className="font-bold">{t("drag")}</p>
+            <p>{t("or")}</p>
+            <p className="text-primary font-bold">{t("browseFiles")}</p>
           </div>
           <p>
-            (Only <span className="uppercase">{acceptedTypes}</span> ), Max
-            Size: {formatFileSize(options?.maxSize)}
+            ({t("only")} <span className="uppercase">{acceptedTypes}</span> ),{" "}
+            {t("max")} {t("size")}: {formatFileSize(options?.maxSize)}
           </p>
         </div>
       </div>
@@ -259,7 +253,16 @@ type DropzoneRejectedFileProps = {
 export const DropzoneRejectedFile = ({
   rejection,
 }: DropzoneRejectedFileProps) => {
+  const t = useTranslations("common.dropzone");
   const { removeRejectedFile } = useDropzoneContext();
+
+  // Errors
+  const errors: Record<ErrorCode, string> = {
+    "file-invalid-type": t("validation.file-invalid-type"),
+    "file-too-large": t("validation.file-too-large"),
+    "file-too-small": t("validation.file-too-small"),
+    "too-many-files": t("validation.too-many-files"),
+  };
 
   return (
     <li className="flex items-center justify-between gap-2 p-4 bg-red-50 border border-destructive rounded-lg">

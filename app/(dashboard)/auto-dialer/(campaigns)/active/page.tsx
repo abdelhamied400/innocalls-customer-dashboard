@@ -1,12 +1,10 @@
 "use client";
-import useAppStore from "@/store/app.slice";
-import AutoDialerActiveCampaignsTable from "./table";
-import { useEffect } from "react";
 import { useTranslations } from "@/providers/TranslationProvider";
-import withActiveOrganization from "@/containers/withActiveOrganization";
+import useAppStore from "@/store/app.slice";
+import { useEffect } from "react";
+import ActiveCampaignsTable from "./table";
 
-type AutoDialerActiveCampaignsProps = object;
-const AutoDialerActiveCampaigns = ({}: AutoDialerActiveCampaignsProps) => {
+const ActiveCampaigns = () => {
   const { setPageTitle } = useAppStore();
   const t = useTranslations("sidebar");
 
@@ -17,10 +15,10 @@ const AutoDialerActiveCampaigns = ({}: AutoDialerActiveCampaignsProps) => {
   return (
     <div className="page flex-1 overflow-hidden" id="auto-dialer">
       <div className="border rounded-xl h-full flex flex-col overflow-hidden">
-        <AutoDialerActiveCampaignsTable />
+        <ActiveCampaignsTable />
       </div>
     </div>
   );
 };
 
-export default withActiveOrganization(AutoDialerActiveCampaigns);
+export default ActiveCampaigns;

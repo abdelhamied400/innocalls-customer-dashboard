@@ -14,11 +14,13 @@ import Field from "@/components/ui/field";
 import SpinButton from "@/components/ui/spin-button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { AutoDialerCreateStep1 } from "@/validation/AutoDialerCreateCampaign";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type CampaignDetailsFormProps = {
   onNext: () => void;
 };
 const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
+  const t = useTranslations("autoDialer.createCampaign.steps.details.form");
   const form = useFormContext<AutoDialerCreateStep1>();
 
   const {
@@ -53,7 +55,7 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
           name="name"
           render={({ field }) => (
             <Field
-              label="Campaign name"
+              label={t("campaignName.label")}
               error={errors.name?.message}
               htmlFor="name"
             >
@@ -62,7 +64,7 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
                   <Input
                     id="name"
                     variant="field"
-                    placeholder="Enter campaign name..."
+                    placeholder={t("campaignName.placeholder")}
                     {...field}
                   />
                 </FormControl>
@@ -78,9 +80,9 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
             <FormItem>
               <FormControl>
                 <SpinButton
-                  label="Waiting Customer Count*"
+                  label={t("waitingCustomerCount.label")}
                   labelAlign="center"
-                  hint="The number of customers that can wait in the queue"
+                  hint={t("waitingCustomerCount.hint")}
                   error={errors.waitingCustomerCount?.message}
                   {...field}
                 />
@@ -96,9 +98,9 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
             <FormItem>
               <FormControl>
                 <SpinButton
-                  label="Trials Count*"
+                  label={t("trialsCount.label")}
                   labelAlign="center"
-                  hint="The number of trials to call each customer"
+                  hint={t("trialsCount.hint")}
                   error={errors.trialsCount?.message}
                   {...field}
                 />
@@ -114,9 +116,9 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
             <FormItem>
               <FormControl>
                 <SpinButton
-                  label="Wrap Up Time"
+                  label={t("wrapUpTime.label")}
                   labelAlign="center"
-                  hint="The time (seconds) between the end of a call and the start of the next call"
+                  hint={t("wrapUpTime.hint")}
                   error={errors.wrapUpTime?.message}
                   {...field}
                 />
@@ -132,7 +134,7 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
             <FormItem>
               <FormControl>
                 <SpinButton
-                  label="Delay Minutes Between Trials"
+                  label={t("delayMinutesBetweenTrials.label")}
                   labelAlign="center"
                   error={errors.delayMinutesBetweenTrials?.message}
                   {...field}
@@ -153,7 +155,7 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
                   onCheckedChange={(checked) => field.onChange(checked)}
                 />
               </FormControl>
-              <FormLabel>Hide Caller Info</FormLabel>
+              <FormLabel>{t("hideCallerInfo.label")}</FormLabel>
             </FormItem>
           )}
         />
@@ -170,13 +172,13 @@ const CampaignDetailsForm = ({ onNext }: CampaignDetailsFormProps) => {
                   onCheckedChange={(checked) => field.onChange(checked)}
                 />
               </FormControl>
-              <FormLabel>Agent Can Logout And Rejoin</FormLabel>
+              <FormLabel>{t("agentCanLogoutAndRejoin.label")}</FormLabel>
             </FormItem>
           )}
         />
 
         <Button size="lg" onClick={handleNext}>
-          Next
+          {t("next")}
         </Button>
       </div>
     </Form>

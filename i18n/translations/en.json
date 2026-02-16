@@ -87,6 +87,31 @@
     "currencies": {
       "sar": "SAR",
       "usd": "USD"
+    },
+    "callerIdSelector": {
+      "country": {
+        "label": "Country",
+        "placeholder": "Select a country..."
+      },
+      "DID": {
+        "label": "DID",
+        "placeholder": "Select a DID..."
+      },
+      "addCaller": "Add Caller"
+    },
+    "dropzone": {
+      "drag": "Drag File Here",
+      "or": "OR",
+      "browseFiles": "Browse Files",
+      "only": "Only",
+      "max": "Max",
+      "size": "Size",
+      "validation": {
+        "file-invalid-type": "Invalid file type",
+        "file-too-large": "File is too large",
+        "file-too-small": "File is too small",
+        "too-many-files": "Too many files"
+      }
     }
   },
   "numbers": {
@@ -2954,8 +2979,8 @@
           "clear": "Clear"
         },
         "creationDate": {
-          "label": "Creation Date",
-          "placeholder": "Select a date range",
+          "placeholder": "Creation Date",
+          "label": "Select a date range",
           "from": {
             "label": "From",
             "placeholder": "Enter from date",
@@ -2968,16 +2993,16 @@
           }
         },
         "durationType": {
-          "label": "Duration Type",
-          "placeholder": "Select duration type",
+          "label": "Select duration type",
+          "placeholder": "Duration Type",
           "options": {
             "timeLimited": "Time Limited",
             "agentAvailability": "Agent Availability"
           }
         },
         "status": {
-          "label": "Status",
-          "placeholder": "Select status",
+          "label": "Select status",
+          "placeholder": "Status",
           "options": {
             "scheduled": "Scheduled",
             "inProgress": "In Progress"
@@ -2991,6 +3016,53 @@
         "durationType": "Duration Type",
         "status": "Status",
         "actions": "Actions"
+      },
+      "actionCell": {
+        "view": "View Details",
+        "edit": "Edit",
+        "pause": "Pause",
+        "resume": "Resume",
+        "cancel": "Cancel",
+        "startModal": {
+          "title": "Start Campaign",
+          "message": "Are you sure you want to start this campaign?",
+          "confirm": "Yes, start campaign",
+          "cancel": "No, cancel",
+          "success": "Campaign started successfully",
+          "successDescription": "The campaign has been started successfully. The status will be updated to 'In Progress'.",
+          "error": "Failed to start campaign",
+          "errorDescription": "An error occurred while starting the campaign. Please try again."
+        },
+        "pauseModal": {
+          "title": "Pause Campaign",
+          "message": "Are you sure you want to pause this campaign?",
+          "confirm": "Yes, pause",
+          "cancel": "No, cancel",
+          "success": "Campaign paused successfully",
+          "successDescription": "The campaign has been paused successfully. The status will be updated to 'Paused'.",
+          "error": "Failed to pause campaign",
+          "errorDescription": "An error occurred while pausing the campaign. Please try again."
+        },
+        "resumeModal": {
+          "title": "Resume Campaign",
+          "message": "Are you sure you want to resume this campaign?",
+          "confirm": "Yes, resume",
+          "cancel": "No, cancel",
+          "success": "Campaign resumed successfully",
+          "successDescription": "The campaign has been resumed successfully. The status will be updated to 'In Progress'.",
+          "error": "Failed to resume campaign",
+          "errorDescription": "An error occurred while resuming the campaign. Please try again."
+        },
+        "finishModal": {
+          "title": "إنهاء الحملة",
+          "message": "Are you sure you want to finish this campaign?",
+          "confirm": "Yes, finish",
+          "cancel": "No, cancel",
+          "success": "Campaign finished successfully",
+          "successDescription": "The campaign has been finished successfully. The status will be updated to 'Finished'.",
+          "error": "Failed to finish campaign",
+          "errorDescription": "An error occurred while finishing the campaign. Please try again."
+        }
       },
       "statuses": {
         "created": "Created",
@@ -3007,6 +3079,314 @@
       "durationTypes": {
         "time-limited": "Time Limited",
         "agent-availability": "Agent Availability"
+      }
+    },
+    "createCampaign": {
+      "title": "Create Auto Dialer Campaign",
+      "description": "Create a new auto dialer campaign to start calling your leads",
+      "steps": {
+        "details": {
+          "title": "Campaign Details",
+          "form": {
+            "campaignName": {
+              "label": "Campaign Name",
+              "placeholder": "Enter campaign name",
+              "validation": {
+                "required": "Campaign name is required"
+              }
+            },
+            "waitingCustomerCount": {
+              "label": "Waiting Customer Count",
+              "hint": "The number of customers that can wait in the queue",
+              "validation": {
+                "min": "Waiting customer count must be at least {min}"
+              }
+            },
+            "trialsCount": {
+              "label": "Trials Count*",
+              "hint": "The number of trials to call each customer",
+              "validation": {
+                "min": "Trials count must be at least {min}"
+              }
+            },
+            "wrapUpTime": {
+              "label": "Wrap Up Time",
+              "hint": "The time (seconds) between the end of a call and the start of the next call",
+              "validation": {
+                "min": "Wrap up time must be at least {min} seconds"
+              }
+            },
+            "delayMinutesBetweenTrials": {
+              "label": "Delay Minutes Between Trials",
+              "validation": {
+                "min": "Delay minutes between trials must be at least {min} minutes"
+              }
+            },
+            "hideCallerInfo": {
+              "label": "Hide Caller Info"
+            },
+            "agentCanLogoutAndRejoin": {
+              "label": "Agent Can Logout And Rejoin"
+            },
+            "next": "Next"
+          }
+        },
+        "callsDetails": {
+          "title": "Calls Details",
+          "form": {
+            "loopSoundFile": {
+              "label": "Sound",
+              "validation": {
+                "required": "Sound file is required",
+                "type": "Only audio files are allowed",
+                "size": "Sound file size must be less than {size}"
+              }
+            },
+            "hasAnnouncement": {
+              "label": "Play Announcement"
+            },
+            "mainSoundFile": {
+              "validation": {
+                "required": "Sound file is required when announcement is enabled",
+                "type": "Only audio files are allowed",
+                "size": "Sound file size must be less than {size}"
+              }
+            },
+            "agents": {
+              "label": "Agents",
+              "placeholder": "Select from the list....",
+              "validation": {
+                "min": "At least {min} agent must be selected"
+              }
+            },
+            "callerIds": {
+              "label": "Caller IDs",
+              "validation": {
+                "min": "At least {min} caller ID must be added",
+                "destination": {
+                  "required": "Destination number is required"
+                },
+                "callerNumber": {
+                  "required": "Caller number is required"
+                }
+              }
+            },
+            "next": "Next"
+          }
+        },
+        "scheduling": {
+          "title": "Scheduling",
+          "form": {
+            "durationType": {
+              "label": "Duration Type",
+              "placeholder": "Select from the list....",
+              "options": {
+                "timeLimited": "Time Limited",
+                "agentAvailability": "Agent Availability"
+              },
+              "validation": {
+                "required": "Duration type is required"
+              }
+            },
+            "maxWaitTime": {
+              "label": "Max Wait Time (Seconds)",
+              "hint": "The max (seconds) the customer will wait if the agent is not available before the call drops",
+              "validation": {
+                "min": "Max wait time must be at least {min} seconds"
+              }
+            },
+            "fromTime": {
+              "label": "From Time",
+              "placeholder": "Select time",
+              "validation": {
+                "required": "From time is required when duration type is time-limited"
+              }
+            },
+            "toTime": {
+              "label": "To Time",
+              "placeholder": "Select time",
+              "validation": {
+                "greaterThanFromTime": "To Time must be greater than From Time",
+                "required": "To time is required when duration type is time-limited"
+              }
+            },
+            "timeZone": {
+              "label": "Select City",
+              "placeholder": "Select a timezone...",
+              "validation": {
+                "required": "Timezone is required when duration type is time-limited"
+              }
+            },
+            "submitting": "Submitting...",
+            "next": "Next"
+          }
+        },
+        "customersList": {
+          "title": "Customers List"
+        }
+      }
+    },
+    "updateCampaign": {
+      "title": "Update Auto Dialer Campaign",
+      "description": "Update an existing auto dialer campaign to start calling your leads",
+      "loading": "Loading campaign details...",
+      "notFound": "Campaign not found",
+      "steps": {
+        "details": {
+          "title": "Campaign Details",
+          "form": {
+            "campaignName": {
+              "label": "Campaign Name",
+              "placeholder": "Enter campaign name",
+              "validation": {
+                "required": "Campaign name is required"
+              }
+            },
+            "waitingCustomerCount": {
+              "label": "Waiting Customer Count",
+              "hint": "The number of customers that can wait in the queue",
+              "validation": {
+                "min": "Waiting customer count must be at least {min}"
+              }
+            },
+            "trialsCount": {
+              "label": "Trials Count*",
+              "hint": "The number of trials to call each customer",
+              "validation": {
+                "min": "Trials count must be at least {min}"
+              }
+            },
+            "wrapUpTime": {
+              "label": "Wrap Up Time",
+              "hint": "The time (seconds) between the end of a call and the start of the next call",
+              "validation": {
+                "min": "Wrap up time must be at least {min} seconds"
+              }
+            },
+            "delayMinutesBetweenTrials": {
+              "label": "Delay Minutes Between Trials",
+              "validation": {
+                "min": "Delay minutes between trials must be at least {min} minutes"
+              }
+            },
+            "hideCallerInfo": {
+              "label": "Hide Caller Info"
+            },
+            "agentCanLogoutAndRejoin": {
+              "label": "Agent Can Logout And Rejoin"
+            },
+            "next": "Next"
+          }
+        },
+        "callsDetails": {
+          "title": "Calls Details",
+          "form": {
+            "loopSoundFile": {
+              "label": "Sound",
+              "validation": {
+                "required": "Sound file is required",
+                "type": "Only audio files are allowed",
+                "size": "Sound file size must be less than {size}"
+              }
+            },
+            "hasAnnouncement": {
+              "label": "Play Announcement"
+            },
+            "mainSoundFile": {
+              "validation": {
+                "required": "Sound file is required when announcement is enabled",
+                "type": "Only audio files are allowed",
+                "size": "Sound file size must be less than {size}"
+              }
+            },
+            "agents": {
+              "label": "Agents",
+              "placeholder": "Select from the list....",
+              "validation": {
+                "min": "At least {min} agent must be selected"
+              }
+            },
+            "callerIds": {
+              "label": "Caller IDs",
+              "validation": {
+                "min": "At least {min} caller ID must be added",
+                "destination": {
+                  "required": "Destination number is required"
+                },
+                "callerNumber": {
+                  "required": "Caller number is required"
+                }
+              }
+            },
+            "next": "Next"
+          }
+        },
+        "scheduling": {
+          "title": "Scheduling",
+          "form": {
+            "durationType": {
+              "label": "Duration Type",
+              "placeholder": "Select from the list....",
+              "options": {
+                "timeLimited": "Time Limited",
+                "agentAvailability": "Agent Availability"
+              },
+              "validation": {
+                "required": "Duration type is required"
+              }
+            },
+            "maxWaitTime": {
+              "label": "Max Wait Time (Seconds)",
+              "hint": "The max (seconds) the customer will wait if the agent is not available before the call drops",
+              "validation": {
+                "min": "Max wait time must be at least {min} seconds"
+              }
+            },
+            "fromTime": {
+              "label": "From Time",
+              "placeholder": "Select time",
+              "validation": {
+                "required": "From time is required when duration type is time-limited"
+              }
+            },
+            "toTime": {
+              "label": "To Time",
+              "placeholder": "Select time",
+              "validation": {
+                "greaterThanFromTime": "To Time must be greater than From Time",
+                "required": "To time is required when duration type is time-limited"
+              }
+            },
+            "timeZone": {
+              "label": "Select City",
+              "placeholder": "Select a timezone...",
+              "validation": {
+                "required": "Timezone is required when duration type is time-limited"
+              }
+            },
+            "next": "Next"
+          }
+        },
+        "customersList": {
+          "title": "Customers List",
+          "form": {
+            "downloadTemplate": "Download Template",
+            "list": [
+              "Ensure all phone numbers include the country code.",
+              "Do not use '+' or '00' before the country code.",
+              "Set the field type to 'number' without decimal points."
+            ],
+            "update": "Update Campaign",
+            "save": "Save as Draft",
+            "submitting": "Submitting..."
+          }
+        }
+      },
+      "toasts": {
+        "success": "Campaign updated successfully",
+        "successDescription": "The campaign has been updated successfully.",
+        "error": "Failed to update campaign",
+        "errorDescription": "An error occurred while updating the campaign. Please try again."
       }
     }
   },

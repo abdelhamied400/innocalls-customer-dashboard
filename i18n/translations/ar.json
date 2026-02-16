@@ -87,6 +87,31 @@
     "currencies": {
       "sar": "ريـال سعودي",
       "usd": "دولار أمريكي"
+    },
+    "callerIdSelector": {
+      "country": {
+        "label": "الدولة",
+        "placeholder": "اختر دولة..."
+      },
+      "DID": {
+        "label": "DID",
+        "placeholder": "اختر DID..."
+      },
+      "addCaller": "إضافة متصل"
+    },
+    "dropzone": {
+      "drag": "اسحب الملف هنا",
+      "or": "أو",
+      "browseFiles": "تصفح الملفات",
+      "only": "فقط",
+      "max": "الحد الأقصى",
+      "size": "الحجم",
+      "validation": {
+        "file-invalid-type": "نوع الملف غير صالح",
+        "file-too-large": "الملف كبير جدًا",
+        "file-too-small": "الملف صغير جدًا",
+        "too-many-files": "عدد الملفات كبير جدًا"
+      }
     }
   },
   "numbers": {
@@ -2968,8 +2993,8 @@
           "clear": "مسح"
         },
         "creationDate": {
-          "label": "تاريخ الإنشاء",
-          "placeholder": "اختر نطاق التاريخ",
+          "label": "اختر نطاق التاريخ",
+          "placeholder": "تاريخ الإنشاء",
           "from": {
             "label": "من",
             "placeholder": "أدخل التاريخ من",
@@ -2982,16 +3007,16 @@
           }
         },
         "durationType": {
-          "label": "نوع المدة",
-          "placeholder": "اختر نوع المدة",
+          "label": "اختر نوع المدة",
+          "placeholder": "نوع المدة",
           "options": {
             "timeLimited": "محدود بالوقت",
             "agentAvailability": "توفر الوكيل"
           }
         },
         "status": {
-          "label": "الحالة",
-          "placeholder": "اختر الحالة",
+          "label": "اختر الحالة",
+          "placeholder": "الحالة",
           "options": {
             "scheduled": "مجدولة",
             "inProgress": "قيد التنفيذ"
@@ -3005,6 +3030,53 @@
         "durationType": "نوع المدة",
         "status": "الحالة",
         "actions": "الإجراءات"
+      },
+      "actionCell": {
+        "view": "عرض التفاصيل",
+        "edit": "تعديل",
+        "pause": "إيقاف مؤقت",
+        "resume": "استئناف",
+        "cancel": "إلغاء",
+        "startModal": {
+          "title": "بدء الحملة",
+          "message": "هل أنت متأكد أنك تريد بدء هذه الحملة؟",
+          "confirm": "نعم، ابدأ الحملة",
+          "cancel": "لا، إلغاء",
+          "success": "تم بدء الحملة بنجاح",
+          "successDescription": "تم بدء الحملة بنجاح. سيتم تحديث الحالة إلى 'قيد التنفيذ'.",
+          "error": "فشل في بدء الحملة",
+          "errorDescription": "حدث خطأ أثناء بدء الحملة. يرجى المحاولة مرة أخرى."
+        },
+        "pauseModal": {
+          "title": "إيقاف الحملة مؤقتاً",
+          "message": "هل أنت متأكد أنك تريد إيقاف هذه الحملة مؤقتاً؟",
+          "confirm": "نعم، إيقاف مؤقت",
+          "cancel": "لا، إلغاء",
+          "success": "تم إيقاف الحملة مؤقتاً بنجاح",
+          "successDescription": "تم إيقاف الحملة مؤقتاً بنجاح. سيتم تحديث الحالة إلى 'متوقفة مؤقتاً'.",
+          "error": "فشل في إيقاف الحملة مؤقتاً",
+          "errorDescription": "حدث خطأ أثناء إيقاف الحملة مؤقتاً. يرجى المحاولة مرة أخرى."
+        },
+        "resumeModal": {
+          "title": "استئناف الحملة",
+          "message": "هل أنت متأكد أنك تريد استئناف هذه الحملة؟",
+          "confirm": "نعم، استئناف",
+          "cancel": "لا، إلغاء",
+          "success": "تم استئناف الحملة بنجاح",
+          "successDescription": "تم استئناف الحملة بنجاح. سيتم تحديث الحالة إلى 'قيد التنفيذ'.",
+          "error": "فشل في استئناف الحملة",
+          "errorDescription": "حدث خطأ أثناء استئناف الحملة. يرجى المحاولة مرة أخرى."
+        },
+        "finishModal": {
+          "title": "إنهاء الحملة",
+          "message": "هل أنت متأكد أنك تريد إنهاء هذه الحملة؟",
+          "confirm": "نعم، إنهاء",
+          "cancel": "لا، إلغاء",
+          "success": "تم إنهاء الحملة بنجاح",
+          "successDescription": "تم إنهاء الحملة بنجاح. سيتم تحديث الحالة إلى 'منتهية'.",
+          "error": "فشل في إنهاء الحملة",
+          "errorDescription": "حدث خطأ أثناء إنهاء الحملة. يرجى المحاولة مرة أخرى."
+        }
       },
       "statuses": {
         "created": "تم الإنشاء",
@@ -3021,6 +3093,314 @@
       "durationTypes": {
         "time-limited": "محدود بالوقت",
         "agent-availability": "توفر الوكيل"
+      }
+    },
+    "createCampaign": {
+      "title": "إنشاء حملة اتصال تلقائي",
+      "description": "إنشاء حملة اتصال تلقائي جديدة لبدء الاتصال بعملائك المحتملين",
+      "steps": {
+        "details": {
+          "title": "تفاصيل الحملة",
+          "form": {
+            "campaignName": {
+              "label": "اسم الحملة",
+              "placeholder": "أدخل اسم الحملة",
+              "validation": {
+                "required": "اسم الحملة مطلوب"
+              }
+            },
+            "waitingCustomerCount": {
+              "label": "عدد العملاء المنتظرين",
+              "hint": "عدد العملاء الذين يمكنهم الانتظار في الطابور",
+              "validation": {
+                "min": "يجب أن يكون عدد العملاء المنتظرين {min} على الأقل"
+              }
+            },
+            "trialsCount": {
+              "label": "عدد المحاولات*",
+              "hint": "عدد مرات محاولة الاتصال بكل عميل",
+              "validation": {
+                "min": "يجب أن يكون عدد المحاولات {min} على الأقل"
+              }
+            },
+            "wrapUpTime": {
+              "label": "وقت الإغلاق",
+              "hint": "الوقت بالثواني بين نهاية المكالمة وبدء المكالمة التالية",
+              "validation": {
+                "min": "يجب أن يكون وقت الإغلاق {min} ثانية على الأقل"
+              }
+            },
+            "delayMinutesBetweenTrials": {
+              "label": "تأخير الدقائق بين المحاولات",
+              "validation": {
+                "min": "يجب أن يكون التأخير {min} دقيقة على الأقل"
+              }
+            },
+            "hideCallerInfo": {
+              "label": "إخفاء معلومات المتصل"
+            },
+            "agentCanLogoutAndRejoin": {
+              "label": "يمكن للوكيل تسجيل الخروج والانضمام مرة أخرى"
+            },
+            "next": "التالي"
+          }
+        },
+        "callsDetails": {
+          "title": "تفاصيل المكالمات",
+          "form": {
+            "loopSoundFile": {
+              "label": "الصوت",
+              "validation": {
+                "required": "ملف الصوت مطلوب",
+                "type": "يُسمح فقط بملفات الصوت",
+                "size": "يجب أن يكون حجم ملف الصوت أقل من {size}"
+              }
+            },
+            "hasAnnouncement": {
+              "label": "تشغيل الإعلان"
+            },
+            "mainSoundFile": {
+              "validation": {
+                "required": "ملف الصوت مطلوب عند تفعيل الإعلان",
+                "type": "يُسمح فقط بملفات الصوت",
+                "size": "يجب أن يكون حجم ملف الصوت أقل من {size}"
+              }
+            },
+            "agents": {
+              "label": "الوكلاء",
+              "placeholder": "اختر من القائمة....",
+              "validation": {
+                "min": "يجب اختيار {min} وكيل على الأقل"
+              }
+            },
+            "callerIds": {
+              "label": "معرفات المتصل",
+              "validation": {
+                "min": "يجب إضافة {min} معرف متصل على الأقل",
+                "destination": {
+                  "required": "رقم الوجهة مطلوب"
+                },
+                "callerNumber": {
+                  "required": "رقم المتصل مطلوب"
+                }
+              }
+            },
+            "next": "التالي"
+          }
+        },
+        "scheduling": {
+          "title": "الجدولة",
+          "form": {
+            "durationType": {
+              "label": "نوع المدة",
+              "placeholder": "اختر من القائمة....",
+              "options": {
+                "timeLimited": "محدود بالوقت",
+                "agentAvailability": "توفر الوكيل"
+              },
+              "validation": {
+                "required": "نوع المدة مطلوب"
+              }
+            },
+            "maxWaitTime": {
+              "label": "أقصى وقت انتظار (بالثواني)",
+              "hint": "أقصى وقت بالثواني سينتظره العميل إذا لم يكن الوكيل متاحاً قبل قطع المكالمة",
+              "validation": {
+                "min": "يجب أن يكون أقصى وقت انتظار {min} ثانية على الأقل"
+              }
+            },
+            "fromTime": {
+              "label": "من الوقت",
+              "placeholder": "اختر الوقت",
+              "validation": {
+                "required": "وقت البداية مطلوب عند كون نوع المدة محدود بالوقت"
+              }
+            },
+            "toTime": {
+              "label": "إلى الوقت",
+              "placeholder": "اختر الوقت",
+              "validation": {
+                "greaterThanFromTime": "يجب أن يكون وقت النهاية أكبر من وقت البداية",
+                "required": "وقت النهاية مطلوب عند كون نوع المدة محدود بالوقت"
+              }
+            },
+            "timeZone": {
+              "label": "اختر المدينة",
+              "placeholder": "اختر منطقة زمنية....",
+              "validation": {
+                "required": "المنطقة الزمنية مطلوبة عند كون نوع المدة محدود بالوقت"
+              }
+            },
+            "submitting": "جاري الإرسال...",
+            "next": "التالي"
+          }
+        },
+        "customersList": {
+          "title": "قائمة العملاء"
+        }
+      }
+    },
+    "updateCampaign": {
+      "title": "تحديث حملة الاتصال التلقائي",
+      "description": "تحديث حملة اتصال تلقائي موجودة لبدء الاتصال بعملائك المحتملين",
+      "loading": "جاري تحميل تفاصيل الحملة...",
+      "notFound": "الحملة غير موجودة",
+      "steps": {
+        "details": {
+          "title": "تفاصيل الحملة",
+          "form": {
+            "campaignName": {
+              "label": "اسم الحملة",
+              "placeholder": "أدخل اسم الحملة",
+              "validation": {
+                "required": "اسم الحملة مطلوب"
+              }
+            },
+            "waitingCustomerCount": {
+              "label": "عدد العملاء المنتظرين",
+              "hint": "عدد العملاء الذين يمكنهم الانتظار في الطابور",
+              "validation": {
+                "min": "يجب أن يكون عدد العملاء المنتظرين {min} على الأقل"
+              }
+            },
+            "trialsCount": {
+              "label": "عدد المحاولات*",
+              "hint": "عدد مرات محاولة الاتصال بكل عميل",
+              "validation": {
+                "min": "يجب أن يكون عدد المحاولات {min} على الأقل"
+              }
+            },
+            "wrapUpTime": {
+              "label": "وقت الإغلاق",
+              "hint": "الوقت بالثواني بين نهاية المكالمة وبدء المكالمة التالية",
+              "validation": {
+                "min": "يجب أن يكون وقت الإغلاق {min} ثانية على الأقل"
+              }
+            },
+            "delayMinutesBetweenTrials": {
+              "label": "تأخير الدقائق بين المحاولات",
+              "validation": {
+                "min": "يجب أن يكون التأخير {min} دقيقة على الأقل"
+              }
+            },
+            "hideCallerInfo": {
+              "label": "إخفاء معلومات المتصل"
+            },
+            "agentCanLogoutAndRejoin": {
+              "label": "يمكن للوكيل تسجيل الخروج والانضمام مرة أخرى"
+            },
+            "next": "التالي"
+          }
+        },
+        "callsDetails": {
+          "title": "تفاصيل المكالمات",
+          "form": {
+            "loopSoundFile": {
+              "label": "الصوت",
+              "validation": {
+                "required": "ملف الصوت مطلوب",
+                "type": "يُسمح فقط بملفات الصوت",
+                "size": "يجب أن يكون حجم ملف الصوت أقل من {size}"
+              }
+            },
+            "hasAnnouncement": {
+              "label": "تشغيل الإعلان"
+            },
+            "mainSoundFile": {
+              "validation": {
+                "required": "ملف الصوت مطلوب عند تفعيل الإعلان",
+                "type": "يُسمح فقط بملفات الصوت",
+                "size": "يجب أن يكون حجم ملف الصوت أقل من {size}"
+              }
+            },
+            "agents": {
+              "label": "الوكلاء",
+              "placeholder": "اختر من القائمة....",
+              "validation": {
+                "min": "يجب اختيار {min} وكيل على الأقل"
+              }
+            },
+            "callerIds": {
+              "label": "معرفات المتصل",
+              "validation": {
+                "min": "يجب إضافة {min} معرف متصل على الأقل",
+                "destination": {
+                  "required": "رقم الوجهة مطلوب"
+                },
+                "callerNumber": {
+                  "required": "رقم المتصل مطلوب"
+                }
+              }
+            },
+            "next": "التالي"
+          }
+        },
+        "scheduling": {
+          "title": "الجدولة",
+          "form": {
+            "durationType": {
+              "label": "نوع المدة",
+              "placeholder": "اختر من القائمة....",
+              "options": {
+                "timeLimited": "محدود بالوقت",
+                "agentAvailability": "توفر الوكيل"
+              },
+              "validation": {
+                "required": "نوع المدة مطلوب"
+              }
+            },
+            "maxWaitTime": {
+              "label": "أقصى وقت انتظار (بالثواني)",
+              "hint": "أقصى وقت بالثواني سينتظره العميل إذا لم يكن الوكيل متاحاً قبل قطع المكالمة",
+              "validation": {
+                "min": "يجب أن يكون أقصى وقت انتظار {min} ثانية على الأقل"
+              }
+            },
+            "fromTime": {
+              "label": "من الوقت",
+              "placeholder": "اختر الوقت",
+              "validation": {
+                "required": "وقت البداية مطلوب عند كون نوع المدة محدود بالوقت"
+              }
+            },
+            "toTime": {
+              "label": "إلى الوقت",
+              "placeholder": "اختر الوقت",
+              "validation": {
+                "greaterThanFromTime": "يجب أن يكون وقت النهاية أكبر من وقت البداية",
+                "required": "وقت النهاية مطلوب عند كون نوع المدة محدود بالوقت"
+              }
+            },
+            "timeZone": {
+              "label": "اختر المدينة",
+              "placeholder": "اختر منطقة زمنية....",
+              "validation": {
+                "required": "المنطقة الزمنية مطلوبة عند كون نوع المدة محدود بالوقت"
+              }
+            },
+            "next": "التالي"
+          }
+        },
+        "customersList": {
+          "title": "قائمة العملاء",
+          "form": {
+            "downloadTemplate": "تحميل النموذج",
+            "list": [
+              "تأكد من أن جميع أرقام الهاتف تتضمن رمز الدولة.",
+              "لا تستخدم '+' أو '00' قبل رمز الدولة.",
+              "اضبط نوع الحقل على 'رقم' بدون نقاط عشرية."
+            ],
+            "update": "تحديث الحملة",
+            "save": "حفظ كمسودة",
+            "submitting": "جاري الإرسال..."
+          }
+        }
+      },
+      "toasts": {
+        "success": "تم تحديث الحملة بنجاح",
+        "successDescription": "تم تحديث الحملة بنجاح.",
+        "error": "فشل في تحديث الحملة",
+        "errorDescription": "حدث خطأ أثناء تحديث الحملة. يرجى المحاولة مرة أخرى."
       }
     }
   },

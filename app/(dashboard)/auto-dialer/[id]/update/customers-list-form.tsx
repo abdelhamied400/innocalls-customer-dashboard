@@ -5,8 +5,10 @@ import Dropzone, {
 } from "@/components/ui/dropzone";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { CSV_SIZE_LIMIT } from "@/constants/file";
+import { useTranslations } from "@/providers/TranslationProvider";
 import autoDialerService from "@/services/auto-dialer.service";
 import { AutoDialerUpdateStep4 } from "@/validation/AutoDialerUpdateCampaign";
+import { useQuery } from "@tanstack/react-query";
 import { DownloadIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useFormContext } from "react-hook-form";
@@ -14,32 +16,21 @@ import { useFormContext } from "react-hook-form";
 type CustomersListFormProps = {
   onNext: () => void;
 };
-const CustomersListForm = ({ onNext }: CustomersListFormProps) => {
-  const form = useFormContext<AutoDialerUpdateStep4>();
+const CustomersListForm = ({}: CustomersListFormProps) => {
+  const t = useTranslations(
+    "autoDialer.updateCampaign.steps.customersList.form",
+  );
   const { id } = useParams();
+  const form = useFormContext<AutoDialerUpdateStep4>();
+  const { data: campaign } = useQuery({
+    queryKey: ["auto-dialer-campaign", id],
+    queryFn: () => autoDialerService.getCampaign(id as string),
+  });
 
   const {
-    trigger,
-    getValues,
     control,
     formState: { errors },
   } = form;
-
-  const handleNext = async () => {
-    const isValid = await trigger(["customers"]);
-
-    if (isValid) {
-      try {
-        const res = await autoDialerService.updateCampaign(
-          id as string,
-          getValues(),
-        );
-        console.log(res);
-      } catch (error) {
-        console.log("Error creating campaign scheduling:", error);
-      }
-    }
-  };
 
   const downloadTemplate = async () => {
     try {
@@ -69,6 +60,7 @@ const CustomersListForm = ({ onNext }: CustomersListFormProps) => {
                   }}
                   value={field.value}
                   onChange={field.onChange}
+                  fakeFiles={[campaign?.fileName].filter(Boolean)}
                 >
                   <DropzoneTrigger />
                   <DropzoneFileList />
@@ -82,21 +74,24 @@ const CustomersListForm = ({ onNext }: CustomersListFormProps) => {
 
       <div className="">
         <Button variant="link" onClick={downloadTemplate} type="button">
-          <DownloadIcon /> Download a template
+          <DownloadIcon /> {t("downloadTemplate")}
         </Button>
       </div>
 
       <ul className="list-disc list-inside space-y-2">
-        <li>Ensure all phone numbers include the country code.</li>
-        <li>Do not use &quot;+&quot; or &quot;00&quot; before the code.</li>
-        <li>
-          Set the field type to &quot;number&quot; without decimal points.
-        </li>
+        <li>{t("list.0")}</li>
+        <li>{t("list.1")}</li>
+        <li>{t("list.2")}</li>
       </ul>
 
-      <Button className="w-full" onClick={handleNext}>
-        Next
-      </Button>
+      <div className="flex items-center gap-2">
+        <Button className="w-full" value="update">
+          {t("update")}
+        </Button>
+        <Button className="w-full" value="save" variant="outline">
+          {t("save")}
+        </Button>
+      </div>
     </div>
   );
 };

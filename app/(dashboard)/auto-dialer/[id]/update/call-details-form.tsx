@@ -22,11 +22,15 @@ import {
 } from "@/validation/AutoDialerUpdateCampaign";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useFormContext } from "react-hook-form";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type CallDetailsFormProps = {
   onNext: () => void;
 };
 const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
+  const t = useTranslations(
+    "autoDialer.updateCampaign.steps.callsDetails.form",
+  );
   const form = useFormContext<AutoDialerUpdateStep2>();
   const { data: extensions } = useLocalizedQuery(queryExtensions({}));
 
@@ -40,7 +44,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
   } = form;
 
   const handleNext = async () => {
-    const res = await AutoDialerUpdateStep2Schema.safeParseAsync(getValues());
+    const res = await AutoDialerUpdateStep2Schema(t).safeParseAsync(getValues());
 
     if (!res.success) {
       setTimeout(() => {
@@ -69,7 +73,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
             <FormItem className="w-full">
               <FormControl>
                 <div className="">
-                  <h3>Sound</h3>
+                  <h3>{t("loopSoundFile.label")}</h3>
                   <Dropzone
                     options={{
                       accept: { "audio/mp3": [".mp3"] },
@@ -105,7 +109,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
-                <FormLabel>Play Announcement</FormLabel>
+                <FormLabel>{t("hasAnnouncement.label")}</FormLabel>
               </div>
             </FormItem>
           )}
@@ -152,7 +156,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                 <FormControl>
                   <Select
                     className="w-full"
-                    label="Agents"
+                    label={t("agents.label")}
                     error={errors.agents?.message}
                     options={
                       extensions?.map((ext) => ({
@@ -160,7 +164,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                         value: ext.id,
                       })) || []
                     }
-                    placeholder="Select from the list...."
+                    placeholder={t("agents.placeholder")}
                     value={
                       extensions
                         ? extensions
@@ -189,7 +193,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
         <hr />
 
         <div className="flex-1">
-          <h3>Caller IDs</h3>
+          <h3>{t("callerIds.label")}</h3>
           <CallerIdSelector />
           {errors.callers?.message && (
             <p className="text-destructive mt-2">{errors.callers.message}</p>
@@ -197,7 +201,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
         </div>
 
         <Button size="lg" onClick={handleNext} type="button">
-          Next
+          {t("next")}
         </Button>
       </div>
     </Form>

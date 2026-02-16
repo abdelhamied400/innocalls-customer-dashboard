@@ -1,4 +1,3 @@
-import { ColumnDef } from "@tanstack/react-table";
 import StatusCell from "./cells/StatusCell";
 import ActionsCell from "./cells/ActionsCell";
 import CreatedAtCell from "./cells/CreatedAtCell";

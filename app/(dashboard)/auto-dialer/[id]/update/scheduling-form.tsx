@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
-import DatePicker from "@/components/ui/date-picker";
 import Field from "@/components/ui/field";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import Select, { Option } from "@/components/Select";
+import Select from "@/components/Select";
 import VirtualizedSelect from "@/components/VirtualizedSelect";
 import SpinButton from "@/components/ui/spin-button";
 import { timezones } from "@/constants/timezones";
@@ -10,27 +9,29 @@ import {
   AutoDialerUpdateStep3,
   AutoDialerUpdateStep3Schema,
 } from "@/validation/AutoDialerUpdateCampaign";
-import React from "react";
 import { useFormContext } from "react-hook-form";
 import TimePicker from "@/components/ui/time-picker";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type DurationType = {
   name: string;
   id: string;
 };
 const durationTypes: DurationType[] = [
-  { name: "Time Limited", id: "time-limited" },
-  { name: "Agent Availability", id: "agent-availability" },
+  { name: "timeLimited", id: "time-limited" },
+  { name: "agentAvailability", id: "agent-availability" },
 ];
 
 type SchedulingFormProps = {
   onNext: () => void;
 };
 const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
+  const tValidation = useTranslations("autoDialer.updateCampaign");
+  const t = useTranslations("autoDialer.updateCampaign.steps.scheduling.form");
   const form = useFormContext<AutoDialerUpdateStep3>();
 
   const durationTypesOptions = durationTypes.map((type) => ({
-    label: type.name,
+    label: t(`durationType.options.${type.name}`),
     value: type.id,
   }));
 
@@ -51,7 +52,9 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
 
   const handleNext = async () => {
     // Validate using the schema from validation folder
-    const res = await AutoDialerUpdateStep3Schema.safeParseAsync(getValues());
+    const res = await AutoDialerUpdateStep3Schema(tValidation).safeParseAsync(
+      getValues(),
+    );
 
     if (!res.success) {
       setTimeout(() => {
@@ -82,7 +85,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
             return (
               <Select
                 {...field}
-                label="Duration Type"
+                label={t("durationType.label")}
                 options={durationTypesOptions}
                 value={selectedType}
                 onChange={(option) => {
@@ -91,7 +94,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
                     shouldValidate: true,
                   });
                 }}
-                placeholder="Select from the list...."
+                placeholder={t("durationType.placeholder")}
                 error={errors.durationType?.message}
               ></Select>
             );
@@ -106,9 +109,9 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
               <FormItem className="w-full">
                 <FormControl>
                   <SpinButton
-                    label="Max Wait Time (Seconds)"
+                    label={t("maxWaitTime.label")}
                     labelAlign="center"
-                    hint="The max (seconds) the customer will wait if the agent is not available before the call drops"
+                    hint={t("maxWaitTime.hint")}
                     error={errors.maxWaitTime?.message}
                     htmlFor="maxWaitTime"
                     id="maxWaitTime"
@@ -128,7 +131,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
                 name="fromTime"
                 render={({ field }) => (
                   <Field
-                    label="From Time"
+                    label={t("fromTime.label")}
                     labelAlign="center"
                     hint=""
                     error={errors.fromTime?.message}
@@ -139,7 +142,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
                         <TimePicker
                           value={field.value}
                           onChange={(time) => setValue("fromTime", time)}
-                          placeholder="Select time"
+                          placeholder={t("fromTime.placeholder")}
                         />
                       </FormControl>
                     </FormItem>
@@ -151,7 +154,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
                 name="toTime"
                 render={({ field }) => (
                   <Field
-                    label="To Time"
+                    label={t("toTime.label")}
                     labelAlign="center"
                     hint=""
                     error={errors.toTime?.message}
@@ -162,7 +165,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
                         <TimePicker
                           value={field.value}
                           onChange={(time) => setValue("toTime", time)}
-                          placeholder="Select time"
+                          placeholder={t("toTime.placeholder")}
                         />
                       </FormControl>
                     </FormItem>
@@ -177,9 +180,9 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
               render={({ field }) => {
                 return (
                   <VirtualizedSelect
-                    label="Select City"
+                    label={t("timezone.label")}
                     options={timezonesOptions}
-                    placeholder="Select a timezone..."
+                    placeholder={t("timezone.placeholder")}
                     error={errors.timezone?.message}
                     value={
                       timezonesOptions.find((tz) => tz.value === field.value) ||
@@ -198,7 +201,7 @@ const SchedulingForm = ({ onNext }: SchedulingFormProps) => {
           </>
         )}
         <Button type="button" onClick={handleNext}>
-          Next
+          {t("next")}
         </Button>
       </div>
     </Form>

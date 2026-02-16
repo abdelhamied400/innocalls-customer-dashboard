@@ -15,9 +15,9 @@ import Stepper, {
   StepperStep,
   StepperSteps,
 } from "@/components/ui/stepper";
-import { ChevronLeftIcon, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import CampaignDetailsForm from "./campaign-details-form";
 import CallDetailsForm from "./call-details-form";
@@ -33,21 +33,22 @@ import autoDialerService from "@/services/auto-dialer.service";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import queryExtensions from "@/queries/queryExtensions";
-
-const steps = [
-  "Campaign Details",
-  "Calls Details",
-  "Scheduling",
-  "Customers List",
-];
+import { ArrowBackIos } from "@mui/icons-material";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const UpdateAutoDialerCampaignSheet = () => {
   const { id } = useParams();
+  const t = useTranslations("autoDialer.updateCampaign");
+  const steps = [
+    t("steps.details.title"),
+    t("steps.callsDetails.title"),
+    t("steps.scheduling.title"),
+    t("steps.customersList.title"),
+  ];
   const searchParams = useSearchParams();
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const [isOpen, setIsOpen] = useState(true);
-  const allowCloseRef = useRef(false);
 
   const { data: extensions, isLoading: isExtensionsLoading } =
     useLocalizedQuery(queryExtensions({}));
@@ -59,7 +60,7 @@ const UpdateAutoDialerCampaignSheet = () => {
 
   const form = useForm<AutoDialerUpdateCampaign>({
     mode: "onChange",
-    resolver: zodResolver(AutoDialerUpdateCampaignSchema),
+    resolver: zodResolver(AutoDialerUpdateCampaignSchema(t)),
     defaultValues: campaign,
   });
 
@@ -87,20 +88,29 @@ const UpdateAutoDialerCampaignSheet = () => {
   }, [searchParams]);
 
   const onSubmit = form.handleSubmit(
-    async (data) => {
+    async (data, e) => {
       // Submit the form data to update the campaign
+      const action = (e?.nativeEvent as any).submitter.value;
       try {
-        await autoDialerService.updateCampaign(id as string, data);
-        toast("Campaign Updated", {
-          description:
-            "The auto dialer campaign has been updated successfully.",
+        const { customers, ...rest } = data;
+        await Promise.all([
+          autoDialerService.updateCampaign(id as string, {
+            ...rest,
+            isDraft: action === "save",
+          }),
+          customers &&
+            autoDialerService.updateCampaignCustomersFile(id as string, {
+              file: customers,
+              isDraft: action === "save",
+            }),
+        ]);
+        toast(t("toasts.success"), {
+          description: t("toasts.successDescription"),
         });
-        // Close the sheet which will trigger router.back()
-        setIsOpen(false);
+        router.push("/auto-dialer/active");
       } catch {
-        toast.error("Error", {
-          description:
-            "There was an error creating the campaign. Please try again.",
+        toast.error(t("toasts.error"), {
+          description: t("toasts.errorDescription"),
         });
       }
     },
@@ -113,12 +123,8 @@ const UpdateAutoDialerCampaignSheet = () => {
     <Sheet
       open={isOpen}
       onOpenChange={(newOpen) => {
-        // Only allow closing when newOpen is false AND isOpen is true
-        // This prevents external click from closing the sheet
-        if (!newOpen && isOpen) {
-          setIsOpen(false);
-          router.back();
-        }
+        setIsOpen(newOpen);
+        router.back();
       }}
     >
       <SheetContent
@@ -134,10 +140,8 @@ const UpdateAutoDialerCampaignSheet = () => {
         }}
       >
         <SheetHeader className="sr-only">
-          <SheetTitle>Update Auto Dialer Campaign</SheetTitle>
-          <SheetDescription>
-            Update a new auto dialer campaign to start calling your leads.
-          </SheetDescription>
+          <SheetTitle>{t("title")}</SheetTitle>
+          <SheetDescription>{t("description")}</SheetDescription>
         </SheetHeader>
 
         <Stepper
@@ -148,7 +152,7 @@ const UpdateAutoDialerCampaignSheet = () => {
         >
           <StepperHeader>
             <StepperPrevious>
-              <ChevronLeftIcon />
+              <ArrowBackIos className="rtl:rotate-180" />
             </StepperPrevious>
 
             <div className="flex flex-1 justify-center gap-2">
@@ -167,23 +171,42 @@ const UpdateAutoDialerCampaignSheet = () => {
           </StepperHeader>
 
           <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[600px] max-h-[calc(100vh - 200px)] overflow-auto">
-            {isLoading && <div>Loading campaign data...</div>}
-            <FormProvider {...form}>
-              <form className="h-full" onSubmit={onSubmit}>
-                <StepperStep idx={0} className="p-4 rounded-xl bg-white h-full">
-                  <CampaignDetailsForm onNext={() => setCurrentStep(1)} />
-                </StepperStep>
-                <StepperStep idx={1} className="p-4 rounded-xl bg-white h-full">
-                  <CallDetailsForm onNext={() => setCurrentStep(2)} />
-                </StepperStep>
-                <StepperStep idx={2} className="p-4 rounded-xl bg-white h-full">
-                  <SchedulingForm onNext={() => setCurrentStep(3)} />
-                </StepperStep>
-                <StepperStep idx={3} className="p-4 rounded-xl bg-white h-full">
-                  <CustomersListForm onNext={() => setCurrentStep(4)} />
-                </StepperStep>
-              </form>
-            </FormProvider>
+            {isLoading && <div>{t("loading")}</div>}
+            {!isLoading && !campaign && (
+              <div className="text-center text-muted-foreground">
+                {t("notFound")}
+              </div>
+            )}
+            {!isLoading && campaign && (
+              <FormProvider {...form}>
+                <form className="h-full" onSubmit={onSubmit}>
+                  <StepperStep
+                    idx={0}
+                    className="p-4 rounded-xl bg-white h-full"
+                  >
+                    <CampaignDetailsForm onNext={() => setCurrentStep(1)} />
+                  </StepperStep>
+                  <StepperStep
+                    idx={1}
+                    className="p-4 rounded-xl bg-white h-full"
+                  >
+                    <CallDetailsForm onNext={() => setCurrentStep(2)} />
+                  </StepperStep>
+                  <StepperStep
+                    idx={2}
+                    className="p-4 rounded-xl bg-white h-full"
+                  >
+                    <SchedulingForm onNext={() => setCurrentStep(3)} />
+                  </StepperStep>
+                  <StepperStep
+                    idx={3}
+                    className="p-4 rounded-xl bg-white h-full"
+                  >
+                    <CustomersListForm onNext={() => setCurrentStep(4)} />
+                  </StepperStep>
+                </form>
+              </FormProvider>
+            )}
           </StepperSteps>
         </Stepper>
       </SheetContent>

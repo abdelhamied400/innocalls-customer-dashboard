@@ -33,9 +33,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import Link from "next/link";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type ActionsCellProps = Cell<AutoDialerCampaignCols>;
 const ActionsCell = ({ row }: ActionsCellProps) => {
+  const t = useTranslations("autoDialer.activeCampaigns.actionCell");
   const [isStarting, setIsStarting] = useState(false);
   const [isPausing, setIsPausing] = useState(false);
   const [isResuming, setIsResuming] = useState(false);
@@ -54,18 +56,19 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       setIsStarting(true);
       await autoDialerService.startCampaign(row.original.id);
       refetchCampaigns();
-      toast.success("Campaign started", {
-        description: "The campaign has been successfully started.",
+      toast.success(t("startModal.success"), {
+        description: t("startModal.successDescription"),
       });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast.error("Campaign start failed", {
-          description: error.response?.data?.message || "An error occurred",
+        toast.error(t("startModal.error"), {
+          description:
+            error.response?.data?.message || t("startModal.errorDescription"),
         });
         return;
       }
-      toast.error("Campaign start failed", {
-        description: "An error occurred while starting the campaign.",
+      toast.error(t("startModal.error"), {
+        description: t("startModal.errorDescription"),
       });
     } finally {
       setIsStarting(false);
@@ -77,18 +80,19 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       setIsPausing(true);
       await autoDialerService.pauseCampaign(row.original.id);
       refetchCampaigns();
-      toast.success("Campaign paused", {
-        description: "The campaign has been successfully paused.",
+      toast.success(t("pauseModal.success"), {
+        description: t("pauseModal.successDescription"),
       });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast.error("Campaign pause failed", {
-          description: error.response?.data?.message || "An error occurred",
+        toast.error(t("pauseModal.error"), {
+          description:
+            error.response?.data?.message || t("pauseModal.errorDescription"),
         });
         return;
       }
-      toast.error("Campaign pause failed", {
-        description: "An error occurred while pausing the campaign.",
+      toast.error(t("pauseModal.error"), {
+        description: t("pauseModal.errorDescription"),
       });
     } finally {
       setIsPausing(false);
@@ -100,18 +104,19 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       setIsResuming(true);
       await autoDialerService.resumeCampaign(row.original.id);
       refetchCampaigns();
-      toast.success("Campaign resumed", {
-        description: "The campaign has been successfully resumed.",
+      toast.success(t("resumeModal.success"), {
+        description: t("resumeModal.successDescription"),
       });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast.error("Campaign resume failed", {
-          description: error.response?.data?.message || "An error occurred",
+        toast.error(t("resumeModal.error"), {
+          description:
+            error.response?.data?.message || t("resumeModal.errorDescription"),
         });
         return;
       }
-      toast.error("Campaign resume failed", {
-        description: "An error occurred while resuming the campaign.",
+      toast.error(t("resumeModal.error"), {
+        description: t("resumeModal.errorDescription"),
       });
     } finally {
       setIsResuming(false);
@@ -123,18 +128,19 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       setIsFinishing(true);
       await autoDialerService.finishCampaign(row.original.id);
       refetchCampaigns();
-      toast.success("Campaign finished", {
-        description: "The campaign has been successfully finished.",
+      toast.success(t("finishModal.success"), {
+        description: t("finishModal.successDescription"),
       });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast.error("Campaign finish failed", {
-          description: error.response?.data?.message || "An error occurred",
+        toast.error(t("finishModal.error"), {
+          description:
+            error.response?.data?.message || t("finishModal.errorDescription"),
         });
         return;
       }
-      toast.error("Campaign finish failed", {
-        description: "An error occurred while finishing the campaign.",
+      toast.error(t("finishModal.error"), {
+        description: t("finishModal.errorDescription"),
       });
     } finally {
       setIsFinishing(false);
@@ -161,15 +167,15 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogTitle>{t("startModal.title")}</AlertDialogTitle>
                 <AlertDialogDescription>
-                  This action cannot be undone. This will start the campaign.
+                  {t("startModal.message")}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogCancel>{t("startModal.cancel")}</AlertDialogCancel>
                 <AlertDialogAction onClick={onStart}>
-                  Continue
+                  {t("startModal.confirm")}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
@@ -191,14 +197,16 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogTitle>{t("pauseModal.title")}</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will pause the campaign.
+                {t("pauseModal.message")}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={onPause}>Continue</AlertDialogAction>
+              <AlertDialogCancel>{t("pauseModal.cancel")}</AlertDialogCancel>
+              <AlertDialogAction onClick={onPause}>
+                {t("pauseModal.confirm")}
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
@@ -219,14 +227,16 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogTitle>{t("resumeModal.title")}</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will resume the campaign.
+                {t("resumeModal.message")}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={onResume}>Continue</AlertDialogAction>
+              <AlertDialogCancel>{t("resumeModal.cancel")}</AlertDialogCancel>
+              <AlertDialogAction onClick={onResume}>
+                {t("resumeModal.confirm")}
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
@@ -251,28 +261,20 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogTitle>{t("finishModal.title")}</AlertDialogTitle>
               <AlertDialogDescription>
-                This action cannot be undone. This will finish the campaign.
+                {t("finishModal.message")}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={onFinish}>Continue</AlertDialogAction>
+              <AlertDialogCancel>{t("finishModal.cancel")}</AlertDialogCancel>
+              <AlertDialogAction onClick={onFinish}>
+                {t("finishModal.confirm")}
+              </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
       )}
-
-      {row.original.isDraft && (
-        <Button size="icon">
-          <EditIcon />
-        </Button>
-      )}
-
-      <Button size="icon">
-        <EyeIcon />
-      </Button>
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -282,16 +284,16 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           <DropdownMenuItem>
-            <EyeIcon className="mr-2" />
-            View Details
+            <EyeIcon />
+            {t("view")}
           </DropdownMenuItem>
           {row.original.isDraft && (
-            <DropdownMenuItem>
-              <Link href={`/auto-dialer/${row.original.id}/update`}>
-                <EditIcon className="mr-2" />
-                Edit Campaign
-              </Link>
-            </DropdownMenuItem>
+            <Link href={`/auto-dialer/${row.original.id}/update`}>
+              <DropdownMenuItem>
+                <EditIcon />
+                {t("edit")}
+              </DropdownMenuItem>
+            </Link>
           )}
         </DropdownMenuContent>
       </DropdownMenu>
