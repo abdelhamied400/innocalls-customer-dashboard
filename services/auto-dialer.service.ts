@@ -145,4 +145,8 @@ export default {
     );
     return res.data.data;
   },
+  fetchCampaignMetrics: async (campaignId: string) => {
+    const res = await api.get(`/auto-dialer/campaigns/${campaignId}/metrics`);
+    return res.data.data;
+  },
 };

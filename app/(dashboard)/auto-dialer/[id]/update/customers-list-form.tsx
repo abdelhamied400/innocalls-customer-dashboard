@@ -60,7 +60,7 @@ const CustomersListForm = ({}: CustomersListFormProps) => {
                   }}
                   value={field.value}
                   onChange={field.onChange}
-                  fakeFiles={[campaign?.fileName].filter(Boolean)}
+                  fakeFiles={campaign?.fileName ? [campaign.fileName] : []}
                 >
                   <DropzoneTrigger />
                   <DropzoneFileList />
