@@ -2,18 +2,9 @@ import StatusCell from "./cells/StatusCell";
 import ActionsCell from "./cells/ActionsCell";
 import CreatedAtCell from "./cells/CreatedAtCell";
 import DurationTypeCell from "./cells/DurationTypeCell";
-import { AutoDialerCampaignActiveStatus } from "@/constants/auto-dialer";
+import { AutoDialerCampaign } from "@/types/autoDialerCampaign";
 
-export type AutoDialerCampaignCols = {
-  agentCanLogoutAndRejoin: boolean;
-  assignedAgents: number[];
-  createdAt: string;
-  durationType: "time-limited" | "agent-availability";
-  id: string;
-  isDraft: boolean;
-  name: string;
-  status: AutoDialerCampaignActiveStatus;
-};
+export type AutoDialerCampaignCols = AutoDialerCampaign;
 
 export const columns = (t: any) => [
   {

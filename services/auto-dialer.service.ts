@@ -1,21 +1,12 @@
 import { objToQueryString } from "@/lib/utils";
 import api from "./api";
 import { objToFormData } from "@/lib/formData";
-import { AutoDialerCampaignActiveStatus } from "@/constants/auto-dialer";
+import { AutoDialerCampaign } from "@/types/autoDialerCampaign";
 
 type FetchActiveCampaignsResponse = {
   totalPages: number;
   totalItems: number;
-  campaigns: {
-    agentCanLogoutAndRejoin: boolean;
-    assignedAgents: number[];
-    createdAt: string;
-    durationType: "time-limited" | "agent-availability";
-    id: string;
-    isDraft: boolean;
-    name: string;
-    status: AutoDialerCampaignActiveStatus;
-  }[];
+  campaigns: AutoDialerCampaign[];
 };
 
 export default {
@@ -58,7 +49,7 @@ export default {
     const res = await api.get(`/auto-dialer/campaigns?${queryString}`);
     return res.data.data;
   },
-  getCampaign: async (campaignId: string) => {
+  getCampaign: async (campaignId: string): Promise<AutoDialerCampaign> => {
     const res = await api.get(`/auto-dialer/campaigns/${campaignId}`);
     return res.data.data.campaign;
   },
