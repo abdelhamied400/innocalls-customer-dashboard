@@ -3451,6 +3451,48 @@
         "csv": "CSV",
         "mp3": "MP3"
       }
+    },
+    "campaignCdrs": {
+      "title": "Campaign CDRs",
+      "filters": {
+        "status": "Status",
+        "agent": "Agent",
+        "phone": "Phone",
+        "statusPlaceholder": "Select status",
+        "agentPlaceholder": "Select agent",
+        "phoneLabel": "Phone Number",
+        "phoneHint": "Digits and + only",
+        "phonePlaceholder": "+20123456789"
+      },
+      "columns": {
+        "phone": "Phone",
+        "name": "Name",
+        "status": "Status",
+        "customerConnectedAt": "Customer Connected At",
+        "waitingTime": "Waiting Time",
+        "talkTime": "Talk Time",
+        "duration": "Duration",
+        "agentConnectedAt": "Agent Connected At",
+        "agent": "Agent",
+        "actions": "Actions"
+      },
+      "toasts": {
+        "errorTitle": "Error",
+        "errorDescription": "An error occurred"
+      },
+      "statuses": {
+        "User did not answer": "User did not answer",
+        "Airplane Mode Enabled": "Airplane Mode Enabled",
+        "Initiated": "Initiated",
+        "Processing": "Processing",
+        "Call Failed": "Call Failed",
+        "User Busy/Rejected By User": "User Busy/Rejected By User",
+        "User Connected": "User Connected",
+        "User Unreachable (Out of Network Coverage or Airplane Mode)": "User Unreachable (Out of Network Coverage or Airplane Mode)",
+        "Completed": "Completed",
+        "Timeout": "Timeout",
+        "Abandoned": "Abandoned"
+      }
     }
   },
   "webrtc": {

@@ -3465,6 +3465,48 @@
         "csv": "CSV",
         "mp3": "MP3"
       }
+    },
+    "campaignCdrs": {
+      "title": "سجلات الحملة",
+      "filters": {
+        "status": "الحالة",
+        "agent": "الوكيل",
+        "phone": "الهاتف",
+        "statusPlaceholder": "اختر الحالة",
+        "agentPlaceholder": "اختر الوكيل",
+        "phoneLabel": "رقم الهاتف",
+        "phoneHint": "الأرقام و + فقط",
+        "phonePlaceholder": "+20123456789"
+      },
+      "columns": {
+        "phone": "الهاتف",
+        "name": "الاسم",
+        "status": "الحالة",
+        "customerConnectedAt": "وقت اتصال العميل",
+        "waitingTime": "وقت الانتظار",
+        "talkTime": "وقت التحدث",
+        "duration": "المدة",
+        "agentConnectedAt": "وقت اتصال الوكيل",
+        "agent": "الوكيل",
+        "actions": "الإجراءات"
+      },
+      "toasts": {
+        "errorTitle": "خطأ",
+        "errorDescription": "حدث خطأ"
+      },
+      "statuses": {
+        "User did not answer": "المستخدم لم يجب",
+        "Airplane Mode Enabled": "وضع الطيران مفعل",
+        "Initiated": "تم البدء",
+        "Processing": "قيد المعالجة",
+        "Call Failed": "فشل الاتصال",
+        "User Busy/Rejected By User": "المستخدم مشغول/رفض المكالمة",
+        "User Connected": "المستخدم متصل",
+        "User Unreachable (Out of Network Coverage or Airplane Mode)": "المستخدم غير متاح (خارج التغطية أو وضع الطيران)",
+        "Completed": "مكتمل",
+        "Timeout": "انتهت المهلة",
+        "Abandoned": "تم التخلي"
+      }
     }
   },
   "webrtc": {

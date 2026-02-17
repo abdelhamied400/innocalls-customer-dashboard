@@ -137,6 +137,10 @@ const Select = <
               ...base,
               zIndex: 9999,
             }),
+            menuPortal: (base) => ({
+              ...base,
+              zIndex: 99999,
+            }),
             menuList: (base) => ({
               ...base,
               maxHeight: 200,

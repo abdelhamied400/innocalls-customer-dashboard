@@ -9,45 +9,45 @@ export type CampaignCdrsCols = CampaignCdr;
 export const columns = (t: any) => [
   {
     accessorKey: "phone",
-    header: "Phone",
+    header: t("columns.phone"),
   },
   {
     accessorKey: "name",
-    header: "Name",
+    header: t("columns.name"),
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: t("columns.status"),
     cell: StatusCell,
   },
   {
     accessorKey: "customerConnectedAt",
-    header: "Customer Connected At",
+    header: t("columns.customerConnectedAt"),
     cell: CustomerConnectedAtCell,
   },
   {
     accessorKey: "waitingTime",
-    header: "Waiting Time",
+    header: t("columns.waitingTime"),
   },
   {
     accessorKey: "talkTime",
-    header: "Talk Time",
+    header: t("columns.talkTime"),
   },
   {
     accessorKey: "duration",
-    header: "Duration",
+    header: t("columns.duration"),
   },
   {
     accessorKey: "agentConnectedAt",
-    header: "Agent Connected At",
+    header: t("columns.agentConnectedAt"),
     cell: AgentConnectedAtCell,
   },
   {
     accessorKey: "agent",
-    header: "Agent",
+    header: t("columns.agent"),
   },
   {
-    header: "Actions",
+    header: t("columns.actions"),
     cell: ActionsCell,
   },
 ];

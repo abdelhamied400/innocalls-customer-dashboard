@@ -40,16 +40,17 @@ const AutoDialerCampaignCdrsTable = () => {
   useEffect(() => {
     if (isError) {
       if (isAxiosError(error)) {
-        toast.error("Error", {
-          description: error.response?.data?.message || "An error occurred",
+        toast.error(t("toasts.errorTitle"), {
+          description:
+            error.response?.data?.message || t("toasts.errorDescription"),
         });
         return;
       }
-      toast.error("Error", {
-        description: "An error occurred",
+      toast.error(t("toasts.errorTitle"), {
+        description: t("toasts.errorDescription"),
       });
     }
-  }, [isError, error]);
+  }, [isError, error, t]);
 
   const handleFiltersChange = (nextFilters: typeof filters) => {
     setFilters(nextFilters);

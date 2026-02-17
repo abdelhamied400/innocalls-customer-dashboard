@@ -25,12 +25,10 @@ const classNames: Record<CampaignCdr["status"], string> = {
 type StatusCellProps = Cell<CampaignCdrsCols, ReactNode>;
 const StatusCell = ({ cell }: StatusCellProps) => {
   const status = cell.getValue() as CampaignCdr["status"];
-  const t = useTranslations("autoDialer");
+  const t = useTranslations("autoDialer.campaignCdrs");
   return (
     <Badge className={cn("border-0", classNames[status])}>
-      <span className="flex items-center gap-2">
-        {t("activeCampaigns.statuses." + status)}
-      </span>
+      <span className="flex items-center gap-2">{t(`statuses.${status}`)}</span>
     </Badge>
   );
 };
