@@ -1,12 +1,18 @@
 import { objToQueryString } from "@/lib/utils";
 import api from "./api";
 import { objToFormData } from "@/lib/formData";
-import { AutoDialerCampaign } from "@/types/autoDialerCampaign";
+import { AutoDialerCampaign, CampaignCdr } from "@/types/autoDialerCampaign";
 
 type FetchActiveCampaignsResponse = {
   totalPages: number;
   totalItems: number;
   campaigns: AutoDialerCampaign[];
+};
+
+type FetchCampaignCdrsResponse = {
+  totalPages: number;
+  totalItems: number;
+  callRequests: CampaignCdr[];
 };
 
 export default {
@@ -123,5 +129,20 @@ export default {
 
     window.URL.revokeObjectURL(url);
     return res.data;
+  },
+  fetchCampaignCdrs: async (
+    campaignId: string,
+    filters?: any,
+  ): Promise<FetchCampaignCdrsResponse> => {
+    const filtersObj = {
+      ...filters,
+      campaignId,
+    };
+
+    const queryString = objToQueryString(filtersObj);
+    const res = await api.get(
+      `/auto-dialer/campaigns/${campaignId}/cdrs?${queryString}`,
+    );
+    return res.data.data;
   },
 };
