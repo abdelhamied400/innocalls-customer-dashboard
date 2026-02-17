@@ -51,11 +51,14 @@ const CampaignActions = ({
   const queryClient = useQueryClient();
 
   const refetchCampaigns = async () => {
-    await queryClient.invalidateQueries({
+    queryClient.invalidateQueries({
       queryKey: ["auto-dialer-active-campaigns"],
     });
-    await queryClient.invalidateQueries({
+    queryClient.invalidateQueries({
       queryKey: ["auto-dialer-campaign", campaign.id],
+    });
+    queryClient.invalidateQueries({
+      queryKey: ["auto-dialer-campaign-metrics", campaign.id],
     });
   };
 

@@ -3450,6 +3450,33 @@
       "fileTypes": {
         "csv": "CSV",
         "mp3": "MP3"
+      },
+      "metrics": {
+        "agentDistribution": "Agent Distribution",
+        "totalAgents": "Total Agents",
+        "onlineAgents": "Online Agents",
+        "availableAgents": "Available Agents",
+        "onCallAgents": "On Call Agents",
+        "dialingAgents": "Dialing Agents",
+        "onBreakAgents": "On Break Agents",
+        "oldestCallWaitTime": "Oldest Call Wait Time",
+        "averageCurrentWaitTime": "Average Current Wait Time",
+        "callsWaiting": "Calls Waiting",
+        "callsInProgress": "Calls In Progress",
+        "seconds": "seconds",
+        "tabs": {
+          "waitingCalls": "Waiting Calls",
+          "inProgressCalls": "In Progress Calls",
+          "agentDetails": "Agent Details"
+        },
+        "columns": {
+          "waitTime": "Wait Time",
+          "callerNumber": "Caller Number",
+          "callerName": "Caller Name",
+          "agentId": "Agent ID",
+          "status": "Status",
+          "currentChannels": "Current Channels"
+        }
       }
     },
     "campaignCdrs": {

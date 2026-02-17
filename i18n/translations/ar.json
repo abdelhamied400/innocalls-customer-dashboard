@@ -3464,6 +3464,33 @@
       "fileTypes": {
         "csv": "CSV",
         "mp3": "MP3"
+      },
+      "metrics": {
+        "agentDistribution": "توزيع الوكلاء",
+        "totalAgents": "إجمالي الوكلاء",
+        "onlineAgents": "الوكلاء المتصلون",
+        "availableAgents": "الوكلاء المتاحون",
+        "onCallAgents": "الوكلاء في مكالمة",
+        "dialingAgents": "الوكلاء يطلبون",
+        "onBreakAgents": "الوكلاء في استراحة",
+        "oldestCallWaitTime": "أقدم وقت انتظار مكالمة",
+        "averageCurrentWaitTime": "متوسط وقت الانتظار الحالي",
+        "callsWaiting": "المكالمات المنتظرة",
+        "callsInProgress": "المكالمات الجارية",
+        "seconds": "ثوانٍ",
+        "tabs": {
+          "waitingCalls": "المكالمات المنتظرة",
+          "inProgressCalls": "المكالمات الجارية",
+          "agentDetails": "تفاصيل الوكلاء"
+        },
+        "columns": {
+          "waitTime": "وقت الانتظار",
+          "callerNumber": "رقم المتصل",
+          "callerName": "اسم المتصل",
+          "agentId": "معرّف الوكيل",
+          "status": "الحالة",
+          "currentChannels": "القنوات الحالية"
+        }
       }
     },
     "campaignCdrs": {

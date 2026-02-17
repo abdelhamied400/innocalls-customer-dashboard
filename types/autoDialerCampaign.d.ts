@@ -34,6 +34,43 @@ export type AutoDialerCampaign = {
   agentCanLogoutAndRejoin: boolean;
 };
 
+export type CallerInfo = {
+  callerNumber: string;
+  callerName: string;
+};
+
+export type WaitingCall = {
+  waitTime: number;
+  callerInfo: CallerInfo;
+};
+
+export type InProgressCall = {
+  agentId: string;
+  callerInfo: CallerInfo;
+};
+
+export type AgentDetail = {
+  agentId: string;
+  status: string;
+  currentChannels: string[];
+};
+
+export type CampaignMetrics = {
+  totalAgents: number;
+  onlineAgents: number;
+  availableAgents: number;
+  onCallAgents: number;
+  dialingAgents: number;
+  onBreakAgents: number;
+  oldestCallWaitTime: number;
+  averageCurrentWaitTime: number;
+  callsWaiting: number;
+  callsInProgress: number;
+  waitingCalls: WaitingCall[];
+  inProgressCalls: InProgressCall[];
+  agentDetails: AgentDetail[];
+};
+
 export type CampaignCdr = {
   id: string;
   status:

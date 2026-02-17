@@ -1,7 +1,7 @@
 import { objToQueryString } from "@/lib/utils";
 import api from "./api";
 import { objToFormData } from "@/lib/formData";
-import { AutoDialerCampaign, CampaignCdr } from "@/types/autoDialerCampaign";
+import { AutoDialerCampaign, CampaignCdr, CampaignMetrics } from "@/types/autoDialerCampaign";
 
 type FetchActiveCampaignsResponse = {
   totalPages: number;
@@ -145,8 +145,8 @@ export default {
     );
     return res.data.data;
   },
-  fetchCampaignMetrics: async (campaignId: string) => {
+  fetchCampaignMetrics: async (campaignId: string): Promise<CampaignMetrics> => {
     const res = await api.get(`/auto-dialer/campaigns/${campaignId}/metrics`);
-    return res.data.data;
+    return res.data;
   },
 };
