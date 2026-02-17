@@ -3402,6 +3402,69 @@
         "error": "فشل في تحديث الحملة",
         "errorDescription": "حدث خطأ أثناء تحديث الحملة. يرجى المحاولة مرة أخرى."
       }
+    },
+    "campaignDetails": {
+      "loading": "جاري التحميل...",
+      "notFound": "الحملة غير موجودة",
+      "campaigns": "الحملات",
+      "status": {
+        "created": "تم الإنشاء",
+        "schedule-customers": "جدولة العملاء",
+        "verifying-customers": "التحقق من العملاء",
+        "verification-failed": "فشل التحقق",
+        "corrupted-ignored": "تم تجاهل الفاسد",
+        "customers-inserted": "تم إدراج العملاء",
+        "in-progress": "قيد التنفيذ",
+        "active": "نشطة",
+        "paused": "متوقفة مؤقتاً",
+        "started": "بدأت",
+        "completed": "مكتملة",
+        "cancelled": "ملغاة",
+        "failed": "فشلت",
+        "finished": "انتهت"
+      },
+      "tabs": {
+        "metrics": "مقاييس الحملة",
+        "cdrs": "سجلات الحملة",
+        "details": "تفاصيل الحملة"
+      },
+      "sections": {
+        "campaignDetails": "تفاصيل الحملة",
+        "campaignScheduling": "جدولة الحملة",
+        "customersList": "قائمة العملاء",
+        "sound": "الصوت",
+        "callerIds": "معرفات المتصل",
+        "attachedAgents": "الوكلاء المرتبطون"
+      },
+      "fields": {
+        "campaignName": "اسم الحملة",
+        "waitingCustomerCount": "عدد العملاء المنتظرين",
+        "trialsCount": "عدد المحاولات",
+        "wrapUpTime": "وقت الإغلاق",
+        "delayMinutesBetweenTrials": "تأخير الدقائق بين المحاولات",
+        "hideCallerInfo": "إخفاء معلومات المتصل",
+        "agentCanLogoutAndRejoin": "يمكن للوكيل تسجيل الخروج والانضمام مرة أخرى",
+        "durationType": "نوع المدة",
+        "maxWaitTimeSeconds": "أقصى وقت انتظار (بالثواني)",
+        "fromTime": "من الوقت",
+        "toTime": "إلى الوقت",
+        "timeZone": "المنطقة الزمنية",
+        "playAnnouncement": "تشغيل الإعلان",
+        "callerIds": "معرفات المتصل",
+        "destination": "الوجهة"
+      },
+      "durationTypes": {
+        "timeLimited": "محدود بالوقت",
+        "agentAvailability": "توفر الوكيل"
+      },
+      "booleans": {
+        "yes": "نعم",
+        "no": "لا"
+      },
+      "fileTypes": {
+        "csv": "CSV",
+        "mp3": "MP3"
+      }
     }
   },
   "webrtc": {

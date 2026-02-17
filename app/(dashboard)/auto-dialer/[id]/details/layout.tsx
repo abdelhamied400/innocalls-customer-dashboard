@@ -1,5 +1,6 @@
 "use client";
 import LinkTabs, { LinkTab } from "@/components/LinkTabs";
+import { useTranslations } from "@/providers/TranslationProvider";
 import { useParams } from "next/navigation";
 import { PropsWithChildren } from "react";
 import CampaignActions from "../../shared/CampaignActions";
@@ -9,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 type CampaignDetailsLayoutProps = PropsWithChildren<{}>;
 const CampaignDetailsLayout = ({ children }: CampaignDetailsLayoutProps) => {
   const { id } = useParams();
+  const t = useTranslations("autoDialer.campaignDetails");
 
   const { data: campaign, isLoading } = useQuery({
     queryKey: ["auto-dialer-campaign", id],
@@ -20,13 +22,13 @@ const CampaignDetailsLayout = ({ children }: CampaignDetailsLayoutProps) => {
       <div className="header flex justify-between items-center">
         <LinkTabs>
           <LinkTab href={`/auto-dialer/${id}/details/metrics`}>
-            Campaign Metrics
+            {t("tabs.metrics")}
           </LinkTab>
           <LinkTab href={`/auto-dialer/${id}/details/cdrs`}>
-            Campaign CDRs
+            {t("tabs.cdrs")}
           </LinkTab>
           <LinkTab href={`/auto-dialer/${id}/details`}>
-            Campaign Details
+            {t("tabs.details")}
           </LinkTab>
         </LinkTabs>
         {!isLoading && campaign && (

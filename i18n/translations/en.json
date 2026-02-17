@@ -3388,6 +3388,69 @@
         "error": "Failed to update campaign",
         "errorDescription": "An error occurred while updating the campaign. Please try again."
       }
+    },
+    "campaignDetails": {
+      "loading": "Loading...",
+      "notFound": "Campaign not found",
+      "campaigns": "Campaigns",
+      "status": {
+        "created": "Created",
+        "schedule-customers": "Schedule Customers",
+        "verifying-customers": "Verifying Customers",
+        "verification-failed": "Verification Failed",
+        "corrupted-ignored": "Corrupted Ignored",
+        "customers-inserted": "Customers Inserted",
+        "in-progress": "In Progress",
+        "active": "Active",
+        "paused": "Paused",
+        "started": "Started",
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "failed": "Failed",
+        "finished": "Finished"
+      },
+      "tabs": {
+        "metrics": "Campaign Metrics",
+        "cdrs": "Campaign CDRs",
+        "details": "Campaign Details"
+      },
+      "sections": {
+        "campaignDetails": "Campaign Details",
+        "campaignScheduling": "Campaign Scheduling",
+        "customersList": "Customers List",
+        "sound": "Sound",
+        "callerIds": "Caller IDs",
+        "attachedAgents": "Attached Agents"
+      },
+      "fields": {
+        "campaignName": "Campaign Name",
+        "waitingCustomerCount": "Waiting Customer Count",
+        "trialsCount": "Trials Count",
+        "wrapUpTime": "Wrap Up Time",
+        "delayMinutesBetweenTrials": "Delay Minutes Between Trials",
+        "hideCallerInfo": "Hide Caller Info",
+        "agentCanLogoutAndRejoin": "Agent Can Logout And Rejoin",
+        "durationType": "Duration Type",
+        "maxWaitTimeSeconds": "Max Wait Time (Seconds)",
+        "fromTime": "From Time",
+        "toTime": "To Time",
+        "timeZone": "Time Zone",
+        "playAnnouncement": "Play Announcement",
+        "callerIds": "Caller IDs",
+        "destination": "Destination"
+      },
+      "durationTypes": {
+        "timeLimited": "Time Limited",
+        "agentAvailability": "Agent Availability"
+      },
+      "booleans": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "fileTypes": {
+        "csv": "CSV",
+        "mp3": "MP3"
+      }
     }
   },
   "webrtc": {
