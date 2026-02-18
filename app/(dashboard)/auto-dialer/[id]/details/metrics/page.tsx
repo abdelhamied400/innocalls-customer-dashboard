@@ -1,4 +1,5 @@
 "use client";
+import { useMemo, useState } from "react";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import useLayoutManager from "@/hooks/use-layout-manager";
 import { useTranslations } from "@/providers/TranslationProvider";
@@ -13,8 +14,10 @@ import DataTableProvider, {
   DataTableHeader,
   DataTableSkeleton,
 } from "@/components/ui/data-table";
+import Field from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
 import { useSip } from "@/providers/webrtc/SipProvider";
-import { InsightsOutlined } from "@mui/icons-material";
+import { InsightsOutlined, Search } from "@mui/icons-material";
 import { toast } from "sonner";
 import {
   waitingCallsColumns,
@@ -25,6 +28,9 @@ import StatsMiniCard from "@/components/StatsMiniCard";
 import useAppStore from "@/store/app.slice";
 import useWebrtcStore from "@/store/webrtc.slice";
 import Image from "next/image";
+import { FilterBox } from "@/components/FilterBox";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const AGENT_COLORS = {
   online: "#0E4D80",
@@ -38,6 +44,7 @@ const EMPTY_CHART_COLOR = "#D1D5DB";
 
 const AutoDialerCampaignMetrics = () => {
   const t = useTranslations("autoDialer.campaignDetails");
+  const searchT = useTranslations("common.search");
   const { id } = useParams<{ id: string }>();
   const { extensionState, spy } = useSip();
   const { setWebrtcOpen } = useAppStore();
@@ -66,6 +73,10 @@ const AutoDialerCampaignMetrics = () => {
   });
 
   const metrics = data as CampaignMetrics | undefined;
+  const [inProgressSearch, setInProgressSearch] = useState("");
+  const [agentDetailsSearch, setAgentDetailsSearch] = useState("");
+  const [agentStatusFilter, setAgentStatusFilter] = useState("");
+  const [agentStatusDraft, setAgentStatusDraft] = useState("");
 
   const agentChartData = metrics
     ? [
@@ -109,6 +120,58 @@ const AutoDialerCampaignMetrics = () => {
   const shouldShowLegendBelow =
     isSmallerScreen ||
     (isLaptopScreen && hasExpandedSidebar && hasExpandedWebrtc);
+
+  const filteredInProgressCalls = useMemo(() => {
+    const rows = metrics?.inProgressCalls ?? [];
+    const keyword = inProgressSearch.trim().toLowerCase();
+
+    if (!keyword) return rows;
+
+    return rows.filter((row) => {
+      const searchable = [
+        row.agentId,
+        row.callerInfo?.callerNumber,
+        row.callerInfo?.callerName,
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      return searchable.includes(keyword);
+    });
+  }, [metrics?.inProgressCalls, inProgressSearch]);
+
+  const agentStatusOptions = useMemo(() => {
+    const statuses = (metrics?.agentDetails ?? [])
+      .map((row) => row.status)
+      .filter(Boolean);
+    return Array.from(new Set(statuses));
+  }, [metrics?.agentDetails]);
+
+  const filteredAgentDetails = useMemo(() => {
+    const rows = metrics?.agentDetails ?? [];
+    const keyword = agentDetailsSearch.trim().toLowerCase();
+
+    return rows.filter((row) => {
+      const matchesStatus = agentStatusFilter
+        ? row.status === agentStatusFilter
+        : true;
+
+      if (!matchesStatus) return false;
+      if (!keyword) return true;
+
+      const searchable = [
+        row.agentId,
+        row.status,
+        row.currentChannels?.join(" "),
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      return searchable.includes(keyword);
+    });
+  }, [metrics?.agentDetails, agentDetailsSearch, agentStatusFilter]);
 
   const onSpy = (ext: string) => {
     setWebrtcOpen(true);
@@ -312,8 +375,19 @@ const AutoDialerCampaignMetrics = () => {
         </TabsContent>
 
         <TabsContent value="inProgressCalls">
+          <div className="flex flex-wrap items-center gap-2 py-2">
+            <Field preIcon={<Search />}>
+              <Input
+                variant="field"
+                placeholder={searchT("placeholder")}
+                type="search"
+                value={inProgressSearch}
+                onChange={(e) => setInProgressSearch(e.target.value)}
+              />
+            </Field>
+          </div>
           <DataTableProvider
-            data={metrics?.inProgressCalls ?? []}
+            data={filteredInProgressCalls}
             columns={inProgressCallsColumns(t)}
             isLoading={isLoading}
             noResultsMessage={t("metrics.noData")}
@@ -327,8 +401,56 @@ const AutoDialerCampaignMetrics = () => {
         </TabsContent>
 
         <TabsContent value="agentDetails">
+          <div className="flex flex-wrap items-center justify-between gap-2 py-2">
+            <Field preIcon={<Search />}>
+              <Input
+                variant="field"
+                placeholder={searchT("placeholder")}
+                type="search"
+                value={agentDetailsSearch}
+                onChange={(e) => setAgentDetailsSearch(e.target.value)}
+              />
+            </Field>
+
+            <FilterBox
+              triggerLabel={t("metrics.columns.status")}
+              label={t("metrics.columns.status")}
+              numberOfFilters={agentStatusFilter ? 1 : 0}
+              onReset={() => {
+                setAgentStatusDraft("");
+                setAgentStatusFilter("");
+              }}
+              onApply={() => {
+                setAgentStatusFilter(agentStatusDraft);
+                return true;
+              }}
+            >
+              <RadioGroup
+                value={agentStatusDraft || "__all"}
+                onValueChange={(value) => {
+                  setAgentStatusDraft(value === "__all" ? "" : value);
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <RadioGroupItem value="__all" id="agent-status-all" />
+                  <Label htmlFor="agent-status-all">
+                    {t("metrics.filters.all")}
+                  </Label>
+                </div>
+                {agentStatusOptions.map((status) => (
+                  <div className="flex items-center gap-2" key={status}>
+                    <RadioGroupItem
+                      value={status}
+                      id={`agent-status-${status}`}
+                    />
+                    <Label htmlFor={`agent-status-${status}`}>{status}</Label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </FilterBox>
+          </div>
           <DataTableProvider
-            data={metrics?.agentDetails ?? []}
+            data={filteredAgentDetails}
             columns={agentDetailsColumns(t)}
             isLoading={isLoading}
             noResultsMessage={t("metrics.noData")}

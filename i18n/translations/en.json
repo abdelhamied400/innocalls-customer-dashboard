@@ -3473,6 +3473,9 @@
         "tooltips": {
           "spy": "Spy"
         },
+        "filters": {
+          "all": "All"
+        },
         "tabs": {
           "waitingCalls": "Waiting Calls",
           "inProgressCalls": "In Progress Calls",

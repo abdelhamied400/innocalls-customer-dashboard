@@ -3487,6 +3487,9 @@
         "tooltips": {
           "spy": "تنصّت"
         },
+        "filters": {
+          "all": "الكل"
+        },
         "tabs": {
           "waitingCalls": "المكالمات المنتظرة",
           "inProgressCalls": "المكالمات الجارية",
