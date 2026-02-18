@@ -35,6 +35,7 @@ type DataTableContextType<TData, TValue> = {
   data: TData[];
   columns: ColumnDef<TData, TValue>[];
   isLoading?: boolean;
+  noResultsMessage?: string;
   onPaginationChange?: (pagination: PaginationState) => void;
   meta?: TableMeta<TData> | undefined;
   pages: number[];
@@ -54,6 +55,7 @@ type DataTableProviderProps<TData, TValue> = PropsWithChildren<{
   data: TData[];
   columns: ColumnDef<TData, TValue>[];
   isLoading?: boolean;
+  noResultsMessage?: string;
   onPaginationChange?: (pagination: PaginationState) => void;
   meta?: TableMeta<TData> | undefined;
   manualPagination?: boolean;
@@ -69,6 +71,7 @@ const DataTableProvider = <TData, TValue>({
   data = [],
   columns,
   isLoading,
+  noResultsMessage,
   onPaginationChange,
   meta,
   manualPagination,
@@ -117,6 +120,7 @@ const DataTableProvider = <TData, TValue>({
         data,
         columns,
         isLoading,
+        noResultsMessage,
         meta,
         onPaginationChange,
         pages,
@@ -152,7 +156,7 @@ export const DataTableHeader = () => {
                   ? null
                   : flexRender(
                       header.column.columnDef.header,
-                      header.getContext()
+                      header.getContext(),
                     )}
               </TableHead>
             );
@@ -164,7 +168,7 @@ export const DataTableHeader = () => {
 };
 
 export const DataTableBody = () => {
-  const { table, columns } = useDataTable();
+  const { table, columns, noResultsMessage } = useDataTable();
   return (
     <TableBody className="">
       {table.getRowModel().rows?.length ? (
@@ -184,7 +188,7 @@ export const DataTableBody = () => {
       ) : (
         <TableRow>
           <TableCell colSpan={columns.length} className="h-24 text-center">
-            No results.
+            {noResultsMessage ?? "No results."}
           </TableCell>
         </TableRow>
       )}

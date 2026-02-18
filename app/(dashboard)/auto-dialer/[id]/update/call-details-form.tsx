@@ -162,7 +162,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                     options={
                       extensions?.map((ext) => ({
                         label: `${ext.name} (${ext.ext})`,
-                        value: ext.id,
+                        value: ext.ext,
                       })) || []
                     }
                     placeholder={t("agents.placeholder")}
@@ -171,12 +171,12 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                         ? extensions
                             .filter((ext) =>
                               Array.isArray(field.value)
-                                ? field.value.includes(ext.id)
+                                ? field.value.includes(ext.ext)
                                 : false,
                             )
                             .map((ext) => ({
                               label: `${ext.name} (${ext.ext})`,
-                              value: ext.id,
+                              value: ext.ext,
                             }))
                         : []
                     }

@@ -3452,6 +3452,9 @@
         "mp3": "MP3"
       },
       "metrics": {
+        "title": "Metrics",
+        "total": "Total",
+        "agents": "Agents",
         "agentDistribution": "Agent Distribution",
         "totalAgents": "Total Agents",
         "onlineAgents": "Online Agents",
@@ -3463,7 +3466,13 @@
         "averageCurrentWaitTime": "Average Current Wait Time",
         "callsWaiting": "Calls Waiting",
         "callsInProgress": "Calls In Progress",
+        "noData": "No data available",
+        "spyConnectionError": "WebRTC is not connected",
+        "onlyAvailableForActiveCampaigns": "Metrics are only available for active campaigns",
         "seconds": "seconds",
+        "tooltips": {
+          "spy": "Spy"
+        },
         "tabs": {
           "waitingCalls": "Waiting Calls",
           "inProgressCalls": "In Progress Calls",
@@ -3474,6 +3483,7 @@
           "callerNumber": "Caller Number",
           "callerName": "Caller Name",
           "agentId": "Agent ID",
+          "actions": "Actions",
           "status": "Status",
           "currentChannels": "Current Channels"
         }

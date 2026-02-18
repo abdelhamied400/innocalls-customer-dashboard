@@ -57,7 +57,7 @@ const StatsMiniCard = ({
     <div className={cn(miniCardVariants({ color }), className)}>
       <div className="flex items-center gap-2">
         <div className={cn(miniCardIconVariants({ color }))}>{icon}</div>
-        {label && <span className="font-bold text-gray-500">{label}</span>}
+        {label && <span className="font-semibold text-gray-500">{label}</span>}
       </div>
       <p className="font-bold text-2xl text-gray-700 transition-colors">
         {value}

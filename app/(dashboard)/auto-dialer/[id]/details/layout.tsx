@@ -5,14 +5,14 @@ import { useParams } from "next/navigation";
 import { PropsWithChildren } from "react";
 import CampaignActions from "../../shared/CampaignActions";
 import autoDialerService from "@/services/auto-dialer.service";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 
 type CampaignDetailsLayoutProps = PropsWithChildren<{}>;
 const CampaignDetailsLayout = ({ children }: CampaignDetailsLayoutProps) => {
   const { id } = useParams();
   const t = useTranslations("autoDialer.campaignDetails");
 
-  const { data: campaign, isLoading } = useQuery({
+  const { data: campaign, isLoading } = useLocalizedQuery({
     queryKey: ["auto-dialer-campaign", id],
     queryFn: () => autoDialerService.getCampaign(id as string),
   });

@@ -3466,6 +3466,9 @@
         "mp3": "MP3"
       },
       "metrics": {
+        "title": "المقاييس",
+        "total": "الإجمالي",
+        "agents": "وكلاء",
         "agentDistribution": "توزيع الوكلاء",
         "totalAgents": "إجمالي الوكلاء",
         "onlineAgents": "الوكلاء المتصلون",
@@ -3477,7 +3480,13 @@
         "averageCurrentWaitTime": "متوسط وقت الانتظار الحالي",
         "callsWaiting": "المكالمات المنتظرة",
         "callsInProgress": "المكالمات الجارية",
+        "noData": "لا توجد بيانات متاحة",
+        "spyConnectionError": "الاتصال عبر WebRTC غير متصل",
+        "onlyAvailableForActiveCampaigns": "المقاييس متاحة فقط للحملات النشطة",
         "seconds": "ثوانٍ",
+        "tooltips": {
+          "spy": "تنصّت"
+        },
         "tabs": {
           "waitingCalls": "المكالمات المنتظرة",
           "inProgressCalls": "المكالمات الجارية",
@@ -3488,6 +3497,7 @@
           "callerNumber": "رقم المتصل",
           "callerName": "اسم المتصل",
           "agentId": "معرّف الوكيل",
+          "actions": "الإجراءات",
           "status": "الحالة",
           "currentChannels": "القنوات الحالية"
         }

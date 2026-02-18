@@ -3,7 +3,18 @@ import {
   InProgressCall,
   AgentDetail,
 } from "@/types/autoDialerCampaign";
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, RowData } from "@tanstack/react-table";
+import { Button } from "@/components/ui/button";
+import { Tooltip } from "@mui/material";
+import Image from "next/image";
+
+declare module "@tanstack/react-table" {
+  interface TableMeta<TData extends RowData> {
+    __rowType?: TData;
+    onSpy?: (ext: string) => void;
+    currentExtension?: string;
+  }
+}
 
 export const waitingCallsColumns = (t: any): ColumnDef<WaitingCall>[] => [
   {
@@ -23,9 +34,7 @@ export const waitingCallsColumns = (t: any): ColumnDef<WaitingCall>[] => [
   },
 ];
 
-export const inProgressCallsColumns = (
-  t: any,
-): ColumnDef<InProgressCall>[] => [
+export const inProgressCallsColumns = (t: any): ColumnDef<InProgressCall>[] => [
   {
     accessorKey: "agentId",
     header: t("metrics.columns.agentId"),
@@ -39,6 +48,35 @@ export const inProgressCallsColumns = (
     accessorFn: (row) => row.callerInfo?.callerName,
     id: "callerName",
     header: t("metrics.columns.callerName"),
+  },
+  {
+    id: "actions",
+    header: t("metrics.columns.actions"),
+    cell: ({ row, table }) => {
+      const agentExtension = row.original.agentId;
+      const currentExtension = table.options.meta?.currentExtension;
+
+      if (!agentExtension || currentExtension === agentExtension) {
+        return null;
+      }
+
+      return (
+        <Tooltip title={t("metrics.tooltips.spy")} arrow>
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={() => table.options.meta?.onSpy?.(agentExtension)}
+          >
+            <Image
+              src="/assets/icons/incognito.svg"
+              alt="spy"
+              width={24}
+              height={24}
+            />
+          </Button>
+        </Tooltip>
+      );
+    },
   },
 ];
 
