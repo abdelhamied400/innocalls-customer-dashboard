@@ -3038,6 +3038,7 @@
         "resume": "استئناف",
         "cancel": "إلغاء",
         "corruptedRecords": "السجلات التالفة",
+        "uncompletedRequests": "الطلبات غير المكتملة",
         "startModal": {
           "title": "بدء الحملة",
           "message": "هل أنت متأكد أنك تريد بدء هذه الحملة؟",
@@ -3560,6 +3561,23 @@
         "error": "فشل في حذف الحملة",
         "errorDescription": "حدث خطأ أثناء حذف الحملة. يرجى المحاولة مرة أخرى."
       }
+    },
+    "uncompletedRequests": {
+      "title": "الطلبات غير المكتملة",
+      "columns": {
+        "phone": "الهاتف",
+        "name": "الاسم",
+        "remainingTrials": "المحاولات المتبقية"
+      },
+      "export": "تصدير",
+      "exportSuccess": "تم بدء التصدير",
+      "exportSuccessDescription": "سيتم إرسال التقرير إلى بريدك الإلكتروني.",
+      "toasts": {
+        "errorTitle": "خطأ",
+        "errorDescription": "فشل في تحميل الطلبات غير المكتملة"
+      },
+      "exportError": "فشل التصدير",
+      "exportErrorDescription": "حدث خطأ أثناء التصدير. يرجى المحاولة مرة أخرى."
     },
     "campaignCdrs": {
       "title": "سجلات الحملة",

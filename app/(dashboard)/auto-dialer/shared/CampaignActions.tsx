@@ -7,6 +7,7 @@ import {
   Visibility as EyeIcon,
   Autorenew as HalfCircleSpinner,
   Warning,
+  AssignmentLate,
 } from "@mui/icons-material";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -315,6 +316,14 @@ const CampaignActions = ({
                 <DropdownMenuItem>
                   <Warning />
                   {t("corruptedRecords")}
+                </DropdownMenuItem>
+              </Link>
+            )}
+            {["in-progress", "active", "paused"].includes(campaign.status) && (
+              <Link href={`/auto-dialer/${campaign.id}/uncompeleted-requests`}>
+                <DropdownMenuItem>
+                  <AssignmentLate />
+                  {t("uncompletedRequests")}
                 </DropdownMenuItem>
               </Link>
             )}

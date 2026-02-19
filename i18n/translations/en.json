@@ -3024,6 +3024,7 @@
         "resume": "Resume",
         "cancel": "Cancel",
         "corruptedRecords": "Corrupted Records",
+        "uncompletedRequests": "Uncompleted Requests",
         "startModal": {
           "title": "Start Campaign",
           "message": "Are you sure you want to start this campaign?",
@@ -3546,6 +3547,23 @@
         "error": "Failed to delete campaign",
         "errorDescription": "An error occurred while deleting the campaign. Please try again."
       }
+    },
+    "uncompletedRequests": {
+      "title": "Uncompleted Requests",
+      "columns": {
+        "phone": "Phone",
+        "name": "Name",
+        "remainingTrials": "Remaining Trials"
+      },
+      "export": "Export",
+      "exportSuccess": "Export Initiated",
+      "exportSuccessDescription": "The report will be sent to your email.",
+      "toasts": {
+        "errorTitle": "Error",
+        "errorDescription": "Failed to load uncompleted requests"
+      },
+      "exportError": "Export Failed",
+      "exportErrorDescription": "An error occurred while exporting. Please try again."
     },
     "campaignCdrs": {
       "title": "Campaign CDRs",

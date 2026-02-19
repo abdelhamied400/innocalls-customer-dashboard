@@ -82,6 +82,13 @@ export type CorruptedRow = {
   reasons: string[];
 };
 
+export type UncompletedRequest = {
+  id: string;
+  name: string;
+  phone: string;
+  remainingTrials: number;
+};
+
 export type CampaignCdr = {
   id: string;
   status:

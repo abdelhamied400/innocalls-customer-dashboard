@@ -6,6 +6,7 @@ import {
   CampaignCdr,
   CampaignMetrics,
   CorruptedRow,
+  UncompletedRequest,
 } from "@/types/autoDialerCampaign";
 
 type FetchActiveCampaignsResponse = {
@@ -24,6 +25,12 @@ type FetchCorruptedRowsResponse = {
   totalPages: number;
   totalItems: number;
   corruptedRows: CorruptedRow[];
+};
+
+type FetchUncompletedRequestsResponse = {
+  totalPages: number;
+  totalItems: number;
+  requests: UncompletedRequest[];
 };
 
 export default {
@@ -190,8 +197,22 @@ export default {
     return res.data;
   },
   cancelCampaign: async (campaignId: string) => {
-    const res = await api.patch(
-      `/auto-dialer/campaigns/${campaignId}/cancel`,
+    const res = await api.patch(`/auto-dialer/campaigns/${campaignId}/cancel`);
+    return res.data;
+  },
+  fetchUncompletedRequests: async (
+    campaignId: string,
+    filters?: any,
+  ): Promise<FetchUncompletedRequestsResponse> => {
+    const queryString = objToQueryString(filters);
+    const res = await api.get(
+      `/auto-dialer/campaigns/${campaignId}/uncompleted-requests?${queryString}`,
+    );
+    return res.data.data;
+  },
+  exportUncompletedRequests: async (campaignId: string) => {
+    const res = await api.get(
+      `/auto-dialer/campaigns/${campaignId}/uncompleted-requests/export`,
     );
     return res.data;
   },
