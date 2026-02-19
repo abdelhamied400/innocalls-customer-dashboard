@@ -3037,6 +3037,7 @@
         "pause": "إيقاف مؤقت",
         "resume": "استئناف",
         "cancel": "إلغاء",
+        "corruptedRecords": "السجلات التالفة",
         "startModal": {
           "title": "بدء الحملة",
           "message": "هل أنت متأكد أنك تريد بدء هذه الحملة؟",
@@ -3504,6 +3505,60 @@
           "status": "الحالة",
           "currentChannels": "القنوات الحالية"
         }
+      }
+    },
+    "corruptedRecords": {
+      "badgePrefix": "عذراً! لدينا",
+      "badgeRecords": "{count} سجل",
+      "badgeSuffix": "يحتاج إلى إصلاح. يرجى مراجعة وتصحيح الأخطاء المميزة لبدء حملتك.",
+      "saveChanges": "حفظ التغييرات",
+      "delete": "حذف",
+      "deleteCorruptedData": "حذف البيانات التالفة",
+      "deleteCampaign": "حذف الحملة",
+      "name": "الاسم",
+      "phone": "الهاتف",
+      "info": "المعلومات",
+      "namePlaceholder": "أدخل الاسم",
+      "phonePlaceholder": "أدخل الهاتف",
+      "infoPlaceholder": "أدخل المعلومات",
+      "noRecords": "لا توجد سجلات تالفة",
+      "loading": "جاري تحميل السجلات التالفة...",
+      "validation": {
+        "nameRequired": "الاسم مطلوب",
+        "phoneRequired": "رقم الهاتف مطلوب",
+        "phoneInvalid": "يجب أن يحتوي الهاتف على أرقام فقط (أضف رمز الدولة، بدون + أو 00)"
+      },
+      "save": "حفظ",
+      "saving": "جاري الحفظ...",
+      "saveSuccess": "تم حفظ السجل بنجاح",
+      "saveSuccessDescription": "تم تحديث السجل التالف.",
+      "saveError": "فشل في حفظ السجل",
+      "saveErrorDescription": "حدث خطأ أثناء حفظ السجل. يرجى المحاولة مرة أخرى.",
+      "allResolved": "تم حل جميع السجلات",
+      "allResolvedDescription": "تم حل جميع السجلات التالفة بنجاح.",
+      "toasts": {
+        "errorTitle": "خطأ",
+        "errorDescription": "فشل في تحميل السجلات التالفة"
+      },
+      "ignoreCorruptedModal": {
+        "title": "حذف البيانات التالفة",
+        "message": "هل أنت متأكد أنك تريد تجاهل وحذف جميع السجلات التالفة؟ ستستمر الحملة بالسجلات الصالحة فقط.",
+        "confirm": "نعم، احذف البيانات التالفة",
+        "cancel": "لا، إلغاء",
+        "success": "تم حذف البيانات التالفة بنجاح",
+        "successDescription": "تم إزالة السجلات التالفة. ستستمر الحملة بالسجلات الصالحة فقط.",
+        "error": "فشل في حذف البيانات التالفة",
+        "errorDescription": "حدث خطأ أثناء حذف البيانات التالفة. يرجى المحاولة مرة أخرى."
+      },
+      "cancelCampaignModal": {
+        "title": "حذف الحملة",
+        "message": "هل أنت متأكد أنك تريد حذف هذه الحملة؟ لا يمكن التراجع عن هذا الإجراء.",
+        "confirm": "نعم، احذف الحملة",
+        "cancel": "لا، إلغاء",
+        "success": "تم حذف الحملة بنجاح",
+        "successDescription": "تم حذف الحملة بنجاح.",
+        "error": "فشل في حذف الحملة",
+        "errorDescription": "حدث خطأ أثناء حذف الحملة. يرجى المحاولة مرة أخرى."
       }
     },
     "campaignCdrs": {

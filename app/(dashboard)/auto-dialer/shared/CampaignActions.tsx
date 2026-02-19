@@ -6,6 +6,7 @@ import {
   Edit as EditIcon,
   Visibility as EyeIcon,
   Autorenew as HalfCircleSpinner,
+  Warning,
 } from "@mui/icons-material";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -306,6 +307,14 @@ const CampaignActions = ({
                 <DropdownMenuItem>
                   <EditIcon />
                   {t("edit")}
+                </DropdownMenuItem>
+              </Link>
+            )}
+            {campaign.status === "verification-failed" && (
+              <Link href={`/auto-dialer/${campaign.id}/corrupted-records`}>
+                <DropdownMenuItem>
+                  <Warning />
+                  {t("corruptedRecords")}
                 </DropdownMenuItem>
               </Link>
             )}

@@ -1,7 +1,12 @@
 import { objToQueryString } from "@/lib/utils";
 import api from "./api";
 import { objToFormData } from "@/lib/formData";
-import { AutoDialerCampaign, CampaignCdr, CampaignMetrics } from "@/types/autoDialerCampaign";
+import {
+  AutoDialerCampaign,
+  CampaignCdr,
+  CampaignMetrics,
+  CorruptedRow,
+} from "@/types/autoDialerCampaign";
 
 type FetchActiveCampaignsResponse = {
   totalPages: number;
@@ -13,6 +18,12 @@ type FetchCampaignCdrsResponse = {
   totalPages: number;
   totalItems: number;
   callRequests: CampaignCdr[];
+};
+
+type FetchCorruptedRowsResponse = {
+  totalPages: number;
+  totalItems: number;
+  corruptedRows: CorruptedRow[];
 };
 
 export default {
@@ -145,8 +156,43 @@ export default {
     );
     return res.data.data;
   },
-  fetchCampaignMetrics: async (campaignId: string): Promise<CampaignMetrics> => {
+  fetchCampaignMetrics: async (
+    campaignId: string,
+  ): Promise<CampaignMetrics> => {
     const res = await api.get(`/auto-dialer/campaigns/${campaignId}/metrics`);
+    return res.data;
+  },
+  fetchCorruptedRows: async (
+    campaignId: string,
+    filters?: any,
+  ): Promise<FetchCorruptedRowsResponse> => {
+    const queryString = objToQueryString(filters);
+    const res = await api.get(
+      `/auto-dialer/campaigns/${campaignId}/corrupted-rows?${queryString}`,
+    );
+    return res.data;
+  },
+  updateCorruptedRow: async (
+    campaignId: string,
+    rowId: string,
+    data: { name: string; phone: string; information: string },
+  ) => {
+    const res = await api.put(
+      `/auto-dialer/campaigns/${campaignId}/corrupted-rows/${rowId}/fix`,
+      data,
+    );
+    return res.data;
+  },
+  ignoreCorrupted: async (campaignId: string) => {
+    const res = await api.patch(
+      `/auto-dialer/campaigns/${campaignId}/ignore-corrupted`,
+    );
+    return res.data;
+  },
+  cancelCampaign: async (campaignId: string) => {
+    const res = await api.patch(
+      `/auto-dialer/campaigns/${campaignId}/cancel`,
+    );
     return res.data;
   },
 };

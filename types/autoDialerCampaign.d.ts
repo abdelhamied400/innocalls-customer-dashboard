@@ -71,6 +71,17 @@ export type CampaignMetrics = {
   agentDetails: AgentDetail[];
 };
 
+export type CorruptedRow = {
+  id: string;
+  row: {
+    phone: string;
+    name: string;
+    information: string;
+  };
+  status: string;
+  reasons: string[];
+};
+
 export type CampaignCdr = {
   id: string;
   status:
