@@ -35,6 +35,12 @@ import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import Link from "next/link";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { AutoDialerCampaign } from "@/types/autoDialerCampaign";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type CampaignActionsProps = {
   campaign: AutoDialerCampaign;
@@ -161,135 +167,164 @@ const CampaignActions = ({
   };
 
   return (
-    <div className="flex items-center gap-4">
-      {campaign.isDraft &&
-        ["customers-inserted", "corrupted-ignored"].includes(
-          campaign.status,
-        ) && (
+    <TooltipProvider>
+      <div className="flex items-center gap-4">
+        {campaign.isDraft &&
+          ["customers-inserted", "corrupted-ignored"].includes(
+            campaign.status,
+          ) && (
+            <AlertDialog>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="ghost-primary" size="icon" disabled={isStarting}>
+                      <div className="flex items-center">
+                        {isStarting ? (
+                          <HalfCircleSpinner className="animate-spin" />
+                        ) : (
+                          <PlayIcon />
+                        )}
+                      </div>
+                    </Button>
+                  </AlertDialogTrigger>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{t("startModal.title")}</p>
+                </TooltipContent>
+              </Tooltip>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>{t("startModal.title")}</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {t("startModal.message")}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>{t("startModal.cancel")}</AlertDialogCancel>
+                  <AlertDialogAction onClick={onStart}>
+                    {t("startModal.confirm")}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          )}
+
+        {["in-progress", "active"].includes(campaign.status) && (
           <AlertDialog>
-            <AlertDialogTrigger asChild>
-              <Button variant="ghost-primary" size="icon" disabled={isStarting}>
-                <div className="flex items-center">
-                  {isStarting ? (
-                    <HalfCircleSpinner className="animate-spin" />
-                  ) : (
-                    <PlayIcon />
-                  )}
-                </div>
-              </Button>
-            </AlertDialogTrigger>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost-warning" size="icon" disabled={isPausing}>
+                    <div className="flex items-center">
+                      {isPausing ? (
+                        <HalfCircleSpinner className="animate-spin" />
+                      ) : (
+                        <PauseIcon />
+                      )}
+                    </div>
+                  </Button>
+                </AlertDialogTrigger>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{t("pause")}</p>
+              </TooltipContent>
+            </Tooltip>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>{t("startModal.title")}</AlertDialogTitle>
+                <AlertDialogTitle>{t("pauseModal.title")}</AlertDialogTitle>
                 <AlertDialogDescription>
-                  {t("startModal.message")}
+                  {t("pauseModal.message")}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>{t("startModal.cancel")}</AlertDialogCancel>
-                <AlertDialogAction onClick={onStart}>
-                  {t("startModal.confirm")}
+                <AlertDialogCancel>{t("pauseModal.cancel")}</AlertDialogCancel>
+                <AlertDialogAction onClick={onPause}>
+                  {t("pauseModal.confirm")}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
         )}
 
-      {["in-progress", "active"].includes(campaign.status) && (
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="ghost-warning" size="icon" disabled={isPausing}>
-              <div className="flex items-center">
-                {isPausing ? (
-                  <HalfCircleSpinner className="animate-spin" />
-                ) : (
-                  <PauseIcon />
-                )}
-              </div>
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{t("pauseModal.title")}</AlertDialogTitle>
-              <AlertDialogDescription>
-                {t("pauseModal.message")}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>{t("pauseModal.cancel")}</AlertDialogCancel>
-              <AlertDialogAction onClick={onPause}>
-                {t("pauseModal.confirm")}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      )}
+        {campaign.status === "paused" && (
+          <AlertDialog>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost-primary" size="icon" disabled={isResuming}>
+                    <div className="flex items-center">
+                      {isResuming ? (
+                        <HalfCircleSpinner className="animate-spin" />
+                      ) : (
+                        <PlayIcon />
+                      )}
+                    </div>
+                  </Button>
+                </AlertDialogTrigger>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{t("resume")}</p>
+              </TooltipContent>
+            </Tooltip>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>{t("resumeModal.title")}</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {t("resumeModal.message")}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t("resumeModal.cancel")}</AlertDialogCancel>
+                <AlertDialogAction onClick={onResume}>
+                  {t("resumeModal.confirm")}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
 
-      {campaign.status === "paused" && (
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="ghost-primary" size="icon" disabled={isResuming}>
-              <div className="flex items-center">
-                {isResuming ? (
-                  <HalfCircleSpinner className="animate-spin" />
-                ) : (
-                  <PlayIcon />
-                )}
-              </div>
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{t("resumeModal.title")}</AlertDialogTitle>
-              <AlertDialogDescription>
-                {t("resumeModal.message")}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>{t("resumeModal.cancel")}</AlertDialogCancel>
-              <AlertDialogAction onClick={onResume}>
-                {t("resumeModal.confirm")}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      )}
+        {["in-progress", "active", "paused"].includes(campaign.status) && (
+          <AlertDialog>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="ghost-destructive"
+                    size="icon"
+                    disabled={isFinishing}
+                  >
+                    <div className="flex items-center">
+                      {isFinishing ? (
+                        <HalfCircleSpinner className="animate-spin" />
+                      ) : (
+                        <SquareIcon />
+                      )}
+                    </div>
+                  </Button>
+                </AlertDialogTrigger>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{t("finishModal.title")}</p>
+              </TooltipContent>
+            </Tooltip>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>{t("finishModal.title")}</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {t("finishModal.message")}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t("finishModal.cancel")}</AlertDialogCancel>
+                <AlertDialogAction onClick={onFinish}>
+                  {t("finishModal.confirm")}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
 
-      {["in-progress", "active", "paused"].includes(campaign.status) && (
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button
-              variant="ghost-destructive"
-              size="icon"
-              disabled={isFinishing}
-            >
-              <div className="flex items-center">
-                {isFinishing ? (
-                  <HalfCircleSpinner className="animate-spin" />
-                ) : (
-                  <SquareIcon />
-                )}
-              </div>
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{t("finishModal.title")}</AlertDialogTitle>
-              <AlertDialogDescription>
-                {t("finishModal.message")}
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>{t("finishModal.cancel")}</AlertDialogCancel>
-              <AlertDialogAction onClick={onFinish}>
-                {t("finishModal.confirm")}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      )}
-
-      {variant === "table" && (
+        {variant === "table" && (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="unstyled" size="icon">
@@ -331,17 +366,18 @@ const CampaignActions = ({
         </DropdownMenu>
       )}
 
-      {variant === "details" && (
-        <Link href={`/auto-dialer/${campaign.id}/update`}>
-          <Button
-            variant="outline"
-            className="border-2 border-primary-300 text-primary-300"
-          >
-            {t("edit")}
-          </Button>
-        </Link>
-      )}
-    </div>
+        {variant === "details" && (
+          <Link href={`/auto-dialer/${campaign.id}/update`}>
+            <Button
+              variant="outline"
+              className="border-2 border-primary-300 text-primary-300"
+            >
+              {t("edit")}
+            </Button>
+          </Link>
+        )}
+      </div>
+    </TooltipProvider>
   );
 };
 

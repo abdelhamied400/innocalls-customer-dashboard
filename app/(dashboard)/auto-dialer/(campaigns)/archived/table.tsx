@@ -13,8 +13,10 @@ import { useEffect, useRef, useState } from "react";
 import { PaginationState } from "@tanstack/react-table";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const ArchivedCampaignsTable = () => {
+  const t = useTranslations("autoDialer");
   const [filters, setFilters] = useState({});
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -33,16 +35,16 @@ const ArchivedCampaignsTable = () => {
   useEffect(() => {
     if (isError) {
       if (isAxiosError(error)) {
-        toast.error("Error", {
-          description: error.response?.data?.message || "An error occurred",
+        toast.error(t("archivedCampaigns.toasts.error"), {
+          description: error.response?.data?.message || t("archivedCampaigns.toasts.errorDescription"),
         });
         return;
       }
-      toast.error("Error", {
-        description: "An error occurred",
+      toast.error(t("archivedCampaigns.toasts.error"), {
+        description: t("archivedCampaigns.toasts.errorDescription"),
       });
     }
-  }, [isError, error, toast]);
+  }, [isError, error]);
 
   // Track if this is the initial render
   const isInitialRender = useRef(true);
@@ -61,7 +63,7 @@ const ArchivedCampaignsTable = () => {
     <div className="rounded-lg flex-1 flex flex-col overflow-hidden">
       <PaginatedTable
         data={data?.campaigns || []}
-        columns={columns}
+        columns={columns(t)}
         pagination={{
           totalItems: data?.totalItems || 0,
           totalPages: data?.totalPages || 0,

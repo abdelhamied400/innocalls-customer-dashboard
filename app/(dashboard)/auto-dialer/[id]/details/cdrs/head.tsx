@@ -16,6 +16,12 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import autoDialerService from "@/services/auto-dialer.service";
 import { CampaignCdr } from "@/types/autoDialerCampaign";
 import { FilterAltOutlined } from "@mui/icons-material";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -127,11 +133,20 @@ const CampaignCdrsHead = ({ filters, setFilters }: CampaignCdrsHeadProps) => {
         <div className="flex justify-between items-center gap-4 p-3">
           <h3>{t("title")}</h3>
           <div className="flex items-center gap-4 actions">
-            <CollapsibleTrigger asChild>
-              <Toggle pressed={true} className="rounded-full bg-transparent">
-                <FilterAltOutlined />
-              </Toggle>
-            </CollapsibleTrigger>
+            <TooltipProvider>
+              <Tooltip>
+                <CollapsibleTrigger asChild>
+                  <TooltipTrigger asChild>
+                    <Toggle pressed={true} className="rounded-full bg-transparent">
+                      <FilterAltOutlined />
+                    </Toggle>
+                  </TooltipTrigger>
+                </CollapsibleTrigger>
+                <TooltipContent>
+                  <p>{t("tooltips.toggleFilters")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
         <CollapsibleContent>

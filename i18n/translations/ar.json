@@ -3095,6 +3095,128 @@
       "durationTypes": {
         "time-limited": "محدود بالوقت",
         "agent-availability": "توفر الوكيل"
+      },
+      "tooltips": {
+        "toggleFilters": "تبديل الفلاتر"
+      }
+    },
+    "finishedCampaigns": {
+      "title": "الحملات المنتهية",
+      "search": "البحث بالاسم...",
+      "columns": {
+        "creationDate": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "durationType": "نوع المدة",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "statuses": {
+        "completed": "مكتملة",
+        "cancelled": "ملغاة",
+        "failed": "فاشلة",
+        "finished": "منتهية"
+      },
+      "filters": {
+        "creationDate": {
+          "placeholder": "تاريخ الإنشاء",
+          "label": "اختر نطاق تاريخ",
+          "from": {
+            "label": "من",
+            "placeholder": "أدخل تاريخ البداية",
+            "hint": "DD/MM/YYYY"
+          },
+          "to": {
+            "label": "إلى",
+            "placeholder": "أدخل تاريخ النهاية",
+            "hint": "DD/MM/YYYY"
+          }
+        },
+        "durationType": {
+          "placeholder": "نوع المدة",
+          "label": "اختر نوع المدة"
+        },
+        "status": {
+          "placeholder": "الحالة",
+          "label": "اختر حالة الحملة"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "تبديل الفلاتر"
+      },
+      "toasts": {
+        "error": "خطأ",
+        "errorDescription": "حدث خطأ"
+      },
+      "actions": {
+        "download": "تحميل التقرير",
+        "view": "عرض التفاصيل",
+        "archive": "أرشفة",
+        "archiveModal": {
+          "title": "أرشفة الحملة",
+          "message": "هل أنت متأكد أنك تريد أرشفة هذه الحملة؟ لا يمكن التراجع عن هذا الإجراء.",
+          "confirm": "نعم، أرشفة",
+          "cancel": "إلغاء"
+        },
+        "toasts": {
+          "downloadSuccess": "بدأ التحميل",
+          "downloadSuccessDescription": "جاري معالجة تقريرك. ستتلقى بريدًا إلكترونيًا برابط التحميل عند الجاهزية.",
+          "archiveSuccess": "تمت أرشفة الحملة",
+          "archiveSuccessDescription": "تمت أرشفة الحملة بنجاح.",
+          "error": "خطأ",
+          "errorDescription": "حدث خطأ"
+        }
+      }
+    },
+    "archivedCampaigns": {
+      "title": "الحملات المؤرشفة",
+      "search": "البحث بالاسم...",
+      "columns": {
+        "creationDate": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "durationType": "نوع المدة",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "statuses": {
+        "completed": "مكتملة",
+        "cancelled": "ملغاة",
+        "failed": "فاشلة",
+        "finished": "منتهية"
+      },
+      "filters": {
+        "creationDate": {
+          "placeholder": "تاريخ الإنشاء",
+          "label": "اختر نطاق تاريخ",
+          "from": {
+            "label": "من",
+            "placeholder": "أدخل تاريخ البداية",
+            "hint": "DD/MM/YYYY"
+          },
+          "to": {
+            "label": "إلى",
+            "placeholder": "أدخل تاريخ النهاية",
+            "hint": "DD/MM/YYYY"
+          }
+        },
+        "durationType": {
+          "placeholder": "نوع المدة",
+          "label": "اختر نوع المدة"
+        },
+        "status": {
+          "placeholder": "الحالة",
+          "label": "اختر حالة الحملة"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "تبديل الفلاتر"
+      },
+      "toasts": {
+        "error": "خطأ",
+        "errorDescription": "حدث خطأ"
+      },
+      "actions": {
+        "download": "تحميل التقرير",
+        "view": "عرض التفاصيل"
       }
     },
     "createCampaign": {
@@ -3623,6 +3745,10 @@
         "Completed": "مكتمل",
         "Timeout": "انتهت المهلة",
         "Abandoned": "تم التخلي"
+      },
+      "listen": "استماع للتسجيل",
+      "tooltips": {
+        "toggleFilters": "تبديل الفلاتر"
       }
     }
   },
@@ -3660,8 +3786,11 @@
       "agent": "الوكيل",
       "actions": "الإجراءات"
     },
-    "listen": "استماع",
-    "searchPhone": "البحث برقم الهاتف..."
+    "listen": "استماع للتسجيل",
+    "searchPhone": "البحث برقم الهاتف...",
+    "tooltips": {
+      "viewCdrs": "عرض سجلات المكالمات"
+    }
   },
   "webrtc": {
     "contacts": {

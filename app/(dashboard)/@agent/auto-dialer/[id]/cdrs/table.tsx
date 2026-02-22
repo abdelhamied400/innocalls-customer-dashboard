@@ -33,6 +33,7 @@ const AgentCampaignCdrsTable = () => {
         limit: pagination.pageSize,
       }),
     refetchInterval: 30000,
+    gcTime: 0,
   });
 
   const handleFiltersChange = (nextFilters: Record<string, any>) => {

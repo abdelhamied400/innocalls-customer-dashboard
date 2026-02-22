@@ -3056,7 +3056,7 @@
           "errorDescription": "An error occurred while resuming the campaign. Please try again."
         },
         "finishModal": {
-          "title": "إنهاء الحملة",
+          "title": "Finish Campaign",
           "message": "Are you sure you want to finish this campaign?",
           "confirm": "Yes, finish",
           "cancel": "No, cancel",
@@ -3081,6 +3081,128 @@
       "durationTypes": {
         "time-limited": "Time Limited",
         "agent-availability": "Agent Availability"
+      },
+      "tooltips": {
+        "toggleFilters": "Toggle Filters"
+      }
+    },
+    "finishedCampaigns": {
+      "title": "Finished Campaigns",
+      "search": "Search by name...",
+      "columns": {
+        "creationDate": "Creation Date",
+        "name": "Name",
+        "durationType": "Duration Type",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "statuses": {
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "failed": "Failed",
+        "finished": "Finished"
+      },
+      "filters": {
+        "creationDate": {
+          "placeholder": "Creation Date",
+          "label": "Select a date range",
+          "from": {
+            "label": "From",
+            "placeholder": "Enter from date",
+            "hint": "DD/MM/YYYY"
+          },
+          "to": {
+            "label": "To",
+            "placeholder": "Enter to date",
+            "hint": "DD/MM/YYYY"
+          }
+        },
+        "durationType": {
+          "placeholder": "Duration Type",
+          "label": "Select duration type"
+        },
+        "status": {
+          "placeholder": "Status",
+          "label": "Select campaign status"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "Toggle Filters"
+      },
+      "toasts": {
+        "error": "Error",
+        "errorDescription": "An error occurred"
+      },
+      "actions": {
+        "download": "Download Report",
+        "view": "View Details",
+        "archive": "Archive",
+        "archiveModal": {
+          "title": "Archive Campaign",
+          "message": "Are you sure you want to archive this campaign? This action cannot be undone.",
+          "confirm": "Yes, archive",
+          "cancel": "Cancel"
+        },
+        "toasts": {
+          "downloadSuccess": "Download started",
+          "downloadSuccessDescription": "Your report is being processed. You will receive an email with the download link once it's ready.",
+          "archiveSuccess": "Campaign Archived",
+          "archiveSuccessDescription": "The campaign has been successfully archived.",
+          "error": "Error",
+          "errorDescription": "An error occurred"
+        }
+      }
+    },
+    "archivedCampaigns": {
+      "title": "Archived Campaigns",
+      "search": "Search by name...",
+      "columns": {
+        "creationDate": "Creation Date",
+        "name": "Name",
+        "durationType": "Duration Type",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "statuses": {
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "failed": "Failed",
+        "finished": "Finished"
+      },
+      "filters": {
+        "creationDate": {
+          "placeholder": "Creation Date",
+          "label": "Select a date range",
+          "from": {
+            "label": "From",
+            "placeholder": "Enter from date",
+            "hint": "DD/MM/YYYY"
+          },
+          "to": {
+            "label": "To",
+            "placeholder": "Enter to date",
+            "hint": "DD/MM/YYYY"
+          }
+        },
+        "durationType": {
+          "placeholder": "Duration Type",
+          "label": "Select duration type"
+        },
+        "status": {
+          "placeholder": "Status",
+          "label": "Select campaign status"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "Toggle Filters"
+      },
+      "toasts": {
+        "error": "Error",
+        "errorDescription": "An error occurred"
+      },
+      "actions": {
+        "download": "Download Report",
+        "view": "View Details"
       }
     },
     "createCampaign": {
@@ -3609,6 +3731,10 @@
         "Completed": "Completed",
         "Timeout": "Timeout",
         "Abandoned": "Abandoned"
+      },
+      "listen": "Listen to Recording",
+      "tooltips": {
+        "toggleFilters": "Toggle Filters"
       }
     }
   },
@@ -3646,8 +3772,11 @@
       "agent": "Agent",
       "actions": "Actions"
     },
-    "listen": "Listen",
-    "searchPhone": "Search by phone..."
+    "listen": "Listen to Recording",
+    "searchPhone": "Search by phone...",
+    "tooltips": {
+      "viewCdrs": "View Call Detail Records"
+    }
   },
   "webrtc": {
     "contacts": {

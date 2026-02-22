@@ -35,6 +35,7 @@ const AutoDialerCampaignCdrsTable = () => {
         limit: pagination.pageSize,
       }),
     refetchInterval: 30000, // Refetch every 30 seconds
+    gcTime: 0,
   });
 
   useEffect(() => {

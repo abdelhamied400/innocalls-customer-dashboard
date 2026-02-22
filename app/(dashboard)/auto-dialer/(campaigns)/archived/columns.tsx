@@ -16,28 +16,28 @@ export type AutoDialerCampaignCols = {
   status: AutoDialerCampaignActiveStatus;
 };
 
-export const columns: ColumnDef<any, any>[] = [
+export const columns = (t: any): ColumnDef<any, any>[] => [
   {
     accessorKey: "createdAt",
-    header: "Creation Date",
+    header: t("archivedCampaigns.columns.creationDate"),
     cell: CreatedAtCell,
   },
   {
     accessorKey: "name",
-    header: "Name",
+    header: t("archivedCampaigns.columns.name"),
   },
   {
     accessorKey: "durationType",
-    header: "Duration Type",
+    header: t("archivedCampaigns.columns.durationType"),
     cell: DurationTypeCell,
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: t("archivedCampaigns.columns.status"),
     cell: StatusCell,
   },
   {
-    header: "Actions",
+    header: t("archivedCampaigns.columns.actions"),
     cell: ActionsCell,
   },
 ];

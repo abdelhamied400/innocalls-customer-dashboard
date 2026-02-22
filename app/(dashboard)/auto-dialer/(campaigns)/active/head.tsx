@@ -13,6 +13,12 @@ import { format } from "date-fns";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Search, FilterAltOutlined, CalendarToday } from "@mui/icons-material";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { useEffect, useState } from "react";
@@ -99,11 +105,20 @@ const AutoDialerActiveHead = ({
                 onChange={handleSearchChange}
               />
             </Field>
-            <CollapsibleTrigger asChild>
-              <Toggle pressed={true} className="rounded-full bg-transparent">
-                <FilterAltOutlined />
-              </Toggle>
-            </CollapsibleTrigger>
+            <TooltipProvider>
+              <Tooltip>
+                <CollapsibleTrigger asChild>
+                  <TooltipTrigger asChild>
+                    <Toggle pressed={true} className="rounded-full bg-transparent">
+                      <FilterAltOutlined />
+                    </Toggle>
+                  </TooltipTrigger>
+                </CollapsibleTrigger>
+                <TooltipContent>
+                  <p>{t("activeCampaigns.tooltips.toggleFilters")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <Link className={cn(buttonVariants())} href="/auto-dialer/create">
               {t("activeCampaigns.create")}
             </Link>

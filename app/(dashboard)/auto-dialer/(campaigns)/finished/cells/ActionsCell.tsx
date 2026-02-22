@@ -25,9 +25,11 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type ActionsCellProps = Cell<AutoDialerCampaignCols>;
 const ActionsCell = ({ row }: ActionsCellProps) => {
+  const t = useTranslations("autoDialer.finishedCampaigns.actions");
   const [isDownloading, setIsDownloading] = useState(false);
   const [isArchiving, setIsArchiving] = useState(false);
   const queryClient = useQueryClient();
@@ -36,18 +38,18 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
     try {
       setIsDownloading(true);
       await autoDialerService.downloadReport(row.original.id);
-      toast.success("Download started", {
-        description: "Your report is being Processed. You will receive an email with the download link once it's ready.",
+      toast.success(t("toasts.downloadSuccess"), {
+        description: t("toasts.downloadSuccessDescription"),
       });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast.error("Error", {
-          description: error.response?.data?.message || "An error occurred",
+        toast.error(t("toasts.error"), {
+          description: error.response?.data?.message || t("toasts.errorDescription"),
         });
         return;
       }
-      toast.error("Error", {
-        description: "An error occurred while downloading the report.",
+      toast.error(t("toasts.error"), {
+        description: t("toasts.errorDescription"),
       });
     } finally {
       setIsDownloading(false);
@@ -64,18 +66,18 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       await queryClient.invalidateQueries({
         queryKey: ["auto-dialer-archived-campaigns"],
       });
-      toast.success("Campaign Archived", {
-        description: "The campaign has been successfully archived.",
+      toast.success(t("toasts.archiveSuccess"), {
+        description: t("toasts.archiveSuccessDescription"),
       });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast.error("Error", {
-          description: error.response?.data?.message || "An error occurred",
+        toast.error(t("toasts.error"), {
+          description: error.response?.data?.message || t("toasts.errorDescription"),
         });
         return;
       }
-      toast.error("Error", {
-        description: "An error occurred while archiving the campaign.",
+      toast.error(t("toasts.error"), {
+        description: t("toasts.errorDescription"),
       });
     } finally {
       setIsArchiving(false);
@@ -83,8 +85,8 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
   };
 
   return (
-    <div className="flex items-center gap-4">
-      <TooltipProvider>
+    <TooltipProvider>
+      <div className="flex items-center gap-4">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -98,22 +100,27 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Download &quot;{row.original.name}&quot; campaign results report</p>
+            <p>{t("download")}</p>
           </TooltipContent>
         </Tooltip>
-      </TooltipProvider>
 
-      <Link href={`/auto-dialer/campaigns/${row.original.id}/edit`}>
-        <Button variant="ghost-primary" size="icon">
-          <EyeIcon />
-        </Button>
-      </Link>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link href={`/auto-dialer/${row.original.id}/details`}>
+              <Button variant="ghost-primary" size="icon">
+                <EyeIcon />
+              </Button>
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{t("view")}</p>
+          </TooltipContent>
+        </Tooltip>
 
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
+        <AlertDialog>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <AlertDialogTrigger asChild>
                 <Button
                   variant="ghost"
                   size="icon"
@@ -122,29 +129,29 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
                 >
                   <Archive />
                 </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Archive &quot;{row.original.name}&quot; campaign</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will archive the campaign.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={archiveCampaign}>
-              Continue
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </div>
+              </AlertDialogTrigger>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t("archive")}</p>
+            </TooltipContent>
+          </Tooltip>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{t("archiveModal.title")}</AlertDialogTitle>
+              <AlertDialogDescription>
+                {t("archiveModal.message")}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{t("archiveModal.cancel")}</AlertDialogCancel>
+              <AlertDialogAction onClick={archiveCampaign}>
+                {t("archiveModal.confirm")}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
+    </TooltipProvider>
   );
 };
 

@@ -10,24 +10,41 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import StreamingSoundPlayer from "@/components/StreamingSoundPlayer";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type ActionsCellProps = Cell<CampaignCdrsCols, ReactNode>;
 const ActionsCell = ({ row }: ActionsCellProps) => {
   const cdr = row.original;
+  const t = useTranslations("autoDialer.campaignCdrs");
   if (!cdr.recordingLink) return null;
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button size="icon" variant="ghost-success">
-          <PlayCircle />
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogTitle>{cdr.phone}</DialogTitle>
-        <StreamingSoundPlayer label={cdr.name} url={cdr.recordingLink} />
-      </DialogContent>
-    </Dialog>
+    <TooltipProvider>
+      <Dialog>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DialogTrigger asChild>
+              <Button size="icon" variant="ghost-success">
+                <PlayCircle />
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{t("listen")}</p>
+          </TooltipContent>
+        </Tooltip>
+        <DialogContent>
+          <DialogTitle>{cdr.phone}</DialogTitle>
+          <StreamingSoundPlayer label={cdr.name} url={cdr.recordingLink} />
+        </DialogContent>
+      </Dialog>
+    </TooltipProvider>
   );
 };
 

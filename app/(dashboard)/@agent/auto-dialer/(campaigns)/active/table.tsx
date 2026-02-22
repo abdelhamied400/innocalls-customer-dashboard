@@ -28,6 +28,7 @@ const ActiveCampaignsTable = () => {
         limit: pagination.pageSize,
       }),
     refetchInterval: 30000,
+    gcTime: 0,
   });
 
   return (

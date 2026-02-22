@@ -11,6 +11,12 @@ import {
 } from "@/components/ui/dialog";
 import StreamingSoundPlayer from "@/components/StreamingSoundPlayer";
 import { useTranslations } from "@/providers/TranslationProvider";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type ActionsCellProps = Cell<AgentCampaignCdrCols, ReactNode>;
 const ActionsCell = ({ row }: ActionsCellProps) => {
@@ -20,17 +26,26 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
   if (!cdr.recordingLink) return null;
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button size="icon" variant="ghost-success">
-          <PlayCircle />
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogTitle>{t("listen")}</DialogTitle>
-        <StreamingSoundPlayer label={cdr.name} url={cdr.recordingLink} />
-      </DialogContent>
-    </Dialog>
+    <TooltipProvider>
+      <Dialog>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <DialogTrigger asChild>
+              <Button size="icon" variant="ghost-success">
+                <PlayCircle />
+              </Button>
+            </DialogTrigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>{t("listen")}</p>
+          </TooltipContent>
+        </Tooltip>
+        <DialogContent>
+          <DialogTitle>{t("listen")}</DialogTitle>
+          <StreamingSoundPlayer label={cdr.name} url={cdr.recordingLink} />
+        </DialogContent>
+      </Dialog>
+    </TooltipProvider>
   );
 };
 
