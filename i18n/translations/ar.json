@@ -3495,7 +3495,8 @@
         "tabs": {
           "waitingCalls": "المكالمات المنتظرة",
           "inProgressCalls": "المكالمات الجارية",
-          "agentDetails": "تفاصيل الوكلاء"
+          "agentDetails": "تفاصيل الوكلاء",
+          "initiatedCalls": "المكالمات المبدوءة"
         },
         "columns": {
           "waitTime": "وقت الانتظار",
@@ -3504,7 +3505,10 @@
           "agentId": "معرّف الوكيل",
           "actions": "الإجراءات",
           "status": "الحالة",
-          "currentChannels": "القنوات الحالية"
+          "currentChannels": "القنوات الحالية",
+          "phone": "الهاتف",
+          "customerName": "اسم العميل",
+          "currentTrial": "المحاولة الحالية"
         }
       }
     },
@@ -3621,6 +3625,43 @@
         "Abandoned": "تم التخلي"
       }
     }
+  },
+  "autoDialerAgent": {
+    "tabs": {
+      "active": "الحملات النشطة",
+      "finished": "الحملات المنتهية"
+    },
+    "columns": {
+      "name": "الاسم",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "statuses": {
+      "active": "نشط",
+      "paused": "متوقف مؤقتاً",
+      "in-progress": "قيد التنفيذ",
+      "created": "تم الإنشاء",
+      "finished": "منتهي",
+      "started": "بدأ"
+    },
+    "actions": {
+      "cdrs": "سجلات المكالمات"
+    },
+    "cdrsTitle": "سجلات مكالمات الحملة",
+    "cdrColumns": {
+      "phone": "الهاتف",
+      "name": "الاسم",
+      "status": "الحالة",
+      "customerConnectedAt": "وقت اتصال العميل",
+      "waitingTime": "وقت الانتظار",
+      "talkTime": "وقت التحدث",
+      "duration": "المدة",
+      "agentConnectedAt": "وقت اتصال الوكيل",
+      "agent": "الوكيل",
+      "actions": "الإجراءات"
+    },
+    "listen": "استماع",
+    "searchPhone": "البحث برقم الهاتف..."
   },
   "webrtc": {
     "contacts": {

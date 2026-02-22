@@ -6,6 +6,7 @@ import {
   CampaignCdr,
   CampaignMetrics,
   CorruptedRow,
+  InitiatedCall,
   UncompletedRequest,
 } from "@/types/autoDialerCampaign";
 
@@ -209,6 +210,14 @@ export default {
       `/auto-dialer/campaigns/${campaignId}/uncompleted-requests?${queryString}`,
     );
     return res.data.data;
+  },
+  fetchCurrentInitiatedCalls: async (
+    campaignId: string,
+  ): Promise<InitiatedCall[]> => {
+    const res = await api.get(
+      `/auto-dialer/campaigns/${campaignId}/current-initiated-calls`,
+    );
+    return res.data.data.calls;
   },
   exportUncompletedRequests: async (campaignId: string) => {
     const res = await api.get(

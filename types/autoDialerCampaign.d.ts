@@ -55,6 +55,13 @@ export type AgentDetail = {
   currentChannels: string[];
 };
 
+export type InitiatedCall = {
+  id: string;
+  phone: string;
+  name: string;
+  currentTrial: number;
+};
+
 export type CampaignMetrics = {
   totalAgents: number;
   onlineAgents: number;

@@ -2,6 +2,7 @@ import {
   WaitingCall,
   InProgressCall,
   AgentDetail,
+  InitiatedCall,
 } from "@/types/autoDialerCampaign";
 import { ColumnDef, RowData } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
@@ -77,6 +78,23 @@ export const inProgressCallsColumns = (t: any): ColumnDef<InProgressCall>[] => [
         </Tooltip>
       );
     },
+  },
+];
+
+export const initiatedCallsColumns = (
+  t: any,
+): ColumnDef<InitiatedCall>[] => [
+  {
+    accessorKey: "phone",
+    header: t("metrics.columns.phone"),
+  },
+  {
+    accessorKey: "name",
+    header: t("metrics.columns.customerName"),
+  },
+  {
+    accessorKey: "currentTrial",
+    header: t("metrics.columns.currentTrial"),
   },
 ];
 

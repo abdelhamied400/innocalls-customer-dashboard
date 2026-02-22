@@ -2,6 +2,7 @@
 import Breadcrumbs, { BreadcrumbItem } from "@/components/Breadcrumbs";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useTranslations } from "@/providers/TranslationProvider";
+import autoDialerAgentService from "@/services/auto-dialer-agent.service";
 import autoDialerService from "@/services/auto-dialer.service";
 import { ArrowBackIos } from "@mui/icons-material";
 import Link from "next/link";
@@ -36,7 +37,7 @@ const AutodialerNavbarTitle = ({ params }: AutodialerNavbarTitleProps) => {
 
   const { data: campaign } = useLocalizedQuery({
     queryKey: ["auto-dialer-campaign", id],
-    queryFn: () => autoDialerService.getCampaign(id as string),
+    queryFn: () => autoDialerAgentService.getCampaign(id as string),
   });
 
   const breadcrumbItems: BreadcrumbItem[] = [

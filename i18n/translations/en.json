@@ -3481,7 +3481,8 @@
         "tabs": {
           "waitingCalls": "Waiting Calls",
           "inProgressCalls": "In Progress Calls",
-          "agentDetails": "Agent Details"
+          "agentDetails": "Agent Details",
+          "initiatedCalls": "Initiated Calls"
         },
         "columns": {
           "waitTime": "Wait Time",
@@ -3490,7 +3491,10 @@
           "agentId": "Agent ID",
           "actions": "Actions",
           "status": "Status",
-          "currentChannels": "Current Channels"
+          "currentChannels": "Current Channels",
+          "phone": "Phone",
+          "customerName": "Customer Name",
+          "currentTrial": "Current Trial"
         }
       }
     },
@@ -3607,6 +3611,43 @@
         "Abandoned": "Abandoned"
       }
     }
+  },
+  "autoDialerAgent": {
+    "tabs": {
+      "active": "Active Campaigns",
+      "finished": "Finished Campaigns"
+    },
+    "columns": {
+      "name": "Name",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "statuses": {
+      "active": "Active",
+      "paused": "Paused",
+      "in-progress": "In Progress",
+      "created": "Created",
+      "finished": "Finished",
+      "started": "Started"
+    },
+    "actions": {
+      "cdrs": "CDRs"
+    },
+    "cdrsTitle": "Campaign CDRs",
+    "cdrColumns": {
+      "phone": "Phone",
+      "name": "Name",
+      "status": "Status",
+      "customerConnectedAt": "Customer Connected At",
+      "waitingTime": "Waiting Time",
+      "talkTime": "Talk Time",
+      "duration": "Duration",
+      "agentConnectedAt": "Agent Connected At",
+      "agent": "Agent",
+      "actions": "Actions"
+    },
+    "listen": "Listen",
+    "searchPhone": "Search by phone..."
   },
   "webrtc": {
     "contacts": {

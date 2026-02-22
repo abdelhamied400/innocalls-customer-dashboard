@@ -23,6 +23,7 @@ import {
   waitingCallsColumns,
   inProgressCallsColumns,
   agentDetailsColumns,
+  initiatedCallsColumns,
 } from "./columns";
 import StatsMiniCard from "@/components/StatsMiniCard";
 import useAppStore from "@/store/app.slice";
@@ -61,6 +62,7 @@ const AutoDialerCampaignMetrics = () => {
   const { data: campaign, isLoading: isCampaignLoading } = useLocalizedQuery({
     queryKey: ["auto-dialer-campaign", id],
     queryFn: () => autoDialerService.getCampaign(id as string),
+    refetchInterval: 15000,
   });
 
   const isActiveCampaign = campaign?.status === "active";
@@ -71,6 +73,14 @@ const AutoDialerCampaignMetrics = () => {
     enabled: isActiveCampaign,
     refetchInterval: isActiveCampaign ? 15000 : false,
   });
+
+  const { data: initiatedCalls, isLoading: isInitiatedCallsLoading } =
+    useLocalizedQuery({
+      queryKey: ["auto-dialer-campaign-initiated-calls", id],
+      queryFn: () => autoDialerService.fetchCurrentInitiatedCalls(id),
+      enabled: isActiveCampaign,
+      refetchInterval: isActiveCampaign ? 15000 : false,
+    });
 
   const metrics = data as CampaignMetrics | undefined;
   const [inProgressSearch, setInProgressSearch] = useState("");
@@ -358,6 +368,9 @@ const AutoDialerCampaignMetrics = () => {
           <TabsTrigger value="agentDetails">
             {t("metrics.tabs.agentDetails")}
           </TabsTrigger>
+          <TabsTrigger value="initiatedCalls">
+            {t("metrics.tabs.initiatedCalls")}
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="waitingCalls">
@@ -458,6 +471,24 @@ const AutoDialerCampaignMetrics = () => {
             <DataTable>
               <DataTableHeader />
               {isLoading ? <DataTableSkeleton /> : <DataTableBody />}
+            </DataTable>
+          </DataTableProvider>
+        </TabsContent>
+
+        <TabsContent value="initiatedCalls">
+          <DataTableProvider
+            data={initiatedCalls ?? []}
+            columns={initiatedCallsColumns(t)}
+            isLoading={isInitiatedCallsLoading}
+            noResultsMessage={t("metrics.noData")}
+          >
+            <DataTable>
+              <DataTableHeader />
+              {isInitiatedCallsLoading ? (
+                <DataTableSkeleton />
+              ) : (
+                <DataTableBody />
+              )}
             </DataTable>
           </DataTableProvider>
         </TabsContent>
