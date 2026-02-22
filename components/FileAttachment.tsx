@@ -2,11 +2,17 @@
 import { AttachFile, Download } from "@mui/icons-material";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
 
 type FileAttachmentProps = {
   fileName: string;
   fileType: string;
-  onDownload: () => void;
+  onDownload?: () => void;
   className?: string;
 };
 
@@ -23,14 +29,26 @@ const FileAttachment = ({
         className,
       )}
     >
-      <div className="flex items-center flex-warp gap-2">
+      <div className="flex items-center gap-2 min-w-0 flex-1">
         <AttachFile />
-        <p className="font-bold">{fileName}</p>
-        <p className="">({fileType})</p>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <p className="truncate min-w-0">
+                <span className="font-bold">{fileName}</span> ({fileType})
+              </p>
+            </TooltipTrigger>
+            <TooltipContent>
+              {fileName} ({fileType})
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
-      <Button variant="unstyled" size="icon" onClick={onDownload}>
-        <Download />
-      </Button>
+      {onDownload && (
+        <Button variant="unstyled" size="icon" onClick={onDownload}>
+          <Download />
+        </Button>
+      )}
     </div>
   );
 };

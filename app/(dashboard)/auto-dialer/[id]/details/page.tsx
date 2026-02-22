@@ -14,6 +14,8 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import autoDialerService from "@/services/auto-dialer.service";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
+import queryExtensions from "@/queries/queryExtensions";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 
 const AutoDialerCampaignDetails = () => {
   const t = useTranslations("autoDialer.campaignDetails");
@@ -22,6 +24,7 @@ const AutoDialerCampaignDetails = () => {
     queryKey: ["auto-dialer-campaign", id],
     queryFn: () => autoDialerService.getCampaign(id as string),
   });
+  const { data: extensions } = useLocalizedQuery(queryExtensions({}));
 
   if (isLoading) {
     return <div>{t("loading")}</div>;
@@ -80,7 +83,7 @@ const AutoDialerCampaignDetails = () => {
       <div className="campaign-scheduling flex flex-col gap-2">
         <h3>{t("sections.campaignScheduling")}</h3>
         <div className="border rounded-lg p-4 flex flex-col gap-4">
-          <div className={cn("flex gap-4 divide-x")}>
+          <div className={cn("flex flex-col lg:flex-row gap-4 divide-x")}>
             <Property
               className="flex-1"
               label={t("fields.durationType")}
@@ -127,23 +130,25 @@ const AutoDialerCampaignDetails = () => {
           <h3>{t("sections.customersList")}</h3>
         </div>
         <div className="p-4 flex flex-col gap-4">
-          <FileAttachment
-            fileName={campaign.fileName}
-            fileType={t("fileTypes.csv")}
-            onDownload={() => {}}
-          />
+          {campaign.fileName ? (
+            <FileAttachment
+              fileName={campaign.fileName}
+              fileType={t("fileTypes.csv")}
+            />
+          ) : (
+            <p>{t("noFileAttached")}</p>
+          )}
         </div>
       </div>
       <div className="sound flex flex-col gap-2 border rounded-lg">
         <div className="header p-4 bg-neutral-100 rounded-t-lg">
           <h3>{t("sections.sound")}</h3>
         </div>
-        <div className="flex gap-4 divide-x p-4">
+        <div className="flex flex-col lg:flex-row gap-4 divide-x p-4">
           <div className="pe-3 flex-1">
             <FileAttachment
               fileName={campaign.loopSoundFileName}
               fileType={t("fileTypes.mp3")}
-              onDownload={() => {}}
             />
           </div>
           <Property
@@ -158,7 +163,6 @@ const AutoDialerCampaignDetails = () => {
               className="flex-1"
               fileName={campaign.mainSoundFileName}
               fileType={t("fileTypes.mp3")}
-              onDownload={() => {}}
             />
           )}
         </div>
@@ -191,14 +195,17 @@ const AutoDialerCampaignDetails = () => {
             <h3>{t("sections.attachedAgents")}</h3>
           </div>
           <div className="p-2 flex flex-wrap gap-2">
-            {campaign.assignedAgents.map((agent, index) => (
-              <div
-                key={index}
-                className="badge p-2 rounded-full bg-neutral-100"
-              >
-                {agent}
-              </div>
-            ))}
+            {campaign.assignedAgents.map((agent, index) => {
+              const ext = extensions?.find((e) => e.ext === String(agent));
+              return (
+                <div
+                  key={index}
+                  className="badge p-2 rounded-full bg-neutral-100"
+                >
+                  {ext?.name || agent}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

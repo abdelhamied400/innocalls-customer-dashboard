@@ -84,7 +84,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                     }}
                     value={field.value}
                     onChange={field.onChange}
-                    fakeFiles={[getValues().loopSoundFileName || ""]}
+                    fakeFiles={getValues().loopSoundFileName ? [getValues().loopSoundFileName] : []}
                   >
                     <DropzoneTrigger />
                     <DropzoneFileList />
@@ -132,7 +132,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                       }}
                       value={field.value}
                       onChange={field.onChange}
-                      fakeFiles={[getValues().mainSoundFileName || ""]}
+                      fakeFiles={getValues().mainSoundFileName ? [getValues().mainSoundFileName] : []}
                     >
                       <DropzoneTrigger />
                       <DropzoneFileList />

@@ -95,8 +95,8 @@ export const AutoDialerUpdateStep3Schema = (t: any) =>
       .number()
       .int()
       .min(
-        0,
-        t("steps.scheduling.form.maxWaitTime.validation.min", { min: 0 }),
+        50,
+        t("steps.scheduling.form.maxWaitTime.validation.min", { min: 50 }),
       ),
     fromTime: z.string().optional(),
     toTime: z.string().optional(),

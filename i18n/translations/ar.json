@@ -3534,6 +3534,7 @@
     "campaignDetails": {
       "loading": "جاري التحميل...",
       "notFound": "الحملة غير موجودة",
+      "noFileAttached": "لا يوجد ملف مرفق",
       "campaigns": "الحملات",
       "status": {
         "created": "تم الإنشاء",

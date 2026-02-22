@@ -3520,6 +3520,7 @@
     "campaignDetails": {
       "loading": "Loading...",
       "notFound": "Campaign not found",
+      "noFileAttached": "No file attached",
       "campaigns": "Campaigns",
       "status": {
         "created": "Created",
