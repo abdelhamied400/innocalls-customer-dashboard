@@ -94,8 +94,8 @@
         "placeholder": "Select a country..."
       },
       "DID": {
-        "label": "DID",
-        "placeholder": "Select a DID..."
+        "label": "Caller ID",
+        "placeholder": "Select a Caller ID..."
       },
       "addCaller": "Add Caller"
     },
@@ -3023,6 +3023,11 @@
         "pause": "Pause",
         "resume": "Resume",
         "cancel": "Cancel",
+        "download": "Download Report",
+        "downloadSuccess": "Download started",
+        "downloadSuccessDescription": "Your report is being processed.",
+        "downloadError": "Error",
+        "downloadErrorDescription": "An error occurred while downloading the report.",
         "corruptedRecords": "Corrupted Records",
         "uncompletedRequests": "Uncompleted Requests",
         "startModal": {
@@ -3350,6 +3355,10 @@
         "customersList": {
           "title": "Customers List"
         }
+      },
+      "toasts": {
+        "error": "Failed to create campaign",
+        "errorDescription": "An error occurred while creating the campaign. Please try again."
       }
     },
     "updateCampaign": {
@@ -3565,7 +3574,7 @@
         "toTime": "To Time",
         "timeZone": "Time Zone",
         "playAnnouncement": "Play Announcement",
-        "callerIds": "Caller IDs",
+        "callerIds": "Caller ID",
         "destination": "Destination"
       },
       "durationTypes": {
@@ -3725,12 +3734,12 @@
         "errorDescription": "An error occurred"
       },
       "statuses": {
-        "User did not answer": "User did not answer",
+        "User did not answer": "User Did Not Answer",
         "Airplane Mode Enabled": "Airplane Mode Enabled",
         "Initiated": "Initiated",
         "Processing": "Processing",
         "Call Failed": "Call Failed",
-        "User Busy/Rejected By User": "User Busy/Rejected By User",
+        "User Busy/Rejected By User": "User Busy / Rejected By User",
         "User Connected": "User Connected",
         "User Unreachable (Out of Network Coverage or Airplane Mode)": "User Unreachable (Out of Network Coverage or Airplane Mode)",
         "Completed": "Completed",

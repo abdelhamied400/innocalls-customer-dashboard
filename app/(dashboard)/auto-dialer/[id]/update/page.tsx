@@ -29,6 +29,7 @@ import {
 import SchedulingForm from "./scheduling-form";
 import CustomersListForm from "./customers-list-form";
 import { toast } from "sonner";
+import { isAxiosError } from "axios";
 import autoDialerService from "@/services/auto-dialer.service";
 import { useQuery } from "@tanstack/react-query";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
@@ -136,15 +137,19 @@ const UpdateAutoDialerCampaignSheet = () => {
           description: t("toasts.successDescription"),
         });
         router.push("/auto-dialer/active");
-      } catch {
+      } catch (error) {
+        if (isAxiosError(error)) {
+          toast.error(t("toasts.error"), {
+            description: error.response?.data?.message || t("toasts.errorDescription"),
+          });
+          return;
+        }
         toast.error(t("toasts.error"), {
           description: t("toasts.errorDescription"),
         });
       }
     },
-    (error) => {
-      console.log(error);
-    },
+    () => {},
   );
 
   return (

@@ -6,19 +6,20 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
 const classNames: Record<string, string> = {
-  "User did not answer": "bg-yellow-200 text-yellow-600 hover:bg-yellow-200",
-  "Airplane Mode Enabled": "bg-red-200 text-red-600 hover:bg-red-200",
-  Initiated: "bg-blue-200 text-blue-600 hover:bg-blue-200",
-  Processing: "bg-cyan-200 text-cyan-600 hover:bg-cyan-200",
-  "Call Failed": "bg-red-200 text-red-600 hover:bg-red-200",
+  Completed: "bg-green-200 text-green-700 hover:bg-green-200",
+  "User Connected": "bg-emerald-200 text-emerald-700 hover:bg-emerald-200",
+  Initiated: "bg-blue-200 text-blue-700 hover:bg-blue-200",
+  Processing: "bg-cyan-200 text-cyan-700 hover:bg-cyan-200",
+  "User did not answer": "bg-amber-200 text-amber-700 hover:bg-amber-200",
   "User Busy/Rejected By User":
-    "bg-yellow-200 text-yellow-600 hover:bg-yellow-200",
-  "User Connected": "bg-green-200 text-green-600 hover:bg-green-200",
+    "bg-orange-200 text-orange-700 hover:bg-orange-200",
+  Timeout: "bg-slate-200 text-slate-700 hover:bg-slate-200",
+  "Call Failed": "bg-red-200 text-red-700 hover:bg-red-200",
+  "Airplane Mode Enabled":
+    "bg-purple-200 text-purple-700 hover:bg-purple-200",
   "User Unreachable (Out of Network Coverage or Airplane Mode)":
-    "bg-red-200 text-red-600 hover:bg-red-200",
-  Completed: "bg-green-200 text-green-600 hover:bg-green-200",
-  Timeout: "bg-yellow-200 text-yellow-600 hover:bg-yellow-200",
-  Abandoned: "bg-red-200 text-red-600 hover:bg-red-200",
+    "bg-pink-200 text-pink-700 hover:bg-pink-200",
+  Abandoned: "bg-rose-200 text-rose-700 hover:bg-rose-200",
 };
 
 type StatusCellProps = Cell<AgentCampaignCdrCols, ReactNode>;
@@ -29,7 +30,7 @@ const StatusCell = ({ cell }: StatusCellProps) => {
     <Badge
       className={cn(
         "border-0",
-        classNames[status] || "bg-gray-200 text-gray-600 hover:bg-gray-200",
+        classNames[status] || "bg-gray-200 text-gray-700 hover:bg-gray-200",
       )}
     >
       <span className="flex items-center gap-2">{t(`statuses.${status}`)}</span>

@@ -32,6 +32,8 @@ import SchedulingForm from "./scheduling-form";
 import withActiveOrganization from "@/containers/withActiveOrganization";
 import autoDialerService from "@/services/auto-dialer.service";
 import { useTranslations } from "@/providers/TranslationProvider";
+import { toast } from "sonner";
+import { isAxiosError } from "axios";
 
 const CreateAutoDialerCampaignSheet = () => {
   const router = useRouter();
@@ -146,12 +148,18 @@ const CreateAutoDialerCampaignSheet = () => {
         const res = await autoDialerService.createCampaign(data);
         router.replace(`/auto-dialer/${res.id}/update?action=continue`);
       } catch (error) {
-        console.log("Error creating campaign scheduling:", error);
+        if (isAxiosError(error)) {
+          toast.error(t("toasts.error"), {
+            description: error.response?.data?.message || t("toasts.errorDescription"),
+          });
+          return;
+        }
+        toast.error(t("toasts.error"), {
+          description: t("toasts.errorDescription"),
+        });
       }
     },
-    (error) => {
-      console.log(error);
-    },
+    () => {},
   );
 
   return (

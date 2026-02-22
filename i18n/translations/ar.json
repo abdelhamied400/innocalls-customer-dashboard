@@ -94,8 +94,8 @@
         "placeholder": "اختر دولة..."
       },
       "DID": {
-        "label": "DID",
-        "placeholder": "اختر DID..."
+        "label": "معرفات المتصل",
+        "placeholder": "اختر معرفات المتصل..."
       },
       "addCaller": "إضافة متصل"
     },
@@ -3037,6 +3037,11 @@
         "pause": "إيقاف مؤقت",
         "resume": "استئناف",
         "cancel": "إلغاء",
+        "download": "تحميل التقرير",
+        "downloadSuccess": "بدأ التحميل",
+        "downloadSuccessDescription": "جاري معالجة تقريرك.",
+        "downloadError": "خطأ",
+        "downloadErrorDescription": "حدث خطأ أثناء تحميل التقرير.",
         "corruptedRecords": "السجلات التالفة",
         "uncompletedRequests": "الطلبات غير المكتملة",
         "startModal": {
@@ -3364,6 +3369,10 @@
         "customersList": {
           "title": "قائمة العملاء"
         }
+      },
+      "toasts": {
+        "error": "فشل إنشاء الحملة",
+        "errorDescription": "حدث خطأ أثناء إنشاء الحملة. يرجى المحاولة مرة أخرى."
       }
     },
     "updateCampaign": {
@@ -3739,17 +3748,17 @@
         "errorDescription": "حدث خطأ"
       },
       "statuses": {
-        "User did not answer": "المستخدم لم يجب",
-        "Airplane Mode Enabled": "وضع الطيران مفعل",
+        "User did not answer": "لم يرد المستخدم",
+        "Airplane Mode Enabled": "تمكين وضع الطيران",
         "Initiated": "تم البدء",
         "Processing": "قيد المعالجة",
         "Call Failed": "فشل الاتصال",
-        "User Busy/Rejected By User": "المستخدم مشغول/رفض المكالمة",
+        "User Busy/Rejected By User": "المستخدم مشغول / تم الرفض من قبل المستخدم",
         "User Connected": "المستخدم متصل",
-        "User Unreachable (Out of Network Coverage or Airplane Mode)": "المستخدم غير متاح (خارج التغطية أو وضع الطيران)",
+        "User Unreachable (Out of Network Coverage or Airplane Mode)": "المستخدم غير متاح (خارج تغطية الشبكة أو وضع الطيران)",
         "Completed": "مكتمل",
         "Timeout": "انتهت المهلة",
-        "Abandoned": "تم التخلي"
+        "Abandoned": "مهجور"
       },
       "listen": "استماع للتسجيل",
       "tooltips": {

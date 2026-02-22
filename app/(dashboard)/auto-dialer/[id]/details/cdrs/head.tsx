@@ -120,7 +120,7 @@ const CampaignCdrsHead = ({ filters, setFilters }: CampaignCdrsHeadProps) => {
   };
 
   const sanitizePhone = (value: string) => {
-    return value.replace(/[^\d+]/g, "").replace(/(?!^)\+/g, "");
+    return value.replace(/[^\d]/g, "");
   };
 
   useEffect(() => {
@@ -239,7 +239,7 @@ const CampaignCdrsHead = ({ filters, setFilters }: CampaignCdrsHeadProps) => {
                 <Input
                   variant="field"
                   placeholder={t("filters.phonePlaceholder")}
-                  inputMode="tel"
+                  inputMode="numeric"
                   value={phone}
                   onChange={(e) => setPhone(sanitizePhone(e.target.value))}
                 />

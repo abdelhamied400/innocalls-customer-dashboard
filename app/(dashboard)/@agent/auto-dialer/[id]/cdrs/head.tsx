@@ -15,7 +15,7 @@ const CdrsHead = ({ filters, setFilters }: CdrsHeadProps) => {
   const { table } = usePaginatedTable();
 
   const sanitizePhone = (value: string) => {
-    return value.replace(/[^\d+]/g, "").replace(/(?!^)\+/g, "");
+    return value.replace(/[^\d]/g, "");
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +35,7 @@ const CdrsHead = ({ filters, setFilters }: CdrsHeadProps) => {
           <Input
             variant="field"
             placeholder={t("searchPhone")}
-            inputMode="tel"
+            inputMode="numeric"
             value={filters.phone || ""}
             onChange={handleSearchChange}
             type="search"

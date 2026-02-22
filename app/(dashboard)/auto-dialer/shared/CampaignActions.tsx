@@ -8,6 +8,7 @@ import {
   Autorenew as HalfCircleSpinner,
   Warning,
   AssignmentLate,
+  Download,
 } from "@mui/icons-material";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -55,6 +56,7 @@ const CampaignActions = ({
   const [isPausing, setIsPausing] = useState(false);
   const [isResuming, setIsResuming] = useState(false);
   const [isFinishing, setIsFinishing] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -163,6 +165,29 @@ const CampaignActions = ({
       });
     } finally {
       setIsFinishing(false);
+    }
+  };
+
+  const onDownload = async () => {
+    try {
+      setIsDownloading(true);
+      await autoDialerService.downloadReport(campaign.id);
+      toast.success(t("downloadSuccess"), {
+        description: t("downloadSuccessDescription"),
+      });
+    } catch (error) {
+      if (isAxiosError(error)) {
+        toast.error(t("downloadError"), {
+          description:
+            error.response?.data?.message || t("downloadErrorDescription"),
+        });
+        return;
+      }
+      toast.error(t("downloadError"), {
+        description: t("downloadErrorDescription"),
+      });
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -322,6 +347,25 @@ const CampaignActions = ({
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+        )}
+
+        {["in-progress", "active", "paused"].includes(campaign.status) && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost-success"
+                size="icon"
+                onClick={onDownload}
+                loading={isDownloading}
+                disabled={isDownloading}
+              >
+                <Download />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t("download")}</p>
+            </TooltipContent>
+          </Tooltip>
         )}
 
         {variant === "table" && (
