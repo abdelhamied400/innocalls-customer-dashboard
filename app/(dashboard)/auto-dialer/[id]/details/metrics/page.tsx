@@ -129,7 +129,7 @@ const AutoDialerCampaignMetrics = () => {
   const isSmallerScreen = isSmall || isMedium || isLarge;
   const shouldShowLegendBelow =
     isSmallerScreen ||
-    (isLaptopScreen && hasExpandedSidebar && hasExpandedWebrtc);
+    (isLaptopScreen && (hasExpandedSidebar || hasExpandedWebrtc));
 
   const filteredInProgressCalls = useMemo(() => {
     const rows = metrics?.inProgressCalls ?? [];

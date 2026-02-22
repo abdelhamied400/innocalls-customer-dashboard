@@ -3740,6 +3740,10 @@
       "listen": "Listen to Recording",
       "tooltips": {
         "toggleFilters": "Toggle Filters"
+      },
+      "notAvailable": {
+        "title": "CDRs",
+        "description": "CDRs are only available for active, paused, in-progress, finished, or completed campaigns"
       }
     }
   },
