@@ -3216,7 +3216,9 @@
               "label": "Campaign Name",
               "placeholder": "Enter campaign name",
               "validation": {
-                "required": "Campaign name is required"
+                "required": "Campaign name is required",
+                "min": "Campaign name must be at least {min} characters",
+                "max": "Campaign name must be at most {max} characters"
               }
             },
             "waitingCustomerCount": {
@@ -3363,7 +3365,9 @@
               "label": "Campaign Name",
               "placeholder": "Enter campaign name",
               "validation": {
-                "required": "Campaign name is required"
+                "required": "Campaign name is required",
+                "min": "Campaign name must be at least {min} characters",
+                "max": "Campaign name must be at most {max} characters"
               }
             },
             "waitingCustomerCount": {

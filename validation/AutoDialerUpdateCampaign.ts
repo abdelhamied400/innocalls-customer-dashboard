@@ -6,7 +6,8 @@ export const AutoDialerUpdateStep1Schema = (t: any) =>
     name: z
       .string()
       .trim()
-      .min(1, t("steps.details.form.campaignName.validation.required")),
+      .min(2, t("steps.details.form.campaignName.validation.min", { min: 2 }))
+      .max(250, t("steps.details.form.campaignName.validation.max", { max: 250 })),
     waitingCustomerCount: z
       .number()
       .int()
