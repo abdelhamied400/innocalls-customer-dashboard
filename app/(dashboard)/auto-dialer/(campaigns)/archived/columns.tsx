@@ -4,6 +4,7 @@ import ActionsCell from "./cells/ActionsCell";
 import CreatedAtCell from "./cells/CreatedAtCell";
 import DurationTypeCell from "./cells/DurationTypeCell";
 import { AutoDialerCampaignActiveStatus } from "@/constants/auto-dialer";
+import SortingHead from "@/components/SortingHead";
 
 export type AutoDialerCampaignCols = {
   agentCanLogoutAndRejoin: boolean;
@@ -19,12 +20,20 @@ export type AutoDialerCampaignCols = {
 export const columns = (t: any): ColumnDef<any, any>[] => [
   {
     accessorKey: "createdAt",
-    header: t("archivedCampaigns.columns.creationDate"),
+    header: ({ column }) => (
+      <SortingHead column={column}>
+        {t("archivedCampaigns.columns.creationDate")}
+      </SortingHead>
+    ),
     cell: CreatedAtCell,
   },
   {
     accessorKey: "name",
-    header: t("archivedCampaigns.columns.name"),
+    header: ({ column }) => (
+      <SortingHead column={column}>
+        {t("archivedCampaigns.columns.name")}
+      </SortingHead>
+    ),
   },
   {
     accessorKey: "durationType",

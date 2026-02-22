@@ -10,7 +10,7 @@ import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
 import { useEffect, useState } from "react";
-import { PaginationState } from "@tanstack/react-table";
+import { PaginationState, SortingState } from "@tanstack/react-table";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { useTranslations } from "@/providers/TranslationProvider";
@@ -18,23 +18,30 @@ import { useTranslations } from "@/providers/TranslationProvider";
 const ActiveCampaignsTable = () => {
   const t = useTranslations("autoDialer");
   const [filters, setFilters] = useState({});
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const sortParams = sorting.length > 0
+    ? { sortBy: sorting[0].id, sortOrder: sorting[0].desc ? "desc" : "asc" }
+    : {};
+
   const { data, isLoading, isError, error } = useLocalizedQuery<{
     totalPages: number;
     totalItems: number;
     campaigns: AutoDialerCampaignCols[];
   }>({
-    queryKey: ["auto-dialer-active-campaigns", filters, pagination],
+    queryKey: ["auto-dialer-active-campaigns", filters, pagination, sorting],
     queryFn: async () =>
       await AutoDialerService.fetchActiveCampaigns({
         ...filters,
+        ...sortParams,
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
       }),
-    refetchInterval: 30000, // Refetch every 30 seconds
+    refetchInterval: 30000,
     gcTime: 0,
   });
 
@@ -68,6 +75,7 @@ const ActiveCampaignsTable = () => {
         }}
         paginationState={pagination}
         onPaginationChange={setPagination}
+        onSortingChange={setSorting}
       >
         <AutoDialerActiveHead
           filters={filters}

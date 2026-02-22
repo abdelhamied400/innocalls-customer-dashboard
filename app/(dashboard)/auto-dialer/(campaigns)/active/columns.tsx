@@ -3,18 +3,27 @@ import ActionsCell from "./cells/ActionsCell";
 import CreatedAtCell from "./cells/CreatedAtCell";
 import DurationTypeCell from "./cells/DurationTypeCell";
 import { AutoDialerCampaign } from "@/types/autoDialerCampaign";
+import SortingHead from "@/components/SortingHead";
 
 export type AutoDialerCampaignCols = AutoDialerCampaign;
 
 export const columns = (t: any) => [
   {
     accessorKey: "createdAt",
-    header: t("activeCampaigns.columns.creationDate"),
+    header: ({ column }: any) => (
+      <SortingHead column={column}>
+        {t("activeCampaigns.columns.creationDate")}
+      </SortingHead>
+    ),
     cell: CreatedAtCell,
   },
   {
     accessorKey: "name",
-    header: t("activeCampaigns.columns.name"),
+    header: ({ column }: any) => (
+      <SortingHead column={column}>
+        {t("activeCampaigns.columns.name")}
+      </SortingHead>
+    ),
   },
   {
     accessorKey: "durationType",

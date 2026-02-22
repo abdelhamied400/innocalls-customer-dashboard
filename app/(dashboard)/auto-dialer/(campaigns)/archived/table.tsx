@@ -10,7 +10,7 @@ import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
 import { useEffect, useRef, useState } from "react";
-import { PaginationState } from "@tanstack/react-table";
+import { PaginationState, SortingState } from "@tanstack/react-table";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { useTranslations } from "@/providers/TranslationProvider";
@@ -18,15 +18,22 @@ import { useTranslations } from "@/providers/TranslationProvider";
 const ArchivedCampaignsTable = () => {
   const t = useTranslations("autoDialer");
   const [filters, setFilters] = useState({});
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const sortParams = sorting.length > 0
+    ? { sortBy: sorting[0].id, sortOrder: sorting[0].desc ? "desc" : "asc" }
+    : {};
+
   const { data, isLoading, isError, error } = useLocalizedQuery({
-    queryKey: ["auto-dialer-archived-campaigns", filters, pagination],
+    queryKey: ["auto-dialer-archived-campaigns", filters, pagination, sorting],
     queryFn: async () =>
       await AutoDialerService.fetchArchivedCampaigns({
         ...filters,
+        ...sortParams,
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
       }),
@@ -55,9 +62,9 @@ const ArchivedCampaignsTable = () => {
       isInitialRender.current = false;
       return;
     }
-    // Reset to first page when filters change
+    // Reset to first page when filters or sorting change
     setPagination((prev) => ({ ...prev, pageIndex: 0 }));
-  }, [filters]);
+  }, [filters, sorting]);
 
   return (
     <div className="rounded-lg flex-1 flex flex-col overflow-hidden">
@@ -70,6 +77,7 @@ const ArchivedCampaignsTable = () => {
         }}
         paginationState={pagination}
         onPaginationChange={setPagination}
+        onSortingChange={setSorting}
       >
         <AutoDialerArchivedHead filters={filters} setFilters={setFilters} />
         <PaginatedTableContent>
