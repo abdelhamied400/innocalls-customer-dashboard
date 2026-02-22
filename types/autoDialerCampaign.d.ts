@@ -50,8 +50,9 @@ export type InProgressCall = {
 };
 
 export type AgentDetail = {
+  name: string;
   agentId: string;
-  status: string;
+  status: "offline" | "on-break" | "busy" | "available";
   currentChannels: string[];
 };
 

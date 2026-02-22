@@ -171,9 +171,9 @@ const AutoDialerCampaignMetrics = () => {
       if (!keyword) return true;
 
       const searchable = [
+        row.name,
         row.agentId,
         row.status,
-        row.currentChannels?.join(" "),
       ]
         .filter(Boolean)
         .join(" ")

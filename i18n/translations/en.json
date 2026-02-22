@@ -3625,9 +3625,16 @@
           "callerNumber": "Caller Number",
           "callerName": "Caller Name",
           "agentId": "Agent ID",
+          "agentName": "Name",
           "actions": "Actions",
           "status": "Status",
           "currentChannels": "Current Channels",
+          "agentStatuses": {
+            "offline": "Offline",
+            "on-break": "On Break",
+            "busy": "Busy",
+            "available": "Available"
+          },
           "phone": "Phone",
           "customerName": "Customer Name",
           "currentTrial": "Current Trial"

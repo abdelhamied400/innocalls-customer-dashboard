@@ -3639,9 +3639,16 @@
           "callerNumber": "رقم المتصل",
           "callerName": "اسم المتصل",
           "agentId": "معرّف الوكيل",
+          "agentName": "الاسم",
           "actions": "الإجراءات",
           "status": "الحالة",
           "currentChannels": "القنوات الحالية",
+          "agentStatuses": {
+            "offline": "غير متصل",
+            "on-break": "في استراحة",
+            "busy": "مشغول",
+            "available": "متاح"
+          },
           "phone": "الهاتف",
           "customerName": "اسم العميل",
           "currentTrial": "المحاولة الحالية"

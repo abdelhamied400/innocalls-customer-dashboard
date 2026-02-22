@@ -8,6 +8,8 @@ import { ColumnDef, RowData } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Tooltip } from "@mui/material";
 import Image from "next/image";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
@@ -98,7 +100,18 @@ export const initiatedCallsColumns = (
   },
 ];
 
+const agentStatusClassNames: Record<AgentDetail["status"], string> = {
+  offline: "bg-gray-200 text-gray-700 hover:bg-gray-200",
+  "on-break": "bg-purple-200 text-purple-700 hover:bg-purple-200",
+  busy: "bg-red-200 text-red-700 hover:bg-red-200",
+  available: "bg-green-200 text-green-700 hover:bg-green-200",
+};
+
 export const agentDetailsColumns = (t: any): ColumnDef<AgentDetail>[] => [
+  {
+    accessorKey: "name",
+    header: t("metrics.columns.agentName"),
+  },
   {
     accessorKey: "agentId",
     header: t("metrics.columns.agentId"),
@@ -106,10 +119,13 @@ export const agentDetailsColumns = (t: any): ColumnDef<AgentDetail>[] => [
   {
     accessorKey: "status",
     header: t("metrics.columns.status"),
-  },
-  {
-    accessorKey: "currentChannels",
-    header: t("metrics.columns.currentChannels"),
-    cell: ({ row }) => row.original.currentChannels?.join(", ") || "-",
+    cell: ({ row }) => {
+      const status = row.original.status;
+      return (
+        <Badge className={cn("border-0", agentStatusClassNames[status])}>
+          {t(`metrics.columns.agentStatuses.${status}`)}
+        </Badge>
+      );
+    },
   },
 ];
