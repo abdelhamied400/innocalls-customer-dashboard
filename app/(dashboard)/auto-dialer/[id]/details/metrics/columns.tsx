@@ -10,6 +10,8 @@ import { Tooltip } from "@mui/material";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import SortingHead from "@/components/SortingHead";
+import { formatDuration } from "@/lib/date";
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
@@ -23,7 +25,10 @@ export const waitingCallsColumns = (t: any): ColumnDef<WaitingCall>[] => [
   {
     accessorKey: "waitTime",
     header: t("metrics.columns.waitTime"),
-    cell: ({ row }) => `${row.original.waitTime}s`,
+    cell: ({ row }) =>
+      `${formatDuration(row.original.waitTime / 1000, {
+        showHours: false,
+      })}`,
   },
   {
     accessorFn: (row) => row.callerInfo?.callerNumber,
@@ -33,7 +38,11 @@ export const waitingCallsColumns = (t: any): ColumnDef<WaitingCall>[] => [
   {
     accessorFn: (row) => row.callerInfo?.callerName,
     id: "callerName",
-    header: t("metrics.columns.callerName"),
+    header: ({ column }) => (
+      <SortingHead column={column}>
+        {t("metrics.columns.callerName")}
+      </SortingHead>
+    ),
   },
 ];
 
@@ -83,9 +92,7 @@ export const inProgressCallsColumns = (t: any): ColumnDef<InProgressCall>[] => [
   },
 ];
 
-export const initiatedCallsColumns = (
-  t: any,
-): ColumnDef<InitiatedCall>[] => [
+export const initiatedCallsColumns = (t: any): ColumnDef<InitiatedCall>[] => [
   {
     accessorKey: "phone",
     header: t("metrics.columns.phone"),

@@ -16,9 +16,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "./pagination";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const DataTablePagination = () => {
   const { table, pages, pagination, manualPagination } = useDataTable();
+  const t = useTranslations("common.pagination");
 
   const startRowIndex =
     table.getState().pagination.pageIndex *
@@ -76,7 +78,7 @@ const DataTablePagination = () => {
       </div>
 
       <div className="flex flex-wrap items-center gap-2 per-page">
-        <label className="text-sm">Rows per page:</label>
+        <label className="text-sm">{t("rowsPerPage")}:</label>
         <Select
           onValueChange={handleperPageChange}
           defaultValue={pagination?.pageSize?.toString()}
@@ -92,7 +94,7 @@ const DataTablePagination = () => {
         </Select>
         <p className="text-sm">
           {startRowIndex}-{endRowIndex}
-          {totalItems ? ` of ${totalItems}` : ""}
+          {totalItems ? ` ${t("of")} ${totalItems}` : ""}
         </p>
       </div>
     </div>

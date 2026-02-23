@@ -410,7 +410,7 @@ const CampaignActions = ({
         </DropdownMenu>
       )}
 
-        {variant === "details" && (
+        {variant === "details" && campaign.isDraft && (
           <Link href={`/auto-dialer/${campaign.id}/update`}>
             <Button
               variant="outline"
