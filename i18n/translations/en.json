@@ -3609,7 +3609,9 @@
         "onlyAvailableForActiveCampaigns": "Metrics are only available for active campaigns",
         "seconds": "seconds",
         "tooltips": {
-          "spy": "Spy"
+          "spy": "Spy",
+          "toggleFilters": "Toggle Filters",
+          "export": "Export to CSV"
         },
         "filters": {
           "all": "All"

@@ -100,11 +100,25 @@ export const initiatedCallsColumns = (
   },
 ];
 
-const agentStatusClassNames: Record<AgentDetail["status"], string> = {
+export const AGENT_STATUSES: AgentDetail["status"][] = [
+  "offline",
+  "on-break",
+  "busy",
+  "available",
+];
+
+export const agentStatusClassNames: Record<AgentDetail["status"], string> = {
   offline: "bg-gray-200 text-gray-700 hover:bg-gray-200",
   "on-break": "bg-purple-200 text-purple-700 hover:bg-purple-200",
   busy: "bg-red-200 text-red-700 hover:bg-red-200",
   available: "bg-green-200 text-green-700 hover:bg-green-200",
+};
+
+export const agentStatusDotColors: Record<AgentDetail["status"], string> = {
+  offline: "bg-gray-400",
+  "on-break": "bg-purple-400",
+  busy: "bg-red-400",
+  available: "bg-green-400",
 };
 
 export const agentDetailsColumns = (t: any): ColumnDef<AgentDetail>[] => [

@@ -6,7 +6,7 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import autoDialerService from "@/services/auto-dialer.service";
 import { CampaignMetrics } from "@/types/autoDialerCampaign";
 import { useParams } from "next/navigation";
-import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
+import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip as RechartsTooltip } from "recharts";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DataTableProvider, {
   DataTable,
@@ -17,13 +17,20 @@ import DataTableProvider, {
 import Field from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useSip } from "@/providers/webrtc/SipProvider";
-import { InsightsOutlined, Search } from "@mui/icons-material";
+import {
+  Download,
+  FilterAltOutlined,
+  InsightsOutlined,
+  Search,
+} from "@mui/icons-material";
 import { toast } from "sonner";
 import {
   waitingCallsColumns,
   inProgressCallsColumns,
   agentDetailsColumns,
   initiatedCallsColumns,
+  AGENT_STATUSES,
+  agentStatusDotColors,
 } from "./columns";
 import StatsMiniCard from "@/components/StatsMiniCard";
 import useAppStore from "@/store/app.slice";
@@ -32,6 +39,20 @@ import Image from "next/image";
 import { FilterBox } from "@/components/FilterBox";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Toggle } from "@/components/ui/toggle";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { exportToCsv } from "@/lib/exportToCsv";
 
 const AGENT_COLORS = {
   online: "#0E4D80",
@@ -151,13 +172,6 @@ const AutoDialerCampaignMetrics = () => {
     });
   }, [metrics?.inProgressCalls, inProgressSearch]);
 
-  const agentStatusOptions = useMemo(() => {
-    const statuses = (metrics?.agentDetails ?? [])
-      .map((row) => row.status)
-      .filter(Boolean);
-    return Array.from(new Set(statuses));
-  }, [metrics?.agentDetails]);
-
   const filteredAgentDetails = useMemo(() => {
     const rows = metrics?.agentDetails ?? [];
     const keyword = agentDetailsSearch.trim().toLowerCase();
@@ -269,7 +283,7 @@ const AutoDialerCampaignMetrics = () => {
                     {totalAgents} {t("metrics.agents")}
                   </tspan>
                 </text>
-                {hasAgentChartData && <Tooltip />}
+                {hasAgentChartData && <RechartsTooltip />}
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -414,54 +428,105 @@ const AutoDialerCampaignMetrics = () => {
         </TabsContent>
 
         <TabsContent value="agentDetails">
-          <div className="flex flex-wrap items-center justify-between gap-2 py-2">
-            <Field preIcon={<Search />}>
-              <Input
-                variant="field"
-                placeholder={searchT("placeholder")}
-                type="search"
-                value={agentDetailsSearch}
-                onChange={(e) => setAgentDetailsSearch(e.target.value)}
-              />
-            </Field>
-
-            <FilterBox
-              triggerLabel={t("metrics.columns.status")}
-              label={t("metrics.columns.status")}
-              numberOfFilters={agentStatusFilter ? 1 : 0}
-              onReset={() => {
-                setAgentStatusDraft("");
-                setAgentStatusFilter("");
-              }}
-              onApply={() => {
-                setAgentStatusFilter(agentStatusDraft);
-                return true;
-              }}
-            >
-              <RadioGroup
-                value={agentStatusDraft || "__all"}
-                onValueChange={(value) => {
-                  setAgentStatusDraft(value === "__all" ? "" : value);
-                }}
-              >
-                <div className="flex items-center gap-2">
-                  <RadioGroupItem value="__all" id="agent-status-all" />
-                  <Label htmlFor="agent-status-all">
-                    {t("metrics.filters.all")}
-                  </Label>
-                </div>
-                {agentStatusOptions.map((status) => (
-                  <div className="flex items-center gap-2" key={status}>
-                    <RadioGroupItem
-                      value={status}
-                      id={`agent-status-${status}`}
+          <Collapsible>
+            <div className="table-head">
+              <div className="flex justify-between items-center gap-4 p-3">
+                <h3>{t("metrics.tabs.agentDetails")}</h3>
+                <div className="flex items-center gap-4 actions">
+                  <Field preIcon={<Search className="text-muted-foreground" />}>
+                    <Input
+                      variant="field"
+                      placeholder={searchT("placeholder")}
+                      type="search"
+                      value={agentDetailsSearch}
+                      onChange={(e) => setAgentDetailsSearch(e.target.value)}
                     />
-                    <Label htmlFor={`agent-status-${status}`}>{status}</Label>
-                  </div>
-                ))}
-              </RadioGroup>
-            </FilterBox>
-          </div>
+                  </Field>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <CollapsibleTrigger asChild>
+                        <TooltipTrigger asChild>
+                          <Toggle pressed={true} className="rounded-full bg-transparent">
+                            <FilterAltOutlined />
+                          </Toggle>
+                        </TooltipTrigger>
+                      </CollapsibleTrigger>
+                      <TooltipContent>
+                        <p>{t("metrics.tooltips.toggleFilters")}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          onClick={() => {
+                            exportToCsv(
+                              filteredAgentDetails,
+                              [
+                                { key: "name", header: t("metrics.columns.agentName") },
+                                { key: "agentId", header: t("metrics.columns.agentId") },
+                                { key: "status", header: t("metrics.columns.status") },
+                              ],
+                              "agent-details",
+                            );
+                          }}
+                        >
+                          <Download />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{t("metrics.tooltips.export")}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+              </div>
+              <CollapsibleContent>
+                <div className="flex flex-wrap items-center gap-2 p-3 pt-0">
+                  <FilterBox
+                    triggerLabel={t("metrics.columns.status")}
+                    label={t("metrics.columns.status")}
+                    numberOfFilters={agentStatusFilter ? 1 : 0}
+                    onReset={() => {
+                      setAgentStatusDraft("");
+                      setAgentStatusFilter("");
+                    }}
+                    onApply={() => {
+                      setAgentStatusFilter(agentStatusDraft);
+                      return true;
+                    }}
+                  >
+                    <RadioGroup
+                      value={agentStatusDraft || "__all"}
+                      onValueChange={(value) => {
+                        setAgentStatusDraft(value === "__all" ? "" : value);
+                      }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <RadioGroupItem value="__all" id="agent-status-all" />
+                        <Label htmlFor="agent-status-all">
+                          {t("metrics.filters.all")}
+                        </Label>
+                      </div>
+                      {AGENT_STATUSES.map((status) => (
+                        <div className="flex items-center gap-2" key={status}>
+                          <RadioGroupItem
+                            value={status}
+                            id={`agent-status-${status}`}
+                          />
+                          <span className={`h-2.5 w-2.5 rounded-full ${agentStatusDotColors[status]}`} />
+                          <Label htmlFor={`agent-status-${status}`}>
+                            {t(`metrics.columns.agentStatuses.${status}`)}
+                          </Label>
+                        </div>
+                      ))}
+                    </RadioGroup>
+                  </FilterBox>
+                </div>
+              </CollapsibleContent>
+            </div>
+          </Collapsible>
           <DataTableProvider
             data={filteredAgentDetails}
             columns={agentDetailsColumns(t)}

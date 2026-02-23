@@ -3623,7 +3623,9 @@
         "onlyAvailableForActiveCampaigns": "المقاييس متاحة فقط للحملات النشطة",
         "seconds": "ثوانٍ",
         "tooltips": {
-          "spy": "تنصّت"
+          "spy": "تنصّت",
+          "toggleFilters": "تبديل الفلاتر",
+          "export": "تصدير إلى CSV"
         },
         "filters": {
           "all": "الكل"
