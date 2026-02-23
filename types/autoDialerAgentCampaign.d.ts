@@ -3,7 +3,7 @@ export type AgentCampaign = {
   name: string;
   status: string;
   createdAt: string;
-  agentStatus: string;
+  agentStatus: "left" | "joined";
   agentCanLogoutAndRejoin: boolean;
 };
 

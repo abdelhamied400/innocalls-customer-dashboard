@@ -3828,10 +3828,13 @@
       "in-progress": "In Progress",
       "created": "Created",
       "finished": "Finished",
-      "started": "Started"
+      "started": "Started",
+      "completed": "Completed"
     },
     "actions": {
-      "cdrs": "CDRs"
+      "cdrs": "CDRs",
+      "leave": "Leave",
+      "join": "Join"
     },
     "cdrsTitle": "Campaign CDRs",
     "cdrColumns": {
@@ -3849,11 +3852,19 @@
     "listen": "Listen to Recording",
     "searchPhone": "Search by phone...",
     "tooltips": {
-      "viewCdrs": "View Call Detail Records"
+      "viewCdrs": "View Call Detail Records",
+      "leaveCampaign": "Leave this campaign",
+      "joinCampaign": "Join this campaign"
     },
     "toasts": {
       "errorTitle": "Error",
-      "errorDescription": "Failed to load campaign CDRs"
+      "errorDescription": "Failed to load campaign CDRs",
+      "leaveSuccess": "Successfully left the campaign",
+      "leaveError": "Leave Failed",
+      "leaveErrorDescription": "Failed to leave the campaign",
+      "joinSuccess": "Successfully joined the campaign",
+      "joinError": "Join Failed",
+      "joinErrorDescription": "Failed to join the campaign"
     }
   },
   "webrtc": {

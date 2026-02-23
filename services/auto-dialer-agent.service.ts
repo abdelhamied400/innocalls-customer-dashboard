@@ -30,6 +30,18 @@ export default {
     const res = await api.get(`/auto-dialer-agent/campaigns?${queryString}`);
     return res.data.data;
   },
+  leaveCampaign: async (campaignId: string) => {
+    const res = await api.patch(
+      `/auto-dialer-agent/campaigns/${campaignId}/leave`,
+    );
+    return res.data;
+  },
+  joinCampaign: async (campaignId: string) => {
+    const res = await api.patch(
+      `/auto-dialer-agent/campaigns/${campaignId}/join`,
+    );
+    return res.data;
+  },
   fetchAgentCampaignCdrs: async (
     campaignId: string,
     filters?: any,

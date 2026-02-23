@@ -3842,10 +3842,13 @@
       "in-progress": "قيد التنفيذ",
       "created": "تم الإنشاء",
       "finished": "منتهي",
-      "started": "بدأ"
+      "started": "بدأ",
+      "completed": "مكتمل"
     },
     "actions": {
-      "cdrs": "سجلات المكالمات"
+      "cdrs": "سجلات المكالمات",
+      "leave": "مغادرة",
+      "join": "انضمام"
     },
     "cdrsTitle": "سجلات مكالمات الحملة",
     "cdrColumns": {
@@ -3863,11 +3866,19 @@
     "listen": "استماع للتسجيل",
     "searchPhone": "البحث برقم الهاتف...",
     "tooltips": {
-      "viewCdrs": "عرض سجلات المكالمات"
+      "viewCdrs": "عرض سجلات المكالمات",
+      "leaveCampaign": "مغادرة هذه الحملة",
+      "joinCampaign": "الانضمام إلى هذه الحملة"
     },
     "toasts": {
       "errorTitle": "خطأ",
-      "errorDescription": "فشل في تحميل سجلات مكالمات الحملة"
+      "errorDescription": "فشل في تحميل سجلات مكالمات الحملة",
+      "leaveSuccess": "تم مغادرة الحملة بنجاح",
+      "leaveError": "فشل المغادرة",
+      "leaveErrorDescription": "فشل في مغادرة الحملة",
+      "joinSuccess": "تم الانضمام إلى الحملة بنجاح",
+      "joinError": "فشل الانضمام",
+      "joinErrorDescription": "فشل في الانضمام إلى الحملة"
     }
   },
   "webrtc": {
