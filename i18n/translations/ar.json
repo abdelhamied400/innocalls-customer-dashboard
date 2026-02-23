@@ -3608,7 +3608,8 @@
       "tabs": {
         "metrics": "مقاييس الحملة",
         "cdrs": "سجلات الحملة",
-        "details": "تفاصيل الحملة"
+        "details": "تفاصيل الحملة",
+        "uncompleted": "غير مكتملة"
       },
       "sections": {
         "campaignDetails": "تفاصيل الحملة",

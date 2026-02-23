@@ -193,7 +193,7 @@ const CampaignActions = ({
 
   return (
     <TooltipProvider>
-      <div className="flex items-center gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         {campaign.isDraft &&
           ["customers-inserted", "corrupted-ignored"].includes(
             campaign.status,
@@ -202,7 +202,11 @@ const CampaignActions = ({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <AlertDialogTrigger asChild>
-                    <Button variant="ghost-primary" size="icon" disabled={isStarting}>
+                    <Button
+                      variant="ghost-primary"
+                      size="icon"
+                      disabled={isStarting}
+                    >
                       <div className="flex items-center">
                         {isStarting ? (
                           <HalfCircleSpinner className="animate-spin" />
@@ -225,7 +229,9 @@ const CampaignActions = ({
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
-                  <AlertDialogCancel>{t("startModal.cancel")}</AlertDialogCancel>
+                  <AlertDialogCancel>
+                    {t("startModal.cancel")}
+                  </AlertDialogCancel>
                   <AlertDialogAction onClick={onStart}>
                     {t("startModal.confirm")}
                   </AlertDialogAction>
@@ -239,7 +245,11 @@ const CampaignActions = ({
             <Tooltip>
               <TooltipTrigger asChild>
                 <AlertDialogTrigger asChild>
-                  <Button variant="ghost-warning" size="icon" disabled={isPausing}>
+                  <Button
+                    variant="ghost-warning"
+                    size="icon"
+                    disabled={isPausing}
+                  >
                     <div className="flex items-center">
                       {isPausing ? (
                         <HalfCircleSpinner className="animate-spin" />
@@ -276,7 +286,11 @@ const CampaignActions = ({
             <Tooltip>
               <TooltipTrigger asChild>
                 <AlertDialogTrigger asChild>
-                  <Button variant="ghost-primary" size="icon" disabled={isResuming}>
+                  <Button
+                    variant="ghost-primary"
+                    size="icon"
+                    disabled={isResuming}
+                  >
                     <div className="flex items-center">
                       {isResuming ? (
                         <HalfCircleSpinner className="animate-spin" />
@@ -369,59 +383,61 @@ const CampaignActions = ({
         )}
 
         {variant === "table" && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="unstyled" size="icon">
-              <EllipsisVerticalIcon />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <Link href={`/auto-dialer/${campaign.id}/details`}>
-              <DropdownMenuItem>
-                <EyeIcon />
-                {t("view")}
-              </DropdownMenuItem>
-            </Link>
-            {campaign.isDraft && (
-              <Link href={`/auto-dialer/${campaign.id}/update`}>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="unstyled" size="icon">
+                <EllipsisVerticalIcon />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <Link href={`/auto-dialer/${campaign.id}/details`}>
                 <DropdownMenuItem>
-                  <EditIcon />
-                  {t("edit")}
+                  <EyeIcon />
+                  {t("view")}
                 </DropdownMenuItem>
               </Link>
-            )}
-            {!campaign.isDraft &&
-              ["in-progress", "active", "paused"].includes(
-                campaign.status,
-              ) && (
-                <Link
-                  href={`/auto-dialer/${campaign.id}/update-main-info`}
-                >
+              {campaign.isDraft && (
+                <Link href={`/auto-dialer/${campaign.id}/update`}>
                   <DropdownMenuItem>
                     <EditIcon />
-                    {t("editMainInfo")}
+                    {t("edit")}
                   </DropdownMenuItem>
                 </Link>
               )}
-            {campaign.status === "verification-failed" && (
-              <Link href={`/auto-dialer/${campaign.id}/corrupted-records`}>
-                <DropdownMenuItem>
-                  <Warning />
-                  {t("corruptedRecords")}
-                </DropdownMenuItem>
-              </Link>
-            )}
-            {["in-progress", "active", "paused"].includes(campaign.status) && (
-              <Link href={`/auto-dialer/${campaign.id}/uncompeleted-requests`}>
-                <DropdownMenuItem>
-                  <AssignmentLate />
-                  {t("uncompletedRequests")}
-                </DropdownMenuItem>
-              </Link>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
+              {!campaign.isDraft &&
+                ["in-progress", "active", "paused"].includes(
+                  campaign.status,
+                ) && (
+                  <Link href={`/auto-dialer/${campaign.id}/update-main-info`}>
+                    <DropdownMenuItem>
+                      <EditIcon />
+                      {t("editMainInfo")}
+                    </DropdownMenuItem>
+                  </Link>
+                )}
+              {campaign.status === "verification-failed" && (
+                <Link href={`/auto-dialer/${campaign.id}/corrupted-records`}>
+                  <DropdownMenuItem>
+                    <Warning />
+                    {t("corruptedRecords")}
+                  </DropdownMenuItem>
+                </Link>
+              )}
+              {["in-progress", "active", "paused"].includes(
+                campaign.status,
+              ) && (
+                <Link
+                  href={`/auto-dialer/${campaign.id}/uncompeleted-requests`}
+                >
+                  <DropdownMenuItem>
+                    <AssignmentLate />
+                    {t("uncompletedRequests")}
+                  </DropdownMenuItem>
+                </Link>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
 
         {variant === "details" && campaign.isDraft && (
           <Link href={`/auto-dialer/${campaign.id}/update`}>

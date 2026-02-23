@@ -36,7 +36,7 @@ const buttonVariants = cva(
         "ghost-warning": "bg-warning-200 text-warning-500",
         "ghost-destructive": "bg-destructive-200 text-destructive-500",
         "ghost-info": "bg-info-100 hover:bg-info-200 text-info-500",
-        tab: "rounded-full bg-gray-100 border border-gray-100 text-gray-950 hover:bg-gray-200 active:bg-gray-200 data-[active=true]:border-primary data-[active=true]:bg-primary-100 data-[active=true]:text-primary",
+        tab: "rounded-full bg-neutral-200 border border-neutral-100 text-neutral-950 hover:bg-neutral-200 active:bg-neutral-200 data-[active=true]:border-primary data-[active=true]:bg-primary-100 data-[active=true]:text-primary",
         unstyled: "",
       },
       size: {

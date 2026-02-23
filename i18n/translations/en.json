@@ -3594,7 +3594,8 @@
       "tabs": {
         "metrics": "Campaign Metrics",
         "cdrs": "Campaign CDRs",
-        "details": "Campaign Details"
+        "details": "Campaign Details",
+        "uncompleted": "Uncompleted"
       },
       "sections": {
         "campaignDetails": "Campaign Details",

@@ -119,6 +119,7 @@ const AutoDialerCampaignMetrics = () => {
   const [waitingCallsSearch, setWaitingCallsSearch] = useState("");
   const [inProgressSearch, setInProgressSearch] = useState("");
   const [agentDetailsSearch, setAgentDetailsSearch] = useState("");
+  const [initiatedCallsSearch, setInitiatedCallsSearch] = useState("");
   const [agentStatusFilter, setAgentStatusFilter] = useState("");
   const [agentStatusDraft, setAgentStatusDraft] = useState("");
 
@@ -223,6 +224,21 @@ const AutoDialerCampaignMetrics = () => {
       return searchable.includes(keyword);
     });
   }, [metrics?.agentDetails, agentDetailsSearch, agentStatusFilter]);
+
+  const filteredInitiatedCalls = useMemo(() => {
+    const rows = initiatedCalls ?? [];
+    const keyword = initiatedCallsSearch.trim().toLowerCase();
+
+    if (!keyword) return rows;
+
+    return rows.filter((row) => {
+      const searchable = [row.phone, row.name]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+      return searchable.includes(keyword);
+    });
+  }, [initiatedCalls, initiatedCallsSearch]);
 
   const onSpy = (ext: string) => {
     setWebrtcOpen(true);
@@ -378,7 +394,7 @@ const AutoDialerCampaignMetrics = () => {
               />
             }
             label={t("metrics.oldestCallWaitTime")}
-            value={`${metrics?.oldestCallWaitTime ?? 0} ${t("metrics.seconds")}`}
+            value={`${Math.round((metrics?.oldestCallWaitTime ?? 0) / 1000)} ${t("metrics.seconds")}`}
             color="primary"
           />
           <StatsMiniCard
@@ -391,7 +407,7 @@ const AutoDialerCampaignMetrics = () => {
               />
             }
             label={t("metrics.averageCurrentWaitTime")}
-            value={`${metrics?.averageCurrentWaitTime ?? 0} ${t("metrics.seconds")}`}
+            value={`${Math.round((metrics?.averageCurrentWaitTime ?? 0) / 1000)} ${t("metrics.seconds")}`}
             color="default"
           />
         </div>
@@ -615,14 +631,60 @@ const AutoDialerCampaignMetrics = () => {
             <div className="table-head">
               <div className="flex justify-between items-center gap-4 p-3">
                 <h3>{t("metrics.tabs.initiatedCalls")}</h3>
+                <div className="flex items-center gap-4 actions">
+                  <Field preIcon={<Search className="text-muted-foreground" />}>
+                    <Input
+                      variant="field"
+                      placeholder={searchT("placeholder")}
+                      type="search"
+                      value={initiatedCallsSearch}
+                      onChange={(e) => setInitiatedCallsSearch(e.target.value)}
+                    />
+                  </Field>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          onClick={() => {
+                            exportToCsv(
+                              filteredInitiatedCalls,
+                              [
+                                {
+                                  key: "phone",
+                                  header: t("metrics.columns.phone"),
+                                },
+                                {
+                                  key: "name",
+                                  header: t("metrics.columns.customerName"),
+                                },
+                                {
+                                  key: "currentTrial",
+                                  header: t("metrics.columns.currentTrial"),
+                                },
+                              ],
+                              "initiated-calls",
+                            );
+                          }}
+                        >
+                          <Download />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>{t("metrics.tooltips.export")}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
               </div>
             </div>
             <DataTableProvider
-              data={initiatedCalls ?? []}
+              data={filteredInitiatedCalls}
               columns={initiatedCallsColumns(t)}
               isLoading={isInitiatedCallsLoading}
               noResultsMessage={t("metrics.noData")}
-              pagination={{ totalItems: (initiatedCalls ?? []).length }}
+              pagination={{ totalItems: filteredInitiatedCalls.length }}
             >
               <DataTable>
                 <DataTableHeader />
@@ -641,4 +703,7 @@ const AutoDialerCampaignMetrics = () => {
   );
 };
 
-export default withPermission(AutoDialerCampaignMetrics, "fullAccessAutoDialerCampaigns");
+export default withPermission(
+  AutoDialerCampaignMetrics,
+  "fullAccessAutoDialerCampaigns",
+);
