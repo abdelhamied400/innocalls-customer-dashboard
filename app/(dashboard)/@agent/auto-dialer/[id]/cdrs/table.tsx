@@ -3,8 +3,10 @@ import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useTranslations } from "@/providers/TranslationProvider";
 import autoDialerAgentService from "@/services/auto-dialer-agent.service";
 import { PaginationState } from "@tanstack/react-table";
+import { isAxiosError } from "axios";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
 import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
@@ -24,7 +26,7 @@ const AgentCampaignCdrsTable = () => {
     pageSize: 10,
   });
 
-  const { data, isLoading } = useLocalizedQuery({
+  const { data, isLoading, isError, error } = useLocalizedQuery({
     queryKey: ["agent-auto-dialer-campaign-cdrs", id, filters, pagination],
     queryFn: async () =>
       await autoDialerAgentService.fetchAgentCampaignCdrs(id, {
@@ -35,6 +37,21 @@ const AgentCampaignCdrsTable = () => {
     refetchInterval: 30000,
     gcTime: 0,
   });
+
+  useEffect(() => {
+    if (isError) {
+      if (isAxiosError(error)) {
+        toast.error(t("toasts.errorTitle"), {
+          description:
+            error.response?.data?.message || t("toasts.errorDescription"),
+        });
+        return;
+      }
+      toast.error(t("toasts.errorTitle"), {
+        description: t("toasts.errorDescription"),
+      });
+    }
+  }, [isError, error, t]);
 
   const handleFiltersChange = (nextFilters: Record<string, any>) => {
     setFilters(nextFilters);

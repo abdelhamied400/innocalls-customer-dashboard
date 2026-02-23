@@ -49,7 +49,10 @@ api.interceptors.response.use(
   async (error) => {
     apiLogger.error("API Error:", error);
     if (error.response) {
-      if (error.response.status === 401) {
+      if (
+        error.response.status === 401 &&
+        process.env.NODE_ENV === "production"
+      ) {
         apiLogger.info("Unauthorized! Logging out...");
         await clientSignout();
       }

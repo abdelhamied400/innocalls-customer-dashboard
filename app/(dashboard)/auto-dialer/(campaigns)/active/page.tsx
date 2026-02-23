@@ -1,4 +1,5 @@
 "use client";
+import withPermission from "@/containers/withPermission";
 import { useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
 import { useEffect } from "react";
@@ -21,4 +22,4 @@ const ActiveCampaigns = () => {
   );
 };
 
-export default ActiveCampaigns;
+export default withPermission(ActiveCampaigns, "fullAccessAutoDialerCampaigns");

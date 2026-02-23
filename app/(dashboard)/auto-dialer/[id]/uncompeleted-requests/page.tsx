@@ -1,4 +1,5 @@
 "use client";
+import withPermission from "@/containers/withPermission";
 
 import { useState } from "react";
 import { useParams } from "next/navigation";
@@ -54,4 +55,4 @@ const UncompletedRequests = () => {
   );
 };
 
-export default UncompletedRequests;
+export default withPermission(UncompletedRequests, "fullAccessAutoDialerCampaigns");

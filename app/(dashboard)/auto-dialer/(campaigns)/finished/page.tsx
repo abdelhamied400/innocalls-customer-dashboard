@@ -2,6 +2,7 @@
 
 import AutoDialerFinishedCampaignsTable from "./table";
 import withActiveOrganization from "@/containers/withActiveOrganization";
+import withPermission from "@/containers/withPermission";
 
 export type Filters = {};
 type AutoDialerFinishedCampaignsProps = {
@@ -19,4 +20,4 @@ const AutoDialerFinishedCampaigns = ({
   );
 };
 
-export default withActiveOrganization(AutoDialerFinishedCampaigns);
+export default withActiveOrganization(withPermission(AutoDialerFinishedCampaigns, "fullAccessAutoDialerCampaigns"));

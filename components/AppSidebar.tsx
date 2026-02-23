@@ -195,14 +195,16 @@ const AppSidebar = () => {
             isComingSoon={true}
             href={`/apps`}
           >
-            <SidebarItem
-              icon={<RingVolume />}
-              title={t("navigation.autoDialer")}
-              href={`/auto-dialer`}
-              isNew={true}
-              isComingSoon={false}
-              disabled={false}
-            />
+            {auth?.user?.fullAccessAutoDialerCampaigns && (
+              <SidebarItem
+                icon={<RingVolume />}
+                title={t("navigation.autoDialer")}
+                href={`/auto-dialer`}
+                isNew={true}
+                isComingSoon={false}
+                disabled={false}
+              />
+            )}
             <SidebarItem
               icon={<Quiz />}
               title={t("navigation.surveyCampaigns")}

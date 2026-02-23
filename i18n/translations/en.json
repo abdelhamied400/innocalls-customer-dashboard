@@ -3849,6 +3849,10 @@
     "searchPhone": "Search by phone...",
     "tooltips": {
       "viewCdrs": "View Call Detail Records"
+    },
+    "toasts": {
+      "errorTitle": "Error",
+      "errorDescription": "Failed to load campaign CDRs"
     }
   },
   "webrtc": {

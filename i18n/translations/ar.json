@@ -3863,6 +3863,10 @@
     "searchPhone": "البحث برقم الهاتف...",
     "tooltips": {
       "viewCdrs": "عرض سجلات المكالمات"
+    },
+    "toasts": {
+      "errorTitle": "خطأ",
+      "errorDescription": "فشل في تحميل سجلات مكالمات الحملة"
     }
   },
   "webrtc": {

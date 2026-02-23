@@ -1,4 +1,5 @@
 "use client";
+import withPermission from "@/containers/withPermission";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -284,4 +285,4 @@ const UpdateMainInfoSheet = () => {
   );
 };
 
-export default UpdateMainInfoSheet;
+export default withPermission(UpdateMainInfoSheet, "fullAccessAutoDialerCampaigns");

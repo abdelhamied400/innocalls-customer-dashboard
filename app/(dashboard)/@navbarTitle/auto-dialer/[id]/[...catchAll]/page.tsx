@@ -5,6 +5,7 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import autoDialerAgentService from "@/services/auto-dialer-agent.service";
 import autoDialerService from "@/services/auto-dialer.service";
 import { ArrowBackIos } from "@mui/icons-material";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { use } from "react";
 
@@ -34,10 +35,17 @@ const classMap: Record<string, string> = {
 const AutodialerNavbarTitle = ({ params }: AutodialerNavbarTitleProps) => {
   const { id } = use(params);
   const t = useTranslations("autoDialer.campaignDetails");
+  const { data: session } = useSession();
+
+  const getCampaign =
+    session?.userType === "agent"
+      ? autoDialerAgentService.getCampaign
+      : autoDialerService.getCampaign;
 
   const { data: campaign } = useLocalizedQuery({
     queryKey: ["auto-dialer-campaign", id],
-    queryFn: () => autoDialerAgentService.getCampaign(id as string),
+    queryFn: () => getCampaign(id as string),
+    gcTime: 0,
   });
 
   const breadcrumbItems: BreadcrumbItem[] = [

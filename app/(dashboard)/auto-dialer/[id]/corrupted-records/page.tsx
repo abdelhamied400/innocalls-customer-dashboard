@@ -1,4 +1,5 @@
 "use client";
+import withPermission from "@/containers/withPermission";
 
 import { useState } from "react";
 import { useParams } from "next/navigation";
@@ -541,4 +542,4 @@ const CorruptedRecords = () => {
   );
 };
 
-export default CorruptedRecords;
+export default withPermission(CorruptedRecords, "fullAccessAutoDialerCampaigns");

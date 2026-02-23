@@ -1,4 +1,5 @@
 "use client";
+import withPermission from "@/containers/withPermission";
 import { useMemo, useState } from "react";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import useLayoutManager from "@/hooks/use-layout-manager";
@@ -640,4 +641,4 @@ const AutoDialerCampaignMetrics = () => {
   );
 };
 
-export default AutoDialerCampaignMetrics;
+export default withPermission(AutoDialerCampaignMetrics, "fullAccessAutoDialerCampaigns");

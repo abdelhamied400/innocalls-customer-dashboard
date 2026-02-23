@@ -1,4 +1,5 @@
 "use client";
+import withPermission from "@/containers/withPermission";
 import AutoDialerCampaignCdrsTable from "./table";
 import autoDialerService from "@/services/auto-dialer.service";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
@@ -56,4 +57,4 @@ const AutoDialerCampaignCdrs = () => {
   );
 };
 
-export default AutoDialerCampaignCdrs;
+export default withPermission(AutoDialerCampaignCdrs, "fullAccessAutoDialerCampaigns");

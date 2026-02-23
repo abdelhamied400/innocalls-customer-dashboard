@@ -1,4 +1,5 @@
 "use client";
+import withPermission from "@/containers/withPermission";
 import FileAttachment from "@/components/FileAttachment";
 import Property from "@/components/Property";
 import {
@@ -213,4 +214,4 @@ const AutoDialerCampaignDetails = () => {
   );
 };
 
-export default AutoDialerCampaignDetails;
+export default withPermission(AutoDialerCampaignDetails, "fullAccessAutoDialerCampaigns");

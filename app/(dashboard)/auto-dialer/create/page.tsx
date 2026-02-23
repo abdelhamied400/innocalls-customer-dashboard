@@ -30,6 +30,7 @@ import {
 } from "@/validation/AutoDialerCreateCampaign";
 import SchedulingForm from "./scheduling-form";
 import withActiveOrganization from "@/containers/withActiveOrganization";
+import withPermission from "@/containers/withPermission";
 import autoDialerService from "@/services/auto-dialer.service";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { toast } from "sonner";
@@ -218,4 +219,4 @@ const CreateAutoDialerCampaignSheet = () => {
   );
 };
 
-export default withActiveOrganization(CreateAutoDialerCampaignSheet);
+export default withActiveOrganization(withPermission(CreateAutoDialerCampaignSheet, "fullAccessAutoDialerCampaigns"));
