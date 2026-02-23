@@ -390,6 +390,19 @@ const CampaignActions = ({
                 </DropdownMenuItem>
               </Link>
             )}
+            {!campaign.isDraft &&
+              ["in-progress", "active", "paused"].includes(
+                campaign.status,
+              ) && (
+                <Link
+                  href={`/auto-dialer/${campaign.id}/update-main-info`}
+                >
+                  <DropdownMenuItem>
+                    <EditIcon />
+                    {t("editMainInfo")}
+                  </DropdownMenuItem>
+                </Link>
+              )}
             {campaign.status === "verification-failed" && (
               <Link href={`/auto-dialer/${campaign.id}/corrupted-records`}>
                 <DropdownMenuItem>
@@ -420,6 +433,18 @@ const CampaignActions = ({
             </Button>
           </Link>
         )}
+        {variant === "details" &&
+          !campaign.isDraft &&
+          ["in-progress", "active", "paused"].includes(campaign.status) && (
+            <Link href={`/auto-dialer/${campaign.id}/update-main-info`}>
+              <Button
+                variant="outline"
+                className="border-2 border-primary-300 text-primary-300"
+              >
+                {t("editMainInfo")}
+              </Button>
+            </Link>
+          )}
       </div>
     </TooltipProvider>
   );

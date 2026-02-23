@@ -225,4 +225,18 @@ export default {
     );
     return res.data;
   },
+  updateCampaignMainInfo: async (
+    campaignId: string,
+    data: {
+      name: string;
+      agents: number[];
+      callers: { destination: string; callerNumber: string }[];
+    },
+  ) => {
+    const res = await api.patch(
+      `/auto-dialer/campaigns/${campaignId}`,
+      data,
+    );
+    return res.data;
+  },
 };

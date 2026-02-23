@@ -2,13 +2,18 @@
 import LinkTabs, { LinkTab } from "@/components/LinkTabs";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { useParams } from "next/navigation";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 import CampaignActions from "../../shared/CampaignActions";
 import autoDialerService from "@/services/auto-dialer.service";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 
-type CampaignDetailsLayoutProps = PropsWithChildren<{}>;
-const CampaignDetailsLayout = ({ children }: CampaignDetailsLayoutProps) => {
+type CampaignDetailsLayoutProps = PropsWithChildren<{
+  updateMainInfoSheet: ReactNode;
+}>;
+const CampaignDetailsLayout = ({
+  children,
+  updateMainInfoSheet,
+}: CampaignDetailsLayoutProps) => {
   const { id } = useParams();
   const t = useTranslations("autoDialer.campaignDetails");
 
@@ -39,6 +44,7 @@ const CampaignDetailsLayout = ({ children }: CampaignDetailsLayoutProps) => {
       </div>
 
       <div className="bg-white rounded-lg p-4">{children}</div>
+      {updateMainInfoSheet}
     </div>
   );
 };

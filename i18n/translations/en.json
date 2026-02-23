@@ -3020,6 +3020,7 @@
       "actionCell": {
         "view": "View Details",
         "edit": "Edit",
+        "editMainInfo": "Edit Info",
         "pause": "Pause",
         "resume": "Resume",
         "cancel": "Cancel",
@@ -3526,6 +3527,49 @@
         "errorDescription": "An error occurred while updating the campaign. Please try again."
       }
     },
+    "updateMainInfo": {
+      "title": "Update Campaign Info",
+      "description": "Update the campaign name, agents, and caller IDs",
+      "loading": "Loading campaign details...",
+      "notFound": "Campaign not found",
+      "form": {
+        "campaignName": {
+          "label": "Campaign Name",
+          "placeholder": "Enter campaign name",
+          "validation": {
+            "min": "Campaign name must be at least {min} characters",
+            "max": "Campaign name must be at most {max} characters"
+          }
+        },
+        "agents": {
+          "label": "Agents",
+          "placeholder": "Select from the list....",
+          "validation": {
+            "min": "At least {min} agent must be selected"
+          }
+        },
+        "callerIds": {
+          "label": "Caller IDs",
+          "validation": {
+            "min": "At least {min} caller ID must be added",
+            "destination": {
+              "required": "Destination number is required"
+            },
+            "callerNumber": {
+              "required": "Caller number is required"
+            }
+          }
+        },
+        "submit": "Update",
+        "submitting": "Updating..."
+      },
+      "toasts": {
+        "success": "Campaign updated successfully",
+        "successDescription": "The campaign info has been updated successfully.",
+        "error": "Failed to update campaign",
+        "errorDescription": "An error occurred while updating the campaign. Please try again."
+      }
+    },
     "campaignDetails": {
       "loading": "Loading...",
       "notFound": "Campaign not found",
@@ -3648,9 +3692,9 @@
       "badgeRecords": "{count} records",
       "badgeSuffix": "that need to be fixed. Please review and correct the highlighted errors to start your campaign.",
       "saveChanges": "Save Changes",
-      "delete": "Delete",
-      "deleteCorruptedData": "Delete corrupted data",
-      "deleteCampaign": "Delete campaign",
+      "delete": "Continue by",
+      "deleteCorruptedData": "Ignore bad rows",
+      "deleteCampaign": "Stop everything",
       "name": "Name",
       "phone": "Phone",
       "info": "Info",
@@ -3660,9 +3704,11 @@
       "noRecords": "No corrupted records found",
       "loading": "Loading corrupted records...",
       "validation": {
-        "nameRequired": "Name is required",
+        "nameMin": "Name must be at least {min} characters",
+        "nameMax": "Name must be at most {max} characters",
         "phoneRequired": "Phone number is required",
-        "phoneInvalid": "Phone must contain only digits (include country code, no + or 00)"
+        "phoneInvalid": "Phone must contain only digits (include country code, no + or 00)",
+        "phoneUnsupportedFormat": "Phone number does not match any supported country format"
       },
       "save": "Save",
       "saving": "Saving...",

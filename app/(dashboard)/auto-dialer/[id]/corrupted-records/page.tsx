@@ -39,6 +39,7 @@ import {
   DeleteForever,
   DeleteSweep,
   ErrorOutline,
+  Save,
 } from "@mui/icons-material";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import useLayoutManager from "@/hooks/use-layout-manager";
@@ -53,12 +54,13 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
+import Spinner from "@/components/ui/spinner";
 
 type CorruptedRecordFormProps = {
   record: CorruptedRow;
   campaignId: string;
   onSaved: () => Promise<void>;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, unknown>) => string;
   isConstrained: boolean;
 };
 
@@ -199,8 +201,8 @@ const CorruptedRecordForm = ({
               </Field>
             </div>
             <div className="pt-6">
-              <Button type="submit" size="sm" disabled={isSaving}>
-                {isSaving ? t("saving") : t("save")}
+              <Button type="submit" size="icon" disabled={isSaving}>
+                {isSaving ? <Spinner /> : <Save />}
               </Button>
             </div>
           </div>
@@ -226,12 +228,8 @@ const CorruptedRecordForm = ({
 const CorruptedRecords = () => {
   const { id } = useParams<{ id: string }>();
   const t = useTranslations("autoDialer.corruptedRecords");
-  const {
-    hasExpandedSidebar,
-    hasExpandedWebrtc,
-    screenWidth,
-    isMobile,
-  } = useLayoutManager();
+  const { hasExpandedSidebar, hasExpandedWebrtc, screenWidth, isMobile } =
+    useLayoutManager();
 
   const isLaptopScreen = screenWidth >= 1024 && screenWidth < 1536;
   const isConstrained =
@@ -240,9 +238,10 @@ const CorruptedRecords = () => {
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  const { data, isLoading, isError } = useLocalizedQuery({
+  const { data, isLoading, isError, error } = useLocalizedQuery({
     queryKey: ["auto-dialer-corrupted-rows", id, page, limit],
     queryFn: () => autoDialerService.fetchCorruptedRows(id, { page, limit }),
+    retry: false,
   });
 
   const [isIgnoring, setIsIgnoring] = useState(false);
@@ -255,17 +254,37 @@ const CorruptedRecords = () => {
 
   if (isError) {
     toast.error(t("toasts.errorTitle"), {
-      description: t("toasts.errorDescription"),
+      description:
+        (isAxiosError(error) && error.response?.data?.message) ||
+        t("toasts.errorDescription"),
     });
   }
 
   const onRecordSaved = async () => {
-    const result = await queryClient.fetchQuery({
-      queryKey: ["auto-dialer-corrupted-rows-check", id],
-      queryFn: () => autoDialerService.fetchCorruptedRows(id, { page: 1, limit: 1 }),
-    });
+    try {
+      const result = await queryClient.fetchQuery({
+        queryKey: ["auto-dialer-corrupted-rows-check", id],
+        queryFn: () =>
+          autoDialerService.fetchCorruptedRows(id, { page: 1, limit: 1 }),
+      });
 
-    if (result.totalItems === 0) {
+      if (result.totalItems === 0) {
+        queryClient.invalidateQueries({
+          queryKey: ["auto-dialer-active-campaigns"],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["auto-dialer-campaign", id],
+        });
+        toast.success(t("allResolved"), {
+          description: t("allResolvedDescription"),
+        });
+        router.push("/auto-dialer/active");
+      } else {
+        queryClient.invalidateQueries({
+          queryKey: ["auto-dialer-corrupted-rows"],
+        });
+      }
+    } catch {
       queryClient.invalidateQueries({
         queryKey: ["auto-dialer-active-campaigns"],
       });
@@ -276,10 +295,6 @@ const CorruptedRecords = () => {
         description: t("allResolvedDescription"),
       });
       router.push("/auto-dialer/active");
-    } else {
-      queryClient.invalidateQueries({
-        queryKey: ["auto-dialer-corrupted-rows"],
-      });
     }
   };
 
@@ -296,7 +311,7 @@ const CorruptedRecords = () => {
       toast.success(t("ignoreCorruptedModal.success"), {
         description: t("ignoreCorruptedModal.successDescription"),
       });
-      router.push(`/auto-dialer/${id}/details`);
+      router.push(`/auto-dialer`);
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("ignoreCorruptedModal.error"), {
