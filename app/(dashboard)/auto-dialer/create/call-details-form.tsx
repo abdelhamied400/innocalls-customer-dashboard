@@ -28,6 +28,7 @@ type CallDetailsFormProps = {
   onNext: () => void;
 };
 const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
+  const tParent = useTranslations("autoDialer.createCampaign");
   const t = useTranslations(
     "autoDialer.createCampaign.steps.callsDetails.form",
   );
@@ -41,10 +42,11 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
     clearErrors,
     getValues,
     setError,
+    trigger,
   } = form;
 
   const handleNext = async () => {
-    const res = await AutoDialerCreateStep2Schema(t)
+    const res = await AutoDialerCreateStep2Schema(tParent)
       .refine(
         (data) => {
           const { hasAnnouncement, mainSoundFile } = data;
@@ -189,9 +191,11 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                             }))
                         : []
                     }
-                    onChange={(data) =>
-                      field.onChange(data.map((d) => d.value))
-                    }
+                    onChange={(data) => {
+                      field.onChange(data.map((d) => d.value));
+                      clearErrors("agents");
+                      trigger("agents");
+                    }}
                     isMulti
                   ></Select>
                 </FormControl>
@@ -202,13 +206,28 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
 
         <hr />
 
-        <div className="flex-1">
-          <h3>{t("callerIds.label")}</h3>
-          <CallerIdSelector />
-          {errors.callers?.message && (
-            <p className="text-destructive mt-2">{errors.callers.message}</p>
+        <FormField
+          control={control}
+          name="callers"
+          render={() => (
+            <FormItem className="flex-1">
+              <h3>{t("callerIds.label")}</h3>
+              <FormControl>
+                <CallerIdSelector
+                  onChangeCallback={() => {
+                    clearErrors("callers");
+                    trigger("callers");
+                  }}
+                />
+              </FormControl>
+              {errors.callers?.message && (
+                <p className="text-destructive mt-2">
+                  {errors.callers.message}
+                </p>
+              )}
+            </FormItem>
           )}
-        </div>
+        />
 
         <Button size="lg" onClick={handleNext} type="button">
           {t("next")}

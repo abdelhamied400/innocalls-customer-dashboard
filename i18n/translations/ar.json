@@ -621,7 +621,7 @@
         "yesDelete": "نعم، احذف"
       },
       "tooltips": {
-        "toggleFilters": "انقر لإظهار/إخفاء فلاتر البحث"
+        "toggleFilters": "تبديل الفلاتر"
       },
       "actions": {
         "createReport": "إنشاء تقرير جديد"
@@ -816,7 +816,7 @@
         "yesDeactivate": "نعم، إلغاء التفعيل"
       },
       "tooltips": {
-        "toggleFilters": "انقر لإظهار/إخفاء فلاتر البحث"
+        "toggleFilters": "تبديل الفلاتر"
       },
       "actions": {
         "createReport": "إنشاء تقرير جديد",
@@ -1120,7 +1120,7 @@
         "deleting": "جاري الحذف..."
       },
       "tooltips": {
-        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
+        "toggleFilters": "تبديل الفلاتر"
       }
     },
     "monitor": {
@@ -1314,7 +1314,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
+        "toggleFilters": "تبديل الفلاتر"
       }
     },
     "timeline": {
@@ -1367,7 +1367,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
+        "toggleFilters": "تبديل الفلاتر"
       }
     }
   },
@@ -1521,7 +1521,7 @@
         "invalidDateRange": "نطاق تاريخ غير صحيح"
       },
       "tooltips": {
-        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
+        "toggleFilters": "تبديل الفلاتر"
       }
     },
     "refillBalance": {
@@ -1766,7 +1766,7 @@
       "viewHistory": "عرض سجل المكالمات"
     },
     "tooltips": {
-      "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
+      "toggleFilters": "تبديل الفلاتر"
     },
     "isAnswered": {
       "both": "كلاهما",
@@ -2080,7 +2080,7 @@
         "noData": "لم يتم العثور على بيانات استخدام للمعايير المحددة."
       },
       "tooltips": {
-        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
+        "toggleFilters": "تبديل الفلاتر"
       }
     },
     "detailed": {
@@ -2133,7 +2133,7 @@
       },
       "tooltips": {
         "export": "استخراج",
-        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
+        "toggleFilters": "تبديل الفلاتر"
       }
     },
     "filters": {
@@ -3129,12 +3129,12 @@
           "from": {
             "label": "من",
             "placeholder": "أدخل تاريخ البداية",
-            "hint": "DD/MM/YYYY"
+            "hint": "يوم/شهر/سنة"
           },
           "to": {
             "label": "إلى",
             "placeholder": "أدخل تاريخ النهاية",
-            "hint": "DD/MM/YYYY"
+            "hint": "يوم/شهر/سنة"
           }
         },
         "durationType": {
@@ -3196,12 +3196,12 @@
           "from": {
             "label": "من",
             "placeholder": "أدخل تاريخ البداية",
-            "hint": "DD/MM/YYYY"
+            "hint": "يوم/شهر/سنة"
           },
           "to": {
             "label": "إلى",
             "placeholder": "أدخل تاريخ النهاية",
-            "hint": "DD/MM/YYYY"
+            "hint": "يوم/شهر/سنة"
           }
         },
         "durationType": {

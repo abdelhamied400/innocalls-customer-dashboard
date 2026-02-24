@@ -621,7 +621,7 @@
         "yesDelete": "Yes, Delete"
       },
       "tooltips": {
-        "toggleFilters": "Click to show/hide search filters"
+        "toggleFilters": "Toggle Filters"
       },
       "actions": {
         "createReport": "Create New Report"
@@ -816,7 +816,7 @@
         "yesDeactivate": "Yes, Deactivate"
       },
       "tooltips": {
-        "toggleFilters": "Click to show/hide search filters"
+        "toggleFilters": "Toggle Filters"
       },
       "actions": {
         "createReport": "Create New Report",
@@ -1120,7 +1120,7 @@
         "deleting": "Deleting..."
       },
       "tooltips": {
-        "toggleFilters": "Click to show/hide search filters"
+        "toggleFilters": "Toggle Filters"
       }
     },
     "monitor": {
@@ -1314,7 +1314,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "Click to show/hide search filters"
+        "toggleFilters": "Toggle Filters"
       }
     },
     "timeline": {
@@ -1367,7 +1367,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "Click to show/hide search filters"
+        "toggleFilters": "Toggle Filters"
       }
     }
   },
@@ -1560,7 +1560,7 @@
         "invalidDateRange": "Invalid date range"
       },
       "tooltips": {
-        "toggleFilters": "Click to show/hide search filters"
+        "toggleFilters": "Toggle Filters"
       }
     }
   },
@@ -1758,7 +1758,7 @@
       "viewHistory": "View call history"
     },
     "tooltips": {
-      "toggleFilters": "Click to show/hide search filters"
+      "toggleFilters": "Toggle Filters"
     },
     "isAnswered": {
       "both": "Both",
@@ -2071,7 +2071,7 @@
         "noData": "No usage data found for the selected criteria."
       },
       "tooltips": {
-        "toggleFilters": "Click to show/hide search filters"
+        "toggleFilters": "Toggle Filters"
       }
     },
     "detailed": {
@@ -2123,7 +2123,7 @@
       },
       "tooltips": {
         "export": "Export",
-        "toggleFilters": "Click to show/hide search filters"
+        "toggleFilters": "Toggle Filters"
       }
     },
     "common": {

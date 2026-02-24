@@ -14,7 +14,11 @@ type SelectOption = {
   value: string;
 };
 
-const CallerIdSelector = () => {
+type CallerIdSelectorProps = {
+  onChangeCallback?: () => void;
+};
+
+const CallerIdSelector = ({ onChangeCallback }: CallerIdSelectorProps = {}) => {
   const t = useTranslations("common.callerIdSelector");
   const {
     control,
@@ -35,6 +39,7 @@ const CallerIdSelector = () => {
       destination: "",
       callerNumber: "",
     });
+    onChangeCallback?.();
   };
 
   // Get selected countries to filter them out from other rows
@@ -93,6 +98,7 @@ const CallerIdSelector = () => {
                       shouldValidate: true,
                     },
                   );
+                  onChangeCallback?.();
                 }}
                 placeholder={t("country.placeholder")}
                 error={fieldErrors?.destination?.message}
@@ -116,6 +122,7 @@ const CallerIdSelector = () => {
                       shouldValidate: true,
                     },
                   );
+                  onChangeCallback?.();
                 }}
                 placeholder={t("DID.placeholder")}
                 error={fieldErrors?.callerNumber?.message}
@@ -128,7 +135,10 @@ const CallerIdSelector = () => {
                 size="icon"
                 className="px-3 mt-6"
                 type="button"
-                onClick={() => remove(index)}
+                onClick={() => {
+                  remove(index);
+                  onChangeCallback?.();
+                }}
               >
                 <DeleteIcon />
               </Button>
