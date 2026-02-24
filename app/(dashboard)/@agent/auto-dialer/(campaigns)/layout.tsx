@@ -14,7 +14,7 @@ const AgentAutoDialerLayout = ({ children }: PropsWithChildren) => {
   }, []);
 
   return (
-    <div className="page flex flex-col gap-4 flex-1 overflow-hidden">
+    <div className="page flex flex-col gap-4 flex-1 p-4 rounded-xl overflow-hidden bg-white">
       <LinkTabs>
         <LinkTab href="/auto-dialer/active">{t("tabs.active")}</LinkTab>
         <LinkTab href="/auto-dialer/finished">{t("tabs.finished")}</LinkTab>

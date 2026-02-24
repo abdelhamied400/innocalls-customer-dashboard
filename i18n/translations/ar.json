@@ -621,7 +621,7 @@
         "yesDelete": "نعم، احذف"
       },
       "tooltips": {
-        "toggleFilters": "تبديل الفلاتر"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       },
       "actions": {
         "createReport": "إنشاء تقرير جديد"
@@ -816,7 +816,7 @@
         "yesDeactivate": "نعم، إلغاء التفعيل"
       },
       "tooltips": {
-        "toggleFilters": "تبديل الفلاتر"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       },
       "actions": {
         "createReport": "إنشاء تقرير جديد",
@@ -1120,7 +1120,7 @@
         "deleting": "جاري الحذف..."
       },
       "tooltips": {
-        "toggleFilters": "تبديل الفلاتر"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       }
     },
     "monitor": {
@@ -1314,7 +1314,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "تبديل الفلاتر"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       }
     },
     "timeline": {
@@ -1367,7 +1367,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "تبديل الفلاتر"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       }
     }
   },
@@ -1521,7 +1521,7 @@
         "invalidDateRange": "نطاق تاريخ غير صحيح"
       },
       "tooltips": {
-        "toggleFilters": "تبديل الفلاتر"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       }
     },
     "refillBalance": {
@@ -1766,7 +1766,7 @@
       "viewHistory": "عرض سجل المكالمات"
     },
     "tooltips": {
-      "toggleFilters": "تبديل الفلاتر"
+      "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
     },
     "isAnswered": {
       "both": "كلاهما",
@@ -2080,7 +2080,7 @@
         "noData": "لم يتم العثور على بيانات استخدام للمعايير المحددة."
       },
       "tooltips": {
-        "toggleFilters": "تبديل الفلاتر"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       }
     },
     "detailed": {
@@ -2133,7 +2133,7 @@
       },
       "tooltips": {
         "export": "استخراج",
-        "toggleFilters": "تبديل الفلاتر"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       }
     },
     "filters": {
@@ -3103,7 +3103,7 @@
         "agent-availability": "توفر الوكيل"
       },
       "tooltips": {
-        "toggleFilters": "تبديل الفلاتر"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       }
     },
     "finishedCampaigns": {
@@ -3147,7 +3147,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "تبديل الفلاتر"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       },
       "toasts": {
         "error": "خطأ",
@@ -3214,7 +3214,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "تبديل الفلاتر"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       },
       "toasts": {
         "error": "خطأ",
@@ -3669,7 +3669,7 @@
         "seconds": "ثوانٍ",
         "tooltips": {
           "spy": "تنصّت",
-          "toggleFilters": "تبديل الفلاتر",
+          "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث",
           "export": "تصدير إلى CSV"
         },
         "filters": {
@@ -3818,7 +3818,7 @@
       },
       "listen": "استماع للتسجيل",
       "tooltips": {
-        "toggleFilters": "تبديل الفلاتر"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       },
       "notAvailable": {
         "title": "سجلات المكالمات",

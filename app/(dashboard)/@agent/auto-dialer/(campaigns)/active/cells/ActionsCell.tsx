@@ -3,7 +3,12 @@ import { AgentCampaignCols } from "../columns";
 import { ReactNode, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Headset, Login, Logout } from "@mui/icons-material";
+import {
+  Login,
+  SubdirectoryArrowRight,
+  Visibility,
+  VisibilityOutlined,
+} from "@mui/icons-material";
 import { useTranslations } from "@/providers/TranslationProvider";
 import {
   Tooltip,
@@ -45,7 +50,8 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("toasts.leaveError"), {
-          description: error.response?.data?.message || t("toasts.leaveErrorDescription"),
+          description:
+            error.response?.data?.message || t("toasts.leaveErrorDescription"),
         });
       } else {
         toast.error(t("toasts.leaveError"), {
@@ -68,7 +74,8 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("toasts.joinError"), {
-          description: error.response?.data?.message || t("toasts.joinErrorDescription"),
+          description:
+            error.response?.data?.message || t("toasts.joinErrorDescription"),
         });
       } else {
         toast.error(t("toasts.joinError"), {
@@ -87,9 +94,8 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link href={`/auto-dialer/${campaign.id}/cdrs`}>
-                <Button size="sm" variant="ghost-primary">
-                  <Headset className="mr-1" />
-                  {t("actions.cdrs")}
+                <Button size="icon" variant="ghost">
+                  <VisibilityOutlined className="mr-1" />
                 </Button>
               </Link>
             </TooltipTrigger>
@@ -102,13 +108,12 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
-                size="sm"
+                size="icon"
                 variant="ghost-destructive"
                 onClick={handleLeave}
                 disabled={isLoading}
               >
-                <Logout className="mr-1" />
-                {t("actions.leave")}
+                <SubdirectoryArrowRight className="mr-1" />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -120,13 +125,12 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
-                size="sm"
+                size="icon"
                 variant="ghost-primary"
                 onClick={handleJoin}
                 disabled={isLoading}
               >
                 <Login className="mr-1" />
-                {t("actions.join")}
               </Button>
             </TooltipTrigger>
             <TooltipContent>

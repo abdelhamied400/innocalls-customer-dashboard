@@ -621,7 +621,7 @@
         "yesDelete": "Yes, Delete"
       },
       "tooltips": {
-        "toggleFilters": "Toggle Filters"
+        "toggleFilters": "click to show/hide search filters"
       },
       "actions": {
         "createReport": "Create New Report"
@@ -816,7 +816,7 @@
         "yesDeactivate": "Yes, Deactivate"
       },
       "tooltips": {
-        "toggleFilters": "Toggle Filters"
+        "toggleFilters": "click to show/hide search filters"
       },
       "actions": {
         "createReport": "Create New Report",
@@ -1120,7 +1120,7 @@
         "deleting": "Deleting..."
       },
       "tooltips": {
-        "toggleFilters": "Toggle Filters"
+        "toggleFilters": "click to show/hide search filters"
       }
     },
     "monitor": {
@@ -1314,7 +1314,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "Toggle Filters"
+        "toggleFilters": "click to show/hide search filters"
       }
     },
     "timeline": {
@@ -1367,7 +1367,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "Toggle Filters"
+        "toggleFilters": "click to show/hide search filters"
       }
     }
   },
@@ -1560,7 +1560,7 @@
         "invalidDateRange": "Invalid date range"
       },
       "tooltips": {
-        "toggleFilters": "Toggle Filters"
+        "toggleFilters": "click to show/hide search filters"
       }
     }
   },
@@ -1758,7 +1758,7 @@
       "viewHistory": "View call history"
     },
     "tooltips": {
-      "toggleFilters": "Toggle Filters"
+      "toggleFilters": "click to show/hide search filters"
     },
     "isAnswered": {
       "both": "Both",
@@ -2071,7 +2071,7 @@
         "noData": "No usage data found for the selected criteria."
       },
       "tooltips": {
-        "toggleFilters": "Toggle Filters"
+        "toggleFilters": "click to show/hide search filters"
       }
     },
     "detailed": {
@@ -2123,7 +2123,7 @@
       },
       "tooltips": {
         "export": "Export",
-        "toggleFilters": "Toggle Filters"
+        "toggleFilters": "click to show/hide search filters"
       }
     },
     "common": {
@@ -3089,7 +3089,7 @@
         "agent-availability": "Agent Availability"
       },
       "tooltips": {
-        "toggleFilters": "Toggle Filters"
+        "toggleFilters": "click to show/hide search filters"
       }
     },
     "finishedCampaigns": {
@@ -3133,7 +3133,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "Toggle Filters"
+        "toggleFilters": "click to show/hide search filters"
       },
       "toasts": {
         "error": "Error",
@@ -3200,7 +3200,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "Toggle Filters"
+        "toggleFilters": "click to show/hide search filters"
       },
       "toasts": {
         "error": "Error",
@@ -3655,7 +3655,7 @@
         "seconds": "seconds",
         "tooltips": {
           "spy": "Spy",
-          "toggleFilters": "Toggle Filters",
+          "toggleFilters": "click to show/hide search filters",
           "export": "Export to CSV"
         },
         "filters": {
@@ -3804,7 +3804,7 @@
       },
       "listen": "Listen to Recording",
       "tooltips": {
-        "toggleFilters": "Toggle Filters"
+        "toggleFilters": "click to show/hide search filters"
       },
       "notAvailable": {
         "title": "CDRs",
