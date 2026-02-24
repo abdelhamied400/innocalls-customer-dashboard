@@ -12,7 +12,6 @@ export type AutoDialerCampaignActiveStatus =
 export type AutoDialerCampaignFinishedStatus =
   | "completed"
   | "cancelled"
-  | "failed"
   | "finished";
 export type AutoDialerCampaignStatus =
   | AutoDialerCampaignActiveStatus
@@ -49,7 +48,6 @@ export const autoDialerCampaignActiveStatuses = (t: any) => [
 export const autoDialerCampaignFinishedStatuses = (t: any) => [
   { value: "completed", label: t("finishedCampaigns.statuses.completed") },
   { value: "cancelled", label: t("finishedCampaigns.statuses.cancelled") },
-  { value: "failed", label: t("finishedCampaigns.statuses.failed") },
   { value: "finished", label: t("finishedCampaigns.statuses.finished") },
 ];
 

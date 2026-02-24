@@ -56,6 +56,12 @@ import { useRouter } from "next/navigation";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
 import Spinner from "@/components/ui/spinner";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type CorruptedRecordFormProps = {
   record: CorruptedRow;
@@ -156,9 +162,18 @@ const CorruptedRecordForm = ({
               />
             </Field>
             <div className="flex justify-end">
-              <Button type="submit" size="sm" disabled={isSaving}>
-                {isSaving ? t("saving") : t("save")}
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button type="submit" size="icon" disabled={isSaving}>
+                      {isSaving ? <Spinner /> : <Save />}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t("save")}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
         ) : (
@@ -202,9 +217,18 @@ const CorruptedRecordForm = ({
               </Field>
             </div>
             <div className="pt-6">
-              <Button type="submit" size="icon" disabled={isSaving}>
-                {isSaving ? <Spinner /> : <Save />}
-              </Button>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button type="submit" size="icon" disabled={isSaving}>
+                      {isSaving ? <Spinner /> : <Save />}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{t("save")}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             </div>
           </div>
         )}
@@ -418,9 +442,7 @@ const CorruptedRecords = () => {
           >
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>
-                  {t("ignoreCorruptedModal.title")}
-                </AlertDialogTitle>
+                <AlertDialogTitle>{t("deleteCorruptedData")}</AlertDialogTitle>
                 <AlertDialogDescription>
                   {t("ignoreCorruptedModal.message")}
                 </AlertDialogDescription>
@@ -441,9 +463,7 @@ const CorruptedRecords = () => {
           >
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>
-                  {t("cancelCampaignModal.title")}
-                </AlertDialogTitle>
+                <AlertDialogTitle>{t("deleteCampaign")}</AlertDialogTitle>
                 <AlertDialogDescription>
                   {t("cancelCampaignModal.message")}
                 </AlertDialogDescription>
@@ -542,4 +562,7 @@ const CorruptedRecords = () => {
   );
 };
 
-export default withPermission(CorruptedRecords, "fullAccessAutoDialerCampaigns");
+export default withPermission(
+  CorruptedRecords,
+  "fullAccessAutoDialerCampaigns",
+);

@@ -404,10 +404,7 @@ const CampaignActions = ({
                   </DropdownMenuItem>
                 </Link>
               )}
-              {!campaign.isDraft &&
-                ["in-progress", "active", "paused"].includes(
-                  campaign.status,
-                ) && (
+              {!campaign.isDraft && campaign.status === "paused" && (
                   <Link href={`/auto-dialer/${campaign.id}/update-main-info`}>
                     <DropdownMenuItem>
                       <EditIcon />
@@ -439,7 +436,7 @@ const CampaignActions = ({
         )}
         {variant === "details" &&
           !campaign.isDraft &&
-          ["in-progress", "active", "paused"].includes(campaign.status) && (
+          campaign.status === "paused" && (
             <Link href={`/auto-dialer/${campaign.id}/update-main-info`}>
               <Button
                 variant="outline"

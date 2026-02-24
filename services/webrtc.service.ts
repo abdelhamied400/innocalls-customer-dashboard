@@ -61,4 +61,17 @@ export default {
     });
     return res.data;
   },
+  getAutoDialerChannelInfo: async (
+    channelId: string
+  ): Promise<{ information: string; callId: string }> => {
+    const res = await api.get(`auto-dialer-channels/agent/${channelId}`);
+    return res.data;
+  },
+  saveAutoDialerChannelNotes: async (callId: string, notes: string) => {
+    const res = await api.patch(
+      `auto-dialer-channels/agent/${callId}/notes`,
+      { notes }
+    );
+    return res.data;
+  },
 };
