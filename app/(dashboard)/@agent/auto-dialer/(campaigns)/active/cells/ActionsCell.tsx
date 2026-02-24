@@ -26,6 +26,13 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
   const isActive = campaign.status === "active";
   const isAgentJoined = campaign.agentStatus === "joined";
   const canLeaveAndJoin = campaign.agentCanLogoutAndRejoin;
+  const showCdrs = [
+    "completed",
+    "finished",
+    "in-progress",
+    "active",
+    "paused",
+  ].includes(campaign.status);
 
   const handleLeave = async () => {
     try {
@@ -76,19 +83,21 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
   return (
     <div className="flex items-center gap-1">
       <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link href={`/auto-dialer/${campaign.id}/cdrs`}>
-              <Button size="sm" variant="ghost-primary">
-                <Headset className="mr-1" />
-                {t("actions.cdrs")}
-              </Button>
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{t("tooltips.viewCdrs")}</p>
-          </TooltipContent>
-        </Tooltip>
+        {showCdrs && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link href={`/auto-dialer/${campaign.id}/cdrs`}>
+                <Button size="sm" variant="ghost-primary">
+                  <Headset className="mr-1" />
+                  {t("actions.cdrs")}
+                </Button>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t("tooltips.viewCdrs")}</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
         {isActive && canLeaveAndJoin && isAgentJoined && (
           <Tooltip>
             <TooltipTrigger asChild>
