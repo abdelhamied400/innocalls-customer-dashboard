@@ -117,15 +117,6 @@ const UncompletedRequestsPage = () => {
         <div className="flex justify-between items-center gap-4 p-3">
           <h3>{t("title")}</h3>
           <div className="flex items-center gap-4 actions">
-            <Field preIcon={<Search className="text-muted-foreground" />}>
-              <Input
-                variant="field"
-                placeholder={searchT("placeholder")}
-                type="search"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </Field>
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>

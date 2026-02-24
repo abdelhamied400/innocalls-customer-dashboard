@@ -233,10 +233,7 @@ export default {
       callers: { destination: string; callerNumber: string }[];
     },
   ) => {
-    const res = await api.patch(
-      `/auto-dialer/campaigns/${campaignId}`,
-      data,
-    );
+    const res = await api.patch(`/auto-dialer/campaigns/${campaignId}`, data);
     return res.data;
   },
 };

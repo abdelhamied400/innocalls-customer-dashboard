@@ -423,18 +423,6 @@ const CampaignActions = ({
                   </DropdownMenuItem>
                 </Link>
               )}
-              {["in-progress", "active", "paused"].includes(
-                campaign.status,
-              ) && (
-                <Link
-                  href={`/auto-dialer/${campaign.id}/uncompeleted-requests`}
-                >
-                  <DropdownMenuItem>
-                    <AssignmentLate />
-                    {t("uncompletedRequests")}
-                  </DropdownMenuItem>
-                </Link>
-              )}
             </DropdownMenuContent>
           </DropdownMenu>
         )}

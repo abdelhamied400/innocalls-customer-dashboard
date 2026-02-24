@@ -52,6 +52,10 @@ export const inProgressCallsColumns = (t: any): ColumnDef<InProgressCall>[] => [
     header: t("metrics.columns.agentId"),
   },
   {
+    accessorKey: "name",
+    header: t("metrics.columns.agentName"),
+  },
+  {
     accessorFn: (row) => row.callerInfo?.callerNumber,
     id: "callerNumber",
     header: t("metrics.columns.callerNumber"),
@@ -59,7 +63,11 @@ export const inProgressCallsColumns = (t: any): ColumnDef<InProgressCall>[] => [
   {
     accessorFn: (row) => row.callerInfo?.callerName,
     id: "callerName",
-    header: t("metrics.columns.callerName"),
+    header: ({ column }) => (
+      <SortingHead column={column}>
+        {t("metrics.columns.callerName")}
+      </SortingHead>
+    ),
   },
   {
     id: "actions",
