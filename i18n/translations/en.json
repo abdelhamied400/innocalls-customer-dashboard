@@ -3770,8 +3770,8 @@
         "statusPlaceholder": "Select status",
         "agentPlaceholder": "Select agent",
         "phoneLabel": "Phone Number",
-        "phoneHint": "Digits and + only",
-        "phonePlaceholder": "+20123456789"
+        "phoneHint": "Digits only",
+        "phonePlaceholder": "20123456789"
       },
       "columns": {
         "phone": "Phone",
@@ -3808,7 +3808,7 @@
       },
       "notAvailable": {
         "title": "CDRs",
-        "description": "CDRs are only available for active, paused, in-progress, finished, or completed campaigns"
+        "description": "CDRs are available only for campaigns with the following statuses: Active, Paused, In Progress, Finished, or Completed."
       }
     }
   },

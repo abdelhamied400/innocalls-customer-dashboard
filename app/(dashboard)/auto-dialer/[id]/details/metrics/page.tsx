@@ -216,7 +216,7 @@ const AutoDialerCampaignMetrics = () => {
       if (!matchesStatus) return false;
       if (!keyword) return true;
 
-      const searchable = [row.name, row.agentId, row.status]
+      const searchable = [row.name, row.agentId]
         .filter(Boolean)
         .join(" ")
         .toLowerCase();

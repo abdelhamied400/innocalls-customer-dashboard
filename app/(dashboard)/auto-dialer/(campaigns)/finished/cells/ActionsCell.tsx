@@ -44,7 +44,8 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("toasts.error"), {
-          description: error.response?.data?.message || t("toasts.errorDescription"),
+          description:
+            error.response?.data?.message || t("toasts.errorDescription"),
         });
         return;
       }
@@ -72,7 +73,8 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("toasts.error"), {
-          description: error.response?.data?.message || t("toasts.errorDescription"),
+          description:
+            error.response?.data?.message || t("toasts.errorDescription"),
         });
         return;
       }
@@ -87,22 +89,24 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
   return (
     <TooltipProvider>
       <div className="flex items-center gap-4">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="ghost-success"
-              size="icon"
-              onClick={downloadReport}
-              loading={isDownloading}
-              disabled={isDownloading}
-            >
-              <Download />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{t("download")}</p>
-          </TooltipContent>
-        </Tooltip>
+        {row.original.status !== "cancelled" && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost-success"
+                size="icon"
+                onClick={downloadReport}
+                loading={isDownloading}
+                disabled={isDownloading}
+              >
+                <Download />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{t("download")}</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
 
         <Tooltip>
           <TooltipTrigger asChild>

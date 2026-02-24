@@ -3,7 +3,7 @@ import StatusCell from "./cells/StatusCell";
 import ActionsCell from "./cells/ActionsCell";
 import CreatedAtCell from "./cells/CreatedAtCell";
 import DurationTypeCell from "./cells/DurationTypeCell";
-import { AutoDialerCampaignActiveStatus } from "@/constants/auto-dialer";
+import { AutoDialerCampaignFinishedStatus } from "@/constants/auto-dialer";
 import SortingHead from "@/components/SortingHead";
 
 export type AutoDialerCampaignCols = {
@@ -14,7 +14,7 @@ export type AutoDialerCampaignCols = {
   id: string;
   isDraft: boolean;
   name: string;
-  status: AutoDialerCampaignActiveStatus;
+  status: AutoDialerCampaignFinishedStatus;
 };
 
 export const columns = (t: any): ColumnDef<any, any>[] => [

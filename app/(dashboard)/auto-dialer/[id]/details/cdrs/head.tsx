@@ -70,11 +70,8 @@ const CampaignCdrsHead = ({ filters, setFilters }: CampaignCdrsHeadProps) => {
   const statuses: CampaignCdr["status"][] = [
     "User did not answer",
     "Airplane Mode Enabled",
-    "Initiated",
-    "Processing",
     "Call Failed",
     "User Busy/Rejected By User",
-    "User Connected",
     "User Unreachable (Out of Network Coverage or Airplane Mode)",
     "Completed",
     "Timeout",
@@ -137,7 +134,10 @@ const CampaignCdrsHead = ({ filters, setFilters }: CampaignCdrsHeadProps) => {
               <Tooltip>
                 <CollapsibleTrigger asChild>
                   <TooltipTrigger asChild>
-                    <Toggle pressed={true} className="rounded-full bg-transparent">
+                    <Toggle
+                      pressed={true}
+                      className="rounded-full bg-transparent"
+                    >
                       <FilterAltOutlined />
                     </Toggle>
                   </TooltipTrigger>
