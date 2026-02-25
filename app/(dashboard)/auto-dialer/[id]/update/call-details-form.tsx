@@ -41,21 +41,26 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
     clearErrors,
     getValues,
     setError,
+    setValue,
   } = form;
 
   const handleNext = async () => {
+    const values = getValues();
+    const hasExistingMainSound = !!values.mainSoundFileName;
+
     const res = await AutoDialerUpdateStep2Schema(t)
       .refine(
         (data) => {
           const { hasAnnouncement, mainSoundFile } = data;
-          return !hasAnnouncement || (hasAnnouncement && mainSoundFile);
+          if (!hasAnnouncement) return true;
+          return hasExistingMainSound || !!mainSoundFile;
         },
         {
           path: ["mainSoundFile"],
           message: t("mainSoundFile.validation.required"),
         },
       )
-      .safeParseAsync(getValues());
+      .safeParseAsync(values);
 
     if (!res.success) {
       setTimeout(() => {
@@ -151,6 +156,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                           ? [getValues().mainSoundFileName!]
                           : []
                       }
+                      removeFakeFile={() => setValue("mainSoundFileName", undefined)}
                     >
                       <DropzoneTrigger />
                       <DropzoneFileList />

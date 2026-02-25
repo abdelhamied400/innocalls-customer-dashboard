@@ -46,6 +46,7 @@ const AutodialerNavbarTitle = ({ params }: AutodialerNavbarTitleProps) => {
     queryKey: ["auto-dialer-campaign", id],
     queryFn: () => getCampaign(id as string),
     gcTime: 0,
+    refetchInterval: 10000,
   });
 
   const breadcrumbItems: BreadcrumbItem[] = [

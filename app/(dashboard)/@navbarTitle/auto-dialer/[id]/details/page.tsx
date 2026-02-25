@@ -37,6 +37,8 @@ const AutodialerNavbarTitle = ({ params }: AutodialerNavbarTitleProps) => {
   const { data: campaign } = useLocalizedQuery({
     queryKey: ["auto-dialer-campaign", id],
     queryFn: () => autoDialerService.getCampaign(id as string),
+    gcTime: 0,
+    refetchInterval: 10000,
   });
 
   const breadcrumbItems: BreadcrumbItem[] = [

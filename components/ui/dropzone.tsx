@@ -67,6 +67,7 @@ const Dropzone = ({
   value,
   onChange,
   fakeFiles = [],
+  removeFakeFile: onRemoveFakeFile,
 }: DropzoneRootProps) => {
   const [acceptedFiles, setAcceptedFiles] = useState<WithId<File>[]>([]);
   const [fileRejections, setFileRejections] = useState<WithId<FileRejection>[]>(
@@ -125,7 +126,8 @@ const Dropzone = ({
 
   const removeFakeFile = useCallback((fileName: string) => {
     setFakeFilesState((prev) => prev.filter((name) => name !== fileName));
-  }, []);
+    onRemoveFakeFile?.(fileName);
+  }, [onRemoveFakeFile]);
 
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: FileRejection[]) => {

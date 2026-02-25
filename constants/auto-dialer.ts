@@ -35,7 +35,6 @@ export const autoDialerCampaignActiveStatuses = (t: any) => [
     label: t("activeCampaigns.statuses.verification-failed"),
   },
   { value: "created", label: t("activeCampaigns.statuses.created") },
-  { value: "started", label: t("activeCampaigns.statuses.started") },
   { value: "in-progress", label: t("activeCampaigns.statuses.in-progress") },
   { value: "active", label: t("activeCampaigns.statuses.active") },
   { value: "paused", label: t("activeCampaigns.statuses.paused") },

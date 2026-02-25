@@ -8,7 +8,11 @@ const CreatedAtCell = ({ cell }: CreatedAtCellProps) => {
   const locale = useDateFnsLocale();
   const lang = useLocale();
   const pattern = lang === "ar" ? "d MMMM yyyy" : "d MMM yyyy";
-  return format(new Date(cell.getValue() as string), pattern, { locale });
+  const formatted = format(new Date(cell.getValue() as string), pattern, { locale });
+  if (lang === "ar") {
+    return formatted.replace(/\d/g, (d) => "٠١٢٣٤٥٦٧٨٩"[+d]);
+  }
+  return formatted;
 };
 
 export default CreatedAtCell;

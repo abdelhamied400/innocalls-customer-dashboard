@@ -24,6 +24,8 @@ const AutoDialerCampaignDetails = () => {
   const { data: campaign, isLoading } = useQuery({
     queryKey: ["auto-dialer-campaign", id],
     queryFn: () => autoDialerService.getCampaign(id as string),
+    gcTime: 0,
+    refetchInterval: 10000,
   });
   const { data: extensions } = useLocalizedQuery(queryExtensions({}));
 
@@ -214,4 +216,7 @@ const AutoDialerCampaignDetails = () => {
   );
 };
 
-export default withPermission(AutoDialerCampaignDetails, "fullAccessAutoDialerCampaigns");
+export default withPermission(
+  AutoDialerCampaignDetails,
+  "fullAccessAutoDialerCampaigns",
+);

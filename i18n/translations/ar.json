@@ -3306,7 +3306,7 @@
               }
             },
             "callerIds": {
-              "label": "معرفات المتصل",
+              "label": "معرف المتصل",
               "validation": {
                 "min": "يجب إضافة {min} معرف متصل على الأقل",
                 "destination": {
@@ -3459,7 +3459,7 @@
               }
             },
             "callerIds": {
-              "label": "معرفات المتصل",
+              "label": "معرف المتصل",
               "validation": {
                 "min": "يجب إضافة {min} معرف متصل على الأقل",
                 "destination": {

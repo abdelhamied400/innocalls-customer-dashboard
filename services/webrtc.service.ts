@@ -41,11 +41,11 @@ export default {
     return res.data.agent;
   },
   searchAgentLiveCalls: async (
-    phone: string
+    phone: string,
   ): Promise<SearchAgentLiveCallsResponse> => {
     return new Promise((resolve) => setTimeout(resolve, 500)).then(async () => {
       const res = await api.get(
-        `agent-calls/live?phone=${encodeURIComponent(phone)}`
+        `agent-calls/live?phone=${encodeURIComponent(phone)}`,
       );
       return res.data;
     });
@@ -62,16 +62,27 @@ export default {
     return res.data;
   },
   getAutoDialerChannelInfo: async (
-    channelId: string
+    channelId: string,
   ): Promise<{ information: string; callId: string }> => {
     const res = await api.get(`auto-dialer-channels/agent/${channelId}`);
     return res.data;
   },
   saveAutoDialerChannelNotes: async (callId: string, notes: string) => {
-    const res = await api.patch(
-      `auto-dialer-channels/agent/${callId}/notes`,
-      { notes }
-    );
+    const res = await api.patch(`auto-dialer-channels/agent/${callId}/notes`, {
+      notes,
+    });
+    return res.data;
+  },
+  getUserAutoDialerChannelInfo: async (
+    channelId: string,
+  ): Promise<{ information: string; callId: string }> => {
+    const res = await api.get(`auto-dialer-channels/user/${channelId}`);
+    return res.data;
+  },
+  saveUserAutoDialerChannelNotes: async (callId: string, notes: string) => {
+    const res = await api.patch(`auto-dialer-channels/user/${callId}/notes`, {
+      notes,
+    });
     return res.data;
   },
 };

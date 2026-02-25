@@ -12,16 +12,22 @@ import { NoteAdd } from "@mui/icons-material";
 import { toast } from "sonner";
 import webrtcService from "@/services/webrtc.service";
 import { useTranslations } from "@/providers/TranslationProvider";
+import { useSession } from "next-auth/react";
 
 const useAutoDialerChannel = (channelId: string | undefined) => {
   const [information, setInformation] = useState("");
   const [callId, setCallId] = useState<string | null>(null);
+  const { data: session } = useSession();
+  const isAgent = session?.userType === "agent";
 
   useEffect(() => {
     if (!channelId) return;
 
-    webrtcService
-      .getAutoDialerChannelInfo(channelId)
+    const fetchInfo = isAgent
+      ? webrtcService.getAutoDialerChannelInfo
+      : webrtcService.getUserAutoDialerChannelInfo;
+
+    fetchInfo(channelId)
       .then((data) => {
         setInformation(data.information || "");
         setCallId(data.callId || null);
@@ -29,7 +35,7 @@ const useAutoDialerChannel = (channelId: string | undefined) => {
       .catch(() => {
         // silently fail - info is optional
       });
-  }, [channelId]);
+  }, [channelId, isAgent]);
 
   return { information, callId };
 };
@@ -55,13 +61,18 @@ const AutoDialerNotes = ({ callId }: { callId: string | null }) => {
   const [notes, setNotes] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false);
+  const { data: session } = useSession();
+  const isAgent = session?.userType === "agent";
 
   const handleSaveNotes = async () => {
     if (!callId) return;
 
     setIsSaving(true);
     try {
-      await webrtcService.saveAutoDialerChannelNotes(callId, notes);
+      const saveNotes = isAgent
+        ? webrtcService.saveAutoDialerChannelNotes
+        : webrtcService.saveUserAutoDialerChannelNotes;
+      await saveNotes(callId, notes);
       toast.success(t("notes.saveSuccess"));
       setPopoverOpen(false);
     } catch {
