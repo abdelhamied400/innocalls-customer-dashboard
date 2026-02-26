@@ -6,6 +6,7 @@ import CallDirection from "./Call/CallDirection";
 import CallState from "./Call/CallState";
 import { cn } from "@/lib/utils";
 import { parseAutoDialerCallee } from "@/lib/webrtc";
+import useWebrtcStore from "@/store/webrtc.slice";
 import {
   useAutoDialerChannel,
   AutoDialerInfo,
@@ -21,7 +22,8 @@ const Call = () => {
     displayName || number || ""
   );
 
-  const { information, callId } = useAutoDialerChannel(channelId);
+  const { information, callId } = useAutoDialerChannel(channelId, number);
+  const { callStartTime } = useWebrtcStore();
 
   const handleHangup = () => {
     currentSession?.terminate();
@@ -73,7 +75,7 @@ const Call = () => {
           <div className=""></div>
         </div>
 
-        <AutoDialerNotes callId={callId} />
+        <AutoDialerNotes callId={callId} callerName={calleeName} callStartTime={callStartTime} />
       </div>
     </div>
   );

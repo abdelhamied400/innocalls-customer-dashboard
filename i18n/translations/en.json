@@ -4076,6 +4076,19 @@
           "status": "Status"
         }
       }
+    },
+    "autoDialer": {
+      "info": {
+        "placeholder": "Customer Information"
+      },
+      "notes": {
+        "title": "Notes",
+        "placeholder": "Write your notes here...",
+        "save": "Save",
+        "saving": "Saving...",
+        "saveSuccess": "Notes saved successfully",
+        "saveError": "Failed to save notes"
+      }
     }
   }
 }

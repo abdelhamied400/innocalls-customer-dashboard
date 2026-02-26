@@ -61,6 +61,14 @@ export default {
     });
     return res.data;
   },
+  getAutoDialerCallId: async (
+    phoneNumber: string,
+  ): Promise<{ callId: string }> => {
+    const res = await api.get(
+      `/agent-calls/live?phone=${encodeURIComponent(phoneNumber)}`,
+    );
+    return { callId: res.data.callId };
+  },
   getAutoDialerChannelInfo: async (
     channelId: string,
   ): Promise<{ information: string; callId: string }> => {
