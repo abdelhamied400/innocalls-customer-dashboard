@@ -8,12 +8,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Close, NoteAdd, SpeakerNotes } from "@mui/icons-material";
+import { Close, SpeakerNotes } from "@mui/icons-material";
 import { toast } from "sonner";
 import webrtcService from "@/services/webrtc.service";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { useSession } from "next-auth/react";
-import CallTimer from "./CallTimer";
 import { format } from "date-fns";
 
 const useAutoDialerChannel = (
@@ -59,8 +58,6 @@ const useAutoDialerChannel = (
 
 const AutoDialerInfo = ({ information }: { information: string }) => {
   const t = useTranslations("webrtc.autoDialer");
-
-  if (!information) return null;
 
   return (
     <Textarea
@@ -129,7 +126,7 @@ const AutoDialerNotes = ({
         <div className="flex flex-col gap-3">
           <div className="bg-[url('/assets/images/notes-header.svg')] h-24 bg-no-repeat bg-cover p-4 rounded-t-3xl flex flex-col justify-center">
             {callerName && <h2 className="font-medium!">{callerName}</h2>}
-            <p className="font-bold">Call time {callTime}</p>
+            <p className="font-bold">{t("notes.callTime")} {callTime}</p>
           </div>
           <div className="content p-4 flex flex-col gap-4">
             <Textarea

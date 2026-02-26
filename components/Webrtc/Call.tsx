@@ -19,10 +19,10 @@ const Call = () => {
   const displayName = currentSession?.remote_identity?.display_name;
 
   const { name: calleeName, channelId } = parseAutoDialerCallee(
-    displayName || number || ""
+    displayName || number || "",
   );
 
-  const { information, callId } = useAutoDialerChannel(channelId, number);
+  const { information } = useAutoDialerChannel(channelId, number);
   const { callStartTime } = useWebrtcStore();
 
   const handleHangup = () => {
@@ -75,7 +75,11 @@ const Call = () => {
           <div className=""></div>
         </div>
 
-        <AutoDialerNotes callId={callId} callerName={calleeName} callStartTime={callStartTime} />
+        <AutoDialerNotes
+          callId={channelId}
+          callerName={calleeName}
+          callStartTime={callStartTime}
+        />
       </div>
     </div>
   );

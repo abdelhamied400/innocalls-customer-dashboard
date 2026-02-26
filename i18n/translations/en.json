@@ -4087,7 +4087,8 @@
         "save": "Save",
         "saving": "Saving...",
         "saveSuccess": "Notes saved successfully",
-        "saveError": "Failed to save notes"
+        "saveError": "Failed to save notes",
+        "callTime": "Call time"
       }
     }
   }
