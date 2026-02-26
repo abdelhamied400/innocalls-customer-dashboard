@@ -38,7 +38,7 @@ export const AutoDialerCreateStep1Schema = (t: any) =>
 export const AutoDialerCreateStep2Schema = (t: any) =>
   z.object({
     loopSoundFile: z
-      .instanceof(File, {
+      .custom<File>((val) => val instanceof File, {
         message: t("steps.callsDetails.form.loopSoundFile.validation.required"),
       })
       .refine((file) => file.type === "audio/mpeg", {
@@ -51,7 +51,7 @@ export const AutoDialerCreateStep2Schema = (t: any) =>
       }),
     hasAnnouncement: z.boolean().default(false),
     mainSoundFile: z
-      .instanceof(File, {
+      .custom<File>((val) => val instanceof File, {
         message: t("steps.callsDetails.form.mainSoundFile.validation.required"),
       })
       .refine((file) => file.type === "audio/mpeg", {

@@ -1,7 +1,6 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
 import breakTypesService from "@/services/break-types.service";
 import EditBreakForm from "./form";
 import { useTranslations } from "@/providers/TranslationProvider";
@@ -14,13 +13,14 @@ import Stepper, {
 } from "@/components/ui/stepper";
 import { ChevronLeftIcon, X } from "lucide-react";
 import withActiveOrganization from "@/containers/withActiveOrganization";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 
 const EditBreakPage = () => {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const t = useTranslations("settings.agent.breaks.editBreak");
 
-  const { data: breakType, isLoading } = useQuery({
+  const { data: breakType, isLoading } = useLocalizedQuery({
     queryKey: ["break-type", id],
     queryFn: () => breakTypesService.getBreakType(id!),
     enabled: !!id,

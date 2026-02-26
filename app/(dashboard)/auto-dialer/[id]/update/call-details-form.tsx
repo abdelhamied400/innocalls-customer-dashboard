@@ -28,6 +28,7 @@ type CallDetailsFormProps = {
   onNext: () => void;
 };
 const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
+  const tParent = useTranslations("autoDialer.updateCampaign");
   const t = useTranslations(
     "autoDialer.updateCampaign.steps.callsDetails.form",
   );
@@ -42,13 +43,24 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
     getValues,
     setError,
     setValue,
+    trigger,
   } = form;
 
   const handleNext = async () => {
     const values = getValues();
+    const hasExistingLoopSound = !!values.loopSoundFileName;
     const hasExistingMainSound = !!values.mainSoundFileName;
 
-    const res = await AutoDialerUpdateStep2Schema(t)
+    const res = await AutoDialerUpdateStep2Schema(tParent)
+      .refine(
+        (data) => {
+          return hasExistingLoopSound || !!data.loopSoundFile;
+        },
+        {
+          path: ["loopSoundFile"],
+          message: t("loopSoundFile.validation.required"),
+        },
+      )
       .refine(
         (data) => {
           const { hasAnnouncement, mainSoundFile } = data;
@@ -98,12 +110,17 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                       maxFiles: 1,
                     }}
                     value={field.value}
-                    onChange={field.onChange}
+                    onChange={(file) => {
+                      field.onChange(file);
+                      clearErrors("loopSoundFile");
+                      trigger("loopSoundFile");
+                    }}
                     fakeFiles={
                       getValues().loopSoundFileName
                         ? [getValues().loopSoundFileName!]
                         : []
                     }
+                    removeFakeFile={() => setValue("loopSoundFileName", undefined)}
                   >
                     <DropzoneTrigger />
                     <DropzoneFileList />
@@ -150,7 +167,11 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                         maxFiles: 1,
                       }}
                       value={field.value}
-                      onChange={field.onChange}
+                      onChange={(file) => {
+                        field.onChange(file);
+                        clearErrors("mainSoundFile");
+                        trigger("mainSoundFile");
+                      }}
                       fakeFiles={
                         getValues().mainSoundFileName
                           ? [getValues().mainSoundFileName!]
@@ -204,9 +225,11 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                             }))
                         : []
                     }
-                    onChange={(data) =>
-                      field.onChange(data.map((d) => d.value))
-                    }
+                    onChange={(data) => {
+                      field.onChange(data.map((d) => d.value));
+                      clearErrors("agents");
+                      trigger("agents");
+                    }}
                     isMulti
                   ></Select>
                 </FormControl>
@@ -217,13 +240,26 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
 
         <hr />
 
-        <div className="flex-1">
-          <h3>{t("callerIds.label")}</h3>
-          <CallerIdSelector />
-          {errors.callers?.message && (
-            <p className="text-destructive mt-2">{errors.callers.message}</p>
+        <FormField
+          control={control}
+          name="callers"
+          render={() => (
+            <FormItem className="flex-1">
+              <h3>{t("callerIds.label")}</h3>
+              <FormControl>
+                <CallerIdSelector
+                  onChangeCallback={() => {
+                    clearErrors("callers");
+                    trigger("callers");
+                  }}
+                />
+              </FormControl>
+              {errors.callers?.message && (
+                <p className="text-destructive mt-2">{errors.callers.message}</p>
+              )}
+            </FormItem>
           )}
-        </div>
+        />
 
         <Button size="lg" onClick={handleNext} type="button">
           {t("next")}

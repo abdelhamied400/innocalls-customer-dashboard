@@ -22,9 +22,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 
 type CampaignCdrsHeadProps = {
   filters: Record<string, any>;
@@ -61,7 +61,7 @@ const CampaignCdrsHead = ({ filters, setFilters }: CampaignCdrsHeadProps) => {
   );
   const [phone, setPhone] = useState(filters.phone || "");
 
-  const { data: campaign } = useQuery({
+  const { data: campaign } = useLocalizedQuery({
     queryKey: ["auto-dialer-campaign", id],
     queryFn: () => autoDialerService.getCampaign(id as string),
     enabled: !!id,

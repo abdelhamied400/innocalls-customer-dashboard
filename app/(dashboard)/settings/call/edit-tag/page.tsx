@@ -2,18 +2,18 @@
 
 import { useTranslations } from "@/providers/TranslationProvider";
 import vocabService from "@/services/vocab.service";
-import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "next/navigation";
 import EditTagForm from "./form";
 import Spinner from "@/components/ui/spinner";
 import withActiveOrganization from "@/containers/withActiveOrganization";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 
 const EditTag = () => {
   const searchParams = useSearchParams();
   const tagId = searchParams.get("id");
   const t = useTranslations("settings.call.editTag");
 
-  const { data: tags = [], isLoading } = useQuery({
+  const { data: tags = [], isLoading } = useLocalizedQuery({
     queryKey: ["tags"],
     queryFn: vocabService.getAllTags,
   });

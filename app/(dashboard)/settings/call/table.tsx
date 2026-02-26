@@ -8,12 +8,12 @@ import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import { columns } from "./columns";
 import { useTranslations } from "@/providers/TranslationProvider";
 import TagsTableHead from "./head";
-import { useQuery } from "@tanstack/react-query";
 import vocabService from "@/services/vocab.service";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 
 const TagsTable = () => {
   const t = useTranslations();
-  const { data: tags = [], isLoading } = useQuery({
+  const { data: tags = [], isLoading } = useLocalizedQuery({
     queryKey: ["tags"],
     queryFn: vocabService.getAllTags,
   });

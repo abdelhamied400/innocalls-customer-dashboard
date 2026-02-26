@@ -95,7 +95,11 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                       maxFiles: 1,
                     }}
                     value={field.value}
-                    onChange={field.onChange}
+                    onChange={(file) => {
+                      field.onChange(file);
+                      clearErrors("loopSoundFile");
+                      trigger("loopSoundFile");
+                    }}
                   >
                     <DropzoneTrigger />
                     <DropzoneFileList />
@@ -143,7 +147,11 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                         maxFiles: 1,
                       }}
                       value={field.value}
-                      onChange={field.onChange}
+                      onChange={(file) => {
+                        field.onChange(file);
+                        clearErrors("mainSoundFile");
+                        trigger("mainSoundFile");
+                      }}
                     >
                       <DropzoneTrigger />
                       <DropzoneFileList />

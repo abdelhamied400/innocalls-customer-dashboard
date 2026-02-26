@@ -5,10 +5,10 @@ import Dropzone, {
 } from "@/components/ui/dropzone";
 import { FormControl, FormField, FormItem } from "@/components/ui/form";
 import { CSV_SIZE_LIMIT } from "@/constants/file";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useTranslations } from "@/providers/TranslationProvider";
 import autoDialerService from "@/services/auto-dialer.service";
 import { AutoDialerUpdateStep4 } from "@/validation/AutoDialerUpdateCampaign";
-import { useQuery } from "@tanstack/react-query";
 import { DownloadIcon } from "lucide-react";
 import { useParams } from "next/navigation";
 import { useFormContext } from "react-hook-form";
@@ -22,7 +22,7 @@ const CustomersListForm = ({}: CustomersListFormProps) => {
   );
   const { id } = useParams();
   const form = useFormContext<AutoDialerUpdateStep4>();
-  const { data: campaign } = useQuery({
+  const { data: campaign } = useLocalizedQuery({
     queryKey: ["auto-dialer-campaign", id],
     queryFn: () => autoDialerService.getCampaign(id as string),
   });

@@ -9,18 +9,22 @@ import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import { columns } from "./columns";
 import { useTranslations } from "@/providers/TranslationProvider";
 import BreakTypesTableHead from "./head";
-import { useQuery } from "@tanstack/react-query";
 import breakTypesService from "@/services/break-types.service";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 
 const BreakTypesTable = () => {
   const t = useTranslations();
-  const { data: breakTypes = [], isLoading } = useQuery({
+  const { data: breakTypes = [], isLoading } = useLocalizedQuery({
     queryKey: ["break-types"],
     queryFn: breakTypesService.getAllBreakTypes,
   });
 
   return (
-    <PaginatedTable data={breakTypes} columns={columns(t)} manualPagination={false}>
+    <PaginatedTable
+      data={breakTypes}
+      columns={columns(t)}
+      manualPagination={false}
+    >
       <BreakTypesTableHead />
       <PaginatedTableContent>
         <PaginatedTableHead />

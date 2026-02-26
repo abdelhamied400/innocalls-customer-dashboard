@@ -13,7 +13,6 @@ import {
 import { cn } from "@/lib/utils";
 import { useTranslations } from "@/providers/TranslationProvider";
 import autoDialerService from "@/services/auto-dialer.service";
-import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 import queryExtensions from "@/queries/queryExtensions";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
@@ -21,7 +20,7 @@ import { useLocalizedQuery } from "@/hooks/use-localized-query";
 const AutoDialerCampaignDetails = () => {
   const t = useTranslations("autoDialer.campaignDetails");
   const { id } = useParams();
-  const { data: campaign, isLoading } = useQuery({
+  const { data: campaign, isLoading } = useLocalizedQuery({
     queryKey: ["auto-dialer-campaign", id],
     queryFn: () => autoDialerService.getCampaign(id as string),
     gcTime: 0,

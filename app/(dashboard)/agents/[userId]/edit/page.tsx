@@ -1,11 +1,11 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
 import usersService from "@/services/users.service";
 import EditUserForm from "./form";
 import Spinner from "@/components/ui/spinner";
 import withActiveOrganization from "@/containers/withActiveOrganization";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 
 const EditUser = () => {
   const { userId } = useParams<{ userId: string }>();
@@ -14,7 +14,7 @@ const EditUser = () => {
     data: initialUser,
     isLoading,
     error,
-  } = useQuery({
+  } = useLocalizedQuery({
     queryKey: ["user", userId],
     queryFn: () => usersService.getUserById(userId),
     enabled: !!userId,

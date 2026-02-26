@@ -39,49 +39,49 @@ export const AutoDialerUpdateStep1Schema = (t: any) =>
 export const AutoDialerUpdateStep2Schema = (t: any) =>
   z.object({
     loopSoundFile: z
-      .instanceof(File, {
-        message: t("loopSoundFile.validation.required"),
+      .custom<File>((val) => val instanceof File, {
+        message: t("steps.callsDetails.form.loopSoundFile.validation.required"),
       })
       .refine((file) => file.type === "audio/mpeg", {
-        message: t("loopSoundFile.validation.type"),
+        message: t("steps.callsDetails.form.loopSoundFile.validation.type"),
       })
       .refine((file) => file.size <= 70000000, {
-        message: t("loopSoundFile.validation.size", {
+        message: t("steps.callsDetails.form.loopSoundFile.validation.size", {
           size: "70 KB",
         }),
       })
       .optional(),
     hasAnnouncement: z.boolean().default(false),
     mainSoundFile: z
-      .instanceof(File, {
-        message: t("mainSoundFile.validation.required"),
+      .custom<File>((val) => val instanceof File, {
+        message: t("steps.callsDetails.form.mainSoundFile.validation.required"),
       })
       .refine((file) => file.type === "audio/mpeg", {
-        message: t("mainSoundFile.validation.type"),
+        message: t("steps.callsDetails.form.mainSoundFile.validation.type"),
       })
       .refine((file) => file.size <= 70000000, {
-        message: t("mainSoundFile.validation.size", {
+        message: t("steps.callsDetails.form.mainSoundFile.validation.size", {
           size: "70 KB",
         }),
       })
       .optional(),
-    agents: z.array(z.string()).min(1, t("agents.validation.min", { min: 1 })),
+    agents: z.array(z.string()).min(1, t("steps.callsDetails.form.agents.validation.min", { min: 1 })),
     callers: z
       .array(
         z.object({
           destination: z
             .string({
-              required_error: t("callerIds.validation.destination.required"),
+              required_error: t("steps.callsDetails.form.callerIds.validation.destination.required"),
             })
-            .nonempty(t("callerIds.validation.destination.required")),
+            .nonempty(t("steps.callsDetails.form.callerIds.validation.destination.required")),
           callerNumber: z
             .string({
-              required_error: t("callerIds.validation.callerNumber.required"),
+              required_error: t("steps.callsDetails.form.callerIds.validation.callerNumber.required"),
             })
-            .nonempty(t("callerIds.validation.callerNumber.required")),
+            .nonempty(t("steps.callsDetails.form.callerIds.validation.callerNumber.required")),
         }),
       )
-      .min(1, t("callerIds.validation.min", { min: 1 })),
+      .min(1, t("steps.callsDetails.form.callerIds.validation.min", { min: 1 })),
   });
 
 export const AutoDialerUpdateStep3Schema = (t: any) =>

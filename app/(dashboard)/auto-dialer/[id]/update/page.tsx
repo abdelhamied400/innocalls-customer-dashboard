@@ -32,7 +32,6 @@ import CustomersListForm from "./customers-list-form";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import autoDialerService from "@/services/auto-dialer.service";
-import { useQuery } from "@tanstack/react-query";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import queryExtensions from "@/queries/queryExtensions";
 import { ArrowBackIos } from "@mui/icons-material";
@@ -61,7 +60,7 @@ const UpdateAutoDialerCampaignSheet = () => {
   const { data: extensions, isLoading: isExtensionsLoading } =
     useLocalizedQuery(queryExtensions({}));
 
-  const { data: campaign, isLoading } = useQuery({
+  const { data: campaign, isLoading } = useLocalizedQuery({
     queryKey: ["auto-dialer-campaign", campaignId],
     queryFn: () => autoDialerService.getCampaign(campaignId as string),
     enabled: isMounted && !!campaignId,
@@ -141,7 +140,8 @@ const UpdateAutoDialerCampaignSheet = () => {
       } catch (error) {
         if (isAxiosError(error)) {
           toast.error(t("toasts.error"), {
-            description: error.response?.data?.message || t("toasts.errorDescription"),
+            description:
+              error.response?.data?.message || t("toasts.errorDescription"),
           });
           return;
         }
@@ -248,4 +248,7 @@ const UpdateAutoDialerCampaignSheet = () => {
   );
 };
 
-export default withPermission(UpdateAutoDialerCampaignSheet, "fullAccessAutoDialerCampaigns");
+export default withPermission(
+  UpdateAutoDialerCampaignSheet,
+  "fullAccessAutoDialerCampaigns",
+);

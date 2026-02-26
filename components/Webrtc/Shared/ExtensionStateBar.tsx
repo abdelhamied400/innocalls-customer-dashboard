@@ -20,7 +20,7 @@ import { AgentActivity } from "@/types/webrtc";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
 import useAuth from "@/hooks/useAuth";
-import { useQuery } from "@tanstack/react-query";
+import { useLocalizedQuery } from "@/hooks/use-localized-query";
 
 const ExtensionStateBar = () => {
   const t = useTranslations("webrtc");
@@ -36,7 +36,7 @@ const ExtensionStateBar = () => {
   const { data: session } = useSession();
   const { onActivityChange } = useSip();
 
-  const { data: availableBreakTypes = [] } = useQuery({
+  const { data: availableBreakTypes = [] } = useLocalizedQuery({
     queryKey: ["agent-available-break-types"],
     queryFn: breakTypesService.getAgentAvailableBreakTypes,
     enabled: session?.userType === "agent",

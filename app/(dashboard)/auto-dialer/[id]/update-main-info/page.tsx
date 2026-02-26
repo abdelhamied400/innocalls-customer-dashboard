@@ -25,12 +25,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import queryExtensions from "@/queries/queryExtensions";
 import { useTranslations } from "@/providers/TranslationProvider";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Field from "@/components/ui/field";
 import Select from "@/components/Select";
@@ -53,7 +48,7 @@ const UpdateMainInfoSheet = () => {
   const { data: extensions, isLoading: isExtensionsLoading } =
     useLocalizedQuery(queryExtensions({}));
 
-  const { data: campaign, isLoading } = useQuery({
+  const { data: campaign, isLoading } = useLocalizedQuery({
     queryKey: ["auto-dialer-campaign", campaignId],
     queryFn: () => autoDialerService.getCampaign(campaignId as string),
     enabled: isMounted && !!campaignId,
@@ -92,13 +87,10 @@ const UpdateMainInfoSheet = () => {
     async (data) => {
       try {
         setIsSubmitting(true);
-        await autoDialerService.updateCampaignMainInfo(
-          campaignId as string,
-          {
-            ...data,
-            agents: data.agents.map(Number),
-          },
-        );
+        await autoDialerService.updateCampaignMainInfo(campaignId as string, {
+          ...data,
+          agents: data.agents.map(Number),
+        });
         queryClient.invalidateQueries({
           queryKey: ["auto-dialer-active-campaigns"],
         });
@@ -128,7 +120,10 @@ const UpdateMainInfoSheet = () => {
     () => {},
   );
 
-  const { control, formState: { errors } } = form;
+  const {
+    control,
+    formState: { errors },
+  } = form;
 
   return (
     <Sheet
@@ -264,14 +259,8 @@ const UpdateMainInfoSheet = () => {
                         )}
                       </div>
 
-                      <Button
-                        size="lg"
-                        type="submit"
-                        disabled={isSubmitting}
-                      >
-                        {isSubmitting
-                          ? t("form.submitting")
-                          : t("form.submit")}
+                      <Button size="lg" type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? t("form.submitting") : t("form.submit")}
                       </Button>
                     </div>
                   </form>
@@ -285,4 +274,7 @@ const UpdateMainInfoSheet = () => {
   );
 };
 
-export default withPermission(UpdateMainInfoSheet, "fullAccessAutoDialerCampaigns");
+export default withPermission(
+  UpdateMainInfoSheet,
+  "fullAccessAutoDialerCampaigns",
+);
