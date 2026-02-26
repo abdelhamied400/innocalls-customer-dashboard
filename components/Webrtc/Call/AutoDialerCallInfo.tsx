@@ -42,7 +42,7 @@ const useAutoDialerChannel = (
   }, [channelId, isAgent]);
 
   useEffect(() => {
-    if (!phoneNumber) return;
+    if (!phoneNumber || !isAgent) return;
 
     webrtcService
       .getAutoDialerCallId(phoneNumber)
@@ -52,7 +52,7 @@ const useAutoDialerChannel = (
       .catch(() => {
         // silently fail - callId is optional
       });
-  }, [phoneNumber]);
+  }, [phoneNumber, isAgent]);
 
   return { information, callId };
 };
