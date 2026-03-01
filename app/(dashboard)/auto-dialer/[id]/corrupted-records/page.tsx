@@ -291,8 +291,8 @@ const CorruptedRecords = () => {
   const onRecordSaved = async () => {
     try {
       const result = await autoDialerService.fetchCorruptedRows(id, {
-        page: 1,
-        limit: 1,
+        page,
+        limit,
       });
 
       if (result.totalItems === 0) {
@@ -306,6 +306,12 @@ const CorruptedRecords = () => {
           description: t("allResolvedDescription"),
         });
         router.push("/auto-dialer/active");
+      } else if (result.corruptedRows.length === 0 && page > 1) {
+        // Current page is now empty but other pages still have records
+        queryClient.invalidateQueries({
+          queryKey: ["auto-dialer-corrupted-rows"],
+        });
+        setPage(1);
       } else {
         await queryClient.refetchQueries({
           queryKey: ["auto-dialer-corrupted-rows"],

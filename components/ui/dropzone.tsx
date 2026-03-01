@@ -303,7 +303,7 @@ export const DropzoneRejectedFile = ({
 };
 
 const DropzoneFakeFile = ({ fileName }: { fileName: string }) => {
-  const { removeFakeFile } = useDropzoneContext();
+  const { removeFakeFile, disabled } = useDropzoneContext();
 
   return (
     <li className="flex items-center justify-between gap-2 p-4 bg-gray-50 border rounded-lg">
@@ -314,6 +314,7 @@ const DropzoneFakeFile = ({ fileName }: { fileName: string }) => {
         size="icon"
         variant="destructive"
         type="button"
+        disabled={disabled}
         onClick={() => removeFakeFile(fileName)}
       >
         <Close />
