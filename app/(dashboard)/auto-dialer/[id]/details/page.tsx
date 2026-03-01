@@ -25,6 +25,7 @@ const AutoDialerCampaignDetails = () => {
     queryFn: () => autoDialerService.getCampaign(id as string),
     gcTime: 0,
     refetchInterval: 10000,
+    refetchOnMount: "always",
   });
   const { data: extensions } = useLocalizedQuery(queryExtensions({}));
 
