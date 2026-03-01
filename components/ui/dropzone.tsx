@@ -34,6 +34,7 @@ interface DropzoneContextType extends Partial<DropzoneState> {
   getInputProps: DropzoneState["getInputProps"];
   fakeFilesState: string[];
   removeFakeFile: (fileName: string) => void;
+  disabled?: boolean;
 }
 
 // Create context
@@ -58,6 +59,7 @@ type DropzoneRootProps = {
   onChange?: (file: File | null) => void;
   fakeFiles?: string[];
   removeFakeFile?: (fileName: string) => void;
+  disabled?: boolean;
 };
 
 // Dropzone Root
@@ -68,6 +70,7 @@ const Dropzone = ({
   onChange,
   fakeFiles = [],
   removeFakeFile: onRemoveFakeFile,
+  disabled,
 }: DropzoneRootProps) => {
   const [acceptedFiles, setAcceptedFiles] = useState<WithId<File>[]>([]);
   const [fileRejections, setFileRejections] = useState<WithId<FileRejection>[]>(
@@ -124,10 +127,13 @@ const Dropzone = ({
     );
   }, []);
 
-  const removeFakeFile = useCallback((fileName: string) => {
-    setFakeFilesState((prev) => prev.filter((name) => name !== fileName));
-    onRemoveFakeFile?.(fileName);
-  }, [onRemoveFakeFile]);
+  const removeFakeFile = useCallback(
+    (fileName: string) => {
+      setFakeFilesState((prev) => prev.filter((name) => name !== fileName));
+      onRemoveFakeFile?.(fileName);
+    },
+    [onRemoveFakeFile],
+  );
 
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: FileRejection[]) => {
@@ -140,6 +146,7 @@ const Dropzone = ({
   const { getRootProps, getInputProps } = useDropzone({
     ...options,
     onDrop,
+    disabled,
   });
 
   // If form value changes from outside (optional, useful for reset)
@@ -184,6 +191,7 @@ const Dropzone = ({
         options,
         fakeFilesState,
         removeFakeFile,
+        disabled,
       }}
     >
       {children}
@@ -194,14 +202,15 @@ const Dropzone = ({
 // Components
 export const DropzoneTrigger = () => {
   const t = useTranslations("common.dropzone");
-  const { getRootProps, getInputProps, options } = useDropzoneContext();
+  const { getRootProps, getInputProps, options, disabled } =
+    useDropzoneContext();
   const acceptedTypes = Object.values(options?.accept || {})
     .map((types) => types.map((type) => type.replace(/^\./, "")).join(", "))
     .join(", ");
 
   return (
     <section
-      className="bg-gray-50 rounded-lg border border-dashed border-gray-300 mb-2"
+      className={`bg-gray-50 rounded-lg border border-dashed border-gray-300 mb-2 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       role="button"
     >
       <div {...getRootProps({ className: "dropzone p-4" })}>
