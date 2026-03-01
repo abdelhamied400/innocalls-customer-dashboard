@@ -3231,14 +3231,16 @@
               "label": "Waiting Customer Count",
               "hint": "The number of customers that can wait in the queue",
               "validation": {
-                "min": "Waiting customer count must be at least {min}"
+                "min": "Waiting customer count must be at least {min}",
+                "max": "Waiting customer count must be at most {max}"
               }
             },
             "trialsCount": {
               "label": "Trials Count*",
               "hint": "The number of trials to call each customer",
               "validation": {
-                "min": "Trials count must be at least {min}"
+                "min": "Trials count must be at least {min}",
+                "max": "Trials count must be at most {max}"
               }
             },
             "wrapUpTime": {
@@ -3384,14 +3386,16 @@
               "label": "Waiting Customer Count",
               "hint": "The number of customers that can wait in the queue",
               "validation": {
-                "min": "Waiting customer count must be at least {min}"
+                "min": "Waiting customer count must be at least {min}",
+                "max": "Waiting customer count must be at most {max}"
               }
             },
             "trialsCount": {
               "label": "Trials Count*",
               "hint": "The number of trials to call each customer",
               "validation": {
-                "min": "Trials count must be at least {min}"
+                "min": "Trials count must be at least {min}",
+                "max": "Trials count must be at most {max}"
               }
             },
             "wrapUpTime": {

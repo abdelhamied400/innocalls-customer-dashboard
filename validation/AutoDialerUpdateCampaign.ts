@@ -17,11 +17,18 @@ export const AutoDialerUpdateStep1Schema = (t: any) =>
       .min(
         0,
         t("steps.details.form.waitingCustomerCount.validation.min", { min: 0 }),
+      )
+      .max(
+        10,
+        t("steps.details.form.waitingCustomerCount.validation.max", {
+          max: 10,
+        }),
       ),
     trialsCount: z
       .number()
       .int()
-      .min(1, t("steps.details.form.trialsCount.validation.min", { min: 1 })),
+      .min(1, t("steps.details.form.trialsCount.validation.min", { min: 1 }))
+      .max(10, t("steps.details.form.trialsCount.validation.max", { max: 10 })),
     wrapUpTime: z
       .number()
       .int()
