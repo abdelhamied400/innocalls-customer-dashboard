@@ -59,7 +59,7 @@ const Call = () => {
         {/* if session status is confirmed */}
         <CallState state={sessionState} />
 
-        <AutoDialerInfo information={information} />
+        {channelId && <AutoDialerInfo information={information} />}
 
         <CallActions />
         <div className="grid grid-cols-3 gap-5 place-items-center">
@@ -76,7 +76,7 @@ const Call = () => {
         </div>
 
         <AutoDialerNotes
-          callId={channelId}
+          channelId={channelId}
           callerName={calleeName}
           callStartTime={callStartTime}
         />

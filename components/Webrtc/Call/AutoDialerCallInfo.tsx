@@ -71,10 +71,10 @@ const AutoDialerInfo = ({ information }: { information: string }) => {
 };
 
 const AutoDialerNotes = ({
-  callId,
+  channelId,
   callerName,
 }: {
-  callId: string | null;
+  channelId: string | null;
   callerName?: string;
   callStartTime?: number | null;
 }) => {
@@ -87,14 +87,14 @@ const AutoDialerNotes = ({
   const [callTime, setCallTime] = useState("");
 
   const handleSaveNotes = async () => {
-    if (!callId) return;
+    if (!channelId) return;
 
     setIsSaving(true);
     try {
       const saveNotes = isAgent
         ? webrtcService.saveAutoDialerChannelNotes
         : webrtcService.saveUserAutoDialerChannelNotes;
-      await saveNotes(callId, notes);
+      await saveNotes(channelId, notes);
       toast.success(t("notes.saveSuccess"));
       setPopoverOpen(false);
     } catch {
@@ -109,7 +109,7 @@ const AutoDialerNotes = ({
     setCallTime(callTime);
   }, []);
 
-  if (!callId) return null;
+  if (!channelId) return null;
 
   return (
     <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
@@ -126,7 +126,9 @@ const AutoDialerNotes = ({
         <div className="flex flex-col gap-3">
           <div className="bg-[url('/assets/images/notes-header.svg')] h-24 bg-no-repeat bg-cover p-4 rounded-t-3xl flex flex-col justify-center">
             {callerName && <h2 className="font-medium!">{callerName}</h2>}
-            <p className="font-bold">{t("notes.callTime")} {callTime}</p>
+            <p className="font-bold">
+              {t("notes.callTime")} {callTime}
+            </p>
           </div>
           <div className="content p-4 flex flex-col gap-4">
             <Textarea
