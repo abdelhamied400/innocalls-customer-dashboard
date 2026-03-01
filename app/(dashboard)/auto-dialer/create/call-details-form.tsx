@@ -50,7 +50,7 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
       .refine(
         (data) => {
           const { hasAnnouncement, mainSoundFile } = data;
-          return !hasAnnouncement || (hasAnnouncement && mainSoundFile);
+          return !hasAnnouncement || (hasAnnouncement && mainSoundFile); // false will trigger the error, true will pass
         },
         {
           path: ["mainSoundFile"],
@@ -121,7 +121,12 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
               <FormControl>
                 <Checkbox
                   checked={!!field.value}
-                  onCheckedChange={(checked) => field.onChange(checked)}
+                  onCheckedChange={(checked) => {
+                    field.onChange(checked);
+                    if (!checked) {
+                      clearErrors("mainSoundFile");
+                    }
+                  }}
                 />
               </FormControl>
               <div className="leading-none">
@@ -149,8 +154,6 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                       value={field.value}
                       onChange={(file) => {
                         field.onChange(file);
-                        clearErrors("mainSoundFile");
-                        trigger("mainSoundFile");
                       }}
                     >
                       <DropzoneTrigger />
