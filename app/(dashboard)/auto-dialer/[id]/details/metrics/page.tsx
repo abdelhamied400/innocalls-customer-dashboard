@@ -113,6 +113,7 @@ const AutoDialerCampaignMetrics = () => {
       queryFn: () => autoDialerService.fetchCurrentInitiatedCalls(id),
       enabled: isActiveCampaign,
       refetchInterval: isActiveCampaign ? 15000 : false,
+      refetchOnMount: isActiveCampaign, // only refetch on mount if campaign is active
     });
 
   const metrics = data as CampaignMetrics | undefined;
