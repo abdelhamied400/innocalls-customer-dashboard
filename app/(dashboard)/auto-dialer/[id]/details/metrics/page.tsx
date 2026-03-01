@@ -107,14 +107,17 @@ const AutoDialerCampaignMetrics = () => {
     refetchInterval: isActiveCampaign ? 15000 : false,
   });
 
-  const { data: initiatedCalls, isLoading: isInitiatedCallsLoading } =
-    useLocalizedQuery({
-      queryKey: ["auto-dialer-campaign-initiated-calls", id],
-      queryFn: () => autoDialerService.fetchCurrentInitiatedCalls(id),
-      enabled: isActiveCampaign,
-      refetchInterval: isActiveCampaign ? 15000 : false,
-      refetchOnMount: isActiveCampaign, // only refetch on mount if campaign is active
-    });
+  const {
+    data: initiatedCalls,
+    isLoading: isInitiatedCallsLoading,
+    refetch: refetchInitiatedCalls,
+  } = useLocalizedQuery({
+    queryKey: ["auto-dialer-campaign-initiated-calls", id],
+    queryFn: () => autoDialerService.fetchCurrentInitiatedCalls(id),
+    enabled: isActiveCampaign,
+    refetchInterval: isActiveCampaign ? 15000 : false,
+    refetchOnMount: isActiveCampaign, // only refetch on mount if campaign is active
+  });
 
   const metrics = data as CampaignMetrics | undefined;
   const [waitingCallsSearch, setWaitingCallsSearch] = useState("");
@@ -415,7 +418,15 @@ const AutoDialerCampaignMetrics = () => {
       </div>
 
       {/* Section 3: Tabbed Tables */}
-      <Tabs defaultValue="waitingCalls" onValueChange={() => refetchMetrics()}>
+      <Tabs
+        defaultValue="waitingCalls"
+        onValueChange={(value) => {
+          if (value === "initiatedCalls") {
+            refetchInitiatedCalls();
+          }
+          refetchMetrics();
+        }}
+      >
         <TabsList>
           <TabsTrigger value="waitingCalls">
             {t("metrics.tabs.waitingCalls")}
