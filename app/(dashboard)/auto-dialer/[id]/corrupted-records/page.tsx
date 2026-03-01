@@ -310,16 +310,16 @@ const CorruptedRecords = () => {
         });
       }
     } catch {
+      toast.success(t("allResolved"), {
+        description: t("allResolvedDescription"),
+      });
+      router.push("/auto-dialer/active");
       queryClient.invalidateQueries({
         queryKey: ["auto-dialer-active-campaigns"],
       });
       queryClient.invalidateQueries({
         queryKey: ["auto-dialer-campaign", id],
       });
-      toast.success(t("allResolved"), {
-        description: t("allResolvedDescription"),
-      });
-      router.push("/auto-dialer/active");
     }
   };
 
