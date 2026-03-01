@@ -1,7 +1,7 @@
 "use client";
 import withPermission from "@/containers/withPermission";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -267,6 +267,7 @@ const CorruptedRecords = () => {
     queryKey: ["auto-dialer-corrupted-rows", id, page, limit],
     queryFn: () => autoDialerService.fetchCorruptedRows(id, { page, limit }),
     retry: false,
+    staleTime: Infinity,
   });
 
   const [isIgnoring, setIsIgnoring] = useState(false);
@@ -277,20 +278,21 @@ const CorruptedRecords = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  if (isError) {
-    toast.error(t("toasts.errorTitle"), {
-      description:
-        (isAxiosError(error) && error.response?.data?.message) ||
-        t("toasts.errorDescription"),
-    });
-  }
+  useEffect(() => {
+    if (isError) {
+      toast.error(t("toasts.errorTitle"), {
+        description:
+          (isAxiosError(error) && error.response?.data?.message) ||
+          t("toasts.errorDescription"),
+      });
+    }
+  }, [isError, error, t]);
 
   const onRecordSaved = async () => {
     try {
-      const result = await queryClient.fetchQuery({
-        queryKey: ["auto-dialer-corrupted-rows-check", id],
-        queryFn: () =>
-          autoDialerService.fetchCorruptedRows(id, { page: 1, limit: 1 }),
+      const result = await autoDialerService.fetchCorruptedRows(id, {
+        page: 1,
+        limit: 1,
       });
 
       if (result.totalItems === 0) {
@@ -305,7 +307,7 @@ const CorruptedRecords = () => {
         });
         router.push("/auto-dialer/active");
       } else {
-        queryClient.invalidateQueries({
+        await queryClient.refetchQueries({
           queryKey: ["auto-dialer-corrupted-rows"],
         });
       }
