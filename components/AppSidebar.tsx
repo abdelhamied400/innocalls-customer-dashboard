@@ -269,9 +269,9 @@ const AppSidebar = () => {
               icon={<Support />}
               title={t("navigation.zendeskCredentials")}
               href={`/developers/zendesk-credentials`}
-              disabled={true}
-              isNew={false}
-              isComingSoon={true}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
             />
             <SidebarItem
               icon={<Key />}
