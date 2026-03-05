@@ -1603,6 +1603,7 @@
       "zendeskCredentials": "بيانات اعتماد زين ديسك",
       "webrtcCredentials": "بيانات اعتماد WebRTC",
       "apiCredentials": "بيانات اعتماد API",
+      "freshdeskCredentials": "فريش ديسك",
       "activityAnalysis": "إحصائيات النشاط"
     },
     "support": {
@@ -4122,6 +4123,57 @@
         "saveSuccess": "تم حفظ الملاحظات بنجاح",
         "saveError": "فشل في حفظ الملاحظات",
         "callTime": "وقت المكالمة"
+      }
+    }
+  },
+   "developers": {
+    "freshdesk": {
+      "title": "بيانات اعتماد فريش ديسك",
+      "subtitle": "إدارة بيانات اعتماد API الخاصة بفريش ديسك",
+      "columns": {
+        "apiKey": "مفتاح API",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "actions": {
+        "create": "إنشاء بيانات اعتماد",
+        "delete": "حذف",
+        "restore": "استعادة",
+        "copy": "نسخ إلى الحافظة",
+        "download": "تحميل كملف"
+      },
+      "filters": {
+        "status": {
+          "label": "الحالة",
+          "selectLabel": "اختر الحالة",
+          "all": "الكل"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
+      },
+      "confirmations": {
+        "deleteTitle": "حذف بيانات الاعتماد",
+        "deleteDescription": "هل أنت متأكد من حذف بيانات الاعتماد هذه؟ يمكن استعادتها لاحقاً.",
+        "restoreTitle": "استعادة بيانات الاعتماد",
+        "restoreDescription": "هل أنت متأكد من استعادة بيانات الاعتماد هذه؟",
+        "cancel": "إلغاء",
+        "yesDelete": "نعم، حذف",
+        "yesRestore": "نعم، استعادة"
+      },
+      "apiKeyDialog": {
+        "title": "تم إنشاء مفتاح API",
+        "description": "يرجى نسخ أو تحميل مفتاح API الخاص بك الآن. لن تتمكن من رؤيته مرة أخرى.",
+        "close": "إغلاق"
+      },
+      "messages": {
+        "createSuccess": "تم إنشاء بيانات الاعتماد بنجاح",
+        "createFailed": "فشل في إنشاء بيانات الاعتماد",
+        "deleted": "تم حذف بيانات الاعتماد بنجاح",
+        "restored": "تم استعادة بيانات الاعتماد بنجاح",
+        "toggleFailed": "فشلت العملية",
+        "copiedToClipboard": "تم نسخ مفتاح API إلى الحافظة",
+        "downloaded": "تم تحميل مفتاح API"
       }
     }
   }

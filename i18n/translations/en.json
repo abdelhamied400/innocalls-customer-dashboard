@@ -1595,6 +1595,7 @@
       "zendeskCredentials": "Zendesk Credentials",
       "webrtcCredentials": "WebRTC Credentials",
       "apiCredentials": "API Credentials",
+      "freshdeskCredentials": "Freshdesk",
       "activityAnalysis": "Activity"
     },
     "support": {
@@ -4107,6 +4108,57 @@
         "saveSuccess": "Notes saved successfully",
         "saveError": "Failed to save notes",
         "callTime": "Call time"
+      }
+    }
+  },
+  "developers": {
+    "freshdesk": {
+      "title": "Freshdesk Credentials",
+      "subtitle": "Manage your Freshdesk API credentials",
+      "columns": {
+        "apiKey": "API Key",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "create": "Create Credential",
+        "delete": "Delete",
+        "restore": "Restore",
+        "copy": "Copy to clipboard",
+        "download": "Download as file"
+      },
+      "filters": {
+        "status": {
+          "label": "Status",
+          "selectLabel": "Select status",
+          "all": "All"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "click to show/hide search filters"
+      },
+      "confirmations": {
+        "deleteTitle": "Delete Credential",
+        "deleteDescription": "Are you sure you want to delete this credential? It can be restored later.",
+        "restoreTitle": "Restore Credential",
+        "restoreDescription": "Are you sure you want to restore this credential?",
+        "cancel": "Cancel",
+        "yesDelete": "Yes, Delete",
+        "yesRestore": "Yes, Restore"
+      },
+      "apiKeyDialog": {
+        "title": "API Key Generated",
+        "description": "Please copy or download your API key now",
+        "close": "Close"
+      },
+      "messages": {
+        "createSuccess": "Credential created successfully",
+        "createFailed": "Failed to create credential",
+        "deleted": "Credential deleted successfully",
+        "restored": "Credential restored successfully",
+        "toggleFailed": "Operation failed",
+        "copiedToClipboard": "API key copied to clipboard",
+        "downloaded": "API key downloaded"
       }
     }
   }
