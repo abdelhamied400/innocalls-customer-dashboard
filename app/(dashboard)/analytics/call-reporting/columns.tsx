@@ -10,49 +10,47 @@ import CallDirectionCell from "./cells/CallDirectionCell";
 import CallRecordingCell from "./cells/CallRecordingCell";
 import { useTranslations } from "@/providers/TranslationProvider";
 
-export const columns = (): ColumnDef<Call>[] => {
-  const t = useTranslations("callReporting.columns");
+export const columns = (
+  t: ReturnType<typeof useTranslations>
+): ColumnDef<Call>[] => [
+  {
+    accessorKey: "source",
+    header: t("columns.source"),
+    cell: SourceCell,
+  },
+  {
+    accessorKey: "destination",
+    header: t("columns.destination"),
+    cell: DestinationCell,
+  },
 
-  return [
-    {
-      accessorKey: "source",
-      header: t("source"),
-      cell: SourceCell,
-    },
-    {
-      accessorKey: "destination",
-      header: t("destination"),
-      cell: DestinationCell,
-    },
-
-    {
-      accessorKey: "datetime",
-      header: t("callDate"),
-      cell: DateTimeCell,
-    },
-    {
-      accessorKey: "duration",
-      header: t("callDuration"),
-    },
-    {
-      accessorKey: "call_status",
-      header: t("callStatus"),
-      cell: CallStatusCell,
-    },
-    {
-      accessorKey: "direction",
-      header: t("callDirection"),
-      cell: CallDirectionCell,
-    },
-    {
-      accessorKey: "callSummary",
-      header: t("callSummary"),
-      cell: CallSummaryCell,
-    },
-    {
-      accessorKey: "recording",
-      header: t("recording"),
-      cell: CallRecordingCell,
-    },
-  ];
-};
+  {
+    accessorKey: "datetime",
+    header: t("columns.callDate"),
+    cell: DateTimeCell,
+  },
+  {
+    accessorKey: "duration",
+    header: t("columns.callDuration"),
+  },
+  {
+    accessorKey: "call_status",
+    header: t("columns.callStatus"),
+    cell: CallStatusCell,
+  },
+  {
+    accessorKey: "direction",
+    header: t("columns.callDirection"),
+    cell: CallDirectionCell,
+  },
+  {
+    accessorKey: "callSummary",
+    header: t("columns.callSummary"),
+    cell: CallSummaryCell,
+  },
+  {
+    accessorKey: "recording",
+    header: t("columns.recording"),
+    cell: CallRecordingCell,
+  },
+];

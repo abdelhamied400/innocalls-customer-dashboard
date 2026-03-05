@@ -6,15 +6,24 @@ import CallDirection from "./Call/CallDirection";
 import CallState from "./Call/CallState";
 import { cn } from "@/lib/utils";
 import { parseAutoDialerCallee } from "@/lib/webrtc";
+import useWebrtcStore from "@/store/webrtc.slice";
+import {
+  useAutoDialerChannel,
+  AutoDialerInfo,
+  AutoDialerNotes,
+} from "./Call/AutoDialerCallInfo";
 
 const Call = () => {
   const { currentSession, sessionState, isSpying, spyingStatus } = useSip();
   const number = currentSession?.remote_identity?.uri?.user.replace("*199", "");
   const displayName = currentSession?.remote_identity?.display_name;
 
-  const { name: calleeName } = parseAutoDialerCallee(
-    displayName || number || ""
+  const { name: calleeName, channelId } = parseAutoDialerCallee(
+    displayName || number || "",
   );
+
+  const { information } = useAutoDialerChannel(channelId, number);
+  const { callStartTime } = useWebrtcStore();
 
   const handleHangup = () => {
     currentSession?.terminate();
@@ -50,6 +59,8 @@ const Call = () => {
         {/* if session status is confirmed */}
         <CallState state={sessionState} />
 
+        {channelId && <AutoDialerInfo information={information} />}
+
         <CallActions />
         <div className="grid grid-cols-3 gap-5 place-items-center">
           <div className=""></div>
@@ -63,6 +74,12 @@ const Call = () => {
           </Button>
           <div className=""></div>
         </div>
+
+        <AutoDialerNotes
+          channelId={channelId}
+          callerName={calleeName}
+          callStartTime={callStartTime}
+        />
       </div>
     </div>
   );

@@ -11,17 +11,24 @@ import { Toggle } from "@/components/ui/toggle";
 import { format } from "date-fns";
 import SearchIcon from "@mui/icons-material/Search";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import CalendarIcon from "@mui/icons-material/CalendarToday";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { useEffect, useState } from "react";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";
 import { isValidDateRange } from "@/lib/date";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { autoDialerCampaignFinishedStatuses } from "@/constants/auto-dialer";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type AutoDialerFinishedHeadProps = {
   filters: Record<string, string>;
@@ -31,7 +38,8 @@ const AutoDialerFinishedHead = ({
   filters,
   setFilters,
 }: AutoDialerFinishedHeadProps) => {
-  const { toast } = useToast();
+  const t = useTranslations("autoDialer.finishedCampaigns");
+  const st = useTranslations("autoDialer");
   const { table } = usePaginatedTable();
   const [fromDate, setFromDate] = useState<Date>();
   const [toDate, setToDate] = useState<Date>();
@@ -51,13 +59,11 @@ const AutoDialerFinishedHead = ({
       fromDate,
       toDate,
       (message) => {
-        toast({
-          title: "Invalid Date Range",
+        toast.error("Invalid Date Range", {
           description: message,
-          variant: "destructive",
         });
       },
-      -1
+      -1,
     );
     if (!isValid) return false;
 
@@ -69,8 +75,6 @@ const AutoDialerFinishedHead = ({
     return true;
   };
 
-  // Reset pagination when filters change
-  // This ensures that when filters are applied, the table starts from the first page
   useEffect(() => {
     table.setPageIndex(0);
   }, [filters]);
@@ -79,22 +83,31 @@ const AutoDialerFinishedHead = ({
     <Collapsible>
       <div className="table-head">
         <div className="flex justify-between items-center gap-4 p-3">
-          <h3>Finished Campaigns</h3>
+          <h3>{t("title")}</h3>
           <div className="flex items-center gap-4 actions">
             <Field preIcon={<SearchIcon className="text-muted-foreground" />}>
               <Input
-                placeholder="search by name..."
+                placeholder={t("search")}
                 type="search"
                 variant="field"
                 value={filters.name || ""}
                 onChange={handleSearchChange}
               />
             </Field>
-            <CollapsibleTrigger asChild>
-              <Toggle pressed={true} className="rounded-full">
-                <FilterAltIcon />
-              </Toggle>
-            </CollapsibleTrigger>
+            <TooltipProvider>
+              <Tooltip>
+                <CollapsibleTrigger asChild>
+                  <TooltipTrigger asChild>
+                    <Toggle pressed={true} className="rounded-full">
+                      <FilterAltIcon />
+                    </Toggle>
+                  </TooltipTrigger>
+                </CollapsibleTrigger>
+                <TooltipContent>
+                  <p>{t("tooltips.toggleFilters")}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
         <CollapsibleContent>
@@ -108,8 +121,8 @@ const AutoDialerFinishedHead = ({
             }}
           >
             <FilterBox
-              triggerLabel="Creation Date"
-              label="Select a date range"
+              triggerLabel={t("filters.creationDate.placeholder")}
+              label={t("filters.creationDate.label")}
               onReset={() => {
                 setFromDate(undefined);
                 setToDate(undefined);
@@ -123,34 +136,33 @@ const AutoDialerFinishedHead = ({
               numberOfFilters={(fromDate ? 1 : 0) + (toDate ? 1 : 0)}
             >
               <Field
-                label="From"
-                hint="DD/MM/YYYY"
+                label={t("filters.creationDate.from.label")}
+                hint={t("filters.creationDate.from.hint")}
                 postIcon={<CalendarIcon className="text-gray-400" />}
               >
                 <DatePicker
                   className="flex-1"
-                  placeholder="Enter from date"
+                  placeholder={t("filters.creationDate.from.placeholder")}
                   value={fromDate}
                   onChange={(date) => setFromDate(date || undefined)}
                 />
               </Field>
               <Field
-                label="To"
-                hint="DD/MM/YYYY"
+                label={t("filters.creationDate.to.label")}
+                hint={t("filters.creationDate.to.hint")}
                 postIcon={<CalendarIcon className="text-gray-400" />}
               >
                 <DatePicker
                   className="flex-1"
-                  placeholder="Enter to date"
+                  placeholder={t("filters.creationDate.to.placeholder")}
                   value={toDate}
                   onChange={(date) => setToDate(date || undefined)}
                 />
               </Field>
             </FilterBox>
-            {/* duration type */}
             <FilterBox
-              triggerLabel="Duration Type"
-              label="Select duration type"
+              triggerLabel={t("filters.durationType.placeholder")}
+              label={t("filters.durationType.label")}
               onReset={() => {
                 setDurationType(undefined);
                 setFilters((prev) => ({
@@ -173,22 +185,20 @@ const AutoDialerFinishedHead = ({
               >
                 <div className="flex items-center gap-2">
                   <RadioGroupItem value="time-limited" id="time-limited" />
-                  <Label htmlFor="time-limited">Time Limited</Label>
+                  <Label htmlFor="time-limited">{st("activeCampaigns.durationTypes.time-limited")}</Label>
                 </div>
                 <div className="flex items-center gap-2">
                   <RadioGroupItem
                     value="agent-availability"
                     id="agent-availability"
                   />
-                  <Label htmlFor="agent-availability">Agent Availability</Label>
+                  <Label htmlFor="agent-availability">{st("activeCampaigns.durationTypes.agent-availability")}</Label>
                 </div>
               </RadioGroup>
             </FilterBox>
-            {/* status */}
-
             <FilterBox
-              triggerLabel="Status"
-              label="Select campaign status"
+              triggerLabel={t("filters.status.placeholder")}
+              label={t("filters.status.label")}
               onReset={() => {
                 setStatus({});
                 setFilters((prev) => ({
@@ -207,7 +217,7 @@ const AutoDialerFinishedHead = ({
               }}
               numberOfFilters={Object.keys(status).length}
             >
-              {autoDialerCampaignFinishedStatuses.map((s) => (
+              {autoDialerCampaignFinishedStatuses(st).map((s) => (
                 <div className="flex items-center gap-2" key={s.value}>
                   <Checkbox
                     id={s.value}

@@ -13,7 +13,7 @@ import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import { isAxiosError } from "axios";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import useAppStore from "@/store/app.slice";
 
@@ -24,7 +24,6 @@ const defaultFilters: UsersMonitorFilters = {
 };
 
 const UsersMonitorTable = ({}) => {
-  const { toast } = useToast();
   const t = useTranslations("users.monitor");
   const { extensionState, spy } = useSip();
   const { setWebrtcOpen } = useAppStore();
@@ -46,10 +45,8 @@ const UsersMonitorTable = ({}) => {
   const onSpy = (ext: string) => {
     setWebrtcOpen(true);
     if (extensionState !== "connected") {
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: t("sipConnectionError"),
-        variant: "destructive",
       });
       return;
     }
@@ -64,10 +61,8 @@ const UsersMonitorTable = ({}) => {
       } else {
         message = error?.message;
       }
-      toast({
-        title: "Error fetching data",
+      toast.error("Error fetching data", {
         description: message,
-        variant: "destructive",
       });
       setFilters(defaultFilters);
       setTimeout(() => {

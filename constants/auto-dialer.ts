@@ -12,36 +12,48 @@ export type AutoDialerCampaignActiveStatus =
 export type AutoDialerCampaignFinishedStatus =
   | "completed"
   | "cancelled"
-  | "failed"
   | "finished";
 export type AutoDialerCampaignStatus =
   | AutoDialerCampaignActiveStatus
   | AutoDialerCampaignFinishedStatus;
 
-export const autoDialerCampaignActiveStatuses = [
-  { value: "schedule-customers", label: "Schedule customers" },
-  { value: "customers-inserted", label: "Customers inserted" },
-  { value: "verifying-customers", label: "Verifying customers" },
-  { value: "verification-failed", label: "Verification failed" },
-  { value: "created", label: "Created" },
-  { value: "started", label: "Started" },
-  { value: "in-progress", label: "In progress" },
-  { value: "active", label: "Active" },
-  { value: "paused", label: "Paused" },
-  { value: "corrupted-ignored", label: "Corrupted ignored" },
+export const autoDialerCampaignActiveStatuses = (t: any) => [
+  {
+    value: "schedule-customers",
+    label: t("activeCampaigns.statuses.schedule-customers"),
+  },
+  {
+    value: "customers-inserted",
+    label: t("activeCampaigns.statuses.customers-inserted"),
+  },
+  {
+    value: "verifying-customers",
+    label: t("activeCampaigns.statuses.verifying-customers"),
+  },
+  {
+    value: "verification-failed",
+    label: t("activeCampaigns.statuses.verification-failed"),
+  },
+  { value: "created", label: t("activeCampaigns.statuses.created") },
+  { value: "in-progress", label: t("activeCampaigns.statuses.in-progress") },
+  { value: "active", label: t("activeCampaigns.statuses.active") },
+  { value: "paused", label: t("activeCampaigns.statuses.paused") },
+  {
+    value: "corrupted-ignored",
+    label: t("activeCampaigns.statuses.corrupted-ignored"),
+  },
 ];
 
-export const autoDialerCampaignFinishedStatuses = [
-  { value: "completed", label: "Completed" },
-  { value: "cancelled", label: "Cancelled" },
-  { value: "failed", label: "Failed" },
-  { value: "finished", label: "Finished" },
+export const autoDialerCampaignFinishedStatuses = (t: any) => [
+  { value: "completed", label: t("finishedCampaigns.statuses.completed") },
+  { value: "cancelled", label: t("finishedCampaigns.statuses.cancelled") },
+  { value: "finished", label: t("finishedCampaigns.statuses.finished") },
 ];
 
 export const autoDialerCampaignArchivedStatuses =
   autoDialerCampaignFinishedStatuses;
 
-export const autoDialerCampaignStatuses = [
-  ...autoDialerCampaignActiveStatuses,
-  ...autoDialerCampaignFinishedStatuses,
+export const autoDialerCampaignStatuses = (t: any) => [
+  ...autoDialerCampaignActiveStatuses(t),
+  ...autoDialerCampaignFinishedStatuses(t),
 ];

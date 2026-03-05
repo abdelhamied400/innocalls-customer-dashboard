@@ -1,10 +1,14 @@
+"use client";
+
 import AutoDialerFinishedCampaignsTable from "./table";
+import withActiveOrganization from "@/containers/withActiveOrganization";
+import withPermission from "@/containers/withPermission";
 
 export type Filters = {};
 type AutoDialerFinishedCampaignsProps = {
   searchParams: Promise<Filters>;
 };
-const AutoDialerFinishedCampaigns = async ({
+const AutoDialerFinishedCampaigns = ({
   searchParams,
 }: AutoDialerFinishedCampaignsProps) => {
   return (
@@ -16,4 +20,4 @@ const AutoDialerFinishedCampaigns = async ({
   );
 };
 
-export default AutoDialerFinishedCampaigns;
+export default withActiveOrganization(withPermission(AutoDialerFinishedCampaigns, "fullAccessAutoDialerCampaigns"));

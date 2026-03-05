@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "lucide-react";
 import DatePicker from "@/components/ui/date-picker";
 import { isValidDateRange } from "@/lib/date";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { useSession } from "next-auth/react";
 import { FilterBar } from "@/components/FilterBar";
@@ -39,7 +39,6 @@ type CallReportingHeadProps = {
   setFilters: React.Dispatch<React.SetStateAction<AgentCallReportingFilters>>;
 };
 const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
-  const { toast } = useToast();
   const t = useTranslations("callReporting");
   const tCommon = useTranslations("common");
 
@@ -73,8 +72,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
         ...filters,
       });
 
-      toast({
-        title: t("export.title"),
+      toast.info(t("export.title"), {
         description: t("export.description"),
       });
     } catch (error) {
@@ -82,10 +80,8 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
       if (isAxiosError(error)) {
         message = error?.response?.data.message;
       }
-      toast({
-        title: t("export.description"),
+      toast.error(t("export.description"), {
         description: message,
-        variant: "destructive",
       });
       console.error("Export error:", error);
     } finally {
@@ -98,10 +94,8 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
       fromDate,
       toDate,
       (message) => {
-        toast({
-          title: t("messages.invalidDateRange"),
+        toast.error(t("messages.invalidDateRange"), {
           description: message,
-          variant: "destructive",
         });
       },
       -1,
@@ -253,12 +247,10 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
                   setNumbers((prev) => [...prev, newExt]);
                   return newExt;
                 }
-                toast({
-                  title: t("filters.validation.number.invalid"),
+                toast.error(t("filters.validation.number.invalid"), {
                   description: t(
                     "filters.validation.number.invalidDescription"
                   ),
-                  variant: "destructive",
                 });
                 return false;
               }}

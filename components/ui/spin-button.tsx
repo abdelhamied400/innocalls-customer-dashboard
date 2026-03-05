@@ -58,6 +58,7 @@ const SpinButton = ({
           size="icon"
           variant="outline"
           type="button"
+          className="size-6 rounded-sm border-stroke text-icons"
           onClick={handleDecrement}
         >
           <MinusIcon />
@@ -90,6 +91,7 @@ const SpinButton = ({
           size="icon"
           variant="outline"
           type="button"
+          className="size-6 rounded-sm border-stroke text-icons"
           onClick={handleIncrement}
         >
           <PlusIcon />

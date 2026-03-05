@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { columns } from "./columns";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import billingService from "@/services/billing.service";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { useTranslations } from "@/providers/TranslationProvider";
 import ChargesHead from "./head";
@@ -29,7 +29,6 @@ fromDate.setDate(fromDate.getDate() - 30);
 const toDate = new Date();
 
 const BillingTable = () => {
-  const { toast } = useToast();
 
   const t = useTranslations("billing.charges");
 
@@ -69,11 +68,8 @@ const BillingTable = () => {
 
   useEffect(() => {
     if (isError && error instanceof AxiosError) {
-      toast({
-        title: t("messages.error"),
-        description:
-          error.response?.data?.message || t("messages.errorDescription"),
-        variant: "destructive",
+      toast.error(t("messages.error"), {
+        description: error.response?.data?.message || t("messages.errorDescription"),
       });
     }
   }, [isError, error]);
@@ -95,7 +91,7 @@ const BillingTable = () => {
     <div className="h-auto sm:h-full flex flex-col border rounded-xl">
       <PaginatedTable
         data={charges.data || []}
-        columns={columns()}
+        columns={columns(t)}
         pagination={{
           totalItems: charges.total || 0,
           totalPages: charges.last_page || 0,

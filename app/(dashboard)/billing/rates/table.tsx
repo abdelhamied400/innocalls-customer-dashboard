@@ -12,6 +12,7 @@ import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import PaginatedTableHead from "@/components/Table/PaginatedTableHead";
 import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type RatesFilters = {
   search: string;
@@ -19,6 +20,7 @@ type RatesFilters = {
 };
 
 const BillingTable = () => {
+  const t = useTranslations("billing.rates");
   const [sorting, setSorting] = useState<SortingState>([]);
   const [filters, setFilters] = useState<RatesFilters>({
     search: "",
@@ -71,7 +73,7 @@ const BillingTable = () => {
     <div className="h-auto sm:h-full flex flex-col border rounded-xl">
       <PaginatedTable
         data={rates.data || []}
-        columns={columns()}
+        columns={columns(t)}
         pagination={{
           totalItems: rates.total || 0,
           totalPages: rates.last_page || 0,

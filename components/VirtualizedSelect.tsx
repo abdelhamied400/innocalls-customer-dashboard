@@ -35,7 +35,8 @@ type VirtualizedSelectProps<
   label?: string;
   error?: string;
   isVirtualized?: boolean;
-} & Omit<SelectProps<OptionType, IsMulti, GroupBase<OptionType>>, "options">;
+  noOptionsMessage?: string;
+} & Omit<SelectProps<OptionType, IsMulti, GroupBase<OptionType>>, "options" | "noOptionsMessage">;
 
 const MenuList = <OptionType extends Option>({
   children,
@@ -70,6 +71,7 @@ const VirtualizedSelect = <
   onChange,
   label,
   error,
+  noOptionsMessage,
   ...props
 }: VirtualizedSelectProps<OptionType, IsMulti>) => {
   // memoize options for performance
@@ -153,7 +155,12 @@ const VirtualizedSelect = <
               ...base,
               display: "none", // hide react-select's internal placeholder
             }),
+            menu: (base) => ({
+              ...base,
+              zIndex: 9999,
+            }),
           }}
+          noOptionsMessage={noOptionsMessage ? () => noOptionsMessage : undefined}
           onChange={onChange}
           {...props}
         />

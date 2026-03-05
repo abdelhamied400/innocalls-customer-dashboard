@@ -1,7 +1,7 @@
 import { cva, VariantProps } from "class-variance-authority";
 import { Button } from "../ui/button";
 import { useSip } from "@/providers/webrtc/SipProvider";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import useAppStore from "@/store/app.slice";
 import Image from "next/image";
 import { useTranslations } from "@/providers/TranslationProvider";
@@ -72,7 +72,6 @@ const AgentCard: React.FC<AgentCardProps> = ({
 }) => {
   const { extensionState, spy } = useSip();
   const { setWebrtcOpen } = useAppStore();
-  const { toast } = useToast();
 
   const t = useTranslations("liveMonitor.liveCalls.callCard");
 
@@ -84,10 +83,8 @@ const AgentCard: React.FC<AgentCardProps> = ({
   const handleSpy = () => {
     setWebrtcOpen(true);
     if (extensionState !== "connected") {
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: t("sipConnectionError"),
-        variant: "destructive",
       });
       return;
     }

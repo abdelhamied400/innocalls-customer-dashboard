@@ -37,20 +37,20 @@ export function useLocalizedQuery<T>(
   const { Organization } = useAuthStore();
   const { data: auth } = useAuth();
 
-  if (typeof keyOrObject === "string") {
-    // Original pattern: useLocalizedQuery(key, queryFn, options)
-    return useQuery({
-      queryKey: [keyOrObject, locale, Organization?.id, auth?.user?.id],
-      queryFn: () => queryFn!({ locale }),
-      ...options,
-    });
-  } else {
-    // New pattern: useLocalizedQuery({ queryKey, queryFn, ...options })
-    const { queryKey, queryFn: fn, ...opts } = keyOrObject;
-    return useQuery({
-      queryKey: [...queryKey, locale, Organization?.id, auth?.user?.id],
-      queryFn: fn,
-      ...opts,
-    });
-  }
+  const queryOptions = typeof keyOrObject === "string"
+    ? {
+        queryKey: [keyOrObject, locale, Organization?.id, auth?.user?.id],
+        queryFn: () => queryFn!({ locale }),
+        ...options,
+      }
+    : (() => {
+        const { queryKey, queryFn: fn, ...opts } = keyOrObject;
+        return {
+          queryKey: [...queryKey, locale, Organization?.id, auth?.user?.id],
+          queryFn: fn,
+          ...opts,
+        };
+      })();
+
+  return useQuery(queryOptions);
 }

@@ -1,7 +1,7 @@
 import StreamingSoundPlayer from "@/components/StreamingSoundPlayer";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import callReportingService from "@/services/call-reporting.service";
 import { AgentCall } from "@/types/api/call-reporting";
 import { Cell } from "@/types/cell";
@@ -12,7 +12,6 @@ import { useMemo, useState } from "react";
 const CallRecordingCell = ({ row }: Cell<AgentCall>) => {
   const hasRecording = row.original.hasRecording;
   const callId = row.original.id;
-  const { toast } = useToast();
   const t = useTranslations("callReporting.recording");
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -33,10 +32,8 @@ const CallRecordingCell = ({ row }: Cell<AgentCall>) => {
       setRecordingUrl(recordingUrl);
       setIsModalOpen(true);
     } catch (error) {
-      toast({
-        title: t("error"),
+      toast.error(t("error"), {
         description: t("errorDescription"),
-        variant: "destructive",
       });
       console.error("Error fetching recording:", error);
     } finally {

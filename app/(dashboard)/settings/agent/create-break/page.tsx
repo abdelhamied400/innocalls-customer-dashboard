@@ -1,4 +1,7 @@
+"use client";
+
 import CreateBreakForm from "./form";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const CreateBreakPage = () => {
   return (
@@ -8,4 +11,4 @@ const CreateBreakPage = () => {
   );
 };
 
-export default CreateBreakPage;
+export default withActiveOrganization(CreateBreakPage);

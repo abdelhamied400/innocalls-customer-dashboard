@@ -1,5 +1,5 @@
 "use client";
-import CallerIdSelector from "@/components/CallerId/CallerIdSelector";
+import CallerIdSelector from "@/components/CallerIdSelector";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import Dropzone, {
@@ -16,34 +16,64 @@ import {
 import Select from "@/components/Select";
 import { SOUND_SIZE_LIMIT } from "@/constants/file";
 import queryExtensions from "@/queries/queryExtensions";
-import { AutoDialerCreateStep2 } from "@/validation/AutoDialerCreateCampaign";
+import {
+  AutoDialerCreateStep2,
+  AutoDialerCreateStep2Schema,
+} from "@/validation/AutoDialerCreateCampaign";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useFormContext } from "react-hook-form";
-import { timezones } from "@/constants/timezones";
-import Field from "@/components/ui/field";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 type CallDetailsFormProps = {
   onNext: () => void;
 };
 const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
+  const tParent = useTranslations("autoDialer.createCampaign");
+  const t = useTranslations(
+    "autoDialer.createCampaign.steps.callsDetails.form",
+  );
   const form = useFormContext<AutoDialerCreateStep2>();
   const { data: extensions } = useLocalizedQuery(queryExtensions({}));
 
   const {
     watch,
-    trigger,
     control,
     formState: { errors },
     clearErrors,
+    getValues,
+    setError,
+    trigger,
   } = form;
 
   const handleNext = async () => {
-    const isValid = await trigger(["sound", "agents", "callerIds"]);
+    const res = await AutoDialerCreateStep2Schema(tParent)
+      .refine(
+        (data) => {
+          const { hasAnnouncement, mainSoundFile } = data;
+          return !hasAnnouncement || (hasAnnouncement && mainSoundFile); // false will trigger the error, true will pass
+        },
+        {
+          path: ["mainSoundFile"],
+          message: t("mainSoundFile.validation.required"),
+        },
+      )
+      .safeParseAsync(getValues());
 
-    if (isValid) {
-      clearErrors();
-      onNext();
+    if (!res.success) {
+      setTimeout(() => {
+        res.error.issues.forEach((issue) => {
+          setError(issue.path[0] as keyof AutoDialerCreateStep2, {
+            type: "manual",
+            message: issue.message,
+          });
+        });
+      }, 0);
+
+      return;
     }
+
+    clearErrors();
+    onNext();
   };
 
   return (
@@ -51,12 +81,12 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
       <div className="flex flex-col gap-4">
         <FormField
           control={control}
-          name="sound"
+          name="loopSoundFile"
           render={({ field }) => (
             <FormItem className="w-full">
               <FormControl>
                 <div className="">
-                  <h3>Sound</h3>
+                  <h3>{t("loopSoundFile.label")}</h3>
                   <Dropzone
                     options={{
                       accept: { "audio/mp3": [".mp3"] },
@@ -65,12 +95,18 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                       maxFiles: 1,
                     }}
                     value={field.value}
-                    onChange={field.onChange}
+                    onChange={(file) => {
+                      field.onChange(file);
+                      clearErrors("loopSoundFile");
+                      trigger("loopSoundFile");
+                    }}
                   >
                     <DropzoneTrigger />
                     <DropzoneFileList />
                   </Dropzone>
-                  <p className="text-destructive">{errors.sound?.message}</p>
+                  <p className="text-destructive">
+                    {errors.loopSoundFile?.message}
+                  </p>
                 </div>
               </FormControl>
             </FormItem>
@@ -79,31 +115,35 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
 
         <FormField
           control={control}
-          name="playAnnouncement"
+          name="hasAnnouncement"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-start gap-2">
+            <FormItem className="flex flex-row items-center gap-2">
               <FormControl>
                 <Checkbox
                   checked={!!field.value}
-                  onCheckedChange={(checked) => field.onChange(checked)}
+                  onCheckedChange={(checked) => {
+                    field.onChange(checked);
+                    if (!checked) {
+                      clearErrors("mainSoundFile");
+                    }
+                  }}
                 />
               </FormControl>
-              <div className="space-y-1 leading-none">
-                <FormLabel>Play Announcement</FormLabel>
+              <div className="leading-none">
+                <FormLabel>{t("hasAnnouncement.label")}</FormLabel>
               </div>
             </FormItem>
           )}
         />
 
-        {watch("playAnnouncement") && (
+        {watch("hasAnnouncement") && (
           <FormField
             control={control}
-            name="announcement"
+            name="mainSoundFile"
             render={({ field }) => (
               <FormItem className="w-full">
                 <FormControl>
                   <div className="">
-                    {/* <h3>Announcement</h3> */}
                     <Dropzone
                       options={{
                         accept: { "audio/mp3": [".mp3"] },
@@ -112,13 +152,15 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                         maxFiles: 1,
                       }}
                       value={field.value}
-                      onChange={field.onChange}
+                      onChange={(file) => {
+                        field.onChange(file);
+                      }}
                     >
                       <DropzoneTrigger />
                       <DropzoneFileList />
                     </Dropzone>
                     <p className="text-destructive">
-                      {errors.announcement?.message}
+                      {errors.mainSoundFile?.message}
                     </p>
                   </div>
                 </FormControl>
@@ -137,17 +179,34 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
                 <FormControl>
                   <Select
                     className="w-full"
-                    label="Agents"
+                    label={t("agents.label")}
                     error={errors.agents?.message}
                     options={
                       extensions?.map((ext) => ({
                         label: `${ext.name} (${ext.ext})`,
-                        value: ext.id,
+                        value: ext.ext,
                       })) || []
                     }
-                    placeholder="Select from the list...."
-                    value={field.value}
-                    onChange={field.onChange}
+                    placeholder={t("agents.placeholder")}
+                    value={
+                      extensions
+                        ? extensions
+                            .filter((ext) =>
+                              Array.isArray(field.value)
+                                ? field.value.includes(ext.ext)
+                                : false,
+                            )
+                            .map((ext) => ({
+                              label: `${ext.name} (${ext.ext})`,
+                              value: ext.ext,
+                            }))
+                        : []
+                    }
+                    onChange={(data) => {
+                      field.onChange(data.map((d) => d.value));
+                      clearErrors("agents");
+                      trigger("agents");
+                    }}
                     isMulti
                   ></Select>
                 </FormControl>
@@ -158,16 +217,31 @@ const CallDetailsForm = ({ onNext }: CallDetailsFormProps) => {
 
         <hr />
 
-        <div className="flex-1">
-          <h3>Caller IDs</h3>
-          <CallerIdSelector />
-          {errors.callerIds?.message && (
-            <p className="text-destructive mt-2">{errors.callerIds.message}</p>
+        <FormField
+          control={control}
+          name="callers"
+          render={() => (
+            <FormItem className="flex-1">
+              <h3>{t("callerIds.label")}</h3>
+              <FormControl>
+                <CallerIdSelector
+                  onChangeCallback={() => {
+                    clearErrors("callers");
+                    trigger("callers");
+                  }}
+                />
+              </FormControl>
+              {errors.callers?.message && (
+                <p className="text-destructive mt-2">
+                  {errors.callers.message}
+                </p>
+              )}
+            </FormItem>
           )}
-        </div>
+        />
 
         <Button size="lg" onClick={handleNext} type="button">
-          Next
+          {t("next")}
         </Button>
       </div>
     </Form>

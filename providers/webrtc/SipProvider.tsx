@@ -20,9 +20,9 @@ import type {
 
 import JsSIP from "jssip";
 import { useUaEvents } from "./SipProvider/useUaEvents";
-import { RTCSession } from "jssip/src/RTCSession";
+import { RTCSession } from "jssip/lib/RTCSession";
 import { defaultCountry } from "@/constants/countries";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useSession } from "next-auth/react";
 import webrtcService from "@/services/webrtc.service";
 import CryptoJS from "crypto-js";
@@ -83,7 +83,6 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     uaRef.current = ua;
   }, [ua]);
 
-  const { toast } = useToast();
   const { setExtension: setExtensionStore } = useWebrtcStore();
 
   const [number, setNumber] = useState<string>("");
@@ -209,10 +208,8 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     (phoneNumber?: string) => {
       const calleeNumber = phoneNumber || number;
       if (!ua) {
-        toast({
-          title: "Error",
+        toast.error("Error", {
           description: "you may not be logged in, or on a break.",
-          variant: "destructive",
         });
         return;
       }
@@ -233,20 +230,16 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
   const spy = (extension: string) => {
     if (!ua) {
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "WebRTC is not initialized",
-        variant: "destructive",
       });
       return;
     }
 
     // check if already on call
     if (!!currentSession) {
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "You are already on a call.",
-        variant: "destructive",
       });
       return;
     }

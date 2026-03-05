@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import billingService from "@/services/billing.service";
 import { Download, MonetizationOn } from "@mui/icons-material";
 import { AxiosError } from "axios";
@@ -12,7 +12,6 @@ import { Cell } from "@/types/cell";
 import { Invoice } from "../columns";
 
 const ActionsCell = ({ row }: Cell<Invoice>) => {
-  const { toast } = useToast();
   const t = useTranslations("billing.invoices");
   const [isLoading, setIsLoading] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -27,18 +26,12 @@ const ActionsCell = ({ row }: Cell<Invoice>) => {
       window.open(url.toString(), "_blank");
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast({
-          variant: "destructive",
-          title: t("messages.error"),
-          description:
-            error.response?.data?.message || t("messages.unknownError"),
+        toast.error(t("messages.error"), {
+          description: error.response?.data?.message || t("messages.unknownError"),
         });
       } else {
-        toast({
-          variant: "destructive",
-          title: t("messages.error"),
-          description:
-            error instanceof Error ? error.message : t("messages.unknownError"),
+        toast.error(t("messages.error"), {
+          description: error instanceof Error ? error.message : t("messages.unknownError"),
         });
       }
     } finally {
@@ -56,18 +49,12 @@ const ActionsCell = ({ row }: Cell<Invoice>) => {
       link.click();
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast({
-          variant: "destructive",
-          title: t("messages.downloadError"),
-          description:
-            error.response?.data?.message || t("messages.unknownError"),
+        toast.error(t("messages.downloadError"), {
+          description: error.response?.data?.message || t("messages.unknownError"),
         });
       } else {
-        toast({
-          variant: "destructive",
-          title: "Error",
-          description:
-            error instanceof Error ? error.message : t("messages.unknownError"),
+        toast.error("Error", {
+          description: error instanceof Error ? error.message : t("messages.unknownError"),
         });
       }
     } finally {

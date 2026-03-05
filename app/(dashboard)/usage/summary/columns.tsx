@@ -13,13 +13,14 @@ const generateHeaderFromKey = (key: string) => {
     .replace(/^\w/, (c) => c.toUpperCase()); // Capitalize the first letter
 };
 
-export const createColumns = (columnKeys: string[]) => {
-  const t = useTranslations("usage.summary.columns");
-
+export const createColumns = (
+  columnKeys: string[],
+  t: ReturnType<typeof useTranslations>
+) => {
   const predefinedColumns: Record<string, ColumnDef<UsageSummary>> = {
     serviceName: {
       accessorKey: "serviceName",
-      header: t("servicesName"),
+      header: t("columns.servicesName"),
 
       cell: ({ row }) => {
         const serviceName = row.getValue("serviceName") as string;
@@ -38,7 +39,7 @@ export const createColumns = (columnKeys: string[]) => {
       return predefinedColumns[key];
     }
 
-    const translatedHeader = t(key as any) || generateHeaderFromKey(key);
+    const translatedHeader = t(`columns.${key}` as any) || generateHeaderFromKey(key);
 
     return {
       accessorKey: key,

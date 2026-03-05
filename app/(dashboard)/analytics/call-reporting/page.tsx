@@ -1,6 +1,9 @@
-import CallReportingTable from "./table";
+"use client";
 
-const CallReporting = async () => {
+import CallReportingTable from "./table";
+import withActiveOrganization from "@/containers/withActiveOrganization";
+
+const CallReporting = () => {
   return (
     <div className="page h-full" id="call-reporting">
       <CallReportingTable />
@@ -8,4 +11,4 @@ const CallReporting = async () => {
   );
 };
 
-export default CallReporting;
+export default withActiveOrganization(CallReporting);

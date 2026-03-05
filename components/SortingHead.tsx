@@ -11,7 +11,7 @@ const SortingHead = <T,>({ column, children }: SortingHeadProps<T>) => {
     column.toggleSorting();
   };
   return (
-    <Button variant="ghost" onClick={toggleSorting}>
+    <Button className="bg-transparent" variant="ghost" onClick={toggleSorting}>
       {children}
       {column.getIsSorted() === "asc" && (
         <ExpandMore className="ml-2 h-4 w-4" />

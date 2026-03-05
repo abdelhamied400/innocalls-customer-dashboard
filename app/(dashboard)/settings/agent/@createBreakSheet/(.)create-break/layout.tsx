@@ -8,14 +8,21 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { useRouter, usePathname } from "next/navigation";
-import { PropsWithChildren, useEffect, useState } from "react";
+import { PropsWithChildren, useState, useEffect } from "react";
 
 type CreateBreakLayoutProps = PropsWithChildren<object>;
 
 const CreateBreakLayout = ({ children }: CreateBreakLayoutProps) => {
   const router = useRouter();
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(true);
+  const isActive = pathname.includes("create-break");
+  const [isOpen, setIsOpen] = useState(isActive);
+
+  useEffect(() => {
+    if (isActive) {
+      setIsOpen(true);
+    }
+  }, [isActive]);
 
   const handleOpenChange = (open: boolean) => {
     if (open) return;
@@ -24,14 +31,10 @@ const CreateBreakLayout = ({ children }: CreateBreakLayoutProps) => {
     router.replace("/settings/agent");
   };
 
-  useEffect(() => {
-    if (pathname.includes("create-break")) {
-      setIsOpen(true);
-    }
-  }, [pathname]);
+  if (!isActive) return null;
 
   return (
-    <div className="create-break-layout" key={pathname}>
+    <div className="create-break-layout">
       <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <SheetContent side="bottom" className="h-screen p-0">
           <SheetHeader className="sr-only">

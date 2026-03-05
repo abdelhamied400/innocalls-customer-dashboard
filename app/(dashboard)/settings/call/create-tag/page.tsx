@@ -1,4 +1,7 @@
+"use client";
+
 import CreateTagForm from "./form";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const CreateTagPage = () => {
   return (
@@ -8,4 +11,4 @@ const CreateTagPage = () => {
   );
 };
 
-export default CreateTagPage;
+export default withActiveOrganization(CreateTagPage);

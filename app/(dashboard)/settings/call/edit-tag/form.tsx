@@ -12,7 +12,7 @@ import Stepper, {
   StepperStep,
   StepperSteps,
 } from "@/components/ui/stepper";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useTranslations } from "@/providers/TranslationProvider";
 import vocabService from "@/services/vocab.service";
 import { FullTag } from "@/types/api/tag";
@@ -29,7 +29,6 @@ type EditTagFormProps = {
 };
 
 const EditTagForm = ({ tag }: EditTagFormProps) => {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const closeSheetRef = useRef<HTMLButtonElement>(null);
   const [currentStep, setCurrentStep] = useState(0);
@@ -59,26 +58,18 @@ const EditTagForm = ({ tag }: EditTagFormProps) => {
         );
       });
 
-      toast({
-        title: t("messages.updateSuccess"),
-        variant: "success",
-      });
+      toast.success(t("messages.updateSuccess"));
 
       // Close sheet and refetch
       closeSheetRef.current?.click();
       queryClient.invalidateQueries({ queryKey: ["tags"] });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: t("messages.updateFailed"),
+        toast.error(t("messages.updateFailed"), {
           description: error.response?.data?.message,
-          variant: "destructive",
         });
       } else {
-        toast({
-          title: t("messages.updateFailed"),
-          variant: "destructive",
-        });
+        toast.error(t("messages.updateFailed"));
       }
     }
   });

@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import CallReportingTable from "./table";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const CallReporting = () => {
   const t = useTranslations("callReporting");
@@ -19,4 +20,4 @@ const CallReporting = () => {
   );
 };
 
-export default CallReporting;
+export default withActiveOrganization(CallReporting);

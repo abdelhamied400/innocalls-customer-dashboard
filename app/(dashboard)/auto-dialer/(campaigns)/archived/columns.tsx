@@ -3,7 +3,8 @@ import StatusCell from "./cells/StatusCell";
 import ActionsCell from "./cells/ActionsCell";
 import CreatedAtCell from "./cells/CreatedAtCell";
 import DurationTypeCell from "./cells/DurationTypeCell";
-import { AutoDialerCampaignActiveStatus } from "@/constants/auto-dialer";
+import { AutoDialerCampaignFinishedStatus } from "@/constants/auto-dialer";
+import SortingHead from "@/components/SortingHead";
 
 export type AutoDialerCampaignCols = {
   agentCanLogoutAndRejoin: boolean;
@@ -13,31 +14,39 @@ export type AutoDialerCampaignCols = {
   id: string;
   isDraft: boolean;
   name: string;
-  status: AutoDialerCampaignActiveStatus;
+  status: AutoDialerCampaignFinishedStatus;
 };
 
-export const columns: ColumnDef<any, any>[] = [
+export const columns = (t: any): ColumnDef<any, any>[] => [
   {
     accessorKey: "createdAt",
-    header: "Creation Date",
+    header: ({ column }) => (
+      <SortingHead column={column}>
+        {t("archivedCampaigns.columns.creationDate")}
+      </SortingHead>
+    ),
     cell: CreatedAtCell,
   },
   {
     accessorKey: "name",
-    header: "Name",
+    header: ({ column }) => (
+      <SortingHead column={column}>
+        {t("archivedCampaigns.columns.name")}
+      </SortingHead>
+    ),
   },
   {
     accessorKey: "durationType",
-    header: "Duration Type",
+    header: t("archivedCampaigns.columns.durationType"),
     cell: DurationTypeCell,
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: t("archivedCampaigns.columns.status"),
     cell: StatusCell,
   },
   {
-    header: "Actions",
+    header: t("archivedCampaigns.columns.actions"),
     cell: ActionsCell,
   },
 ];

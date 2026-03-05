@@ -19,10 +19,9 @@ export type Invoice = {
   remaining: number;
 };
 
-export const columns = (): ColumnDef<Invoice>[] => {
-  const t = useTranslations("billing.invoices");
-
-  return [
+export const columns = (
+  t: ReturnType<typeof useTranslations>
+): ColumnDef<Invoice>[] => [
     {
       accessorKey: "number",
       header: t("columns.refNo"),
@@ -60,4 +59,3 @@ export const columns = (): ColumnDef<Invoice>[] => {
       cell: ActionsCell,
     },
   ];
-};

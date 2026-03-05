@@ -84,6 +84,7 @@ const ProfileMenu = () => {
         provider: "",
         allowedBreakTypes: [],
         paymentCurrency: "SAR",
+        status: "pending",
       });
     }
     const org = auth?.organizations?.find((org) => org.id === orgId);

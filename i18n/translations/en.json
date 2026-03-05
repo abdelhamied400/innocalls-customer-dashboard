@@ -87,6 +87,31 @@
     "currencies": {
       "sar": "SAR",
       "usd": "USD"
+    },
+    "callerIdSelector": {
+      "country": {
+        "label": "Country",
+        "placeholder": "Select a country..."
+      },
+      "DID": {
+        "label": "Caller ID",
+        "placeholder": "Select a Caller ID..."
+      },
+      "addCaller": "Add Caller"
+    },
+    "dropzone": {
+      "drag": "Drag File Here",
+      "or": "OR",
+      "browseFiles": "Browse Files",
+      "only": "Only",
+      "max": "Max",
+      "size": "Size",
+      "validation": {
+        "file-invalid-type": "Invalid file type",
+        "file-too-large": "File is too large",
+        "file-too-small": "File is too small",
+        "too-many-files": "Too many files"
+      }
     }
   },
   "numbers": {
@@ -241,6 +266,14 @@
           "currentPassword": {
             "required": "Current password is required"
           },
+          "newPassword": {
+            "minLength": "Password must be at least {min} characters long",
+            "maxLength": "Password must be no more than {max} characters long",
+            "uppercase": "Password must contain at least one uppercase letter",
+            "lowercase": "Password must contain at least one lowercase letter",
+            "number": "Password must contain at least one number",
+            "specialChar": "Password must contain at least one special character"
+          },
           "confirmPassword": {
             "mismatch": "Passwords do not match"
           }
@@ -278,7 +311,7 @@
           },
           "validation": {
             "organizationName": {
-              "required": "Organization name is required"
+              "minTwoChars": "Organization name must be at least 2 characters"
             }
           }
         },
@@ -301,6 +334,7 @@
       },
       "tags": {
         "title": "Manage Tags",
+        "subtitle": "All Tags",
         "columns": {
           "nameAR": "Name in Arabic",
           "nameEN": "Name in English",
@@ -308,7 +342,10 @@
           "actions": "Actions"
         },
         "actions": {
-          "create": "Create New Tag"
+          "create": "Create New Tag",
+          "edit": "Edit",
+          "enable": "Enable",
+          "disable": "Disable"
         },
         "filters": {
           "status": {
@@ -348,10 +385,10 @@
           },
           "validation": {
             "nameAR": {
-              "required": "Name in Arabic is required"
+              "minTwoChars": "Name must be at least 2 characters"
             },
             "nameEN": {
-              "required": "Name in English is required"
+              "minTwoChars": "Name must be at least 2 characters"
             }
           }
         },
@@ -380,10 +417,10 @@
           },
           "validation": {
             "nameAR": {
-              "required": "Name in Arabic is required"
+              "minTwoChars": "Name must be at least 2 characters"
             },
             "nameEN": {
-              "required": "Name in English is required"
+              "minTwoChars": "Name must be at least 2 characters"
             }
           }
         },
@@ -407,7 +444,10 @@
           "actions": "Actions"
         },
         "actions": {
-          "create": "Create New Break"
+          "create": "Create New Break",
+          "edit": "Edit",
+          "delete": "Delete",
+          "restore": "Restore"
         },
         "confirmations": {
           "deleteTitle": "Delete \"{name}\" break",
@@ -440,10 +480,10 @@
             },
             "validation": {
               "nameAR": {
-                "required": "Name in Arabic is required"
+                "minTwoChars": "Name must be at least 2 characters"
               },
               "nameEN": {
-                "required": "Name in English is required"
+                "minTwoChars": "Name must be at least 2 characters"
               }
             }
           },
@@ -472,10 +512,10 @@
             },
             "validation": {
               "nameAR": {
-                "required": "Name in Arabic is required"
+                "minTwoChars": "Name must be at least 2 characters"
               },
               "nameEN": {
-                "required": "Name in English is required"
+                "minTwoChars": "Name must be at least 2 characters"
               }
             }
           },
@@ -487,6 +527,537 @@
           "actions": {
             "save": "Save Changes",
             "close": "Close"
+          }
+        }
+      }
+    }
+  },
+  "reports": {
+    "title": "Reports",
+    "layout": {
+      "tabs": {
+        "oneTime": "One Time Report",
+        "scheduled": "Scheduled Report"
+      }
+    },
+    "reportTypes": {
+      "outbound_summary": "Outbound Summary",
+      "outbound_agent_stats": "Outbound Agent Stats",
+      "outbound_date_distribution": "Outbound Date Distribution",
+      "outbound_hourly_distribution": "Outbound Hourly Distribution",
+      "inbound_agent_summary": "Inbound Agent Summary",
+      "inbound_agent_date_distribution": "Inbound Agent Date Distribution",
+      "inbound_agent_hourly_distribution": "Inbound Agent Hourly Distribution",
+      "inbound_queue_summary": "Inbound Queue Summary",
+      "inbound_queue_date_distribution": "Inbound Queue Date Distribution",
+      "inbound_queue_hourly_distribution": "Inbound Queue Hourly Distribution",
+      "inbound_queue_agent_performance": "Inbound Queue Agent Performance",
+      "inbound_queue_repeated_callers": "Inbound Queue Repeated Callers",
+      "unanswered_summary": "Unanswered Summary",
+      "inbound_unanswered_date_distribution": "Inbound Unanswered Date Distribution",
+      "inbound_unanswered_hourly_distribution": "Inbound Unanswered Hourly Distribution",
+      "outbound_unanswered_date_distribution": "Outbound Unanswered Date Distribution",
+      "outbound_unanswered_hourly_distribution": "Outbound Unanswered Hourly Distribution",
+      "agent_summary": "Agent Summary",
+      "agent_call_distribution": "Agent Call Distribution",
+      "agent_sla_compliance": "Agent SLA Compliance"
+    },
+    "oneTime": {
+      "title": "One Time Report",
+      "columns": {
+        "createdAt": "Creation Date",
+        "name": "Name",
+        "report": "Report",
+        "status": "Status",
+        "recipients": "Recipients",
+        "actions": "Actions"
+      },
+      "statusValues": {
+        "completed": "Completed",
+        "failed": "Failed",
+        "pending": "Pending",
+        "processing": "Processing"
+      },
+      "cells": {
+        "recipients": {
+          "count": "{count} recipients",
+          "dialogTitle": "Recipients",
+          "dialogDescription": "List of all recipients for this report",
+          "sheetTitle": "{name} Recipients"
+        }
+      },
+      "filters": {
+        "creationDate": {
+          "triggerLabel": "Creation Date",
+          "label": "Filter by Creation Date"
+        },
+        "fromDate": {
+          "label": "From",
+          "hint": "DD/MM/YYYY",
+          "placeholder": "Enter from date"
+        },
+        "toDate": {
+          "label": "To",
+          "hint": "DD/MM/YYYY",
+          "placeholder": "Enter to date"
+        }
+      },
+      "messages": {
+        "invalidDateRange": "Invalid date range",
+        "dateRangeExceeds30Days": "Date range cannot exceed 30 days",
+        "queueRequired": "Queue is required for this report type",
+        "invalidExtensionsFormat": "Extensions must be comma-separated numbers (e.g., 101,102,103)",
+        "invalidSla": "SLA must be a number greater than 0",
+        "deleteSuccess": "Report deleted successfully",
+        "deleteFailed": "Failed to delete report",
+        "error": "Error",
+        "fillRequiredFields": "Please fill in all required fields",
+        "unknownError": "An unknown error occurred"
+      },
+      "confirmations": {
+        "deleteTitle": "Delete Report",
+        "deleteDescription": "Are you sure you want to delete this report? This action cannot be undone.",
+        "cancel": "Cancel",
+        "yesDelete": "Yes, Delete"
+      },
+      "tooltips": {
+        "toggleFilters": "click to show/hide search filters"
+      },
+      "actions": {
+        "createReport": "Create New Report"
+      },
+      "createReport": {
+        "title": "Create New Report",
+        "description": "Create a new one-time report",
+        "steps": {
+          "createReport": "Create New One Time Report"
+        },
+        "form": {
+          "fields": {
+            "name": {
+              "label": "Report Name",
+              "placeholder": "Enter report name"
+            },
+            "report": {
+              "label": "Report",
+              "placeholder": "Select report type",
+              "options": {
+                "agent": "Agent Report",
+                "admin": "Admin Report"
+              }
+            },
+            "recipients": {
+              "label": "Recipients",
+              "placeholder": "Enter email and press Enter",
+              "hint": "Type the email address and press \"Enter\" to add it."
+            },
+            "fromDate": {
+              "label": "From Date",
+              "placeholder": "Select from date"
+            },
+            "toDate": {
+              "label": "To Date",
+              "placeholder": "Select to date"
+            },
+            "type": {
+              "label": "Type",
+              "placeholder": "Select type",
+              "options": {
+                "perQueue": "Per Queue"
+              }
+            },
+            "queue": {
+              "label": "Queue",
+              "placeholder": "Select queue"
+            },
+            "extensions": {
+              "label": "Extensions",
+              "placeholder": "Select extensions"
+            },
+            "sla": {
+              "label": "SLA (seconds)",
+              "placeholder": "e.g., 30",
+              "hint": "Service Level Agreement threshold in seconds"
+            },
+            "includeInternalCalls": {
+              "label": "Include Internal Calls"
+            }
+          },
+          "validation": {
+            "name": {
+              "minLength": "Report name must be at least 2 characters",
+              "maxLength": "Report name must be at most 200 characters"
+            },
+            "report": {
+              "required": "Please select a report type"
+            },
+            "recipients": {
+              "required": "Please add at least one recipient",
+              "invalidEmail": "Invalid email address",
+              "duplicate": "This email is already added"
+            },
+            "fromDate": {
+              "required": "From date is required",
+              "invalid": "Invalid date"
+            },
+            "toDate": {
+              "required": "To date is required",
+              "invalid": "Invalid date"
+            },
+            "dateRange": {
+              "invalid": "To date must be after from date",
+              "exceeds30Days": "Date range cannot exceed 30 days"
+            },
+            "queue": {
+              "required": "Queue is required for this report type"
+            },
+            "extensions": {
+              "invalid": "Extensions must be comma-separated numbers (e.g., 101,102,103)"
+            },
+            "sla": {
+              "invalid": "SLA must be a number greater than 0"
+            }
+          }
+        },
+        "actions": {
+          "close": "Close",
+          "submit": "Generate Report"
+        },
+        "success": {
+          "title": "Report has been generated successfully!",
+          "subtitle": "It will be sent to your email shortly.",
+          "backToReports": "Back to Reports Table",
+          "backToDashboard": "Back to Dashboard"
+        }
+      }
+    },
+    "scheduled": {
+      "title": "Scheduled Report",
+      "columns": {
+        "createdAt": "Creation Date",
+        "name": "Name",
+        "scheduled": "Scheduled",
+        "status": "Status",
+        "nextGeneration": "Next Generation",
+        "recipients": "Recipients",
+        "actions": "Actions"
+      },
+      "cells": {
+        "recipients": {
+          "count": "{count} recipients",
+          "dialogTitle": "Recipients",
+          "dialogDescription": "List of all recipients for this report",
+          "sheetTitle": "{name} Recipients"
+        },
+        "scheduled": {
+          "daily": "Daily",
+          "weekly": "Weekly",
+          "monthly": "Monthly"
+        },
+        "status": {
+          "active": "Active",
+          "inactive": "Inactive"
+        }
+      },
+      "filters": {
+        "creationDate": {
+          "triggerLabel": "Creation Date",
+          "label": "Filter by Creation Date"
+        },
+        "fromDate": {
+          "label": "From",
+          "hint": "DD/MM/YYYY",
+          "placeholder": "Enter from date"
+        },
+        "toDate": {
+          "label": "To",
+          "hint": "DD/MM/YYYY",
+          "placeholder": "Enter to date"
+        },
+        "scheduled": {
+          "triggerLabel": "Scheduled",
+          "label": "Filter by Schedule",
+          "options": {
+            "daily": "Daily",
+            "weekly": "Weekly",
+            "monthly": "Monthly"
+          }
+        },
+        "status": {
+          "triggerLabel": "Status",
+          "label": "Filter by Status",
+          "options": {
+            "active": "Active",
+            "inactive": "Inactive"
+          }
+        }
+      },
+      "messages": {
+        "invalidDateRange": "Invalid date range",
+        "deleteSuccess": "Report deleted successfully",
+        "deleteFailed": "Failed to delete report",
+        "generateSuccess": "Report generated successfully",
+        "generateFailed": "Failed to generate report",
+        "activateSuccess": "Report activated successfully",
+        "activateFailed": "Failed to activate report",
+        "deactivateSuccess": "Report deactivated successfully",
+        "deactivateFailed": "Failed to deactivate report"
+      },
+      "confirmations": {
+        "deleteTitle": "Delete Report",
+        "deleteDescription": "Are you sure you want to delete this scheduled report? This action cannot be undone.",
+        "activateTitle": "Activate Report",
+        "activateDescription": "Are you sure you want to activate \"{name}\"? This report will start generating according to its schedule.",
+        "deactivateTitle": "Deactivate Report",
+        "deactivateDescription": "Are you sure you want to deactivate \"{name}\"? This report will stop generating until reactivated.",
+        "cancel": "Cancel",
+        "yesDelete": "Yes, Delete",
+        "yesActivate": "Yes, Activate",
+        "yesDeactivate": "Yes, Deactivate"
+      },
+      "tooltips": {
+        "toggleFilters": "click to show/hide search filters"
+      },
+      "actions": {
+        "createReport": "Create New Report",
+        "viewHistory": "View History",
+        "generateNow": "Generate Now",
+        "generating": "Generating...",
+        "activate": "Activate",
+        "deactivate": "Deactivate"
+      },
+      "createReport": {
+        "title": "Create Scheduled Report",
+        "description": "Create a new scheduled report",
+        "steps": {
+          "details": "Create New Scheduled Report",
+          "schedule": "Schedule"
+        },
+        "form": {
+          "fields": {
+            "reportName": {
+              "label": "Report Name",
+              "placeholder": "Enter report name"
+            },
+            "recipients": {
+              "label": "Recipients",
+              "placeholder": "Enter email and press Enter",
+              "hint": "Type the email address and press \"Enter\" to add it."
+            },
+            "emailSubject": {
+              "label": "Email Subject",
+              "placeholder": "Enter email subject"
+            },
+            "report": {
+              "label": "Report",
+              "placeholder": "Select report type",
+              "options": {
+                "outboundSummary": "Outbound Summary",
+                "outboundAgentStats": "Outbound Agent Stats",
+                "outboundDateDistribution": "Outbound Date Distribution",
+                "outboundHourlyDistribution": "Outbound Hourly Distribution",
+                "inboundAgentSummary": "Inbound Agent Summary",
+                "inboundAgentDateDistribution": "Inbound Agent Date Distribution",
+                "inboundAgentHourlyDistribution": "Inbound Agent Hourly Distribution",
+                "inboundQueueSummary": "Inbound Queue Summary",
+                "inboundQueueDateDistribution": "Inbound Queue Date Distribution",
+                "inboundQueueHourlyDistribution": "Inbound Queue Hourly Distribution",
+                "inboundQueueAgentPerformance": "Inbound Queue Agent Performance",
+                "inboundQueueRepeatedCallers": "Inbound Queue Repeated Callers",
+                "unansweredSummary": "Unanswered Summary",
+                "agentSummary": "Agent Summary",
+                "agentCallDistribution": "Agent Call Distribution",
+                "agentSlaCompliance": "Agent SLA Compliance"
+              }
+            },
+            "dateRangeStart": {
+              "label": "Date Range Start",
+              "placeholder": "Select start date"
+            },
+            "dateRangeEnd": {
+              "label": "Date Range End",
+              "placeholder": "Select end date"
+            },
+            "dateRange": {
+              "options": {
+                "today": "Today",
+                "previousDay": "Previous Day",
+                "previousWeek": "Previous Week",
+                "previousMonth": "Previous Month"
+              }
+            },
+            "queue": {
+              "label": "Queue",
+              "placeholder": "Select queue"
+            },
+            "extensions": {
+              "label": "Extensions",
+              "placeholder": "Select extensions"
+            },
+            "sla": {
+              "label": "SLA (seconds)",
+              "placeholder": "e.g., 30",
+              "hint": "Service Level Agreement threshold in seconds"
+            },
+            "includeInternalCalls": {
+              "label": "Include Internal Calls"
+            },
+            "timezone": {
+              "label": "Timezone",
+              "placeholder": "Select timezone"
+            },
+            "frequency": {
+              "label": "Frequency",
+              "placeholder": "Select frequency",
+              "options": {
+                "daily": "Daily",
+                "weekly": "Weekly",
+                "monthly": "Monthly"
+              }
+            },
+            "days": {
+              "label": "Days",
+              "options": {
+                "sat": "Sat",
+                "sun": "Sun",
+                "mon": "Mon",
+                "tue": "Tue",
+                "wed": "Wed",
+                "thu": "Thu",
+                "fri": "Fri"
+              }
+            },
+            "monthDay": {
+              "label": "Day of Month",
+              "placeholder": "Select day"
+            },
+            "atTime": {
+              "label": "At",
+              "placeholder": "Select time"
+            }
+          },
+          "nextGeneration": {
+            "title": "Next Generation",
+            "at": "at"
+          },
+          "validation": {
+            "name": {
+              "required": "Report name is required",
+              "minLength": "Report name must be at least 2 characters",
+              "maxLength": "Report name must be at most 200 characters"
+            },
+            "recipients": {
+              "required": "Please add at least one recipient",
+              "invalidEmail": "Invalid email address",
+              "duplicate": "This email is already added"
+            },
+            "emailSubject": {
+              "required": "Email subject is required",
+              "minLength": "Email subject must be at least 2 characters",
+              "maxLength": "Email subject must be at most 200 characters"
+            },
+            "report": {
+              "required": "Please select a report type"
+            },
+            "dateRangeStart": {
+              "required": "Date range start is required"
+            },
+            "dateRangeEnd": {
+              "required": "Date range end is required"
+            },
+            "dateRange": {
+              "endBeforeStart": "End date cannot be before start date"
+            },
+            "queue": {
+              "required": "Queue is required for this report type"
+            },
+            "sla": {
+              "invalid": "SLA must be a number greater than 0"
+            },
+            "timezone": {
+              "required": "Timezone is required"
+            },
+            "frequency": {
+              "required": "Frequency is required"
+            },
+            "daysOfWeek": {
+              "required": "Please select at least one day"
+            },
+            "dayOfMonth": {
+              "required": "Please select a day of month"
+            },
+            "time": {
+              "required": "Time is required"
+            }
+          }
+        },
+        "actions": {
+          "close": "Close",
+          "next": "Next",
+          "submit": "Generate Scheduled Report"
+        },
+        "success": {
+          "title": "Report has been scheduled successfully!",
+          "subtitle": "It will be generated according to your schedule.",
+          "backToReports": "Back to Reports Table",
+          "backToDashboard": "Back to Dashboard"
+        },
+        "messages": {
+          "createSuccess": "Report scheduled successfully",
+          "createFailed": "Failed to create scheduled report",
+          "validationError": "Please fill in all required fields"
+        }
+      },
+      "editReport": {
+        "title": "Edit Scheduled Report",
+        "description": "Edit scheduled report settings",
+        "actions": {
+          "update": "Update Report"
+        },
+        "success": {
+          "title": "Report updated successfully!",
+          "subtitle": "Your changes have been saved.",
+          "backToHistory": "Back to History",
+          "backToReports": "Back to Reports Table",
+          "backToDashboard": "Back to Dashboard"
+        },
+        "messages": {
+          "updateSuccess": "Report updated successfully",
+          "updateFailed": "Failed to update report"
+        }
+      },
+      "history": {
+        "title": "Report History",
+        "description": "View generation history for this scheduled report",
+        "noHistory": "No generation history available for this report.",
+        "scheduleInfo": {
+          "title": "Schedule Info",
+          "timezone": "Time Zone",
+          "generatorDays": "Generator Days",
+          "generatorTime": "Generator Time",
+          "dayOfMonthSuffix": "of each month",
+          "weekDays": {
+            "sat": "Sat",
+            "sun": "Sun",
+            "mon": "Mon",
+            "tue": "Tue",
+            "wed": "Wed",
+            "thu": "Thu",
+            "fri": "Fri"
+          }
+        },
+        "columns": {
+          "generatedAt": "Generation Date",
+          "reportName": "Name",
+          "status": "Status",
+          "recipients": "Recipients"
+        },
+        "cells": {
+          "status": {
+            "completed": "Completed",
+            "failed": "Failed",
+            "pending": "Pending",
+            "processing": "Processing"
           }
         }
       }
@@ -549,7 +1120,7 @@
         "deleting": "Deleting..."
       },
       "tooltips": {
-        "toggleFilters": "Click to show/hide search filters"
+        "toggleFilters": "click to show/hide search filters"
       }
     },
     "monitor": {
@@ -743,7 +1314,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "Click to show/hide search filters"
+        "toggleFilters": "click to show/hide search filters"
       }
     },
     "timeline": {
@@ -796,7 +1367,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "Click to show/hide search filters"
+        "toggleFilters": "click to show/hide search filters"
       }
     }
   },
@@ -989,7 +1560,7 @@
         "invalidDateRange": "Invalid date range"
       },
       "tooltips": {
-        "toggleFilters": "Click to show/hide search filters"
+        "toggleFilters": "click to show/hide search filters"
       }
     }
   },
@@ -1010,6 +1581,7 @@
       "postCallSurvey": "Post Call Survey",
       "aiVoiceAgents": "AI Voice Agents",
       "analytics": "Analytics",
+      "reports": "Reports",
       "inbound": "Incoming",
       "outbound": "Outgoing",
       "unanswered": "Unanswered",
@@ -1186,7 +1758,7 @@
       "viewHistory": "View call history"
     },
     "tooltips": {
-      "toggleFilters": "Click to show/hide search filters"
+      "toggleFilters": "click to show/hide search filters"
     },
     "isAnswered": {
       "both": "Both",
@@ -1499,7 +2071,7 @@
         "noData": "No usage data found for the selected criteria."
       },
       "tooltips": {
-        "toggleFilters": "Click to show/hide search filters"
+        "toggleFilters": "click to show/hide search filters"
       }
     },
     "detailed": {
@@ -1551,7 +2123,7 @@
       },
       "tooltips": {
         "export": "Export",
-        "toggleFilters": "Click to show/hide search filters"
+        "toggleFilters": "click to show/hide search filters"
       }
     },
     "common": {
@@ -2391,6 +2963,914 @@
       }
     }
   },
+  "autoDialer": {
+    "tabs": {
+      "active": "Active Campaigns",
+      "finished": "Finished Campaigns",
+      "archived": "Archived Campaigns"
+    },
+    "activeCampaigns": {
+      "title": "Active Campaigns",
+      "search": "Search...",
+      "filters": {
+        "shared": {
+          "reset": "Reset",
+          "apply": "Apply",
+          "clear": "Clear"
+        },
+        "creationDate": {
+          "placeholder": "Creation Date",
+          "label": "Select a date range",
+          "from": {
+            "label": "From",
+            "placeholder": "Enter from date",
+            "hint": "DD/MM/YYYY"
+          },
+          "to": {
+            "label": "To",
+            "placeholder": "Enter to date",
+            "hint": "DD/MM/YYYY"
+          }
+        },
+        "durationType": {
+          "label": "Select duration type",
+          "placeholder": "Duration Type",
+          "options": {
+            "timeLimited": "Time Limited",
+            "agentAvailability": "Agent Availability"
+          }
+        },
+        "status": {
+          "label": "Select status",
+          "placeholder": "Status",
+          "options": {
+            "scheduled": "Scheduled",
+            "inProgress": "In Progress"
+          }
+        }
+      },
+      "create": "Create Campaign",
+      "columns": {
+        "creationDate": "Creation Date",
+        "name": "Name",
+        "durationType": "Duration Type",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actionCell": {
+        "view": "View Details",
+        "edit": "Edit",
+        "editMainInfo": "Edit Info",
+        "pause": "Pause",
+        "resume": "Resume",
+        "cancel": "Cancel",
+        "download": "Download Report",
+        "downloadSuccess": "Download started",
+        "downloadSuccessDescription": "Your report is being processed.",
+        "downloadError": "Error",
+        "downloadErrorDescription": "An error occurred while downloading the report.",
+        "corruptedRecords": "Corrupted Records",
+        "uncompletedRequests": "Uncompleted Requests",
+        "startModal": {
+          "title": "Start Campaign",
+          "message": "Are you sure you want to start this campaign?",
+          "confirm": "Yes, start campaign",
+          "cancel": "No, cancel",
+          "success": "Campaign started successfully",
+          "successDescription": "The campaign has been started successfully. The status will be updated to 'In Progress'.",
+          "error": "Failed to start campaign",
+          "errorDescription": "An error occurred while starting the campaign. Please try again."
+        },
+        "pauseModal": {
+          "title": "Pause Campaign",
+          "message": "Are you sure you want to pause this campaign?",
+          "confirm": "Yes, pause",
+          "cancel": "No, cancel",
+          "success": "Campaign paused successfully",
+          "successDescription": "The campaign has been paused successfully. The status will be updated to 'Paused'.",
+          "error": "Failed to pause campaign",
+          "errorDescription": "An error occurred while pausing the campaign. Please try again."
+        },
+        "resumeModal": {
+          "title": "Resume Campaign",
+          "message": "Are you sure you want to resume this campaign?",
+          "confirm": "Yes, resume",
+          "cancel": "No, cancel",
+          "success": "Campaign resumed successfully",
+          "successDescription": "The campaign has been resumed successfully. The status will be updated to 'In Progress'.",
+          "error": "Failed to resume campaign",
+          "errorDescription": "An error occurred while resuming the campaign. Please try again."
+        },
+        "finishModal": {
+          "title": "Finish Campaign",
+          "message": "Are you sure you want to finish this campaign?",
+          "confirm": "Yes, finish",
+          "cancel": "No, cancel",
+          "success": "Campaign finished successfully",
+          "successDescription": "The campaign has been finished successfully. The status will be updated to 'Finished'.",
+          "error": "Failed to finish campaign",
+          "errorDescription": "An error occurred while finishing the campaign. Please try again."
+        }
+      },
+      "statuses": {
+        "created": "Created",
+        "schedule-customers": "Scheduling customers",
+        "verifying-customers": "Verifying customers",
+        "verification-failed": "Verification failed",
+        "corrupted-ignored": "Corrupted ignored",
+        "customers-inserted": "Customers inserted",
+        "in-progress": "In progress",
+        "active": "Active",
+        "paused": "Paused",
+        "started": "Started"
+      },
+      "durationTypes": {
+        "time-limited": "Time Limited",
+        "agent-availability": "Agent Availability"
+      },
+      "tooltips": {
+        "toggleFilters": "click to show/hide search filters"
+      }
+    },
+    "finishedCampaigns": {
+      "title": "Finished Campaigns",
+      "search": "Search by name...",
+      "columns": {
+        "creationDate": "Creation Date",
+        "name": "Name",
+        "durationType": "Duration Type",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "statuses": {
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "failed": "Failed",
+        "finished": "Finished"
+      },
+      "filters": {
+        "creationDate": {
+          "placeholder": "Creation Date",
+          "label": "Select a date range",
+          "from": {
+            "label": "From",
+            "placeholder": "Enter from date",
+            "hint": "DD/MM/YYYY"
+          },
+          "to": {
+            "label": "To",
+            "placeholder": "Enter to date",
+            "hint": "DD/MM/YYYY"
+          }
+        },
+        "durationType": {
+          "placeholder": "Duration Type",
+          "label": "Select duration type"
+        },
+        "status": {
+          "placeholder": "Status",
+          "label": "Select campaign status"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "click to show/hide search filters"
+      },
+      "toasts": {
+        "error": "Error",
+        "errorDescription": "An error occurred"
+      },
+      "actions": {
+        "download": "Download Report",
+        "view": "View Details",
+        "archive": "Archive",
+        "archiveModal": {
+          "title": "Archive Campaign",
+          "message": "Are you sure you want to archive this campaign? This action cannot be undone.",
+          "confirm": "Yes, archive",
+          "cancel": "Cancel"
+        },
+        "toasts": {
+          "downloadSuccess": "Download started",
+          "downloadSuccessDescription": "Your report is being processed. You will receive an email with the download link once it's ready.",
+          "archiveSuccess": "Campaign Archived",
+          "archiveSuccessDescription": "The campaign has been successfully archived.",
+          "error": "Error",
+          "errorDescription": "An error occurred"
+        }
+      }
+    },
+    "archivedCampaigns": {
+      "title": "Archived Campaigns",
+      "search": "Search by name...",
+      "columns": {
+        "creationDate": "Creation Date",
+        "name": "Name",
+        "durationType": "Duration Type",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "statuses": {
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "failed": "Failed",
+        "finished": "Finished"
+      },
+      "filters": {
+        "creationDate": {
+          "placeholder": "Creation Date",
+          "label": "Select a date range",
+          "from": {
+            "label": "From",
+            "placeholder": "Enter from date",
+            "hint": "DD/MM/YYYY"
+          },
+          "to": {
+            "label": "To",
+            "placeholder": "Enter to date",
+            "hint": "DD/MM/YYYY"
+          }
+        },
+        "durationType": {
+          "placeholder": "Duration Type",
+          "label": "Select duration type"
+        },
+        "status": {
+          "placeholder": "Status",
+          "label": "Select campaign status"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "click to show/hide search filters"
+      },
+      "toasts": {
+        "error": "Error",
+        "errorDescription": "An error occurred"
+      },
+      "actions": {
+        "download": "Download Report",
+        "view": "View Details"
+      }
+    },
+    "createCampaign": {
+      "title": "Create Auto Dialer Campaign",
+      "description": "Create a new auto dialer campaign to start calling your leads",
+      "steps": {
+        "details": {
+          "title": "Campaign Details",
+          "form": {
+            "campaignName": {
+              "label": "Campaign Name",
+              "placeholder": "Enter campaign name",
+              "validation": {
+                "required": "Campaign name is required",
+                "min": "Campaign name must be at least {min} characters",
+                "max": "Campaign name must be at most {max} characters"
+              }
+            },
+            "waitingCustomerCount": {
+              "label": "Waiting Customer Count",
+              "hint": "The number of customers that can wait in the queue",
+              "validation": {
+                "min": "Waiting customer count must be at least {min}",
+                "max": "Waiting customer count must be at most {max}"
+              }
+            },
+            "trialsCount": {
+              "label": "Trials Count*",
+              "hint": "The number of trials to call each customer",
+              "validation": {
+                "min": "Trials count must be at least {min}",
+                "max": "Trials count must be at most {max}"
+              }
+            },
+            "wrapUpTime": {
+              "label": "Wrap Up Time",
+              "hint": "The time (seconds) between the end of a call and the start of the next call",
+              "validation": {
+                "min": "Wrap up time must be at least {min} seconds"
+              }
+            },
+            "delayMinutesBetweenTrials": {
+              "label": "Delay Minutes Between Trials",
+              "validation": {
+                "min": "Delay minutes between trials must be at least {min} minutes"
+              }
+            },
+            "hideCallerInfo": {
+              "label": "Hide Caller Info"
+            },
+            "agentCanLogoutAndRejoin": {
+              "label": "Agent Can Logout And Rejoin"
+            },
+            "next": "Next"
+          }
+        },
+        "callsDetails": {
+          "title": "Calls Details",
+          "form": {
+            "loopSoundFile": {
+              "label": "Sound",
+              "validation": {
+                "required": "Sound file is required",
+                "type": "Only audio files are allowed",
+                "size": "Sound file size must be less than {size}"
+              }
+            },
+            "hasAnnouncement": {
+              "label": "Play Announcement"
+            },
+            "mainSoundFile": {
+              "validation": {
+                "required": "Sound file is required when announcement is enabled",
+                "type": "Only audio files are allowed",
+                "size": "Sound file size must be less than {size}"
+              }
+            },
+            "agents": {
+              "label": "Agents",
+              "placeholder": "Select from the list....",
+              "validation": {
+                "min": "At least {min} agent must be selected"
+              }
+            },
+            "callerIds": {
+              "label": "Caller IDs",
+              "validation": {
+                "min": "At least {min} caller ID must be added",
+                "destination": {
+                  "required": "Destination number is required"
+                },
+                "callerNumber": {
+                  "required": "Caller number is required"
+                }
+              }
+            },
+            "next": "Next"
+          }
+        },
+        "scheduling": {
+          "title": "Scheduling",
+          "form": {
+            "durationType": {
+              "label": "Duration Type",
+              "placeholder": "Select from the list....",
+              "options": {
+                "timeLimited": "Time Limited",
+                "agentAvailability": "Agent Availability"
+              },
+              "validation": {
+                "required": "Duration type is required"
+              }
+            },
+            "maxWaitTime": {
+              "label": "Max Wait Time (Seconds)",
+              "hint": "The max (seconds) the customer will wait if the agent is not available before the call drops",
+              "validation": {
+                "min": "Max wait time must be at least {min} seconds"
+              }
+            },
+            "fromTime": {
+              "label": "From Time",
+              "placeholder": "Select time",
+              "validation": {
+                "required": "From time is required when duration type is time-limited"
+              }
+            },
+            "toTime": {
+              "label": "To Time",
+              "placeholder": "Select time",
+              "validation": {
+                "greaterThanFromTime": "To Time must be greater than From Time",
+                "required": "To time is required when duration type is time-limited"
+              }
+            },
+            "timeZone": {
+              "label": "Select City",
+              "placeholder": "Select a timezone...",
+              "validation": {
+                "required": "Timezone is required when duration type is time-limited"
+              }
+            },
+            "submitting": "Submitting...",
+            "next": "Next"
+          }
+        },
+        "customersList": {
+          "title": "Customers List"
+        }
+      },
+      "toasts": {
+        "error": "Failed to create campaign",
+        "errorDescription": "An error occurred while creating the campaign. Please try again."
+      }
+    },
+    "updateCampaign": {
+      "title": "Update Auto Dialer Campaign",
+      "description": "Update an existing auto dialer campaign to start calling your leads",
+      "loading": "Loading campaign details...",
+      "notFound": "Campaign not found",
+      "steps": {
+        "details": {
+          "title": "Campaign Details",
+          "form": {
+            "campaignName": {
+              "label": "Campaign Name",
+              "placeholder": "Enter campaign name",
+              "validation": {
+                "required": "Campaign name is required",
+                "min": "Campaign name must be at least {min} characters",
+                "max": "Campaign name must be at most {max} characters"
+              }
+            },
+            "waitingCustomerCount": {
+              "label": "Waiting Customer Count",
+              "hint": "The number of customers that can wait in the queue",
+              "validation": {
+                "min": "Waiting customer count must be at least {min}",
+                "max": "Waiting customer count must be at most {max}"
+              }
+            },
+            "trialsCount": {
+              "label": "Trials Count*",
+              "hint": "The number of trials to call each customer",
+              "validation": {
+                "min": "Trials count must be at least {min}",
+                "max": "Trials count must be at most {max}"
+              }
+            },
+            "wrapUpTime": {
+              "label": "Wrap Up Time",
+              "hint": "The time (seconds) between the end of a call and the start of the next call",
+              "validation": {
+                "min": "Wrap up time must be at least {min} seconds"
+              }
+            },
+            "delayMinutesBetweenTrials": {
+              "label": "Delay Minutes Between Trials",
+              "validation": {
+                "min": "Delay minutes between trials must be at least {min} minutes"
+              }
+            },
+            "hideCallerInfo": {
+              "label": "Hide Caller Info"
+            },
+            "agentCanLogoutAndRejoin": {
+              "label": "Agent Can Logout And Rejoin"
+            },
+            "next": "Next"
+          }
+        },
+        "callsDetails": {
+          "title": "Calls Details",
+          "form": {
+            "loopSoundFile": {
+              "label": "Sound",
+              "validation": {
+                "required": "Sound file is required",
+                "type": "Only audio files are allowed",
+                "size": "Sound file size must be less than {size}"
+              }
+            },
+            "hasAnnouncement": {
+              "label": "Play Announcement"
+            },
+            "mainSoundFile": {
+              "validation": {
+                "required": "Sound file is required when announcement is enabled",
+                "type": "Only audio files are allowed",
+                "size": "Sound file size must be less than {size}"
+              }
+            },
+            "agents": {
+              "label": "Agents",
+              "placeholder": "Select from the list....",
+              "validation": {
+                "min": "At least {min} agent must be selected"
+              }
+            },
+            "callerIds": {
+              "label": "Caller IDs",
+              "validation": {
+                "min": "At least {min} caller ID must be added",
+                "destination": {
+                  "required": "Destination number is required"
+                },
+                "callerNumber": {
+                  "required": "Caller number is required"
+                }
+              }
+            },
+            "next": "Next"
+          }
+        },
+        "scheduling": {
+          "title": "Scheduling",
+          "form": {
+            "durationType": {
+              "label": "Duration Type",
+              "placeholder": "Select from the list....",
+              "options": {
+                "timeLimited": "Time Limited",
+                "agentAvailability": "Agent Availability"
+              },
+              "validation": {
+                "required": "Duration type is required"
+              }
+            },
+            "maxWaitTime": {
+              "label": "Max Wait Time (Seconds)",
+              "hint": "The max (seconds) the customer will wait if the agent is not available before the call drops",
+              "validation": {
+                "min": "Max wait time must be at least {min} seconds"
+              }
+            },
+            "fromTime": {
+              "label": "From Time",
+              "placeholder": "Select time",
+              "validation": {
+                "required": "From time is required when duration type is time-limited"
+              }
+            },
+            "toTime": {
+              "label": "To Time",
+              "placeholder": "Select time",
+              "validation": {
+                "greaterThanFromTime": "To Time must be greater than From Time",
+                "required": "To time is required when duration type is time-limited"
+              }
+            },
+            "timeZone": {
+              "label": "Select City",
+              "placeholder": "Select a timezone...",
+              "validation": {
+                "required": "Timezone is required when duration type is time-limited"
+              }
+            },
+            "next": "Next"
+          }
+        },
+        "customersList": {
+          "title": "Customers List",
+          "form": {
+            "downloadTemplate": "Download Template",
+            "list": [
+              "Ensure all phone numbers include the country code.",
+              "Do not use '+' or '00' before the country code.",
+              "Set the field type to 'number' without decimal points."
+            ],
+            "update": "Update Campaign",
+            "save": "Save as Draft",
+            "submitting": "Submitting..."
+          }
+        }
+      },
+      "toasts": {
+        "success": "Campaign updated successfully",
+        "successDescription": "The campaign has been updated successfully.",
+        "error": "Failed to update campaign",
+        "errorDescription": "An error occurred while updating the campaign. Please try again."
+      }
+    },
+    "updateMainInfo": {
+      "title": "Update Campaign Info",
+      "description": "Update the campaign name, agents, and caller IDs",
+      "loading": "Loading campaign details...",
+      "notFound": "Campaign not found",
+      "form": {
+        "campaignName": {
+          "label": "Campaign Name",
+          "placeholder": "Enter campaign name",
+          "validation": {
+            "min": "Campaign name must be at least {min} characters",
+            "max": "Campaign name must be at most {max} characters"
+          }
+        },
+        "agents": {
+          "label": "Agents",
+          "placeholder": "Select from the list....",
+          "validation": {
+            "min": "At least {min} agent must be selected"
+          }
+        },
+        "callerIds": {
+          "label": "Caller IDs",
+          "validation": {
+            "min": "At least {min} caller ID must be added",
+            "destination": {
+              "required": "Destination number is required"
+            },
+            "callerNumber": {
+              "required": "Caller number is required"
+            }
+          }
+        },
+        "submit": "Update",
+        "submitting": "Updating..."
+      },
+      "toasts": {
+        "success": "Campaign updated successfully",
+        "successDescription": "The campaign info has been updated successfully.",
+        "error": "Failed to update campaign",
+        "errorDescription": "An error occurred while updating the campaign. Please try again."
+      }
+    },
+    "campaignDetails": {
+      "loading": "Loading...",
+      "notFound": "Campaign not found",
+      "noFileAttached": "No file attached",
+      "campaigns": "Campaigns",
+      "status": {
+        "created": "Created",
+        "schedule-customers": "Schedule Customers",
+        "verifying-customers": "Verifying Customers",
+        "verification-failed": "Verification Failed",
+        "corrupted-ignored": "Corrupted Ignored",
+        "customers-inserted": "Customers Inserted",
+        "in-progress": "In Progress",
+        "active": "Active",
+        "paused": "Paused",
+        "started": "Started",
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "failed": "Failed",
+        "finished": "Finished"
+      },
+      "tabs": {
+        "metrics": "Campaign Metrics",
+        "cdrs": "Campaign CDRs",
+        "details": "Campaign Details",
+        "uncompleted": "Uncompleted"
+      },
+      "sections": {
+        "campaignDetails": "Campaign Details",
+        "campaignScheduling": "Campaign Scheduling",
+        "customersList": "Customers List",
+        "sound": "Sound",
+        "callerIds": "Caller IDs",
+        "attachedAgents": "Attached Agents"
+      },
+      "fields": {
+        "campaignName": "Campaign Name",
+        "waitingCustomerCount": "Waiting Customer Count",
+        "trialsCount": "Trials Count",
+        "wrapUpTime": "Wrap Up Time",
+        "delayMinutesBetweenTrials": "Delay Minutes Between Trials",
+        "hideCallerInfo": "Hide Caller Info",
+        "agentCanLogoutAndRejoin": "Agent Can Logout And Rejoin",
+        "durationType": "Duration Type",
+        "maxWaitTimeSeconds": "Max Wait Time (Seconds)",
+        "fromTime": "From Time",
+        "toTime": "To Time",
+        "timeZone": "Time Zone",
+        "playAnnouncement": "Play Announcement",
+        "callerIds": "Caller ID",
+        "destination": "Destination"
+      },
+      "durationTypes": {
+        "timeLimited": "Time Limited",
+        "agentAvailability": "Agent Availability"
+      },
+      "booleans": {
+        "yes": "Yes",
+        "no": "No"
+      },
+      "fileTypes": {
+        "csv": "CSV",
+        "mp3": "MP3"
+      },
+      "metrics": {
+        "title": "Metrics",
+        "total": "Total",
+        "agents": "Agents",
+        "agentDistribution": "Agent Distribution",
+        "totalAgents": "Total Agents",
+        "onlineAgents": "Online Agents",
+        "availableAgents": "Available Agents",
+        "onCallAgents": "On Call Agents",
+        "dialingAgents": "Dialing Agents",
+        "onBreakAgents": "On Break Agents",
+        "oldestCallWaitTime": "Oldest Call Wait Time",
+        "averageCurrentWaitTime": "Average Current Wait Time",
+        "callsWaiting": "Calls Waiting",
+        "callsInProgress": "Calls In Progress",
+        "noData": "No data available",
+        "spyConnectionError": "WebRTC is not connected",
+        "onlyAvailableForActiveCampaigns": "Metrics are only available for active campaigns",
+        "seconds": "seconds",
+        "tooltips": {
+          "spy": "Spy",
+          "toggleFilters": "click to show/hide search filters",
+          "export": "Export to CSV"
+        },
+        "filters": {
+          "all": "All"
+        },
+        "tabs": {
+          "waitingCalls": "Waiting Calls",
+          "inProgressCalls": "In Progress Calls",
+          "agentDetails": "Agent Details",
+          "initiatedCalls": "Initiated Calls"
+        },
+        "columns": {
+          "waitTime": "Wait Time",
+          "callerNumber": "Caller Number",
+          "callerName": "Caller Name",
+          "agentId": "Agent ID",
+          "agentName": "Name",
+          "actions": "Actions",
+          "status": "Status",
+          "currentChannels": "Current Channels",
+          "agentStatuses": {
+            "offline": "Offline",
+            "on-break": "On Break",
+            "busy": "Busy",
+            "available": "Available"
+          },
+          "phone": "Phone",
+          "customerName": "Customer Name",
+          "currentTrial": "Current Trial"
+        }
+      }
+    },
+    "corruptedRecords": {
+      "badgePrefix": "Oops! We have",
+      "badgeRecords": "{count} records",
+      "badgeSuffix": "that need to be fixed. Please review and correct the highlighted errors to start your campaign.",
+      "saveChanges": "Save Changes",
+      "delete": "Continue by",
+      "deleteCorruptedData": "Ignore bad rows",
+      "deleteCampaign": "Stop everything",
+      "name": "Name",
+      "phone": "Phone",
+      "info": "Info",
+      "namePlaceholder": "Enter name",
+      "phonePlaceholder": "Enter phone",
+      "infoPlaceholder": "Enter info",
+      "noRecords": "No corrupted records found",
+      "loading": "Loading corrupted records...",
+      "validation": {
+        "nameMin": "Name must be at least {min} characters",
+        "nameMax": "Name must be at most {max} characters",
+        "phoneRequired": "Phone number is required",
+        "phoneInvalid": "Phone must contain only digits (include country code, no + or 00)",
+        "phoneUnsupportedFormat": "Phone number does not match any supported country format"
+      },
+      "save": "Save",
+      "saving": "Saving...",
+      "saveSuccess": "Record saved successfully",
+      "saveSuccessDescription": "The corrupted record has been updated.",
+      "saveError": "Failed to save record",
+      "saveErrorDescription": "An error occurred while saving the record. Please try again.",
+      "allResolved": "All records resolved",
+      "allResolvedDescription": "All corrupted records have been resolved successfully.",
+      "toasts": {
+        "errorTitle": "Error",
+        "errorDescription": "Failed to load corrupted records"
+      },
+      "ignoreCorruptedModal": {
+        "title": "Delete Corrupted Data",
+        "message": "Are you sure you want to ignore and delete all corrupted records? The campaign will proceed with only the valid records.",
+        "confirm": "Yes, delete corrupted data",
+        "cancel": "No, cancel",
+        "success": "Corrupted data deleted successfully",
+        "successDescription": "The corrupted records have been removed. The campaign will proceed with valid records only.",
+        "error": "Failed to delete corrupted data",
+        "errorDescription": "An error occurred while deleting corrupted data. Please try again."
+      },
+      "cancelCampaignModal": {
+        "title": "Stop Campaign",
+        "message": "Are you sure you want to stop this campaign? This action cannot be undone.",
+        "confirm": "Yes, stop campaign",
+        "cancel": "No, cancel",
+        "success": "Campaign stopped successfully",
+        "successDescription": "The campaign has been stopped successfully.",
+        "error": "Failed to stop campaign",
+        "errorDescription": "An error occurred while stopping the campaign. Please try again."
+      }
+    },
+    "uncompletedRequests": {
+      "title": "Uncompleted Requests",
+      "columns": {
+        "phone": "Phone",
+        "name": "Name",
+        "remainingTrials": "Remaining Trials"
+      },
+      "export": "Export",
+      "exportSuccess": "Export Initiated",
+      "exportSuccessDescription": "The report will be sent to your email.",
+      "toasts": {
+        "errorTitle": "Error",
+        "errorDescription": "Failed to load uncompleted requests"
+      },
+      "exportError": "Export Failed",
+      "exportErrorDescription": "An error occurred while exporting. Please try again."
+    },
+    "campaignCdrs": {
+      "title": "Campaign CDRs",
+      "filters": {
+        "status": "Status",
+        "agent": "Agent",
+        "phone": "Phone",
+        "statusPlaceholder": "Select status",
+        "agentPlaceholder": "Select agent",
+        "phoneLabel": "Phone Number",
+        "phoneHint": "Digits only",
+        "phonePlaceholder": "20123456789"
+      },
+      "columns": {
+        "phone": "Phone",
+        "name": "Name",
+        "status": "Status",
+        "customerConnectedAt": "Customer Connected At",
+        "waitingTime": "Waiting Time",
+        "talkTime": "Talk Time",
+        "duration": "Duration",
+        "agentConnectedAt": "Agent Connected At",
+        "agent": "Agent",
+        "actions": "Actions"
+      },
+      "toasts": {
+        "errorTitle": "Error",
+        "errorDescription": "An error occurred"
+      },
+      "statuses": {
+        "User did not answer": "User Did Not Answer",
+        "Airplane Mode Enabled": "Airplane Mode Enabled",
+        "Initiated": "Initiated",
+        "Processing": "Processing",
+        "Call Failed": "Call Failed",
+        "User Busy/Rejected By User": "User Busy / Rejected By User",
+        "User Connected": "User Connected",
+        "User Unreachable (Out of Network Coverage or Airplane Mode)": "User Unreachable (Out of Network Coverage or Airplane Mode)",
+        "Completed": "Completed",
+        "Timeout": "Timeout",
+        "Abandoned": "Abandoned"
+      },
+      "listen": "Listen to Recording",
+      "tooltips": {
+        "toggleFilters": "click to show/hide search filters"
+      },
+      "notAvailable": {
+        "title": "CDRs",
+        "description": "CDRs are available only for campaigns with the following statuses: Active, Paused, In Progress, Finished, or Completed."
+      }
+    }
+  },
+  "autoDialerAgent": {
+    "tabs": {
+      "active": "Active Campaigns",
+      "finished": "Finished Campaigns"
+    },
+    "columns": {
+      "name": "Name",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "statuses": {
+      "active": "Active",
+      "paused": "Paused",
+      "in-progress": "In Progress",
+      "created": "Created",
+      "finished": "Finished",
+      "started": "Started",
+      "completed": "Completed"
+    },
+    "actions": {
+      "cdrs": "CDRs",
+      "leave": "Leave",
+      "join": "Join"
+    },
+    "cdrsTitle": "Campaign CDRs",
+    "cdrColumns": {
+      "phone": "Phone",
+      "name": "Name",
+      "status": "Status",
+      "customerConnectedAt": "Customer Connected At",
+      "waitingTime": "Waiting Time",
+      "talkTime": "Talk Time",
+      "duration": "Duration",
+      "agentConnectedAt": "Agent Connected At",
+      "agent": "Agent",
+      "actions": "Actions"
+    },
+    "listen": "Listen to Recording",
+    "searchPhone": "Search by phone...",
+    "tooltips": {
+      "viewCdrs": "View Call Detail Records",
+      "leaveCampaign": "Leave this campaign",
+      "joinCampaign": "Join this campaign"
+    },
+    "toasts": {
+      "errorTitle": "Error",
+      "errorDescription": "Failed to load campaign CDRs",
+      "leaveSuccess": "Successfully left the campaign",
+      "leaveError": "Leave Failed",
+      "leaveErrorDescription": "Failed to leave the campaign",
+      "joinSuccess": "Successfully joined the campaign",
+      "joinError": "Join Failed",
+      "joinErrorDescription": "Failed to join the campaign"
+    }
+  },
   "webrtc": {
     "contacts": {
       "title": "Contacts",
@@ -2613,6 +4093,20 @@
           "duration": "Duration",
           "status": "Status"
         }
+      }
+    },
+    "autoDialer": {
+      "info": {
+        "placeholder": "Customer Information"
+      },
+      "notes": {
+        "title": "Notes",
+        "placeholder": "Write your notes here...",
+        "save": "Save",
+        "saving": "Saving...",
+        "saveSuccess": "Notes saved successfully",
+        "saveError": "Failed to save notes",
+        "callTime": "Call time"
       }
     }
   }

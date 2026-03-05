@@ -10,7 +10,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import Field from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import webrtcService from "@/services/webrtc.service";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +22,6 @@ const CreateContact = () => {
 
   const { navigate } = useRouting();
   const queryClient = useQueryClient();
-  const { toast } = useToast();
   const form = useForm({
     defaultValues: {
       name: "",
@@ -38,27 +37,20 @@ const CreateContact = () => {
         queryKey: ["contacts-list"],
       });
 
-      toast({
-        title: t("messages.contactCreated"),
+      toast.success(t("messages.contactCreated"), {
         description: t("messages.contactCreatedDescription"),
-        variant: "success",
       });
 
       navigate("/contacts/list");
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: t("messages.error"),
-          description:
-            error.response?.data?.message ||
+        toast.error(t("messages.error"), {
+          description: error.response?.data?.message ||
             t("messages.failedToCreateContact"),
-          variant: "destructive",
         });
       } else {
-        toast({
-          title: t("messages.error"),
+        toast.error(t("messages.error"), {
           description: t("messages.unexpectedError"),
-          variant: "destructive",
         });
       }
     }

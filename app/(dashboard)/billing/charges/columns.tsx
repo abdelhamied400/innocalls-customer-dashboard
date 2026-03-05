@@ -18,16 +18,16 @@ export type Charge = {
   type: string;
 };
 
-export const columns = (): ColumnDef<Charge>[] => {
-  const t = useTranslations("billing.charges.columns");
-  return [
-    {
-      accessorKey: "id",
-      header: t("refNo"),
-    },
-    {
-      accessorKey: "datetime",
-      header: t("date"),
+export const columns = (
+  t: ReturnType<typeof useTranslations>
+): ColumnDef<Charge>[] => [
+  {
+    accessorKey: "id",
+    header: t("columns.refNo"),
+  },
+  {
+    accessorKey: "datetime",
+    header: t("columns.date"),
       cell: ({ row }) => (
         <div className="datetime-cell font-normal">
           <p>{row.original.datetime.date}</p>
@@ -37,7 +37,7 @@ export const columns = (): ColumnDef<Charge>[] => {
     },
     {
       accessorKey: "amount",
-      header: t("amount"),
+      header: t("columns.amount"),
       cell: ({ row }) => {
         const amount = row.getValue("amount") as number;
         const currency = row.original.currency as string;
@@ -51,7 +51,6 @@ export const columns = (): ColumnDef<Charge>[] => {
     },
     {
       accessorKey: "description",
-      header: t("description"),
+      header: t("columns.description"),
     },
   ];
-};

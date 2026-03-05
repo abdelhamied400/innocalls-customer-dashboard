@@ -10,7 +10,7 @@ import Spinner from "./spinner";
 const LONG_PRESS_DURATION = 300;
 
 const buttonVariants = cva(
-  "inline-flex justify-center items-center gap-2 disabled:opacity-50 rounded-md focus-visible:ring-1 focus-visible:ring-ring font-semibold text-sm whitespace-nowrap transition-colors disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-5 focus-visible:outline-none",
+  "cursor-pointer inline-flex justify-center items-center gap-2 disabled:opacity-50 rounded-lg focus-visible:ring-1 focus-visible:ring-ring font-semibold text-sm whitespace-nowrap transition-colors disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg]:size-5 focus-visible:outline-none",
   {
     variants: {
       variant: {
@@ -31,12 +31,12 @@ const buttonVariants = cva(
           "rounded-full bg-neutral-800 text-primary-foreground",
         filter:
           "bg-neutral-200 text-neutral-foreground hover:bg-neutral-300 text-xs rounded-full font-semibold",
-        "ghost-primary": "bg-primary-100 hover:bg-primary-200 text-primary-500",
-        "ghost-success": "bg-success-100 hover:bg-success-200 text-success-500",
-        "ghost-warning": "bg-warning-100 hover:bg-warning-200 text-warning-500",
-        "ghost-destructive":
-          "bg-destructive-100 hover:bg-destructive-200 text-destructive-500",
-        tab: "rounded-full bg-gray-100 border border-gray-100 text-gray-950 hover:bg-gray-200 active:bg-gray-200 data-[active=true]:border-primary data-[active=true]:bg-primary-100 data-[active=true]:text-primary",
+        "ghost-primary": "bg-primary-200 text-primary-600",
+        "ghost-success": "bg-success-200 text-success-500",
+        "ghost-warning": "bg-warning-200 text-warning-500",
+        "ghost-destructive": "bg-destructive-200 text-destructive-500",
+        "ghost-info": "bg-info-100 hover:bg-info-200 text-info-500",
+        tab: "rounded-full bg-neutral-200 border border-neutral-100 text-neutral-950 hover:bg-neutral-200 active:bg-neutral-200 data-[active=true]:border-primary data-[active=true]:bg-primary-100 data-[active=true]:text-primary",
         unstyled: "",
       },
       size: {
@@ -51,11 +51,12 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
+  },
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   loading?: boolean;
@@ -75,7 +76,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       onClick,
       ...props
     },
-    ref
+    ref,
   ) => {
     const Comp = asChild ? Slot : "button";
 
@@ -136,7 +137,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {size === "icon" && loading ? "" : children}
       </Comp>
     );
-  }
+  },
 );
 Button.displayName = "Button";
 

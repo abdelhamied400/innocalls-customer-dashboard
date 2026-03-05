@@ -25,70 +25,162 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   type AutoDialerCreateCampaign,
   AutoDialerCreateCampaignSchema,
+  AutoDialerCreateStep3,
+  AutoDialerCreateStep3Schema,
 } from "@/validation/AutoDialerCreateCampaign";
 import SchedulingForm from "./scheduling-form";
-import CustomersListForm from "./customers-list-form";
-import { generateUUID } from "@/lib/utils";
-
-const steps = [
-  "Campaign Details",
-  "Calls Details",
-  "Scheduling",
-  "Customers List",
-];
+import withActiveOrganization from "@/containers/withActiveOrganization";
+import withPermission from "@/containers/withPermission";
+import autoDialerService from "@/services/auto-dialer.service";
+import { useTranslations } from "@/providers/TranslationProvider";
+import { toast } from "sonner";
+import { isAxiosError } from "axios";
 
 const CreateAutoDialerCampaignSheet = () => {
   const router = useRouter();
+  const t = useTranslations("autoDialer.createCampaign");
   const [currentStep, setCurrentStep] = useState(0);
+
+  const steps = [
+    t("steps.details.title"),
+    t("steps.callsDetails.title"),
+    t("steps.scheduling.title"),
+    t("steps.customersList.title"),
+  ];
 
   const form = useForm<AutoDialerCreateCampaign>({
     mode: "onChange",
-    resolver: zodResolver(AutoDialerCreateCampaignSchema),
+    resolver: zodResolver(AutoDialerCreateCampaignSchema(t)),
     defaultValues: {
-      campaignName: "",
+      name: "",
       waitingCustomerCount: 0,
       trialsCount: 1,
       wrapUpTime: 10,
       delayMinutesBetweenTrials: 5,
       hideCallerInfo: false,
-      agentCanLogoutAndRejoin: false,
-      playAnnouncement: false,
+      agentCanLogoutAndRejoin: true,
+      hasAnnouncement: false,
       agents: [],
-      callerIds: [
+      maxWaitTime: 50,
+      durationType: "time-limited",
+      callers: [
         {
-          id: generateUUID(),
           destination: "",
-          callerId: "",
+          callerNumber: "",
         },
       ],
     },
   });
 
-  const onSubmit = form.handleSubmit((data) => {
-    // setCurrentStep((step) => step + 1);
+  const onSubmit = form.handleSubmit(
+    async (data) => {
+      // validate the form
+      const res = await AutoDialerCreateStep3Schema(t)
+        .refine(
+          (data) => {
+            const { fromTime, toTime, durationType } = data;
+            if (durationType === "time-limited" && fromTime && toTime) {
+              return fromTime < toTime;
+            }
+            return true;
+          },
+          {
+            path: ["toTime"],
+            message: t(
+              "steps.scheduling.form.toTime.validation.greaterThanFromTime",
+            ),
+          },
+        )
+        .refine(
+          (data) => {
+            if (data.durationType === "time-limited" && !data.timezone) {
+              return false;
+            }
+            return true;
+          },
+          {
+            path: ["timezone"],
+            message: t("steps.scheduling.form.timeZone.validation.required"),
+          },
+        )
+        .refine(
+          (data) => {
+            if (data.durationType === "time-limited" && !data.fromTime) {
+              return false;
+            }
+            return true;
+          },
+          {
+            path: ["fromTime"],
+            message: t("steps.scheduling.form.fromTime.validation.required"),
+          },
+        )
+        .refine(
+          (data) => {
+            if (data.durationType === "time-limited" && !data.toTime) {
+              return false;
+            }
+            return true;
+          },
+          {
+            path: ["toTime"],
+            message: t("steps.scheduling.form.toTime.validation.required"),
+          },
+        )
+        .safeParseAsync(data);
 
-    console.log(data);
-  }, console.error);
+      if (!res.success) {
+        setTimeout(() => {
+          res.error.issues.forEach((issue) => {
+            form.setError(issue.path[0] as keyof AutoDialerCreateStep3, {
+              type: "manual",
+              message: issue.message,
+            });
+          });
+        }, 0);
+
+        return;
+      }
+
+      form.clearErrors();
+
+      // sending to server
+      try {
+        const res = await autoDialerService.createCampaign(data);
+        router.replace(`/auto-dialer/${res.id}/update?action=continue`);
+      } catch (error) {
+        if (isAxiosError(error)) {
+          toast.error(t("toasts.error"), {
+            description: error.response?.data?.message || t("toasts.errorDescription"),
+          });
+          return;
+        }
+        toast.error(t("toasts.error"), {
+          description: t("toasts.errorDescription"),
+        });
+      }
+    },
+    () => {},
+  );
 
   return (
     <Sheet defaultOpen={true} onOpenChange={() => router.back()}>
       <SheetContent side="bottom" className="h-screen p-0">
         <SheetHeader className="sr-only">
-          <SheetTitle>Create Auto Dialer Campaign</SheetTitle>
-          <SheetDescription>
-            Create a new auto dialer campaign to start calling your leads.
-          </SheetDescription>
+          <SheetTitle>{t("title")}</SheetTitle>
+          <SheetDescription>{t("description")}</SheetDescription>
         </SheetHeader>
 
         <Stepper
           steps={steps}
           currentStep={currentStep}
           onStepChange={setCurrentStep}
+          enableStepping={false}
           className="h-full flex flex-col"
         >
           <StepperHeader>
             <StepperPrevious>
-              <ChevronLeftIcon />
+              <ChevronLeftIcon className="rtl:rotate-180" />
             </StepperPrevious>
 
             <div className="flex flex-1 justify-center gap-2">
@@ -118,9 +210,6 @@ const CreateAutoDialerCampaignSheet = () => {
                 <StepperStep idx={2} className="p-4 rounded-xl bg-white h-full">
                   <SchedulingForm onNext={() => setCurrentStep(3)} />
                 </StepperStep>
-                <StepperStep idx={3} className="p-4 rounded-xl bg-white h-full">
-                  <CustomersListForm onNext={() => setCurrentStep(4)} />
-                </StepperStep>
               </form>
             </FormProvider>
           </StepperSteps>
@@ -130,4 +219,4 @@ const CreateAutoDialerCampaignSheet = () => {
   );
 };
 
-export default CreateAutoDialerCampaignSheet;
+export default withActiveOrganization(withPermission(CreateAutoDialerCampaignSheet, "fullAccessAutoDialerCampaigns"));

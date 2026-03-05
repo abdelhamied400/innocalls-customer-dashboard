@@ -12,39 +12,30 @@ import Stepper, {
   StepperStep,
   StepperSteps,
 } from "@/components/ui/stepper";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useTranslations } from "@/providers/TranslationProvider";
 import breakTypesService from "@/services/break-types.service";
 import { BreakType } from "@/types/api/break-type";
+import { EditBreakFormValues, EditBreakSchema } from "@/validation/EditBreak";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { ChevronLeftIcon, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-const editBreakSchema = (t: (key: string) => string) =>
-  z.object({
-    nameAR: z.string().min(1, t("form.validation.nameAR.required")),
-    nameEN: z.string().min(1, t("form.validation.nameEN.required")),
-  });
-
-type EditBreakFormValues = z.infer<ReturnType<typeof editBreakSchema>>;
 
 type EditBreakFormProps = {
   breakType: BreakType;
 };
 
 const EditBreakForm = ({ breakType }: EditBreakFormProps) => {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const closeSheetRef = useRef<HTMLButtonElement>(null);
   const [currentStep, setCurrentStep] = useState(0);
   const t = useTranslations("settings.agent.breaks.editBreak");
 
   const form = useForm<EditBreakFormValues>({
-    resolver: zodResolver(editBreakSchema(t)),
+    resolver: zodResolver(EditBreakSchema(t)),
     defaultValues: {
       nameAR: breakType.nameAR,
       nameEN: breakType.nameEN,
@@ -65,29 +56,21 @@ const EditBreakForm = ({ breakType }: EditBreakFormProps) => {
         return oldData.map((bt) =>
           bt.id === breakType.id
             ? { ...bt, nameAR: data.nameAR, nameEN: data.nameEN }
-            : bt
+            : bt,
         );
       });
 
-      toast({
-        title: t("messages.updateSuccess"),
-        variant: "success",
-      });
+      toast.success(t("messages.updateSuccess"));
 
       closeSheetRef.current?.click();
       queryClient.invalidateQueries({ queryKey: ["break-types"] });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: t("messages.updateFailed"),
+        toast.error(t("messages.updateFailed"), {
           description: error.response?.data?.message,
-          variant: "destructive",
         });
       } else {
-        toast({
-          title: t("messages.updateFailed"),
-          variant: "destructive",
-        });
+        toast.error(t("messages.updateFailed"));
       }
     }
   });

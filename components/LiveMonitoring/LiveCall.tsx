@@ -1,7 +1,8 @@
 import { CallMade, CallReceived } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 import Timer from "../ui/timer";
 import { Button } from "../ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import useAppStore from "@/store/app.slice";
 import Image from "next/image";
@@ -30,22 +31,32 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
   const t = useTranslations("liveMonitor.liveCalls.callCard");
 
   const { extension } = useWebrtcStore();
-  const { toast } = useToast();
   const { spy, extensionState } = useSip();
   const { setWebrtcOpen } = useAppStore();
 
+  const [nowMs, setNowMs] = useState(() =>
+    new Date(timestamp * 1000).getTime(),
+  );
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setNowMs(Date.now());
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   // Convert timestamp to seconds from now
-  const startTime = Math.floor(
-    Math.floor((Date.now() - new Date(timestamp * 1000).getTime()) / 1000),
+  const startTime = Math.max(
+    0,
+    Math.floor((nowMs - new Date(timestamp * 1000).getTime()) / 1000),
   );
 
   const handleSpy = (extension: string) => {
     setWebrtcOpen(true);
     if (extensionState !== "connected") {
-      toast({
-        title: t("error"),
+      toast.error(t("error"), {
         description: t("sipConnectionError"),
-        variant: "destructive",
       });
       return;
     }

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/collapsible";
 import { Toggle } from "@/components/ui/toggle";
 import DatePicker from "@/components/ui/date-picker";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isValidDateRange } from "@/lib/date";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
@@ -44,7 +44,6 @@ const ChargesHead = ({ filters, setFilters }: ChargesHeadProps) => {
   const t = useTranslations("billing.charges");
   const tBillingCommon = useTranslations("billing.common");
   const tCommon = useTranslations("common");
-  const { toast } = useToast();
 
   const [fromDate, setFromDate] = useState<Date>(defaultFromDate);
   const [toDate, setToDate] = useState<Date>(defaultToDate);
@@ -54,10 +53,8 @@ const ChargesHead = ({ filters, setFilters }: ChargesHeadProps) => {
       fromDate,
       toDate,
       (message) => {
-        toast({
-          title: tBillingCommon("messages.invalidDateRange"),
+        toast.error(tBillingCommon("messages.invalidDateRange"), {
           description: message,
-          variant: "destructive",
         });
       },
       90,

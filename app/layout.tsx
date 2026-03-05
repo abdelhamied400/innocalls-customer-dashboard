@@ -40,7 +40,10 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 
   return (
     <html lang={targetLocale} dir={localeObj.dir}>
-      <body className={`${fonts[targetLocale].variable} antialiased`}>
+      <body
+        suppressHydrationWarning
+        className={`${fonts[targetLocale].variable} antialiased`}
+      >
         <MainProvider>{children}</MainProvider>
       </body>
     </html>

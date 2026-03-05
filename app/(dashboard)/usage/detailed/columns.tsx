@@ -13,14 +13,14 @@ const generateHeaderFromKey = (key: string) => {
     .replace(/^\w/, (c) => c.toUpperCase()); // Capitalize the first letter
 };
 
-export const createColumns = (columnKeys: string[]) => {
-  const t = useTranslations("usage.detailed.columns");
-  const tOrigin = useTranslations("usage.detailed.origin");
-
+export const createColumns = (
+  columnKeys: string[],
+  t: ReturnType<typeof useTranslations>
+) => {
   const predefinedColumns: Record<string, ColumnDef<UsageDetailed>> = {
     origin: {
       accessorKey: "origin",
-      header: t("origin"),
+      header: t("columns.origin"),
       cell: ({ row }) => {
         const origin = row.getValue("origin") as string;
         const variantsLookup: any = {
@@ -32,7 +32,7 @@ export const createColumns = (columnKeys: string[]) => {
         return (
           <div className="flex items-center">
             <Badge variant={variant}>
-              {tOrigin(`${origin?.toLocaleLowerCase()}`)}
+              {t(`origin.${origin?.toLocaleLowerCase()}`)}
             </Badge>
           </div>
         );
@@ -46,7 +46,7 @@ export const createColumns = (columnKeys: string[]) => {
     }
 
     // Fallback to translated column name or generate from key
-    const translatedHeader = t(key as any) || generateHeaderFromKey(key);
+    const translatedHeader = t(`columns.${key}` as any) || generateHeaderFromKey(key);
 
     return {
       accessorKey: key,

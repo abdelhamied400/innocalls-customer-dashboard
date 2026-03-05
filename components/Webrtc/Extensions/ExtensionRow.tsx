@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Spinner from "@/components/ui/spinner";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { Extension } from "@/types/api/extension";
 import { useState } from "react";
 
@@ -11,7 +11,6 @@ type ExtensionRowProps = {
 };
 const ExtensionRow = ({ extension, disabled, onClick }: ExtensionRowProps) => {
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
 
   const handleClick = async () => {
     if (onClick) {
@@ -20,10 +19,8 @@ const ExtensionRow = ({ extension, disabled, onClick }: ExtensionRowProps) => {
         await onClick();
       } catch (error) {
         console.error("Error during extension login:", error);
-        toast({
-          title: "Error",
+        toast.error("Error", {
           description: "Failed to login to extension. Please try again.",
-          variant: "destructive",
         });
       } finally {
         setLoading(false);

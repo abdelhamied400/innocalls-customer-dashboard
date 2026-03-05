@@ -5,27 +5,26 @@ export const UpdatePasswordSchema = (t: any, tCommon: any) =>
     .object({
       currentPassword: z
         .string()
-        .min(8, { message: t("validation.passwordMinLength", { length: 8 }) })
-        .max(64, { message: t("validation.passwordMaxLength", { length: 64 }) })
-        .regex(/[A-Z]/, { message: t("validation.passwordUppercase") })
-        .regex(/[a-z]/, { message: t("validation.passwordLowercase") })
-        .regex(/[0-9]/, { message: t("validation.passwordNumber") })
-        .regex(/[^A-Za-z0-9]/, {
-          message: t("validation.passwordSpecialChar"),
-        }),
+        .trim()
+        .min(1, { message: t("form.validation.currentPassword.required") }),
       newPassword: z
         .string()
-        .min(8, { message: t("validation.passwordMinLength", { length: 8 }) })
-        .max(64, { message: t("validation.passwordMaxLength", { length: 64 }) })
-        .regex(/[A-Z]/, { message: t("validation.passwordUppercase") })
-        .regex(/[a-z]/, { message: t("validation.passwordLowercase") })
-        .regex(/[0-9]/, { message: t("validation.passwordNumber") })
+        .trim()
+        .min(8, {
+          message: t("form.validation.newPassword.minLength", { min: 8 }),
+        })
+        .max(64, {
+          message: t("form.validation.newPassword.maxLength", { max: 64 }),
+        })
+        .regex(/[A-Z]/, { message: t("form.validation.newPassword.uppercase") })
+        .regex(/[a-z]/, { message: t("form.validation.newPassword.lowercase") })
+        .regex(/[0-9]/, { message: t("form.validation.newPassword.number") })
         .regex(/[^A-Za-z0-9]/, {
-          message: t("validation.passwordSpecialChar"),
+          message: t("form.validation.newPassword.specialChar"),
         }),
-      confirmedPassword: z.string(),
+      confirmedPassword: z.string().trim(),
     })
     .refine((data) => data.newPassword === data.confirmedPassword, {
       path: ["confirmedPassword"],
-      message: tCommon("validation.passwordsMustMatch"),
+      message: t("form.validation.confirmPassword.mismatch"),
     });

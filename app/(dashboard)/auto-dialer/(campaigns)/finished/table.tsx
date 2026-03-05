@@ -10,22 +10,30 @@ import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
 import { useEffect, useRef, useState } from "react";
-import { PaginationState } from "@tanstack/react-table";
-import { useToast } from "@/hooks/use-toast";
+import { PaginationState, SortingState } from "@tanstack/react-table";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 const FinishedCampaignsTable = () => {
-  const { toast } = useToast();
+  const t = useTranslations("autoDialer");
   const [filters, setFilters] = useState({});
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const sortParams = sorting.length > 0
+    ? { sortBy: sorting[0].id, sortOrder: sorting[0].desc ? "desc" : "asc" }
+    : {};
+
   const { data, isLoading, isError, error } = useLocalizedQuery({
-    queryKey: ["auto-dialer-finished-campaigns", filters, pagination],
+    queryKey: ["auto-dialer-finished-campaigns", filters, pagination, sorting],
     queryFn: async () =>
       await AutoDialerService.fetchFinishedCampaigns({
         ...filters,
+        ...sortParams,
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
       }),
@@ -34,20 +42,16 @@ const FinishedCampaignsTable = () => {
   useEffect(() => {
     if (isError) {
       if (isAxiosError(error)) {
-        toast({
-          title: "Error",
-          description: error.response?.data?.message || "An error occurred",
-          variant: "destructive",
+        toast.error(t("finishedCampaigns.toasts.error"), {
+          description: error.response?.data?.message || t("finishedCampaigns.toasts.errorDescription"),
         });
         return;
       }
-      toast({
-        title: "Error",
-        description: "An error occurred",
-        variant: "destructive",
+      toast.error(t("finishedCampaigns.toasts.error"), {
+        description: t("finishedCampaigns.toasts.errorDescription"),
       });
     }
-  }, [isError, error, toast]);
+  }, [isError, error]);
 
   // Track if this is the initial render
   const isInitialRender = useRef(true);
@@ -58,21 +62,22 @@ const FinishedCampaignsTable = () => {
       isInitialRender.current = false;
       return;
     }
-    // Reset to first page when filters change
+    // Reset to first page when filters or sorting change
     setPagination((prev) => ({ ...prev, pageIndex: 0 }));
-  }, [filters]);
+  }, [filters, sorting]);
 
   return (
     <div className="rounded-lg flex-1 flex flex-col overflow-hidden">
       <PaginatedTable
         data={data?.campaigns || []}
-        columns={columns}
+        columns={columns(t)}
         pagination={{
           totalItems: data?.totalItems || 0,
           totalPages: data?.totalPages || 0,
         }}
         paginationState={pagination}
         onPaginationChange={setPagination}
+        onSortingChange={setSorting}
       >
         <AutoDialerFinishedHead filters={filters} setFilters={setFilters} />
         <PaginatedTableContent>

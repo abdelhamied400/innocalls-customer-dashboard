@@ -1,6 +1,9 @@
-import PaymentHistoryTable from "./table";
+"use client";
 
-const PaymentHistory = async () => {
+import PaymentHistoryTable from "./table";
+import withActiveOrganization from "@/containers/withActiveOrganization";
+
+const PaymentHistory = () => {
   return (
     <div className="page h-full" id="payment-history">
       <PaymentHistoryTable />
@@ -8,4 +11,4 @@ const PaymentHistory = async () => {
   );
 };
 
-export default PaymentHistory;
+export default withActiveOrganization(PaymentHistory);

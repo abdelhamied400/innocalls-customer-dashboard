@@ -18,17 +18,20 @@ const ResponsiveWebrtc = ({ children }: ResponsiveWebrtcProps) => {
   }
 
   return (
-    <Sheet
-      open={isWebrtcOpen}
-      onOpenChange={(open) => {
-        setWebrtcOpen(open);
-      }}
-    >
-      <SheetContent side="right" className="p-0 w-[280px] overflow-y-auto">
-        <SheetTitle hidden>WebRTC</SheetTitle>
-        {children}
-      </SheetContent>
-    </Sheet>
+    <>
+      {!isWebrtcOpen && children}
+      <Sheet
+        open={isWebrtcOpen}
+        onOpenChange={(open) => {
+          setWebrtcOpen(open);
+        }}
+      >
+        <SheetContent side="right" className="p-0 w-[280px] overflow-y-auto">
+          <SheetTitle hidden>WebRTC</SheetTitle>
+          {children}
+        </SheetContent>
+      </Sheet>
+    </>
   );
 };
 

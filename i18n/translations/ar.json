@@ -87,6 +87,31 @@
     "currencies": {
       "sar": "ريـال سعودي",
       "usd": "دولار أمريكي"
+    },
+    "callerIdSelector": {
+      "country": {
+        "label": "الدولة",
+        "placeholder": "اختر دولة..."
+      },
+      "DID": {
+        "label": "معرف المتصل",
+        "placeholder": "اختر معرف المتصل..."
+      },
+      "addCaller": "إضافة متصل"
+    },
+    "dropzone": {
+      "drag": "اسحب الملف هنا",
+      "or": "أو",
+      "browseFiles": "تصفح الملفات",
+      "only": "فقط",
+      "max": "الحد الأقصى",
+      "size": "الحجم",
+      "validation": {
+        "file-invalid-type": "نوع الملف غير صالح",
+        "file-too-large": "الملف كبير جدًا",
+        "file-too-small": "الملف صغير جدًا",
+        "too-many-files": "عدد الملفات كبير جدًا"
+      }
     }
   },
   "numbers": {
@@ -234,12 +259,20 @@
           },
           "confirmPassword": {
             "label": "تأكيد كلمة المرور",
-            "placeholder": "تأكيد كلمة المرور الجديدة..."
+            "placeholder": "أعد إدخال كلمة المرور الجديدة..."
           }
         },
         "validation": {
           "currentPassword": {
             "required": "كلمة المرور الحالية مطلوبة"
+          },
+          "newPassword": {
+            "minLength": "يجب أن تتكون كلمة المرور من {min} أحرف على الأقل",
+            "maxLength": "يجب ألا تزيد كلمة المرور عن {max} حرف",
+            "uppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
+            "lowercase": "يجب أن تحتوي كلمة المرور على حرف صغير واحد على الأقل",
+            "number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
+            "specialChar": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل"
           },
           "confirmPassword": {
             "mismatch": "كلمات المرور غير متطابقة"
@@ -255,7 +288,7 @@
       "actions": {
         "submit": "حفظ التغييرات"
       },
-      "hint": "*انقر على 'حفظ التغييرات' للتأكد من حفظ التحديثات"
+      "hint": "*انقر على 'حفظ التغييرات' للتأكد من حفظ تحديثاتك"
     }
   },
   "settings": {
@@ -278,7 +311,7 @@
           },
           "validation": {
             "organizationName": {
-              "required": "اسم المنظمة مطلوب"
+              "minTwoChars": "يجب أن يكون اسم المنظمة حرفين على الأقل"
             }
           }
         },
@@ -301,6 +334,7 @@
       },
       "tags": {
         "title": "إدارة الوسوم",
+        "subtitle": "جميع الوسوم",
         "columns": {
           "nameAR": "الاسم بالعربية",
           "nameEN": "الاسم بالإنجليزية",
@@ -308,7 +342,10 @@
           "actions": "الإجراءات"
         },
         "actions": {
-          "create": "إنشاء وسم جديد"
+          "create": "إنشاء وسم جديد",
+          "edit": "تعديل",
+          "enable": "تفعيل",
+          "disable": "إيقاف"
         },
         "filters": {
           "status": {
@@ -348,10 +385,10 @@
           },
           "validation": {
             "nameAR": {
-              "required": "الاسم بالعربية مطلوب"
+              "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
             },
             "nameEN": {
-              "required": "الاسم بالإنجليزية مطلوب"
+              "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
             }
           }
         },
@@ -381,10 +418,10 @@
           },
           "validation": {
             "nameAR": {
-              "required": "الاسم بالعربية مطلوب"
+              "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
             },
             "nameEN": {
-              "required": "الاسم بالإنجليزية مطلوب"
+              "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
             }
           }
         },
@@ -407,7 +444,10 @@
           "actions": "الإجراءات"
         },
         "actions": {
-          "create": "إنشاء استراحة جديدة"
+          "create": "إنشاء استراحة جديدة",
+          "edit": "تعديل",
+          "delete": "حذف",
+          "restore": "استعادة"
         },
         "confirmations": {
           "deleteTitle": "حذف استراحة \"{name}\"",
@@ -440,10 +480,10 @@
             },
             "validation": {
               "nameAR": {
-                "required": "الاسم بالعربية مطلوب"
+                "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
               },
               "nameEN": {
-                "required": "الاسم بالإنجليزية مطلوب"
+                "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
               }
             }
           },
@@ -472,10 +512,10 @@
             },
             "validation": {
               "nameAR": {
-                "required": "الاسم بالعربية مطلوب"
+                "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
               },
               "nameEN": {
-                "required": "الاسم بالإنجليزية مطلوب"
+                "minTwoChars": "يجب أن يكون الاسم حرفين على الأقل"
               }
             }
           },
@@ -487,6 +527,537 @@
           "actions": {
             "save": "حفظ التغييرات",
             "close": "إغلاق"
+          }
+        }
+      }
+    }
+  },
+  "reports": {
+    "title": "التقارير",
+    "layout": {
+      "tabs": {
+        "oneTime": "تقرير لمرة واحدة",
+        "scheduled": "تقرير مجدول"
+      }
+    },
+    "reportTypes": {
+      "outbound_summary": "ملخص المكالمات الصادرة",
+      "outbound_agent_stats": "إحصائيات وكلاء المكالمات الصادرة",
+      "outbound_date_distribution": "توزيع المكالمات الصادرة حسب التاريخ",
+      "outbound_hourly_distribution": "توزيع المكالمات الصادرة حسب الساعة",
+      "inbound_agent_summary": "ملخص وكلاء المكالمات الواردة",
+      "inbound_agent_date_distribution": "توزيع وكلاء المكالمات الواردة حسب التاريخ",
+      "inbound_agent_hourly_distribution": "توزيع وكلاء المكالمات الواردة حسب الساعة",
+      "inbound_queue_summary": "ملخص قوائم الانتظار الواردة",
+      "inbound_queue_date_distribution": "توزيع قوائم الانتظار الواردة حسب التاريخ",
+      "inbound_queue_hourly_distribution": "توزيع قوائم الانتظار الواردة حسب الساعة",
+      "inbound_queue_agent_performance": "أداء وكلاء قوائم الانتظار الواردة",
+      "inbound_queue_repeated_callers": "المتصلين المتكررين لقوائم الانتظار الواردة",
+      "unanswered_summary": "ملخص المكالمات غير المجابة",
+      "inbound_unanswered_date_distribution": "توزيع المكالمات الواردة غير المجابة حسب التاريخ",
+      "inbound_unanswered_hourly_distribution": "توزيع المكالمات الواردة غير المجابة حسب الساعة",
+      "outbound_unanswered_date_distribution": "توزيع المكالمات الصادرة غير المجابة حسب التاريخ",
+      "outbound_unanswered_hourly_distribution": "توزيع المكالمات الصادرة غير المجابة حسب الساعة",
+      "agent_summary": "ملخص الوكلاء",
+      "agent_call_distribution": "توزيع مكالمات الوكلاء",
+      "agent_sla_compliance": "التزام الوكلاء بمستوى الخدمة"
+    },
+    "oneTime": {
+      "title": "تقرير لمرة واحدة",
+      "columns": {
+        "createdAt": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "report": "التقرير",
+        "status": "الحالة",
+        "recipients": "المستلمون",
+        "actions": "الإجراءات"
+      },
+      "statusValues": {
+        "completed": "مكتمل",
+        "failed": "فشل",
+        "pending": "قيد الانتظار",
+        "processing": "قيد المعالجة"
+      },
+      "cells": {
+        "recipients": {
+          "count": "{count} مستلمين",
+          "dialogTitle": "المستلمون",
+          "dialogDescription": "قائمة جميع المستلمين لهذا التقرير",
+          "sheetTitle": "مستلمو {name}"
+        }
+      },
+      "filters": {
+        "creationDate": {
+          "triggerLabel": "تاريخ الإنشاء",
+          "label": "تصفية حسب تاريخ الإنشاء"
+        },
+        "fromDate": {
+          "label": "من",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل تاريخ البداية"
+        },
+        "toDate": {
+          "label": "إلى",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل تاريخ النهاية"
+        }
+      },
+      "messages": {
+        "invalidDateRange": "نطاق التاريخ غير صالح",
+        "dateRangeExceeds30Days": "لا يمكن أن يتجاوز نطاق التاريخ 30 يومًا",
+        "queueRequired": "قائمة الانتظار مطلوبة لهذا النوع من التقارير",
+        "invalidExtensionsFormat": "يجب أن تكون التحويلات أرقام مفصولة بفواصل (مثال: 101,102,103)",
+        "invalidSla": "يجب أن يكون SLA رقمًا أكبر من 0",
+        "deleteSuccess": "تم حذف التقرير بنجاح",
+        "deleteFailed": "فشل في حذف التقرير",
+        "error": "خطأ",
+        "fillRequiredFields": "يرجى ملء جميع الحقول المطلوبة",
+        "unknownError": "حدث خطأ غير معروف"
+      },
+      "confirmations": {
+        "deleteTitle": "حذف التقرير",
+        "deleteDescription": "هل أنت متأكد من رغبتك في حذف هذا التقرير؟ لا يمكن التراجع عن هذا الإجراء.",
+        "cancel": "إلغاء",
+        "yesDelete": "نعم، احذف"
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
+      },
+      "actions": {
+        "createReport": "إنشاء تقرير جديد"
+      },
+      "createReport": {
+        "title": "إنشاء تقرير جديد",
+        "description": "إنشاء تقرير لمرة واحدة جديد",
+        "steps": {
+          "createReport": "إنشاء تقرير لمرة واحدة جديد"
+        },
+        "form": {
+          "fields": {
+            "name": {
+              "label": "اسم التقرير",
+              "placeholder": "أدخل اسم التقرير"
+            },
+            "report": {
+              "label": "التقرير",
+              "placeholder": "اختر نوع التقرير",
+              "options": {
+                "agent": "تقرير الوكيل",
+                "admin": "تقرير المسؤول"
+              }
+            },
+            "recipients": {
+              "label": "المستلمون",
+              "placeholder": "أدخل البريد الإلكتروني واضغط Enter",
+              "hint": "اكتب عنوان البريد الإلكتروني واضغط \"Enter\" لإضافته."
+            },
+            "fromDate": {
+              "label": "من تاريخ",
+              "placeholder": "اختر تاريخ البداية"
+            },
+            "toDate": {
+              "label": "إلى تاريخ",
+              "placeholder": "اختر تاريخ النهاية"
+            },
+            "type": {
+              "label": "النوع",
+              "placeholder": "اختر النوع",
+              "options": {
+                "perQueue": "لكل قائمة انتظار"
+              }
+            },
+            "queue": {
+              "label": "قائمة الانتظار",
+              "placeholder": "اختر قائمة الانتظار"
+            },
+            "extensions": {
+              "label": "التحويلات",
+              "placeholder": "اختر التحويلات"
+            },
+            "sla": {
+              "label": "SLA (بالثواني)",
+              "placeholder": "مثال: 30",
+              "hint": "عتبة اتفاقية مستوى الخدمة بالثواني"
+            },
+            "includeInternalCalls": {
+              "label": "تضمين المكالمات الداخلية"
+            }
+          },
+          "validation": {
+            "name": {
+              "minLength": "يجب أن يكون اسم التقرير حرفين على الأقل",
+              "maxLength": "يجب أن لا يتجاوز اسم التقرير 200 حرف"
+            },
+            "report": {
+              "required": "يرجى اختيار نوع التقرير"
+            },
+            "recipients": {
+              "required": "يرجى إضافة مستلم واحد على الأقل",
+              "invalidEmail": "عنوان بريد إلكتروني غير صالح",
+              "duplicate": "هذا البريد الإلكتروني مضاف مسبقاً"
+            },
+            "fromDate": {
+              "required": "تاريخ البداية مطلوب",
+              "invalid": "تاريخ غير صالح"
+            },
+            "toDate": {
+              "required": "تاريخ النهاية مطلوب",
+              "invalid": "تاريخ غير صالح"
+            },
+            "dateRange": {
+              "invalid": "يجب أن يكون تاريخ النهاية بعد تاريخ البداية",
+              "exceeds30Days": "لا يمكن أن يتجاوز نطاق التاريخ 30 يومًا"
+            },
+            "queue": {
+              "required": "قائمة الانتظار مطلوبة لهذا النوع من التقارير"
+            },
+            "extensions": {
+              "invalid": "يجب أن تكون التحويلات أرقام مفصولة بفواصل (مثال: 101,102,103)"
+            },
+            "sla": {
+              "invalid": "يجب أن يكون SLA رقمًا أكبر من 0"
+            }
+          }
+        },
+        "actions": {
+          "close": "إغلاق",
+          "submit": "إنشاء التقرير"
+        },
+        "success": {
+          "title": "تم إنشاء التقرير بنجاح!",
+          "subtitle": "سيتم إرساله إلى بريدك الإلكتروني قريباً.",
+          "backToReports": "العودة إلى جدول التقارير",
+          "backToDashboard": "العودة إلى لوحة التحكم"
+        }
+      }
+    },
+    "scheduled": {
+      "title": "التقارير المجدولة",
+      "columns": {
+        "createdAt": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "scheduled": "الجدولة",
+        "status": "الحالة",
+        "nextGeneration": "الإنشاء التالي",
+        "recipients": "المستلمون",
+        "actions": "الإجراءات"
+      },
+      "cells": {
+        "recipients": {
+          "count": "{count} مستلمين",
+          "dialogTitle": "المستلمون",
+          "dialogDescription": "قائمة جميع المستلمين لهذا التقرير",
+          "sheetTitle": "مستلمو {name}"
+        },
+        "scheduled": {
+          "daily": "يومي",
+          "weekly": "أسبوعي",
+          "monthly": "شهري"
+        },
+        "status": {
+          "active": "نشط",
+          "inactive": "غير نشط"
+        }
+      },
+      "filters": {
+        "creationDate": {
+          "triggerLabel": "تاريخ الإنشاء",
+          "label": "تصفية حسب تاريخ الإنشاء"
+        },
+        "fromDate": {
+          "label": "من",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل تاريخ البداية"
+        },
+        "toDate": {
+          "label": "إلى",
+          "hint": "يوم/شهر/سنة",
+          "placeholder": "أدخل تاريخ النهاية"
+        },
+        "scheduled": {
+          "triggerLabel": "الجدولة",
+          "label": "تصفية حسب الجدولة",
+          "options": {
+            "daily": "يومي",
+            "weekly": "أسبوعي",
+            "monthly": "شهري"
+          }
+        },
+        "status": {
+          "triggerLabel": "الحالة",
+          "label": "تصفية حسب الحالة",
+          "options": {
+            "active": "نشط",
+            "inactive": "غير نشط"
+          }
+        }
+      },
+      "messages": {
+        "invalidDateRange": "نطاق التاريخ غير صالح",
+        "deleteSuccess": "تم حذف التقرير بنجاح",
+        "deleteFailed": "فشل في حذف التقرير",
+        "generateSuccess": "تم إنشاء التقرير بنجاح",
+        "generateFailed": "فشل في إنشاء التقرير",
+        "activateSuccess": "تم تفعيل التقرير بنجاح",
+        "activateFailed": "فشل في تفعيل التقرير",
+        "deactivateSuccess": "تم إلغاء تفعيل التقرير بنجاح",
+        "deactivateFailed": "فشل في إلغاء تفعيل التقرير"
+      },
+      "confirmations": {
+        "deleteTitle": "حذف التقرير",
+        "deleteDescription": "هل أنت متأكد من حذف هذا التقرير المجدول؟ لا يمكن التراجع عن هذا الإجراء.",
+        "activateTitle": "تفعيل التقرير",
+        "activateDescription": "هل أنت متأكد من تفعيل \"{name}\"؟ سيبدأ هذا التقرير في الإنشاء وفقاً لجدوله الزمني.",
+        "deactivateTitle": "إلغاء تفعيل التقرير",
+        "deactivateDescription": "هل أنت متأكد من إلغاء تفعيل \"{name}\"؟ سيتوقف هذا التقرير عن الإنشاء حتى يتم إعادة تفعيله.",
+        "cancel": "إلغاء",
+        "yesDelete": "نعم، حذف",
+        "yesActivate": "نعم، تفعيل",
+        "yesDeactivate": "نعم، إلغاء التفعيل"
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
+      },
+      "actions": {
+        "createReport": "إنشاء تقرير جديد",
+        "viewHistory": "عرض السجل",
+        "generateNow": "إنشاء الآن",
+        "generating": "جاري الإنشاء...",
+        "activate": "تفعيل",
+        "deactivate": "إلغاء التفعيل"
+      },
+      "createReport": {
+        "title": "إنشاء تقرير مجدول",
+        "description": "إنشاء تقرير مجدول جديد",
+        "steps": {
+          "details": "إنشاء تقرير مجدول جديد",
+          "schedule": "الجدولة"
+        },
+        "form": {
+          "fields": {
+            "reportName": {
+              "label": "اسم التقرير",
+              "placeholder": "أدخل اسم التقرير"
+            },
+            "recipients": {
+              "label": "المستلمون",
+              "placeholder": "أدخل البريد الإلكتروني واضغط Enter",
+              "hint": "اكتب عنوان البريد الإلكتروني واضغط \"Enter\" لإضافته."
+            },
+            "emailSubject": {
+              "label": "موضوع البريد",
+              "placeholder": "أدخل موضوع البريد"
+            },
+            "report": {
+              "label": "التقرير",
+              "placeholder": "اختر نوع التقرير",
+              "options": {
+                "outboundSummary": "ملخص الصادر",
+                "outboundAgentStats": "إحصائيات وكيل الصادر",
+                "outboundDateDistribution": "توزيع تاريخ الصادر",
+                "outboundHourlyDistribution": "التوزيع الساعي للصادر",
+                "inboundAgentSummary": "ملخص وكيل الوارد",
+                "inboundAgentDateDistribution": "توزيع تاريخ وكيل الوارد",
+                "inboundAgentHourlyDistribution": "التوزيع الساعي لوكيل الوارد",
+                "inboundQueueSummary": "ملخص قائمة الوارد",
+                "inboundQueueDateDistribution": "توزيع تاريخ قائمة الوارد",
+                "inboundQueueHourlyDistribution": "التوزيع الساعي لقائمة الوارد",
+                "inboundQueueAgentPerformance": "أداء وكيل قائمة الوارد",
+                "inboundQueueRepeatedCallers": "المتصلون المتكررون في قائمة الوارد",
+                "unansweredSummary": "ملخص غير المجاب",
+                "agentSummary": "ملخص الوكيل",
+                "agentCallDistribution": "توزيع مكالمات الوكيل",
+                "agentSlaCompliance": "التزام الوكيل باتفاقية مستوى الخدمة"
+              }
+            },
+            "dateRangeStart": {
+              "label": "بداية نطاق التاريخ",
+              "placeholder": "اختر تاريخ البداية"
+            },
+            "dateRangeEnd": {
+              "label": "نهاية نطاق التاريخ",
+              "placeholder": "اختر تاريخ النهاية"
+            },
+            "dateRange": {
+              "options": {
+                "today": "اليوم",
+                "previousDay": "اليوم السابق",
+                "previousWeek": "الأسبوع السابق",
+                "previousMonth": "الشهر السابق"
+              }
+            },
+            "queue": {
+              "label": "قائمة الانتظار",
+              "placeholder": "اختر قائمة الانتظار"
+            },
+            "extensions": {
+              "label": "التحويلات",
+              "placeholder": "اختر التحويلات"
+            },
+            "sla": {
+              "label": "SLA (بالثواني)",
+              "placeholder": "مثال: 30",
+              "hint": "عتبة اتفاقية مستوى الخدمة بالثواني"
+            },
+            "includeInternalCalls": {
+              "label": "تضمين المكالمات الداخلية"
+            },
+            "timezone": {
+              "label": "المنطقة الزمنية",
+              "placeholder": "اختر المنطقة الزمنية"
+            },
+            "frequency": {
+              "label": "التكرار",
+              "placeholder": "اختر التكرار",
+              "options": {
+                "daily": "يومي",
+                "weekly": "أسبوعي",
+                "monthly": "شهري"
+              }
+            },
+            "days": {
+              "label": "الأيام",
+              "options": {
+                "sat": "السبت",
+                "sun": "الأحد",
+                "mon": "الإثنين",
+                "tue": "الثلاثاء",
+                "wed": "الأربعاء",
+                "thu": "الخميس",
+                "fri": "الجمعة"
+              }
+            },
+            "monthDay": {
+              "label": "يوم الشهر",
+              "placeholder": "اختر اليوم"
+            },
+            "atTime": {
+              "label": "في",
+              "placeholder": "اختر الوقت"
+            }
+          },
+          "nextGeneration": {
+            "title": "الإنشاء التالي",
+            "at": "في"
+          },
+          "validation": {
+            "name": {
+              "required": "اسم التقرير مطلوب",
+              "minLength": "يجب أن يكون اسم التقرير حرفين على الأقل",
+              "maxLength": "يجب ألا يتجاوز اسم التقرير 200 حرف"
+            },
+            "recipients": {
+              "required": "يرجى إضافة مستلم واحد على الأقل",
+              "invalidEmail": "عنوان بريد إلكتروني غير صالح",
+              "duplicate": "هذا البريد الإلكتروني مضاف مسبقاً"
+            },
+            "emailSubject": {
+              "required": "موضوع البريد مطلوب",
+              "minLength": "يجب أن يكون موضوع البريد حرفين على الأقل",
+              "maxLength": "يجب ألا يتجاوز موضوع البريد 200 حرف"
+            },
+            "report": {
+              "required": "يرجى اختيار نوع التقرير"
+            },
+            "dateRangeStart": {
+              "required": "بداية نطاق التاريخ مطلوبة"
+            },
+            "dateRangeEnd": {
+              "required": "نهاية نطاق التاريخ مطلوبة"
+            },
+            "dateRange": {
+              "endBeforeStart": "لا يمكن أن يكون تاريخ النهاية قبل تاريخ البداية"
+            },
+            "queue": {
+              "required": "قائمة الانتظار مطلوبة لهذا النوع من التقارير"
+            },
+            "sla": {
+              "invalid": "يجب أن يكون SLA رقمًا أكبر من 0"
+            },
+            "timezone": {
+              "required": "المنطقة الزمنية مطلوبة"
+            },
+            "frequency": {
+              "required": "التكرار مطلوب"
+            },
+            "daysOfWeek": {
+              "required": "يرجى اختيار يوم واحد على الأقل"
+            },
+            "dayOfMonth": {
+              "required": "يرجى اختيار يوم من الشهر"
+            },
+            "time": {
+              "required": "الوقت مطلوب"
+            }
+          }
+        },
+        "actions": {
+          "close": "إغلاق",
+          "next": "التالي",
+          "submit": "إنشاء التقرير المجدول"
+        },
+        "success": {
+          "title": "تم جدولة التقرير بنجاح!",
+          "subtitle": "سيتم إنشاؤه وفقاً لجدولك.",
+          "backToReports": "العودة إلى جدول التقارير",
+          "backToDashboard": "العودة إلى لوحة التحكم"
+        },
+        "messages": {
+          "createSuccess": "تم جدولة التقرير بنجاح",
+          "createFailed": "فشل في إنشاء التقرير المجدول",
+          "validationError": "يرجى ملء جميع الحقول المطلوبة"
+        }
+      },
+      "editReport": {
+        "title": "تعديل التقرير المجدول",
+        "description": "تعديل إعدادات التقرير المجدول",
+        "actions": {
+          "update": "تحديث التقرير"
+        },
+        "success": {
+          "title": "تم تحديث التقرير بنجاح!",
+          "subtitle": "تم حفظ التغييرات.",
+          "backToHistory": "العودة إلى السجل",
+          "backToReports": "العودة إلى جدول التقارير",
+          "backToDashboard": "العودة إلى لوحة التحكم"
+        },
+        "messages": {
+          "updateSuccess": "تم تحديث التقرير بنجاح",
+          "updateFailed": "فشل في تحديث التقرير"
+        }
+      },
+      "history": {
+        "title": "سجل التقرير",
+        "description": "عرض سجل إنشاء هذا التقرير المجدول",
+        "noHistory": "لا يوجد سجل إنشاء متاح لهذا التقرير.",
+        "scheduleInfo": {
+          "title": "معلومات الجدولة",
+          "timezone": "المنطقة الزمنية",
+          "generatorDays": "أيام التوليد",
+          "generatorTime": "وقت التوليد",
+          "dayOfMonthSuffix": "من كل شهر",
+          "weekDays": {
+            "sat": "السبت",
+            "sun": "الأحد",
+            "mon": "الإثنين",
+            "tue": "الثلاثاء",
+            "wed": "الأربعاء",
+            "thu": "الخميس",
+            "fri": "الجمعة"
+          }
+        },
+        "columns": {
+          "generatedAt": "تاريخ الإنشاء",
+          "reportName": "الاسم",
+          "status": "الحالة",
+          "recipients": "المستلمون"
+        },
+        "cells": {
+          "status": {
+            "completed": "مكتمل",
+            "failed": "فشل",
+            "pending": "قيد الانتظار",
+            "processing": "قيد المعالجة"
           }
         }
       }
@@ -549,7 +1120,7 @@
         "deleting": "جاري الحذف..."
       },
       "tooltips": {
-        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       }
     },
     "monitor": {
@@ -743,7 +1314,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       }
     },
     "timeline": {
@@ -796,7 +1367,7 @@
         }
       },
       "tooltips": {
-        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       }
     }
   },
@@ -950,7 +1521,7 @@
         "invalidDateRange": "نطاق تاريخ غير صحيح"
       },
       "tooltips": {
-        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       }
     },
     "refillBalance": {
@@ -1018,6 +1589,7 @@
       "postCallSurvey": "استطلاع ما بعد المكالمة",
       "aiVoiceAgents": "وكلاء الصوت الذكي",
       "analytics": "إحصائيات المكالمات",
+      "reports": "التقارير",
       "inbound": "الواردة",
       "outbound": "الصادرة",
       "unanswered": "غير المجابة",
@@ -1194,7 +1766,7 @@
       "viewHistory": "عرض سجل المكالمات"
     },
     "tooltips": {
-      "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
+      "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
     },
     "isAnswered": {
       "both": "كلاهما",
@@ -1508,7 +2080,7 @@
         "noData": "لم يتم العثور على بيانات استخدام للمعايير المحددة."
       },
       "tooltips": {
-        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       }
     },
     "detailed": {
@@ -1561,7 +2133,7 @@
       },
       "tooltips": {
         "export": "استخراج",
-        "toggleFilters": "انقر لإظهار/إخفاء خيارات البحث"
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
       }
     },
     "filters": {
@@ -2405,6 +2977,914 @@
       }
     }
   },
+  "autoDialer": {
+    "tabs": {
+      "active": "الحملات النشطة",
+      "finished": "الحملات المنتهية",
+      "archived": "الحملات المؤرشفة"
+    },
+    "activeCampaigns": {
+      "title": "الحملات النشطة",
+      "search": "بحث...",
+      "filters": {
+        "shared": {
+          "reset": "إعادة تعيين",
+          "apply": "تطبيق",
+          "clear": "مسح"
+        },
+        "creationDate": {
+          "label": "اختر نطاق التاريخ",
+          "placeholder": "تاريخ الإنشاء",
+          "from": {
+            "label": "من",
+            "placeholder": "أدخل التاريخ من",
+            "hint": "يوم/شهر/سنة"
+          },
+          "to": {
+            "label": "إلى",
+            "placeholder": "أدخل التاريخ إلى",
+            "hint": "يوم/شهر/سنة"
+          }
+        },
+        "durationType": {
+          "label": "اختر نوع المدة",
+          "placeholder": "نوع المدة",
+          "options": {
+            "timeLimited": "محدود بالوقت",
+            "agentAvailability": "توفر الوكيل"
+          }
+        },
+        "status": {
+          "label": "اختر الحالة",
+          "placeholder": "الحالة",
+          "options": {
+            "scheduled": "مجدولة",
+            "inProgress": "قيد التنفيذ"
+          }
+        }
+      },
+      "create": "إنشاء حملة",
+      "columns": {
+        "creationDate": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "durationType": "نوع المدة",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "actionCell": {
+        "view": "عرض التفاصيل",
+        "edit": "تعديل",
+        "editMainInfo": "تعديل المعلومات",
+        "pause": "إيقاف مؤقت",
+        "resume": "استئناف",
+        "cancel": "إلغاء",
+        "download": "تحميل التقرير",
+        "downloadSuccess": "بدأ التحميل",
+        "downloadSuccessDescription": "جاري معالجة تقريرك.",
+        "downloadError": "خطأ",
+        "downloadErrorDescription": "حدث خطأ أثناء تحميل التقرير.",
+        "corruptedRecords": "السجلات التالفة",
+        "uncompletedRequests": "الطلبات غير المكتملة",
+        "startModal": {
+          "title": "بدء الحملة",
+          "message": "هل أنت متأكد أنك تريد بدء هذه الحملة؟",
+          "confirm": "نعم، ابدأ الحملة",
+          "cancel": "لا، إلغاء",
+          "success": "تم بدء الحملة بنجاح",
+          "successDescription": "تم بدء الحملة بنجاح. سيتم تحديث الحالة إلى 'قيد التنفيذ'.",
+          "error": "فشل في بدء الحملة",
+          "errorDescription": "حدث خطأ أثناء بدء الحملة. يرجى المحاولة مرة أخرى."
+        },
+        "pauseModal": {
+          "title": "إيقاف الحملة مؤقتاً",
+          "message": "هل أنت متأكد أنك تريد إيقاف هذه الحملة مؤقتاً؟",
+          "confirm": "نعم، إيقاف مؤقت",
+          "cancel": "لا، إلغاء",
+          "success": "تم إيقاف الحملة مؤقتاً بنجاح",
+          "successDescription": "تم إيقاف الحملة مؤقتاً بنجاح. سيتم تحديث الحالة إلى 'متوقفة مؤقتاً'.",
+          "error": "فشل في إيقاف الحملة مؤقتاً",
+          "errorDescription": "حدث خطأ أثناء إيقاف الحملة مؤقتاً. يرجى المحاولة مرة أخرى."
+        },
+        "resumeModal": {
+          "title": "استئناف الحملة",
+          "message": "هل أنت متأكد أنك تريد استئناف هذه الحملة؟",
+          "confirm": "نعم، استئناف",
+          "cancel": "لا، إلغاء",
+          "success": "تم استئناف الحملة بنجاح",
+          "successDescription": "تم استئناف الحملة بنجاح. سيتم تحديث الحالة إلى 'قيد التنفيذ'.",
+          "error": "فشل في استئناف الحملة",
+          "errorDescription": "حدث خطأ أثناء استئناف الحملة. يرجى المحاولة مرة أخرى."
+        },
+        "finishModal": {
+          "title": "إنهاء الحملة",
+          "message": "هل أنت متأكد أنك تريد إنهاء هذه الحملة؟",
+          "confirm": "نعم، إنهاء",
+          "cancel": "لا، إلغاء",
+          "success": "تم إنهاء الحملة بنجاح",
+          "successDescription": "تم إنهاء الحملة بنجاح. سيتم تحديث الحالة إلى 'منتهية'.",
+          "error": "فشل في إنهاء الحملة",
+          "errorDescription": "حدث خطأ أثناء إنهاء الحملة. يرجى المحاولة مرة أخرى."
+        }
+      },
+      "statuses": {
+        "created": "تم الإنشاء",
+        "schedule-customers": "جدولة العملاء",
+        "verifying-customers": "التحقق من العملاء",
+        "verification-failed": "فشل التحقق",
+        "corrupted-ignored": "تم تجاهل التالف",
+        "customers-inserted": "تم إدراج العملاء",
+        "in-progress": "قيد التنفيذ",
+        "active": "نشطة",
+        "paused": "متوقفة مؤقتاً",
+        "started": "بدأت"
+      },
+      "durationTypes": {
+        "time-limited": "محدود بالوقت",
+        "agent-availability": "توفر الوكيل"
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
+      }
+    },
+    "finishedCampaigns": {
+      "title": "الحملات المنتهية",
+      "search": "البحث بالاسم...",
+      "columns": {
+        "creationDate": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "durationType": "نوع المدة",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "statuses": {
+        "completed": "مكتملة",
+        "cancelled": "ملغاة",
+        "failed": "فاشلة",
+        "finished": "منتهية"
+      },
+      "filters": {
+        "creationDate": {
+          "placeholder": "تاريخ الإنشاء",
+          "label": "اختر نطاق تاريخ",
+          "from": {
+            "label": "من",
+            "placeholder": "أدخل تاريخ البداية",
+            "hint": "يوم/شهر/سنة"
+          },
+          "to": {
+            "label": "إلى",
+            "placeholder": "أدخل تاريخ النهاية",
+            "hint": "يوم/شهر/سنة"
+          }
+        },
+        "durationType": {
+          "placeholder": "نوع المدة",
+          "label": "اختر نوع المدة"
+        },
+        "status": {
+          "placeholder": "الحالة",
+          "label": "اختر حالة الحملة"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
+      },
+      "toasts": {
+        "error": "خطأ",
+        "errorDescription": "حدث خطأ"
+      },
+      "actions": {
+        "download": "تحميل التقرير",
+        "view": "عرض التفاصيل",
+        "archive": "أرشفة",
+        "archiveModal": {
+          "title": "أرشفة الحملة",
+          "message": "هل أنت متأكد أنك تريد أرشفة هذه الحملة؟ لا يمكن التراجع عن هذا الإجراء.",
+          "confirm": "نعم، أرشفة",
+          "cancel": "إلغاء"
+        },
+        "toasts": {
+          "downloadSuccess": "بدأ التحميل",
+          "downloadSuccessDescription": "جاري معالجة تقريرك. ستتلقى بريدًا إلكترونيًا برابط التحميل عند الجاهزية.",
+          "archiveSuccess": "تمت أرشفة الحملة",
+          "archiveSuccessDescription": "تمت أرشفة الحملة بنجاح.",
+          "error": "خطأ",
+          "errorDescription": "حدث خطأ"
+        }
+      }
+    },
+    "archivedCampaigns": {
+      "title": "الحملات المؤرشفة",
+      "search": "البحث بالاسم...",
+      "columns": {
+        "creationDate": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "durationType": "نوع المدة",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "statuses": {
+        "completed": "مكتملة",
+        "cancelled": "ملغاة",
+        "failed": "فاشلة",
+        "finished": "منتهية"
+      },
+      "filters": {
+        "creationDate": {
+          "placeholder": "تاريخ الإنشاء",
+          "label": "اختر نطاق تاريخ",
+          "from": {
+            "label": "من",
+            "placeholder": "أدخل تاريخ البداية",
+            "hint": "يوم/شهر/سنة"
+          },
+          "to": {
+            "label": "إلى",
+            "placeholder": "أدخل تاريخ النهاية",
+            "hint": "يوم/شهر/سنة"
+          }
+        },
+        "durationType": {
+          "placeholder": "نوع المدة",
+          "label": "اختر نوع المدة"
+        },
+        "status": {
+          "placeholder": "الحالة",
+          "label": "اختر حالة الحملة"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
+      },
+      "toasts": {
+        "error": "خطأ",
+        "errorDescription": "حدث خطأ"
+      },
+      "actions": {
+        "download": "تحميل التقرير",
+        "view": "عرض التفاصيل"
+      }
+    },
+    "createCampaign": {
+      "title": "إنشاء حملة اتصال تلقائي",
+      "description": "إنشاء حملة اتصال تلقائي جديدة لبدء الاتصال بعملائك المحتملين",
+      "steps": {
+        "details": {
+          "title": "تفاصيل الحملة",
+          "form": {
+            "campaignName": {
+              "label": "اسم الحملة",
+              "placeholder": "أدخل اسم الحملة",
+              "validation": {
+                "required": "اسم الحملة مطلوب",
+                "min": "يجب أن يكون اسم الحملة {min} حروف على الأقل",
+                "max": "يجب ألا يتجاوز اسم الحملة {max} حرف"
+              }
+            },
+            "waitingCustomerCount": {
+              "label": "عدد العملاء المنتظرين",
+              "hint": "عدد العملاء الذين يمكنهم الانتظار في الطابور",
+              "validation": {
+                "min": "يجب أن يكون عدد العملاء المنتظرين {min} على الأقل",
+                "max": "يجب ألا يتجاوز عدد العملاء المنتظرين {max}"
+              }
+            },
+            "trialsCount": {
+              "label": "عدد المحاولات*",
+              "hint": "عدد مرات محاولة الاتصال بكل عميل",
+              "validation": {
+                "min": "يجب أن يكون عدد المحاولات {min} على الأقل",
+                "max": "يجب ألا يتجاوز عدد المحاولات {max}"
+              }
+            },
+            "wrapUpTime": {
+              "label": "وقت الإغلاق",
+              "hint": "الوقت بالثواني بين نهاية المكالمة وبدء المكالمة التالية",
+              "validation": {
+                "min": "يجب أن يكون وقت الإغلاق {min} ثانية على الأقل"
+              }
+            },
+            "delayMinutesBetweenTrials": {
+              "label": "تأخير الدقائق بين المحاولات",
+              "validation": {
+                "min": "يجب أن يكون التأخير {min} دقيقة على الأقل"
+              }
+            },
+            "hideCallerInfo": {
+              "label": "إخفاء معلومات المتصل"
+            },
+            "agentCanLogoutAndRejoin": {
+              "label": "يمكن للوكيل تسجيل الخروج والانضمام مرة أخرى"
+            },
+            "next": "التالي"
+          }
+        },
+        "callsDetails": {
+          "title": "تفاصيل المكالمات",
+          "form": {
+            "loopSoundFile": {
+              "label": "الصوت",
+              "validation": {
+                "required": "ملف الصوت مطلوب",
+                "type": "يُسمح فقط بملفات الصوت",
+                "size": "يجب أن يكون حجم ملف الصوت أقل من {size}"
+              }
+            },
+            "hasAnnouncement": {
+              "label": "تشغيل الإعلان"
+            },
+            "mainSoundFile": {
+              "validation": {
+                "required": "ملف الصوت مطلوب عند تفعيل الإعلان",
+                "type": "يُسمح فقط بملفات الصوت",
+                "size": "يجب أن يكون حجم ملف الصوت أقل من {size}"
+              }
+            },
+            "agents": {
+              "label": "الوكلاء",
+              "placeholder": "اختر من القائمة....",
+              "validation": {
+                "min": "يجب اختيار {min} وكيل على الأقل"
+              }
+            },
+            "callerIds": {
+              "label": "معرف المتصل",
+              "validation": {
+                "min": "يجب إضافة {min} معرف متصل على الأقل",
+                "destination": {
+                  "required": "رقم الوجهة مطلوب"
+                },
+                "callerNumber": {
+                  "required": "رقم المتصل مطلوب"
+                }
+              }
+            },
+            "next": "التالي"
+          }
+        },
+        "scheduling": {
+          "title": "الجدولة",
+          "form": {
+            "durationType": {
+              "label": "نوع المدة",
+              "placeholder": "اختر من القائمة....",
+              "options": {
+                "timeLimited": "محدود بالوقت",
+                "agentAvailability": "توفر الوكيل"
+              },
+              "validation": {
+                "required": "نوع المدة مطلوب"
+              }
+            },
+            "maxWaitTime": {
+              "label": "أقصى وقت انتظار (بالثواني)",
+              "hint": "أقصى وقت بالثواني سينتظره العميل إذا لم يكن الوكيل متاحاً قبل قطع المكالمة",
+              "validation": {
+                "min": "يجب أن يكون أقصى وقت انتظار {min} ثانية على الأقل"
+              }
+            },
+            "fromTime": {
+              "label": "من الوقت",
+              "placeholder": "اختر الوقت",
+              "validation": {
+                "required": "وقت البداية مطلوب عند كون نوع المدة محدود بالوقت"
+              }
+            },
+            "toTime": {
+              "label": "إلى الوقت",
+              "placeholder": "اختر الوقت",
+              "validation": {
+                "greaterThanFromTime": "يجب أن يكون وقت النهاية أكبر من وقت البداية",
+                "required": "وقت النهاية مطلوب عند كون نوع المدة محدود بالوقت"
+              }
+            },
+            "timeZone": {
+              "label": "اختر المدينة",
+              "placeholder": "اختر منطقة زمنية....",
+              "validation": {
+                "required": "المنطقة الزمنية مطلوبة عند كون نوع المدة محدود بالوقت"
+              }
+            },
+            "submitting": "جاري الإرسال...",
+            "next": "التالي"
+          }
+        },
+        "customersList": {
+          "title": "قائمة العملاء"
+        }
+      },
+      "toasts": {
+        "error": "فشل إنشاء الحملة",
+        "errorDescription": "حدث خطأ أثناء إنشاء الحملة. يرجى المحاولة مرة أخرى."
+      }
+    },
+    "updateCampaign": {
+      "title": "تحديث حملة الاتصال التلقائي",
+      "description": "تحديث حملة اتصال تلقائي موجودة لبدء الاتصال بعملائك المحتملين",
+      "loading": "جاري تحميل تفاصيل الحملة...",
+      "notFound": "الحملة غير موجودة",
+      "steps": {
+        "details": {
+          "title": "تفاصيل الحملة",
+          "form": {
+            "campaignName": {
+              "label": "اسم الحملة",
+              "placeholder": "أدخل اسم الحملة",
+              "validation": {
+                "required": "اسم الحملة مطلوب",
+                "min": "يجب أن يكون اسم الحملة {min} حروف على الأقل",
+                "max": "يجب ألا يتجاوز اسم الحملة {max} حرف"
+              }
+            },
+            "waitingCustomerCount": {
+              "label": "عدد العملاء المنتظرين",
+              "hint": "عدد العملاء الذين يمكنهم الانتظار في الطابور",
+              "validation": {
+                "min": "يجب أن يكون عدد العملاء المنتظرين {min} على الأقل",
+                "max": "يجب أن يكون عدد العملاء المنتظرين أقل من {max}"
+              }
+            },
+            "trialsCount": {
+              "label": "عدد المحاولات*",
+              "hint": "عدد مرات محاولة الاتصال بكل عميل",
+              "validation": {
+                "min": "يجب أن يكون عدد المحاولات {min} على الأقل",
+                "max": "يجب أن يكون عدد المحاولات أقل من {max}"
+              }
+            },
+            "wrapUpTime": {
+              "label": "وقت الإغلاق",
+              "hint": "الوقت بالثواني بين نهاية المكالمة وبدء المكالمة التالية",
+              "validation": {
+                "min": "يجب أن يكون وقت الإغلاق {min} ثانية على الأقل"
+              }
+            },
+            "delayMinutesBetweenTrials": {
+              "label": "تأخير الدقائق بين المحاولات",
+              "validation": {
+                "min": "يجب أن يكون التأخير {min} دقيقة على الأقل"
+              }
+            },
+            "hideCallerInfo": {
+              "label": "إخفاء معلومات المتصل"
+            },
+            "agentCanLogoutAndRejoin": {
+              "label": "يمكن للوكيل تسجيل الخروج والانضمام مرة أخرى"
+            },
+            "next": "التالي"
+          }
+        },
+        "callsDetails": {
+          "title": "تفاصيل المكالمات",
+          "form": {
+            "loopSoundFile": {
+              "label": "الصوت",
+              "validation": {
+                "required": "ملف الصوت مطلوب",
+                "type": "يُسمح فقط بملفات الصوت",
+                "size": "يجب أن يكون حجم ملف الصوت أقل من {size}"
+              }
+            },
+            "hasAnnouncement": {
+              "label": "تشغيل الإعلان"
+            },
+            "mainSoundFile": {
+              "validation": {
+                "required": "ملف الصوت مطلوب عند تفعيل الإعلان",
+                "type": "يُسمح فقط بملفات الصوت",
+                "size": "يجب أن يكون حجم ملف الصوت أقل من {size}"
+              }
+            },
+            "agents": {
+              "label": "الوكلاء",
+              "placeholder": "اختر من القائمة....",
+              "validation": {
+                "min": "يجب اختيار {min} وكيل على الأقل"
+              }
+            },
+            "callerIds": {
+              "label": "معرف المتصل",
+              "validation": {
+                "min": "يجب إضافة {min} معرف متصل على الأقل",
+                "destination": {
+                  "required": "رقم الوجهة مطلوب"
+                },
+                "callerNumber": {
+                  "required": "رقم المتصل مطلوب"
+                }
+              }
+            },
+            "next": "التالي"
+          }
+        },
+        "scheduling": {
+          "title": "الجدولة",
+          "form": {
+            "durationType": {
+              "label": "نوع المدة",
+              "placeholder": "اختر من القائمة....",
+              "options": {
+                "timeLimited": "محدود بالوقت",
+                "agentAvailability": "توفر الوكيل"
+              },
+              "validation": {
+                "required": "نوع المدة مطلوب"
+              }
+            },
+            "maxWaitTime": {
+              "label": "أقصى وقت انتظار (بالثواني)",
+              "hint": "أقصى وقت بالثواني سينتظره العميل إذا لم يكن الوكيل متاحاً قبل قطع المكالمة",
+              "validation": {
+                "min": "يجب أن يكون أقصى وقت انتظار {min} ثانية على الأقل"
+              }
+            },
+            "fromTime": {
+              "label": "من الوقت",
+              "placeholder": "اختر الوقت",
+              "validation": {
+                "required": "وقت البداية مطلوب عند كون نوع المدة محدود بالوقت"
+              }
+            },
+            "toTime": {
+              "label": "إلى الوقت",
+              "placeholder": "اختر الوقت",
+              "validation": {
+                "greaterThanFromTime": "يجب أن يكون وقت النهاية أكبر من وقت البداية",
+                "required": "وقت النهاية مطلوب عند كون نوع المدة محدود بالوقت"
+              }
+            },
+            "timeZone": {
+              "label": "اختر المدينة",
+              "placeholder": "اختر منطقة زمنية....",
+              "validation": {
+                "required": "المنطقة الزمنية مطلوبة عند كون نوع المدة محدود بالوقت"
+              }
+            },
+            "next": "التالي"
+          }
+        },
+        "customersList": {
+          "title": "قائمة العملاء",
+          "form": {
+            "downloadTemplate": "تحميل النموذج",
+            "list": [
+              "تأكد من أن جميع أرقام الهاتف تتضمن رمز الدولة.",
+              "لا تستخدم '+' أو '00' قبل رمز الدولة.",
+              "اضبط نوع الحقل على 'رقم' بدون نقاط عشرية."
+            ],
+            "update": "تحديث الحملة",
+            "save": "حفظ كمسودة",
+            "submitting": "جاري الإرسال..."
+          }
+        }
+      },
+      "toasts": {
+        "success": "تم تحديث الحملة بنجاح",
+        "successDescription": "تم تحديث الحملة بنجاح.",
+        "error": "فشل في تحديث الحملة",
+        "errorDescription": "حدث خطأ أثناء تحديث الحملة. يرجى المحاولة مرة أخرى."
+      }
+    },
+    "updateMainInfo": {
+      "title": "تحديث معلومات الحملة",
+      "description": "تحديث اسم الحملة والوكلاء ومعرف المتصل",
+      "loading": "جاري تحميل تفاصيل الحملة...",
+      "notFound": "الحملة غير موجودة",
+      "form": {
+        "campaignName": {
+          "label": "اسم الحملة",
+          "placeholder": "أدخل اسم الحملة",
+          "validation": {
+            "min": "يجب أن يكون اسم الحملة {min} حروف على الأقل",
+            "max": "يجب ألا يتجاوز اسم الحملة {max} حرف"
+          }
+        },
+        "agents": {
+          "label": "الوكلاء",
+          "placeholder": "اختر من القائمة....",
+          "validation": {
+            "min": "يجب اختيار {min} وكيل على الأقل"
+          }
+        },
+        "callerIds": {
+          "label": "معرف المتصل",
+          "validation": {
+            "min": "يجب إضافة {min} معرف متصل على الأقل",
+            "destination": {
+              "required": "رقم الوجهة مطلوب"
+            },
+            "callerNumber": {
+              "required": "رقم المتصل مطلوب"
+            }
+          }
+        },
+        "submit": "تحديث",
+        "submitting": "جاري التحديث..."
+      },
+      "toasts": {
+        "success": "تم تحديث الحملة بنجاح",
+        "successDescription": "تم تحديث معلومات الحملة بنجاح.",
+        "error": "فشل في تحديث الحملة",
+        "errorDescription": "حدث خطأ أثناء تحديث الحملة. يرجى المحاولة مرة أخرى."
+      }
+    },
+    "campaignDetails": {
+      "loading": "جاري التحميل...",
+      "notFound": "الحملة غير موجودة",
+      "noFileAttached": "لا يوجد ملف مرفق",
+      "campaigns": "الحملات",
+      "status": {
+        "created": "تم الإنشاء",
+        "schedule-customers": "جدولة العملاء",
+        "verifying-customers": "التحقق من العملاء",
+        "verification-failed": "فشل التحقق",
+        "corrupted-ignored": "تم تجاهل الفاسد",
+        "customers-inserted": "تم إدراج العملاء",
+        "in-progress": "قيد التنفيذ",
+        "active": "نشطة",
+        "paused": "متوقفة مؤقتاً",
+        "started": "بدأت",
+        "completed": "مكتملة",
+        "cancelled": "ملغاة",
+        "failed": "فشلت",
+        "finished": "انتهت"
+      },
+      "tabs": {
+        "metrics": "مقاييس الحملة",
+        "cdrs": "سجلات الحملة",
+        "details": "تفاصيل الحملة",
+        "uncompleted": "غير مكتملة"
+      },
+      "sections": {
+        "campaignDetails": "تفاصيل الحملة",
+        "campaignScheduling": "جدولة الحملة",
+        "customersList": "قائمة العملاء",
+        "sound": "الصوت",
+        "callerIds": "معرف المتصل",
+        "attachedAgents": "الوكلاء المرتبطون"
+      },
+      "fields": {
+        "campaignName": "اسم الحملة",
+        "waitingCustomerCount": "عدد العملاء المنتظرين",
+        "trialsCount": "عدد المحاولات",
+        "wrapUpTime": "وقت الإغلاق",
+        "delayMinutesBetweenTrials": "تأخير الدقائق بين المحاولات",
+        "hideCallerInfo": "إخفاء معلومات المتصل",
+        "agentCanLogoutAndRejoin": "يمكن للوكيل تسجيل الخروج والانضمام مرة أخرى",
+        "durationType": "نوع المدة",
+        "maxWaitTimeSeconds": "أقصى وقت انتظار (بالثواني)",
+        "fromTime": "من الوقت",
+        "toTime": "إلى الوقت",
+        "timeZone": "المنطقة الزمنية",
+        "playAnnouncement": "تشغيل الإعلان",
+        "callerIds": "معرف المتصل",
+        "destination": "الوجهة"
+      },
+      "durationTypes": {
+        "timeLimited": "محدود بالوقت",
+        "agentAvailability": "توفر الوكيل"
+      },
+      "booleans": {
+        "yes": "نعم",
+        "no": "لا"
+      },
+      "fileTypes": {
+        "csv": "CSV",
+        "mp3": "MP3"
+      },
+      "metrics": {
+        "title": "المقاييس",
+        "total": "الإجمالي",
+        "agents": "وكلاء",
+        "agentDistribution": "توزيع الوكلاء",
+        "totalAgents": "إجمالي الوكلاء",
+        "onlineAgents": "الوكلاء المتصلون",
+        "availableAgents": "الوكلاء المتاحون",
+        "onCallAgents": "الوكلاء في مكالمة",
+        "dialingAgents": "الوكلاء يطلبون",
+        "onBreakAgents": "الوكلاء في استراحة",
+        "oldestCallWaitTime": "أقدم وقت انتظار مكالمة",
+        "averageCurrentWaitTime": "متوسط وقت الانتظار الحالي",
+        "callsWaiting": "المكالمات المنتظرة",
+        "callsInProgress": "المكالمات الجارية",
+        "noData": "لا توجد بيانات متاحة",
+        "spyConnectionError": "الاتصال عبر WebRTC غير متصل",
+        "onlyAvailableForActiveCampaigns": "المقاييس متاحة فقط للحملات النشطة",
+        "seconds": "ثوانٍ",
+        "tooltips": {
+          "spy": "تنصّت",
+          "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث",
+          "export": "تصدير إلى CSV"
+        },
+        "filters": {
+          "all": "الكل"
+        },
+        "tabs": {
+          "waitingCalls": "المكالمات المنتظرة",
+          "inProgressCalls": "المكالمات الجارية",
+          "agentDetails": "تفاصيل الوكلاء",
+          "initiatedCalls": "المكالمات المبدوءة"
+        },
+        "columns": {
+          "waitTime": "وقت الانتظار",
+          "callerNumber": "رقم المتصل",
+          "callerName": "اسم المتصل",
+          "agentId": "معرّف الوكيل",
+          "agentName": "الاسم",
+          "actions": "الإجراءات",
+          "status": "الحالة",
+          "currentChannels": "القنوات الحالية",
+          "agentStatuses": {
+            "offline": "غير متصل",
+            "on-break": "في استراحة",
+            "busy": "مشغول",
+            "available": "متاح"
+          },
+          "phone": "الهاتف",
+          "customerName": "اسم العميل",
+          "currentTrial": "المحاولة الحالية"
+        }
+      }
+    },
+    "corruptedRecords": {
+      "badgePrefix": "عذراً! لدينا",
+      "badgeRecords": "{count} سجل",
+      "badgeSuffix": "يحتاج إلى إصلاح. يرجى مراجعة وتصحيح الأخطاء المميزة لبدء حملتك.",
+      "saveChanges": "حفظ التغييرات",
+      "delete": "متابعة بـ",
+      "deleteCorruptedData": "تجاهل الصفوف السيئة",
+      "deleteCampaign": "إيقاف كل شيء",
+      "name": "الاسم",
+      "phone": "الهاتف",
+      "info": "المعلومات",
+      "namePlaceholder": "أدخل الاسم",
+      "phonePlaceholder": "أدخل الهاتف",
+      "infoPlaceholder": "أدخل المعلومات",
+      "noRecords": "لا توجد سجلات تالفة",
+      "loading": "جاري تحميل السجلات التالفة...",
+      "validation": {
+        "nameMin": "يجب أن يكون الاسم {min} حروف على الأقل",
+        "nameMax": "يجب ألا يتجاوز الاسم {max} حرف",
+        "phoneRequired": "رقم الهاتف مطلوب",
+        "phoneInvalid": "يجب أن يحتوي الهاتف على أرقام فقط (أضف رمز الدولة، بدون + أو 00)",
+        "phoneUnsupportedFormat": "رقم الهاتف لا يتطابق مع أي صيغة دولة مدعومة"
+      },
+      "save": "حفظ",
+      "saving": "جاري الحفظ...",
+      "saveSuccess": "تم حفظ السجل بنجاح",
+      "saveSuccessDescription": "تم تحديث السجل التالف.",
+      "saveError": "فشل في حفظ السجل",
+      "saveErrorDescription": "حدث خطأ أثناء حفظ السجل. يرجى المحاولة مرة أخرى.",
+      "allResolved": "تم حل جميع السجلات",
+      "allResolvedDescription": "تم حل جميع السجلات التالفة بنجاح.",
+      "toasts": {
+        "errorTitle": "خطأ",
+        "errorDescription": "فشل في تحميل السجلات التالفة"
+      },
+      "ignoreCorruptedModal": {
+        "title": "حذف البيانات التالفة",
+        "message": "هل أنت متأكد أنك تريد تجاهل وحذف جميع السجلات التالفة؟ ستستمر الحملة بالسجلات الصالحة فقط.",
+        "confirm": "نعم، احذف البيانات التالفة",
+        "cancel": "لا، إلغاء",
+        "success": "تم حذف البيانات التالفة بنجاح",
+        "successDescription": "تم إزالة السجلات التالفة. ستستمر الحملة بالسجلات الصالحة فقط.",
+        "error": "فشل في حذف البيانات التالفة",
+        "errorDescription": "حدث خطأ أثناء حذف البيانات التالفة. يرجى المحاولة مرة أخرى."
+      },
+      "cancelCampaignModal": {
+        "title": "إيقاف الحملة",
+        "message": "هل أنت متأكد أنك تريد إيقاف هذه الحملة؟ لا يمكن التراجع عن هذا الإجراء.",
+        "confirm": "نعم، أوقف الحملة",
+        "cancel": "لا، إلغاء",
+        "success": "تم إيقاف الحملة بنجاح",
+        "successDescription": "تم إيقاف الحملة بنجاح.",
+        "error": "فشل في إيقاف الحملة",
+        "errorDescription": "حدث خطأ أثناء إيقاف الحملة. يرجى المحاولة مرة أخرى."
+      }
+    },
+    "uncompletedRequests": {
+      "title": "الطلبات غير المكتملة",
+      "columns": {
+        "phone": "الهاتف",
+        "name": "الاسم",
+        "remainingTrials": "المحاولات المتبقية"
+      },
+      "export": "تصدير",
+      "exportSuccess": "تم بدء التصدير",
+      "exportSuccessDescription": "سيتم إرسال التقرير إلى بريدك الإلكتروني.",
+      "toasts": {
+        "errorTitle": "خطأ",
+        "errorDescription": "فشل في تحميل الطلبات غير المكتملة"
+      },
+      "exportError": "فشل التصدير",
+      "exportErrorDescription": "حدث خطأ أثناء التصدير. يرجى المحاولة مرة أخرى."
+    },
+    "campaignCdrs": {
+      "title": "سجلات الحملة",
+      "filters": {
+        "status": "الحالة",
+        "agent": "الوكيل",
+        "phone": "الهاتف",
+        "statusPlaceholder": "اختر الحالة",
+        "agentPlaceholder": "اختر الوكيل",
+        "phoneLabel": "رقم الهاتف",
+        "phoneHint": "الأرقام فقط",
+        "phonePlaceholder": "20123456789"
+      },
+      "columns": {
+        "phone": "الهاتف",
+        "name": "الاسم",
+        "status": "الحالة",
+        "customerConnectedAt": "وقت اتصال العميل",
+        "waitingTime": "وقت الانتظار",
+        "talkTime": "وقت التحدث",
+        "duration": "المدة",
+        "agentConnectedAt": "وقت اتصال الوكيل",
+        "agent": "الوكيل",
+        "actions": "الإجراءات"
+      },
+      "toasts": {
+        "errorTitle": "خطأ",
+        "errorDescription": "حدث خطأ"
+      },
+      "statuses": {
+        "User did not answer": "لم يرد المستخدم",
+        "Airplane Mode Enabled": "تمكين وضع الطيران",
+        "Initiated": "تم البدء",
+        "Processing": "قيد المعالجة",
+        "Call Failed": "فشل الاتصال",
+        "User Busy/Rejected By User": "المستخدم مشغول / تم الرفض من قبل المستخدم",
+        "User Connected": "المستخدم متصل",
+        "User Unreachable (Out of Network Coverage or Airplane Mode)": "المستخدم غير متاح (خارج تغطية الشبكة أو وضع الطيران)",
+        "Completed": "مكتمل",
+        "Timeout": "انتهت المهلة",
+        "Abandoned": "مهجور"
+      },
+      "listen": "استماع للتسجيل",
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
+      },
+      "notAvailable": {
+        "title": "سجلات المكالمات",
+        "description": "سجلات المكالمات متاحة فقط للحملات التي تحمل الحالات التالية: نشطة، متوقفة، قيد التنفيذ، منتهية، أو مكتملة."
+      }
+    }
+  },
+  "autoDialerAgent": {
+    "tabs": {
+      "active": "الحملات النشطة",
+      "finished": "الحملات المنتهية"
+    },
+    "columns": {
+      "name": "الاسم",
+      "status": "الحالة",
+      "actions": "الإجراءات"
+    },
+    "statuses": {
+      "active": "نشط",
+      "paused": "متوقف مؤقتاً",
+      "in-progress": "قيد التنفيذ",
+      "created": "تم الإنشاء",
+      "finished": "منتهي",
+      "started": "بدأ",
+      "completed": "مكتمل"
+    },
+    "actions": {
+      "cdrs": "سجلات المكالمات",
+      "leave": "مغادرة",
+      "join": "انضمام"
+    },
+    "cdrsTitle": "سجلات مكالمات الحملة",
+    "cdrColumns": {
+      "phone": "الهاتف",
+      "name": "الاسم",
+      "status": "الحالة",
+      "customerConnectedAt": "وقت اتصال العميل",
+      "waitingTime": "وقت الانتظار",
+      "talkTime": "وقت التحدث",
+      "duration": "المدة",
+      "agentConnectedAt": "وقت اتصال الوكيل",
+      "agent": "الوكيل",
+      "actions": "الإجراءات"
+    },
+    "listen": "استماع للتسجيل",
+    "searchPhone": "البحث برقم الهاتف...",
+    "tooltips": {
+      "viewCdrs": "عرض سجلات المكالمات",
+      "leaveCampaign": "مغادرة هذه الحملة",
+      "joinCampaign": "الانضمام إلى هذه الحملة"
+    },
+    "toasts": {
+      "errorTitle": "خطأ",
+      "errorDescription": "فشل في تحميل سجلات مكالمات الحملة",
+      "leaveSuccess": "تم مغادرة الحملة بنجاح",
+      "leaveError": "فشل المغادرة",
+      "leaveErrorDescription": "فشل في مغادرة الحملة",
+      "joinSuccess": "تم الانضمام إلى الحملة بنجاح",
+      "joinError": "فشل الانضمام",
+      "joinErrorDescription": "فشل في الانضمام إلى الحملة"
+    }
+  },
   "webrtc": {
     "contacts": {
       "title": "جهات الاتصال",
@@ -2628,6 +4108,20 @@
           "duration": "المدة",
           "status": "الحالة"
         }
+      }
+    },
+    "autoDialer": {
+      "info": {
+        "placeholder": "معلومات العميل"
+      },
+      "notes": {
+        "title": "ملاحظات",
+        "placeholder": "اكتب ملاحظاتك هنا...",
+        "save": "حفظ",
+        "saving": "جاري الحفظ...",
+        "saveSuccess": "تم حفظ الملاحظات بنجاح",
+        "saveError": "فشل في حفظ الملاحظات",
+        "callTime": "وقت المكالمة"
       }
     }
   }

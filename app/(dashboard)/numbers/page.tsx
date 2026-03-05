@@ -1,6 +1,7 @@
 "use client";
 import withPermission from "@/containers/withPermission";
 import NumbersTable from "./table";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const Numbers = () => {
   return (
@@ -10,4 +11,4 @@ const Numbers = () => {
   );
 };
 
-export default withPermission(Numbers, "fullAccessNumbers");
+export default withActiveOrganization(withPermission(Numbers, "fullAccessNumbers"));

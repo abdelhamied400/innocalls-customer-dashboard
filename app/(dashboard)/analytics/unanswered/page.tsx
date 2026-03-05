@@ -24,6 +24,7 @@ import { FilterBox } from "@/components/FilterBox";
 import { formatDate } from "@/lib/date";
 import AgentsPicker from "@/components/AgentsPicker";
 import { FilterBar } from "@/components/FilterBar";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 type Option = {
   value: string;
@@ -193,4 +194,4 @@ const UnansweredAnalytics = () => {
   );
 };
 
-export default UnansweredAnalytics;
+export default withActiveOrganization(UnansweredAnalytics);

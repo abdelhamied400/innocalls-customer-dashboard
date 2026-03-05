@@ -26,7 +26,7 @@ import createUserSchema, {
   type CreateUserSchema,
 } from "@/validation/CreateUser";
 import usersService from "@/services/users.service";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "@/providers/TranslationProvider";
@@ -56,7 +56,6 @@ const CreateUserForm = () => {
   }, []);
   const queryClient = useQueryClient();
   const [currentStep, setCurrentStep] = useState(0);
-  const { toast } = useToast();
   const closeSheetRef = useRef<HTMLButtonElement>(null);
   const t = useTranslations("users.create");
   const commonT = useTranslations("common");
@@ -77,8 +76,7 @@ const CreateUserForm = () => {
   const onSubmit = form.handleSubmit(async (data) => {
     try {
       const res = await usersService.createUser(data);
-      toast({
-        title: t("messages.success"),
+      toast.info(t("messages.success"), {
         description: t("messages.successDescription", {
           name: form.getValues("name"),
         }),
@@ -87,18 +85,12 @@ const CreateUserForm = () => {
       queryClient.invalidateQueries({ queryKey: ["users"] }); // Invalidate the users query to refresh the list
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          variant: "destructive",
-          title: t("messages.error"),
-          description:
-            error.response?.data?.message || t("messages.unknownError"),
+        toast.error(t("messages.error"), {
+          description: error.response?.data?.message || t("messages.unknownError"),
         });
       } else {
-        toast({
-          variant: "destructive",
-          title: t("messages.error"),
-          description:
-            error instanceof Error ? error.message : t("messages.unknownError"),
+        toast.error(t("messages.error"), {
+          description: error instanceof Error ? error.message : t("messages.unknownError"),
         });
       }
     }
@@ -119,7 +111,7 @@ const CreateUserForm = () => {
     >
       <StepperHeader>
         <StepperPrevious>
-          <ChevronLeftIcon />
+          <ChevronLeftIcon className="rtl:rotate-180" />
         </StepperPrevious>
 
         <div className="flex flex-1 justify-center gap-2">

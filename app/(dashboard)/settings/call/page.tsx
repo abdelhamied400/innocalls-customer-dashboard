@@ -12,12 +12,12 @@ import TagsTable from "./table";
 import useAuthStore from "@/store/auth.slice";
 import { Organization } from "@/types/api/organization";
 import settingsService from "@/services/settings.service";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
+import withActiveOrganization from "@/containers/withActiveOrganization";
 
 const CallSettings = () => {
   const t = useTranslations("settings.call");
   const { Organization, setOrganization } = useAuthStore();
-  const { toast } = useToast();
 
   const handleToggleAfterCallSummary = async (checked: boolean) => {
     try {
@@ -28,15 +28,9 @@ const CallSettings = () => {
         enableAfterCallTags: checked,
       });
 
-      toast({
-        title: t("callSummary.toggleSuccess"),
-        variant: "success",
-      });
+      toast.success(t("callSummary.toggleSuccess"));
     } catch (error) {
-      toast({
-        title: t("callSummary.toggleFailed"),
-        variant: "destructive",
-      });
+      toast.error(t("callSummary.toggleFailed"));
     }
   };
 
@@ -69,7 +63,9 @@ const CallSettings = () => {
           value="manage-tags"
           className="border rounded-lg data-[state=open]:flex-1 flex flex-col"
         >
-          <AccordionTrigger className="p-4">{t("tags.title")}</AccordionTrigger>
+          <AccordionTrigger className="p-4 font-medium">
+            {t("tags.title")}
+          </AccordionTrigger>
           <AccordionContent className="px-4 py-2 flex flex-col gap-2 h-[calc(100vh-380px)] overflow-y-auto">
             <TagsTable />
           </AccordionContent>
@@ -79,4 +75,4 @@ const CallSettings = () => {
   );
 };
 
-export default CallSettings;
+export default withActiveOrganization(CallSettings);

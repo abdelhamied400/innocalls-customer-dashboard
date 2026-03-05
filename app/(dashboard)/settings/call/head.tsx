@@ -25,8 +25,10 @@ const TagsTableHead = () => {
   const tCommon = useTranslations("common");
   const { table } = usePaginatedTable();
   const [status, setStatus] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
     table.setGlobalFilter(e.target.value);
   };
 
@@ -49,12 +51,13 @@ const TagsTableHead = () => {
   return (
     <Collapsible>
       <div className="tags-table-head flex flex-wrap items-center justify-between p-4 gap-2">
-        <h3 className="text-lg font-semibold">{t("title")}</h3>
+        <h3 className="text-sm font-semibold">{t("subtitle")}</h3>
         <div className="flex flex-wrap items-center gap-2">
           <Field preIcon={<SearchIcon />}>
             <Input
               variant="field"
               placeholder={tCommon("search.placeholder")}
+              value={searchTerm}
               onChange={handleSearchChange}
               type="search"
             />
@@ -79,6 +82,7 @@ const TagsTableHead = () => {
           onClear={() => {
             setStatus("");
             table.resetColumnFilters();
+            setSearchTerm("");
             table.setGlobalFilter("");
           }}
         >
@@ -89,21 +93,22 @@ const TagsTableHead = () => {
             onApply={applyStatusFilter}
             numberOfFilters={status && status !== "all" ? 1 : 0}
           >
-            <RadioGroup
-              value={status}
-              onValueChange={setStatus}
-            >
+            <RadioGroup value={status} onValueChange={setStatus}>
               <div className="flex items-center gap-2">
                 <RadioGroupItem value="all" id="status-all" />
                 <Label htmlFor="status-all">{t("filters.status.all")}</Label>
               </div>
               <div className="flex items-center gap-2">
                 <RadioGroupItem value="active" id="status-active" />
-                <Label htmlFor="status-active">{tCommon("status.active")}</Label>
+                <Label htmlFor="status-active">
+                  {tCommon("status.active")}
+                </Label>
               </div>
               <div className="flex items-center gap-2">
                 <RadioGroupItem value="inactive" id="status-inactive" />
-                <Label htmlFor="status-inactive">{tCommon("status.inactive")}</Label>
+                <Label htmlFor="status-inactive">
+                  {tCommon("status.inactive")}
+                </Label>
               </div>
             </RadioGroup>
           </FilterBox>

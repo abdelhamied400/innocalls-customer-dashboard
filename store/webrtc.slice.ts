@@ -4,7 +4,7 @@ import {
   SessionState,
   SpyingStatus,
 } from "@/providers/webrtc/SipProvider/types";
-import { RTCSession } from "jssip/src/RTCSession";
+import { RTCSession } from "jssip/lib/RTCSession";
 import JsSIP from "jssip";
 import { defaultCountry } from "@/constants/countries";
 import { create } from "zustand";

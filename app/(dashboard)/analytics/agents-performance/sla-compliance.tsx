@@ -60,7 +60,7 @@ const SlaComplianceAnalytics = ({ filters }: SlaComplianceAnalyticsProps) => {
     if (!data) return [];
 
     // First filter by search term
-    let filtered = data.filter((agent) => {
+    const filtered = data.filter((agent) => {
       if (!slaComplianceFilters.search) return true;
       const searchTerm = slaComplianceFilters.search.toLowerCase();
       const agentSearchText = `${agent.name} ${agent.ext}`.toLowerCase();

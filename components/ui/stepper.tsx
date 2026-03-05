@@ -9,6 +9,7 @@ export type StepperContextType = {
   currentStep: number;
   goToStep: (step: number) => void;
   totalSteps: number;
+  enableStepping?: boolean;
 };
 const StepperContext = createContext<StepperContextType | null>(null);
 
@@ -18,6 +19,7 @@ export type StepperProps = PropsWithChildren<{
   currentStep?: number; // Current Step
   onStepChange?: (step: number) => void; // Change Step
   steps?: Array<string>;
+  enableStepping?: boolean;
 }>;
 const Stepper = ({
   children,
@@ -25,6 +27,7 @@ const Stepper = ({
   currentStep = 0,
   steps,
   onStepChange,
+  enableStepping = true,
 }: StepperProps) => {
   const goToStep = (step: number) => {
     if (onStepChange) onStepChange(step);
@@ -37,6 +40,7 @@ const Stepper = ({
           currentStep,
           goToStep,
           totalSteps: steps?.length || React.Children.count(children),
+          enableStepping,
         }}
       >
         {children}
@@ -72,11 +76,11 @@ export const StepperHeaderTitle = ({
   className,
   idx,
 }: StepperHeaderTitleProps) => {
-  const { currentStep, goToStep, totalSteps } = useStepper();
+  const { currentStep, goToStep, totalSteps, enableStepping } = useStepper();
   const isActive = idx === currentStep;
   const isCompleted = idx < currentStep;
 
-  const handleClick = () => goToStep(idx);
+  const handleClick = () => enableStepping && goToStep(idx);
 
   return (
     <div

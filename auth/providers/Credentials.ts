@@ -1,4 +1,4 @@
-import { getCookie, setCookie } from "cookies-next";
+import { setCookie } from "cookies-next";
 import { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
@@ -41,7 +41,7 @@ const CredentialsProvider = Credentials({
           "X-Client-IP": ip,
         },
         body: JSON.stringify({ email, password, userType }),
-      }
+      },
     );
 
     if (!response.ok) {

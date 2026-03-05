@@ -21,7 +21,7 @@ const RefillBalanceLoading = () => {
       >
         <StepperHeader>
           <StepperPrevious>
-            <ChevronLeftIcon />
+            <ChevronLeftIcon className="rtl:rotate-180" />
           </StepperPrevious>
 
           <div className="flex flex-1 justify-center gap-2">

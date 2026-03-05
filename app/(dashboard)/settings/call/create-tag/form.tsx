@@ -12,34 +12,25 @@ import Stepper, {
   StepperStep,
   StepperSteps,
 } from "@/components/ui/stepper";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useTranslations } from "@/providers/TranslationProvider";
 import vocabService from "@/services/vocab.service";
+import { CreateTagFormValues, CreateTagSchema } from "@/validation/CreateTag";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { ChevronLeftIcon, X } from "lucide-react";
 import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-const createTagSchema = (t: (key: string) => string) =>
-  z.object({
-    nameAR: z.string().min(1, t("form.validation.nameAR.required")),
-    nameEN: z.string().min(1, t("form.validation.nameEN.required")),
-  });
-
-type CreateTagFormValues = z.infer<ReturnType<typeof createTagSchema>>;
 
 const CreateTagForm = () => {
-  const { toast } = useToast();
   const queryClient = useQueryClient();
   const closeSheetRef = useRef<HTMLButtonElement>(null);
   const [currentStep, setCurrentStep] = useState(0);
   const t = useTranslations("settings.call.createTag");
 
   const form = useForm<CreateTagFormValues>({
-    resolver: zodResolver(createTagSchema(t)),
+    resolver: zodResolver(CreateTagSchema(t)),
     defaultValues: {
       nameAR: "",
       nameEN: "",
@@ -54,25 +45,17 @@ const CreateTagForm = () => {
     try {
       await vocabService.createTag(data);
 
-      toast({
-        title: t("messages.createSuccess"),
-        variant: "success",
-      });
+      toast.success(t("messages.createSuccess"));
 
       closeSheetRef.current?.click();
       queryClient.invalidateQueries({ queryKey: ["tags"] });
     } catch (error) {
       if (isAxiosError(error)) {
-        toast({
-          title: t("messages.createFailed"),
+        toast.error(t("messages.createFailed"), {
           description: error.response?.data?.message,
-          variant: "destructive",
         });
       } else {
-        toast({
-          title: t("messages.createFailed"),
-          variant: "destructive",
-        });
+        toast.error(t("messages.createFailed"));
       }
     }
   });

@@ -1,7 +1,10 @@
+"use client";
 import { redirect } from "next/navigation";
+import withActiveOrganization from "@/containers/withActiveOrganization";
+import withPermission from "@/containers/withPermission";
 
-const Other = () => {
-  redirect("/auto-dialer/active");
+const Autodialer = () => {
+  return redirect("/auto-dialer/active");
 };
 
-export default Other;
+export default withActiveOrganization(withPermission(Autodialer, "fullAccessAutoDialerCampaigns"));

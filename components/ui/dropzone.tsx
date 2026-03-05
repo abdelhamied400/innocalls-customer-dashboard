@@ -12,23 +12,16 @@ import {
   FileRejection,
   ErrorCode,
 } from "react-dropzone";
-import XIcon from "@mui/icons-material/X";
 import UploadIcon from "@mui/icons-material/Upload";
 
 import { formatFileSize } from "@/lib/file";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "./button";
+import { Close } from "@mui/icons-material";
+import { useTranslations } from "@/providers/TranslationProvider";
 
 // Utility type
 type WithId<T> = T & { id: string };
-
-// Errors
-const errors: Record<ErrorCode, string> = {
-  "file-invalid-type": "Invalid file type",
-  "file-too-large": "File is too large",
-  "file-too-small": "File is too small",
-  "too-many-files": "Too many files",
-};
 
 // Context type
 interface DropzoneContextType extends Partial<DropzoneState> {
@@ -39,11 +32,14 @@ interface DropzoneContextType extends Partial<DropzoneState> {
   options?: DropzoneOptions;
   getRootProps: DropzoneState["getRootProps"];
   getInputProps: DropzoneState["getInputProps"];
+  fakeFilesState: string[];
+  removeFakeFile: (fileName: string) => void;
+  disabled?: boolean;
 }
 
 // Create context
 const DropzoneContext = createContext<DropzoneContextType | undefined>(
-  undefined
+  undefined,
 );
 
 // Hook
@@ -61,6 +57,9 @@ type DropzoneRootProps = {
   options?: DropzoneOptions;
   value?: File | null;
   onChange?: (file: File | null) => void;
+  fakeFiles?: string[];
+  removeFakeFile?: (fileName: string) => void;
+  disabled?: boolean;
 };
 
 // Dropzone Root
@@ -69,10 +68,71 @@ const Dropzone = ({
   options = {},
   value,
   onChange,
+  fakeFiles = [],
+  removeFakeFile: onRemoveFakeFile,
+  disabled,
 }: DropzoneRootProps) => {
   const [acceptedFiles, setAcceptedFiles] = useState<WithId<File>[]>([]);
   const [fileRejections, setFileRejections] = useState<WithId<FileRejection>[]>(
-    []
+    [],
+  );
+  const [fakeFilesState, setFakeFilesState] = useState<string[]>(fakeFiles);
+
+  const addAcceptedFile = useCallback(
+    (file: File) => {
+      const fileWithId = new File([file], file.name, {
+        type: file.type,
+        lastModified: file.lastModified,
+      });
+
+      Object.defineProperty(fileWithId, "id", {
+        value: uuidv4(),
+        writable: false,
+        enumerable: true,
+      });
+
+      setAcceptedFiles([fileWithId as WithId<File>]);
+      setFileRejections([]);
+
+      if (onChange) {
+        onChange(fileWithId as WithId<File>);
+      }
+    },
+    [onChange],
+  );
+
+  const addRejectedFile = useCallback(
+    (rejection: FileRejection) => {
+      setFileRejections((prev) => [...prev, { ...rejection, id: uuidv4() }]);
+      if (onChange) {
+        onChange(null);
+      }
+    },
+    [onChange],
+  );
+
+  const removeFile = useCallback(
+    (id: string) => {
+      setAcceptedFiles((prev) => prev.filter((file) => file.id !== id));
+      if (onChange) {
+        onChange(null);
+      }
+    },
+    [onChange],
+  );
+
+  const removeRejectedFile = useCallback((id: string) => {
+    setFileRejections((prev) =>
+      prev.filter((rejection) => rejection.id !== id),
+    );
+  }, []);
+
+  const removeFakeFile = useCallback(
+    (fileName: string) => {
+      setFakeFilesState((prev) => prev.filter((name) => name !== fileName));
+      onRemoveFakeFile?.(fileName);
+    },
+    [onRemoveFakeFile],
   );
 
   const onDrop = useCallback(
@@ -80,59 +140,22 @@ const Dropzone = ({
       acceptedFiles.forEach((file) => addAcceptedFile(file));
       fileRejections.forEach((rejection) => addRejectedFile(rejection));
     },
-    []
+    [addAcceptedFile, addRejectedFile],
   );
-
-  const addAcceptedFile = (file: File) => {
-    const fileWithId = new File([file], file.name, {
-      type: file.type,
-      lastModified: file.lastModified,
-    });
-
-    Object.defineProperty(fileWithId, "id", {
-      value: uuidv4(),
-      writable: false,
-      enumerable: true,
-    });
-
-    setAcceptedFiles([fileWithId as WithId<File>]);
-    setFileRejections([]);
-
-    if (onChange) {
-      onChange(fileWithId as WithId<File>);
-    }
-  };
-
-  const addRejectedFile = (rejection: FileRejection) => {
-    setFileRejections((prev) => [...prev, { ...rejection, id: uuidv4() }]);
-    if (onChange) {
-      onChange(null);
-    }
-  };
-
-  const removeFile = (id: string) => {
-    setAcceptedFiles((prev) => prev.filter((file) => file.id !== id));
-    if (onChange) {
-      onChange(null);
-    }
-  };
-
-  const removeRejectedFile = (id: string) => {
-    setFileRejections((prev) =>
-      prev.filter((rejection) => rejection.id !== id)
-    );
-  };
 
   const { getRootProps, getInputProps } = useDropzone({
     ...options,
     onDrop,
+    disabled,
   });
 
   // If form value changes from outside (optional, useful for reset)
   useEffect(() => {
     if (value == null) {
-      setAcceptedFiles([]);
-      setFileRejections([]);
+      setTimeout(() => {
+        setAcceptedFiles([]);
+        setFileRejections([]);
+      }, 0);
     }
   }, [value]);
 
@@ -149,8 +172,11 @@ const Dropzone = ({
         enumerable: true,
       });
 
-      setAcceptedFiles([fileWithId as WithId<File>]);
+      setTimeout(() => {
+        setAcceptedFiles([fileWithId as WithId<File>]);
+      }, 0);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -163,6 +189,9 @@ const Dropzone = ({
         removeFile,
         removeRejectedFile,
         options,
+        fakeFilesState,
+        removeFakeFile,
+        disabled,
       }}
     >
       {children}
@@ -172,14 +201,16 @@ const Dropzone = ({
 
 // Components
 export const DropzoneTrigger = () => {
-  const { getRootProps, getInputProps, options } = useDropzoneContext();
+  const t = useTranslations("common.dropzone");
+  const { getRootProps, getInputProps, options, disabled } =
+    useDropzoneContext();
   const acceptedTypes = Object.values(options?.accept || {})
     .map((types) => types.map((type) => type.replace(/^\./, "")).join(", "))
     .join(", ");
 
   return (
     <section
-      className="bg-gray-50 rounded-lg border border-dashed border-gray-300 mb-2"
+      className={`bg-gray-50 rounded-lg border border-dashed border-gray-300 mb-2 ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
       role="button"
     >
       <div {...getRootProps({ className: "dropzone p-4" })}>
@@ -187,13 +218,13 @@ export const DropzoneTrigger = () => {
         <div className="text-gray-500 flex flex-col items-center">
           <div className="flex flex-wrap gap-1">
             <UploadIcon />
-            <p className="font-bold">Drag File Here</p>
-            <p>Or</p>
-            <p className="text-primary font-bold">Browse Files</p>
+            <p className="font-bold">{t("drag")}</p>
+            <p>{t("or")}</p>
+            <p className="text-primary font-bold">{t("browseFiles")}</p>
           </div>
           <p>
-            (Only <span className="uppercase">{acceptedTypes}</span> ), Max
-            Size: {formatFileSize(options?.maxSize)}
+            ({t("only")} <span className="uppercase">{acceptedTypes}</span> ),{" "}
+            {t("max")} {t("size")}: {formatFileSize(options?.maxSize)}
           </p>
         </div>
       </div>
@@ -221,7 +252,7 @@ export const DropzoneFile = ({ file }: FileProps) => {
         type="button"
         onClick={() => removeFile(file.id)}
       >
-        <XIcon />
+        <Close />
       </Button>
     </li>
   );
@@ -233,7 +264,16 @@ type DropzoneRejectedFileProps = {
 export const DropzoneRejectedFile = ({
   rejection,
 }: DropzoneRejectedFileProps) => {
+  const t = useTranslations("common.dropzone");
   const { removeRejectedFile } = useDropzoneContext();
+
+  // Errors
+  const errors: Record<ErrorCode, string> = {
+    "file-invalid-type": t("validation.file-invalid-type"),
+    "file-too-large": t("validation.file-too-large"),
+    "file-too-small": t("validation.file-too-small"),
+    "too-many-files": t("validation.too-many-files"),
+  };
 
   return (
     <li className="flex items-center justify-between gap-2 p-4 bg-red-50 border border-destructive rounded-lg">
@@ -256,17 +296,42 @@ export const DropzoneRejectedFile = ({
         type="button"
         onClick={() => removeRejectedFile(rejection.id)}
       >
-        <XIcon />
+        <Close />
+      </Button>
+    </li>
+  );
+};
+
+const DropzoneFakeFile = ({ fileName }: { fileName: string }) => {
+  const { removeFakeFile, disabled } = useDropzoneContext();
+
+  return (
+    <li className="flex items-center justify-between gap-2 p-4 bg-gray-50 border rounded-lg">
+      <div className="flex flex-col">
+        <p>{fileName}</p>
+      </div>
+      <Button
+        size="icon"
+        variant="destructive"
+        type="button"
+        disabled={disabled}
+        onClick={() => removeFakeFile(fileName)}
+      >
+        <Close />
       </Button>
     </li>
   );
 };
 
 export const DropzoneFileList = () => {
-  const { acceptedFiles, fileRejections } = useDropzoneContext();
+  const { acceptedFiles, fileRejections, fakeFilesState } =
+    useDropzoneContext();
 
   return (
     <ul className="flex flex-col gap-2">
+      {fakeFilesState.map((fileName) => (
+        <DropzoneFakeFile key={fileName} fileName={fileName} />
+      ))}
       {acceptedFiles.map((file) => (
         <DropzoneFile key={file.id} file={file} />
       ))}
