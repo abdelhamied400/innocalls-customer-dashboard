@@ -28,6 +28,7 @@ import Key from "@mui/icons-material/Key";
 import Api from "@mui/icons-material/Api";
 import Support from "@mui/icons-material/Support";
 import SupportAgent from "@mui/icons-material/SupportAgent";
+import Cloud from "@mui/icons-material/Cloud";
 import SmartToy from "@mui/icons-material/SmartToy";
 import Image from "next/image";
 import { Button } from "./ui/button";
@@ -252,8 +253,8 @@ const AppSidebar = () => {
           <SidebarCollapsibleItem
             icon={<Code />}
             title={t("navigation.developersTab")}
-            isNew={false}
-            isComingSoon={true}
+            isNew={true}
+            isComingSoon={false}
             href={`/developers`}
           >
             <SidebarItem
@@ -292,6 +293,14 @@ const AppSidebar = () => {
               icon={<SupportAgent />}
               title={t("navigation.freshdeskCredentials")}
               href={`/developers/freshdesk-credentials`}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
+            />
+            <SidebarItem
+              icon={<Cloud />}
+              title={t("navigation.zohoCredentials")}
+              href={`/developers/zoho-credentials`}
               disabled={false}
               isNew={true}
               isComingSoon={false}

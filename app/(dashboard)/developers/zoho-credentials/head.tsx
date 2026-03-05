@@ -24,14 +24,14 @@ import { FilterBox } from "@/components/FilterBox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import Field from "@/components/ui/field";
-import freshdeskCredentialService from "@/services/freshdesk-credential.service";
+import zohoCredentialService from "@/services/zoho-credential.service";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
-import ApiKeyDialog from "./ApiKeyDialog";
+import ApiKeyDialog from "../freshdesk-credentials/ApiKeyDialog";
 
-const FreshdeskTableHead = () => {
-  const t = useTranslations("developers.freshdesk");
+const ZohoTableHead = () => {
+  const t = useTranslations("developers.zoho");
   const tCommon = useTranslations("common");
   const { table } = usePaginatedTable();
   const queryClient = useQueryClient();
@@ -64,9 +64,9 @@ const FreshdeskTableHead = () => {
   const handleCreate = async () => {
     try {
       setIsCreating(true);
-      const result = await freshdeskCredentialService.create();
+      const result = await zohoCredentialService.create();
       setGeneratedApiKey(result.apiKey);
-      queryClient.invalidateQueries({ queryKey: ["freshdesk-credentials"] });
+      queryClient.invalidateQueries({ queryKey: ["zoho-credentials"] });
       toast.success(t("messages.createSuccess"));
     } catch (error) {
       if (isAxiosError(error)) {
@@ -132,21 +132,21 @@ const FreshdeskTableHead = () => {
               label={t("filters.status.selectLabel")}
               onReset={resetStatusFilter}
               onApply={applyStatusFilter}
-              numberOfFilters={status && status !== "all" ? 1 : 0}
+              numberOfFilters={status ? 1 : 0}
             >
               <RadioGroup value={status} onValueChange={setStatus}>
                 <div className="flex items-center gap-2">
-                  <RadioGroupItem value="active" id="freshdesk-status-active" />
-                  <Label htmlFor="freshdesk-status-active">
+                  <RadioGroupItem value="active" id="zoho-status-active" />
+                  <Label htmlFor="zoho-status-active">
                     {tCommon("status.active")}
                   </Label>
                 </div>
                 <div className="flex items-center gap-2">
                   <RadioGroupItem
                     value="inactive"
-                    id="freshdesk-status-inactive"
+                    id="zoho-status-inactive"
                   />
-                  <Label htmlFor="freshdesk-status-inactive">
+                  <Label htmlFor="zoho-status-inactive">
                     {tCommon("status.inactive")}
                   </Label>
                 </div>
@@ -159,10 +159,11 @@ const FreshdeskTableHead = () => {
       <ApiKeyDialog
         apiKey={generatedApiKey}
         onClose={() => setGeneratedApiKey(null)}
-        downloadFileName="freshdesk-api-key.txt"
+        translationNamespace="developers.zoho"
+        downloadFileName="zoho-api-key.txt"
       />
     </>
   );
 };
 
-export default FreshdeskTableHead;
+export default ZohoTableHead;

@@ -24,10 +24,17 @@ import { useState } from "react";
 type ApiKeyDialogProps = {
   apiKey: string | null;
   onClose: () => void;
+  translationNamespace?: string;
+  downloadFileName?: string;
 };
 
-const ApiKeyDialog = ({ apiKey, onClose }: ApiKeyDialogProps) => {
-  const t = useTranslations("developers.freshdesk");
+const ApiKeyDialog = ({
+  apiKey,
+  onClose,
+  translationNamespace = "developers.freshdesk",
+  downloadFileName = "api-key.txt",
+}: ApiKeyDialogProps) => {
+  const t = useTranslations(translationNamespace);
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -44,7 +51,7 @@ const ApiKeyDialog = ({ apiKey, onClose }: ApiKeyDialogProps) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "freshdesk-api-key.txt";
+    a.download = downloadFileName;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
