@@ -27,6 +27,7 @@ import Phone from "@mui/icons-material/Phone";
 import Key from "@mui/icons-material/Key";
 import Api from "@mui/icons-material/Api";
 import Support from "@mui/icons-material/Support";
+import SupportAgent from "@mui/icons-material/SupportAgent";
 import SmartToy from "@mui/icons-material/SmartToy";
 import Image from "next/image";
 import { Button } from "./ui/button";
@@ -286,6 +287,14 @@ const AppSidebar = () => {
               disabled={true}
               isNew={false}
               isComingSoon={true}
+            />
+            <SidebarItem
+              icon={<SupportAgent />}
+              title={t("navigation.freshdeskCredentials")}
+              href={`/developers/freshdesk-credentials`}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
             />
           </SidebarCollapsibleItem>
         )}
