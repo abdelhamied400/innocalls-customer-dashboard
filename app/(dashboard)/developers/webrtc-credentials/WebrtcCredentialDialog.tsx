@@ -91,7 +91,6 @@ const WebrtcCredentialDialog = ({
   };
 
   const handleClose = () => {
-    reset({ domains: [""] });
     onClose();
   };
 

@@ -19,7 +19,7 @@ import {
 import { useTranslations } from "@/providers/TranslationProvider";
 import { Check, ContentCopy, Download } from "@mui/icons-material";
 import { toast } from "sonner";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 type ApiKeyDialogProps = {
   apiKey: string | null;
@@ -36,18 +36,27 @@ const ApiKeyDialog = ({
 }: ApiKeyDialogProps) => {
   const t = useTranslations(translationNamespace);
   const [copied, setCopied] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const displayedApiKey = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (apiKey) {
+      displayedApiKey.current = apiKey;
+      setIsOpen(true);
+    }
+  }, [apiKey]);
 
   const handleCopy = async () => {
-    if (!apiKey) return;
-    await navigator.clipboard.writeText(apiKey);
+    if (!displayedApiKey.current) return;
+    await navigator.clipboard.writeText(displayedApiKey.current);
     setCopied(true);
     toast.success(t("messages.copiedToClipboard"));
     setTimeout(() => setCopied(false), 2000);
   };
 
   const handleDownload = () => {
-    if (!apiKey) return;
-    const blob = new Blob([apiKey], { type: "text/plain" });
+    if (!displayedApiKey.current) return;
+    const blob = new Blob([displayedApiKey.current], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -60,12 +69,15 @@ const ApiKeyDialog = ({
   };
 
   const handleClose = () => {
-    setCopied(false);
-    onClose();
+    setIsOpen(false);
+    setTimeout(() => {
+      setCopied(false);
+      onClose();
+    }, 200);
   };
 
   return (
-    <AlertDialog open={!!apiKey} onOpenChange={(open) => !open && handleClose()}>
+    <AlertDialog open={isOpen} onOpenChange={(open) => !open && handleClose()}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>{t("apiKeyDialog.title")}</AlertDialogTitle>
@@ -80,7 +92,7 @@ const ApiKeyDialog = ({
           </label>
           <div className="flex items-center gap-2 p-3 bg-muted border rounded-lg">
             <code className="flex-1 text-sm font-mono break-all select-all">
-              {apiKey}
+              {displayedApiKey.current}
             </code>
             <div className="flex items-center gap-1 shrink-0">
               <TooltipProvider>
