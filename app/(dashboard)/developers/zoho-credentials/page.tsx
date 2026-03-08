@@ -3,6 +3,7 @@
 import { useTranslations } from "@/providers/TranslationProvider";
 import ZohoCredentialsTable from "./table";
 import withActiveOrganization from "@/containers/withActiveOrganization";
+import withPermission from "@/containers/withPermission";
 
 const ZohoCredentialsPage = () => {
   const t = useTranslations("developers.zoho");
@@ -17,4 +18,6 @@ const ZohoCredentialsPage = () => {
   );
 };
 
-export default withActiveOrganization(ZohoCredentialsPage);
+export default withActiveOrganization(
+  withPermission(ZohoCredentialsPage, "completeControlDeveloperTools"),
+);

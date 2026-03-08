@@ -249,7 +249,8 @@ const AppSidebar = () => {
             />
           </SidebarCollapsibleItem>
         )}
-        {session?.userType === "user" && (
+        {session?.userType === "user" &&
+          auth?.user?.completeControlDeveloperTools && (
           <SidebarCollapsibleItem
             icon={<Code />}
             title={t("navigation.developersTab")}

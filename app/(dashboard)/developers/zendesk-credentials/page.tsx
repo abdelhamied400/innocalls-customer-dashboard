@@ -3,6 +3,7 @@
 import { useTranslations } from "@/providers/TranslationProvider";
 import ZendeskCredentialsTable from "./table";
 import withActiveOrganization from "@/containers/withActiveOrganization";
+import withPermission from "@/containers/withPermission";
 
 const ZendeskCredentialsPage = () => {
   const t = useTranslations("developers.zendesk");
@@ -17,4 +18,6 @@ const ZendeskCredentialsPage = () => {
   );
 };
 
-export default withActiveOrganization(ZendeskCredentialsPage);
+export default withActiveOrganization(
+  withPermission(ZendeskCredentialsPage, "completeControlDeveloperTools"),
+);

@@ -3,6 +3,7 @@
 import { useTranslations } from "@/providers/TranslationProvider";
 import WebrtcCredentialsTable from "./table";
 import withActiveOrganization from "@/containers/withActiveOrganization";
+import withPermission from "@/containers/withPermission";
 
 const WebrtcCredentialsPage = () => {
   const t = useTranslations("developers.webrtc");
@@ -17,4 +18,6 @@ const WebrtcCredentialsPage = () => {
   );
 };
 
-export default withActiveOrganization(WebrtcCredentialsPage);
+export default withActiveOrganization(
+  withPermission(WebrtcCredentialsPage, "completeControlDeveloperTools"),
+);

@@ -3,6 +3,7 @@
 import { useTranslations } from "@/providers/TranslationProvider";
 import ApiCredentialsTable from "./table";
 import withActiveOrganization from "@/containers/withActiveOrganization";
+import withPermission from "@/containers/withPermission";
 
 const ApiCredentialsPage = () => {
   const t = useTranslations("developers.apiCredentials");
@@ -17,4 +18,6 @@ const ApiCredentialsPage = () => {
   );
 };
 
-export default withActiveOrganization(ApiCredentialsPage);
+export default withActiveOrganization(
+  withPermission(ApiCredentialsPage, "completeControlDeveloperTools"),
+);

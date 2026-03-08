@@ -3,6 +3,7 @@
 import { useTranslations } from "@/providers/TranslationProvider";
 import FreshdeskCredentialsTable from "./table";
 import withActiveOrganization from "@/containers/withActiveOrganization";
+import withPermission from "@/containers/withPermission";
 
 const FreshdeskCredentialsPage = () => {
   const t = useTranslations("developers.freshdesk");
@@ -17,4 +18,6 @@ const FreshdeskCredentialsPage = () => {
   );
 };
 
-export default withActiveOrganization(FreshdeskCredentialsPage);
+export default withActiveOrganization(
+  withPermission(FreshdeskCredentialsPage, "completeControlDeveloperTools"),
+);
