@@ -4225,6 +4225,91 @@
         "downloaded": "تم تحميل مفتاح API"
       }
     },
+    "apiCredentials": {
+      "title": "بيانات اعتماد API",
+      "subtitle": "إدارة بيانات اعتماد API الخاصة بك",
+      "columns": {
+        "title": "العنوان",
+        "apiId": "معرف API",
+        "apiSecret": "مفتاح API السري",
+        "services": "الخدمات",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "serviceLabels": {
+        "pbx": "PBX",
+        "order-confirmation": "تأكيد الطلب",
+        "call-campaign": "حملة الاتصال",
+        "web-call": "مكالمة ويب",
+        "auto-dialer-campaign": "حملة الاتصال التلقائي",
+        "billing": "الفواتير"
+      },
+      "actions": {
+        "create": "إنشاء بيانات اعتماد",
+        "edit": "تعديل الخدمات",
+        "delete": "حذف",
+        "restore": "استعادة",
+        "copy": "نسخ إلى الحافظة",
+        "download": "تحميل كملف"
+      },
+      "filters": {
+        "status": {
+          "label": "الحالة",
+          "selectLabel": "اختر الحالة"
+        },
+        "services": {
+          "label": "الخدمات",
+          "selectLabel": "تصفية حسب الخدمة"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث",
+        "createCredential": "إنشاء بيانات اعتماد API جديدة"
+      },
+      "confirmations": {
+        "deleteTitle": "حذف بيانات الاعتماد",
+        "deleteDescription": "هل أنت متأكد من حذف بيانات الاعتماد هذه؟ يمكن استعادتها لاحقاً.",
+        "restoreTitle": "استعادة بيانات الاعتماد",
+        "restoreDescription": "هل أنت متأكد من استعادة بيانات الاعتماد هذه؟",
+        "cancel": "إلغاء",
+        "yesDelete": "نعم، حذف",
+        "yesRestore": "نعم، استعادة"
+      },
+      "credentialDialog": {
+        "createTitle": "إنشاء بيانات اعتماد API",
+        "createDescription": "أدخل عنواناً واختر الخدمات لبيانات الاعتماد هذه.",
+        "editTitle": "تعديل الخدمات",
+        "editDescription": "تحديث الخدمات المفعلة لبيانات الاعتماد هذه.",
+        "titleLabel": "العنوان",
+        "titlePlaceholder": "مثال: مفتاح API الخاص بي",
+        "servicesLabel": "الخدمات",
+        "servicesPlaceholder": "اختر الخدمات...",
+        "create": "إنشاء",
+        "update": "تحديث",
+        "validation": {
+          "titleRequired": "العنوان مطلوب",
+          "titleMin": "يجب أن يكون العنوان حرفين على الأقل",
+          "titleMax": "يجب ألا يتجاوز العنوان 250 حرفاً",
+          "servicesMin": "مطلوب خدمة واحدة على الأقل"
+        }
+      },
+      "secretDialog": {
+        "title": "تم إنشاء بيانات اعتماد API",
+        "description": "يرجى نسخ أو تحميل بيانات الاعتماد الآن. لن يتم عرض المفتاح السري مرة أخرى.",
+        "close": "إغلاق"
+      },
+      "messages": {
+        "createSuccess": "تم إنشاء بيانات الاعتماد بنجاح",
+        "createFailed": "فشل في إنشاء بيانات الاعتماد",
+        "updateSuccess": "تم تحديث بيانات الاعتماد بنجاح",
+        "updateFailed": "فشل في تحديث بيانات الاعتماد",
+        "deleted": "تم حذف بيانات الاعتماد بنجاح",
+        "restored": "تم استعادة بيانات الاعتماد بنجاح",
+        "toggleFailed": "فشلت العملية",
+        "copiedToClipboard": "تم النسخ إلى الحافظة",
+        "downloaded": "تم تحميل بيانات الاعتماد"
+      }
+    },
     "webrtc": {
       "title": "بيانات اعتماد WebRTC",
       "subtitle": "إدارة بيانات اعتماد WebRTC API الخاصة بك",

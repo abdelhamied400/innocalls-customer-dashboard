@@ -285,9 +285,9 @@ const AppSidebar = () => {
               icon={<Api />}
               title={t("navigation.apiCredentials")}
               href={`/developers/api-credentials`}
-              disabled={true}
-              isNew={false}
-              isComingSoon={true}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
             />
             <SidebarItem
               icon={<SupportAgent />}

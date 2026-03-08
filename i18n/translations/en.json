@@ -4210,6 +4210,91 @@
         "downloaded": "API key downloaded"
       }
     },
+    "apiCredentials": {
+      "title": "API Credentials",
+      "subtitle": "Manage your API credentials",
+      "columns": {
+        "title": "Title",
+        "apiId": "API ID",
+        "apiSecret": "API Secret",
+        "services": "Services",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "serviceLabels": {
+        "pbx": "PBX",
+        "order-confirmation": "Order Confirmation",
+        "call-campaign": "Call Campaign",
+        "web-call": "Web Call",
+        "auto-dialer-campaign": "Auto Dialer Campaign",
+        "billing": "Billing"
+      },
+      "actions": {
+        "create": "Create Credential",
+        "edit": "Edit Services",
+        "delete": "Delete",
+        "restore": "Restore",
+        "copy": "Copy to clipboard",
+        "download": "Download as file"
+      },
+      "filters": {
+        "status": {
+          "label": "Status",
+          "selectLabel": "Select status"
+        },
+        "services": {
+          "label": "Services",
+          "selectLabel": "Filter by service"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "click to show/hide search filters",
+        "createCredential": "Create a new API credential"
+      },
+      "confirmations": {
+        "deleteTitle": "Delete Credential",
+        "deleteDescription": "Are you sure you want to delete this credential? It can be restored later.",
+        "restoreTitle": "Restore Credential",
+        "restoreDescription": "Are you sure you want to restore this credential?",
+        "cancel": "Cancel",
+        "yesDelete": "Yes, Delete",
+        "yesRestore": "Yes, Restore"
+      },
+      "credentialDialog": {
+        "createTitle": "Create API Credential",
+        "createDescription": "Provide a title and select the services for this credential.",
+        "editTitle": "Edit Services",
+        "editDescription": "Update the enabled services for this credential.",
+        "titleLabel": "Title",
+        "titlePlaceholder": "e.g. My API Key",
+        "servicesLabel": "Services",
+        "servicesPlaceholder": "Select services...",
+        "create": "Create",
+        "update": "Update",
+        "validation": {
+          "titleRequired": "Title is required",
+          "titleMin": "Title must be at least 2 characters",
+          "titleMax": "Title must be at most 250 characters",
+          "servicesMin": "At least one service is required"
+        }
+      },
+      "secretDialog": {
+        "title": "API Credentials Generated",
+        "description": "Please copy or download your API credentials now. The secret will not be shown again.",
+        "close": "Close"
+      },
+      "messages": {
+        "createSuccess": "Credential created successfully",
+        "createFailed": "Failed to create credential",
+        "updateSuccess": "Credential updated successfully",
+        "updateFailed": "Failed to update credential",
+        "deleted": "Credential deleted successfully",
+        "restored": "Credential restored successfully",
+        "toggleFailed": "Operation failed",
+        "copiedToClipboard": "Copied to clipboard",
+        "downloaded": "Credentials downloaded"
+      }
+    },
     "webrtc": {
       "title": "WebRTC Credentials",
       "subtitle": "Manage your WebRTC API credentials",
