@@ -1,7 +1,7 @@
 "use client";
 import useAuth from "@/hooks/useAuth";
 import useAuthStore from "@/store/auth.slice";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import React, { useState } from "react";
 
 const DevLogger = () => {

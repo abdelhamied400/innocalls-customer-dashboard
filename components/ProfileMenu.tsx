@@ -15,8 +15,7 @@ import {
 } from "@/components/ui/tooltip";
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import { Button } from "./ui/button";
-import { signOut } from "next-auth/react";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import { getCookie, setCookie, deleteCookie } from "cookies-next/client";
 import useAuthStore from "@/store/auth.slice";
 import { useRouter } from "next/navigation";
@@ -28,6 +27,8 @@ import { AgentActivity } from "@/types/webrtc";
 import webrtcService from "@/services/webrtc.service";
 import useAuth from "@/hooks/useAuth";
 import { Organization } from "@/types/api/organization";
+import useSessionStore from "@/store/session.slice";
+import { clientSignout } from "@/lib/auth";
 
 const ProfileMenu = () => {
   const { data: session, status } = useSession();
@@ -51,7 +52,6 @@ const ProfileMenu = () => {
       : null;
 
   const handleLogout = async () => {
-    // Sign out without redirect first
     if (session?.userType === "agent") {
       await webrtcService
         .changeAgentState(AgentActivity.PORTAL_LOGGED_OUT)
@@ -59,11 +59,7 @@ const ProfileMenu = () => {
           console.error("Error changing agent state on logout:", err);
         });
     }
-    deleteCookie("OrganizationId");
-    // deleteCookie("authjs.csrf-token");
-    // deleteCookie("__Secure-authjs.session-token");
-    await signOut({ redirect: false });
-    router.push("/login");
+    await clientSignout("/login");
   };
 
   const handleOrganizationChange = async (org: Organization) => {
@@ -174,7 +170,6 @@ const ProfileMenu = () => {
             <div className="flex-col items-start gap-1 hidden md:flex">
               <p className="font-semibold text-lg">{auth?.user?.name}</p>
               <p className="text-neutral-400 text-sm">{Organization?.name}</p>
-              {/* <p className="text-neutral-400 text-sm">{session?.user.userType}</p> */}
             </div>
 
             <ExpandCircleDownOutlinedIcon className="text-neutral-300" />
@@ -190,9 +185,7 @@ const ProfileMenu = () => {
               onClick={() => handleOrganizationChange(org)}
             >
               <span>{org.name}</span>
-              <span className="text-xs text-gray-600">
-                {/* {org.hasTenant ? t("tenant") : t("noTenant")} */}
-              </span>
+              <span className="text-xs text-gray-600"></span>
             </DropdownMenuItem>
           ))}
           <DropdownMenuSeparator />

@@ -23,7 +23,7 @@ import { useUaEvents } from "./SipProvider/useUaEvents";
 import { RTCSession } from "jssip/lib/RTCSession";
 import { defaultCountry } from "@/constants/countries";
 import { toast } from "sonner";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import webrtcService from "@/services/webrtc.service";
 import CryptoJS from "crypto-js";
 import { webrtcStoppingActivities } from "@/constants/agent-activity";

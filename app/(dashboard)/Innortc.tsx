@@ -7,7 +7,7 @@ import useDeepLinkListener from "@/hooks/use-deep-link-listener";
 import { useRouting } from "@/providers/RoutingProvider";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import useAppStore from "@/store/app.slice";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import useAuth from "@/hooks/useAuth";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { cn } from "@/lib/utils";

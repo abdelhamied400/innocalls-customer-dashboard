@@ -1,7 +1,11 @@
 import { deleteCookie } from "cookies-next/client";
-import { signOut } from "next-auth/react";
+import useSessionStore from "@/store/session.slice";
 
 export const clientSignout = async (callbackUrl?: string) => {
   deleteCookie("OrganizationId");
-  await signOut({ callbackUrl: callbackUrl || undefined });
+  useSessionStore.getState().clearSession();
+  if (typeof window !== "undefined") {
+    const previousUrl = window.location.pathname;
+    window.location.href = callbackUrl || `/login?next=${previousUrl}`;
+  }
 };

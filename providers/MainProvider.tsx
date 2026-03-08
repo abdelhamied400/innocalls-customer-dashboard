@@ -1,19 +1,19 @@
 import { PropsWithChildren } from "react";
 import { TranslationProvider } from "./TranslationProvider";
-import { SessionProvider } from "next-auth/react";
 import ClientProvider from "./ClientProvider";
 import { WebrtcProvider } from "./webrtc/WebrtcProvider";
+import CustomSessionProvider from "./CustomSessionProvider";
 
 type MainProviderProps = PropsWithChildren<object>;
 const MainProvider = async ({ children }: MainProviderProps) => {
   return (
-    <SessionProvider>
+    <CustomSessionProvider>
       <TranslationProvider>
         <ClientProvider>
           <WebrtcProvider>{children}</WebrtcProvider>
         </ClientProvider>
       </TranslationProvider>
-    </SessionProvider>
+    </CustomSessionProvider>
   );
 };
 

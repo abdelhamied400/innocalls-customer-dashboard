@@ -1,25 +1,26 @@
-import { auth } from "./auth";
+import { NextRequest, NextResponse } from "next/server";
+import { AUTH_COOKIE } from "@/lib/session";
 
-const basePublicPages = [
+const publicPages = [
   "/login",
   "/register",
   "/forgot-password",
   "/reset-password",
 ];
 
-export default auth((request) => {
+export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const isPublicPage = basePublicPages.includes(pathname);
+  const isPublicPage = publicPages.some((page) => pathname.startsWith(page));
+  const isAuthenticated = request.cookies.has(AUTH_COOKIE);
 
-  if (!request.auth && !isPublicPage) {
+  if (!isAuthenticated && !isPublicPage) {
     const newUrl = new URL(`/login?next=${pathname}`, request.nextUrl.origin);
-    return Response.redirect(newUrl);
+    return NextResponse.redirect(newUrl);
   }
 
-  // No intl middleware needed, just continue
-  return;
-});
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: [

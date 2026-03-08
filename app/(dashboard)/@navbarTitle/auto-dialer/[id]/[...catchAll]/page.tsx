@@ -6,7 +6,7 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import autoDialerAgentService from "@/services/auto-dialer-agent.service";
 import autoDialerService from "@/services/auto-dialer.service";
 import { ArrowBackIos } from "@mui/icons-material";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import Link from "next/link";
 import { use } from "react";
 

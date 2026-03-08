@@ -11,7 +11,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "./collapsible";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import { ChevronDown } from "lucide-react";
 
 type SidebarCollapsibleItemProps = {

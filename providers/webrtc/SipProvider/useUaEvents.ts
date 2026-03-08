@@ -11,7 +11,7 @@ import { webrtcLogger } from "@/lib/logger";
 import useWebrtcStore from "@/store/webrtc.slice";
 import webrtcService from "@/services/webrtc.service";
 import { differenceInSeconds, format, intervalToDuration } from "date-fns";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import { forcePCMA, parseAutoDialerCallee } from "@/lib/webrtc";
 import { processPhoneNumber } from "@/lib/dialpad-utils";
 

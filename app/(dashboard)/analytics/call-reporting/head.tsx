@@ -20,7 +20,7 @@ import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";

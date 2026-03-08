@@ -3,7 +3,7 @@
 import { PropsWithChildren, useEffect } from "react";
 import { RoutingProvider } from "../RoutingProvider";
 import { SipProvider } from "./SipProvider";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import { useTranslationContext, useTranslations } from "../TranslationProvider";
 
 type WebrtcProviderProps = PropsWithChildren<object>;

@@ -1,10 +1,10 @@
 import axios from "axios";
-import { getSession } from "next-auth/react";
 import { getCookie } from "cookies-next";
 import { clientSignout } from "@/lib/auth";
 import { defaultLocale } from "@/i18n/config";
 import { getTimezone } from "@/lib/meta";
 import { apiLogger } from "@/lib/logger";
+import useSessionStore from "@/store/session.slice";
 
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
@@ -19,7 +19,7 @@ const api = axios.create({
 
 // Request interceptor
 api.interceptors.request.use(async (config) => {
-  const session = await getSession();
+  const { session } = useSessionStore.getState();
   const organizationId =
     (await getCookie("OrganizationId")) || session?.organizations?.[0]?.id;
   const ip = await getCookie("ip");

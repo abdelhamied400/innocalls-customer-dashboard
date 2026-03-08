@@ -1,5 +1,5 @@
 import authService from "@/services/auth.service";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import { useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useLocale } from "@/providers/TranslationProvider";
@@ -19,7 +19,7 @@ const useAuth = () => {
   }, [status, queryClient]);
 
   const userType = session?.userType;
-  const userId = (session as any)?.user?.id || (session as any)?.user?.email;
+  const userId = session?.user?.id || session?.user?.email;
 
   // Use useQuery directly to avoid circular dependency with useLocalizedQuery
   const userQuery = useQuery({

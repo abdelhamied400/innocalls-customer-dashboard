@@ -13,7 +13,7 @@ import { webrtcStoppingActivities } from "@/constants/agent-activity";
 import webrtcService from "@/services/webrtc.service";
 import breakTypesService from "@/services/break-types.service";
 import { DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import { Skeleton } from "@/components/ui/skeleton";
 import { isValidTransition } from "@/lib/webrtc";
 import { AgentActivity } from "@/types/webrtc";
