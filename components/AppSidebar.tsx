@@ -277,9 +277,9 @@ const AppSidebar = () => {
               icon={<Key />}
               title={t("navigation.webrtcCredentials")}
               href={`/developers/webrtc-credentials`}
-              disabled={true}
-              isNew={false}
-              isComingSoon={true}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
             />
             <SidebarItem
               icon={<Api />}

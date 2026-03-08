@@ -4210,6 +4210,77 @@
         "downloaded": "API key downloaded"
       }
     },
+    "webrtc": {
+      "title": "WebRTC Credentials",
+      "subtitle": "Manage your WebRTC API credentials",
+      "columns": {
+        "apiKey": "API Key",
+        "domains": "Allowed Domains",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "create": "Create Credential",
+        "edit": "Edit Domains",
+        "delete": "Delete",
+        "restore": "Restore",
+        "copy": "Copy to clipboard",
+        "download": "Download as file"
+      },
+      "filters": {
+        "status": {
+          "label": "Status",
+          "selectLabel": "Select status"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "click to show/hide search filters",
+        "createCredential": "Create a new WebRTC credential"
+      },
+      "confirmations": {
+        "deleteTitle": "Delete Credential",
+        "deleteDescription": "Are you sure you want to delete this credential? It can be restored later.",
+        "restoreTitle": "Restore Credential",
+        "restoreDescription": "Are you sure you want to restore this credential?",
+        "cancel": "Cancel",
+        "yesDelete": "Yes, Delete",
+        "yesRestore": "Yes, Restore"
+      },
+      "credentialDialog": {
+        "createTitle": "Create WebRTC Credential",
+        "createDescription": "Add at least one allowed domain for this credential.",
+        "editTitle": "Edit Allowed Domains",
+        "editDescription": "Update the allowed domains for this credential.",
+        "domainsLabel": "Allowed Domains",
+        "domainPlaceholder": "https://innocalls.com",
+        "addDomain": "Add Domain",
+        "removeDomain": "Remove domain",
+        "create": "Create",
+        "update": "Update",
+        "validation": {
+          "domainRequired": "Domain is required",
+          "domainInvalid": "Must be a valid URL with http:// or https:// protocol",
+          "domainDuplicate": "Domain already added",
+          "domainMin": "At least one domain is required"
+        }
+      },
+      "apiKeyDialog": {
+        "title": "API Key Generated",
+        "description": "Please copy or download your API key now.",
+        "close": "Close"
+      },
+      "messages": {
+        "createSuccess": "Credential created successfully",
+        "createFailed": "Failed to create credential",
+        "updateSuccess": "Credential updated successfully",
+        "updateFailed": "Failed to update credential",
+        "deleted": "Credential deleted successfully",
+        "restored": "Credential restored successfully",
+        "toggleFailed": "Operation failed",
+        "copiedToClipboard": "API key copied to clipboard",
+        "downloaded": "API key downloaded"
+      }
+    },
     "zendesk": {
       "title": "Zendesk Credentials",
       "subtitle": "Manage your Zendesk API credentials",
