@@ -1614,7 +1614,35 @@
       "callDirection": "Call Direction",
       "callSummary": "Call Summary",
       "recording": "Recording",
-      "waitTime": "Wait Time"
+      "waitTime": "Wait Time",
+      "transcription": "Call Insights"
+    },
+    "transcription": {
+      "title": "Call Insights",
+      "summary": "Summary",
+      "topics": "Topics",
+      "actionItems": "Action Items",
+      "sentiment": {
+        "title": "Sentiment",
+        "overall": "Overall",
+        "score": "Score",
+        "customer": "Customer",
+        "agent": "Agent",
+        "positive": "Positive",
+        "negative": "Negative",
+        "neutral": "Neutral",
+        "mixed": "Mixed"
+      },
+      "qualityScore": {
+        "title": "Agent Quality Score",
+        "overall": "Overall Score",
+        "greeting": "Greeting",
+        "closing": "Closing",
+        "professionalism": "Professionalism",
+        "productKnowledge": "Product Knowledge",
+        "objectionHandling": "Objection Handling",
+        "notes": "Notes"
+      }
     },
     "direction": {
       "incoming": "Incoming",

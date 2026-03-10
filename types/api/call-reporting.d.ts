@@ -4,6 +4,31 @@ type CallMember = {
   name: string;
   number: string;
 };
+export type CallSentiment = {
+  overall: "positive" | "negative" | "neutral" | "mixed";
+  score: number;
+  customer_sentiment: string;
+  agent_sentiment: string;
+};
+
+export type AgentQualityScore = {
+  score?: number | null;
+  greeting?: number | null;
+  closing?: number | null;
+  professionalism?: number | null;
+  product_knowledge?: number | null;
+  objection_handling?: number | null;
+  notes?: string | null;
+};
+
+export type CallTranscription = {
+  summary?: string;
+  sentiment?: CallSentiment;
+  topics?: string[];
+  actionItems?: string[];
+  agentQualityScore?: AgentQualityScore | null;
+};
+
 export type Call = {
   callSummary?: {
     addedBy: string;
@@ -23,6 +48,7 @@ export type Call = {
     date: string;
     time: string;
   };
+  transcription?: CallTranscription;
 };
 
 export type AgentCall = {

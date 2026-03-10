@@ -1622,7 +1622,35 @@
       "callDirection": "اتجاه المكالمة",
       "callSummary": "ملخص المكالمة",
       "recording": "التسجيل",
-      "waitTime": "وقت الانتظار"
+      "waitTime": "وقت الانتظار",
+      "transcription": "تحليل المكالمة"
+    },
+    "transcription": {
+      "title": "تحليل المكالمة",
+      "summary": "الملخص",
+      "topics": "المواضيع",
+      "actionItems": "الإجراءات المطلوبة",
+      "sentiment": {
+        "title": "المشاعر",
+        "overall": "الإجمالي",
+        "score": "النتيجة",
+        "customer": "العميل",
+        "agent": "الوكيل",
+        "positive": "إيجابي",
+        "negative": "سلبي",
+        "neutral": "محايد",
+        "mixed": "مختلط"
+      },
+      "qualityScore": {
+        "title": "تقييم جودة الوكيل",
+        "overall": "التقييم الإجمالي",
+        "greeting": "التحية",
+        "closing": "الإغلاق",
+        "professionalism": "الاحترافية",
+        "productKnowledge": "المعرفة بالمنتج",
+        "objectionHandling": "التعامل مع الاعتراضات",
+        "notes": "الملاحظات"
+      }
     },
     "direction": {
       "incoming": "واردة",

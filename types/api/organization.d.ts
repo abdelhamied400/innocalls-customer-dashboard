@@ -5,6 +5,7 @@ export type Organization = {
   listenToCallEvents: boolean;
   provider: string;
   enableAfterCallTags: boolean;
+  enableCallTranscription?: boolean;
   isDemo: boolean;
   allowedBreakTypes: Array<AgentActivity>;
   paymentCurrency: string;
