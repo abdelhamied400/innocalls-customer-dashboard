@@ -6,6 +6,8 @@ export const clientSignout = async (callbackUrl?: string) => {
   useSessionStore.getState().clearSession();
   if (typeof window !== "undefined") {
     const previousUrl = window.location.pathname;
-    window.location.href = callbackUrl || `/login?next=${previousUrl}`;
+    if (previousUrl !== "/login") {
+      window.location.href = callbackUrl || `/login?next=${previousUrl}`;
+    }
   }
 };
