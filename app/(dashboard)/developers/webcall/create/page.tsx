@@ -10,6 +10,7 @@ import { WebCallAppFormValues } from "@/validation/WebCallApp";
 import WebCallForm from "../WebCallForm";
 import withActiveOrganization from "@/containers/withActiveOrganization";
 import withPermission from "@/containers/withPermission";
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -17,12 +18,14 @@ import Link from "next/link";
 const CreateWebCallPage = () => {
   const t = useTranslations("developers.webcall");
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (data: WebCallAppFormValues) => {
     try {
       setIsSubmitting(true);
       await webcallService.create(data);
+      await queryClient.invalidateQueries({ queryKey: ["webcall-apps"] });
       toast.success(t("messages.createSuccess"));
       router.push("/developers/webcall");
     } catch (error) {

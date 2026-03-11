@@ -56,10 +56,10 @@ const WebCallForm = ({
     resolver: zodResolver(WebCallAppSchema(t)),
     defaultValues: defaultValues ?? {
       iconText: "Call Us",
-      iconBackgroundColor: "#d32f2f",
-      iconBaseColor: "#424242",
+      iconBackgroundColor: "#8d8080",
+      iconBaseColor: "#ad9d9d",
       iconFontColor: "#ffffff",
-      concurrentCalls: 5,
+      concurrentCalls: 10,
       destinationNumber: "",
       callerId: "",
       domains: [""],
@@ -245,7 +245,10 @@ const WebCallForm = ({
           <Plus className="h-4 w-4" />
           {t("form.addDomain")}
         </Button>
-        {errors.domains && !Array.isArray(errors.domains) && (
+        {errors.domains?.root?.message && (
+          <p className="text-sm text-red-500">{errors.domains.root.message}</p>
+        )}
+        {errors.domains?.message && (
           <p className="text-sm text-red-500">{errors.domains.message}</p>
         )}
       </div>

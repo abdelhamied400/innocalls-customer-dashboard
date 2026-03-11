@@ -4316,7 +4316,7 @@
           "iconText": "اتصل بنا",
           "callerId": "اختر معرّف المتصل...",
           "destinationNumber": "أدخل رقم الوجهة",
-          "concurrentCalls": "5",
+          "concurrentCalls": "10",
           "domain": "https://example.com"
         },
         "addDomain": "إضافة نطاق",

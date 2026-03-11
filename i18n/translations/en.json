@@ -4301,7 +4301,7 @@
           "iconText": "Call Us",
           "callerId": "Select Caller ID...",
           "destinationNumber": "Enter destination number",
-          "concurrentCalls": "5",
+          "concurrentCalls": "10",
           "domain": "https://example.com"
         },
         "addDomain": "Add Domain",

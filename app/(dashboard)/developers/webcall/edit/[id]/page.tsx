@@ -14,12 +14,14 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const EditWebCallPage = () => {
   const t = useTranslations("developers.webcall");
   const router = useRouter();
   const params = useParams<{ id: string }>();
+  const queryClient = useQueryClient();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { data: app, isLoading, dataUpdatedAt } = useLocalizedQuery({
@@ -33,6 +35,7 @@ const EditWebCallPage = () => {
     try {
       setIsSubmitting(true);
       await webcallService.update(params.id, data);
+      await queryClient.invalidateQueries({ queryKey: ["webcall-apps"] });
       toast.success(t("messages.updateSuccess"));
       router.push("/developers/webcall");
     } catch (error) {
