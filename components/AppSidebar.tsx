@@ -262,9 +262,9 @@ const AppSidebar = () => {
               icon={<Phone />}
               title={t("navigation.webcall")}
               href={`/developers/webcall`}
-              disabled={true}
-              isNew={false}
-              isComingSoon={true}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
             />
             <SidebarItem
               icon={<Support />}

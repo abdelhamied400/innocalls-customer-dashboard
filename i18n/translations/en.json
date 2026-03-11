@@ -4238,6 +4238,102 @@
         "downloaded": "API key downloaded"
       }
     },
+    "webcall": {
+      "title": "Web Call",
+      "subtitle": "Manage your Web Call credentials",
+      "columns": {
+        "id": "Embed Code",
+        "iconText": "Name",
+        "callerId": "Caller ID",
+        "destinationNumber": "Destination",
+        "domains": "Allowed Domains",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "create": "Create",
+        "edit": "Edit",
+        "enable": "Enable",
+        "disable": "Disable",
+        "copySnippet": "Copy embed snippet"
+      },
+      "filters": {
+        "status": {
+          "label": "Status",
+          "selectLabel": "Select status"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "Click to show/hide search filters",
+        "create": "Create a new Web Call credential"
+      },
+      "confirmations": {
+        "enableTitle": "Enable Web Call",
+        "enableDescription": "Are you sure you want to enable this Web Call?",
+        "disableTitle": "Disable Web Call",
+        "disableDescription": "Are you sure you want to disable this Web Call?",
+        "cancel": "Cancel",
+        "yesEnable": "Yes, Enable",
+        "yesDisable": "Yes, Disable"
+      },
+      "createPage": {
+        "title": "Create Web Call"
+      },
+      "editPage": {
+        "title": "Edit Web Call"
+      },
+      "form": {
+        "sections": {
+          "style": "Style",
+          "configuration": "Configuration",
+          "domains": "Allowed Domains"
+        },
+        "fields": {
+          "iconText": "Icon Text",
+          "backgroundColor": "Background Color",
+          "iconBaseColor": "Icon Base Color",
+          "fontColor": "Font Color",
+          "callerId": "Caller ID",
+          "destinationNumber": "Destination Number",
+          "concurrentCalls": "Concurrent Calls"
+        },
+        "placeholders": {
+          "iconText": "Call Us",
+          "callerId": "Select Caller ID...",
+          "destinationNumber": "Enter destination number",
+          "concurrentCalls": "5",
+          "domain": "https://example.com"
+        },
+        "addDomain": "Add Domain",
+        "removeDomain": "Remove domain",
+        "create": "Create",
+        "update": "Update",
+        "validation": {
+          "iconTextMin": "Icon text must be at least 2 characters",
+          "iconTextMax": "Icon text must be at most 250 characters",
+          "colorRequired": "Color is required",
+          "concurrentCallsRequired": "Concurrent calls is required",
+          "concurrentCallsMin": "Minimum 1 concurrent call",
+          "destinationNumberRequired": "Destination number is required",
+          "destinationNumberDigits": "Destination number must contain only digits",
+          "callerIdRequired": "Caller ID is required",
+          "domainRequired": "Domain is required",
+          "domainInvalid": "Must be a valid URL with http:// or https:// protocol",
+          "domainDuplicate": "Domain already added",
+          "domainMin": "At least one domain is required"
+        }
+      },
+      "messages": {
+        "createSuccess": "Web Call created successfully",
+        "createFailed": "Failed to create Web Call",
+        "updateSuccess": "Web Call updated successfully",
+        "updateFailed": "Failed to update Web Call",
+        "enabled": "Web Call enabled successfully",
+        "disabled": "Web Call disabled successfully",
+        "toggleFailed": "Operation failed",
+        "copiedSnippet": "Embed snippet copied to clipboard"
+      }
+    },
     "apiCredentials": {
       "title": "API Credentials",
       "subtitle": "Manage your API credentials",

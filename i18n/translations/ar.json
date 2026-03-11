@@ -4253,6 +4253,102 @@
         "downloaded": "تم تحميل مفتاح API"
       }
     },
+    "webcall": {
+      "title": "مكالمة ويب",
+      "subtitle": "إدارة بيانات اعتماد مكالمة الويب",
+      "columns": {
+        "id": "كود التضمين",
+        "iconText": "الاسم",
+        "callerId": "معرّف المتصل",
+        "destinationNumber": "الوجهة",
+        "domains": "النطاقات المسموحة",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "actions": {
+        "create": "إنشاء",
+        "edit": "تعديل",
+        "enable": "تفعيل",
+        "disable": "تعطيل",
+        "copySnippet": "نسخ كود التضمين"
+      },
+      "filters": {
+        "status": {
+          "label": "الحالة",
+          "selectLabel": "اختر الحالة"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث",
+        "create": "إنشاء مكالمة ويب جديدة"
+      },
+      "confirmations": {
+        "enableTitle": "تفعيل مكالمة الويب",
+        "enableDescription": "هل أنت متأكد من تفعيل مكالمة الويب هذه؟",
+        "disableTitle": "تعطيل مكالمة الويب",
+        "disableDescription": "هل أنت متأكد من تعطيل مكالمة الويب هذه؟",
+        "cancel": "إلغاء",
+        "yesEnable": "نعم، تفعيل",
+        "yesDisable": "نعم، تعطيل"
+      },
+      "createPage": {
+        "title": "إنشاء مكالمة ويب"
+      },
+      "editPage": {
+        "title": "تعديل مكالمة ويب"
+      },
+      "form": {
+        "sections": {
+          "style": "التنسيق",
+          "configuration": "الإعدادات",
+          "domains": "النطاقات المسموحة"
+        },
+        "fields": {
+          "iconText": "نص الأيقونة",
+          "backgroundColor": "لون الخلفية",
+          "iconBaseColor": "لون قاعدة الأيقونة",
+          "fontColor": "لون الخط",
+          "callerId": "معرّف المتصل",
+          "destinationNumber": "رقم الوجهة",
+          "concurrentCalls": "المكالمات المتزامنة"
+        },
+        "placeholders": {
+          "iconText": "اتصل بنا",
+          "callerId": "اختر معرّف المتصل...",
+          "destinationNumber": "أدخل رقم الوجهة",
+          "concurrentCalls": "5",
+          "domain": "https://example.com"
+        },
+        "addDomain": "إضافة نطاق",
+        "removeDomain": "إزالة النطاق",
+        "create": "إنشاء",
+        "update": "تحديث",
+        "validation": {
+          "iconTextMin": "يجب أن يكون نص الأيقونة حرفين على الأقل",
+          "iconTextMax": "يجب ألا يتجاوز نص الأيقونة 250 حرفاً",
+          "colorRequired": "اللون مطلوب",
+          "concurrentCallsRequired": "المكالمات المتزامنة مطلوبة",
+          "concurrentCallsMin": "مكالمة متزامنة واحدة على الأقل",
+          "destinationNumberRequired": "رقم الوجهة مطلوب",
+          "destinationNumberDigits": "رقم الوجهة يجب أن يحتوي على أرقام فقط",
+          "callerIdRequired": "معرّف المتصل مطلوب",
+          "domainRequired": "النطاق مطلوب",
+          "domainInvalid": "يجب أن يكون رابط صالح يبدأ بـ http:// أو https://",
+          "domainDuplicate": "النطاق مضاف بالفعل",
+          "domainMin": "مطلوب نطاق واحد على الأقل"
+        }
+      },
+      "messages": {
+        "createSuccess": "تم إنشاء مكالمة الويب بنجاح",
+        "createFailed": "فشل في إنشاء مكالمة الويب",
+        "updateSuccess": "تم تحديث مكالمة الويب بنجاح",
+        "updateFailed": "فشل في تحديث مكالمة الويب",
+        "enabled": "تم تفعيل مكالمة الويب بنجاح",
+        "disabled": "تم تعطيل مكالمة الويب بنجاح",
+        "toggleFailed": "فشلت العملية",
+        "copiedSnippet": "تم نسخ كود التضمين إلى الحافظة"
+      }
+    },
     "apiCredentials": {
       "title": "بيانات اعتماد API",
       "subtitle": "إدارة بيانات اعتماد API الخاصة بك",
