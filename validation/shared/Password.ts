@@ -5,7 +5,10 @@ export const PasswordSchema = (t: ReturnType<typeof useTranslations>) =>
   z
     .string()
     .min(8, {
-      message: t("form.validation.password.minLength",{ min: 8 }), 
+      message: t("form.validation.password.minLength",{ min: 8 }),
+    })
+    .max(250, {
+      message: t("form.validation.password.maxLength",{ max: 250 }),
     })
     .regex(/[a-z]/, {
       message: t("form.validation.password.lowercase"),

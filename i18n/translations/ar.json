@@ -19,7 +19,8 @@
           "uppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
           "number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
           "special": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل",
-          "required": "كلمة المرور مطلوبة"
+          "required": "كلمة المرور مطلوبة",
+          "maxLength": "يجب ألا تزيد كلمة المرور عن {max} حرفًا"
         },
         "date": {
           "from": {
@@ -243,6 +244,36 @@
       },
       "actions": {
         "submit": "إعادة تعيين كلمة المرور"
+      }
+    },
+    "verifyDemo": {
+      "title": "تحقق من حسابك",
+      "subtitle": "أنشئ كلمة مرور لإكمال إعداد حسابك",
+      "form": {
+        "fields": {
+          "password": {
+            "label": "كلمة المرور",
+            "placeholder": "أدخل كلمة المرور..."
+          },
+          "passwordConfirm": {
+            "label": "تأكيد كلمة المرور",
+            "placeholder": "أعد إدخال كلمة المرور..."
+          }
+        },
+        "validation": {
+          "passwordConfirm": {
+            "mismatch": "كلمات المرور غير متطابقة"
+          }
+        }
+      },
+      "messages": {
+        "verifySuccess": "تم تعيين كلمة المرور",
+        "verifySuccessDescription": "تم تعيين كلمة المرور بنجاح.",
+        "verifyFailed": "خطأ",
+        "defaultErrorDescription": "حدث خطأ أثناء تعيين كلمة المرور."
+      },
+      "actions": {
+        "submit": "تعيين كلمة المرور"
       }
     },
     "updatePassword": {

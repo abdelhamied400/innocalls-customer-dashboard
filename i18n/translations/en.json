@@ -19,7 +19,8 @@
           "uppercase": "Password must contain at least one uppercase letter",
           "number": "Password must contain at least one number",
           "special": "Password must contain at least one special character",
-          "required": "Password is required"
+          "required": "Password is required",
+          "maxLength": "Password must be no more than {max} characters"
         },
         "date": {
           "from": {
@@ -243,6 +244,36 @@
       },
       "actions": {
         "submit": "Reset Password"
+      }
+    },
+    "verifyDemo": {
+      "title": "Verify Your Account",
+      "subtitle": "Create a password to complete your account setup",
+      "form": {
+        "fields": {
+          "password": {
+            "label": "Password",
+            "placeholder": "Enter password..."
+          },
+          "passwordConfirm": {
+            "label": "Confirm Password",
+            "placeholder": "Re-enter password..."
+          }
+        },
+        "validation": {
+          "passwordConfirm": {
+            "mismatch": "Passwords do not match"
+          }
+        }
+      },
+      "messages": {
+        "verifySuccess": "Password Set",
+        "verifySuccessDescription": "Your password has been set successfully.",
+        "verifyFailed": "Error",
+        "defaultErrorDescription": "An error occurred while setting your password."
+      },
+      "actions": {
+        "submit": "Set Password"
       }
     },
     "updatePassword": {

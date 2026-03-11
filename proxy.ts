@@ -5,6 +5,7 @@ const basePublicPages = [
   "/register",
   "/forgot-password",
   "/reset-password",
+  "/verify",
 ];
 
 export default auth((request) => {
@@ -14,6 +15,11 @@ export default auth((request) => {
 
   if (!request.auth && !isPublicPage) {
     const newUrl = new URL(`/login?next=${pathname}`, request.nextUrl.origin);
+    return Response.redirect(newUrl);
+  }
+
+  if (request.auth && isPublicPage) {
+    const newUrl = new URL("/", request.nextUrl.origin);
     return Response.redirect(newUrl);
   }
 
