@@ -12,7 +12,9 @@ const WebCallPage = () => {
     <div className="page h-full" id="webcall">
       <div className="flex flex-col h-full gap-4">
         <h1 className="text-xl font-semibold">{t("title")}</h1>
-        <WebCallTable />
+        <div className="bg-white rounded-xl flex-1 min-h-0 overflow-auto">
+          <WebCallTable />
+        </div>
       </div>
     </div>
   );
