@@ -102,6 +102,7 @@ const EditWebrtcCredentialPage = () => {
         },
       );
 
+      await queryClient.invalidateQueries({ queryKey: ["webrtc-credentials"] });
       toast.success(t("messages.updateSuccess"));
       router.push("/developers/webrtc-credentials");
     } catch (error) {
