@@ -27,7 +27,7 @@ import { Delete, RestoreFromTrash, Edit } from "@mui/icons-material";
 import { useQueryClient } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
 import { useState } from "react";
-import WebrtcCredentialDialog from "./WebrtcCredentialDialog";
+import Link from "next/link";
 
 type WebrtcActionsCellProps = {
   credential: WebRTCCredential;
@@ -36,8 +36,6 @@ type WebrtcActionsCellProps = {
 const WebrtcActionsCell = ({ credential }: WebrtcActionsCellProps) => {
   const queryClient = useQueryClient();
   const [isToggling, setIsToggling] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isUpdating, setIsUpdating] = useState(false);
   const t = useTranslations("developers.webrtc");
 
   const handleToggle = async () => {
@@ -81,49 +79,16 @@ const WebrtcActionsCell = ({ credential }: WebrtcActionsCellProps) => {
     }
   };
 
-  const handleUpdate = async (domains: string[]) => {
-    try {
-      setIsUpdating(true);
-      await webrtcCredentialService.update(credential.id, domains);
-
-      queryClient.setQueryData<WebRTCCredential[]>(
-        ["webrtc-credentials"],
-        (oldData) => {
-          if (!oldData) return oldData;
-          return oldData.map((c) =>
-            c.id === credential.id ? { ...c, domains } : c,
-          );
-        },
-      );
-
-      toast.success(t("messages.updateSuccess"));
-      queryClient.invalidateQueries({ queryKey: ["webrtc-credentials"] });
-      setIsEditing(false);
-    } catch (error) {
-      if (isAxiosError(error)) {
-        toast.error(t("messages.updateFailed"), {
-          description: error.response?.data?.message,
-        });
-      } else {
-        toast.error(t("messages.updateFailed"));
-      }
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
   return (
     <TooltipProvider>
       <div className="flex gap-2">
         {!credential.isDeleted && (
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsEditing(true)}
-              >
-                <Edit />
+              <Button variant="ghost" size="icon" asChild>
+                <Link href={`/developers/webrtc-credentials/edit/${credential.id}`}>
+                  <Edit />
+                </Link>
               </Button>
             </TooltipTrigger>
             <TooltipContent>{t("actions.edit")}</TooltipContent>
@@ -180,15 +145,6 @@ const WebrtcActionsCell = ({ credential }: WebrtcActionsCellProps) => {
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
-
-        <WebrtcCredentialDialog
-          open={isEditing}
-          onClose={() => setIsEditing(false)}
-          onSubmit={handleUpdate}
-          initialDomains={credential.domains}
-          isEdit={true}
-          isSubmitting={isUpdating}
-        />
       </div>
     </TooltipProvider>
   );
