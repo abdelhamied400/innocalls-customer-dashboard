@@ -4189,7 +4189,6 @@
    "developers": {
     "freshdesk": {
       "title": "بيانات اعتماد فريش ديسك",
-      "subtitle": "إدارة بيانات اعتماد API الخاصة بفريش ديسك",
       "columns": {
         "apiKey": "مفتاح API",
         "status": "الحالة",
@@ -4238,7 +4237,6 @@
     },
     "zoho": {
       "title": "بيانات اعتماد زوهو",
-      "subtitle": "إدارة بيانات اعتماد API الخاصة بزوهو",
       "columns": {
         "apiKey": "مفتاح API",
         "status": "الحالة",
@@ -4286,7 +4284,6 @@
     },
     "webcall": {
       "title": "مكالمة ويب",
-      "subtitle": "إدارة بيانات اعتماد مكالمة الويب",
       "columns": {
         "id": "كود التضمين",
         "iconText": "الاسم",
@@ -4382,7 +4379,6 @@
     },
     "apiCredentials": {
       "title": "بيانات اعتماد API",
-      "subtitle": "إدارة بيانات اعتماد API الخاصة بك",
       "columns": {
         "title": "العنوان",
         "apiId": "معرف API",
@@ -4405,7 +4401,8 @@
         "delete": "حذف",
         "restore": "استعادة",
         "copy": "نسخ إلى الحافظة",
-        "download": "تحميل كملف"
+        "download": "تحميل كملف",
+        "close": "إغلاق"
       },
       "filters": {
         "status": {
@@ -4463,11 +4460,16 @@
         "toggleFailed": "فشلت العملية",
         "copiedToClipboard": "تم النسخ إلى الحافظة",
         "downloaded": "تم تحميل بيانات الاعتماد"
+      },
+      "createPage": {
+        "title": "إنشاء بيانات اعتماد API"
+      },
+      "editPage": {
+        "title": "تعديل بيانات اعتماد API"
       }
     },
     "webrtc": {
       "title": "بيانات اعتماد WebRTC",
-      "subtitle": "إدارة بيانات اعتماد WebRTC API الخاصة بك",
       "columns": {
         "apiKey": "مفتاح API",
         "domains": "النطاقات المسموحة",
@@ -4480,7 +4482,8 @@
         "delete": "حذف",
         "restore": "استعادة",
         "copy": "نسخ إلى الحافظة",
-        "download": "تحميل كملف"
+        "download": "تحميل كملف",
+        "close": "إغلاق"
       },
       "filters": {
         "status": {
@@ -4534,11 +4537,16 @@
         "toggleFailed": "فشلت العملية",
         "copiedToClipboard": "تم نسخ مفتاح API إلى الحافظة",
         "downloaded": "تم تحميل مفتاح API"
+      },
+      "createPage": {
+        "title": "إنشاء بيانات اعتماد WebRTC"
+      },
+      "editPage": {
+        "title": "تعديل بيانات اعتماد WebRTC"
       }
     },
     "zendesk": {
       "title": "بيانات اعتماد زين ديسك",
-      "subtitle": "إدارة بيانات اعتماد API الخاصة بزين ديسك",
       "columns": {
         "apiKey": "مفتاح API",
         "status": "الحالة",
