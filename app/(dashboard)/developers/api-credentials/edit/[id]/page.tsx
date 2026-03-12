@@ -74,6 +74,7 @@ const EditApiCredentialPage = () => {
         },
       );
 
+      await queryClient.invalidateQueries({ queryKey: ["api-credentials"] });
       toast.success(t("messages.updateSuccess"));
       router.push("/developers/api-credentials");
     } catch (error) {

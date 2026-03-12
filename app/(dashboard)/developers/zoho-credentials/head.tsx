@@ -85,7 +85,7 @@ const ZohoTableHead = () => {
     <>
       <Collapsible>
         <div className="flex flex-wrap items-center justify-between p-4 gap-2">
-          <h3 className="text-sm font-semibold">{t("subtitle")}</h3>
+          <h1 className="text-xl font-semibold">{t("title")}</h1>
           <div className="flex flex-wrap items-center gap-2">
             <Field preIcon={<SearchIcon />}>
               <Input
