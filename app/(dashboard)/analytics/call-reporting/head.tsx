@@ -39,18 +39,8 @@ type CallReportingHeadProps = {
   setFilters: React.Dispatch<React.SetStateAction<CallReportingFilters>>;
 };
 const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
-  const { setPageTitle } = useAppStore();
-
   const t = useTranslations("callReporting");
   const tCommon = useTranslations("common");
-  const locale = useLocale();
-
-  useEffect(() => {
-    setPageTitle(t("title"));
-
-    // Cleanup when component unmounts
-    return () => setPageTitle(null);
-  }, [locale]);
 
   const { table } = usePaginatedTable();
   const [isExporting, setIsExporting] = useState(false);
@@ -72,14 +62,14 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
   ];
 
   const [fromDate, setFromDate] = useState<Date>(
-    filters.fromDate ? new Date(filters.fromDate) : new Date()
+    filters.fromDate ? new Date(filters.fromDate) : new Date(),
   );
   const [toDate, setToDate] = useState<Date>(
-    filters.toDate ? new Date(filters.toDate) : new Date()
+    filters.toDate ? new Date(filters.toDate) : new Date(),
   );
   const [sourceExtensions, setSourceExtensions] = useState<Option[]>([]);
   const [destinationExtensions, setDestinationExtensions] = useState<Option[]>(
-    []
+    [],
   );
   const [selectedTags, setSelectedTags] = useState<Option[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>([]);
@@ -119,7 +109,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
         });
       },
       -1,
-      tCommon
+      tCommon,
     );
 
     if (!isValid) return false;
@@ -269,7 +259,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
                 }
                 toast.error(t("filters.validation.number.invalid"), {
                   description: t(
-                    "filters.validation.number.invalidDescription"
+                    "filters.validation.number.invalidDescription",
                   ),
                 });
                 return false;
@@ -313,7 +303,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
                 }
                 toast.error(t("filters.validation.number.invalid"), {
                   description: t(
-                    "filters.validation.number.invalidDescription"
+                    "filters.validation.number.invalidDescription",
                   ),
                 });
                 return false;
@@ -368,7 +358,7 @@ const CallReportingHead = ({ filters, setFilters }: CallReportingHeadProps) => {
                       setSelectedStatuses((prev) =>
                         checked
                           ? [...prev, status.value]
-                          : prev.filter((s) => s !== status.value)
+                          : prev.filter((s) => s !== status.value),
                       );
                     }}
                   />
