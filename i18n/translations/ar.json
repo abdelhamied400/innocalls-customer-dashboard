@@ -1651,15 +1651,17 @@
       "callDuration": "مدة المكالمة",
       "callStatus": "حالة المكالمة",
       "callDirection": "اتجاه المكالمة",
-      "callSummary": "ملخص المكالمة",
+      "callSummary": "ملخص الوكيل",
       "recording": "التسجيل",
       "waitTime": "وقت الانتظار",
-      "transcription": "تحليل المكالمة"
+      "transcription": "تحليل المكالمة",
+      "aiSummary": "ملخص الذكاء الاصطناعي"
     },
     "transcription": {
       "title": "تحليل المكالمة",
       "summary": "الملخص",
       "topics": "المواضيع",
+      "processing": "جاري المعالجة...",
       "actionItems": "الإجراءات المطلوبة",
       "sentiment": {
         "title": "المشاعر",

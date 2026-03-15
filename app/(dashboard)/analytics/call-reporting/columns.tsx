@@ -9,6 +9,7 @@ import CallStatusCell from "./cells/CallStatusCell";
 import CallDirectionCell from "./cells/CallDirectionCell";
 import CallRecordingCell from "./cells/CallRecordingCell";
 import TranscriptionCell from "./cells/TranscriptionCell";
+import TranscriptionSummaryCell from "./cells/TranscriptionSummaryCell";
 import { useTranslations } from "@/providers/TranslationProvider";
 
 type ColumnsOptions = {
@@ -63,11 +64,18 @@ export const columns = (
   ];
 
   if (options.enableCallTranscription) {
-    cols.push({
-      id: "transcription",
-      header: t("columns.transcription"),
-      cell: TranscriptionCell,
-    });
+    cols.push(
+      {
+        id: "transcriptionSummary",
+        header: t("columns.aiSummary"),
+        cell: TranscriptionSummaryCell,
+      },
+      {
+        id: "transcription",
+        header: t("columns.transcription"),
+        cell: TranscriptionCell,
+      }
+    );
   }
 
   return cols;

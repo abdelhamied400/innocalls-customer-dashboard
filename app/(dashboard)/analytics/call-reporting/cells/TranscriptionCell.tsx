@@ -23,6 +23,7 @@ import {
   SentimentVeryDissatisfied,
   SentimentNeutral,
   SentimentSatisfied,
+  HourglassBottom,
 } from "@mui/icons-material";
 import { useTranslations } from "@/providers/TranslationProvider";
 
@@ -54,6 +55,23 @@ const TranscriptionCell = ({ row }: Cell<Call>) => {
   const t = useTranslations("callReporting.transcription");
 
   if (!transcription) return null;
+
+  if (transcription.status === "pending" || transcription.status === "processing") {
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="ghost-primary" size="icon" disabled>
+              <HourglassBottom className="text-yellow-500 animate-pulse" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <span className="text-xs">{t("processing")}</span>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  }
 
   const sentiment = transcription.sentiment;
   const config =

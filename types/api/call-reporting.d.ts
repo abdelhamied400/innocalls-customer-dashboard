@@ -22,6 +22,7 @@ export type AgentQualityScore = {
 };
 
 export type CallTranscription = {
+  status?: "completed" | "pending" | "processing";
   summary?: string;
   sentiment?: CallSentiment;
   topics?: string[];

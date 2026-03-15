@@ -1643,15 +1643,17 @@
       "callDuration": "Call Duration",
       "callStatus": "Call Status",
       "callDirection": "Call Direction",
-      "callSummary": "Call Summary",
+      "callSummary": "Agent Summary",
       "recording": "Recording",
       "waitTime": "Wait Time",
-      "transcription": "Call Insights"
+      "transcription": "Call Insights",
+      "aiSummary": "AI Summary"
     },
     "transcription": {
       "title": "Call Insights",
       "summary": "Summary",
       "topics": "Topics",
+      "processing": "Processing...",
       "actionItems": "Action Items",
       "sentiment": {
         "title": "Sentiment",
