@@ -61,9 +61,9 @@ const TranscriptionCell = ({ row }: Cell<Call>) => {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button variant="ghost-primary" size="icon" disabled>
-              <HourglassBottom className="text-yellow-500 animate-pulse" />
-            </Button>
+            <span className="inline-flex items-center justify-center h-9 w-9 cursor-default">
+              <HourglassBottom className="text-gray-400 animate-pulse" />
+            </span>
           </TooltipTrigger>
           <TooltipContent>
             <span className="text-xs">{t("processing")}</span>
