@@ -33,7 +33,9 @@ import {
 } from "@mui/icons-material";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { TranscriptSegment } from "@/types/api/call-reporting";
-import { Download, Headset, User, MessageSquareText } from "lucide-react";
+import { Download, Headset, User, MessageSquareText, Search, ChevronUp, ChevronDown } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { useEffect, useRef, useState } from "react";
 
 function downloadTranscriptAsText(segments: TranscriptSegment[]) {
   const grouped: { speaker: string; texts: { text: string; start: number }[] }[] = [];
@@ -88,7 +90,25 @@ const speakerStyles = [
   },
 ] as const;
 
-function TranscriptSegments({ segments }: { segments: TranscriptSegment[] }) {
+function HighlightText({ text, search }: { text: string; search: string }) {
+  const trimmed = search.trim();
+  if (!trimmed) return <>{text}</>;
+  const escaped = trimmed.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const parts = text.split(new RegExp(`(${escaped})`, "gi"));
+  return (
+    <>
+      {parts.map((part, i) =>
+        part.toLowerCase() === trimmed.toLowerCase() ? (
+          <mark key={i} className="bg-yellow-200 rounded-sm px-0.5">{part}</mark>
+        ) : (
+          part
+        )
+      )}
+    </>
+  );
+}
+
+function TranscriptSegments({ segments, search = "" }: { segments: TranscriptSegment[]; search?: string }) {
   const speakerMap = new Map<string, number>();
   let nextIndex = 0;
 
@@ -143,7 +163,7 @@ function TranscriptSegments({ segments }: { segments: TranscriptSegment[] }) {
                   }`}
                 >
                   <p dir="auto" className="text-sm text-gray-800 leading-relaxed">
-                    {t.text}
+                    <HighlightText text={t.text} search={search} />
                   </p>
                   <span dir="ltr" className={`block text-[10px] tabular-nums ${style.timestamp} mt-1 ${isRight ? "text-start" : "text-end"}`}>
                     {formatTime(t.start)}
@@ -184,6 +204,40 @@ const sentimentConfig = {
 const TranscriptionCell = ({ row }: Cell<Call>) => {
   const transcription = row.original.transcription;
   const t = useTranslations("callReporting.transcription");
+  const [transcriptSearch, setTranscriptSearch] = useState("");
+  const [currentMatch, setCurrentMatch] = useState(0);
+  const [matchCount, setMatchCount] = useState(0);
+  const transcriptRef = useRef<HTMLDivElement>(null);
+
+
+  useEffect(() => {
+    if (!transcriptSearch.trim()) {
+      setMatchCount(0);
+      setCurrentMatch(0);
+      transcriptRef.current?.firstElementChild?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    const timer = setTimeout(() => {
+      const marks = transcriptRef.current?.querySelectorAll("mark");
+      const total = marks?.length ?? 0;
+      setMatchCount(total);
+      setCurrentMatch(total > 0 ? 1 : 0);
+      if (marks?.[0]) {
+        marks[0].scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [transcriptSearch]);
+
+  const navigateMatch = (direction: "prev" | "next") => {
+    const marks = transcriptRef.current?.querySelectorAll("mark");
+    if (!marks?.length) return;
+    const next = direction === "next"
+      ? currentMatch % marks.length + 1
+      : ((currentMatch - 2 + marks.length) % marks.length) + 1;
+    setCurrentMatch(next);
+    marks[next - 1].scrollIntoView({ behavior: "smooth", block: "center" });
+  };
 
   if (!transcription) return null;
 
@@ -334,7 +388,7 @@ const TranscriptionCell = ({ row }: Cell<Call>) => {
           )}
 
           {transcription.transcriptSegments && transcription.transcriptSegments.length > 0 && (
-            <Dialog>
+            <Dialog onOpenChange={(open) => { if (!open) { setTranscriptSearch(""); setCurrentMatch(0); setMatchCount(0); } }}>
               <DialogTrigger asChild>
                 <Button variant="outline" className="w-full gap-2">
                   <MessageSquareText className="h-4 w-4" />
@@ -342,27 +396,75 @@ const TranscriptionCell = ({ row }: Cell<Call>) => {
                 </Button>
               </DialogTrigger>
               <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto p-0">
-                <div className="sticky top-0 z-10 bg-white flex flex-row items-center justify-between p-4 pb-3 border-b">
-                  <DialogTitle>{t("transcript")}</DialogTitle>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
+                <div className="sticky top-0 z-10 bg-white flex flex-col gap-3 p-4 pb-3 border-b">
+                  <div className="flex flex-row items-center justify-between">
+                    <DialogTitle>{t("transcript")}</DialogTitle>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="ghost-primary"
+                            size="icon"
+                            onClick={() => downloadTranscriptAsText(transcription.transcriptSegments!)}
+                          >
+                            <Download className="h-5 w-5" />
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <span className="text-xs">{t("downloadTranscript")}</span>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div className="relative flex-1">
+                      <Search className="absolute start-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 z-10" />
+                      <Input
+                        type="search"
+                        placeholder={t("searchTranscript")}
+                        value={transcriptSearch}
+                        onChange={(e) => setTranscriptSearch(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" && matchCount > 0) {
+                            e.preventDefault();
+                            navigateMatch(e.shiftKey ? "prev" : "next");
+                          }
+                          if (e.key === "Delete" || (e.key === "Backspace" && !transcriptSearch)) {
+                            transcriptRef.current?.firstElementChild?.scrollIntoView({ behavior: "smooth", block: "start" });
+                          }
+                        }}
+                        className="ps-8 h-9 bg-gray-50 border-gray-200 rounded-lg focus-visible:ring-1 focus-visible:ring-primary-500 focus-visible:border-primary-500 [&::-webkit-search-cancel-button]:appearance-none"
+                      />
+                    </div>
+                    {transcriptSearch && (
+                      <>
+                        <span dir="ltr" className="text-xs text-gray-500 tabular-nums whitespace-nowrap">
+                          {matchCount > 0 ? `${currentMatch}/${matchCount}` : `0/0`}
+                        </span>
                         <Button
-                          variant="ghost-primary"
+                          variant="ghost"
                           size="icon"
-                          onClick={() => downloadTranscriptAsText(transcription.transcriptSegments!)}
+                          className="h-7 w-7 shrink-0"
+                          disabled={matchCount === 0}
+                          onClick={() => navigateMatch("prev")}
                         >
-                          <Download className="h-5 w-5" />
+                          <ChevronUp className="h-4 w-4" />
                         </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <span className="text-xs">{t("downloadTranscript")}</span>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7 shrink-0"
+                          disabled={matchCount === 0}
+                          onClick={() => navigateMatch("next")}
+                        >
+                          <ChevronDown className="h-4 w-4" />
+                        </Button>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <div className="p-4 pt-2">
-                  <TranscriptSegments segments={transcription.transcriptSegments} />
+                <div ref={transcriptRef} className="p-4 pt-2">
+                  <TranscriptSegments segments={transcription.transcriptSegments} search={transcriptSearch} />
                 </div>
               </DialogContent>
             </Dialog>

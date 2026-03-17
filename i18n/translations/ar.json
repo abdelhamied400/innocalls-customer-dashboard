@@ -1686,7 +1686,8 @@
       },
       "transcript": "النص",
       "viewTranscript": "عرض النص الكامل",
-      "downloadTranscript": "تحميل"
+      "downloadTranscript": "تحميل",
+      "searchTranscript": "بحث  ..."
     },
     "direction": {
       "incoming": "واردة",

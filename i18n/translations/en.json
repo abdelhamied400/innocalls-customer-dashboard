@@ -1678,7 +1678,8 @@
       },
       "transcript": "Transcript",
       "viewTranscript": "View Full Transcript",
-      "downloadTranscript": "Download"
+      "downloadTranscript": "Download",
+      "searchTranscript": "Search ..."
     },
     "direction": {
       "incoming": "Incoming",
