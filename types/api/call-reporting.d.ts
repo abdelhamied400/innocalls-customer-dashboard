@@ -21,6 +21,13 @@ export type AgentQualityScore = {
   notes?: string | null;
 };
 
+export type TranscriptSegment = {
+  start: number;
+  end: number;
+  text: string;
+  speaker: string;
+};
+
 export type CallTranscription = {
   status?: "completed" | "pending" | "processing";
   summary?: string;
@@ -28,6 +35,7 @@ export type CallTranscription = {
   topics?: string[];
   actionItems?: string[];
   agentQualityScore?: AgentQualityScore | null;
+  transcriptSegments?: TranscriptSegment[];
 };
 
 export type Call = {

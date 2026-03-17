@@ -1683,7 +1683,10 @@
         "productKnowledge": "المعرفة بالمنتج",
         "objectionHandling": "التعامل مع الاعتراضات",
         "notes": "الملاحظات"
-      }
+      },
+      "transcript": "النص",
+      "viewTranscript": "عرض النص الكامل",
+      "downloadTranscript": "تحميل"
     },
     "direction": {
       "incoming": "واردة",

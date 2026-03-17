@@ -1675,7 +1675,10 @@
         "productKnowledge": "Product Knowledge",
         "objectionHandling": "Objection Handling",
         "notes": "Notes"
-      }
+      },
+      "transcript": "Transcript",
+      "viewTranscript": "View Full Transcript",
+      "downloadTranscript": "Download"
     },
     "direction": {
       "incoming": "Incoming",

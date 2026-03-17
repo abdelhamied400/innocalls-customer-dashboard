@@ -16,6 +16,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -26,6 +32,131 @@ import {
   HourglassBottom,
 } from "@mui/icons-material";
 import { useTranslations } from "@/providers/TranslationProvider";
+import { TranscriptSegment } from "@/types/api/call-reporting";
+import { Download, Headset, User, MessageSquareText } from "lucide-react";
+
+function downloadTranscriptAsText(segments: TranscriptSegment[]) {
+  const grouped: { speaker: string; texts: { text: string; start: number }[] }[] = [];
+  for (const seg of segments) {
+    const last = grouped[grouped.length - 1];
+    if (last && last.speaker === seg.speaker) {
+      last.texts.push({ text: seg.text, start: seg.start });
+    } else {
+      grouped.push({ speaker: seg.speaker, texts: [{ text: seg.text, start: seg.start }] });
+    }
+  }
+  const blocks = grouped.map((g) => {
+    const header = `${g.speaker}:`;
+    const messages = g.texts.map((t) => `  [${formatTime(t.start)}] ${t.text}`);
+    return [header, ...messages].join("\n");
+  });
+  const blob = new Blob([blocks.join("\n\n")], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "transcript.txt";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function formatTime(seconds: number): string {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
+const speakerStyles = [
+  {
+    bubble: "bg-gradient-to-br from-blue-50 to-blue-100/60 shadow-sm",
+    bubbleFirst: "rounded-2xl rounded-ss-none",
+    bubbleFollow: "rounded-2xl rounded-ss-md",
+    label: "text-blue-700",
+    avatar: "bg-blue-100 text-blue-600 ring-2 ring-blue-200",
+    timestamp: "text-blue-400",
+    icon: Headset,
+    side: "start" as const,
+  },
+  {
+    bubble: "bg-gradient-to-bl from-gray-50 to-gray-100 shadow-sm",
+    bubbleFirst: "rounded-2xl rounded-se-none",
+    bubbleFollow: "rounded-2xl rounded-se-md",
+    label: "text-gray-600",
+    avatar: "bg-gray-200 text-gray-500 ring-2 ring-gray-300",
+    timestamp: "text-gray-400",
+    icon: User,
+    side: "end" as const,
+  },
+] as const;
+
+function TranscriptSegments({ segments }: { segments: TranscriptSegment[] }) {
+  const speakerMap = new Map<string, number>();
+  let nextIndex = 0;
+
+  // Group consecutive segments by same speaker, keep individual timestamps
+  const grouped: { speaker: string; texts: { text: string; start: number; end: number }[] }[] = [];
+  for (const seg of segments) {
+    const last = grouped[grouped.length - 1];
+    if (last && last.speaker === seg.speaker) {
+      last.texts.push({ text: seg.text, start: seg.start, end: seg.end });
+    } else {
+      grouped.push({ speaker: seg.speaker, texts: [{ text: seg.text, start: seg.start, end: seg.end }] });
+    }
+    if (!speakerMap.has(seg.speaker)) {
+      speakerMap.set(seg.speaker, nextIndex++);
+    }
+  }
+
+  return (
+    <div className="space-y-4">
+      {grouped.map((group, i) => {
+        const styleIdx = (speakerMap.get(group.speaker) ?? 0) % speakerStyles.length;
+        const style = speakerStyles[styleIdx];
+        const Icon = style.icon;
+        const isRight = style.side === "end";
+
+        return (
+          <div
+            key={i}
+            className={`flex gap-2 max-w-[85%] ${
+              isRight ? "ms-auto flex-row-reverse" : ""
+            }`}
+          >
+            {/* Avatar — aligned to top */}
+            <div className="w-7 shrink-0 pt-5">
+              <div className={`h-7 w-7 rounded-full flex items-center justify-center ${style.avatar}`}>
+                <Icon className="h-3.5 w-3.5" />
+              </div>
+            </div>
+
+            <div className={`flex flex-col gap-1 ${isRight ? "items-end" : "items-start"}`}>
+              {/* Speaker name */}
+              <span className={`text-xs font-semibold mb-0.5 ${style.label}`}>
+                {group.speaker}
+              </span>
+
+              {/* Bubbles — one per segment */}
+              {group.texts.map((t, j) => (
+                <div
+                  key={j}
+                  className={`px-3.5 py-2 ${style.bubble} ${
+                    j === 0 ? style.bubbleFirst : style.bubbleFollow
+                  }`}
+                >
+                  <p dir="auto" className="text-sm text-gray-800 leading-relaxed">
+                    {t.text}
+                  </p>
+                  <span dir="ltr" className={`block text-[10px] tabular-nums ${style.timestamp} mt-1 ${isRight ? "text-start" : "text-end"}`}>
+                    {formatTime(t.start)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 const sentimentConfig = {
   positive: {
@@ -200,6 +331,41 @@ const TranscriptionCell = ({ row }: Cell<Call>) => {
                 ))}
               </ul>
             </div>
+          )}
+
+          {transcription.transcriptSegments && transcription.transcriptSegments.length > 0 && (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" className="w-full gap-2">
+                  <MessageSquareText className="h-4 w-4" />
+                  {t("viewTranscript")}
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto p-0">
+                <div className="sticky top-0 z-10 bg-white flex flex-row items-center justify-between p-4 pb-3 border-b">
+                  <DialogTitle>{t("transcript")}</DialogTitle>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost-primary"
+                          size="icon"
+                          onClick={() => downloadTranscriptAsText(transcription.transcriptSegments!)}
+                        >
+                          <Download className="h-5 w-5" />
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <span className="text-xs">{t("downloadTranscript")}</span>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
+                <div className="p-4 pt-2">
+                  <TranscriptSegments segments={transcription.transcriptSegments} />
+                </div>
+              </DialogContent>
+            </Dialog>
           )}
 
           {transcription.agentQualityScore && (
