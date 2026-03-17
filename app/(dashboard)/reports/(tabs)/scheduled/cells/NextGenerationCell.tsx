@@ -4,7 +4,7 @@ import { CellContext } from "@tanstack/react-table";
 import { parse, format } from "date-fns";
 
 const NextGenerationCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
-  const { formattedNextGenerationDate, time } = row.original;
+  const { formattedNextGenerationDate, time, status } = row.original;
   const locale = useDateFnsLocale();
   // Parse the time (using today’s date as base)
   const parsed = parse(time, "HH:mm", new Date());
@@ -13,6 +13,10 @@ const NextGenerationCell = ({ row }: CellContext<ScheduledReport, unknown>) => {
   const time12 = format(parsed, "h:mm a", {
     locale,
   });
+
+  if (status === "inactive") {
+    return null;
+  }
 
   return (
     <div className="flex flex-col font-normal">
