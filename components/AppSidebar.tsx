@@ -27,6 +27,8 @@ import Phone from "@mui/icons-material/Phone";
 import Key from "@mui/icons-material/Key";
 import Api from "@mui/icons-material/Api";
 import Support from "@mui/icons-material/Support";
+import SupportAgent from "@mui/icons-material/SupportAgent";
+import Cloud from "@mui/icons-material/Cloud";
 import SmartToy from "@mui/icons-material/SmartToy";
 import Image from "next/image";
 import { Button } from "./ui/button";
@@ -247,45 +249,62 @@ const AppSidebar = () => {
             />
           </SidebarCollapsibleItem>
         )}
-        {session?.userType === "user" && (
+        {session?.userType === "user" &&
+          auth?.user?.completeControlDeveloperTools && (
           <SidebarCollapsibleItem
             icon={<Code />}
             title={t("navigation.developersTab")}
-            isNew={false}
-            isComingSoon={true}
+            isNew={true}
+            isComingSoon={false}
             href={`/developers`}
           >
             <SidebarItem
               icon={<Phone />}
               title={t("navigation.webcall")}
               href={`/developers/webcall`}
-              disabled={true}
-              isNew={false}
-              isComingSoon={true}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
             />
             <SidebarItem
               icon={<Support />}
               title={t("navigation.zendeskCredentials")}
               href={`/developers/zendesk-credentials`}
-              disabled={true}
-              isNew={false}
-              isComingSoon={true}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
             />
             <SidebarItem
               icon={<Key />}
               title={t("navigation.webrtcCredentials")}
               href={`/developers/webrtc-credentials`}
-              disabled={true}
-              isNew={false}
-              isComingSoon={true}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
             />
             <SidebarItem
               icon={<Api />}
               title={t("navigation.apiCredentials")}
               href={`/developers/api-credentials`}
-              disabled={true}
-              isNew={false}
-              isComingSoon={true}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
+            />
+            <SidebarItem
+              icon={<SupportAgent />}
+              title={t("navigation.freshdeskCredentials")}
+              href={`/developers/freshdesk-credentials`}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
+            />
+            <SidebarItem
+              icon={<Cloud />}
+              title={t("navigation.zohoCredentials")}
+              href={`/developers/zoho-credentials`}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
             />
           </SidebarCollapsibleItem>
         )}

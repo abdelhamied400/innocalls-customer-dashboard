@@ -79,6 +79,7 @@ const ProfileMenu = () => {
         name: "",
         hasTenant: false,
         enableAfterCallTags: false,
+        enableCallTranscription: false,
         isDemo: false,
         listenToCallEvents: false,
         provider: "",

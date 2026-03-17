@@ -19,7 +19,8 @@
           "uppercase": "يجب أن تحتوي كلمة المرور على حرف كبير واحد على الأقل",
           "number": "يجب أن تحتوي كلمة المرور على رقم واحد على الأقل",
           "special": "يجب أن تحتوي كلمة المرور على رمز خاص واحد على الأقل",
-          "required": "كلمة المرور مطلوبة"
+          "required": "كلمة المرور مطلوبة",
+          "maxLength": "يجب ألا تزيد كلمة المرور عن {max} حرفًا"
         },
         "date": {
           "from": {
@@ -243,6 +244,36 @@
       },
       "actions": {
         "submit": "إعادة تعيين كلمة المرور"
+      }
+    },
+    "verifyDemo": {
+      "title": "تحقق من حسابك",
+      "subtitle": "أنشئ كلمة مرور لإكمال إعداد حسابك",
+      "form": {
+        "fields": {
+          "password": {
+            "label": "كلمة المرور",
+            "placeholder": "أدخل كلمة المرور..."
+          },
+          "passwordConfirm": {
+            "label": "تأكيد كلمة المرور",
+            "placeholder": "أعد إدخال كلمة المرور..."
+          }
+        },
+        "validation": {
+          "passwordConfirm": {
+            "mismatch": "كلمات المرور غير متطابقة"
+          }
+        }
+      },
+      "messages": {
+        "verifySuccess": "تم تعيين كلمة المرور",
+        "verifySuccessDescription": "تم تعيين كلمة المرور بنجاح.",
+        "verifyFailed": "خطأ",
+        "defaultErrorDescription": "حدث خطأ أثناء تعيين كلمة المرور."
+      },
+      "actions": {
+        "submit": "تعيين كلمة المرور"
       }
     },
     "updatePassword": {
@@ -1603,6 +1634,8 @@
       "zendeskCredentials": "بيانات اعتماد زين ديسك",
       "webrtcCredentials": "بيانات اعتماد WebRTC",
       "apiCredentials": "بيانات اعتماد API",
+      "freshdeskCredentials": "فريش ديسك",
+      "zohoCredentials": "زوهو",
       "activityAnalysis": "إحصائيات النشاط"
     },
     "support": {
@@ -1618,9 +1651,43 @@
       "callDuration": "مدة المكالمة",
       "callStatus": "حالة المكالمة",
       "callDirection": "اتجاه المكالمة",
-      "callSummary": "ملخص المكالمة",
+      "callSummary": "ملخص الوكيل",
       "recording": "التسجيل",
-      "waitTime": "وقت الانتظار"
+      "waitTime": "وقت الانتظار",
+      "transcription": "تحليل المكالمة",
+      "aiSummary": "ملخص الذكاء الاصطناعي"
+    },
+    "transcription": {
+      "title": "تحليل المكالمة",
+      "summary": "الملخص",
+      "topics": "المواضيع",
+      "processing": "جاري المعالجة...",
+      "actionItems": "الإجراءات المطلوبة",
+      "sentiment": {
+        "title": "المشاعر",
+        "overall": "الإجمالي",
+        "score": "النتيجة",
+        "customer": "العميل",
+        "agent": "الوكيل",
+        "positive": "إيجابي",
+        "negative": "سلبي",
+        "neutral": "محايد",
+        "mixed": "مختلط"
+      },
+      "qualityScore": {
+        "title": "تقييم جودة الوكيل",
+        "overall": "التقييم الإجمالي",
+        "greeting": "التحية",
+        "closing": "الإغلاق",
+        "professionalism": "الاحترافية",
+        "productKnowledge": "المعرفة بالمنتج",
+        "objectionHandling": "التعامل مع الاعتراضات",
+        "notes": "الملاحظات"
+      },
+      "transcript": "النص",
+      "viewTranscript": "عرض النص الكامل",
+      "downloadTranscript": "تحميل",
+      "searchTranscript": "بحث  ..."
     },
     "direction": {
       "incoming": "واردة",
@@ -4122,6 +4189,413 @@
         "saveSuccess": "تم حفظ الملاحظات بنجاح",
         "saveError": "فشل في حفظ الملاحظات",
         "callTime": "وقت المكالمة"
+      }
+    }
+  },
+   "developers": {
+    "freshdesk": {
+      "title": "بيانات اعتماد فريش ديسك",
+      "columns": {
+        "apiKey": "مفتاح API",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "actions": {
+        "create": "إنشاء بيانات اعتماد",
+        "delete": "حذف",
+        "restore": "استعادة",
+        "copy": "نسخ إلى الحافظة",
+        "download": "تحميل كملف"
+      },
+      "filters": {
+        "status": {
+          "label": "الحالة",
+          "selectLabel": "اختر الحالة",
+          "all": "الكل"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
+      },
+      "confirmations": {
+        "deleteTitle": "حذف بيانات الاعتماد",
+        "deleteDescription": "هل أنت متأكد من حذف بيانات الاعتماد هذه؟ يمكن استعادتها لاحقاً.",
+        "restoreTitle": "استعادة بيانات الاعتماد",
+        "restoreDescription": "هل أنت متأكد من استعادة بيانات الاعتماد هذه؟",
+        "cancel": "إلغاء",
+        "yesDelete": "نعم، حذف",
+        "yesRestore": "نعم، استعادة"
+      },
+      "apiKeyDialog": {
+        "title": "تم إنشاء مفتاح API",
+        "description": "يرجى نسخ أو تحميل مفتاح API الخاص بك الآن.",
+        "close": "إغلاق"
+      },
+      "messages": {
+        "createSuccess": "تم إنشاء بيانات الاعتماد بنجاح",
+        "createFailed": "فشل في إنشاء بيانات الاعتماد",
+        "deleted": "تم حذف بيانات الاعتماد بنجاح",
+        "restored": "تم استعادة بيانات الاعتماد بنجاح",
+        "toggleFailed": "فشلت العملية",
+        "copiedToClipboard": "تم نسخ مفتاح API إلى الحافظة",
+        "downloaded": "تم تحميل مفتاح API"
+      }
+    },
+    "zoho": {
+      "title": "بيانات اعتماد زوهو",
+      "columns": {
+        "apiKey": "مفتاح API",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "actions": {
+        "create": "إنشاء بيانات اعتماد",
+        "delete": "حذف",
+        "restore": "استعادة",
+        "copy": "نسخ إلى الحافظة",
+        "download": "تحميل كملف"
+      },
+      "filters": {
+        "status": {
+          "label": "الحالة",
+          "selectLabel": "اختر الحالة"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
+      },
+      "confirmations": {
+        "deleteTitle": "حذف بيانات الاعتماد",
+        "deleteDescription": "هل أنت متأكد من حذف بيانات الاعتماد هذه؟ يمكن استعادتها لاحقاً.",
+        "restoreTitle": "استعادة بيانات الاعتماد",
+        "restoreDescription": "هل أنت متأكد من استعادة بيانات الاعتماد هذه؟",
+        "cancel": "إلغاء",
+        "yesDelete": "نعم، حذف",
+        "yesRestore": "نعم، استعادة"
+      },
+      "apiKeyDialog": {
+        "title": "تم إنشاء مفتاح API",
+        "description": "يرجى نسخ أو تحميل مفتاح API الخاص بك الآن.",
+        "close": "إغلاق"
+      },
+      "messages": {
+        "createSuccess": "تم إنشاء بيانات الاعتماد بنجاح",
+        "createFailed": "فشل في إنشاء بيانات الاعتماد",
+        "deleted": "تم حذف بيانات الاعتماد بنجاح",
+        "restored": "تم استعادة بيانات الاعتماد بنجاح",
+        "toggleFailed": "فشلت العملية",
+        "copiedToClipboard": "تم نسخ مفتاح API إلى الحافظة",
+        "downloaded": "تم تحميل مفتاح API"
+      }
+    },
+    "webcall": {
+      "title": "مكالمة ويب",
+      "columns": {
+        "id": "كود التضمين",
+        "iconText": "الاسم",
+        "callerId": "معرّف المتصل",
+        "destinationNumber": "الوجهة",
+        "domains": "النطاقات المسموحة",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "actions": {
+        "create": "إنشاء",
+        "edit": "تعديل",
+        "enable": "تفعيل",
+        "disable": "تعطيل",
+        "copySnippet": "نسخ كود التضمين"
+      },
+      "filters": {
+        "status": {
+          "label": "الحالة",
+          "selectLabel": "اختر الحالة"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث",
+        "create": "إنشاء مكالمة ويب جديدة"
+      },
+      "confirmations": {
+        "enableTitle": "تفعيل مكالمة الويب",
+        "enableDescription": "هل أنت متأكد من تفعيل مكالمة الويب هذه؟",
+        "disableTitle": "تعطيل مكالمة الويب",
+        "disableDescription": "هل أنت متأكد من تعطيل مكالمة الويب هذه؟",
+        "cancel": "إلغاء",
+        "yesEnable": "نعم، تفعيل",
+        "yesDisable": "نعم، تعطيل"
+      },
+      "createPage": {
+        "title": "إنشاء مكالمة ويب"
+      },
+      "editPage": {
+        "title": "تعديل مكالمة ويب"
+      },
+      "form": {
+        "sections": {
+          "style": "التنسيق",
+          "configuration": "الإعدادات",
+          "domains": "النطاقات المسموحة"
+        },
+        "fields": {
+          "iconText": "نص الأيقونة",
+          "backgroundColor": "لون الخلفية",
+          "iconBaseColor": "لون قاعدة الأيقونة",
+          "fontColor": "لون الخط",
+          "callerId": "معرّف المتصل",
+          "destinationNumber": "رقم الوجهة",
+          "concurrentCalls": "المكالمات المتزامنة"
+        },
+        "placeholders": {
+          "iconText": "اتصل بنا",
+          "callerId": "اختر معرّف المتصل...",
+          "destinationNumber": "أدخل رقم الوجهة",
+          "concurrentCalls": "10",
+          "domain": "https://example.com"
+        },
+        "addDomain": "إضافة نطاق",
+        "removeDomain": "إزالة النطاق",
+        "create": "إنشاء",
+        "update": "تحديث",
+        "validation": {
+          "iconTextMin": "يجب أن يكون نص الأيقونة حرفين على الأقل",
+          "iconTextMax": "يجب ألا يتجاوز نص الأيقونة 250 حرفاً",
+          "colorRequired": "اللون مطلوب",
+          "concurrentCallsRequired": "المكالمات المتزامنة مطلوبة",
+          "concurrentCallsMin": "مكالمة متزامنة واحدة على الأقل",
+          "destinationNumberRequired": "رقم الوجهة مطلوب",
+          "destinationNumberDigits": "رقم الوجهة يجب أن يحتوي على أرقام فقط",
+          "callerIdRequired": "معرّف المتصل مطلوب",
+          "domainRequired": "النطاق مطلوب",
+          "domainInvalid": "يجب أن يكون رابط صالح يبدأ بـ http:// أو https://",
+          "domainDuplicate": "النطاق مضاف بالفعل",
+          "domainMin": "مطلوب نطاق واحد على الأقل"
+        }
+      },
+      "messages": {
+        "createSuccess": "تم إنشاء مكالمة الويب بنجاح",
+        "createFailed": "فشل في إنشاء مكالمة الويب",
+        "updateSuccess": "تم تحديث مكالمة الويب بنجاح",
+        "updateFailed": "فشل في تحديث مكالمة الويب",
+        "enabled": "تم تفعيل مكالمة الويب بنجاح",
+        "disabled": "تم تعطيل مكالمة الويب بنجاح",
+        "toggleFailed": "فشلت العملية",
+        "copiedSnippet": "تم نسخ كود التضمين إلى الحافظة"
+      }
+    },
+    "apiCredentials": {
+      "title": "بيانات اعتماد API",
+      "columns": {
+        "title": "العنوان",
+        "apiId": "معرف API",
+        "apiSecret": "مفتاح API السري",
+        "services": "الخدمات",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "serviceLabels": {
+        "pbx": "PBX",
+        "order-confirmation": "تأكيد الطلب",
+        "call-campaign": "حملة الاتصال",
+        "web-call": "مكالمة ويب",
+        "auto-dialer-campaign": "حملة الاتصال التلقائي",
+        "billing": "الفواتير"
+      },
+      "actions": {
+        "create": "إنشاء بيانات اعتماد",
+        "edit": "تعديل الخدمات",
+        "delete": "حذف",
+        "restore": "استعادة",
+        "copy": "نسخ إلى الحافظة",
+        "download": "تحميل كملف",
+        "close": "إغلاق"
+      },
+      "filters": {
+        "status": {
+          "label": "الحالة",
+          "selectLabel": "اختر الحالة"
+        },
+        "services": {
+          "label": "الخدمات",
+          "selectLabel": "تصفية حسب الخدمة"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث",
+        "createCredential": "إنشاء بيانات اعتماد API جديدة"
+      },
+      "confirmations": {
+        "deleteTitle": "حذف بيانات الاعتماد",
+        "deleteDescription": "هل أنت متأكد من حذف بيانات الاعتماد هذه؟ يمكن استعادتها لاحقاً.",
+        "restoreTitle": "استعادة بيانات الاعتماد",
+        "restoreDescription": "هل أنت متأكد من استعادة بيانات الاعتماد هذه؟",
+        "cancel": "إلغاء",
+        "yesDelete": "نعم، حذف",
+        "yesRestore": "نعم، استعادة"
+      },
+      "credentialDialog": {
+        "createTitle": "إنشاء بيانات اعتماد API",
+        "createDescription": "أدخل عنواناً واختر الخدمات لبيانات الاعتماد هذه.",
+        "editTitle": "تعديل الخدمات",
+        "editDescription": "تحديث الخدمات المفعلة لبيانات الاعتماد هذه.",
+        "titleLabel": "العنوان",
+        "titlePlaceholder": "مثال: مفتاح API الخاص بي",
+        "servicesLabel": "الخدمات",
+        "servicesPlaceholder": "اختر الخدمات...",
+        "create": "إنشاء",
+        "update": "تحديث",
+        "validation": {
+          "titleRequired": "العنوان مطلوب",
+          "titleMin": "يجب أن يكون العنوان حرفين على الأقل",
+          "titleMax": "يجب ألا يتجاوز العنوان 250 حرفاً",
+          "servicesMin": "مطلوب خدمة واحدة على الأقل"
+        }
+      },
+      "secretDialog": {
+        "title": "تم إنشاء بيانات اعتماد API",
+        "description": "يرجى نسخ أو تحميل بيانات الاعتماد الآن. لن يتم عرض المفتاح السري مرة أخرى.",
+        "close": "إغلاق"
+      },
+      "messages": {
+        "createSuccess": "تم إنشاء بيانات الاعتماد بنجاح",
+        "createFailed": "فشل في إنشاء بيانات الاعتماد",
+        "updateSuccess": "تم تحديث بيانات الاعتماد بنجاح",
+        "updateFailed": "فشل في تحديث بيانات الاعتماد",
+        "deleted": "تم حذف بيانات الاعتماد بنجاح",
+        "restored": "تم استعادة بيانات الاعتماد بنجاح",
+        "toggleFailed": "فشلت العملية",
+        "copiedToClipboard": "تم النسخ إلى الحافظة",
+        "downloaded": "تم تحميل بيانات الاعتماد"
+      },
+      "createPage": {
+        "title": "إنشاء بيانات اعتماد API"
+      },
+      "editPage": {
+        "title": "تعديل بيانات اعتماد API"
+      }
+    },
+    "webrtc": {
+      "title": "بيانات اعتماد WebRTC",
+      "columns": {
+        "apiKey": "مفتاح API",
+        "domains": "النطاقات المسموحة",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "actions": {
+        "create": "إنشاء بيانات اعتماد",
+        "edit": "تعديل النطاقات",
+        "delete": "حذف",
+        "restore": "استعادة",
+        "copy": "نسخ إلى الحافظة",
+        "download": "تحميل كملف",
+        "close": "إغلاق"
+      },
+      "filters": {
+        "status": {
+          "label": "الحالة",
+          "selectLabel": "اختر الحالة"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث",
+        "createCredential": "إنشاء بيانات اعتماد WebRTC جديدة"
+      },
+      "confirmations": {
+        "deleteTitle": "حذف بيانات الاعتماد",
+        "deleteDescription": "هل أنت متأكد من حذف بيانات الاعتماد هذه؟ يمكن استعادتها لاحقاً.",
+        "restoreTitle": "استعادة بيانات الاعتماد",
+        "restoreDescription": "هل أنت متأكد من استعادة بيانات الاعتماد هذه؟",
+        "cancel": "إلغاء",
+        "yesDelete": "نعم، حذف",
+        "yesRestore": "نعم، استعادة"
+      },
+      "credentialDialog": {
+        "createTitle": "إنشاء بيانات اعتماد WebRTC",
+        "createDescription": "أضف نطاقاً واحداً على الأقل مسموحاً به لبيانات الاعتماد هذه.",
+        "editTitle": "تعديل النطاقات المسموحة",
+        "editDescription": "تحديث النطاقات المسموحة لبيانات الاعتماد هذه.",
+        "domainsLabel": "النطاقات المسموحة",
+        "domainPlaceholder": "https://innocalls.com",
+        "addDomain": "إضافة نطاق",
+        "removeDomain": "إزالة النطاق",
+        "create": "إنشاء",
+        "update": "تحديث",
+        "validation": {
+          "domainRequired": "النطاق مطلوب",
+          "domainInvalid": "يجب أن يكون رابط صالح يبدأ بـ http:// أو https://",
+          "domainDuplicate": "النطاق مضاف بالفعل",
+          "domainMin": "مطلوب نطاق واحد على الأقل"
+        }
+      },
+      "apiKeyDialog": {
+        "title": "تم إنشاء مفتاح API",
+        "description": "يرجى نسخ أو تحميل مفتاح API الخاص بك الآن.",
+        "close": "إغلاق"
+      },
+      "messages": {
+        "createSuccess": "تم إنشاء بيانات الاعتماد بنجاح",
+        "createFailed": "فشل في إنشاء بيانات الاعتماد",
+        "updateSuccess": "تم تحديث بيانات الاعتماد بنجاح",
+        "updateFailed": "فشل في تحديث بيانات الاعتماد",
+        "deleted": "تم حذف بيانات الاعتماد بنجاح",
+        "restored": "تم استعادة بيانات الاعتماد بنجاح",
+        "toggleFailed": "فشلت العملية",
+        "copiedToClipboard": "تم نسخ مفتاح API إلى الحافظة",
+        "downloaded": "تم تحميل مفتاح API"
+      },
+      "createPage": {
+        "title": "إنشاء بيانات اعتماد WebRTC"
+      },
+      "editPage": {
+        "title": "تعديل بيانات اعتماد WebRTC"
+      }
+    },
+    "zendesk": {
+      "title": "بيانات اعتماد زين ديسك",
+      "columns": {
+        "apiKey": "مفتاح API",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "actions": {
+        "create": "إنشاء بيانات اعتماد",
+        "delete": "حذف",
+        "restore": "استعادة",
+        "copy": "نسخ إلى الحافظة",
+        "download": "تحميل كملف"
+      },
+      "filters": {
+        "status": {
+          "label": "الحالة",
+          "selectLabel": "اختر الحالة"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
+      },
+      "confirmations": {
+        "deleteTitle": "حذف بيانات الاعتماد",
+        "deleteDescription": "هل أنت متأكد من حذف بيانات الاعتماد هذه؟ يمكن استعادتها لاحقاً.",
+        "restoreTitle": "استعادة بيانات الاعتماد",
+        "restoreDescription": "هل أنت متأكد من استعادة بيانات الاعتماد هذه؟",
+        "cancel": "إلغاء",
+        "yesDelete": "نعم، حذف",
+        "yesRestore": "نعم، استعادة"
+      },
+      "apiKeyDialog": {
+        "title": "تم إنشاء مفتاح API",
+        "description": "يرجى نسخ أو تحميل مفتاح API الخاص بك الآن.",
+        "close": "إغلاق"
+      },
+      "messages": {
+        "createSuccess": "تم إنشاء بيانات الاعتماد بنجاح",
+        "createFailed": "فشل في إنشاء بيانات الاعتماد",
+        "deleted": "تم حذف بيانات الاعتماد بنجاح",
+        "restored": "تم استعادة بيانات الاعتماد بنجاح",
+        "toggleFailed": "فشلت العملية",
+        "copiedToClipboard": "تم نسخ مفتاح API إلى الحافظة",
+        "downloaded": "تم تحميل مفتاح API"
       }
     }
   }

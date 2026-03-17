@@ -16,6 +16,7 @@ import PaginatedTableSkeleton from "@/components/Table/PaginatedTableSkeleton";
 import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import { useTranslations } from "@/providers/TranslationProvider";
+import useAuthStore from "@/store/auth.slice";
 
 const defaultFilters: CallReportingFilters = {
   fromDate: new Date(),
@@ -31,6 +32,7 @@ const CallReportingTable = () => {
 
   const tCallReporting = useTranslations("callReporting");
   const t = useTranslations("callReporting.messages");
+  const { Organization } = useAuthStore();
 
   const [filters, setFilters] = useState<CallReportingFilters>({
     ...defaultFilters,
@@ -93,7 +95,9 @@ const CallReportingTable = () => {
     <div className="h-full flex flex-col">
       <PaginatedTable
         data={callReporting?.data || []}
-        columns={columns(tCallReporting)}
+        columns={columns(tCallReporting, {
+          enableCallTranscription: Organization?.enableCallTranscription,
+        })}
         pagination={{
           totalItems: callReporting?.total || 0,
           totalPages: callReporting?.last_page || 0,

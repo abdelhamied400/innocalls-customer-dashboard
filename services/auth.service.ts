@@ -84,6 +84,13 @@ export default {
       newPassword: newPassword,
     });
   },
+  verifyDemoAccount: async (token: string, password: string) => {
+    const res = await api.post(`/v1/demo-requests/verify/${token}`, {
+      password,
+    });
+
+    return res.data;
+  },
   updateAgentPassword: async (
     currentPassword: string,
     newPassword: string,

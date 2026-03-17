@@ -19,7 +19,8 @@
           "uppercase": "Password must contain at least one uppercase letter",
           "number": "Password must contain at least one number",
           "special": "Password must contain at least one special character",
-          "required": "Password is required"
+          "required": "Password is required",
+          "maxLength": "Password must be no more than {max} characters"
         },
         "date": {
           "from": {
@@ -243,6 +244,36 @@
       },
       "actions": {
         "submit": "Reset Password"
+      }
+    },
+    "verifyDemo": {
+      "title": "Verify Your Account",
+      "subtitle": "Create a password to complete your account setup",
+      "form": {
+        "fields": {
+          "password": {
+            "label": "Password",
+            "placeholder": "Enter password..."
+          },
+          "passwordConfirm": {
+            "label": "Confirm Password",
+            "placeholder": "Re-enter password..."
+          }
+        },
+        "validation": {
+          "passwordConfirm": {
+            "mismatch": "Passwords do not match"
+          }
+        }
+      },
+      "messages": {
+        "verifySuccess": "Password Set",
+        "verifySuccessDescription": "Your password has been set successfully.",
+        "verifyFailed": "Error",
+        "defaultErrorDescription": "An error occurred while setting your password."
+      },
+      "actions": {
+        "submit": "Set Password"
       }
     },
     "updatePassword": {
@@ -1595,6 +1626,8 @@
       "zendeskCredentials": "Zendesk Credentials",
       "webrtcCredentials": "WebRTC Credentials",
       "apiCredentials": "API Credentials",
+      "freshdeskCredentials": "Freshdesk",
+      "zohoCredentials": "Zoho",
       "activityAnalysis": "Activity"
     },
     "support": {
@@ -1610,9 +1643,43 @@
       "callDuration": "Call Duration",
       "callStatus": "Call Status",
       "callDirection": "Call Direction",
-      "callSummary": "Call Summary",
+      "callSummary": "Agent Summary",
       "recording": "Recording",
-      "waitTime": "Wait Time"
+      "waitTime": "Wait Time",
+      "transcription": "Call Insights",
+      "aiSummary": "AI Summary"
+    },
+    "transcription": {
+      "title": "Call Insights",
+      "summary": "Summary",
+      "topics": "Topics",
+      "processing": "Processing...",
+      "actionItems": "Action Items",
+      "sentiment": {
+        "title": "Sentiment",
+        "overall": "Overall",
+        "score": "Score",
+        "customer": "Customer",
+        "agent": "Agent",
+        "positive": "Positive",
+        "negative": "Negative",
+        "neutral": "Neutral",
+        "mixed": "Mixed"
+      },
+      "qualityScore": {
+        "title": "Agent Quality Score",
+        "overall": "Overall Score",
+        "greeting": "Greeting",
+        "closing": "Closing",
+        "professionalism": "Professionalism",
+        "productKnowledge": "Product Knowledge",
+        "objectionHandling": "Objection Handling",
+        "notes": "Notes"
+      },
+      "transcript": "Transcript",
+      "viewTranscript": "View Full Transcript",
+      "downloadTranscript": "Download",
+      "searchTranscript": "Search ..."
     },
     "direction": {
       "incoming": "Incoming",
@@ -4107,6 +4174,413 @@
         "saveSuccess": "Notes saved successfully",
         "saveError": "Failed to save notes",
         "callTime": "Call time"
+      }
+    }
+  },
+  "developers": {
+    "freshdesk": {
+      "title": "Freshdesk Credentials",
+      "columns": {
+        "apiKey": "API Key",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "create": "Create Credential",
+        "delete": "Delete",
+        "restore": "Restore",
+        "copy": "Copy to clipboard",
+        "download": "Download as file"
+      },
+      "filters": {
+        "status": {
+          "label": "Status",
+          "selectLabel": "Select status",
+          "all": "All"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "click to show/hide search filters"
+      },
+      "confirmations": {
+        "deleteTitle": "Delete Credential",
+        "deleteDescription": "Are you sure you want to delete this credential? It can be restored later.",
+        "restoreTitle": "Restore Credential",
+        "restoreDescription": "Are you sure you want to restore this credential?",
+        "cancel": "Cancel",
+        "yesDelete": "Yes, Delete",
+        "yesRestore": "Yes, Restore"
+      },
+      "apiKeyDialog": {
+        "title": "API Key Generated",
+        "description": "Please copy or download your API key now",
+        "close": "Close"
+      },
+      "messages": {
+        "createSuccess": "Credential created successfully",
+        "createFailed": "Failed to create credential",
+        "deleted": "Credential deleted successfully",
+        "restored": "Credential restored successfully",
+        "toggleFailed": "Operation failed",
+        "copiedToClipboard": "API key copied to clipboard",
+        "downloaded": "API key downloaded"
+      }
+    },
+    "zoho": {
+      "title": "Zoho Credentials",
+      "columns": {
+        "apiKey": "API Key",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "create": "Create Credential",
+        "delete": "Delete",
+        "restore": "Restore",
+        "copy": "Copy to clipboard",
+        "download": "Download as file"
+      },
+      "filters": {
+        "status": {
+          "label": "Status",
+          "selectLabel": "Select status"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "click to show/hide search filters"
+      },
+      "confirmations": {
+        "deleteTitle": "Delete Credential",
+        "deleteDescription": "Are you sure you want to delete this credential? It can be restored later.",
+        "restoreTitle": "Restore Credential",
+        "restoreDescription": "Are you sure you want to restore this credential?",
+        "cancel": "Cancel",
+        "yesDelete": "Yes, Delete",
+        "yesRestore": "Yes, Restore"
+      },
+      "apiKeyDialog": {
+        "title": "API Key Generated",
+        "description": "Please copy or download your API key now.",
+        "close": "Close"
+      },
+      "messages": {
+        "createSuccess": "Credential created successfully",
+        "createFailed": "Failed to create credential",
+        "deleted": "Credential deleted successfully",
+        "restored": "Credential restored successfully",
+        "toggleFailed": "Operation failed",
+        "copiedToClipboard": "API key copied to clipboard",
+        "downloaded": "API key downloaded"
+      }
+    },
+    "webcall": {
+      "title": "Web Call",
+      "columns": {
+        "id": "Embed Code",
+        "iconText": "Name",
+        "callerId": "Caller ID",
+        "destinationNumber": "Destination",
+        "domains": "Allowed Domains",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "create": "Create",
+        "edit": "Edit",
+        "enable": "Enable",
+        "disable": "Disable",
+        "copySnippet": "Copy embed snippet"
+      },
+      "filters": {
+        "status": {
+          "label": "Status",
+          "selectLabel": "Select status"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "Click to show/hide search filters",
+        "create": "Create a new Web Call credential"
+      },
+      "confirmations": {
+        "enableTitle": "Enable Web Call",
+        "enableDescription": "Are you sure you want to enable this Web Call?",
+        "disableTitle": "Disable Web Call",
+        "disableDescription": "Are you sure you want to disable this Web Call?",
+        "cancel": "Cancel",
+        "yesEnable": "Yes, Enable",
+        "yesDisable": "Yes, Disable"
+      },
+      "createPage": {
+        "title": "Create Web Call"
+      },
+      "editPage": {
+        "title": "Edit Web Call"
+      },
+      "form": {
+        "sections": {
+          "style": "Style",
+          "configuration": "Configuration",
+          "domains": "Allowed Domains"
+        },
+        "fields": {
+          "iconText": "Icon Text",
+          "backgroundColor": "Background Color",
+          "iconBaseColor": "Icon Base Color",
+          "fontColor": "Font Color",
+          "callerId": "Caller ID",
+          "destinationNumber": "Destination Number",
+          "concurrentCalls": "Concurrent Calls"
+        },
+        "placeholders": {
+          "iconText": "Call Us",
+          "callerId": "Select Caller ID...",
+          "destinationNumber": "Enter destination number",
+          "concurrentCalls": "10",
+          "domain": "https://example.com"
+        },
+        "addDomain": "Add Domain",
+        "removeDomain": "Remove domain",
+        "create": "Create",
+        "update": "Update",
+        "validation": {
+          "iconTextMin": "Icon text must be at least 2 characters",
+          "iconTextMax": "Icon text must be at most 250 characters",
+          "colorRequired": "Color is required",
+          "concurrentCallsRequired": "Concurrent calls is required",
+          "concurrentCallsMin": "Minimum 1 concurrent call",
+          "destinationNumberRequired": "Destination number is required",
+          "destinationNumberDigits": "Destination number must contain only digits",
+          "callerIdRequired": "Caller ID is required",
+          "domainRequired": "Domain is required",
+          "domainInvalid": "Must be a valid URL with http:// or https:// protocol",
+          "domainDuplicate": "Domain already added",
+          "domainMin": "At least one domain is required"
+        }
+      },
+      "messages": {
+        "createSuccess": "Web Call created successfully",
+        "createFailed": "Failed to create Web Call",
+        "updateSuccess": "Web Call updated successfully",
+        "updateFailed": "Failed to update Web Call",
+        "enabled": "Web Call enabled successfully",
+        "disabled": "Web Call disabled successfully",
+        "toggleFailed": "Operation failed",
+        "copiedSnippet": "Embed snippet copied to clipboard"
+      }
+    },
+    "apiCredentials": {
+      "title": "API Credentials",
+      "columns": {
+        "title": "Title",
+        "apiId": "API ID",
+        "apiSecret": "API Secret",
+        "services": "Services",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "serviceLabels": {
+        "pbx": "PBX",
+        "order-confirmation": "Order Confirmation",
+        "call-campaign": "Call Campaign",
+        "web-call": "Web Call",
+        "auto-dialer-campaign": "Auto Dialer Campaign",
+        "billing": "Billing"
+      },
+      "actions": {
+        "create": "Create Credential",
+        "edit": "Edit Services",
+        "delete": "Delete",
+        "restore": "Restore",
+        "copy": "Copy to clipboard",
+        "download": "Download as file",
+        "close": "Close"
+      },
+      "filters": {
+        "status": {
+          "label": "Status",
+          "selectLabel": "Select status"
+        },
+        "services": {
+          "label": "Services",
+          "selectLabel": "Filter by service"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "click to show/hide search filters",
+        "createCredential": "Create a new API credential"
+      },
+      "confirmations": {
+        "deleteTitle": "Delete Credential",
+        "deleteDescription": "Are you sure you want to delete this credential? It can be restored later.",
+        "restoreTitle": "Restore Credential",
+        "restoreDescription": "Are you sure you want to restore this credential?",
+        "cancel": "Cancel",
+        "yesDelete": "Yes, Delete",
+        "yesRestore": "Yes, Restore"
+      },
+      "credentialDialog": {
+        "createTitle": "Create API Credential",
+        "createDescription": "Provide a title and select the services for this credential.",
+        "editTitle": "Edit Services",
+        "editDescription": "Update the enabled services for this credential.",
+        "titleLabel": "Title",
+        "titlePlaceholder": "e.g. My API Key",
+        "servicesLabel": "Services",
+        "servicesPlaceholder": "Select services...",
+        "create": "Create",
+        "update": "Update",
+        "validation": {
+          "titleRequired": "Title is required",
+          "titleMin": "Title must be at least 2 characters",
+          "titleMax": "Title must be at most 250 characters",
+          "servicesMin": "At least one service is required"
+        }
+      },
+      "secretDialog": {
+        "title": "API Credentials Generated",
+        "description": "Please copy or download your API credentials now. The secret will not be shown again.",
+        "close": "Close"
+      },
+      "messages": {
+        "createSuccess": "Credential created successfully",
+        "createFailed": "Failed to create credential",
+        "updateSuccess": "Credential updated successfully",
+        "updateFailed": "Failed to update credential",
+        "deleted": "Credential deleted successfully",
+        "restored": "Credential restored successfully",
+        "toggleFailed": "Operation failed",
+        "copiedToClipboard": "Copied to clipboard",
+        "downloaded": "Credentials downloaded"
+      },
+      "createPage": {
+        "title": "Create API Credential"
+      },
+      "editPage": {
+        "title": "Edit API Credential"
+      }
+    },
+    "webrtc": {
+      "title": "WebRTC Credentials",
+      "columns": {
+        "apiKey": "API Key",
+        "domains": "Allowed Domains",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "create": "Create Credential",
+        "edit": "Edit Domains",
+        "delete": "Delete",
+        "restore": "Restore",
+        "copy": "Copy to clipboard",
+        "download": "Download as file",
+        "close": "Close"
+      },
+      "filters": {
+        "status": {
+          "label": "Status",
+          "selectLabel": "Select status"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "click to show/hide search filters",
+        "createCredential": "Create a new WebRTC credential"
+      },
+      "confirmations": {
+        "deleteTitle": "Delete Credential",
+        "deleteDescription": "Are you sure you want to delete this credential? It can be restored later.",
+        "restoreTitle": "Restore Credential",
+        "restoreDescription": "Are you sure you want to restore this credential?",
+        "cancel": "Cancel",
+        "yesDelete": "Yes, Delete",
+        "yesRestore": "Yes, Restore"
+      },
+      "credentialDialog": {
+        "createTitle": "Create WebRTC Credential",
+        "createDescription": "Add at least one allowed domain for this credential.",
+        "editTitle": "Edit Allowed Domains",
+        "editDescription": "Update the allowed domains for this credential.",
+        "domainsLabel": "Allowed Domains",
+        "domainPlaceholder": "https://innocalls.com",
+        "addDomain": "Add Domain",
+        "removeDomain": "Remove domain",
+        "create": "Create",
+        "update": "Update",
+        "validation": {
+          "domainRequired": "Domain is required",
+          "domainInvalid": "Must be a valid URL with http:// or https:// protocol",
+          "domainDuplicate": "Domain already added",
+          "domainMin": "At least one domain is required"
+        }
+      },
+      "apiKeyDialog": {
+        "title": "API Key Generated",
+        "description": "Please copy or download your API key now.",
+        "close": "Close"
+      },
+      "messages": {
+        "createSuccess": "Credential created successfully",
+        "createFailed": "Failed to create credential",
+        "updateSuccess": "Credential updated successfully",
+        "updateFailed": "Failed to update credential",
+        "deleted": "Credential deleted successfully",
+        "restored": "Credential restored successfully",
+        "toggleFailed": "Operation failed",
+        "copiedToClipboard": "API key copied to clipboard",
+        "downloaded": "API key downloaded"
+      },
+      "createPage": {
+        "title": "Create WebRTC Credential"
+      },
+      "editPage": {
+        "title": "Edit WebRTC Credential"
+      }
+    },
+    "zendesk": {
+      "title": "Zendesk Credentials",
+      "columns": {
+        "apiKey": "API Key",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "create": "Create Credential",
+        "delete": "Delete",
+        "restore": "Restore",
+        "copy": "Copy to clipboard",
+        "download": "Download as file"
+      },
+      "filters": {
+        "status": {
+          "label": "Status",
+          "selectLabel": "Select status"
+        }
+      },
+      "tooltips": {
+        "toggleFilters": "click to show/hide search filters"
+      },
+      "confirmations": {
+        "deleteTitle": "Delete Credential",
+        "deleteDescription": "Are you sure you want to delete this credential? It can be restored later.",
+        "restoreTitle": "Restore Credential",
+        "restoreDescription": "Are you sure you want to restore this credential?",
+        "cancel": "Cancel",
+        "yesDelete": "Yes, Delete",
+        "yesRestore": "Yes, Restore"
+      },
+      "apiKeyDialog": {
+        "title": "API Key Generated",
+        "description": "Please copy or download your API key now.",
+        "close": "Close"
+      },
+      "messages": {
+        "createSuccess": "Credential created successfully",
+        "createFailed": "Failed to create credential",
+        "deleted": "Credential deleted successfully",
+        "restored": "Credential restored successfully",
+        "toggleFailed": "Operation failed",
+        "copiedToClipboard": "API key copied to clipboard",
+        "downloaded": "API key downloaded"
       }
     }
   }
