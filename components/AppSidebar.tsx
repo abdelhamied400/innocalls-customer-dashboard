@@ -95,9 +95,9 @@ const AppSidebar = () => {
             icon={<Assessment />}
             title={t("navigation.reports")}
             href={`/reports`}
-            disabled={isPending}
-            isNew={true}
-            isComingSoon={false}
+            disabled={true}
+            isNew={false}
+            isComingSoon={true}
           />
         )}
 
@@ -127,17 +127,17 @@ const AppSidebar = () => {
           <SidebarCollapsibleItem
             icon={<Apps />}
             title={t("navigation.apps")}
-            isNew={true}
-            isComingSoon={false}
+            isNew={false}
+            isComingSoon={true}
             href={`/apps`}
           >
             <SidebarItem
               icon={<RingVolume />}
               title={t("navigation.autoDialer")}
               href={`/auto-dialer`}
-              disabled={false}
-              isNew={true}
-              isComingSoon={false}
+              disabled={true}
+              isNew={false}
+              isComingSoon={true}
             />
           </SidebarCollapsibleItem>
         )}
@@ -202,9 +202,9 @@ const AppSidebar = () => {
                 icon={<RingVolume />}
                 title={t("navigation.autoDialer")}
                 href={`/auto-dialer`}
-                isNew={true}
-                isComingSoon={false}
-                disabled={false}
+                disabled={true}
+                isNew={false}
+                isComingSoon={true}
               />
             )}
             <SidebarItem
@@ -254,57 +254,57 @@ const AppSidebar = () => {
           <SidebarCollapsibleItem
             icon={<Code />}
             title={t("navigation.developersTab")}
-            isNew={true}
-            isComingSoon={false}
+            isNew={false}
+            isComingSoon={true}
             href={`/developers`}
           >
             <SidebarItem
               icon={<Phone />}
               title={t("navigation.webcall")}
               href={`/developers/webcall`}
-              disabled={false}
-              isNew={true}
-              isComingSoon={false}
+              disabled={true}
+              isNew={false}
+              isComingSoon={true}
             />
             <SidebarItem
               icon={<Support />}
               title={t("navigation.zendeskCredentials")}
               href={`/developers/zendesk-credentials`}
-              disabled={false}
-              isNew={true}
-              isComingSoon={false}
+              disabled={true}
+              isNew={false}
+              isComingSoon={true}
             />
             <SidebarItem
               icon={<Key />}
               title={t("navigation.webrtcCredentials")}
               href={`/developers/webrtc-credentials`}
-              disabled={false}
-              isNew={true}
-              isComingSoon={false}
+              disabled={true}
+              isNew={false}
+              isComingSoon={true}
             />
             <SidebarItem
               icon={<Api />}
               title={t("navigation.apiCredentials")}
               href={`/developers/api-credentials`}
-              disabled={false}
-              isNew={true}
-              isComingSoon={false}
+              disabled={true}
+              isNew={false}
+              isComingSoon={true}
             />
             <SidebarItem
               icon={<SupportAgent />}
               title={t("navigation.freshdeskCredentials")}
               href={`/developers/freshdesk-credentials`}
-              disabled={false}
-              isNew={true}
-              isComingSoon={false}
+              disabled={true}
+              isNew={false}
+              isComingSoon={true}
             />
             <SidebarItem
               icon={<Cloud />}
               title={t("navigation.zohoCredentials")}
               href={`/developers/zoho-credentials`}
-              disabled={false}
-              isNew={true}
-              isComingSoon={false}
+              disabled={true}
+              isNew={false}
+              isComingSoon={true}
             />
           </SidebarCollapsibleItem>
         )}

@@ -141,6 +141,7 @@ const QueueManagement = () => {
               activeCalls={queue.activeCalls.map((call) => ({
                 ...call,
                 phoneNumber: call.caller,
+                timestamp: call.connectedAt,
                 callDuration: call.connectedAt
                   ? Math.floor(
                       (Date.now() -
@@ -152,6 +153,7 @@ const QueueManagement = () => {
               waitingCalls={queue.waitingCalls.map((call) => ({
                 ...call,
                 phoneNumber: call.caller,
+                timestamp: call.enteredAt,
                 callDuration: call.enteredAt
                   ? Math.floor(
                       (Date.now() - new Date(call.enteredAt * 1000).getTime()) /

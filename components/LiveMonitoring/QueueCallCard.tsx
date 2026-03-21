@@ -48,7 +48,8 @@ type QueueCallCardProps = {
   phoneNumber: string;
   agent: { name: string; ext: string };
   status: "active" | "waiting";
-  callDuration: number;
+  callDuration?: number;
+  timestamp?: number;
   color?: VariantProps<typeof queueCallCardVariants>["color"];
 };
 
@@ -57,6 +58,7 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
   agent,
   status,
   callDuration,
+  timestamp,
   color = "success",
 }) => {
   const t = useTranslations(
@@ -135,7 +137,7 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
               statusClasses
             )}
           >
-            <Timer startingTime={callDuration} />
+            <Timer timestamp={timestamp} startingTime={callDuration} />
           </span>
         </div>
       </div>
