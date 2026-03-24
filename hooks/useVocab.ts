@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import useAuthStore from "@/store/auth.slice";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import vocabService from "@/services/vocab.service";

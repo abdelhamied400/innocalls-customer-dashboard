@@ -18,7 +18,6 @@ import DatePicker from "@/components/ui/date-picker";
 import { isValidDateRange } from "@/lib/date";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
-import { useSession } from "next-auth/react";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { usePaginatedTable } from "@/components/Table/PaginatedTable";

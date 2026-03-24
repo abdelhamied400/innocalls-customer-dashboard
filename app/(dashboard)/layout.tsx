@@ -6,7 +6,7 @@ import ResponsiveSidebar from "@/components/ResponsiveSidebar";
 import ResponsiveWebrtc from "@/components/ResponsiveWebrtc";
 import AppNavbar from "@/components/AppNavbar";
 import { getCookie } from "cookies-next/client";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import { useLayoutManager } from "@/hooks/use-layout-manager";
 import InnortcLayout from "@/components/Webrtc/InnortcLayout";
 import DevLogger from "@/components/DevLogger";

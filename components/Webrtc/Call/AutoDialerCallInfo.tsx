@@ -12,7 +12,7 @@ import { Close, SpeakerNotes } from "@mui/icons-material";
 import { toast } from "sonner";
 import webrtcService from "@/services/webrtc.service";
 import { useTranslations } from "@/providers/TranslationProvider";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import { format } from "date-fns";
 
 const useAutoDialerChannel = (

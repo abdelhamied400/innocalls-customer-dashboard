@@ -5,7 +5,6 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
@@ -14,6 +13,9 @@ import Link from "next/link";
 import { LoginSchema } from "@/validation/Login";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { useEffect, useState } from "react";
+import authService from "@/services/auth.service";
+import useSessionStore from "@/store/session.slice";
+import { setCookie } from "cookies-next";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -21,6 +23,7 @@ const LoginForm = () => {
   const t = useTranslations("auth.login");
   const tCommon = useTranslations("common");
   const [clientIp, setClientIp] = useState<string>("");
+  const { setSession } = useSessionStore();
 
   useEffect(() => {
     let isActive = true;
@@ -36,7 +39,6 @@ const LoginForm = () => {
     };
   }, []);
 
-  // 1. Define your form.
   const form = useForm({
     resolver: zodResolver(LoginSchema(t, tCommon)),
     defaultValues: {
@@ -53,24 +55,43 @@ const LoginForm = () => {
   } = form;
 
   const onSubmit = form.handleSubmit(async (values) => {
-    const result = await signIn("credentials", {
-      email: values.email,
-      password: values.password,
-      userType: values.userType,
-      clientIp,
-      redirect: false,
-    });
-
-    if (result?.error) {
-      toast.error(t("messages.loginFailed"), {
-        description: result.code,
+    try {
+      const res = await authService.login({
+        email: values.email,
+        password: values.password,
+        userType: values.userType as "user" | "agent",
+        clientIp,
       });
-    } else {
+
+      const organizations =
+        res.organizations || (res.agent?.organization ? [res.agent.organization] : []);
+
+      setCookie("OrganizationId", organizations?.[0]?.id || "");
+
+      setSession({
+        accessToken: res.accessToken,
+        userType: values.userType as "user" | "agent",
+        organizations,
+        user: {
+          email: res.user?.email || res.agent?.email,
+          id: res.user?.id || res.agent?.id,
+        },
+      });
+
       toast.info(t("messages.loginSuccess"), {
         description: t("messages.loginSuccessDescription"),
       });
+
       const redirectTo = searchParams.get("next") || "/";
       router.push(redirectTo);
+    } catch (err: any) {
+      const message =
+        err?.response?.data?.message ||
+        err?.message ||
+        t("messages.loginFailed");
+      toast.error(t("messages.loginFailed"), {
+        description: message,
+      });
     }
   });
 

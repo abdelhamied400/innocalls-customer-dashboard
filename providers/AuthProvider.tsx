@@ -1,6 +1,6 @@
 import AppSpinner from "@/components/ui/AppSpinner";
 import { useTranslationContext, useTranslations } from "./TranslationProvider";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import useAuth from "@/hooks/useAuth";
 import { PropsWithChildren } from "react";
 

@@ -3,7 +3,7 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import React from "react";
 import FullPageError from "./FullPageError";
 import useAuthStore from "@/store/auth.slice";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 
 const hasTenant = <P extends object>(Component: React.ComponentType<P>) => {
   const WrappedComponent = (props: P) => {

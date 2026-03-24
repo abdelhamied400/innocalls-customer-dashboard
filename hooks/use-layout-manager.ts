@@ -1,6 +1,6 @@
 import { useMemo, useEffect, useState } from "react";
 import useAppStore from "@/store/app.slice";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import useAuth from "./useAuth";
 import useAuthStore from "@/store/auth.slice";
 

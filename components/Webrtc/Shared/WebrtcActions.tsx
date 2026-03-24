@@ -20,7 +20,7 @@ import {
 import CallLog from "../CallLog";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import { Contacts, ContactsProviders } from "../Contacts";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import { useTranslations } from "@/providers/TranslationProvider";
 
 const WebrtcActions = () => {

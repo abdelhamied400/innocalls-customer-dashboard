@@ -1,7 +1,7 @@
 "use client";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import useWebrtcStore from "@/store/webrtc.slice";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/hooks/useSession";
 import CallSummaryForm from "./CallSummaryForm";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { useTranslations } from "@/providers/TranslationProvider";

@@ -29,7 +29,6 @@ import InboundAnalyticsDateDistribution from "./date-distribution";
 import InboundAnalyticsQueueAnalysis from "./queue-analysis";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
-import { useSession } from "next-auth/react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useVocab } from "@/hooks/useVocab";

@@ -6,6 +6,7 @@ type Credentials = {
   email: string;
   password: string;
   userType?: "user" | "agent";
+  clientIp?: string;
 };
 
 type FetchProfileResponse = {
@@ -16,7 +17,7 @@ type FetchProfileResponse = {
 };
 
 export default {
-  login: async ({ email, password, userType = "user" }: Credentials) => {
+  login: async ({ email, password, userType = "user", clientIp }: Credentials) => {
     const res = await api.post(
       `/v2/auth/login`,
       {
@@ -26,6 +27,7 @@ export default {
       {
         headers: {
           "X-User-Type": userType,
+          ...(clientIp ? { "X-Client-IP": clientIp } : {}),
         },
       },
     );
