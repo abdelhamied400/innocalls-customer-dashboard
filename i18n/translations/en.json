@@ -4583,5 +4583,62 @@
         "downloaded": "API key downloaded"
       }
     }
+  },
+  "innoSupport": {
+    "title": "Innocalls Support",
+    "list": {
+      "title": "Support Tickets",
+      "columns": {
+        "ticketNumber": "Ticket #",
+        "subject": "Subject",
+        "department": "Department",
+        "status": "Status",
+        "createdTime": "Created At",
+        "actions": "Actions"
+      },
+      "filters": {
+        "status": "Status",
+        "department": "Department",
+        "subject": "Subject",
+        "selectFromList": "Select from list",
+        "subjectPlaceholder": "Filter by subject..."
+      },
+      "status": {
+        "Open": "Open",
+        "Closed": "Closed"
+      },
+      "actions": {
+        "view": "View"
+      },
+      "tooltips": {
+        "toggleFilters": "click to show/hide search filters"
+      }
+    },
+    "view": {
+      "title": "Ticket Details",
+      "backToList": "Back to Tickets",
+      "ticketNumber": "Ticket #",
+      "subject": "Subject",
+      "department": "Department",
+      "status": "Status",
+      "priority": "Priority",
+      "classification": "Classification",
+      "channel": "Channel",
+      "description": "Description",
+      "assignee": "Assignee",
+      "createdAt": "Created At",
+      "dueDate": "Due Date",
+      "attachments": "Attachments",
+      "replies": "Replies",
+      "noReplies": "No replies yet",
+      "newestFirst": "Newest first",
+      "oldestFirst": "Oldest first",
+      "priority_values": {
+        "High": "High",
+        "Medium": "Medium",
+        "Low": "Low",
+        "None": "None"
+      }
+    }
   }
 }

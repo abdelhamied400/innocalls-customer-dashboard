@@ -4598,5 +4598,62 @@
         "downloaded": "تم تحميل مفتاح API"
       }
     }
+  },
+  "innoSupport": {
+    "title": "دعم اينوكولز",
+    "list": {
+      "title": "تذاكر الدعم",
+      "columns": {
+        "ticketNumber": "رقم التذكرة",
+        "subject": "الموضوع",
+        "department": "القسم",
+        "status": "الحالة",
+        "createdTime": "تاريخ الإنشاء",
+        "actions": "الإجراءات"
+      },
+      "filters": {
+        "status": "الحالة",
+        "department": "القسم",
+        "subject": "الموضوع",
+        "selectFromList": "اختر من القائمة",
+        "subjectPlaceholder": "تصفية حسب الموضوع..."
+      },
+      "status": {
+        "Open": "مفتوحة",
+        "Closed": "مغلقة"
+      },
+      "actions": {
+        "view": "عرض"
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
+      }
+    },
+    "view": {
+      "title": "تفاصيل التذكرة",
+      "backToList": "العودة إلى التذاكر",
+      "ticketNumber": "رقم التذكرة",
+      "subject": "الموضوع",
+      "department": "القسم",
+      "status": "الحالة",
+      "priority": "الأولوية",
+      "classification": "التصنيف",
+      "channel": "القناة",
+      "description": "الوصف",
+      "assignee": "المسؤول",
+      "createdAt": "تاريخ الإنشاء",
+      "dueDate": "تاريخ الاستحقاق",
+      "attachments": "المرفقات",
+      "replies": "الردود",
+      "noReplies": "لا توجد ردود بعد",
+      "newestFirst": "الأحدث أولاً",
+      "oldestFirst": "الأقدم أولاً",
+      "priority_values": {
+        "High": "عالية",
+        "Medium": "متوسطة",
+        "Low": "منخفضة",
+        "None": "بدون"
+      }
+    }
   }
 }
