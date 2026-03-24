@@ -1,5 +1,5 @@
 import { CallMade, CallReceived } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+
 import Timer from "../ui/timer";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
@@ -14,6 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import useWebrtcStore from "@/store/webrtc.slice";
+import { getElapsedTime } from "@/lib/date";
 
 interface LiveCallProps {
   from: string;
@@ -33,24 +34,6 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
   const { extension } = useWebrtcStore();
   const { spy, extensionState } = useSip();
   const { setWebrtcOpen } = useAppStore();
-
-  const [nowMs, setNowMs] = useState(() =>
-    new Date(timestamp * 1000).getTime(),
-  );
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setNowMs(Date.now());
-    }, 1000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  // Convert timestamp to seconds from now
-  const startTime = Math.max(
-    0,
-    Math.floor((nowMs - new Date(timestamp * 1000).getTime()) / 1000),
-  );
 
   const handleSpy = (extension: string) => {
     setWebrtcOpen(true);
@@ -154,7 +137,7 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
           <div className="duration flex items-center gap-1">
             <span className="block w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
             <p className="text-xs text-green-500">
-              <Timer startingTime={startTime} />
+              <Timer startingTime={getElapsedTime(timestamp)} />
             </p>
           </div>
         </div>

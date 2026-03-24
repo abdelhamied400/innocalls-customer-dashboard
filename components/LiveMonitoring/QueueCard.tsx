@@ -98,12 +98,14 @@ type QueueCardProps = VariantProps<typeof queueCardVariants> & {
     name: string;
     ext?: string;
     callDuration: number;
+    timestamp?: number;
   }>;
   waitingCalls?: Array<{
     phoneNumber: string;
     name?: string;
     ext?: string;
     callDuration: number;
+    timestamp?: number;
   }>;
 };
 
@@ -279,15 +281,16 @@ const QueueCard = ({
             </AccordionTrigger>
             <AccordionContent className="p-2 flex flex-col gap-2 max-h-60 overflow-y-auto">
               {activeCalls.length > 0 ? (
-                activeCalls.map((call, idx) => (
+                activeCalls.map((call) => (
                   <QueueCallCard
-                    key={idx}
+                    key={`${call.phoneNumber.replace(/\D/g, "")}-${call.timestamp}`}
                     phoneNumber={call.phoneNumber}
                     agent={{
                       name: call.name || t("unknownAgent"),
                       ext: call.ext || "",
                     }}
                     status="active"
+                    timestamp={call.timestamp}
                     callDuration={call.callDuration}
                     color="success"
                   />
@@ -313,15 +316,16 @@ const QueueCard = ({
             </AccordionTrigger>
             <AccordionContent className="p-2 flex flex-col gap-2 max-h-60 overflow-y-auto">
               {waitingCalls.length > 0 ? (
-                waitingCalls.map((call, idx) => (
+                waitingCalls.map((call) => (
                   <QueueCallCard
-                    key={idx}
+                    key={`${call.phoneNumber.replace(/\D/g, "")}-${call.timestamp}`}
                     phoneNumber={call.phoneNumber}
                     agent={{
                       name: call.name || t("unknownAgent"),
                       ext: call.ext || "",
                     }}
                     status="waiting"
+                    timestamp={call.timestamp}
                     callDuration={call.callDuration}
                     color="warning"
                   />
