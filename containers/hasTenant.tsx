@@ -1,4 +1,5 @@
 "use client";
+import * as Sentry from "@sentry/nextjs";
 import { useTranslations } from "@/providers/TranslationProvider";
 import React from "react";
 import FullPageError from "./FullPageError";
@@ -16,6 +17,11 @@ const hasTenant = <P extends object>(Component: React.ComponentType<P>) => {
       status === "authenticated" &&
       !Organization?.hasTenant
     ) {
+      Sentry.addBreadcrumb({
+        category: "auth.tenant",
+        message: "Tenant check failed — no tenant assigned to organization",
+        level: "warning",
+      });
       return (
         <FullPageError
           status={403}

@@ -1,7 +1,9 @@
 /**
- * Logger utility class for development debugging
- * Provides colored, namespaced logging that only shows in development
+ * Logger utility class for development debugging and Sentry integration
+ * Provides colored, namespaced logging that sends errors and breadcrumbs to Sentry
  */
+
+import * as Sentry from "@sentry/nextjs";
 
 type LogLevel = "log" | "info" | "warn" | "error" | "debug";
 
@@ -71,16 +73,16 @@ class Logger {
 
     // Create styled namespace badge
     const namespaceStyle = `
-      background: ${this.color}; 
-      color: white; 
-      padding: 2px 6px; 
-      border-radius: 3px; 
+      background: ${this.color};
+      color: white;
+      padding: 2px 6px;
+      border-radius: 3px;
       font-weight: bold;
       font-size: 11px;
     `;
 
     const timeStyle = `
-      color: #666; 
+      color: #666;
       font-size: 11px;
     `;
 
@@ -110,6 +112,11 @@ class Logger {
    */
   log(message: string, ...args: any[]): void {
     this.initializeConfig();
+    Sentry.addBreadcrumb({
+      category: this.namespace,
+      message,
+      level: "log",
+    });
     if (!this.config!.enabled) return;
     const formatted = this.formatMessage("log", message, ...args);
     console.log(...formatted);
@@ -120,6 +127,7 @@ class Logger {
    */
   info(message: string, ...args: any[]): void {
     this.initializeConfig();
+    Sentry.logger.info(`[${this.namespace}] ${message}`);
     if (!this.config!.enabled) return;
     const formatted = this.formatMessage("info", message, ...args);
     console.info(...formatted);
@@ -130,16 +138,25 @@ class Logger {
    */
   warn(message: string, ...args: any[]): void {
     this.initializeConfig();
+    Sentry.logger.warn(`[${this.namespace}] ${message}`);
     if (!this.config!.enabled) return;
     const formatted = this.formatMessage("warn", message, ...args);
     console.warn(...formatted);
   }
 
   /**
-   * Log an error message
+   * Log an error message — captures exception in Sentry if an Error is provided
    */
   error(message: string, ...args: any[]): void {
     this.initializeConfig();
+    const errorArg = args.find((a) => a instanceof Error);
+    if (errorArg) {
+      Sentry.captureException(errorArg, {
+        extra: { namespace: this.namespace, message },
+      });
+    } else {
+      Sentry.logger.error(`[${this.namespace}] ${message}`);
+    }
     if (!this.config!.enabled) return;
     const formatted = this.formatMessage("error", message, ...args);
     console.error(...formatted);

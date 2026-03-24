@@ -18,6 +18,7 @@ import type {
   SpyingStatus,
 } from "./SipProvider/types";
 
+import * as Sentry from "@sentry/nextjs";
 import JsSIP from "jssip";
 import { useUaEvents } from "./SipProvider/useUaEvents";
 import { RTCSession } from "jssip/lib/RTCSession";
@@ -47,6 +48,7 @@ const cleanupAllUserAgents = () => {
       ua.stop();
     } catch (error) {
       console.warn("Error stopping user agent:", error);
+      Sentry.captureException(error, { tags: { component: "webrtc", action: "cleanupUserAgent" } });
     }
   });
   activeUserAgents.clear();
@@ -99,6 +101,10 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   // Show microphone access modal when user denies media access
   useEffect(() => {
     if (sessionState === "user_denied_media") {
+      Sentry.captureMessage("WebRTC microphone access denied by user", {
+        level: "warning",
+        tags: { component: "webrtc" },
+      });
       setShowMicModal(true);
     }
   }, [sessionState]);
@@ -113,6 +119,11 @@ export const SipProvider = ({ children }: SipProviderProps) => {
 
   const login = useCallback(
     (extensionData: ExtensionWithCredentials) => {
+      Sentry.addBreadcrumb({
+        category: "webrtc",
+        message: `SIP login initiated for extension ${extensionData.ext}`,
+        level: "info",
+      });
       setExtensionStore(extensionData);
 
       // Use ref to avoid dependency on ua state
@@ -194,6 +205,11 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   }, [auth?.user?.id, currentSession, stopRingtone, ua, unbindEvents]);
 
   const logout = () => {
+    Sentry.addBreadcrumb({
+      category: "webrtc",
+      message: "SIP logout initiated",
+      level: "info",
+    });
     cleanup();
     navigate("/extensions");
   };
