@@ -101,9 +101,9 @@ const LiveCalls = () => {
             layoutVariant === "both-open" && "grid-cols-1"
           )}
         >
-          {liveCallsData.map((call, index) => (
+          {liveCallsData.map((call) => (
             <LiveCall
-              key={index}
+              key={call.timestamp}
               from={call.from}
               to={call.to}
               timestamp={call.timestamp}
