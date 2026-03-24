@@ -48,7 +48,7 @@ const queueCardVariants = cva(
       variant: "default",
       color: "default",
     },
-  }
+  },
 );
 
 const queueCardIconVariants = cva("icon transition-colors rounded-full p-1", {
@@ -127,9 +127,21 @@ const getIcon = (name?: string) => {
   const lowercaseName = name?.toLowerCase() || "default";
   // Start with lowercase name to ensure case-insensitive lookup
   const matchedKey = Object.keys(icons).find(
-    (key) => key !== "default" && lowercaseName.startsWith(key)
+    (key) => key !== "default" && lowercaseName.startsWith(key),
   );
   return icons[matchedKey ?? "default"];
+};
+
+const getRandomColor = () => {
+  const colors: any = [
+    "primary",
+    "destructive",
+    "warning",
+    "info",
+    "success",
+    "default",
+  ];
+  return colors[Math.floor(Math.random() * colors.length)];
 };
 
 const QueueCard = ({
@@ -143,18 +155,6 @@ const QueueCard = ({
   waitingCalls = [],
 }: QueueCardProps) => {
   const t = useTranslations("liveMonitor.queueManagement.queueCard");
-
-  const getRandomColor = () => {
-    const colors: any = [
-      "primary",
-      "destructive",
-      "warning",
-      "info",
-      "success",
-      "default",
-    ];
-    return colors[Math.floor(Math.random() * colors.length)];
-  };
 
   const colorVariant = color || getRandomColor();
 
@@ -290,7 +290,6 @@ const QueueCard = ({
                       ext: call.ext || "",
                     }}
                     status="active"
-                    timestamp={call.timestamp}
                     callDuration={call.callDuration}
                     color="success"
                   />
@@ -325,7 +324,6 @@ const QueueCard = ({
                       ext: call.ext || "",
                     }}
                     status="waiting"
-                    timestamp={call.timestamp}
                     callDuration={call.callDuration}
                     color="warning"
                   />

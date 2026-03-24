@@ -136,7 +136,7 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
               statusClasses,
             )}
           >
-            <Timer startingTime={getElapsedTime(callDuration)} />
+            <Timer startingTime={callDuration} />
           </span>
         </div>
       </div>
