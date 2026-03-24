@@ -6,6 +6,7 @@ import { RTCSessionEvent } from "jssip/src/UA";
 import { CallListener, OutgoingEvent, RTCSession } from "jssip/lib/RTCSession";
 import { ExtensionWithCredentials } from "@/types/api/extension";
 
+import * as Sentry from "@sentry/nextjs";
 import { addCallToLog } from "@/lib/call-log";
 import { webrtcLogger } from "@/lib/logger";
 import useWebrtcStore from "@/store/webrtc.slice";
@@ -269,6 +270,11 @@ export const useUaEvents = ({
       userAgent.on("disconnected", () => setExtensionState("disconnected"));
       userAgent.on("registrationFailed", (e) => {
         webrtcLogger.error("Registration failed", e);
+        Sentry.captureMessage("SIP registration failed", {
+          level: "error",
+          tags: { component: "webrtc" },
+          extra: { cause: e.cause, response: e.response?.status_code },
+        });
         setExtensionState("disconnected");
       });
       userAgent.on("newRTCSession", async (e: RTCSessionEvent) => {
@@ -340,6 +346,12 @@ export const useUaEvents = ({
           stopRingtone();
           stopRingingTone();
           webrtcLogger.warn("Call failed", event);
+          Sentry.addBreadcrumb({
+            category: "webrtc.call",
+            message: `Call failed: ${event.cause}`,
+            level: "warning",
+            data: { cause: event.cause },
+          });
           setTimeout(() => {
             navigate("/dialpad");
             setCurrentSession?.(null);

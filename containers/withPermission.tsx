@@ -1,4 +1,5 @@
 "use client";
+import * as Sentry from "@sentry/nextjs";
 import { useSession } from "@/hooks/useSession";
 import React from "react";
 import FullPageError from "./FullPageError";
@@ -33,6 +34,11 @@ function withPermission<P extends object>(
       !auth?.user[requiredPermission] &&
       status === "authenticated"
     ) {
+      Sentry.addBreadcrumb({
+        category: "auth.permission",
+        message: `Permission denied: ${requiredPermission}`,
+        level: "warning",
+      });
       return (
         <FullPageError
           status={403}

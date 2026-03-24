@@ -1,4 +1,5 @@
 import axios from "axios";
+import * as Sentry from "@sentry/nextjs";
 import { getCookie } from "cookies-next";
 import { clientSignout } from "@/lib/auth";
 import { defaultLocale } from "@/i18n/config";
@@ -39,6 +40,13 @@ api.interceptors.request.use(async (config) => {
 
   config.headers["timezone"] = timezone;
 
+  Sentry.addBreadcrumb({
+    category: "api.request",
+    message: `${config.method?.toUpperCase()} ${config.url}`,
+    level: "info",
+    data: { url: config.url, method: config.method, organizationId },
+  });
+
   return config;
 });
 
@@ -49,17 +57,29 @@ api.interceptors.response.use(
   async (error) => {
     apiLogger.error("API Error:", error);
     if (error.response) {
-      if (
-        error.response.status === 401 &&
-        process.env.NODE_ENV === "production"
-      ) {
+      const { status, config: reqConfig } = error.response;
+      Sentry.captureException(error, {
+        tags: { component: "api", status },
+        extra: {
+          url: reqConfig?.url,
+          method: reqConfig?.method,
+          status,
+          statusText: error.response.statusText,
+        },
+      });
+      if (status === 401 && process.env.NODE_ENV === "production") {
         apiLogger.info("Unauthorized! Logging out...");
         await clientSignout();
       }
     } else if (error.request) {
       apiLogger.error("Network error - please check your connection");
+      Sentry.captureException(error, {
+        tags: { component: "api", type: "network" },
+        extra: { url: error.config?.url, method: error.config?.method },
+      });
     } else {
       apiLogger.error("Error:", error.message);
+      Sentry.captureException(error, { tags: { component: "api" } });
     }
     return Promise.reject(error);
   },
