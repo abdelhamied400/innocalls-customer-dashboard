@@ -14,6 +14,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import useWebrtcStore from "@/store/webrtc.slice";
+import { getElapsedTime } from "@/lib/date";
 
 interface LiveCallProps {
   from: string;
@@ -33,7 +34,6 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
   const { extension } = useWebrtcStore();
   const { spy, extensionState } = useSip();
   const { setWebrtcOpen } = useAppStore();
-
 
   const handleSpy = (extension: string) => {
     setWebrtcOpen(true);
@@ -137,7 +137,7 @@ const LiveCall = ({ from, to, timestamp }: LiveCallProps) => {
           <div className="duration flex items-center gap-1">
             <span className="block w-3 h-3 bg-green-500 rounded-full animate-pulse"></span>
             <p className="text-xs text-green-500">
-              <Timer timestamp={timestamp} />
+              <Timer startingTime={getElapsedTime(timestamp)} />
             </p>
           </div>
         </div>

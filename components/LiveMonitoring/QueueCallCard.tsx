@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/tooltip";
 
 const queueCallCardVariants = cva(
-  "p-3 rounded-lg border hover:border-500 transition-all duration-200 group",
+  "p-3 rounded-lg border transition-all duration-200 group",
   {
     variants: {
       color: {
@@ -29,7 +29,7 @@ const queueCallCardVariants = cva(
     defaultVariants: {
       color: "success",
     },
-  }
+  },
 );
 
 const statusColorVariants = cva("text-white", {
@@ -48,8 +48,7 @@ type QueueCallCardProps = {
   phoneNumber: string;
   agent: { name: string; ext: string };
   status: "active" | "waiting";
-  callDuration?: number;
-  timestamp?: number;
+  callDuration: number;
   color?: VariantProps<typeof queueCallCardVariants>["color"];
 };
 
@@ -58,11 +57,10 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
   agent,
   status,
   callDuration,
-  timestamp,
   color = "success",
 }) => {
   const t = useTranslations(
-    "liveMonitor.queueManagement.queueCard.queueCardCall"
+    "liveMonitor.queueManagement.queueCard.queueCardCall",
   );
 
   const statusClasses = statusColorVariants({ color });
@@ -134,10 +132,10 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
           <span
             className={cn(
               "text-xs px-2 py-1 rounded-full font-medium",
-              statusClasses
+              statusClasses,
             )}
           >
-            <Timer timestamp={timestamp} startingTime={callDuration} />
+            <Timer startingTime={callDuration} />
           </span>
         </div>
       </div>

@@ -115,3 +115,8 @@ export const formatDate = (
     locale: options?.locale === "ar" ? arEG : enUS,
   });
 };
+
+
+export const getElapsedTime = (timestamp: number): number => {
+  return Math.floor((Date.now() - new Date(timestamp * 1000).getTime()) / 1000);
+};
