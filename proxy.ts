@@ -20,6 +20,10 @@ export default function middleware(request: NextRequest) {
     return NextResponse.redirect(newUrl);
   }
 
+  if (isAuthenticated && isPublicPage) {
+    return NextResponse.redirect(new URL("/", request.nextUrl.origin));
+  }
+
   return NextResponse.next();
 }
 
