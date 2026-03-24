@@ -14,6 +14,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { getElapsedTime } from "@/lib/date";
 
 const queueCallCardVariants = cva(
   "p-3 rounded-lg border transition-all duration-200 group",
@@ -135,7 +136,7 @@ const QueueCallCard: React.FC<QueueCallCardProps> = ({
               statusClasses,
             )}
           >
-            <Timer startingTime={callDuration} />
+            <Timer startingTime={getElapsedTime(callDuration)} />
           </span>
         </div>
       </div>
