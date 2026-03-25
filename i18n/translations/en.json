@@ -4608,7 +4608,8 @@
         "Closed": "Closed"
       },
       "actions": {
-        "view": "View"
+        "view": "View",
+        "create": "Create Ticket"
       },
       "tooltips": {
         "toggleFilters": "click to show/hide search filters"
@@ -4633,11 +4634,37 @@
       "noReplies": "No replies yet",
       "newestFirst": "Newest first",
       "oldestFirst": "Oldest first",
+      "reply": "Reply",
       "priority_values": {
         "High": "High",
         "Medium": "Medium",
         "Low": "Low",
         "None": "None"
+      }
+    },
+    "create": {
+      "title": "Create Ticket",
+      "form": {
+        "subject": "Subject",
+        "subjectPlaceholder": "Enter ticket subject",
+        "department": "Department",
+        "departmentPlaceholder": "Select department",
+        "description": "Description",
+        "descriptionPlaceholder": "Describe your issue...",
+        "attachment": "Attachment",
+        "attachFile": "Attach a file",
+        "submit": "Submit Ticket",
+        "validation": {
+          "subjectRequired": "Subject is required",
+          "subjectMax": "Subject must be at most 255 characters",
+          "departmentRequired": "Department is required",
+          "descriptionRequired": "Description is required",
+          "fileTooLarge": "File size must be less than 5MB"
+        }
+      },
+      "messages": {
+        "success": "Ticket created successfully",
+        "error": "Failed to create ticket"
       }
     }
   }

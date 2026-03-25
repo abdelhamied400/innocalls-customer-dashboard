@@ -59,6 +59,7 @@
     "react-dom": "19.2.4",
     "react-dropzone": "^14.3.5",
     "react-hook-form": "^7.53.2",
+    "react-quill-new": "^3.8.3",
     "react-select": "^5.10.1",
     "react-window": "^1.8.11",
     "recharts": "^2.15.0",

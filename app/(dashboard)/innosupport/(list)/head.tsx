@@ -1,6 +1,8 @@
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import Field from "@/components/ui/field";
 import { SearchIcon } from "lucide-react";
+import Link from "next/link";
 import {
   Collapsible,
   CollapsibleContent,
@@ -93,6 +95,10 @@ const TicketsTableHeader = ({
                 <p>{t("tooltips.toggleFilters")}</p>
               </TooltipContent>
             </Tooltip>
+
+            <Link href="/innosupport/create">
+              <Button>{t("actions.create")}</Button>
+            </Link>
           </div>
         </TooltipProvider>
       </div>

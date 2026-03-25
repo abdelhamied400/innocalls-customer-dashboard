@@ -7,7 +7,7 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import withActiveOrganization from "@/containers/withActiveOrganization";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Clock, User, Headset, Mail, Globe, Phone, ArrowUpDown } from "lucide-react";
+import { ArrowLeft, Clock, User, Headset, Mail, Globe, Phone, ArrowUpDown, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { format } from "date-fns";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -91,13 +91,25 @@ const TicketViewPage = () => {
   return (
     <div className="page h-full flex flex-col gap-4 p-4 overflow-auto">
       {/* Header */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between">
         <Link href="/innosupport">
           <Button variant="ghost" size="sm">
             <ArrowLeft className="h-4 w-4" />
             {t("backToList")}
           </Button>
         </Link>
+        {ticket.replyUrl && (
+          <a
+            href={`https://${ticket.replyUrl}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button size="sm">
+              <ExternalLink className="h-4 w-4" />
+              {t("reply")}
+            </Button>
+          </a>
+        )}
       </div>
 
       {/* Ticket Info Card */}

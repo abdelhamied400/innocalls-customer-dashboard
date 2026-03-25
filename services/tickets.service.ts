@@ -78,4 +78,23 @@ export default {
     const res = await api.get("/zoho/departments");
     return res.data;
   },
+
+  createTicket: async (data: {
+    subject: string;
+    departmentId: string;
+    description: string;
+    file?: File;
+  }) => {
+    const formData = new FormData();
+    formData.append("subject", data.subject);
+    formData.append("departmentId", data.departmentId);
+    formData.append("description", data.description);
+    if (data.file) {
+      formData.append("file", data.file);
+    }
+    const res = await api.post("/zoho/create-ticket", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return res.data;
+  },
 };

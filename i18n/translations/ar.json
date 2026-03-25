@@ -4623,7 +4623,8 @@
         "Closed": "مغلقة"
       },
       "actions": {
-        "view": "عرض"
+        "view": "عرض",
+        "create": "إنشاء تذكرة"
       },
       "tooltips": {
         "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
@@ -4648,11 +4649,37 @@
       "noReplies": "لا توجد ردود بعد",
       "newestFirst": "الأحدث أولاً",
       "oldestFirst": "الأقدم أولاً",
+      "reply": "رد",
       "priority_values": {
         "High": "عالية",
         "Medium": "متوسطة",
         "Low": "منخفضة",
         "None": "بدون"
+      }
+    },
+    "create": {
+      "title": "إنشاء تذكرة",
+      "form": {
+        "subject": "الموضوع",
+        "subjectPlaceholder": "أدخل موضوع التذكرة",
+        "department": "القسم",
+        "departmentPlaceholder": "اختر القسم",
+        "description": "الوصف",
+        "descriptionPlaceholder": "صف مشكلتك...",
+        "attachment": "المرفق",
+        "attachFile": "إرفاق ملف",
+        "submit": "إرسال التذكرة",
+        "validation": {
+          "subjectRequired": "الموضوع مطلوب",
+          "subjectMax": "يجب ألا يتجاوز الموضوع 255 حرفاً",
+          "departmentRequired": "القسم مطلوب",
+          "descriptionRequired": "الوصف مطلوب",
+          "fileTooLarge": "يجب أن يكون حجم الملف أقل من 5 ميجابايت"
+        }
+      },
+      "messages": {
+        "success": "تم إنشاء التذكرة بنجاح",
+        "error": "فشل إنشاء التذكرة"
       }
     }
   }
