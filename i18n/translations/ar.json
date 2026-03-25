@@ -4616,7 +4616,8 @@
         "department": "القسم",
         "subject": "الموضوع",
         "selectFromList": "اختر من القائمة",
-        "subjectPlaceholder": "تصفية حسب الموضوع..."
+        "subjectPlaceholder": "تصفية حسب الموضوع...",
+        "searchMinChars": "اكتب 3 أحرف على الأقل للبحث"
       },
       "status": {
         "Open": "مفتوحة",

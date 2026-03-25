@@ -57,13 +57,18 @@ const TicketsTableHeader = ({
     queryFn: ticketsService.getDepartments,
   });
 
+  const MIN_SEARCH_LENGTH = 3;
+
   useEffect(() => {
     if (debouncedSearchTerm === (filters.subject || "")) return;
-    setFilters((prev) => ({
-      ...prev,
-      subject: debouncedSearchTerm.trim() || undefined,
-      page: 1,
-    }));
+    const trimmed = debouncedSearchTerm.trim();
+    if (trimmed.length >= MIN_SEARCH_LENGTH || trimmed.length === 0) {
+      setFilters((prev) => ({
+        ...prev,
+        subject: trimmed || undefined,
+        page: 1,
+      }));
+    }
   }, [debouncedSearchTerm]);
 
   return (
@@ -72,15 +77,22 @@ const TicketsTableHeader = ({
         <h2>{t("title")}</h2>
         <TooltipProvider>
           <div className="actions flex flex-wrap items-center gap-2">
-            <Field preIcon={<SearchIcon />}>
-              <Input
-                variant="field"
-                placeholder={t("filters.subjectPlaceholder")}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                type="search"
-              />
-            </Field>
+            <div className="relative">
+              <Field preIcon={<SearchIcon />}>
+                <Input
+                  variant="field"
+                  placeholder={t("filters.subjectPlaceholder")}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  type="search"
+                />
+              </Field>
+              {searchTerm.length > 0 && searchTerm.length < MIN_SEARCH_LENGTH && (
+                <p className="absolute text-xs text-muted-foreground mt-1">
+                  {t("filters.searchMinChars")}
+                </p>
+              )}
+            </div>
 
             <Tooltip>
               <CollapsibleTrigger asChild>
