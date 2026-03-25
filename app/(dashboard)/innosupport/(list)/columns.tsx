@@ -103,7 +103,12 @@ export const columns = (
     header: t("columns.createdTime"),
     cell: ({ row }: { row: any }) => {
       const date = new Date(row.getValue("createdTime"));
-      return format(date, "dd MMM yyyy, HH:mm");
+      return (
+        <div className="font-normal">
+          <p>{format(date, "dd MMM yyyy")}</p>
+          <p className="text-gray-500">{format(date, "hh:mm a")}</p>
+        </div>
+      );
     },
   },
   {

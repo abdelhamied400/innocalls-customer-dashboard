@@ -4602,7 +4602,7 @@
   "innoSupport": {
     "title": "دعم اينوكولز",
     "list": {
-      "title": "تذاكر الدعم",
+      "title": "التذاكر",
       "columns": {
         "ticketNumber": "رقم التذكرة",
         "subject": "الموضوع",
@@ -4664,6 +4664,23 @@
         "subjectPlaceholder": "أدخل موضوع التذكرة",
         "department": "القسم",
         "departmentPlaceholder": "اختر القسم",
+        "phone": "رقم الهاتف",
+        "phonePlaceholder": "أدخل رقم الهاتف",
+        "priority": "الأولوية",
+        "priorityPlaceholder": "اختر الأولوية",
+        "priorityOptions": {
+          "High": "عالية",
+          "Medium": "متوسطة",
+          "Low": "منخفضة"
+        },
+        "classification": "التصنيف",
+        "classificationPlaceholder": "اختر التصنيف",
+        "classificationOptions": {
+          "Problem": "مشكلة",
+          "Question": "سؤال",
+          "Request": "طلب",
+          "Others": "أخرى"
+        },
         "description": "الوصف",
         "descriptionPlaceholder": "صف مشكلتك...",
         "attachment": "المرفق",
@@ -4671,14 +4688,18 @@
         "submit": "إرسال التذكرة",
         "validation": {
           "subjectRequired": "الموضوع مطلوب",
-          "subjectMax": "يجب ألا يتجاوز الموضوع 255 حرفاً",
+          "subjectMax": "يجب ألا يتجاوز الموضوع 250 حرفاً",
           "departmentRequired": "القسم مطلوب",
+          "phoneRequired": "رقم الهاتف مطلوب",
+          "phoneInvalid": "رقم الهاتف يجب أن يحتوي على أرقام فقط",
           "descriptionRequired": "الوصف مطلوب",
-          "fileTooLarge": "يجب أن يكون حجم الملف أقل من 5 ميجابايت"
+          "descriptionMax": "يجب ألا يتجاوز الوصف 5000 حرف",
+          "fileTooLarge": "يجب أن يكون حجم الملف أقل من 20 ميجابايت",
+          "fileTypeNotAllowed": "يُسمح فقط بالصور ومقاطع الفيديو والمستندات والملفات النصية"
         }
       },
       "messages": {
-        "success": "تم إنشاء التذكرة بنجاح",
+        "success": "تم إنشاء التذكرة بنجاح. قد يستغرق ظهورها في القائمة بضع ثوانٍ.",
         "error": "فشل إنشاء التذكرة"
       }
     }

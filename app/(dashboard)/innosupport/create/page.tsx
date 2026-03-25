@@ -1,8 +1,7 @@
 "use client";
 
 import { useTranslations } from "@/providers/TranslationProvider";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import ticketsService from "@/services/tickets.service";
@@ -10,6 +9,8 @@ import { CreateTicketFormValues } from "@/validation/CreateTicket";
 import CreateTicketForm from "../CreateTicketForm";
 import withActiveOrganization from "@/containers/withActiveOrganization";
 import { useQueryClient } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import { SheetClose } from "@/components/ui/sheet";
 import Stepper, {
   StepperHeader,
   StepperHeaderTitle,
@@ -17,21 +18,22 @@ import Stepper, {
   StepperStep,
   StepperSteps,
 } from "@/components/ui/stepper";
-import { ChevronLeftIcon } from "lucide-react";
+import { ChevronLeftIcon, X } from "lucide-react";
 
 const CreateTicketPage = () => {
   const t = useTranslations("innoSupport.create");
-  const router = useRouter();
+  const commonT = useTranslations("common");
   const queryClient = useQueryClient();
+  const closeSheetRef = useRef<HTMLButtonElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (data: CreateTicketFormValues) => {
+    setIsSubmitting(true);
     try {
-      setIsSubmitting(true);
       await ticketsService.createTicket(data);
       await queryClient.invalidateQueries({ queryKey: ["tickets"] });
       toast.success(t("messages.success"));
-      router.push("/innosupport");
+      closeSheetRef.current?.click();
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("messages.error"), {
@@ -40,9 +42,8 @@ const CreateTicketPage = () => {
       } else {
         toast.error(t("messages.error"));
       }
-    } finally {
-      setIsSubmitting(false);
     }
+    setIsSubmitting(false);
   };
 
   return (
@@ -61,6 +62,12 @@ const CreateTicketPage = () => {
             <p>{t("title")}</p>
           </StepperHeaderTitle>
         </div>
+        <Button size="icon" asChild variant="unstyled">
+          <SheetClose ref={closeSheetRef}>
+            <X className="h-4 w-4" />
+            <span className="sr-only">{commonT("actions.close")}</span>
+          </SheetClose>
+        </Button>
       </StepperHeader>
 
       <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[600px] max-h-[calc(100vh-200px)] overflow-auto">

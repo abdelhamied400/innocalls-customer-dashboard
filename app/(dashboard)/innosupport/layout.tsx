@@ -2,9 +2,12 @@
 import { PropsWithChildren, useEffect } from "react";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import useAppStore from "@/store/app.slice";
+import withPermission from "@/containers/withPermission";
 
-type InnoSupportLayoutProps = PropsWithChildren<object>;
-const InnoSupportLayout = ({ children }: InnoSupportLayoutProps) => {
+type InnoSupportLayoutProps = PropsWithChildren<{
+  createSheet: React.ReactNode;
+}>;
+const InnoSupportLayout = ({ children, createSheet }: InnoSupportLayoutProps) => {
   const { setPageTitle } = useAppStore();
   const locale = useLocale();
   const t = useTranslations("innoSupport");
@@ -16,9 +19,10 @@ const InnoSupportLayout = ({ children }: InnoSupportLayoutProps) => {
 
   return (
     <div className="flex-1 h-full">
+      {createSheet}
       <div className="h-full w-full">{children}</div>
     </div>
   );
 };
 
-export default InnoSupportLayout;
+export default withPermission(InnoSupportLayout, "completeControlTicketing");

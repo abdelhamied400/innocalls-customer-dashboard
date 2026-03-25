@@ -329,11 +329,13 @@ const AppSidebar = () => {
             height={200}
             className="mx-auto"
           />
-          <Link href="/innosupport">
-            <Button size="lg" className="w-full">
-              {t("support.innoSupport")}
-            </Button>
-          </Link>
+          {auth?.user?.completeControlTicketing && (
+            <Link href="/innosupport">
+              <Button size="lg" className="w-full">
+                {t("support.innoSupport")}
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </Sidebar>

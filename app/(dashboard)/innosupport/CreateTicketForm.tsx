@@ -6,8 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   CreateTicketSchema,
   CreateTicketFormValues,
+  PRIORITY_OPTIONS,
+  CLASSIFICATION_OPTIONS,
+  ACCEPTED_FILE_EXTENSIONS,
 } from "@/validation/CreateTicket";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import Field from "@/components/ui/field";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
@@ -15,10 +19,6 @@ import ticketsService, { Department } from "@/services/tickets.service";
 import Select from "@/components/Select";
 import { Paperclip, X } from "lucide-react";
 import { useRef, useState } from "react";
-import dynamic from "next/dynamic";
-import "react-quill-new/dist/quill.snow.css";
-
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 type SelectOption = {
   label: string;
@@ -28,17 +28,6 @@ type SelectOption = {
 type CreateTicketFormProps = {
   onSubmit: (data: CreateTicketFormValues) => Promise<void>;
   isSubmitting: boolean;
-};
-
-const quillModules = {
-  toolbar: [
-    [{ header: [1, 2, 3, false] }],
-    ["bold", "italic", "underline", "strike"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ align: [] }],
-    ["link"],
-    ["clean"],
-  ],
 };
 
 const CreateTicketForm = ({ onSubmit, isSubmitting }: CreateTicketFormProps) => {
@@ -67,12 +56,26 @@ const CreateTicketForm = ({ onSubmit, isSubmitting }: CreateTicketFormProps) => 
     defaultValues: {
       subject: "",
       departmentId: "",
+      phone: "",
       description: "",
+      priority: "Medium",
+      classification: "Problem",
     },
   });
 
   const watchedDepartmentId = watch("departmentId");
-  const watchedDescription = watch("description");
+  const watchedPriority = watch("priority");
+  const watchedClassification = watch("classification");
+
+  const priorityOptions: SelectOption[] = PRIORITY_OPTIONS.map((p) => ({
+    label: t(`form.priorityOptions.${p}`),
+    value: p,
+  }));
+
+  const classificationOptions: SelectOption[] = CLASSIFICATION_OPTIONS.map((c) => ({
+    label: t(`form.classificationOptions.${c}`),
+    value: c,
+  }));
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -119,24 +122,60 @@ const CreateTicketForm = ({ onSubmit, isSubmitting }: CreateTicketFormProps) => 
         error={errors.departmentId?.message}
       />
 
-      <div className="space-y-1.5">
-        <label className="text-sm font-medium">{t("form.description")}</label>
-        <ReactQuill
-          theme="snow"
-          value={watchedDescription}
-          onChange={(value) => {
-            const isEmpty = value === "<p><br></p>" || value === "";
-            setValue("description", isEmpty ? "" : value, {
-              shouldValidate: true,
-            });
-          }}
-          modules={quillModules}
-          placeholder={t("form.descriptionPlaceholder")}
+      <Field label={t("form.phone")} error={errors.phone?.message}>
+        <Input
+          variant="field"
+          {...register("phone")}
+          placeholder={t("form.phonePlaceholder")}
         />
-        {errors.description?.message && (
-          <p className="text-sm text-destructive">{errors.description.message}</p>
-        )}
-      </div>
+      </Field>
+
+      <Select<SelectOption, false>
+        label={t("form.priority")}
+        options={priorityOptions}
+        value={
+          watchedPriority
+            ? priorityOptions.find((opt) => opt.value === watchedPriority) ||
+              null
+            : null
+        }
+        onChange={(option) => {
+          setValue("priority", option?.value as typeof watchedPriority, {
+            shouldValidate: true,
+          });
+        }}
+        placeholder={t("form.priorityPlaceholder")}
+        isClearable
+      />
+
+      <Select<SelectOption, false>
+        label={t("form.classification")}
+        options={classificationOptions}
+        value={
+          watchedClassification
+            ? classificationOptions.find(
+                (opt) => opt.value === watchedClassification
+              ) || null
+            : null
+        }
+        onChange={(option) => {
+          setValue(
+            "classification",
+            option?.value as typeof watchedClassification,
+            { shouldValidate: true }
+          );
+        }}
+        placeholder={t("form.classificationPlaceholder")}
+        isClearable
+      />
+
+      <Field label={t("form.description")} error={errors.description?.message}>
+        <Textarea
+          {...register("description")}
+          placeholder={t("form.descriptionPlaceholder")}
+          rows={8}
+        />
+      </Field>
 
       <div className="space-y-2">
         <Field
@@ -146,6 +185,7 @@ const CreateTicketForm = ({ onSubmit, isSubmitting }: CreateTicketFormProps) => 
           <input
             type="file"
             ref={fileInputRef}
+            accept={ACCEPTED_FILE_EXTENSIONS}
             onChange={handleFileChange}
             className="hidden"
           />

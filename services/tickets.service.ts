@@ -82,15 +82,25 @@ export default {
   createTicket: async (data: {
     subject: string;
     departmentId: string;
+    phone: string;
     description: string;
+    priority?: string;
+    classification?: string;
     file?: File;
   }) => {
     const formData = new FormData();
     formData.append("subject", data.subject);
     formData.append("departmentId", data.departmentId);
+    formData.append("phone", data.phone);
     formData.append("description", data.description);
+    if (data.priority) {
+      formData.append("priority", data.priority);
+    }
+    if (data.classification) {
+      formData.append("classification", data.classification);
+    }
     if (data.file) {
-      formData.append("file", data.file);
+      formData.append("attachment", data.file);
     }
     const res = await api.post("/zoho/create-ticket", formData, {
       headers: { "Content-Type": "multipart/form-data" },

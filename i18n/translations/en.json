@@ -4587,13 +4587,13 @@
   "innoSupport": {
     "title": "Innocalls Support",
     "list": {
-      "title": "Support Tickets",
+      "title": "Tickets",
       "columns": {
         "ticketNumber": "Ticket #",
         "subject": "Subject",
         "department": "Department",
         "status": "Status",
-        "createdTime": "Created At",
+        "createdTime": "Creation Date",
         "actions": "Actions"
       },
       "filters": {
@@ -4649,6 +4649,23 @@
         "subjectPlaceholder": "Enter ticket subject",
         "department": "Department",
         "departmentPlaceholder": "Select department",
+        "phone": "Phone",
+        "phonePlaceholder": "Enter contact phone number",
+        "priority": "Priority",
+        "priorityPlaceholder": "Select priority",
+        "priorityOptions": {
+          "High": "High",
+          "Medium": "Medium",
+          "Low": "Low"
+        },
+        "classification": "Classification",
+        "classificationPlaceholder": "Select classification",
+        "classificationOptions": {
+          "Problem": "Problem",
+          "Question": "Question",
+          "Request": "Request",
+          "Others": "Others"
+        },
         "description": "Description",
         "descriptionPlaceholder": "Describe your issue...",
         "attachment": "Attachment",
@@ -4656,14 +4673,18 @@
         "submit": "Submit Ticket",
         "validation": {
           "subjectRequired": "Subject is required",
-          "subjectMax": "Subject must be at most 255 characters",
+          "subjectMax": "Subject must be at most 250 characters",
           "departmentRequired": "Department is required",
+          "phoneRequired": "Phone number is required",
+          "phoneInvalid": "Phone number must contain only digits",
           "descriptionRequired": "Description is required",
-          "fileTooLarge": "File size must be less than 5MB"
+          "descriptionMax": "Description must be at most 5000 characters",
+          "fileTooLarge": "File size must be less than 20MB",
+          "fileTypeNotAllowed": "Only images, videos, documents, and text files are allowed"
         }
       },
       "messages": {
-        "success": "Ticket created successfully",
+        "success": "Ticket created successfully. It may take a few seconds to appear in the list.",
         "error": "Failed to create ticket"
       }
     }

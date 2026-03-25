@@ -44,7 +44,6 @@ const TicketsTableHeader = ({
   setFilters,
 }: TicketsTableHeaderProps) => {
   const t = useTranslations("innoSupport.list");
-  const commonT = useTranslations("common.search");
 
   const [status, setStatus] = useState<string>(filters.status || "");
   const [departmentId, setDepartmentId] = useState<string>(
@@ -76,7 +75,7 @@ const TicketsTableHeader = ({
             <Field preIcon={<SearchIcon />}>
               <Input
                 variant="field"
-                placeholder={commonT("placeholder")}
+                placeholder={t("filters.subjectPlaceholder")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 type="search"

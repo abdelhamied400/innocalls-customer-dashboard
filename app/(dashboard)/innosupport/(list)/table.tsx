@@ -38,6 +38,8 @@ const TicketsTable = () => {
         page: pagination.pageIndex + 1,
         perPage: pagination.pageSize,
       }),
+    staleTime: 0,
+    gcTime: 0,
   });
 
   const handlePaginationChange = (newPagination: PaginationState) => {
