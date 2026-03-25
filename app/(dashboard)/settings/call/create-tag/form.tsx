@@ -48,7 +48,7 @@ const CreateTagForm = () => {
       toast.success(t("messages.createSuccess"));
 
       closeSheetRef.current?.click();
-      queryClient.invalidateQueries({ queryKey: ["tags"] });
+      queryClient.invalidateQueries({ queryKey: ["call-tags"] });
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("messages.createFailed"), {

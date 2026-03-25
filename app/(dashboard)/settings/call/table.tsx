@@ -14,7 +14,7 @@ import { useLocalizedQuery } from "@/hooks/use-localized-query";
 const TagsTable = () => {
   const t = useTranslations();
   const { data: tags = [], isLoading } = useLocalizedQuery({
-    queryKey: ["tags"],
+    queryKey: ["call-tags"],
     queryFn: vocabService.getAllTags,
   });
 

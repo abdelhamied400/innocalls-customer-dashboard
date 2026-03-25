@@ -14,7 +14,7 @@ const EditTag = () => {
   const t = useTranslations("settings.call.editTag");
 
   const { data: tags = [], isLoading } = useLocalizedQuery({
-    queryKey: ["tags"],
+    queryKey: ["call-tags"],
     queryFn: vocabService.getAllTags,
   });
 
