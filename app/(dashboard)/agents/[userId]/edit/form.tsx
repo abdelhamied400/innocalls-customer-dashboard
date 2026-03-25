@@ -14,7 +14,7 @@ import Stepper, {
 } from "@/components/ui/stepper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeftIcon, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { useRef, useState, type FormEvent } from "react";
 import { useForm } from "react-hook-form";
 import {
   RadioGroup,
@@ -55,7 +55,14 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
     },
   });
 
-  const onSubmit = form.handleSubmit(async (data) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const isValid = await form.trigger();
+    if (!isValid) return;
+
+    const data = form.getValues();
+
     try {
       // Create a copy of the data
       const submitData: EditUserSubmitSchema = { ...data };
@@ -74,20 +81,23 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
       closeSheetRef.current?.click(); // Close the sheet
       queryClient.invalidateQueries({ queryKey: ["users"] }); // Invalidate the users query to refresh the list
       queryClient.invalidateQueries({ queryKey: ["user", initialUser.id] });
+      queryClient.invalidateQueries({ queryKey: ["extensions"] }); // Invalidate the extensions query to refresh the list
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("update.messages.error"), {
-          description: error.response?.data?.message || t("update.messages.unknownError"),
+          description:
+            error.response?.data?.message || t("update.messages.unknownError"),
         });
       } else {
         toast.error(t("update.messages.error"), {
-          description: error instanceof Error
+          description:
+            error instanceof Error
               ? error.message
               : t("update.messages.unknownError"),
         });
       }
     }
-  }, console.error);
+  };
 
   return (
     <Stepper
@@ -114,7 +124,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
         </Button>
       </StepperHeader>
 
-      <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[600px] max-h-[calc(100vh - 200px)]">
+      <StepperSteps className="flex-1 mx-auto my-8 w-75 md:w-150 max-h-[calc(100vh - 200px)]">
         <Form {...form}>
           <form onSubmit={onSubmit} className="h-full">
             <StepperStep
@@ -162,7 +172,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                           id="email"
                           variant="field"
                           placeholder={t(
-                            "create.form.fields.email.placeholder"
+                            "create.form.fields.email.placeholder",
                           )}
                           type="email"
                           {...field}
@@ -190,7 +200,7 @@ const EditUserForm = ({ initialUser }: EditUserFormProps) => {
                           id="password"
                           variant="field"
                           placeholder={t(
-                            "create.form.fields.password.placeholder"
+                            "create.form.fields.password.placeholder",
                           )}
                           type="password"
                           {...field}
