@@ -30,6 +30,7 @@ import Support from "@mui/icons-material/Support";
 import SupportAgent from "@mui/icons-material/SupportAgent";
 import Cloud from "@mui/icons-material/Cloud";
 import SmartToy from "@mui/icons-material/SmartToy";
+import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { useTranslations } from "@/providers/TranslationProvider";
@@ -328,7 +329,13 @@ const AppSidebar = () => {
             height={200}
             className="mx-auto"
           />
-          <Button size="lg">{t("support.innoSupport")}</Button>
+          {auth?.user?.completeControlTicketing && (
+            <Link href="/innosupport">
+              <Button size="lg" className="w-full">
+                {t("support.innoSupport")}
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
     </Sidebar>

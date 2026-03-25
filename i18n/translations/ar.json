@@ -4598,5 +4598,111 @@
         "downloaded": "تم تحميل مفتاح API"
       }
     }
+  },
+  "innoSupport": {
+    "title": "دعم اينوكولز",
+    "list": {
+      "title": "التذاكر",
+      "columns": {
+        "ticketNumber": "رقم التذكرة",
+        "subject": "الموضوع",
+        "department": "القسم",
+        "status": "الحالة",
+        "createdTime": "تاريخ الإنشاء",
+        "actions": "الإجراءات"
+      },
+      "filters": {
+        "status": "الحالة",
+        "department": "القسم",
+        "subject": "الموضوع",
+        "selectFromList": "اختر من القائمة",
+        "subjectPlaceholder": "تصفية حسب الموضوع...",
+        "searchMinChars": "اكتب 3 أحرف على الأقل للبحث"
+      },
+      "status": {
+        "Open": "مفتوحة",
+        "Closed": "مغلقة"
+      },
+      "actions": {
+        "view": "عرض",
+        "create": "إنشاء تذكرة"
+      },
+      "tooltips": {
+        "toggleFilters": "انقر لإظهار/إخفاء مرشحات البحث"
+      }
+    },
+    "view": {
+      "title": "تفاصيل التذكرة",
+      "backToList": "العودة إلى التذاكر",
+      "ticketNumber": "رقم التذكرة",
+      "subject": "الموضوع",
+      "department": "القسم",
+      "status": "الحالة",
+      "priority": "الأولوية",
+      "classification": "التصنيف",
+      "channel": "القناة",
+      "description": "الوصف",
+      "assignee": "المسؤول",
+      "createdAt": "تاريخ الإنشاء",
+      "dueDate": "تاريخ الاستحقاق",
+      "attachments": "المرفقات",
+      "replies": "الردود",
+      "noReplies": "لا توجد ردود بعد",
+      "newestFirst": "الأحدث أولاً",
+      "oldestFirst": "الأقدم أولاً",
+      "reply": "رد",
+      "priority_values": {
+        "High": "عالية",
+        "Medium": "متوسطة",
+        "Low": "منخفضة",
+        "None": "بدون"
+      }
+    },
+    "create": {
+      "title": "إنشاء تذكرة",
+      "form": {
+        "subject": "الموضوع",
+        "subjectPlaceholder": "أدخل موضوع التذكرة",
+        "department": "القسم",
+        "departmentPlaceholder": "اختر القسم",
+        "phone": "رقم الهاتف",
+        "phonePlaceholder": "أدخل رقم الهاتف",
+        "priority": "الأولوية",
+        "priorityPlaceholder": "اختر الأولوية",
+        "priorityOptions": {
+          "High": "عالية",
+          "Medium": "متوسطة",
+          "Low": "منخفضة"
+        },
+        "classification": "التصنيف",
+        "classificationPlaceholder": "اختر التصنيف",
+        "classificationOptions": {
+          "Problem": "مشكلة",
+          "Question": "سؤال",
+          "Request": "طلب",
+          "Others": "أخرى"
+        },
+        "description": "الوصف",
+        "descriptionPlaceholder": "صف مشكلتك...",
+        "attachment": "المرفق",
+        "attachFile": "إرفاق ملف",
+        "submit": "إرسال التذكرة",
+        "validation": {
+          "subjectRequired": "الموضوع مطلوب",
+          "subjectMax": "يجب ألا يتجاوز الموضوع 250 حرفاً",
+          "departmentRequired": "القسم مطلوب",
+          "phoneRequired": "رقم الهاتف مطلوب",
+          "phoneInvalid": "رقم الهاتف يجب أن يحتوي على أرقام فقط",
+          "descriptionRequired": "الوصف مطلوب",
+          "descriptionMax": "يجب ألا يتجاوز الوصف 5000 حرف",
+          "fileTooLarge": "يجب أن يكون حجم الملف أقل من 20 ميجابايت",
+          "fileTypeNotAllowed": "يُسمح فقط بالصور ومقاطع الفيديو والمستندات والملفات النصية"
+        }
+      },
+      "messages": {
+        "success": "تم إنشاء التذكرة بنجاح. قد يستغرق ظهورها في القائمة بضع ثوانٍ.",
+        "error": "فشل إنشاء التذكرة"
+      }
+    }
   }
 }
