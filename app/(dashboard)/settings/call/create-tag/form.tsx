@@ -48,7 +48,7 @@ const CreateTagForm = () => {
       toast.success(t("messages.createSuccess"));
 
       closeSheetRef.current?.click();
-      queryClient.invalidateQueries({ queryKey: ["tags"] });
+      queryClient.invalidateQueries({ queryKey: ["call-tags"] });
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("messages.createFailed"), {
@@ -85,7 +85,7 @@ const CreateTagForm = () => {
         </Button>
       </StepperHeader>
 
-      <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[600px] max-h-[calc(100vh-200px)] overflow-auto">
+      <StepperSteps className="flex-1 mx-auto my-8 w-75 md:w-150 max-h-[calc(100vh-200px)] overflow-auto">
         <Form {...form}>
           <form onSubmit={onSubmit} className="h-full">
             <StepperStep

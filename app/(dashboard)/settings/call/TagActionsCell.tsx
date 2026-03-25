@@ -55,12 +55,12 @@ const TagActionsCell = ({ tag }: TagActionsCellProps) => {
         );
       });
 
-      toast.success(tag.isDeleted
-          ? t("messages.tagEnabled")
-          : t("messages.tagDisabled"));
+      toast.success(
+        tag.isDeleted ? t("messages.tagEnabled") : t("messages.tagDisabled"),
+      );
 
       // Refetch in background to ensure data consistency
-      queryClient.invalidateQueries({ queryKey: ["tags"] });
+      queryClient.invalidateQueries({ queryKey: ["call-tags"] });
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("messages.toggleFailed"), {

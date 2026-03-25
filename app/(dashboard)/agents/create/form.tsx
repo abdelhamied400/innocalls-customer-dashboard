@@ -14,7 +14,7 @@ import Stepper, {
 } from "@/components/ui/stepper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronLeftIcon, X } from "lucide-react";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, type FormEvent } from "react";
 import { useForm } from "react-hook-form";
 import {
   RadioGroup,
@@ -33,7 +33,9 @@ import { useTranslations } from "@/providers/TranslationProvider";
 
 const CreateUserForm = () => {
   const [ext, setExt] = useState<number | null>(null);
-  const [pin, setPin] = useState<string>("");
+  const [pin] = useState<string>(() =>
+    (Math.floor(Math.random() * 10000) + 1).toString().padStart(4, "0"),
+  );
 
   useEffect(() => {
     let isMounted = true;
@@ -45,15 +47,11 @@ const CreateUserForm = () => {
       .catch(() => {
         if (isMounted) setExt(1000);
       });
-    // Generate a random 4-digit PIN
-    const generatedPin = (Math.floor(Math.random() * 10000) + 1)
-      .toString()
-      .padStart(4, "0");
-    setPin(generatedPin);
     return () => {
       isMounted = false;
     };
   }, []);
+
   const queryClient = useQueryClient();
   const [currentStep, setCurrentStep] = useState(0);
   const closeSheetRef = useRef<HTMLButtonElement>(null);
@@ -73,9 +71,16 @@ const CreateUserForm = () => {
     },
   });
 
-  const onSubmit = form.handleSubmit(async (data) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const isValid = await form.trigger();
+    if (!isValid) return;
+
+    const data = form.getValues();
+
     try {
-      const res = await usersService.createUser(data);
+      await usersService.createUser(data);
       toast.info(t("messages.success"), {
         description: t("messages.successDescription", {
           name: form.getValues("name"),
@@ -83,18 +88,21 @@ const CreateUserForm = () => {
       });
       closeSheetRef.current?.click(); // Close the sheet
       queryClient.invalidateQueries({ queryKey: ["users"] }); // Invalidate the users query to refresh the list
+      queryClient.invalidateQueries({ queryKey: ["extensions"] }); // Invalidate the extensions query to refresh the list
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("messages.error"), {
-          description: error.response?.data?.message || t("messages.unknownError"),
+          description:
+            error.response?.data?.message || t("messages.unknownError"),
         });
       } else {
         toast.error(t("messages.error"), {
-          description: error instanceof Error ? error.message : t("messages.unknownError"),
+          description:
+            error instanceof Error ? error.message : t("messages.unknownError"),
         });
       }
     }
-  });
+  };
 
   if (ext === null || pin === "") {
     return (
@@ -127,7 +135,7 @@ const CreateUserForm = () => {
         </Button>
       </StepperHeader>
 
-      <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[600px] max-h-[calc(100vh - 200px)]">
+      <StepperSteps className="flex-1 mx-auto my-8 w-75 md:w-150 max-h-[calc(100vh - 200px)]">
         <Form {...form}>
           <form onSubmit={onSubmit} className="h-full">
             <StepperStep

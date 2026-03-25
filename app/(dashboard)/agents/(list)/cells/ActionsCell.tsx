@@ -51,6 +51,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       setIsActivating(true);
       await usersService.activateUser(row.original.id);
       await queryClient.invalidateQueries({ queryKey: ["users"] }); // Invalidate the users query to refresh the list
+      await queryClient.invalidateQueries({ queryKey: ["extensions"] }); // Invalidate the extensions query to refresh the list
       toast.success(t("messages.userActivated"), {
         description: t("messages.userActivatedDesc", {
           name: row.original.name,
@@ -59,11 +60,13 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("messages.errorActivating"), {
-          description: error.response?.data?.message || t("messages.actionError"),
+          description:
+            error.response?.data?.message || t("messages.actionError"),
         });
       } else {
         toast.error(t("messages.errorActivating"), {
-          description: error instanceof Error
+          description:
+            error instanceof Error
               ? error.message
               : t("messages.unexpectedError"),
         });
@@ -78,6 +81,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       setIsDeactivating(true);
       await usersService.deactivateUser(row.original.id);
       await queryClient.invalidateQueries({ queryKey: ["users"] }); // Invalidate the users query to refresh the list
+      await queryClient.invalidateQueries({ queryKey: ["extensions"] }); // Invalidate the extensions query to refresh the list
       toast.success(t("messages.userDeactivated"), {
         description: t("messages.userDeactivatedDesc", {
           name: row.original.name,
@@ -86,11 +90,13 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("messages.errorDeactivating"), {
-          description: error.response?.data?.message || t("messages.actionError"),
+          description:
+            error.response?.data?.message || t("messages.actionError"),
         });
       } else {
         toast.error(t("messages.errorDeactivating"), {
-          description: error instanceof Error
+          description:
+            error instanceof Error
               ? error.message
               : t("messages.unexpectedError"),
         });
@@ -105,17 +111,20 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
       setIsDeleting(true);
       await usersService.deleteUser(row.original.id);
       await queryClient.invalidateQueries({ queryKey: ["users"] }); // Invalidate the users query to refresh the list
+      await queryClient.invalidateQueries({ queryKey: ["extensions"] }); // Invalidate the extensions query to refresh the list
       toast.success(t("messages.userDeleted"), {
         description: t("messages.userDeletedDesc", { name: row.original.name }),
       });
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("messages.errorDeleting"), {
-          description: error.response?.data?.message || t("messages.actionError"),
+          description:
+            error.response?.data?.message || t("messages.actionError"),
         });
       } else {
         toast.error(t("messages.errorDeleting"), {
-          description: error instanceof Error
+          description:
+            error instanceof Error
               ? error.message
               : t("messages.unexpectedError"),
         });
