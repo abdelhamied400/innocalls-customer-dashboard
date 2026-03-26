@@ -4689,5 +4689,159 @@
         "error": "Failed to create ticket"
       }
     }
+  },
+  "callBridge": {
+    "list": {
+      "title": "Call Bridge",
+      "search": "Search...",
+      "create": "Create Bridge",
+      "columns": {
+        "creationDate": "Creation Date",
+        "name": "Name",
+        "actions": "Actions"
+      }
+    },
+    "details": {
+      "title": "Bridge Details",
+      "description": "View call bridge configuration",
+      "loading": "Loading...",
+      "notFound": "Bridge not found",
+      "fields": {
+        "name": "Name",
+        "createdAt": "Created At",
+        "callers": "Caller IDs",
+        "firstRecipientTrialsCount": "First Recipient Trials",
+        "secondRecipientTrialsCount": "Second Recipient Trials",
+        "firstRecipientDelay": "First Recipient Delay",
+        "secondRecipientDelay": "Second Recipient Delay",
+        "warningTimeBeforeEnd": "Warning Time Before End",
+        "soundFiles": "Sound Files",
+        "welcomeSound": "Welcome Sound",
+        "alertSound": "Alert Sound",
+        "firstRecipientSorrySound": "First Recipient Sorry Sound",
+        "secondRecipientSorrySound": "Second Recipient Sorry Sound",
+        "warningSound": "Warning Sound"
+      }
+    },
+    "create": {
+      "title": "Create Call Bridge",
+      "description": "Create a new call bridge to connect callers",
+      "steps": {
+        "details": {
+          "title": "Bridge Details"
+        },
+        "soundFiles": {
+          "title": "Sound Files"
+        }
+      },
+      "form": {
+        "name": {
+          "label": "Bridge Name",
+          "placeholder": "Enter bridge name",
+          "validation": {
+            "required": "Bridge name is required",
+            "min": "Bridge name must be at least {min} characters",
+            "max": "Bridge name must be at most {max} characters"
+          }
+        },
+        "callers": {
+          "label": "Caller IDs",
+          "validation": {
+            "min": "At least {min} caller ID must be added",
+            "destination": {
+              "required": "Destination is required"
+            },
+            "callerNumber": {
+              "required": "Caller number is required"
+            }
+          }
+        },
+        "firstRecipientTrialsCount": {
+          "label": "First Recipient Trials Count",
+          "hint": "Min 1, Max 10",
+          "validation": {
+            "min": "Must be at least {min}",
+            "max": "Must be at most {max}"
+          }
+        },
+        "secondRecipientTrialsCount": {
+          "label": "Second Recipient Trials Count",
+          "hint": "Min 1, Max 10",
+          "validation": {
+            "min": "Must be at least {min}",
+            "max": "Must be at most {max}"
+          }
+        },
+        "firstRecipientDelayMinutesBetweenTrials": {
+          "label": "First Recipient Delay (minutes)",
+          "validation": {
+            "min": "Must be at least {min} minutes"
+          }
+        },
+        "secondRecipientDelayMinutesBetweenTrials": {
+          "label": "Second Recipient Delay (minutes)",
+          "validation": {
+            "min": "Must be at least {min} minutes",
+            "max": "Must be at most {max} minutes"
+          }
+        },
+        "warningTimeBeforeEnd": {
+          "label": "Warning Time Before End (minutes)",
+          "hint": "Required when a warning sound is uploaded",
+          "validation": {
+            "min": "Must be at least {min} minute"
+          }
+        },
+        "welcomeSoundFile": {
+          "label": "Welcome Sound",
+          "validation": {
+            "required": "Welcome sound is required",
+            "type": "Only MP3 files are allowed",
+            "size": "File size must be less than 10MB"
+          }
+        },
+        "alertSoundFile": {
+          "label": "Alert Sound",
+          "validation": {
+            "required": "Alert sound is required",
+            "type": "Only MP3 files are allowed",
+            "size": "File size must be less than 10MB"
+          }
+        },
+        "firstRecipientSorrySoundFile": {
+          "label": "First Recipient Sorry Sound",
+          "validation": {
+            "required": "First recipient sorry sound is required",
+            "type": "Only MP3 files are allowed",
+            "size": "File size must be less than 10MB"
+          }
+        },
+        "secondRecipientSorrySoundFile": {
+          "label": "Second Recipient Sorry Sound",
+          "validation": {
+            "required": "Second recipient sorry sound is required",
+            "type": "Only MP3 files are allowed",
+            "size": "File size must be less than 10MB"
+          }
+        },
+        "warningSoundFile": {
+          "label": "Warning Sound",
+          "optional": "(Optional)",
+          "validation": {
+            "type": "Only MP3 files are allowed",
+            "size": "File size must be less than 10MB"
+          }
+        },
+        "next": "Next",
+        "submit": "Create Bridge",
+        "submitting": "Creating..."
+      },
+      "toasts": {
+        "success": "Bridge created successfully",
+        "successDescription": "The call bridge has been created successfully.",
+        "error": "Failed to create bridge",
+        "errorDescription": "An error occurred while creating the bridge. Please try again."
+      }
+    }
   }
 }

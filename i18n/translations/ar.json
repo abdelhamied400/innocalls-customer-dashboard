@@ -4704,5 +4704,159 @@
         "error": "فشل إنشاء التذكرة"
       }
     }
+  },
+  "callBridge": {
+    "list": {
+      "title": "جسر المكالمات",
+      "search": "بحث...",
+      "create": "إنشاء جسر",
+      "columns": {
+        "creationDate": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "actions": "الإجراءات"
+      }
+    },
+    "details": {
+      "title": "تفاصيل الجسر",
+      "description": "عرض إعدادات جسر المكالمات",
+      "loading": "جارٍ التحميل...",
+      "notFound": "لم يُعثر على الجسر",
+      "fields": {
+        "name": "الاسم",
+        "createdAt": "تاريخ الإنشاء",
+        "callers": "أرقام المتصلين",
+        "firstRecipientTrialsCount": "محاولات المستلم الأول",
+        "secondRecipientTrialsCount": "محاولات المستلم الثاني",
+        "firstRecipientDelay": "تأخير المستلم الأول",
+        "secondRecipientDelay": "تأخير المستلم الثاني",
+        "warningTimeBeforeEnd": "وقت التحذير قبل الانتهاء",
+        "soundFiles": "ملفات الصوت",
+        "welcomeSound": "صوت الترحيب",
+        "alertSound": "صوت التنبيه",
+        "firstRecipientSorrySound": "صوت الاعتذار للمستلم الأول",
+        "secondRecipientSorrySound": "صوت الاعتذار للمستلم الثاني",
+        "warningSound": "صوت التحذير"
+      }
+    },
+    "create": {
+      "title": "إنشاء جسر مكالمات",
+      "description": "أنشئ جسر مكالمات جديداً للربط بين المتصلين",
+      "steps": {
+        "details": {
+          "title": "تفاصيل الجسر"
+        },
+        "soundFiles": {
+          "title": "ملفات الصوت"
+        }
+      },
+      "form": {
+        "name": {
+          "label": "اسم الجسر",
+          "placeholder": "أدخل اسم الجسر",
+          "validation": {
+            "required": "اسم الجسر مطلوب",
+            "min": "يجب أن يكون اسم الجسر {min} أحرف على الأقل",
+            "max": "يجب أن لا يتجاوز اسم الجسر {max} حرف"
+          }
+        },
+        "callers": {
+          "label": "أرقام المتصلين",
+          "validation": {
+            "min": "يجب إضافة رقم متصل واحد على الأقل",
+            "destination": {
+              "required": "الوجهة مطلوبة"
+            },
+            "callerNumber": {
+              "required": "رقم المتصل مطلوب"
+            }
+          }
+        },
+        "firstRecipientTrialsCount": {
+          "label": "عدد محاولات المستلم الأول",
+          "hint": "الحد الأدنى 1، الحد الأقصى 10",
+          "validation": {
+            "min": "يجب أن يكون على الأقل {min}",
+            "max": "يجب أن لا يتجاوز {max}"
+          }
+        },
+        "secondRecipientTrialsCount": {
+          "label": "عدد محاولات المستلم الثاني",
+          "hint": "الحد الأدنى 1، الحد الأقصى 10",
+          "validation": {
+            "min": "يجب أن يكون على الأقل {min}",
+            "max": "يجب أن لا يتجاوز {max}"
+          }
+        },
+        "firstRecipientDelayMinutesBetweenTrials": {
+          "label": "تأخير المستلم الأول (دقائق)",
+          "validation": {
+            "min": "يجب أن يكون على الأقل {min} دقيقة"
+          }
+        },
+        "secondRecipientDelayMinutesBetweenTrials": {
+          "label": "تأخير المستلم الثاني (دقائق)",
+          "validation": {
+            "min": "يجب أن يكون على الأقل {min} دقيقة",
+            "max": "يجب أن لا يتجاوز {max} دقائق"
+          }
+        },
+        "warningTimeBeforeEnd": {
+          "label": "وقت التحذير قبل الانتهاء (دقائق)",
+          "hint": "مطلوب عند رفع صوت تحذير",
+          "validation": {
+            "min": "يجب أن يكون على الأقل {min} دقيقة"
+          }
+        },
+        "welcomeSoundFile": {
+          "label": "صوت الترحيب",
+          "validation": {
+            "required": "صوت الترحيب مطلوب",
+            "type": "يُسمح فقط بملفات MP3",
+            "size": "يجب أن لا يتجاوز حجم الملف 10 ميجابايت"
+          }
+        },
+        "alertSoundFile": {
+          "label": "صوت التنبيه",
+          "validation": {
+            "required": "صوت التنبيه مطلوب",
+            "type": "يُسمح فقط بملفات MP3",
+            "size": "يجب أن لا يتجاوز حجم الملف 10 ميجابايت"
+          }
+        },
+        "firstRecipientSorrySoundFile": {
+          "label": "صوت الاعتذار للمستلم الأول",
+          "validation": {
+            "required": "صوت الاعتذار للمستلم الأول مطلوب",
+            "type": "يُسمح فقط بملفات MP3",
+            "size": "يجب أن لا يتجاوز حجم الملف 10 ميجابايت"
+          }
+        },
+        "secondRecipientSorrySoundFile": {
+          "label": "صوت الاعتذار للمستلم الثاني",
+          "validation": {
+            "required": "صوت الاعتذار للمستلم الثاني مطلوب",
+            "type": "يُسمح فقط بملفات MP3",
+            "size": "يجب أن لا يتجاوز حجم الملف 10 ميجابايت"
+          }
+        },
+        "warningSoundFile": {
+          "label": "صوت التحذير",
+          "optional": "(اختياري)",
+          "validation": {
+            "type": "يُسمح فقط بملفات MP3",
+            "size": "يجب أن لا يتجاوز حجم الملف 10 ميجابايت"
+          }
+        },
+        "next": "التالي",
+        "submit": "إنشاء الجسر",
+        "submitting": "جاري الإنشاء..."
+      },
+      "toasts": {
+        "success": "تم إنشاء الجسر بنجاح",
+        "successDescription": "تم إنشاء جسر المكالمات بنجاح.",
+        "error": "فشل إنشاء الجسر",
+        "errorDescription": "حدث خطأ أثناء إنشاء الجسر. يرجى المحاولة مرة أخرى."
+      }
+    }
   }
 }
