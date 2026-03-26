@@ -77,16 +77,18 @@ const TagActionsCell = ({ tag }: TagActionsCellProps) => {
   return (
     <TooltipProvider>
       <div className="flex gap-2">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link href={`/settings/call/edit-tag?id=${tag.id}`}>
-              <Button variant="ghost" size="icon" className="text-gray-400">
-                <Edit />
-              </Button>
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent>{t("actions.edit")}</TooltipContent>
-        </Tooltip>
+        {!tag.isDeleted && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link href={`/settings/call/edit-tag?id=${tag.id}`}>
+                <Button variant="ghost" size="icon" className="text-gray-400">
+                  <Edit />
+                </Button>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent>{t("actions.edit")}</TooltipContent>
+          </Tooltip>
+        )}
 
         <AlertDialog>
           <Tooltip>

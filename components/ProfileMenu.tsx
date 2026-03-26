@@ -176,19 +176,21 @@ const ProfileMenu = () => {
             <ExpandCircleDownOutlinedIcon className="text-neutral-300" />
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent className="flex flex-col max-h-60">
           <DropdownMenuLabel>{t("organizations")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {auth?.organizations?.map((org) => (
-            <DropdownMenuItem
-              key={org.name}
-              className="flex flex-col items-start gap-0"
-              onClick={() => handleOrganizationChange(org)}
-            >
-              <span>{org.name}</span>
-              <span className="text-xs text-gray-600"></span>
-            </DropdownMenuItem>
-          ))}
+          <div className="overflow-y-auto flex-1">
+            {auth?.organizations?.map((org) => (
+              <DropdownMenuItem
+                key={org.name}
+                className="flex flex-col items-start gap-0"
+                onClick={() => handleOrganizationChange(org)}
+              >
+                <span>{org.name}</span>
+                <span className="text-xs text-gray-600"></span>
+              </DropdownMenuItem>
+            ))}
+          </div>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
             <Button
