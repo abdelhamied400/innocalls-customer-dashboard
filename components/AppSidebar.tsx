@@ -224,14 +224,16 @@ const AppSidebar = () => {
               isNew={false}
               isComingSoon={true}
             />
-            <SidebarItem
-              icon={<Hub />}
-              title={t("navigation.callBridge")}
-              href={`/analytics/call-bridge`}
-              disabled={true}
-              isNew={false}
-              isComingSoon={true}
-            />
+            {auth?.user?.fullAccessConferenceBridge && (
+              <SidebarItem
+                icon={<Hub />}
+                title={t("navigation.callBridge")}
+                href={`/call-bridge`}
+                disabled={false}
+                isNew={true}
+                isComingSoon={false}
+              />
+            )}
             <SidebarItem
               icon={<ShoppingCart />}
               title={t("navigation.orderConfirmation")}
