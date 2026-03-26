@@ -176,7 +176,7 @@ const ProfileMenu = () => {
             <ExpandCircleDownOutlinedIcon className="text-neutral-300" />
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent className="max-h-60 overflow-auto">
           <DropdownMenuLabel>{t("organizations")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           {auth?.organizations?.map((org) => (
