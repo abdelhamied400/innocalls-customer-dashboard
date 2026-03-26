@@ -136,9 +136,9 @@ const AppSidebar = () => {
               icon={<RingVolume />}
               title={t("navigation.autoDialer")}
               href={`/auto-dialer`}
-              disabled={true}
-              isNew={false}
-              isComingSoon={true}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
             />
           </SidebarCollapsibleItem>
         )}
@@ -203,9 +203,9 @@ const AppSidebar = () => {
                 icon={<RingVolume />}
                 title={t("navigation.autoDialer")}
                 href={`/auto-dialer`}
-                disabled={true}
-                isNew={false}
-                isComingSoon={true}
+                disabled={false}
+                isNew={true}
+                isComingSoon={false}
               />
             )}
             <SidebarItem
