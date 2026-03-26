@@ -229,9 +229,9 @@ const AppSidebar = () => {
                 icon={<Hub />}
                 title={t("navigation.callBridge")}
                 href={`/call-bridge`}
-                disabled={false}
-                isNew={true}
-                isComingSoon={false}
+                disabled={true}
+                isNew={false}
+                isComingSoon={true}
               />
             )}
             <SidebarItem

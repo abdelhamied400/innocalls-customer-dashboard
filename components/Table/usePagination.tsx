@@ -35,9 +35,9 @@ const usePagination = <TData,>(table: Table<TData>, options: Options) => {
     serverPagination?.hasNext !== undefined &&
     serverPagination?.total === undefined;
 
-  // Use server-provided total, or calculate it
+  // Use server-provided total, or calculate it from table's row count
   // In hasNext mode without total, we don't know the real total
-  const totalItems = serverPagination?.total ?? currentPageRowCount;
+  const totalItems = serverPagination?.total ?? table.getRowCount();
 
   // Calculate row indices based on current page
   const calculatedStart = tablePagination.pageIndex * pageSize + 1;
