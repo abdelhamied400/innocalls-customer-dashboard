@@ -572,6 +572,7 @@
       }
     },
     "reportTypes": {
+      "unanswered_queue_calls": "Unanswered Queue Calls",
       "outbound_summary": "Outbound Summary",
       "outbound_agent_stats": "Outbound Agent Stats",
       "outbound_date_distribution": "Outbound Date Distribution",
@@ -712,6 +713,15 @@
             },
             "includeInternalCalls": {
               "label": "Include Internal Calls"
+            },
+            "queues": {
+              "label": "Queues",
+              "placeholder": "Select queues (optional)"
+            },
+            "waitTimeThreshold": {
+              "label": "Wait Time Threshold (seconds)",
+              "placeholder": "50",
+              "hint": "Calls with wait time above this threshold are classified as Long Wait"
             }
           },
           "validation": {
@@ -747,6 +757,9 @@
             },
             "sla": {
               "invalid": "SLA must be a number greater than 0"
+            },
+            "waitTimeThreshold": {
+              "invalid": "Wait time threshold must be a number greater than 0"
             }
           }
         },
@@ -933,6 +946,15 @@
             "includeInternalCalls": {
               "label": "Include Internal Calls"
             },
+            "queues": {
+              "label": "Queues",
+              "placeholder": "Select queues (optional)"
+            },
+            "waitTimeThreshold": {
+              "label": "Wait Time Threshold (seconds)",
+              "placeholder": "50",
+              "hint": "Calls with wait time above this threshold are classified as Long Wait"
+            },
             "timezone": {
               "label": "Timezone",
               "placeholder": "Select timezone"
@@ -1004,6 +1026,9 @@
             },
             "sla": {
               "invalid": "SLA must be a number greater than 0"
+            },
+            "waitTimeThreshold": {
+              "invalid": "Wait time threshold must be a number greater than 0"
             },
             "timezone": {
               "required": "Timezone is required"

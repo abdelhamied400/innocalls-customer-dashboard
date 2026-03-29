@@ -54,11 +54,6 @@ export const usePhoneHistoryColumns = (): ColumnDef<PhoneHistoryItem>[] => {
         cell: ({ row }) => row.original.duration,
       },
       {
-        accessorKey: "totalHoldTime",
-        header: t("totalWaitTime"),
-        cell: ({ row }) => row.original.totalHoldTime,
-      },
-      {
         accessorKey: "recording",
         header: t("recording"),
         cell: ({ row }) =>

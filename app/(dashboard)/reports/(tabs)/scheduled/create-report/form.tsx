@@ -56,6 +56,8 @@ const CreateReportForm = () => {
       extensions: "",
       sla: "",
       includeInternalCalls: false,
+      queues: "",
+      waitTimeThreshold: "",
       timezone: "",
       frequency: "",
       daysOfWeek: [],
@@ -138,6 +140,14 @@ const CreateReportForm = () => {
 
     if (data.sla?.trim()) {
       reportConfig.sla = parseInt(data.sla, 10);
+    }
+
+    if (data.queues?.trim()) {
+      reportConfig.queues = data.queues.trim();
+    }
+
+    if (data.waitTimeThreshold?.trim()) {
+      reportConfig.waitTimeThreshold = parseInt(data.waitTimeThreshold, 10);
     }
 
     const payload: CreateScheduledReportPayload = {

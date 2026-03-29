@@ -13,6 +13,8 @@ import {
   shouldShowExtensions,
   shouldShowQueue,
   shouldShowSla,
+  shouldShowQueues,
+  shouldShowWaitTimeThreshold,
 } from "@/constants/reports";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { useReportOptions } from "@/hooks/useReportOptions";
@@ -51,6 +53,8 @@ const ReportDetailsStep = ({
   const showExtensions = shouldShowExtensions(reportType);
   const showQueue = shouldShowQueue(reportType);
   const showSla = shouldShowSla(reportType);
+  const showQueues = shouldShowQueues(reportType);
+  const showWaitTimeThreshold = shouldShowWaitTimeThreshold(reportType);
 
   // Date range start options
   const dateRangeStartOptions = [
@@ -93,6 +97,12 @@ const ReportDetailsStep = ({
     }
     if (!shouldShowSla(newReportType)) {
       setValue("sla", "");
+    }
+    if (!shouldShowQueues(newReportType)) {
+      setValue("queues", "");
+    }
+    if (!shouldShowWaitTimeThreshold(newReportType)) {
+      setValue("waitTimeThreshold", "");
     }
   };
 
@@ -413,6 +423,83 @@ const ReportDetailsStep = ({
                       type="number"
                       min={1}
                       placeholder={t("form.fields.sla.placeholder")}
+                      {...field}
+                    />
+                  </Field>
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        )}
+
+        {/* Queues Multi-Select - Only for Unanswered Queue Calls */}
+        {showQueues && (
+          <FormField
+            control={control}
+            name="queues"
+            render={({ field }) => {
+              const selectedValues = field.value
+                ? field.value
+                    .split(",")
+                    .map((v) => v.trim())
+                    .filter(Boolean)
+                : [];
+              const selectedOptions = queueOptions.filter((opt) =>
+                selectedValues.includes(opt.value),
+              );
+
+              return (
+                <FormItem>
+                  <FormControl>
+                    <Select
+                      classNames={{
+                        valueContainer: () => "font-semibold",
+                        menuList: () => "font-semibold",
+                      }}
+                      label={t("form.fields.queues.label")}
+                      options={queueOptions}
+                      value={selectedOptions}
+                      onChange={(options) => {
+                        const values = Array.isArray(options)
+                          ? options.map((opt: any) => opt.value).join(",")
+                          : "";
+                        field.onChange(values);
+                      }}
+                      placeholder={t("form.fields.queues.placeholder")}
+                      error={errors.queues?.message}
+                      isMulti
+                      noOptionsMessage={noOptionsMessage}
+                    />
+                  </FormControl>
+                </FormItem>
+              );
+            }}
+          />
+        )}
+
+        {/* Wait Time Threshold - Only for Unanswered Queue Calls */}
+        {showWaitTimeThreshold && (
+          <FormField
+            control={control}
+            name="waitTimeThreshold"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Field
+                    label={t("form.fields.waitTimeThreshold.label")}
+                    hint={t("form.fields.waitTimeThreshold.hint")}
+                    htmlFor="waitTimeThreshold"
+                    error={errors.waitTimeThreshold?.message}
+                  >
+                    <Input
+                      id="waitTimeThreshold"
+                      variant="field"
+                      className="font-semibold placeholder:font-normal"
+                      type="number"
+                      min={1}
+                      placeholder={t(
+                        "form.fields.waitTimeThreshold.placeholder",
+                      )}
                       {...field}
                     />
                   </Field>

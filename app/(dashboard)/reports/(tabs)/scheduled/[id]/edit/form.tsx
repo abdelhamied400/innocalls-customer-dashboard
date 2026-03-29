@@ -74,6 +74,8 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
       extensions: "",
       sla: "",
       includeInternalCalls: false,
+      queues: "",
+      waitTimeThreshold: "",
       timezone: "",
       frequency: "",
       daysOfWeek: [],
@@ -131,6 +133,12 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
       }
       if (report.reportConfig?.sla) {
         setValue("sla", String(report.reportConfig.sla));
+      }
+      if (report.reportConfig?.queues) {
+        setValue("queues", report.reportConfig.queues);
+      }
+      if (report.reportConfig?.waitTimeThreshold) {
+        setValue("waitTimeThreshold", String(report.reportConfig.waitTimeThreshold));
       }
 
       setValue("timezone", report.timezone);
@@ -211,6 +219,14 @@ const EditReportForm = ({ reportId }: EditReportFormProps) => {
 
     if (data.sla?.trim()) {
       reportConfig.sla = parseInt(data.sla, 10);
+    }
+
+    if (data.queues?.trim()) {
+      reportConfig.queues = data.queues.trim();
+    }
+
+    if (data.waitTimeThreshold?.trim()) {
+      reportConfig.waitTimeThreshold = parseInt(data.waitTimeThreshold, 10);
     }
 
     const payload: UpdateScheduledReportPayload = {
