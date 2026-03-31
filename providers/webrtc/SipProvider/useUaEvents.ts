@@ -3,7 +3,7 @@ import { useRouting } from "@/providers/RoutingProvider";
 import { ExtensionState, SessionState, SpyingStatus } from "./types";
 import JsSIP, { C } from "jssip";
 import { RTCSessionEvent } from "jssip/src/UA";
-import { CallListener, OutgoingEvent, RTCSession } from "jssip/lib/RTCSession";
+import { OutgoingEvent, RTCSession } from "jssip/lib/RTCSession";
 import { ExtensionWithCredentials } from "@/types/api/extension";
 
 import * as Sentry from "@sentry/nextjs";
@@ -11,14 +11,16 @@ import { addCallToLog } from "@/lib/call-log";
 import { webrtcLogger } from "@/lib/logger";
 import useWebrtcStore from "@/store/webrtc.slice";
 import webrtcService from "@/services/webrtc.service";
-import { differenceInSeconds, format, intervalToDuration } from "date-fns";
+import { differenceInSeconds } from "date-fns";
 import { useSession } from "@/hooks/useSession";
-import { forcePCMA, parseAutoDialerCallee } from "@/lib/webrtc";
+import { parseAutoDialerCallee } from "@/lib/webrtc";
 import { processPhoneNumber } from "@/lib/dialpad-utils";
+import { toast } from "sonner";
 
 export type useUAEventsDeps = {
   setExtensionState: React.Dispatch<React.SetStateAction<ExtensionState>>;
   setCurrentSession: React.Dispatch<React.SetStateAction<RTCSession | null>>;
+  currentSessionRef: React.MutableRefObject<RTCSession | null>;
   setSessionState: React.Dispatch<
     React.SetStateAction<SessionState | undefined>
   >;
@@ -28,6 +30,7 @@ export type useUAEventsDeps = {
 export const useUaEvents = ({
   setExtensionState,
   setCurrentSession,
+  currentSessionRef,
   setSessionState,
   setIsSpying,
   setSpyingStatus,
@@ -171,13 +174,28 @@ export const useUaEvents = ({
     [navigate, stopRingtone, updateSessionState],
   );
 
+  const playRingingTone = useCallback(() => {
+    if (ringingToneRef.current) {
+      // Already playing
+      return ringingToneRef.current;
+    }
+    ringingToneRef.current = document.createElement("audio");
+    ringingToneRef.current.src = "/assets/sound/ringing.mp3";
+    ringingToneRef.current.load();
+    ringingToneRef.current.loop = true;
+    ringingToneRef.current
+      .play()
+      .catch((err) => webrtcLogger.error("Error playing ringing tone", err));
+    return ringingToneRef.current;
+  }, []);
+
   const handleOutgoingCall = useCallback(
     (e: RTCSessionEvent, extension: ExtensionWithCredentials) => {
       webrtcLogger.info("Outgoing call initiated", { session: e.session });
       const session = e.session;
 
-      session.on("sdp", (e) => {
-        // e.sdp = forcePCMA(e.sdp);
+      session.on("sdp", () => {
+        // Codec manipulation can be reintroduced here if needed.
       });
 
       const connection = session.connection;
@@ -210,7 +228,7 @@ export const useUaEvents = ({
         updateSessionState("answered");
       });
 
-      session.on("failed", (event) => {
+      session.on("failed", () => {
         if (authSession?.userType === "agent" && !!currentCallId.current) {
           setCallSummaryModalOpen(true);
         }
@@ -233,29 +251,39 @@ export const useUaEvents = ({
       navigate("/call");
       updateSessionState("trying");
     },
-    [navigate, updateSessionState],
+    [
+      authSession?.userType,
+      navigate,
+      playRingingTone,
+      setCallSummaryModalOpen,
+      updateSessionState,
+    ],
   );
-
-  const playRingingTone = useCallback(() => {
-    if (ringingToneRef.current) {
-      // Already playing
-      return ringingToneRef.current;
-    }
-    ringingToneRef.current = document.createElement("audio");
-    ringingToneRef.current.src = "/assets/sound/ringing.mp3";
-    ringingToneRef.current.load();
-    ringingToneRef.current.loop = true;
-    ringingToneRef.current
-      .play()
-      .catch((err) => webrtcLogger.error("Error playing ringing tone", err));
-    return ringingToneRef.current;
-  }, []);
 
   const stopRingingTone = useCallback(() => {
     if (ringingToneRef.current) {
       ringingToneRef.current.pause();
       ringingToneRef.current.currentTime = 0;
     }
+  }, []);
+
+  const rejectAdditionalSession = useCallback((session: RTCSession) => {
+    webrtcLogger.warn("Rejected additional WebRTC session", {
+      direction: session.direction,
+    });
+
+    try {
+      session.terminate({
+        status_code: 486,
+        reason_phrase: "Busy Here",
+      });
+    } catch (error) {
+      webrtcLogger.warn("Failed to reject additional WebRTC session", error);
+    }
+
+    // toast.error("Error", {
+    //   description: "Only one WebRTC call can be open at a time.",
+    // });
   }, []);
 
   const bindEvents = useCallback(
@@ -279,6 +307,11 @@ export const useUaEvents = ({
       });
       userAgent.on("newRTCSession", async (e: RTCSessionEvent) => {
         const session = e.session;
+
+        if (currentSessionRef.current) {
+          rejectAdditionalSession(session);
+          return;
+        }
 
         setCurrentSession?.(session);
 
@@ -390,12 +423,21 @@ export const useUaEvents = ({
       });
     },
     [
+      authSession?.userType,
+      currentSessionRef,
+      setCallStartTime,
+      setCallSummaryModalOpen,
       setExtensionState,
+      setIsSpying,
+      setSpyingStatus,
       handleIncomingCall,
       handleOutgoingCall,
-      setCurrentSession,
       navigate,
+      rejectAdditionalSession,
+      setCurrentSession,
       stopRingtone,
+      stopRingingTone,
+      updateLastCall,
       updateSessionState,
     ],
   );

@@ -48,7 +48,9 @@ const cleanupAllUserAgents = () => {
       ua.stop();
     } catch (error) {
       console.warn("Error stopping user agent:", error);
-      Sentry.captureException(error, { tags: { component: "webrtc", action: "cleanupUserAgent" } });
+      Sentry.captureException(error, {
+        tags: { component: "webrtc", action: "cleanupUserAgent" },
+      });
     }
   });
   activeUserAgents.clear();
@@ -79,11 +81,16 @@ export const SipProvider = ({ children }: SipProviderProps) => {
     auth?.user?.latestActivity?.type || AgentActivity.CONNECTED_NOT_READY;
 
   const uaRef = useRef<JsSIP.UA | null>(null);
+  const currentSessionRef = useRef<RTCSession | null>(null);
 
   // Keep uaRef in sync with ua state
   useEffect(() => {
     uaRef.current = ua;
   }, [ua]);
+
+  useEffect(() => {
+    currentSessionRef.current = currentSession;
+  }, [currentSession]);
 
   const { setExtension: setExtensionStore } = useWebrtcStore();
 
@@ -112,6 +119,7 @@ export const SipProvider = ({ children }: SipProviderProps) => {
   const { bindEvents, unbindEvents, stopRingtone } = useUaEvents({
     setExtensionState,
     setCurrentSession,
+    currentSessionRef,
     setSessionState,
     setIsSpying,
     setSpyingStatus,
@@ -231,6 +239,13 @@ export const SipProvider = ({ children }: SipProviderProps) => {
       }
       if (!phoneNumber && !number) {
         console.error("Phone number is not provided");
+        return;
+      }
+
+      if (currentSessionRef.current) {
+        // toast.error("Error", {
+        //   description: "Only one WebRTC call can be open at a time.",
+        // });
         return;
       }
 
