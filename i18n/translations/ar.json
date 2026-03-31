@@ -572,6 +572,7 @@
       }
     },
     "reportTypes": {
+      "unanswered_queue_calls": "مكالمات قائمة الانتظار غير المجابة",
       "outbound_summary": "ملخص المكالمات الصادرة",
       "outbound_agent_stats": "إحصائيات وكلاء المكالمات الصادرة",
       "outbound_date_distribution": "توزيع المكالمات الصادرة حسب التاريخ",
@@ -712,6 +713,15 @@
             },
             "includeInternalCalls": {
               "label": "تضمين المكالمات الداخلية"
+            },
+            "queues": {
+              "label": "قوائم الانتظار",
+              "placeholder": "اختر قوائم الانتظار (اختياري)"
+            },
+            "waitTimeThreshold": {
+              "label": "حد وقت الانتظار (ثواني)",
+              "placeholder": "50",
+              "hint": "المكالمات التي تتجاوز وقت الانتظار هذا تُصنف كانتظار طويل"
             }
           },
           "validation": {
@@ -747,6 +757,9 @@
             },
             "sla": {
               "invalid": "يجب أن يكون SLA رقمًا أكبر من 0"
+            },
+            "waitTimeThreshold": {
+              "invalid": "يجب أن يكون حد وقت الانتظار رقمًا أكبر من 0"
             }
           }
         },
@@ -933,6 +946,15 @@
             "includeInternalCalls": {
               "label": "تضمين المكالمات الداخلية"
             },
+            "queues": {
+              "label": "قوائم الانتظار",
+              "placeholder": "اختر قوائم الانتظار (اختياري)"
+            },
+            "waitTimeThreshold": {
+              "label": "حد وقت الانتظار (ثواني)",
+              "placeholder": "50",
+              "hint": "المكالمات التي تتجاوز وقت الانتظار هذا تُصنف كانتظار طويل"
+            },
             "timezone": {
               "label": "المنطقة الزمنية",
               "placeholder": "اختر المنطقة الزمنية"
@@ -1004,6 +1026,9 @@
             },
             "sla": {
               "invalid": "يجب أن يكون SLA رقمًا أكبر من 0"
+            },
+            "waitTimeThreshold": {
+              "invalid": "يجب أن يكون حد وقت الانتظار رقمًا أكبر من 0"
             },
             "timezone": {
               "required": "المنطقة الزمنية مطلوبة"

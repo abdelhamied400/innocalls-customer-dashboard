@@ -38,6 +38,18 @@ const createOneTimeReportSchema = (t: ReturnType<typeof useTranslations>) =>
           { message: t("form.validation.sla.invalid") },
         ),
       includeInternalCalls: z.boolean().optional().default(false),
+      queues: z.string().optional(),
+      waitTimeThreshold: z
+        .string()
+        .optional()
+        .refine(
+          (val) => {
+            if (!val || val.trim() === "") return true;
+            const num = parseInt(val, 10);
+            return !isNaN(num) && num >= 1;
+          },
+          { message: t("form.validation.waitTimeThreshold.invalid") },
+        ),
     })
     .superRefine((data, ctx) => {
       const reportType = data.report as ReportType;

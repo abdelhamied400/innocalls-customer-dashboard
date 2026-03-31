@@ -28,18 +28,16 @@ const usePagination = <TData,>(table: Table<TData>, options: Options) => {
   const pageSize = serverPagination?.limit ?? tablePagination.pageSize;
 
   // Get the current page's row count
-  const currentPageRowCount = options.isManualPagination
-    ? table.getRowCount()
-    : table.getFilteredRowModel().rows.length;
+  const currentPageRowCount = table.getRowModel().rows.length;
 
   // Check if we're in "hasNext mode" (no total provided, using hasNext instead)
   const isHasNextMode =
     serverPagination?.hasNext !== undefined &&
     serverPagination?.total === undefined;
 
-  // Use server-provided total, or calculate it
+  // Use server-provided total, or calculate it from table's row count
   // In hasNext mode without total, we don't know the real total
-  const totalItems = serverPagination?.total ?? currentPageRowCount;
+  const totalItems = serverPagination?.total ?? table.getRowCount();
 
   // Calculate row indices based on current page
   const calculatedStart = tablePagination.pageIndex * pageSize + 1;

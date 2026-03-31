@@ -1,5 +1,10 @@
 import { ReportType } from "@/types/api/report";
 
+// Unanswered Queue Calls Reports
+export const UNANSWERED_QUEUE_CALLS_REPORTS: ReportType[] = [
+  "unanswered_queue_calls",
+];
+
 // Report categories for conditional field rendering
 export const OUTBOUND_REPORTS: ReportType[] = [
   "outbound_summary",
@@ -38,6 +43,8 @@ export const AGENT_REPORTS: ReportType[] = [
 
 // Report type values for select dropdown
 export const REPORT_TYPE_VALUES: ReportType[] = [
+  // Unanswered Queue Calls
+  "unanswered_queue_calls",
   // Outbound Reports
   "outbound_summary",
   "outbound_agent_stats",
@@ -101,4 +108,14 @@ export const shouldShowQueue = (reportType: ReportType | undefined): boolean => 
 export const shouldShowSla = (reportType: ReportType | undefined): boolean => {
   if (!reportType) return false;
   return reportType === "agent_sla_compliance" || reportType === "agent_summary";
+};
+
+export const shouldShowQueues = (reportType: ReportType | undefined): boolean => {
+  if (!reportType) return false;
+  return UNANSWERED_QUEUE_CALLS_REPORTS.includes(reportType);
+};
+
+export const shouldShowWaitTimeThreshold = (reportType: ReportType | undefined): boolean => {
+  if (!reportType) return false;
+  return UNANSWERED_QUEUE_CALLS_REPORTS.includes(reportType);
 };

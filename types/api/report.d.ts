@@ -1,4 +1,6 @@
 export type ReportType =
+  // Unanswered Queue Calls
+  | "unanswered_queue_calls"
   // Outbound Reports
   | "outbound_summary"
   | "outbound_agent_stats"
@@ -39,6 +41,8 @@ export type OneTimeReportConfig = {
   timezone?: string;
   sla?: number;
   queue?: string;
+  queues?: string;
+  waitTimeThreshold?: number;
 };
 
 export type OneTimeReport = {
@@ -72,6 +76,8 @@ export type CreateOneTimeReportPayload = {
     extensions?: string; // Comma-separated numbers e.g. "101,102,103"
     sla?: number;
     queue?: string;
+    queues?: string; // Comma-separated queue names e.g. "sales,support"
+    waitTimeThreshold?: number;
   };
 };
 
@@ -100,6 +106,8 @@ export type ScheduledReportConfig = {
   timezone?: string;
   sla?: number;
   queue?: string;
+  queues?: string;
+  waitTimeThreshold?: number;
 };
 
 export type ScheduledReport = {
@@ -158,6 +166,8 @@ export type CreateScheduledReportPayload = {
     extensions?: string;
     sla?: number;
     queue?: string;
+    queues?: string;
+    waitTimeThreshold?: number;
   };
   timezone: string;
   frequency: ScheduledReportFrequency;
