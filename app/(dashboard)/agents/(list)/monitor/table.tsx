@@ -17,18 +17,10 @@ import { toast } from "sonner";
 import { useSip } from "@/providers/webrtc/SipProvider";
 import useAppStore from "@/store/app.slice";
 
-type UsersMonitorFilters = {};
-
-const defaultFilters: UsersMonitorFilters = {
-  search: "",
-};
-
 const UsersMonitorTable = ({}) => {
   const t = useTranslations("users.monitor");
   const { extensionState, spy } = useSip();
   const { setWebrtcOpen } = useAppStore();
-
-  const [filters, setFilters] = useState<UsersMonitorFilters>(defaultFilters);
 
   const {
     data = [],
@@ -37,7 +29,7 @@ const UsersMonitorTable = ({}) => {
     error,
     refetch,
   } = useLocalizedQuery({
-    queryKey: ["monitor-users", filters],
+    queryKey: ["monitor-users"],
     queryFn: async () => usersService.getUsersMonitor(),
     refetchInterval: 30000,
   });
@@ -64,12 +56,11 @@ const UsersMonitorTable = ({}) => {
       toast.error("Error fetching data", {
         description: message,
       });
-      setFilters(defaultFilters);
       setTimeout(() => {
         refetch();
       }, 0);
     }
-  }, [isError, error, toast]);
+  }, [isError, error, refetch]);
 
   return (
     <div className="flex flex-col gap-0 h-full border rounded-xl">
@@ -81,7 +72,7 @@ const UsersMonitorTable = ({}) => {
           onSpy,
         }}
       >
-        <MonitorUsersHead filters={filters} setFilters={setFilters} />
+        <MonitorUsersHead />
 
         <PaginatedTableContent>
           <PaginatedTableHead />

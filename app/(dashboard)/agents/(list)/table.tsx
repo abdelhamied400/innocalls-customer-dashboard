@@ -16,16 +16,10 @@ import PaginatedTablePagination from "@/components/Table/PaginatedTablePaginatio
 interface UsersTableProps {}
 
 const UsersTable = ({}: UsersTableProps) => {
-  const [filters, setFilters] = useState<Record<string, any>>({
-    name: "",
-    status: "",
-  });
-
-  // client-side data fetching
   const t = useTranslations("users.list");
 
   const { data = [], isLoading } = useLocalizedQuery<User[]>({
-    queryKey: ["users", filters],
+    queryKey: ["users"],
     queryFn: usersService.getUsers,
     refetchInterval(query) {
       // refetch every 3 seconds if there are pending users
@@ -45,7 +39,7 @@ const UsersTable = ({}: UsersTableProps) => {
         columns={columns(t)}
         manualPagination={false}
       >
-        <UsersTableHeader filters={filters} setFilters={setFilters} />
+        <UsersTableHeader />
         <PaginatedTableContent>
           <PaginatedTableHead />
           {isLoading && <PaginatedTableSkeleton />}

@@ -27,32 +27,19 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-interface UsersTableHeaderProps {
-  filters: Record<string, string>;
-  setFilters: React.Dispatch<React.SetStateAction<Record<string, any>>>;
-}
-
-const UsersTableHeader = ({ filters, setFilters }: UsersTableHeaderProps) => {
+const UsersTableHeader = () => {
   const t = useTranslations("users.list");
   const commonT = useTranslations("common.search");
   const { Organization } = useAuthStore();
 
-  const [status, setStatus] = useState<string[]>(
-    filters.status
-      ? Array.isArray(filters.status)
-        ? filters.status
-        : filters.status.split(",").filter(Boolean)
-      : []
-  );
+  const [name, setName] = useState("");
+  const [status, setStatus] = useState<string[]>([]);
 
   const { table } = usePaginatedTable();
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setFilters((prev) => ({
-      ...prev,
-      name: value,
-    }));
+    setName(value);
     table.setGlobalFilter(value);
     table.setPageIndex(0); // Reset to first page on search change
   };
@@ -67,7 +54,7 @@ const UsersTableHeader = ({ filters, setFilters }: UsersTableHeaderProps) => {
               <Input
                 variant="field"
                 placeholder={commonT("placeholder")}
-                value={filters.name}
+                value={name}
                 onChange={handleSearchChange}
                 type="search"
               />
@@ -98,11 +85,7 @@ const UsersTableHeader = ({ filters, setFilters }: UsersTableHeaderProps) => {
         <FilterBar
           onClear={() => {
             setStatus([]);
-            setFilters((prev) => ({
-              ...prev,
-              status: [],
-              name: "",
-            }));
+            setName("");
             table.resetColumnFilters();
             table.setGlobalFilter("");
             table.setPageIndex(0); // Reset to first page on filter change
@@ -113,17 +96,9 @@ const UsersTableHeader = ({ filters, setFilters }: UsersTableHeaderProps) => {
             label={t("filters.selectFromList")}
             onReset={() => {
               setStatus([]);
-              setFilters((prev) => ({
-                ...prev,
-                status: [],
-              }));
               table.resetColumnFilters();
             }}
             onApply={() => {
-              setFilters((prev) => ({
-                ...prev,
-                status: status.join(","),
-              }));
               table.setColumnFilters((prev) => [
                 ...prev.filter((col) => col.id !== "status"),
                 { id: "status", value: status.join(",") },

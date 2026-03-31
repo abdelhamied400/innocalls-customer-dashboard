@@ -4,21 +4,13 @@ import { Input } from "@/components/ui/input";
 import { Search } from "@mui/icons-material";
 import { useTranslations } from "@/providers/TranslationProvider";
 
-type MonitorUsersHeadProps = {
-  filters: Record<string, string>;
-  setFilters: React.Dispatch<React.SetStateAction<Record<string, any>>>;
-};
-const MonitorUsersHead = ({ filters, setFilters }: MonitorUsersHeadProps) => {
+const MonitorUsersHead = () => {
   const t = useTranslations("users.monitor");
   const searchT = useTranslations("common.search");
   const { table } = usePaginatedTable();
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    setFilters((prev) => ({
-      ...prev,
-      name: value,
-    }));
     table.setGlobalFilter(value);
     table.setPageIndex(0); // Reset to first page on search change
   };
@@ -31,7 +23,7 @@ const MonitorUsersHead = ({ filters, setFilters }: MonitorUsersHeadProps) => {
           <Input
             variant="field"
             placeholder={searchT("placeholder")}
-            value={filters.name || ""}
+            value={table.getState().globalFilter || ""}
             onChange={handleSearchChange}
             type="search"
           />
