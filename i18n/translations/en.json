@@ -4751,6 +4751,7 @@
         "secondRecipientTrialsCount": "Second Recipient Trials",
         "firstRecipientDelay": "First Recipient Delay",
         "secondRecipientDelay": "Second Recipient Delay",
+        "minutesValue": "{value} min",
         "warningTimeBeforeEnd": "Warning Time Before End",
         "soundFiles": "Sound Files",
         "welcomeSound": "Welcome Sound",
@@ -4883,6 +4884,18 @@
     "calls": {
       "title": "Bridge Calls",
       "create": "Create Call",
+      "statuses": {
+        "pending": "Pending",
+        "processing": "Processing",
+        "in_progress": "In Progress",
+        "complete": "Complete",
+        "deleted": "Deleted"
+      },
+      "endCallStatuses": {
+        "completed": "Completed",
+        "deleted": "Deleted",
+        "call_failed": "Call Failed"
+      },
       "table": {
         "columns": {
           "scheduleDateTime": "Scheduled At",

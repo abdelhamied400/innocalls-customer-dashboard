@@ -41,12 +41,6 @@ const CallBridgeHead = ({ filters, setFilters }: CallBridgeHeadProps) => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </Field>
-          <Link
-            className={cn(buttonVariants({ variant: "outline" }))}
-            href="/call-bridge/calls"
-          >
-            {t("list.calls")}
-          </Link>
           <Link className={cn(buttonVariants())} href="/call-bridge/create">
             {t("list.create")}
           </Link>

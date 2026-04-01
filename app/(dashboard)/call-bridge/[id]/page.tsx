@@ -66,11 +66,15 @@ const CallBridgeDetails = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 divide-x">
             <Property
               label={t("fields.firstRecipientDelay")}
-              value={`${bridge.firstRecipientDelayMinutesBetweenTrials} min`}
+              value={t("fields.minutesValue", {
+                value: bridge.firstRecipientDelayMinutesBetweenTrials,
+              })}
             />
             <Property
               label={t("fields.secondRecipientDelay")}
-              value={`${bridge.secondRecipientDelayMinutesBetweenTrials} min`}
+              value={t("fields.minutesValue", {
+                value: bridge.secondRecipientDelayMinutesBetweenTrials,
+              })}
             />
           </div>
           {bridge.warningTimeBeforeEnd != null && (
@@ -79,7 +83,9 @@ const CallBridgeDetails = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 divide-x">
                 <Property
                   label={t("fields.warningTimeBeforeEnd")}
-                  value={`${bridge.warningTimeBeforeEnd} min`}
+                  value={t("fields.minutesValue", {
+                    value: bridge.warningTimeBeforeEnd,
+                  })}
                 />
               </div>
             </>

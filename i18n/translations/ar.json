@@ -4767,6 +4767,7 @@
         "secondRecipientTrialsCount": "محاولات المستلم الثاني",
         "firstRecipientDelay": "تأخير المستلم الأول",
         "secondRecipientDelay": "تأخير المستلم الثاني",
+        "minutesValue": "{value} دقيقة",
         "warningTimeBeforeEnd": "وقت التحذير قبل الانتهاء",
         "soundFiles": "ملفات الصوت",
         "welcomeSound": "صوت الترحيب",
@@ -4899,6 +4900,18 @@
     "calls": {
       "title": "مكالمات الجسر",
       "create": "إنشاء مكالمة",
+      "statuses": {
+        "pending": "قيد الانتظار",
+        "processing": "قيد المعالجة",
+        "in_progress": "قيد التنفيذ",
+        "complete": "مكتملة",
+        "deleted": "محذوفة"
+      },
+      "endCallStatuses": {
+        "completed": "مكتملة",
+        "deleted": "محذوفة",
+        "call_failed": "فشل الاتصال"
+      },
       "table": {
         "columns": {
           "scheduleDateTime": "الموعد",

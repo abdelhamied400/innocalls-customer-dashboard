@@ -1,4 +1,5 @@
 import { Badge, BadgeVariant } from "@/components/ui/badge";
+import { useTranslations } from "@/providers/TranslationProvider";
 import { CallBridgeCall } from "@/types/callBridge";
 import { Cell } from "@/types/cell";
 
@@ -14,8 +15,11 @@ const variantMap: Record<string, BadgeVariant> = {
 };
 
 const StatusCell = ({ cell }: StatusCellProps) => {
+  const t = useTranslations("callBridge.calls.statuses");
   const value = String(cell.getValue() || "");
-  return <Badge variant={variantMap[value] || "neutral"}>{value}</Badge>;
+  const label = t(value.replace(/-/g, "_") as any);
+
+  return <Badge variant={variantMap[value] || "neutral"}>{label}</Badge>;
 };
 
 export default StatusCell;

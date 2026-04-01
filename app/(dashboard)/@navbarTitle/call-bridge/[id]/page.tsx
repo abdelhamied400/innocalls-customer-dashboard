@@ -2,6 +2,7 @@
 import Breadcrumbs, { BreadcrumbItem } from "@/components/Breadcrumbs";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
+import { useTranslations } from "@/providers/TranslationProvider";
 import callBridgeService from "@/services/call-bridge.service";
 import { ArrowBackIos } from "@mui/icons-material";
 import Link from "next/link";
@@ -15,18 +16,17 @@ type CallBridgeNavbarTitleProps = {
 
 const CallBridgeNavbarTitle = ({ params }: CallBridgeNavbarTitleProps) => {
   const { id } = use(params);
+  const t = useTranslations("callBridge");
 
   const { data: bridge, isFetching } = useLocalizedQuery({
     queryKey: ["call-bridge-detail", id],
     queryFn: () => callBridgeService.getBridge(id as string),
     gcTime: 0,
-    refetchInterval: 10000,
-    refetchOnMount: "always",
   });
 
   const breadcrumbItems: BreadcrumbItem[] = [
     {
-      label: "Call Bridges",
+      label: t("list.title"),
       href: "/call-bridge",
     },
     {
