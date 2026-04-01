@@ -12,6 +12,7 @@ import {
 type FileAttachmentProps = {
   fileName: string;
   fileType: string;
+  label?: string;
   onDownload?: () => void;
   className?: string;
 };
@@ -19,14 +20,16 @@ type FileAttachmentProps = {
 const FileAttachment = ({
   fileName,
   fileType,
+  label,
   onDownload,
   className,
 }: FileAttachmentProps) => {
   return (
+    <div className={cn("flex flex-col gap-1", className)}>
+      {label && <span className="text-sm text-neutral-500">{label}</span>}
     <div
       className={cn(
         "attachment bg-neutral-100 rounded-lg p-2 flex justify-between items-center",
-        className,
       )}
     >
       <div className="flex items-center gap-2 min-w-0 flex-1">
@@ -49,6 +52,7 @@ const FileAttachment = ({
           <Download />
         </Button>
       )}
+    </div>
     </div>
   );
 };

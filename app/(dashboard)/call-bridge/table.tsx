@@ -14,24 +14,36 @@ import { PaginationState } from "@tanstack/react-table";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { useTranslations } from "@/providers/TranslationProvider";
+import { SortingState } from "@tanstack/react-table";
 
 const CallBridgeTable = () => {
   const t = useTranslations("callBridge");
   const [filters, setFilters] = useState({});
+  const [sorting, setSorting] = useState<SortingState>([]);
+
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const sortParams =
+    sorting.length > 0 && ["name", "createdAt"].includes(sorting[0].id)
+      ? {
+          sortBy: sorting[0].id,
+          sortOrder: sorting[0].desc ? "desc" : "asc",
+        }
+      : {};
 
   const { data, isLoading, isError, error } = useLocalizedQuery<{
     flows: CallBridgeCols[];
     totalItems: number;
     totalPages: number;
   }>({
-    queryKey: ["call-bridge-list", filters, pagination],
+    queryKey: ["call-bridge-list", filters, pagination, sorting],
     queryFn: async () =>
       await callBridgeService.fetchBridges({
         ...filters,
+        ...sortParams,
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
       }),
@@ -66,6 +78,7 @@ const CallBridgeTable = () => {
         }}
         paginationState={pagination}
         onPaginationChange={setPagination}
+        onSortingChange={setSorting}
       >
         <CallBridgeHead filters={filters} setFilters={handleFiltersChange} />
         <PaginatedTableContent>

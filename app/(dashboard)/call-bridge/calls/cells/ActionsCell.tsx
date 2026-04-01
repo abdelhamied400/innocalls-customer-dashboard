@@ -12,6 +12,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useTranslations } from "@/providers/TranslationProvider";
 import callBridgeService from "@/services/call-bridge.service";
 import { CallBridgeCall } from "@/types/callBridge";
@@ -60,31 +66,45 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
 
   return (
     <div className="flex items-center gap-1">
-      <Button
-        variant="ghost-primary"
-        size="icon"
-        onClick={() => row.toggleExpanded()}
-        aria-label="Toggle call details"
-      >
-        {isExpanded ? (
-          <VisibilityOff fontSize="small" />
-        ) : (
-          <Visibility fontSize="small" />
-        )}
-      </Button>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost-primary"
+              size="icon"
+              onClick={() => row.toggleExpanded()}
+            >
+              {isExpanded ? (
+                <VisibilityOff fontSize="small" />
+              ) : (
+                <Visibility fontSize="small" />
+              )}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            {isExpanded ? t("actions.hideDetails") : t("actions.viewDetails")}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
 
       {isPending && (
         <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button
-              variant="ghost-destructive"
-              size="icon"
-              aria-label={t("actions.delete")}
-              disabled={isDeleting}
-            >
-              <DeleteOutline fontSize="small" />
-            </Button>
-          </AlertDialogTrigger>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="ghost-destructive"
+                    size="icon"
+                    disabled={isDeleting}
+                  >
+                    <DeleteOutline fontSize="small" />
+                  </Button>
+                </AlertDialogTrigger>
+              </TooltipTrigger>
+              <TooltipContent>{t("actions.delete")}</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>

@@ -195,6 +195,7 @@ const CreateCallBridgeCallPage = () => {
                         return (
                           <VirtualizedSelect
                             label={t("form.conferenceBridgeFlow.label")}
+                            hint={t("form.conferenceBridgeFlow.hint")}
                             error={
                               form.formState.errors.conferenceBridgeFlow
                                 ?.message
@@ -234,6 +235,7 @@ const CreateCallBridgeCallPage = () => {
                           <FormControl>
                             <Field
                               label={t("form.duration.label")}
+                              hint={t("form.duration.hint")}
                               error={form.formState.errors.duration?.message}
                             >
                               <Input
@@ -259,6 +261,7 @@ const CreateCallBridgeCallPage = () => {
                       render={({ field }) => (
                         <VirtualizedSelect
                           label={t("form.timezone.label")}
+                          hint={t("form.timezone.hint")}
                           error={form.formState.errors.timezone?.message}
                           options={timezoneOptions}
                           placeholder={t("form.timezone.placeholder")}
@@ -284,6 +287,7 @@ const CreateCallBridgeCallPage = () => {
                           <FormControl>
                             <Field
                               label={t("form.dateTime.label")}
+                              hint={t("form.dateTime.hint")}
                               error={form.formState.errors.dateTime?.message}
                             >
                               <DateTimePicker
@@ -308,6 +312,7 @@ const CreateCallBridgeCallPage = () => {
                           <FormControl>
                             <Field
                               label={t("form.firstRecipient.name.label")}
+                              hint={t("form.firstRecipient.name.hint")}
                               error={
                                 form.formState.errors.firstRecipient?.name
                                   ?.message
@@ -334,6 +339,7 @@ const CreateCallBridgeCallPage = () => {
                           <FormControl>
                             <Field
                               label={t("form.firstRecipient.phone.label")}
+                              hint={t("form.firstRecipient.phone.hint")}
                               error={
                                 form.formState.errors.firstRecipient?.phone
                                   ?.message
@@ -360,6 +366,7 @@ const CreateCallBridgeCallPage = () => {
                           <FormControl>
                             <Field
                               label={t("form.secondRecipient.name.label")}
+                              hint={t("form.secondRecipient.name.hint")}
                               error={
                                 form.formState.errors.secondRecipient?.name
                                   ?.message
@@ -386,6 +393,7 @@ const CreateCallBridgeCallPage = () => {
                           <FormControl>
                             <Field
                               label={t("form.secondRecipient.phone.label")}
+                              hint={t("form.secondRecipient.phone.hint")}
                               error={
                                 form.formState.errors.secondRecipient?.phone
                                   ?.message

@@ -1,6 +1,12 @@
-import { MinusIcon, PlusIcon } from "lucide-react";
+import { Info, MinusIcon, PlusIcon } from "lucide-react";
 import { Button } from "./button";
 import { cn } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./tooltip";
 
 type SpinButtonProps = {
   id?: string;
@@ -68,13 +74,31 @@ const SpinButton = ({
           {label && (
             <span
               className={cn(
-                "block text-xs text-muted-foreground",
+                "flex items-center gap-1 text-xs text-muted-foreground",
                 error && "text-red-500",
-                labelAlign === "center" && "text-center",
-                labelAlign === "end" && "text-end"
+                labelAlign === "center" && "justify-center",
+                labelAlign === "end" && "justify-end"
               )}
             >
               {label}
+              {hint && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        <Info className="w-3 h-3" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent className="text-xs w-56 p-2">
+                      {hint}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
             </span>
           )}
           <input
@@ -98,7 +122,6 @@ const SpinButton = ({
         </Button>
       </label>
 
-      {hint && <p className="text-muted-foreground text-xs">{hint}</p>}
       {error && <p className="text-red-500 text-xs">{error}</p>}
     </div>
   );

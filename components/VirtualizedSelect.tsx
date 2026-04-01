@@ -9,6 +9,7 @@ import Select, {
   OnChangeValue,
   ActionMeta,
   components as Components,
+  StylesConfig,
 } from "react-select";
 import { FixedSizeList as List } from "react-window";
 import { Badge } from "./ui/badge";
@@ -25,7 +26,7 @@ type Option = {
 
 type VirtualizedSelectProps<
   OptionType extends Option = Option,
-  IsMulti extends boolean = false
+  IsMulti extends boolean = false,
 > = {
   options: OptionType[];
   isMulti?: IsMulti;
@@ -34,9 +35,13 @@ type VirtualizedSelectProps<
   className?: string;
   label?: string;
   error?: string;
+  hint?: string;
   isVirtualized?: boolean;
   noOptionsMessage?: string;
-} & Omit<SelectProps<OptionType, IsMulti, GroupBase<OptionType>>, "options" | "noOptionsMessage">;
+} & Omit<
+  SelectProps<OptionType, IsMulti, GroupBase<OptionType>>,
+  "options" | "noOptionsMessage"
+>;
 
 const MenuList = <OptionType extends Option>({
   children,
@@ -61,7 +66,7 @@ const MenuList = <OptionType extends Option>({
 
 const VirtualizedSelect = <
   OptionType extends Option = Option,
-  IsMulti extends boolean = false
+  IsMulti extends boolean = false,
 >({
   options,
   isSearchable = true,
@@ -71,7 +76,9 @@ const VirtualizedSelect = <
   onChange,
   label,
   error,
+  hint,
   noOptionsMessage,
+  styles: customStyles,
   ...props
 }: VirtualizedSelectProps<OptionType, IsMulti>) => {
   // memoize options for performance
@@ -80,7 +87,7 @@ const VirtualizedSelect = <
   const onRemoveOption = (val: OptionType) => {
     if (isMulti && props.value && Array.isArray(props.value)) {
       const newValue = props.value.filter(
-        (option: OptionType) => option.value !== val.value
+        (option: OptionType) => option.value !== val.value,
       ) as readonly OptionType[];
       if (onChange) {
         onChange(
@@ -88,15 +95,88 @@ const VirtualizedSelect = <
           {
             action: "remove-value",
             removedValue: val,
-          } as ActionMeta<OptionType>
+          } as ActionMeta<OptionType>,
         );
       }
     }
   };
 
+  const mergedStyles: StylesConfig<
+    OptionType,
+    IsMulti,
+    GroupBase<OptionType>
+  > = {
+    control: (base, state) => {
+      const defaultStyles = {
+        ...base,
+        backgroundColor: "transparent",
+        border: 0,
+        padding: 0,
+        boxShadow: "none",
+        "&:hover": {
+          borderColor: "hsl(var(--input))",
+        },
+      };
+
+      return customStyles?.control
+        ? customStyles.control(defaultStyles, state)
+        : defaultStyles;
+    },
+    valueContainer: (base, state) => {
+      const defaultStyles = {
+        ...base,
+        padding: 0,
+      };
+
+      return customStyles?.valueContainer
+        ? customStyles.valueContainer(defaultStyles, state)
+        : defaultStyles;
+    },
+    input: (base, state) => {
+      const defaultStyles = {
+        ...base,
+        color: "hsl(var(--foreground))",
+      };
+
+      return customStyles?.input
+        ? customStyles.input(defaultStyles, state)
+        : defaultStyles;
+    },
+    placeholder: (base, state) => {
+      const defaultStyles = {
+        ...base,
+        display: "none",
+      };
+
+      return customStyles?.placeholder
+        ? customStyles.placeholder(defaultStyles, state)
+        : defaultStyles;
+    },
+    menu: (base, state) => {
+      const defaultStyles = {
+        ...base,
+        zIndex: 9999,
+      };
+
+      return customStyles?.menu
+        ? customStyles.menu(defaultStyles, state)
+        : defaultStyles;
+    },
+    menuPortal: (base, state) => {
+      const defaultStyles = {
+        ...base,
+        zIndex: 99999,
+      };
+
+      return customStyles?.menuPortal
+        ? customStyles.menuPortal(defaultStyles, state)
+        : defaultStyles;
+    },
+  };
+
   return (
     <div className={cn("select", className)}>
-      <Field label={label} error={error}>
+      <Field label={label} error={error} hint={hint}>
         <Select
           className="w-full"
           classNamePrefix="virtualized-select"
@@ -132,35 +212,10 @@ const VirtualizedSelect = <
               );
             },
           }}
-          styles={{
-            control: (base) => ({
-              ...base,
-              backgroundColor: "transparent",
-              border: 0,
-              padding: 0,
-              boxShadow: "none",
-              "&:hover": {
-                borderColor: "hsl(var(--input))",
-              },
-            }),
-            valueContainer: (base) => ({
-              ...base,
-              padding: 0,
-            }),
-            input: (base) => ({
-              ...base,
-              color: "hsl(var(--foreground))",
-            }),
-            placeholder: (base) => ({
-              ...base,
-              display: "none", // hide react-select's internal placeholder
-            }),
-            menu: (base) => ({
-              ...base,
-              zIndex: 9999,
-            }),
-          }}
-          noOptionsMessage={noOptionsMessage ? () => noOptionsMessage : undefined}
+          styles={mergedStyles}
+          noOptionsMessage={
+            noOptionsMessage ? () => noOptionsMessage : undefined
+          }
           onChange={onChange}
           {...props}
         />

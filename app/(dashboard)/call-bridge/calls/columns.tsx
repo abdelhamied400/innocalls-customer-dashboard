@@ -4,6 +4,7 @@ import DateTimeCell from "./cells/DateTimeCell";
 import RecipientCell from "./cells/RecipientCell";
 import EndCallStatusCell from "./cells/EndCallStatusCell";
 import ActionsCell from "./cells/ActionsCell";
+import SortingHead from "@/components/SortingHead";
 
 export type CallBridgeCallsCols = CallBridgeCall;
 
@@ -30,8 +31,18 @@ export const columns = (t: any) => [
   },
   {
     accessorKey: "scheduleDateTime",
-    header: t("table.columns.scheduleDateTime"),
+    header: ({ column }: any) => (
+      <SortingHead column={column}>
+        {t("table.columns.scheduleDateTime")}
+      </SortingHead>
+    ),
     cell: DateTimeCell,
+  },
+  {
+    accessorKey: "scheduleDuration",
+    header: ({ column }: any) => (
+      <SortingHead column={column}>{t("table.columns.duration")}</SortingHead>
+    ),
   },
   {
     accessorKey: "timezone",

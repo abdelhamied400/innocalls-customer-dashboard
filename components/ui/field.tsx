@@ -1,5 +1,12 @@
 import { cn } from "@/lib/utils";
 import { PropsWithChildren, ReactNode } from "react";
+import { Info } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type FieldProps = PropsWithChildren<{
   htmlFor?: string;
@@ -30,20 +37,38 @@ const Field = ({
         <div
           className={cn(
             "bg-gray-50 hover:bg-gray-100 px-4 pt-2 pb-1.5 border rounded-xl",
-            error && "border-red-500 bg-red-50 hover:bg-red-100 text-red-500"
+            error && "border-red-500 bg-red-50 hover:bg-red-100 text-red-500",
           )}
           {...props}
         >
           {label && (
             <span
               className={cn(
-                "block text-xs text-muted-foreground",
+                "flex items-center gap-1 text-xs text-muted-foreground",
                 error && "text-red-500",
-                labelAlign === "center" && "text-center",
-                labelAlign === "end" && "text-end"
+                labelAlign === "center" && "justify-center",
+                labelAlign === "end" && "justify-end",
               )}
             >
               {label}
+              {hint && (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <button
+                        type="button"
+                        className="inline-flex items-center text-muted-foreground hover:text-foreground transition-colors"
+                        onClick={(e) => e.preventDefault()}
+                      >
+                        <Info className="w-3 h-3" />
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent className="text-xs w-56 p-2">
+                      {hint}
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )}
             </span>
           )}
           <div className="flex items-center gap-1">
@@ -54,7 +79,6 @@ const Field = ({
         </div>
       </label>
 
-      {hint && <p className="text-muted-foreground text-xs">{hint}</p>}
       {error && <p className="text-red-500 text-xs">{error}</p>}
     </div>
   );

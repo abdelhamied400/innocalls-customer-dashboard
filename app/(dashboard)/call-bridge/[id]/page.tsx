@@ -39,12 +39,8 @@ const CallBridgeDetails = () => {
       <div className="bridge-details flex flex-col gap-2">
         <h3>{t("sections.bridgeDetails")}</h3>
         <div className="border rounded-lg p-4 flex flex-col gap-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 divide-x">
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-4 divide-x">
             <Property label={t("fields.name")} value={bridge.name} />
-            <Property
-              label={t("fields.createdAt")}
-              value={bridge.createdAt || "—"}
-            />
           </div>
         </div>
       </div>
@@ -123,12 +119,14 @@ const CallBridgeDetails = () => {
           <div className="flex flex-col lg:flex-row gap-4 divide-x">
             <div className="flex-1 pe-3">
               <FileAttachment
+                label={t("fields.welcomeSound")}
                 fileName={bridge.welcomeSoundFileName}
                 fileType={t("fileTypes.mp3")}
               />
             </div>
             <div className="flex-1 ps-3">
               <FileAttachment
+                label={t("fields.alertSound")}
                 fileName={bridge.alertSoundFileName}
                 fileType={t("fileTypes.mp3")}
               />
@@ -138,12 +136,14 @@ const CallBridgeDetails = () => {
           <div className="flex flex-col lg:flex-row gap-4 divide-x">
             <div className="flex-1 pe-3">
               <FileAttachment
+                label={t("fields.firstRecipientSorrySound")}
                 fileName={bridge.firstRecipientSorrySoundFileName}
                 fileType={t("fileTypes.mp3")}
               />
             </div>
             <div className="flex-1 ps-3">
               <FileAttachment
+                label={t("fields.secondRecipientSorrySound")}
                 fileName={bridge.secondRecipientSorrySoundFileName}
                 fileType={t("fileTypes.mp3")}
               />
@@ -155,6 +155,7 @@ const CallBridgeDetails = () => {
               <div className="flex flex-col lg:flex-row gap-4">
                 <div className="flex-1">
                   <FileAttachment
+                    label={t("fields.warningSound")}
                     fileName={bridge.warningSoundFileName}
                     fileType={t("fileTypes.mp3")}
                   />

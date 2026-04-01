@@ -1,17 +1,15 @@
 "use client";
 import { useFormContext } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Field from "@/components/ui/field";
 import SpinButton from "@/components/ui/spin-button";
 import CallBridgeCallerIdSelector from "@/components/CallBridgeCallerIdSelector";
-import { CallBridgeStep1, CallBridgeStep1Schema } from "@/validation/CallBridgeCreate";
+import {
+  CallBridgeStep1,
+  CallBridgeStep1Schema,
+} from "@/validation/CallBridgeCreate";
 import { useTranslations } from "@/providers/TranslationProvider";
 
 type BridgeDetailsFormProps = {
@@ -60,6 +58,7 @@ const BridgeDetailsForm = ({ onNext }: BridgeDetailsFormProps) => {
               label={t("form.name.label")}
               error={errors.name?.message}
               htmlFor="name"
+              hint={t("form.name.hint")}
             >
               <FormItem className="w-full">
                 <FormControl>
@@ -90,7 +89,9 @@ const BridgeDetailsForm = ({ onNext }: BridgeDetailsFormProps) => {
                 />
               </FormControl>
               {errors.callers?.message && (
-                <p className="text-destructive mt-2">{errors.callers.message}</p>
+                <p className="text-destructive mt-2">
+                  {errors.callers.message}
+                </p>
               )}
             </FormItem>
           )}
@@ -142,9 +143,14 @@ const BridgeDetailsForm = ({ onNext }: BridgeDetailsFormProps) => {
               <FormItem>
                 <FormControl>
                   <SpinButton
-                    label={t("form.firstRecipientDelayMinutesBetweenTrials.label")}
+                    label={t(
+                      "form.firstRecipientDelayMinutesBetweenTrials.label",
+                    )}
                     labelAlign="center"
-                    error={errors.firstRecipientDelayMinutesBetweenTrials?.message}
+                    hint={t("form.firstRecipientDelayMinutesBetweenTrials.hint")}
+                    error={
+                      errors.firstRecipientDelayMinutesBetweenTrials?.message
+                    }
                     {...field}
                   />
                 </FormControl>
@@ -159,9 +165,14 @@ const BridgeDetailsForm = ({ onNext }: BridgeDetailsFormProps) => {
               <FormItem>
                 <FormControl>
                   <SpinButton
-                    label={t("form.secondRecipientDelayMinutesBetweenTrials.label")}
+                    label={t(
+                      "form.secondRecipientDelayMinutesBetweenTrials.label",
+                    )}
                     labelAlign="center"
-                    error={errors.secondRecipientDelayMinutesBetweenTrials?.message}
+                    hint={t("form.secondRecipientDelayMinutesBetweenTrials.hint")}
+                    error={
+                      errors.secondRecipientDelayMinutesBetweenTrials?.message
+                    }
                     {...field}
                   />
                 </FormControl>

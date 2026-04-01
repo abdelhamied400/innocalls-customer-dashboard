@@ -1396,6 +1396,7 @@
             "meeting": "Meeting",
             "training": "Training",
             "Prayer": "Prayer",
+            "prayer": "Prayer",
             "personal": "Personal",
             "lunch": "Lunch",
             "breakfast": "Breakfast",
@@ -1542,6 +1543,14 @@
         "date": "Date",
         "amount": "Amount",
         "description": "Description"
+      },
+      "filters": {
+        "from": "From",
+        "to": "To",
+        "fromDateHint": "DD/MM/YYYY",
+        "toDateHint": "DD/MM/YYYY",
+        "enterFromDate": "Enter from date",
+        "enterToDate": "Enter to date"
       },
       "messages": {
         "error": "Error fetching payment history",
@@ -2045,6 +2054,7 @@
       "talkTimeStats": {
         "title": "Talk Time",
         "subtitle": "Last 30 Days",
+        "valueSubtitle1": "vs last month",
         "valueSubtitle": "{percentage}% vs last month",
         "averagePerCall": "Average Per Call",
         "dailyAverage": "Daily Average",
@@ -2193,7 +2203,8 @@
       },
       "origin": {
         "outgoing": "Outgoing",
-        "incoming": "Incoming"
+        "incoming": "Incoming",
+        "internal": "Internal"
       },
       "filters": {
         "account": {
@@ -2232,6 +2243,9 @@
         }
       },
       "unknownError": "An unknown error occurred."
+    },
+    "filters": {
+      "dateRange": "Date Range"
     }
   },
   "analytics": {
@@ -2566,6 +2580,7 @@
     "inbound": {
       "title": "Incoming Analytics",
       "subtitle": "View detailed analytics for incoming calls",
+      "dateRangeSearch": "Date Range Search",
       "quickStats": {
         "totalCalls": "Total Calls",
         "avgWaitTime": "Avg Wait Time",
@@ -2988,6 +3003,7 @@
       "statsCards": {
         "answerRate": {
           "title": "Answer Rate",
+          "unit": "%",
           "comparison": "{percentage}% vs previous"
         },
         "totalWaitTime": {
@@ -3002,6 +3018,7 @@
         },
         "slaCompliance": {
           "title": "SLA Compliance",
+          "unit": "%",
           "comparison": "{percentage}% vs previous"
         }
       },
@@ -3028,7 +3045,8 @@
         },
         "validation": {
           "sla": {
-            "invalid": "SLA must be an integer greater than or equal to 1"
+            "invalid": "SLA must be an integer greater than or equal to 1",
+            "int": "Incoming calls SLA must be an integer greater than zero"
           }
         }
       }
@@ -4043,6 +4061,7 @@
         "meeting": "Meeting",
         "training": "Training",
         "Prayer": "Prayer",
+        "prayer": "Prayer",
         "personal": "Personal",
         "lunch": "Lunch",
         "breakfast": "Breakfast",
@@ -4066,6 +4085,7 @@
     "callLog": {
       "title": "Call Log",
       "noCalls": " No calls logged yet. Make a call to see it here.",
+      "calls": "Calls",
       "status": {
         "incoming": "Incoming Calls ",
         "outgoing": "Outgoing Calls",
@@ -4717,7 +4737,7 @@
   },
   "callBridge": {
     "list": {
-      "title": "Call Bridge",
+      "title": "Flows",
       "search": "Search...",
       "calls": "Calls",
       "create": "Create Bridge",
@@ -4725,6 +4745,9 @@
         "creationDate": "Creation Date",
         "name": "Name",
         "actions": "Actions"
+      },
+      "actions": {
+        "view": "View Details"
       }
     },
     "details": {
@@ -4746,6 +4769,7 @@
         "name": "Name",
         "createdAt": "Created At",
         "destination": "Destination",
+        "callers": "Caller IDs",
         "callerNumber": "Caller Number",
         "firstRecipientTrialsCount": "First Recipient Trials",
         "secondRecipientTrialsCount": "Second Recipient Trials",
@@ -4776,6 +4800,7 @@
         "name": {
           "label": "Bridge Name",
           "placeholder": "Enter bridge name",
+          "hint": "A unique name to identify this bridge flow",
           "validation": {
             "required": "Bridge name is required",
             "min": "Bridge name must be at least {min} characters",
@@ -4784,6 +4809,7 @@
         },
         "callers": {
           "label": "Caller IDs",
+          "hint": "Caller IDs used when placing outgoing calls",
           "validation": {
             "min": "At least {min} caller ID must be added",
             "destination": {
@@ -4812,12 +4838,14 @@
         },
         "firstRecipientDelayMinutesBetweenTrials": {
           "label": "First Recipient Delay (minutes)",
+          "hint": "Delay in minutes between consecutive retry attempts for the first recipient",
           "validation": {
             "min": "Must be at least {min} minutes"
           }
         },
         "secondRecipientDelayMinutesBetweenTrials": {
           "label": "Second Recipient Delay (minutes)",
+          "hint": "Delay in minutes between consecutive retry attempts for the second recipient",
           "validation": {
             "min": "Must be at least {min} minutes",
             "max": "Must be at most {max} minutes"
@@ -4832,6 +4860,7 @@
         },
         "welcomeSoundFile": {
           "label": "Welcome Sound",
+          "hint": "Played when the call is answered by a recipient",
           "validation": {
             "required": "Welcome sound is required",
             "type": "Only MP3 files are allowed",
@@ -4840,6 +4869,7 @@
         },
         "alertSoundFile": {
           "label": "Alert Sound",
+          "hint": "Played to alert recipients of an incoming bridge connection",
           "validation": {
             "required": "Alert sound is required",
             "type": "Only MP3 files are allowed",
@@ -4848,6 +4878,7 @@
         },
         "firstRecipientSorrySoundFile": {
           "label": "First Recipient Sorry Sound",
+          "hint": "Played when all retry attempts for the first recipient are exhausted",
           "validation": {
             "required": "First recipient sorry sound is required",
             "type": "Only MP3 files are allowed",
@@ -4856,6 +4887,7 @@
         },
         "secondRecipientSorrySoundFile": {
           "label": "Second Recipient Sorry Sound",
+          "hint": "Played when all retry attempts for the second recipient are exhausted",
           "validation": {
             "required": "Second recipient sorry sound is required",
             "type": "Only MP3 files are allowed",
@@ -4865,6 +4897,7 @@
         "warningSoundFile": {
           "label": "Warning Sound",
           "optional": "(Optional)",
+          "hint": "Optional sound played before the call ends as a time warning",
           "validation": {
             "type": "Only MP3 files are allowed",
             "size": "File size must be less than 10MB"
@@ -4929,6 +4962,7 @@
         "conferenceBridgeFlow": {
           "label": "Bridge Flow",
           "placeholder": "Select bridge flow",
+          "hint": "The bridge flow configuration to use for this call",
           "validation": {
             "required": "Bridge flow is required",
             "objectId": "Bridge flow id is invalid"
@@ -4936,6 +4970,7 @@
         },
         "duration": {
           "label": "Duration (minutes)",
+          "hint": "Maximum call duration in minutes",
           "validation": {
             "required": "Duration is required",
             "integer": "Duration must be an integer",
@@ -4945,6 +4980,7 @@
         "timezone": {
           "label": "Timezone",
           "placeholder": "Select timezone",
+          "hint": "Timezone used to interpret the scheduled date and time",
           "validation": {
             "required": "Timezone is required",
             "invalid": "Timezone is invalid"
@@ -4952,6 +4988,7 @@
         },
         "dateTime": {
           "label": "Scheduled Date & Time",
+          "hint": "The date and time when the call will be initiated",
           "validation": {
             "required": "Date and time is required",
             "format": "Date and time must be in YYYY-MM-DD HH:mm format",
@@ -4962,6 +4999,7 @@
           "name": {
             "label": "First Recipient Name",
             "placeholder": "Enter first recipient name",
+            "hint": "Display name of the first recipient",
             "validation": {
               "required": "First recipient name is required",
               "min": "Name must be at least {min} characters",
@@ -4971,6 +5009,7 @@
           "phone": {
             "label": "First Recipient Phone",
             "placeholder": "Enter first recipient phone",
+            "hint": "Include country code, e.g. +20xxxxxxxxxx",
             "validation": {
               "required": "First recipient phone is required",
               "invalid": "The phone number you entered is not valid, please enter the country code followed by valid numeric digits"
@@ -4981,6 +5020,7 @@
           "name": {
             "label": "Second Recipient Name",
             "placeholder": "Enter second recipient name",
+            "hint": "Display name of the second recipient",
             "validation": {
               "required": "Second recipient name is required",
               "min": "Name must be at least {min} characters",
@@ -4990,6 +5030,7 @@
           "phone": {
             "label": "Second Recipient Phone",
             "placeholder": "Enter second recipient phone",
+            "hint": "Include country code, e.g. +20xxxxxxxxxx",
             "validation": {
               "required": "Second recipient phone is required",
               "invalid": "The phone number you entered is not valid, please enter the country code followed by valid numeric digits",
@@ -5002,6 +5043,8 @@
         "cancel": "Cancel",
         "create": "Create",
         "delete": "Delete",
+        "viewDetails": "View Details",
+        "hideDetails": "Hide Details",
         "deleteConfirmTitle": "Delete Bridge Call",
         "deleteConfirmDescription": "Are you sure you want to delete this bridge call? This action cannot be undone."
       },
@@ -5014,6 +5057,39 @@
         "deletedDescription": "The bridge call has been deleted.",
         "deleteError": "Failed to delete call",
         "deleteErrorDescription": "An error occurred while deleting the call. Please try again."
+      },
+      "filters": {
+        "conferenceBridgeFlow": {
+          "triggerLabel": "Bridge Flow",
+          "label": "Filter by Bridge Flow",
+          "placeholder": "Select bridge flow"
+        },
+        "status": {
+          "triggerLabel": "Status",
+          "label": "Filter by Status",
+          "all": "All Statuses"
+        },
+        "endCallStatus": {
+          "triggerLabel": "End Call Status",
+          "label": "Filter by End Call Status",
+          "all": "All End Call Statuses"
+        },
+        "sort": {
+          "triggerLabel": "Sort",
+          "label": "Sort Results"
+        },
+        "sortBy": {
+          "label": "Sort By",
+          "all": "Default",
+          "scheduleDateTime": "Schedule Date",
+          "scheduleDuration": "Scheduled Duration"
+        },
+        "sortOrder": {
+          "label": "Sort Order",
+          "all": "Default",
+          "asc": "Ascending",
+          "desc": "Descending"
+        }
       }
     }
   }

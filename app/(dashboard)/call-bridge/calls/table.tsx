@@ -8,7 +8,7 @@ import PaginatedTableBody from "@/components/Table/PaginatedTableBody";
 import PaginatedTablePagination from "@/components/Table/PaginatedTablePagination";
 import PaginatedTableContent from "@/components/Table/PaginatedTableContent";
 import { useEffect, useState } from "react";
-import { PaginationState } from "@tanstack/react-table";
+import { PaginationState, SortingState } from "@tanstack/react-table";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
@@ -21,10 +21,34 @@ import { cn } from "@/lib/utils";
 const CallBridgeCallsTable = () => {
   const t = useTranslations("callBridge.calls");
   const locale = useLocale();
+  const [filters, setFilters] = useState<Record<string, any>>({});
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
+  const handleSetFilters: React.Dispatch<
+    React.SetStateAction<Record<string, any>>
+  > = (value) => {
+    setFilters(value);
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  };
+
+  const handleSortingChange: React.Dispatch<
+    React.SetStateAction<SortingState>
+  > = (value) => {
+    setSorting(value);
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }));
+  };
+
+  const sortParams =
+    sorting.length > 0 &&
+    ["scheduleDateTime", "scheduleDuration"].includes(sorting[0].id)
+      ? {
+          sortBy: sorting[0].id,
+          sortOrder: sorting[0].desc ? "desc" : "asc",
+        }
+      : {};
 
   const endCallVariantMap: Record<string, BadgeVariant> = {
     Completed: "success",
@@ -44,9 +68,11 @@ const CallBridgeCallsTable = () => {
     totalItems: number;
     totalPages: number;
   }>({
-    queryKey: ["call-bridge-calls-list", pagination],
+    queryKey: ["call-bridge-calls-list", filters, pagination, sorting],
     queryFn: async () =>
       await callBridgeService.fetchCalls({
+        ...filters,
+        ...sortParams,
         page: pagination.pageIndex + 1,
         limit: pagination.pageSize,
       }),
@@ -79,9 +105,10 @@ const CallBridgeCallsTable = () => {
         }}
         paginationState={pagination}
         onPaginationChange={setPagination}
+        onSortingChange={handleSortingChange}
         getRowCanExpand={() => true}
       >
-        <CallBridgeCallsHead />
+        <CallBridgeCallsHead filters={filters} setFilters={handleSetFilters} />
         <PaginatedTableContent>
           <PaginatedTableHead />
           {isLoading && <PaginatedTableSkeleton />}
@@ -125,7 +152,7 @@ const CallBridgeCallsTable = () => {
                             <span className="text-xs text-muted-foreground uppercase tracking-wide">
                               {t("details.talkTime")}
                             </span>
-                            <span className="text-sm font-semibold" dir="ltr">
+                            <span className="text-sm font-semibold">
                               {call.callOutcome?.talkTime || "-"}
                             </span>
                           </div>
@@ -133,7 +160,7 @@ const CallBridgeCallsTable = () => {
                             <span className="text-xs text-muted-foreground uppercase tracking-wide">
                               {t("details.scheduleDuration")}
                             </span>
-                            <span className="text-sm font-semibold" dir="ltr">
+                            <span className="text-sm font-semibold">
                               {call.scheduleDuration || "-"}
                             </span>
                           </div>
@@ -150,65 +177,69 @@ const CallBridgeCallsTable = () => {
                       </div>
                     </div>
 
-                    {call.endCallStatus === "Completed" && recordingUrl && (
-                      <div className="rounded-xl border bg-white p-4 shadow-sm flex flex-col gap-3">
-                        <span className="text-xs text-muted-foreground uppercase tracking-wide">
-                          {t("details.recording")}
-                        </span>
-                        <StreamingSoundPlayer
-                          url={recordingUrl}
-                          label={`recording-${call.uniqueIdentifier || call.id}.wav`}
-                        />
-                      </div>
+                    {call.status !== "deleted" && (
+                      <>
+                        {call.endCallStatus === "Completed" && recordingUrl && (
+                          <div className="rounded-xl border bg-white p-4 shadow-sm flex flex-col gap-3">
+                            <span className="text-xs text-muted-foreground uppercase tracking-wide">
+                              {t("details.recording")}
+                            </span>
+                            <StreamingSoundPlayer
+                              url={recordingUrl}
+                              label={`recording-${call.uniqueIdentifier || call.id}.wav`}
+                            />
+                          </div>
+                        )}
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="rounded-lg border bg-white p-3 flex flex-col gap-2">
+                            <h4 className="font-semibold text-sm">
+                              {t("details.firstRecipient")}
+                            </h4>
+                            <p className="text-sm">
+                              {t("details.name")}:{" "}
+                              {call.firstRecipient?.name || "-"}
+                            </p>
+                            <p className="text-sm font-bold">
+                              {t("details.phone")}:{" "}
+                              {call.firstRecipient?.phone || "-"}
+                            </p>
+                            <p className="text-sm">
+                              {t("details.lastStatus")}:{" "}
+                              {call.callOutcome?.firstRecipientLastCallStatus ||
+                                "-"}
+                            </p>
+                            <p className="text-sm">
+                              {t("details.trials")}:{" "}
+                              {call.callOutcome?.firstRecipientTrials ?? "-"}
+                            </p>
+                          </div>
+
+                          <div className="rounded-lg border bg-white p-3 flex flex-col gap-2">
+                            <h4 className="font-semibold text-sm">
+                              {t("details.secondRecipient")}
+                            </h4>
+                            <p className="text-sm">
+                              {t("details.name")}:{" "}
+                              {call.secondRecipient?.name || "-"}
+                            </p>
+                            <p className="text-sm font-bold">
+                              {t("details.phone")}:{" "}
+                              {call.secondRecipient?.phone || "-"}
+                            </p>
+                            <p className="text-sm">
+                              {t("details.lastStatus")}:{" "}
+                              {call.callOutcome
+                                ?.secondRecipientLastCallStatus || "-"}
+                            </p>
+                            <p className="text-sm">
+                              {t("details.trials")}:{" "}
+                              {call.callOutcome?.secondRecipientTrials ?? "-"}
+                            </p>
+                          </div>
+                        </div>
+                      </>
                     )}
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="rounded-lg border bg-white p-3 flex flex-col gap-2">
-                        <h4 className="font-semibold text-sm">
-                          {t("details.firstRecipient")}
-                        </h4>
-                        <p className="text-sm">
-                          {t("details.name")}:{" "}
-                          {call.firstRecipient?.name || "-"}
-                        </p>
-                        <p className="text-sm font-bold" dir="ltr">
-                          {t("details.phone")}:{" "}
-                          {call.firstRecipient?.phone || "-"}
-                        </p>
-                        <p className="text-sm">
-                          {t("details.lastStatus")}:{" "}
-                          {call.callOutcome?.firstRecipientLastCallStatus ||
-                            "-"}
-                        </p>
-                        <p className="text-sm">
-                          {t("details.trials")}:{" "}
-                          {call.callOutcome?.firstRecipientTrials ?? "-"}
-                        </p>
-                      </div>
-
-                      <div className="rounded-lg border bg-white p-3 flex flex-col gap-2">
-                        <h4 className="font-semibold text-sm">
-                          {t("details.secondRecipient")}
-                        </h4>
-                        <p className="text-sm">
-                          {t("details.name")}:{" "}
-                          {call.secondRecipient?.name || "-"}
-                        </p>
-                        <p className="text-sm font-bold" dir="ltr">
-                          {t("details.phone")}:{" "}
-                          {call.secondRecipient?.phone || "-"}
-                        </p>
-                        <p className="text-sm">
-                          {t("details.lastStatus")}:{" "}
-                          {call.callOutcome?.secondRecipientLastCallStatus ||
-                            "-"}
-                        </p>
-                        <p className="text-sm">
-                          {t("details.trials")}:{" "}
-                          {call.callOutcome?.secondRecipientTrials ?? "-"}
-                        </p>
-                      </div>
-                    </div>
                   </div>
                 );
               }}
