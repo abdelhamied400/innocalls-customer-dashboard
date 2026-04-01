@@ -4731,10 +4731,21 @@
       "description": "View call bridge configuration",
       "loading": "Loading...",
       "notFound": "Bridge not found",
+      "sections": {
+        "bridgeDetails": "Bridge Details",
+        "recipientsConfiguration": "Recipients Configuration",
+        "callers": "Caller IDs",
+        "soundFiles": "Sound Files"
+      },
+      "fileTypes": {
+        "csv": "CSV",
+        "mp3": "MP3"
+      },
       "fields": {
         "name": "Name",
         "createdAt": "Created At",
-        "callers": "Caller IDs",
+        "destination": "Destination",
+        "callerNumber": "Caller Number",
         "firstRecipientTrialsCount": "First Recipient Trials",
         "secondRecipientTrialsCount": "Second Recipient Trials",
         "firstRecipientDelay": "First Recipient Delay",

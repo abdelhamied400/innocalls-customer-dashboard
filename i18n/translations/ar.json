@@ -4746,9 +4746,21 @@
       "description": "عرض إعدادات جسر المكالمات",
       "loading": "جارٍ التحميل...",
       "notFound": "لم يُعثر على الجسر",
+      "sections": {
+        "bridgeDetails": "تفاصيل الجسر",
+        "recipientsConfiguration": "إعدادات المستقبلين",
+        "callers": "أرقام المتصلين",
+        "soundFiles": "ملفات الصوت"
+      },
+      "fileTypes": {
+        "csv": "CSV",
+        "mp3": "MP3"
+      },
       "fields": {
         "name": "الاسم",
         "createdAt": "تاريخ الإنشاء",
+        "destination": "الوجهة",
+        "callerNumber": "رقم المتصل",
         "callers": "أرقام المتصلين",
         "firstRecipientTrialsCount": "محاولات المستلم الأول",
         "secondRecipientTrialsCount": "محاولات المستلم الثاني",
