@@ -9,11 +9,6 @@ export type CallBridgeCallsCols = CallBridgeCall;
 
 export const columns = (t: any) => [
   {
-    accessorKey: "scheduleDateTime",
-    header: t("table.columns.scheduleDateTime"),
-    cell: DateTimeCell,
-  },
-  {
     accessorKey: "firstRecipient.name",
     header: t("table.columns.firstRecipient"),
     cell: (ctx: any) => <RecipientCell {...ctx} type="first" />,
@@ -24,12 +19,9 @@ export const columns = (t: any) => [
     cell: (ctx: any) => <RecipientCell {...ctx} type="second" />,
   },
   {
-    accessorKey: "scheduleDuration",
-    header: t("table.columns.duration"),
-  },
-  {
-    accessorKey: "timezone",
-    header: t("table.columns.timezone"),
+    accessorKey: "endCallStatus",
+    header: t("table.columns.endCallStatus"),
+    cell: EndCallStatusCell,
   },
   {
     accessorKey: "status",
@@ -37,9 +29,13 @@ export const columns = (t: any) => [
     cell: StatusCell,
   },
   {
-    accessorKey: "endCallStatus",
-    header: t("table.columns.endCallStatus"),
-    cell: EndCallStatusCell,
+    accessorKey: "scheduleDateTime",
+    header: t("table.columns.scheduleDateTime"),
+    cell: DateTimeCell,
+  },
+  {
+    accessorKey: "timezone",
+    header: t("table.columns.timezone"),
   },
   {
     id: "actions",

@@ -7,7 +7,8 @@ type StatusCellProps = Cell<CallBridgeCall>;
 const variantMap: Record<string, BadgeVariant> = {
   pending: "warning",
   processing: "info",
-  "in-progress": "primary",
+  "in-progress": "info",
+  in_progress: "info",
   complete: "success",
   deleted: "neutral",
 };

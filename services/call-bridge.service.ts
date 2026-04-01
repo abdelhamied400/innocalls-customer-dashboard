@@ -42,6 +42,11 @@ export default {
     return res.data.data;
   },
 
+  deleteCall: async (id: string) => {
+    const res = await api.delete(`/bridge-calls/${id}`);
+    return res.data.data;
+  },
+
   uploadSound: async (file: File): Promise<UploadSoundResponse> => {
     const formData = new FormData();
     formData.append("file", file);

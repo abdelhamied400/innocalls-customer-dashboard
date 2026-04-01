@@ -12,7 +12,7 @@ const RecipientCell = ({ row, type }: RecipientCellProps) => {
       : row.original.secondRecipient;
 
   return (
-    <div className="flex flex-col leading-tight">
+    <div className="flex flex-col leading-tight items-center">
       <span className="text-sm">{recipient?.name || "-"}</span>
       <span className="text-sm font-bold" dir="ltr">
         {recipient?.phone || "-"}
