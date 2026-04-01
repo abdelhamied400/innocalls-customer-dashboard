@@ -17,6 +17,15 @@ import CallBridgeCallsHead from "./head";
 import { Badge, BadgeVariant } from "@/components/ui/badge";
 import StreamingSoundPlayer from "@/components/StreamingSoundPlayer";
 import { cn } from "@/lib/utils";
+import {
+  CheckCircle2,
+  XCircle,
+  Phone,
+  User,
+  Clock,
+  PhoneOutgoing,
+  RotateCw,
+} from "lucide-react";
 
 const CallBridgeCallsTable = () => {
   const t = useTranslations("callBridge.calls");
@@ -192,51 +201,154 @@ const CallBridgeCallsTable = () => {
                         )}
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="rounded-lg border bg-white p-3 flex flex-col gap-2">
-                            <h4 className="font-semibold text-sm">
-                              {t("details.firstRecipient")}
-                            </h4>
-                            <p className="text-sm">
-                              {t("details.name")}:{" "}
-                              {call.firstRecipient?.name || "-"}
-                            </p>
-                            <p className="text-sm font-bold">
-                              {t("details.phone")}:{" "}
-                              {call.firstRecipient?.phone || "-"}
-                            </p>
-                            <p className="text-sm">
-                              {t("details.lastStatus")}:{" "}
-                              {call.callOutcome?.firstRecipientLastCallStatus ||
-                                "-"}
-                            </p>
-                            <p className="text-sm">
-                              {t("details.trials")}:{" "}
-                              {call.callOutcome?.firstRecipientTrials ?? "-"}
-                            </p>
-                          </div>
+                          {[
+                            {
+                              label: t("details.firstRecipient"),
+                              recipient: call.firstRecipient,
+                              lastStatus:
+                                call.callOutcome
+                                  ?.firstRecipientLastCallStatus,
+                              trials:
+                                call.callOutcome?.firstRecipientTrials,
+                              lastAttemptTime:
+                                call.callOutcome
+                                  ?.firstRecipientLastAttemptTime,
+                              callerNumber:
+                                call.callOutcome?.firstCallerNumber,
+                            },
+                            {
+                              label: t("details.secondRecipient"),
+                              recipient: call.secondRecipient,
+                              lastStatus:
+                                call.callOutcome
+                                  ?.secondRecipientLastCallStatus,
+                              trials:
+                                call.callOutcome?.secondRecipientTrials,
+                              lastAttemptTime:
+                                call.callOutcome
+                                  ?.secondRecipientLastAttemptTime,
+                              callerNumber:
+                                call.callOutcome?.secondCallerNumber,
+                            },
+                          ].map((r) => {
+                            const isAnswered =
+                              r.lastStatus === "Answered";
 
-                          <div className="rounded-lg border bg-white p-3 flex flex-col gap-2">
-                            <h4 className="font-semibold text-sm">
-                              {t("details.secondRecipient")}
-                            </h4>
-                            <p className="text-sm">
-                              {t("details.name")}:{" "}
-                              {call.secondRecipient?.name || "-"}
-                            </p>
-                            <p className="text-sm font-bold">
-                              {t("details.phone")}:{" "}
-                              {call.secondRecipient?.phone || "-"}
-                            </p>
-                            <p className="text-sm">
-                              {t("details.lastStatus")}:{" "}
-                              {call.callOutcome
-                                ?.secondRecipientLastCallStatus || "-"}
-                            </p>
-                            <p className="text-sm">
-                              {t("details.trials")}:{" "}
-                              {call.callOutcome?.secondRecipientTrials ?? "-"}
-                            </p>
-                          </div>
+                            return (
+                              <div
+                                key={r.label}
+                                className="rounded-xl border bg-white p-4 shadow-sm flex flex-col gap-3"
+                              >
+                                <div className="flex items-center justify-between">
+                                  <h4 className="font-semibold text-sm">
+                                    {r.label}
+                                  </h4>
+                                  {r.lastStatus && (
+                                    <Badge
+                                      variant={
+                                        isAnswered
+                                          ? "success"
+                                          : "destructive"
+                                      }
+                                      className="gap-1 text-xs"
+                                    >
+                                      {isAnswered ? (
+                                        <CheckCircle2 className="h-3 w-3" />
+                                      ) : (
+                                        <XCircle className="h-3 w-3" />
+                                      )}
+                                      {r.lastStatus}
+                                    </Badge>
+                                  )}
+                                </div>
+
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div className="flex items-center gap-2 text-sm">
+                                    <User className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                    <span className="text-muted-foreground">
+                                      {t("details.name")}:
+                                    </span>
+                                    <span className="font-medium truncate">
+                                      {r.recipient?.name || "-"}
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-sm">
+                                    <Phone className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                    <span className="text-muted-foreground">
+                                      {t("details.phone")}:
+                                    </span>
+                                    <span className="font-semibold" dir="ltr">
+                                      {r.recipient?.phone || "-"}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                <div className="border-t pt-3 grid grid-cols-2 gap-3">
+                                  {r.callerNumber && (
+                                    <div className="flex items-center gap-2 text-sm">
+                                      <PhoneOutgoing className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                      <span className="text-muted-foreground">
+                                        {t("details.callerNumber")}:
+                                      </span>
+                                      <span className="font-medium" dir="ltr">
+                                        {r.callerNumber}
+                                      </span>
+                                    </div>
+                                  )}
+                                  {r.lastAttemptTime && (
+                                    <div className="flex items-center gap-2 text-sm">
+                                      <Clock className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                      <span className="text-muted-foreground">
+                                        {t("details.lastAttemptTime")}:
+                                      </span>
+                                      <span className="font-medium">
+                                        {new Date(
+                                          r.lastAttemptTime,
+                                        ).toLocaleTimeString(locale, {
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                          second: "2-digit",
+                                          hour12: true,
+                                        })}
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>
+
+                                {r.trials != null && (
+                                  <div className="border-t pt-3 flex items-center gap-2">
+                                    <RotateCw className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                    <span className="text-sm text-muted-foreground">
+                                      {t("details.trials")}:
+                                    </span>
+                                    <div className="flex items-center gap-1.5">
+                                      {Array.from({
+                                        length: Math.max(
+                                          r.trials ?? 1,
+                                          1,
+                                        ),
+                                      }).map((_, i) => (
+                                        <div
+                                          key={i}
+                                          className={cn(
+                                            "h-2 w-2 rounded-full",
+                                            i < (r.trials ?? 0)
+                                              ? isAnswered
+                                                ? "bg-success-500"
+                                                : "bg-destructive"
+                                              : "bg-neutral-200",
+                                          )}
+                                        />
+                                      ))}
+                                      <span className="text-xs font-medium ms-1">
+                                        {r.trials}
+                                      </span>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
                       </>
                     )}
