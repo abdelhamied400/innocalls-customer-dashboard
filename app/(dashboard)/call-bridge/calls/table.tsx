@@ -150,19 +150,17 @@ const CallBridgeCallsTable = () => {
                       </div>
                     </div>
 
-                    <div className="rounded-xl border bg-white p-4 shadow-sm flex flex-col gap-3">
-                      <span className="text-xs text-muted-foreground uppercase tracking-wide">
-                        {t("details.recording")}
-                      </span>
-                      {recordingUrl ? (
+                    {call.endCallStatus === "Completed" && recordingUrl && (
+                      <div className="rounded-xl border bg-white p-4 shadow-sm flex flex-col gap-3">
+                        <span className="text-xs text-muted-foreground uppercase tracking-wide">
+                          {t("details.recording")}
+                        </span>
                         <StreamingSoundPlayer
                           url={recordingUrl}
                           label={`recording-${call.uniqueIdentifier || call.id}.wav`}
                         />
-                      ) : (
-                        <p className="text-sm text-muted-foreground">-</p>
-                      )}
-                    </div>
+                      </div>
+                    )}
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="rounded-lg border bg-white p-3 flex flex-col gap-2">
