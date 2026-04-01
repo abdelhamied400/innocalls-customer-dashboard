@@ -5,10 +5,13 @@ import {
   ColumnDef,
   getCoreRowModel,
   getPaginationRowModel,
+  getExpandedRowModel,
   PaginationState,
   useReactTable,
   SortingState,
   ColumnFiltersState,
+  ExpandedState,
+  Row,
   getSortedRowModel,
   getFilteredRowModel,
 } from "@tanstack/react-table";
@@ -49,6 +52,7 @@ type PaginatedTableProps<TData, TValue> = PropsWithChildren<{
   manualPagination?: boolean;
   meta?: TableMeta<TData>;
   serverPagination?: ServerPagination;
+  getRowCanExpand?: (row: Row<TData>) => boolean;
 }>;
 const PaginatedTable = <TData, TValue>({
   data,
@@ -64,6 +68,7 @@ const PaginatedTable = <TData, TValue>({
   children,
   meta,
   serverPagination: serverPaginationProp,
+  getRowCanExpand,
 }: PaginatedTableProps<TData, TValue>) => {
   const [internalPagination, setInternalPagination] = useState<PaginationState>(
     {
@@ -94,6 +99,7 @@ const PaginatedTable = <TData, TValue>({
   };
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [expanded, setExpanded] = useState<ExpandedState>({});
 
   const table = useReactTable({
     data,
@@ -103,11 +109,13 @@ const PaginatedTable = <TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
     // state
     state: {
       sorting,
       pagination,
       columnFilters,
+      expanded,
     },
     // options
     manualPagination,
@@ -119,6 +127,8 @@ const PaginatedTable = <TData, TValue>({
     onPaginationChange: handlePaginationChange,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
+    onExpandedChange: setExpanded,
+    getRowCanExpand,
     meta,
   });
 

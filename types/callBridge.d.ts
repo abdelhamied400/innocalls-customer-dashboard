@@ -33,3 +33,61 @@ export type UploadSoundResponse = {
   path: string;
   originalName: string;
 };
+
+export type CallBridgeCall = {
+  id: string;
+  firstRecipient: {
+    name: string;
+    phone: string;
+  };
+  secondRecipient: {
+    name: string;
+    phone: string;
+  };
+  status: string;
+  scheduleDuration: string;
+  timezone: string;
+  scheduleDateTime: string;
+  uniqueIdentifier?: string;
+  recordingLink?: string;
+  endCallStatus: string;
+  matchesScheduledDuration: boolean;
+  callOutcome?: {
+    callDuration: number;
+    talkTime: string;
+    firstRecipientTrials: number;
+    secondRecipientTrials: number;
+    firstRecipientLastAttemptTime: string | null;
+    secondRecipientLastAttemptTime: string | null;
+    firstRecipientLastCallStatus: string;
+    secondRecipientLastCallStatus: string;
+    firstCallerNumber?: string;
+    secondCallerNumber?: string;
+    isConnected: boolean;
+    summary?: {
+      en: string;
+      ar: string;
+    };
+  };
+};
+
+export type FetchCallBridgeCallsResponse = {
+  calls: CallBridgeCall[];
+  totalItems: number;
+  totalPages: number;
+};
+
+export type CreateCallBridgeCallPayload = {
+  duration: number;
+  timezone: string;
+  dateTime: string;
+  firstRecipient: {
+    name: string;
+    phone: string;
+  };
+  secondRecipient: {
+    name: string;
+    phone: string;
+  };
+  conferenceBridgeFlow: string;
+};

@@ -162,7 +162,4 @@ const CallBridgeDetails = () => {
   );
 };
 
-export default withPermission(
-  CallBridgeDetails,
-  "fullAccessConferenceBridge",
-);
+export default withPermission(CallBridgeDetails, "fullAccessConferenceBridge");

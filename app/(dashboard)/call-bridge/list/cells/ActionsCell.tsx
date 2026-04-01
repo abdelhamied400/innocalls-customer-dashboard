@@ -10,7 +10,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
   return (
     <div className="flex items-center gap-2">
       <Button variant="ghost-primary" size="icon" asChild>
-        <Link href={`/call-bridge/${row.original.id}/details`}>
+        <Link href={`/call-bridge/${row.original.id}`}>
           <Visibility fontSize="small" />
         </Link>
       </Button>

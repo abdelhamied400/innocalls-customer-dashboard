@@ -1,5 +1,11 @@
 import api from "./api";
-import { CallBridge, CallBridgeDetail, UploadSoundResponse } from "@/types/callBridge";
+import {
+  CallBridge,
+  CallBridgeDetail,
+  UploadSoundResponse,
+  FetchCallBridgeCallsResponse,
+  CreateCallBridgeCallPayload,
+} from "@/types/callBridge";
 import { objToQueryString } from "@/lib/utils";
 
 type FetchBridgesResponse = {
@@ -22,6 +28,17 @@ export default {
 
   createBridge: async (data: object) => {
     const res = await api.post("/conference-bridges", data);
+    return res.data.data;
+  },
+
+  fetchCalls: async (filters?: any): Promise<FetchCallBridgeCallsResponse> => {
+    const queryString = objToQueryString(filters || {});
+    const res = await api.get(`/bridge-calls?${queryString}`);
+    return res.data.data;
+  },
+
+  createCall: async (data: CreateCallBridgeCallPayload) => {
+    const res = await api.post("/bridge-calls", data);
     return res.data.data;
   },
 

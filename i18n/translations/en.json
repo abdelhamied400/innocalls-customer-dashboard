@@ -4719,6 +4719,7 @@
     "list": {
       "title": "Call Bridge",
       "search": "Search...",
+      "calls": "Calls",
       "create": "Create Bridge",
       "columns": {
         "creationDate": "Creation Date",
@@ -4877,6 +4878,121 @@
         "successDescription": "The call bridge has been created successfully.",
         "error": "Failed to create bridge",
         "errorDescription": "An error occurred while creating the bridge. Please try again."
+      }
+    },
+    "calls": {
+      "title": "Bridge Calls",
+      "create": "Create Call",
+      "table": {
+        "columns": {
+          "scheduleDateTime": "Scheduled At",
+          "firstRecipient": "First Recipient",
+          "secondRecipient": "Second Recipient",
+          "duration": "Duration",
+          "timezone": "Timezone",
+          "status": "Status",
+          "endCallStatus": "End Call Status",
+          "actions": "Actions"
+        }
+      },
+      "details": {
+        "status": "Status",
+        "endCallStatus": "End Call Status",
+        "summary": "Call Summary",
+        "talkTime": "Talk Time",
+        "scheduleDuration": "Scheduled Duration",
+        "recording": "Recording",
+        "firstRecipient": "First Recipient",
+        "secondRecipient": "Second Recipient",
+        "name": "Name",
+        "phone": "Phone",
+        "lastStatus": "Last Status",
+        "trials": "Trials"
+      },
+      "createPage": {
+        "title": "Create Bridge Call"
+      },
+      "form": {
+        "conferenceBridgeFlow": {
+          "label": "Bridge Flow",
+          "placeholder": "Select bridge flow",
+          "validation": {
+            "required": "Bridge flow is required",
+            "objectId": "Bridge flow id is invalid"
+          }
+        },
+        "duration": {
+          "label": "Duration (minutes)",
+          "validation": {
+            "required": "Duration is required",
+            "integer": "Duration must be an integer",
+            "min": "Duration must be at least {min}"
+          }
+        },
+        "timezone": {
+          "label": "Timezone",
+          "placeholder": "Select timezone",
+          "validation": {
+            "required": "Timezone is required",
+            "invalid": "Timezone is invalid"
+          }
+        },
+        "dateTime": {
+          "label": "Scheduled Date & Time",
+          "validation": {
+            "required": "Date and time is required",
+            "format": "Date and time must be in YYYY-MM-DD HH:mm format",
+            "future": "Date and time must be in the future"
+          }
+        },
+        "firstRecipient": {
+          "name": {
+            "label": "First Recipient Name",
+            "placeholder": "Enter first recipient name",
+            "validation": {
+              "required": "First recipient name is required",
+              "min": "Name must be at least {min} characters",
+              "max": "Name must be at most {max} characters"
+            }
+          },
+          "phone": {
+            "label": "First Recipient Phone",
+            "placeholder": "Enter first recipient phone",
+            "validation": {
+              "required": "First recipient phone is required",
+              "invalid": "Phone must contain digits only"
+            }
+          }
+        },
+        "secondRecipient": {
+          "name": {
+            "label": "Second Recipient Name",
+            "placeholder": "Enter second recipient name",
+            "validation": {
+              "required": "Second recipient name is required",
+              "min": "Name must be at least {min} characters",
+              "max": "Name must be at most {max} characters"
+            }
+          },
+          "phone": {
+            "label": "Second Recipient Phone",
+            "placeholder": "Enter second recipient phone",
+            "validation": {
+              "required": "Second recipient phone is required",
+              "invalid": "Phone must contain digits only"
+            }
+          }
+        }
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "create": "Create"
+      },
+      "toasts": {
+        "created": "Call created successfully",
+        "createdDescription": "The call has been scheduled successfully.",
+        "error": "Request failed",
+        "errorDescription": "An error occurred. Please try again."
       }
     }
   }

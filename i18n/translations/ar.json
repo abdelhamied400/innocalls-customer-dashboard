@@ -4217,7 +4217,7 @@
       }
     }
   },
-   "developers": {
+  "developers": {
     "freshdesk": {
       "title": "بيانات اعتماد فريش ديسك",
       "columns": {
@@ -4734,6 +4734,7 @@
     "list": {
       "title": "جسر المكالمات",
       "search": "بحث...",
+      "calls": "المكالمات",
       "create": "إنشاء جسر",
       "columns": {
         "creationDate": "تاريخ الإنشاء",
@@ -4893,6 +4894,121 @@
         "successDescription": "تم إنشاء جسر المكالمات بنجاح.",
         "error": "فشل إنشاء الجسر",
         "errorDescription": "حدث خطأ أثناء إنشاء الجسر. يرجى المحاولة مرة أخرى."
+      }
+    },
+    "calls": {
+      "title": "مكالمات الجسر",
+      "create": "إنشاء مكالمة",
+      "table": {
+        "columns": {
+          "scheduleDateTime": "الموعد",
+          "firstRecipient": "المستلم الأول",
+          "secondRecipient": "المستلم الثاني",
+          "duration": "المدة",
+          "timezone": "المنطقة الزمنية",
+          "status": "الحالة",
+          "endCallStatus": "نتيجة إنهاء المكالمة",
+          "actions": "الإجراءات"
+        }
+      },
+      "details": {
+        "status": "الحالة",
+        "endCallStatus": "نتيجة إنهاء المكالمة",
+        "summary": "ملخص المكالمة",
+        "talkTime": "مدة التحدث",
+        "scheduleDuration": "المدة المجدولة",
+        "recording": "التسجيل",
+        "firstRecipient": "المستلم الأول",
+        "secondRecipient": "المستلم الثاني",
+        "name": "الاسم",
+        "phone": "الهاتف",
+        "lastStatus": "آخر حالة",
+        "trials": "عدد المحاولات"
+      },
+      "createPage": {
+        "title": "إنشاء مكالمة جسر"
+      },
+      "form": {
+        "conferenceBridgeFlow": {
+          "label": "مسار الجسر",
+          "placeholder": "اختر مسار الجسر",
+          "validation": {
+            "required": "مسار الجسر مطلوب",
+            "objectId": "معرف مسار الجسر غير صالح"
+          }
+        },
+        "duration": {
+          "label": "المدة (بالدقائق)",
+          "validation": {
+            "required": "المدة مطلوبة",
+            "integer": "يجب أن تكون المدة عددًا صحيحًا",
+            "min": "يجب أن تكون المدة على الأقل {min}"
+          }
+        },
+        "timezone": {
+          "label": "المنطقة الزمنية",
+          "placeholder": "اختر المنطقة الزمنية",
+          "validation": {
+            "required": "المنطقة الزمنية مطلوبة",
+            "invalid": "المنطقة الزمنية غير صالحة"
+          }
+        },
+        "dateTime": {
+          "label": "تاريخ ووقت الجدولة",
+          "validation": {
+            "required": "التاريخ والوقت مطلوبان",
+            "format": "يجب أن يكون التاريخ والوقت بصيغة YYYY-MM-DD HH:mm",
+            "future": "يجب أن يكون التاريخ والوقت في المستقبل"
+          }
+        },
+        "firstRecipient": {
+          "name": {
+            "label": "اسم المستلم الأول",
+            "placeholder": "أدخل اسم المستلم الأول",
+            "validation": {
+              "required": "اسم المستلم الأول مطلوب",
+              "min": "يجب ألا يقل الاسم عن {min} أحرف",
+              "max": "يجب ألا يزيد الاسم عن {max} حرف"
+            }
+          },
+          "phone": {
+            "label": "هاتف المستلم الأول",
+            "placeholder": "أدخل هاتف المستلم الأول",
+            "validation": {
+              "required": "هاتف المستلم الأول مطلوب",
+              "invalid": "يجب أن يحتوي الهاتف على أرقام فقط"
+            }
+          }
+        },
+        "secondRecipient": {
+          "name": {
+            "label": "اسم المستلم الثاني",
+            "placeholder": "أدخل اسم المستلم الثاني",
+            "validation": {
+              "required": "اسم المستلم الثاني مطلوب",
+              "min": "يجب ألا يقل الاسم عن {min} أحرف",
+              "max": "يجب ألا يزيد الاسم عن {max} حرف"
+            }
+          },
+          "phone": {
+            "label": "هاتف المستلم الثاني",
+            "placeholder": "أدخل هاتف المستلم الثاني",
+            "validation": {
+              "required": "هاتف المستلم الثاني مطلوب",
+              "invalid": "يجب أن يحتوي الهاتف على أرقام فقط"
+            }
+          }
+        }
+      },
+      "actions": {
+        "cancel": "إلغاء",
+        "create": "إنشاء"
+      },
+      "toasts": {
+        "created": "تم إنشاء المكالمة بنجاح",
+        "createdDescription": "تمت جدولة المكالمة بنجاح.",
+        "error": "فشل الطلب",
+        "errorDescription": "حدث خطأ. يرجى المحاولة مرة أخرى."
       }
     }
   }
