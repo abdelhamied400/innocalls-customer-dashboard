@@ -35,13 +35,6 @@ const DateTimePicker = ({
     : [0, 0];
 
   const now = new Date();
-  const isToday =
-    selectedDate &&
-    selectedDate.getFullYear() === now.getFullYear() &&
-    selectedDate.getMonth() === now.getMonth() &&
-    selectedDate.getDate() === now.getDate();
-
-  const minHour = isToday ? now.getHours() : 0;
 
   const hoursArray = Array.from({ length: 24 }, (_, i) => i);
   const minutesArray = Array.from({ length: 60 }, (_, i) => i);
@@ -57,31 +50,12 @@ const DateTimePicker = ({
 
   const handleDateSelect = (date: Date | undefined) => {
     if (!date) return;
-    const newDate = new Date(date);
-    const isNewToday =
-      newDate.getFullYear() === now.getFullYear() &&
-      newDate.getMonth() === now.getMonth() &&
-      newDate.getDate() === now.getDate();
-
-    let h = timeHour;
-    let m = timeMinute;
-
-    if (isNewToday) {
-      if (h < now.getHours()) h = now.getHours();
-      if (h === now.getHours() && m <= now.getMinutes())
-        m = now.getMinutes() + 1;
-    }
-
-    onChange?.(buildValue(newDate, h, m));
+    onChange?.(buildValue(new Date(date), timeHour, timeMinute));
   };
 
   const handleHourChange = (hour: number) => {
     if (!selectedDate) return;
-    let m = timeMinute;
-    if (isToday && hour === now.getHours() && m <= now.getMinutes()) {
-      m = now.getMinutes() + 1;
-    }
-    onChange?.(buildValue(selectedDate, hour, m));
+    onChange?.(buildValue(selectedDate, hour, timeMinute));
   };
 
   const handleMinuteChange = (minute: number) => {
@@ -132,10 +106,9 @@ const DateTimePicker = ({
           />
           <div className="border-l flex">
             {/* Hours */}
-            <div className="h-60 w-16 overflow-y-auto" ref={hoursContainerRef}>
+            <div className="h-60 w-16 overflow-y-auto" ref={hoursContainerRef} onWheel={(e) => e.stopPropagation()}>
               <div className="p-2 flex flex-col gap-1">
                 {hoursArray.map((hour) => {
-                  const disabled = isToday && hour < minHour;
                   return (
                     <Button
                       key={hour}
@@ -143,7 +116,7 @@ const DateTimePicker = ({
                       variant="ghost"
                       size="sm"
                       data-hour={hour}
-                      disabled={disabled || !selectedDate}
+                      disabled={!selectedDate}
                       className={cn(
                         "w-full justify-center",
                         timeHour === hour &&
@@ -166,13 +139,10 @@ const DateTimePicker = ({
             <div
               className="h-60 w-16 overflow-y-auto"
               ref={minutesContainerRef}
+              onWheel={(e) => e.stopPropagation()}
             >
               <div className="p-2 flex flex-col gap-1">
                 {minutesArray.map((minute) => {
-                  const disabled =
-                    isToday &&
-                    timeHour === now.getHours() &&
-                    minute <= now.getMinutes();
                   return (
                     <Button
                       key={minute}
@@ -180,7 +150,7 @@ const DateTimePicker = ({
                       variant="ghost"
                       size="sm"
                       data-minute={minute}
-                      disabled={disabled || !selectedDate}
+                      disabled={!selectedDate}
                       className={cn(
                         "w-full justify-center",
                         timeMinute === minute &&

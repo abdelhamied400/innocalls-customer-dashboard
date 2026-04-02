@@ -4905,6 +4905,7 @@
           "optional": "(Optional)",
           "hint": "the warning sound file",
           "validation": {
+            "required": "Warning sound file is required",
             "type": "Only MP3 files are allowed",
             "size": "File size must be less than 10MB"
           }
@@ -4963,7 +4964,12 @@
         "lastAttemptTime": "Last Attempt",
         "callerNumber": "Caller Number",
         "copied": "Copied to clipboard",
-        "durationUsage": "Call Duration Usage"
+        "durationUsage": "Call Duration Usage",
+        "recipientStatus": {
+          "Not Sent": "Not Sent",
+          "Call Failed": "Call Failed",
+          "Answered": "Answered"
+        }
       },
       "createPage": {
         "title": "Create Bridge Call"
@@ -5019,7 +5025,7 @@
           "phone": {
             "label": "First Recipient Phone",
             "placeholder": "Enter first recipient phone",
-            "hint": "Include country code, e.g. +20xxxxxxxxxx",
+            "hint": "Include country code, e.g. 20xxxxxxxxxx",
             "validation": {
               "required": "First recipient phone is required",
               "invalid": "The phone number you entered is not valid, please enter the country code followed by valid numeric digits"
@@ -5040,7 +5046,7 @@
           "phone": {
             "label": "Second Recipient Phone",
             "placeholder": "Enter second recipient phone",
-            "hint": "Include country code, e.g. +20xxxxxxxxxx",
+            "hint": "Include country code, e.g. 20xxxxxxxxxx",
             "validation": {
               "required": "Second recipient phone is required",
               "invalid": "The phone number you entered is not valid, please enter the country code followed by valid numeric digits",

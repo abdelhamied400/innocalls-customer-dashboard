@@ -71,6 +71,7 @@ export const CallBridgeStep1Schema = (t: any) =>
 
 export const CallBridgeStep2Schema = (t: any) =>
   z.object({
+    enableWarningSound: z.boolean().default(false),
     welcomeSoundFile: soundFileSchema(t, "welcomeSoundFile"),
     alertSoundFile: soundFileSchema(t, "alertSoundFile"),
     firstRecipientSorrySoundFile: soundFileSchema(t, "firstRecipientSorrySoundFile"),
@@ -79,7 +80,26 @@ export const CallBridgeStep2Schema = (t: any) =>
   });
 
 export const CallBridgeCreateSchema = (t: any) =>
-  CallBridgeStep1Schema(t).merge(CallBridgeStep2Schema(t));
+  CallBridgeStep1Schema(t)
+    .merge(CallBridgeStep2Schema(t))
+    .superRefine((data, ctx) => {
+      if (data.enableWarningSound) {
+        if (!data.warningSoundFile) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: t("form.warningSoundFile.validation.required"),
+            path: ["warningSoundFile"],
+          });
+        }
+        if (!data.warningTimeBeforeEnd) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: t("form.warningTimeBeforeEnd.validation.min", { min: 1 }),
+            path: ["warningTimeBeforeEnd"],
+          });
+        }
+      }
+    });
 
 export type CallBridgeStep1 = z.infer<ReturnType<typeof CallBridgeStep1Schema>>;
 export type CallBridgeStep2 = z.infer<ReturnType<typeof CallBridgeStep2Schema>>;

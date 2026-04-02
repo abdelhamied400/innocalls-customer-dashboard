@@ -1,6 +1,5 @@
 "use client";
 import { useFormContext } from "react-hook-form";
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import Dropzone, {
@@ -68,23 +67,17 @@ const SoundFilesForm = () => {
     formState: { errors, isSubmitting },
   } = form;
 
-  const [enableWarningSound, setEnableWarningSound] = useState(false);
+  const enableWarningSound = form.watch("enableWarningSound");
 
   const handleWarningSoundToggle = (checked: boolean) => {
-    setEnableWarningSound(checked);
+    setValue("enableWarningSound", checked);
     if (!checked) {
       setValue("warningSoundFile", undefined);
+      setValue("warningTimeBeforeEnd", 1);
       clearErrors("warningSoundFile");
       clearErrors("warningTimeBeforeEnd");
     }
   };
-
-  useEffect(() => {
-    if (!enableWarningSound) {
-      setValue("warningSoundFile", undefined);
-      setValue("warningTimeBeforeEnd", undefined);
-    }
-  }, [enableWarningSound, setValue]);
 
   return (
     <Form {...form}>

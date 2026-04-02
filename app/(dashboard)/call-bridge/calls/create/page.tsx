@@ -14,13 +14,7 @@ import {
   CallBridgeCallCreate,
   CallBridgeCallCreateSchema,
 } from "@/validation/CallBridgeCallCreate";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import Field from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import VirtualizedSelect from "@/components/VirtualizedSelect";
@@ -250,7 +244,6 @@ const CreateCallBridgeCallPage = () => {
                               />
                             </Field>
                           </FormControl>
-                          <FormMessage />
                         </FormItem>
                       )}
                     />
@@ -274,6 +267,25 @@ const CreateCallBridgeCallPage = () => {
                             data: { value: string | number } | null,
                           ) => {
                             field.onChange(data?.value || "");
+                            form.trigger("dateTime");
+                          }}
+                          isVirtualized={false}
+                          menuPortalTarget={document.body}
+                          styles={{
+                            menu: (base) => ({
+                              ...base,
+                              width: "auto",
+                              minWidth: "100%",
+                            }),
+                            menuList: (base) => ({
+                              ...base,
+                              maxHeight: 240,
+                              overflowY: "auto",
+                            }),
+                            option: (base) => ({
+                              ...base,
+                              whiteSpace: "nowrap",
+                            }),
                           }}
                         />
                       )}
@@ -297,7 +309,6 @@ const CreateCallBridgeCallPage = () => {
                               />
                             </Field>
                           </FormControl>
-                          <FormMessage />
                         </FormItem>
                       )}
                     />

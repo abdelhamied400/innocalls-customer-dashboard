@@ -64,6 +64,24 @@ const MenuList = <OptionType extends Option>({
   );
 };
 
+const ScrollableMenuList = <OptionType extends Option>({
+  children,
+  innerRef,
+  innerProps,
+  maxHeight,
+}: MenuListProps<OptionType>) => {
+  return (
+    <div
+      ref={innerRef}
+      {...innerProps}
+      style={{ maxHeight, overflowY: "auto" }}
+      onWheel={(e) => e.stopPropagation()}
+    >
+      {children}
+    </div>
+  );
+};
+
 const VirtualizedSelect = <
   OptionType extends Option = Option,
   IsMulti extends boolean = false,
@@ -78,6 +96,7 @@ const VirtualizedSelect = <
   error,
   hint,
   noOptionsMessage,
+  isVirtualized = true,
   styles: customStyles,
   ...props
 }: VirtualizedSelectProps<OptionType, IsMulti>) => {
@@ -162,6 +181,11 @@ const VirtualizedSelect = <
         ? customStyles.menu(defaultStyles, state)
         : defaultStyles;
     },
+    menuList: (base, state) => {
+      return customStyles?.menuList
+        ? customStyles.menuList(base, state)
+        : base;
+    },
     menuPortal: (base, state) => {
       const defaultStyles = {
         ...base,
@@ -185,7 +209,7 @@ const VirtualizedSelect = <
           placeholder={placeholder}
           isMulti={isMulti}
           components={{
-            MenuList,
+            MenuList: isVirtualized ? MenuList : ScrollableMenuList,
             IndicatorSeparator: () => <></>,
             MultiValue: () => <></>,
             ValueContainer: ({ children, ...innerProps }) => {

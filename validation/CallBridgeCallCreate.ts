@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { fromZonedTime } from "date-fns-tz";
 
 const isValidTimezone = (timezone: string) => {
   try {
@@ -33,18 +34,7 @@ export const CallBridgeCallCreateSchema = (t: any) =>
         .string({ required_error: t("form.dateTime.validation.required") })
         .regex(/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}$/, {
           message: t("form.dateTime.validation.format"),
-        })
-        .refine(
-          (value) => {
-            const parsed = new Date(value.replace(" ", "T"));
-            return (
-              !Number.isNaN(parsed.getTime()) && parsed.getTime() > Date.now()
-            );
-          },
-          {
-            message: t("form.dateTime.validation.future"),
-          },
-        ),
+        }),
       firstRecipient: z.object({
         name: z
           .string({
@@ -87,13 +77,29 @@ export const CallBridgeCallCreateSchema = (t: any) =>
           ),
       }),
     })
-    .refine(
-      (data) => data.firstRecipient.phone !== data.secondRecipient.phone,
-      {
-        message: t("form.secondRecipient.phone.validation.different"),
-        path: ["secondRecipient", "phone"],
-      },
-    );
+    .superRefine((data, ctx) => {
+      if (data.firstRecipient.phone === data.secondRecipient.phone) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: t("form.secondRecipient.phone.validation.different"),
+          path: ["secondRecipient", "phone"],
+        });
+      }
+
+      if (data.dateTime && data.timezone) {
+        const utcDate = fromZonedTime(
+          data.dateTime.replace(" ", "T"),
+          data.timezone,
+        );
+        if (Number.isNaN(utcDate.getTime()) || utcDate.getTime() <= Date.now()) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: t("form.dateTime.validation.future"),
+            path: ["dateTime"],
+          });
+        }
+      }
+    });
 
 export type CallBridgeCallCreate = z.infer<
   ReturnType<typeof CallBridgeCallCreateSchema>

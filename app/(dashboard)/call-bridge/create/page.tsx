@@ -51,19 +51,11 @@ const CreateCallBridgeSheet = () => {
       firstRecipientDelayMinutesBetweenTrials: 0,
       secondRecipientDelayMinutesBetweenTrials: 0,
       warningTimeBeforeEnd: 1,
+      enableWarningSound: false,
     },
   });
 
   const onSubmit = form.handleSubmit(async (data) => {
-    // Validate warningTimeBeforeEnd if warning sound is present
-    if (data.warningSoundFile && !data.warningTimeBeforeEnd) {
-      form.setError("warningTimeBeforeEnd", {
-        type: "manual",
-        message: t("form.warningTimeBeforeEnd.validation.min", { min: 1 }),
-      });
-      return;
-    }
-
     try {
       // Upload all sound files in parallel
       const uploadPromises: Promise<{ path: string; originalName: string }>[] =
@@ -74,8 +66,7 @@ const CreateCallBridgeSheet = () => {
           callBridgeService.uploadSound(data.secondRecipientSorrySoundFile),
         ];
 
-      const hasWarningSound = !!data.warningSoundFile;
-      if (hasWarningSound) {
+      if (data.enableWarningSound) {
         uploadPromises.push(
           callBridgeService.uploadSound(data.warningSoundFile!),
         );
@@ -104,7 +95,7 @@ const CreateCallBridgeSheet = () => {
           data.secondRecipientDelayMinutesBetweenTrials,
       };
 
-      if (hasWarningSound && warning) {
+      if (data.enableWarningSound && warning) {
         payload.warningSoundFileName = warning.originalName;
         payload.warningSoundFilePath = warning.path;
         payload.warningTimeBeforeEnd = data.warningTimeBeforeEnd;
@@ -133,7 +124,7 @@ const CreateCallBridgeSheet = () => {
 
   return (
     <Sheet defaultOpen={true} onOpenChange={() => router.back()}>
-      <SheetContent side="bottom" className="h-screen p-0">
+      <SheetContent side="bottom" className="h-screen p-0 overflow-hidden">
         <SheetHeader className="sr-only">
           <SheetTitle>{t("title")}</SheetTitle>
           <SheetDescription>{t("description")}</SheetDescription>
@@ -167,7 +158,7 @@ const CreateCallBridgeSheet = () => {
             </Button>
           </StepperHeader>
 
-          <StepperSteps className="flex-1 mx-auto my-8 w-[320px] md:w-160 max-h-[calc(100vh-200px)]">
+          <StepperSteps className="flex-1 mx-auto my-8 w-[320px] md:w-160 max-h-[calc(100vh-200px)] overflow-hidden">
             <FormProvider {...form}>
               <form className="h-full" onSubmit={onSubmit}>
                 <StepperStep

@@ -35,6 +35,7 @@ import {
   Check,
   FileText,
 } from "lucide-react";
+import { RecipientStatus } from "@/constants/callBridge";
 
 const parseDurationToMinutes = (duration: string): number => {
   const parts = duration.split(":").map(Number);
@@ -211,8 +212,21 @@ const CallBridgeCallsTable = () => {
                                 endCallVariantMap[call.endCallStatus] ||
                                 "neutral"
                               }
+                              className="gap-1"
                             >
-                              {call.endCallStatus || "-"}
+                              {call.endCallStatus === "Completed" ? (
+                                <CheckCircle2 className="h-3 w-3" />
+                              ) : call.endCallStatus === "Call Failed" ? (
+                                <XCircle className="h-3 w-3" />
+                              ) : null}
+                              {call.endCallStatus
+                                ? t(
+                                    `endCallStatuses.${call.endCallStatus
+                                      .toLowerCase()
+                                      .replace(/[^a-z0-9]+/g, "_")
+                                      .replace(/^_|_$/g, "")}` as any,
+                                  )
+                                : "-"}
                             </Badge>
                           </div>
 
@@ -317,197 +331,329 @@ const CallBridgeCallsTable = () => {
                             )}
 
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {[
-                              {
-                                index: 1,
-                                label: t("details.firstRecipient"),
-                                recipient: call.firstRecipient,
-                                lastStatus:
-                                  call.callOutcome
-                                    ?.firstRecipientLastCallStatus,
-                                trials:
-                                  call.callOutcome?.firstRecipientTrials,
-                                lastAttemptTime:
-                                  call.callOutcome
-                                    ?.firstRecipientLastAttemptTime,
-                                callerNumber:
-                                  call.callOutcome?.firstCallerNumber,
-                              },
-                              {
-                                index: 2,
-                                label: t("details.secondRecipient"),
-                                recipient: call.secondRecipient,
-                                lastStatus:
-                                  call.callOutcome
-                                    ?.secondRecipientLastCallStatus,
-                                trials:
-                                  call.callOutcome?.secondRecipientTrials,
-                                lastAttemptTime:
-                                  call.callOutcome
-                                    ?.secondRecipientLastAttemptTime,
-                                callerNumber:
-                                  call.callOutcome?.secondCallerNumber,
-                              },
-                            ].map((r) => {
-                              const isAnswered =
-                                r.lastStatus === "Answered";
-
-                              return (
-                                <div
-                                  key={r.label}
-                                  className="rounded-xl border bg-white p-4 shadow-sm flex flex-col gap-3"
-                                >
-                                  <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-2.5">
-                                      <div
-                                        className={cn(
-                                          "h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0",
-                                          r.index === 1
-                                            ? "bg-primary-500"
-                                            : "bg-blue-500",
-                                        )}
-                                      >
-                                        {r.index}
-                                      </div>
-                                      <h4 className="font-semibold text-sm">
-                                        {r.label}
-                                      </h4>
-                                    </div>
-                                    {r.lastStatus && (
-                                      <Badge
-                                        variant={
-                                          isAnswered
-                                            ? "success"
-                                            : "destructive"
-                                        }
-                                        className="gap-1 text-xs"
-                                      >
-                                        {isAnswered ? (
-                                          <CheckCircle2 className="h-3 w-3" />
-                                        ) : (
-                                          <XCircle className="h-3 w-3" />
-                                        )}
-                                        {r.lastStatus}
-                                      </Badge>
-                                    )}
+                            {/* First Recipient */}
+                            <div className="rounded-xl border bg-white p-4 shadow-sm flex flex-col gap-3">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2.5">
+                                  <div className="h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0 bg-primary-500">
+                                    1
                                   </div>
-
-                                  <div className="grid grid-cols-2 gap-3">
-                                    <div className="flex items-center gap-2 text-sm">
-                                      <User className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                                      <span className="text-muted-foreground">
-                                        {t("details.name")}:
-                                      </span>
-                                      <span className="font-medium truncate">
-                                        {r.recipient?.name || "-"}
-                                      </span>
-                                    </div>
-                                    <div className="flex items-center gap-2 text-sm">
-                                      <Phone className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                                      <span className="text-muted-foreground">
-                                        {t("details.phone")}:
-                                      </span>
-                                      <span className="font-semibold" dir="ltr">
-                                        {r.recipient?.phone || "-"}
-                                      </span>
-                                      {r.recipient?.phone && (
-                                        <Tooltip>
-                                          <TooltipTrigger asChild>
-                                            <span>
-                                              <CopyButton
-                                                value={r.recipient.phone}
-                                                successMessage={t(
-                                                  "details.copied",
-                                                )}
-                                              />
-                                            </span>
-                                          </TooltipTrigger>
-                                          <TooltipContent>
-                                            {t("details.phone")}
-                                          </TooltipContent>
-                                        </Tooltip>
-                                      )}
-                                    </div>
-                                  </div>
-
-                                  {(r.callerNumber || r.lastAttemptTime) && (
-                                  <div className="border-t pt-3 grid grid-cols-2 gap-3">
-                                    {r.callerNumber && (
-                                      <div className="flex items-center gap-2 text-sm">
-                                        <PhoneOutgoing className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                                        <span className="text-muted-foreground">
-                                          {t("details.callerNumber")}:
-                                        </span>
-                                        <span className="font-medium" dir="ltr">
-                                          {r.callerNumber}
-                                        </span>
-                                        <Tooltip>
-                                          <TooltipTrigger asChild>
-                                            <span>
-                                              <CopyButton
-                                                value={r.callerNumber}
-                                                successMessage={t(
-                                                  "details.copied",
-                                                )}
-                                              />
-                                            </span>
-                                          </TooltipTrigger>
-                                          <TooltipContent>
-                                            {t("details.callerNumber")}
-                                          </TooltipContent>
-                                        </Tooltip>
-                                      </div>
+                                  <h4 className="font-semibold text-sm">
+                                    {t("details.firstRecipient")}
+                                  </h4>
+                                </div>
+                                {call.callOutcome
+                                  ?.firstRecipientLastCallStatus && (
+                                  <Badge
+                                    variant={
+                                      call.callOutcome
+                                        .firstRecipientLastCallStatus ===
+                                      RecipientStatus.ANSWERED
+                                        ? "success"
+                                        : "destructive"
+                                    }
+                                    className="gap-1 text-xs"
+                                  >
+                                    {call.callOutcome
+                                      .firstRecipientLastCallStatus ===
+                                    RecipientStatus.ANSWERED ? (
+                                      <CheckCircle2 className="h-3 w-3" />
+                                    ) : (
+                                      <XCircle className="h-3 w-3" />
                                     )}
-                                    {r.lastAttemptTime && (
-                                      <div className="flex items-center gap-2 text-sm">
-                                        <Clock className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                                        <span className="text-muted-foreground">
-                                          {t("details.lastAttemptTime")}:
-                                        </span>
-                                        <span className="font-medium">
-                                          {new Date(
-                                            r.lastAttemptTime,
-                                          ).toLocaleTimeString(locale, {
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                            second: "2-digit",
-                                            hour12: true,
-                                          })}
-                                        </span>
-                                      </div>
+                                    {t(
+                                      `details.recipientStatus.${call.callOutcome.firstRecipientLastCallStatus}`,
                                     )}
-                                  </div>
-                                  )}
+                                  </Badge>
+                                )}
+                              </div>
 
-                                  {r.trials != null && r.trials > 0 && (
-                                    <div className="border-t pt-3 flex items-center gap-2">
-                                      <RotateCw className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
-                                      <span className="text-sm text-muted-foreground">
-                                        {t("details.trials")}:
-                                      </span>
-                                      <div className="flex items-center gap-1.5">
-                                        {Array.from({
-                                          length: r.trials,
-                                        }).map((_, i) => (
-                                          <div
-                                            key={i}
-                                            className={cn(
-                                              "h-2 w-2 rounded-full",
-                                              isAnswered
-                                                ? "bg-success-500"
-                                                : "bg-destructive",
-                                            )}
+                              <div className="grid grid-cols-2 gap-3">
+                                <div className="flex items-center gap-2 text-sm">
+                                  <User className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                  <span className="text-muted-foreground">
+                                    {t("details.name")}:
+                                  </span>
+                                  <span className="font-medium truncate">
+                                    {call.firstRecipient?.name || "-"}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-2 text-sm">
+                                  <Phone className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                  <span className="text-muted-foreground">
+                                    {t("details.phone")}:
+                                  </span>
+                                  <span className="font-semibold" dir="ltr">
+                                    {call.firstRecipient?.phone || "-"}
+                                  </span>
+                                  {call.firstRecipient?.phone && (
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <span>
+                                          <CopyButton
+                                            value={call.firstRecipient.phone}
+                                            successMessage={t("details.copied")}
                                           />
-                                        ))}
-                                        <span className="text-xs font-medium ms-1">
-                                          {r.trials}
                                         </span>
-                                      </div>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        {t("details.phone")}
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  )}
+                                </div>
+                              </div>
+
+                              {(call.callOutcome?.firstCallerNumber ||
+                                call.callOutcome
+                                  ?.firstRecipientLastAttemptTime) && (
+                                <div className="border-t pt-3 grid grid-cols-2 gap-3">
+                                  {call.callOutcome?.firstCallerNumber && (
+                                    <div className="flex items-center gap-2 text-sm">
+                                      <PhoneOutgoing className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                      <span className="text-muted-foreground">
+                                        {t("details.callerNumber")}:
+                                      </span>
+                                      <span className="font-medium" dir="ltr">
+                                        {call.callOutcome.firstCallerNumber}
+                                      </span>
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <span>
+                                            <CopyButton
+                                              value={
+                                                call.callOutcome
+                                                  .firstCallerNumber
+                                              }
+                                              successMessage={t(
+                                                "details.copied",
+                                              )}
+                                            />
+                                          </span>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                          {t("details.callerNumber")}
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    </div>
+                                  )}
+                                  {call.callOutcome
+                                    ?.firstRecipientLastAttemptTime && (
+                                    <div className="flex items-center gap-2 text-sm">
+                                      <Clock className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                      <span className="text-muted-foreground">
+                                        {t("details.lastAttemptTime")}:
+                                      </span>
+                                      <span className="font-medium">
+                                        {new Date(
+                                          call.callOutcome
+                                            .firstRecipientLastAttemptTime,
+                                        ).toLocaleTimeString(locale, {
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                          second: "2-digit",
+                                          hour12: true,
+                                        })}
+                                      </span>
                                     </div>
                                   )}
                                 </div>
-                              );
-                            })}
+                              )}
+
+                              {call.callOutcome?.firstRecipientTrials != null &&
+                                call.callOutcome.firstRecipientTrials > 0 && (
+                                  <div className="border-t pt-3 flex items-center gap-2">
+                                    <RotateCw className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                    <span className="text-sm text-muted-foreground">
+                                      {t("details.trials")}:
+                                    </span>
+                                    <div className="flex items-center gap-1.5">
+                                      {Array.from({
+                                        length:
+                                          call.callOutcome.firstRecipientTrials,
+                                      }).map((_, i) => (
+                                        <div
+                                          key={i}
+                                          className={cn(
+                                            "h-2 w-2 rounded-full",
+                                            call.callOutcome
+                                              ?.firstRecipientLastCallStatus ===
+                                              RecipientStatus.ANSWERED
+                                              ? "bg-success-500"
+                                              : "bg-destructive",
+                                          )}
+                                        />
+                                      ))}
+                                      <span className="text-xs font-medium ms-1">
+                                        {call.callOutcome.firstRecipientTrials}
+                                      </span>
+                                    </div>
+                                  </div>
+                                )}
+                            </div>
+
+                            {/* Second Recipient */}
+                            <div className="rounded-xl border bg-white p-4 shadow-sm flex flex-col gap-3">
+                              <div className="flex items-center justify-between">
+                                <div className="flex items-center gap-2.5">
+                                  <div className="h-7 w-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0 bg-blue-500">
+                                    2
+                                  </div>
+                                  <h4 className="font-semibold text-sm">
+                                    {t("details.secondRecipient")}
+                                  </h4>
+                                </div>
+                                {call.callOutcome
+                                  ?.secondRecipientLastCallStatus && (
+                                  <Badge
+                                    variant={
+                                      call.callOutcome
+                                        .secondRecipientLastCallStatus ===
+                                      RecipientStatus.ANSWERED
+                                        ? "success"
+                                        : "destructive"
+                                    }
+                                    className="gap-1 text-xs"
+                                  >
+                                    {call.callOutcome
+                                      .secondRecipientLastCallStatus ===
+                                    RecipientStatus.ANSWERED ? (
+                                      <CheckCircle2 className="h-3 w-3" />
+                                    ) : (
+                                      <XCircle className="h-3 w-3" />
+                                    )}
+                                    {t(
+                                      `details.recipientStatus.${call.callOutcome.secondRecipientLastCallStatus}`,
+                                    )}
+                                  </Badge>
+                                )}
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-3">
+                                <div className="flex items-center gap-2 text-sm">
+                                  <User className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                  <span className="text-muted-foreground">
+                                    {t("details.name")}:
+                                  </span>
+                                  <span className="font-medium truncate">
+                                    {call.secondRecipient?.name || "-"}
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-2 text-sm">
+                                  <Phone className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                  <span className="text-muted-foreground">
+                                    {t("details.phone")}:
+                                  </span>
+                                  <span className="font-semibold" dir="ltr">
+                                    {call.secondRecipient?.phone || "-"}
+                                  </span>
+                                  {call.secondRecipient?.phone && (
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <span>
+                                          <CopyButton
+                                            value={call.secondRecipient.phone}
+                                            successMessage={t("details.copied")}
+                                          />
+                                        </span>
+                                      </TooltipTrigger>
+                                      <TooltipContent>
+                                        {t("details.phone")}
+                                      </TooltipContent>
+                                    </Tooltip>
+                                  )}
+                                </div>
+                              </div>
+
+                              {(call.callOutcome?.secondCallerNumber ||
+                                call.callOutcome
+                                  ?.secondRecipientLastAttemptTime) && (
+                                <div className="border-t pt-3 grid grid-cols-2 gap-3">
+                                  {call.callOutcome?.secondCallerNumber && (
+                                    <div className="flex items-center gap-2 text-sm">
+                                      <PhoneOutgoing className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                      <span className="text-muted-foreground">
+                                        {t("details.callerNumber")}:
+                                      </span>
+                                      <span className="font-medium" dir="ltr">
+                                        {call.callOutcome.secondCallerNumber}
+                                      </span>
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <span>
+                                            <CopyButton
+                                              value={
+                                                call.callOutcome
+                                                  .secondCallerNumber
+                                              }
+                                              successMessage={t(
+                                                "details.copied",
+                                              )}
+                                            />
+                                          </span>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                          {t("details.callerNumber")}
+                                        </TooltipContent>
+                                      </Tooltip>
+                                    </div>
+                                  )}
+                                  {call.callOutcome
+                                    ?.secondRecipientLastAttemptTime && (
+                                    <div className="flex items-center gap-2 text-sm">
+                                      <Clock className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                      <span className="text-muted-foreground">
+                                        {t("details.lastAttemptTime")}:
+                                      </span>
+                                      <span className="font-medium">
+                                        {new Date(
+                                          call.callOutcome
+                                            .secondRecipientLastAttemptTime,
+                                        ).toLocaleTimeString(locale, {
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                          second: "2-digit",
+                                          hour12: true,
+                                        })}
+                                      </span>
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+
+                              {call.callOutcome?.secondRecipientTrials !=
+                                null &&
+                                call.callOutcome.secondRecipientTrials > 0 && (
+                                  <div className="border-t pt-3 flex items-center gap-2">
+                                    <RotateCw className="h-3.5 w-3.5 text-muted-foreground shrink-0" />
+                                    <span className="text-sm text-muted-foreground">
+                                      {t("details.trials")}:
+                                    </span>
+                                    <div className="flex items-center gap-1.5">
+                                      {Array.from({
+                                        length:
+                                          call.callOutcome
+                                            .secondRecipientTrials,
+                                      }).map((_, i) => (
+                                        <div
+                                          key={i}
+                                          className={cn(
+                                            "h-2 w-2 rounded-full",
+                                            call.callOutcome
+                                              ?.secondRecipientLastCallStatus ===
+                                              RecipientStatus.ANSWERED
+                                              ? "bg-success-500"
+                                              : "bg-destructive",
+                                          )}
+                                        />
+                                      ))}
+                                      <span className="text-xs font-medium ms-1">
+                                        {call.callOutcome.secondRecipientTrials}
+                                      </span>
+                                    </div>
+                                  </div>
+                                )}
+                            </div>
                           </div>
                         </>
                       )}
