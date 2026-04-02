@@ -4778,7 +4778,11 @@
         "firstRecipientSorrySound": "صوت الاعتذار للمستلم الأول",
         "secondRecipientSorrySound": "صوت الاعتذار للمستلم الثاني",
         "warningSound": "صوت التحذير"
-      }
+      },
+      "trials": "عدد المحاولات",
+      "lastAttemptTime": "آخر محاولة",
+      "callerNumber": "رقم المتصل",
+      "trialsOf": "{count} من {total}"
     },
     "create": {
       "title": "إنشاء جسر مكالمات",
@@ -4981,7 +4985,11 @@
         "name": "الاسم",
         "phone": "الهاتف",
         "lastStatus": "آخر حالة",
-        "trials": "عدد المحاولات"
+        "trials": "عدد المحاولات",
+        "lastAttemptTime": "آخر محاولة",
+        "callerNumber": "رقم المتصل",
+        "copied": "تم النسخ",
+        "durationUsage": "استخدام مدة المكالمة"
       },
       "createPage": {
         "title": "إنشاء مكالمة جسر"

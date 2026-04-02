@@ -4783,7 +4783,11 @@
         "firstRecipientSorrySound": "First Recipient Sorry Sound",
         "secondRecipientSorrySound": "Second Recipient Sorry Sound",
         "warningSound": "Warning Sound"
-      }
+      },
+          "trials": "Trials",
+        "lastAttemptTime": "Last Attempt",
+        "callerNumber": "Caller Number",
+        "trialsOf": "{count} of {total}"
     },
     "create": {
       "title": "Create Call Bridge",
@@ -4953,7 +4957,11 @@
         "name": "Name",
         "phone": "Phone",
         "lastStatus": "Last Status",
-        "trials": "Trials"
+        "trials": "Trials",
+        "lastAttemptTime": "Last Attempt",
+        "callerNumber": "Caller Number",
+        "copied": "Copied to clipboard",
+        "durationUsage": "Call Duration Usage"
       },
       "createPage": {
         "title": "Create Bridge Call"
