@@ -9,7 +9,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Toggle } from "@/components/ui/toggle";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import FilterAltIcon from "@mui/icons-material/FilterAltOutlined";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
@@ -47,7 +47,7 @@ const TicketsTableHeader = ({
 
   const [status, setStatus] = useState<string>(filters.status || "");
   const [departmentId, setDepartmentId] = useState<string>(
-    filters.departmentId || ""
+    filters.departmentId || "",
   );
   const [searchTerm, setSearchTerm] = useState<string>(filters.subject || "");
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
@@ -87,11 +87,12 @@ const TicketsTableHeader = ({
                   type="search"
                 />
               </Field>
-              {searchTerm.length > 0 && searchTerm.length < MIN_SEARCH_LENGTH && (
-                <p className="absolute text-xs text-muted-foreground mt-1">
-                  {t("filters.searchMinChars")}
-                </p>
-              )}
+              {searchTerm.length > 0 &&
+                searchTerm.length < MIN_SEARCH_LENGTH && (
+                  <p className="absolute text-xs text-muted-foreground mt-1">
+                    {t("filters.searchMinChars")}
+                  </p>
+                )}
             </div>
 
             <Tooltip>

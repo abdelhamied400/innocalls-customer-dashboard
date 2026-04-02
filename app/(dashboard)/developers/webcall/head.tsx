@@ -18,7 +18,7 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "@/components/ui/tooltip";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import FilterAltIcon from "@mui/icons-material/FilterAltOutlined";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -74,7 +74,10 @@ const WebCallTableHead = () => {
             <Tooltip>
               <CollapsibleTrigger asChild>
                 <TooltipTrigger asChild>
-                  <Toggle pressed={true} className="rounded-full bg-transparent">
+                  <Toggle
+                    pressed={true}
+                    className="rounded-full bg-transparent"
+                  >
                     <FilterAltIcon />
                   </Toggle>
                 </TooltipTrigger>

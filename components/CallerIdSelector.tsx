@@ -1,11 +1,9 @@
 // components/CallerIdSelector.tsx
 import { useFieldArray, useFormContext } from "react-hook-form";
-import { generateUUID } from "@/lib/utils";
 import { Button } from "./ui/button";
 import Select from "./Select";
 import PlusIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
-import { AutoDialerCreateStep2 } from "@/validation/AutoDialerCreateCampaign";
 import { useVocab } from "@/hooks/useVocab";
 import { useTranslations } from "@/providers/TranslationProvider";
 
@@ -14,18 +12,30 @@ type SelectOption = {
   value: string;
 };
 
-type CallerIdSelectorProps = {
-  onChangeCallback?: () => void;
+type FormWithCallers = {
+  callers: { destination: string; callerNumber: string }[];
 };
 
-const CallerIdSelector = ({ onChangeCallback }: CallerIdSelectorProps = {}) => {
+type CallerIdSelectorProps = {
+  onChangeCallback?: () => void;
+  menuPlacement?: "top" | "bottom" | "auto";
+  countryHint?: string;
+  didHint?: string;
+};
+
+const CallerIdSelector = ({
+  onChangeCallback,
+  menuPlacement = "top",
+  countryHint,
+  didHint,
+}: CallerIdSelectorProps = {}) => {
   const t = useTranslations("common.callerIdSelector");
   const {
     control,
     watch,
     setValue,
     formState: { errors },
-  } = useFormContext<AutoDialerCreateStep2>();
+  } = useFormContext<FormWithCallers>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "callers",
@@ -81,8 +91,9 @@ const CallerIdSelector = ({ onChangeCallback }: CallerIdSelectorProps = {}) => {
             <div className="grid grid-cols-1 lg:grid-cols-2 flex-1 gap-2">
               <Select<SelectOption, false>
                 label={t("country.label")}
+                hint={countryHint}
                 options={availableCountryOptions}
-                menuPlacement="top"
+                menuPlacement={menuPlacement}
                 value={
                   currentDestination
                     ? countryOptions.find(
@@ -106,8 +117,9 @@ const CallerIdSelector = ({ onChangeCallback }: CallerIdSelectorProps = {}) => {
 
               <Select<SelectOption, false>
                 label={t("DID.label")}
+                hint={didHint}
                 options={didOptions}
-                menuPlacement="top"
+                menuPlacement={menuPlacement}
                 value={
                   currentCallerId
                     ? didOptions.find((opt) => opt.value === currentCallerId) ||

@@ -8,7 +8,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Toggle } from "@/components/ui/toggle";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import FilterAltIcon from "@mui/icons-material/FilterAltOutlined";
 import Link from "next/link";
 import { useTranslations } from "@/providers/TranslationProvider";
 import useAuthStore from "@/store/auth.slice";

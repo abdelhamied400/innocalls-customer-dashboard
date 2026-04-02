@@ -4784,10 +4784,10 @@
         "secondRecipientSorrySound": "Second Recipient Sorry Sound",
         "warningSound": "Warning Sound"
       },
-          "trials": "Trials",
-        "lastAttemptTime": "Last Attempt",
-        "callerNumber": "Caller Number",
-        "trialsOf": "{count} of {total}"
+      "trials": "Trials",
+      "lastAttemptTime": "Last Attempt",
+      "callerNumber": "Caller Number",
+      "trialsOf": "{count} of {total}"
     },
     "create": {
       "title": "Create Call Bridge",
@@ -4804,7 +4804,7 @@
         "name": {
           "label": "Bridge Name",
           "placeholder": "Enter bridge name",
-          "hint": "A unique name to identify this bridge flow",
+          "hint": "The name of this call bridge",
           "validation": {
             "required": "Bridge name is required",
             "min": "Bridge name must be at least {min} characters",
@@ -4814,6 +4814,8 @@
         "callers": {
           "label": "Caller IDs",
           "hint": "Caller IDs used when placing outgoing calls",
+          "countryHint": "The destination that the call bridge will call",
+          "didHint": "The caller ID that the call bridge will use",
           "validation": {
             "min": "At least {min} caller ID must be added",
             "destination": {
@@ -4826,7 +4828,7 @@
         },
         "firstRecipientTrialsCount": {
           "label": "First Recipient Trials Count",
-          "hint": "Min 1, Max 10",
+          "hint": "The number of trials to call first recipient",
           "validation": {
             "min": "Must be at least {min}",
             "max": "Must be at most {max}"
@@ -4834,7 +4836,7 @@
         },
         "secondRecipientTrialsCount": {
           "label": "Second Recipient Trials Count",
-          "hint": "Min 1, Max 10",
+          "hint": "The number of trials to call second recipient",
           "validation": {
             "min": "Must be at least {min}",
             "max": "Must be at most {max}"
@@ -4842,14 +4844,14 @@
         },
         "firstRecipientDelayMinutesBetweenTrials": {
           "label": "First Recipient Delay (minutes)",
-          "hint": "Delay in minutes between consecutive retry attempts for the first recipient",
+          "hint": "The time (minutes) between the end of a call and the start of the next call for the customer",
           "validation": {
             "min": "Must be at least {min} minutes"
           }
         },
         "secondRecipientDelayMinutesBetweenTrials": {
           "label": "Second Recipient Delay (minutes)",
-          "hint": "Delay in minutes between consecutive retry attempts for the second recipient",
+          "hint": "The time (minutes) between the end of a call and the start of the next call for the customer",
           "validation": {
             "min": "Must be at least {min} minutes",
             "max": "Must be at most {max} minutes"
@@ -4864,7 +4866,7 @@
         },
         "welcomeSoundFile": {
           "label": "Welcome Sound",
-          "hint": "Played when the call is answered by a recipient",
+          "hint": "The sound that will be played for the first recipent when the call starts",
           "validation": {
             "required": "Welcome sound is required",
             "type": "Only MP3 files are allowed",
@@ -4873,7 +4875,7 @@
         },
         "alertSoundFile": {
           "label": "Alert Sound",
-          "hint": "Played to alert recipients of an incoming bridge connection",
+          "hint": "The sound that will be played for the second recipent when the call is answered",
           "validation": {
             "required": "Alert sound is required",
             "type": "Only MP3 files are allowed",
@@ -4882,7 +4884,7 @@
         },
         "firstRecipientSorrySoundFile": {
           "label": "First Recipient Sorry Sound",
-          "hint": "Played when all retry attempts for the first recipient are exhausted",
+          "hint": "the first recipient sorry sound file",
           "validation": {
             "required": "First recipient sorry sound is required",
             "type": "Only MP3 files are allowed",
@@ -4891,7 +4893,7 @@
         },
         "secondRecipientSorrySoundFile": {
           "label": "Second Recipient Sorry Sound",
-          "hint": "Played when all retry attempts for the second recipient are exhausted",
+          "hint": "the second recipient sorry sound file",
           "validation": {
             "required": "Second recipient sorry sound is required",
             "type": "Only MP3 files are allowed",
@@ -4901,7 +4903,7 @@
         "warningSoundFile": {
           "label": "Warning Sound",
           "optional": "(Optional)",
-          "hint": "Optional sound played before the call ends as a time warning",
+          "hint": "the warning sound file",
           "validation": {
             "type": "Only MP3 files are allowed",
             "size": "File size must be less than 10MB"
@@ -5067,6 +5069,7 @@
         "deleteErrorDescription": "An error occurred while deleting the call. Please try again."
       },
       "filters": {
+        "toggle": "click to show/hide search filters",
         "conferenceBridgeFlow": {
           "triggerLabel": "Bridge Flow",
           "label": "Filter by Bridge Flow",

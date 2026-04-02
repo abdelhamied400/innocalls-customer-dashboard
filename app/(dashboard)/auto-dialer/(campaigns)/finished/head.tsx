@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Toggle } from "@/components/ui/toggle";
 import { format } from "date-fns";
 import SearchIcon from "@mui/icons-material/Search";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import FilterAltIcon from "@mui/icons-material/FilterAltOutlined";
 import {
   Tooltip,
   TooltipContent,
@@ -185,14 +185,18 @@ const AutoDialerFinishedHead = ({
               >
                 <div className="flex items-center gap-2">
                   <RadioGroupItem value="time-limited" id="time-limited" />
-                  <Label htmlFor="time-limited">{st("activeCampaigns.durationTypes.time-limited")}</Label>
+                  <Label htmlFor="time-limited">
+                    {st("activeCampaigns.durationTypes.time-limited")}
+                  </Label>
                 </div>
                 <div className="flex items-center gap-2">
                   <RadioGroupItem
                     value="agent-availability"
                     id="agent-availability"
                   />
-                  <Label htmlFor="agent-availability">{st("activeCampaigns.durationTypes.agent-availability")}</Label>
+                  <Label htmlFor="agent-availability">
+                    {st("activeCampaigns.durationTypes.agent-availability")}
+                  </Label>
                 </div>
               </RadioGroup>
             </FilterBox>

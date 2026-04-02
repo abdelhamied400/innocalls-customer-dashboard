@@ -114,6 +114,12 @@ const SheetContent = React.forwardRef<
             sheetVariants({ side: directionalSide }),
             className,
           )}
+          onInteractOutside={(e) => {
+            const target = e.target as HTMLElement;
+            if (target.closest("[data-sonner-toaster]")) {
+              e.preventDefault();
+            }
+          }}
           {...props}
         >
           {children}

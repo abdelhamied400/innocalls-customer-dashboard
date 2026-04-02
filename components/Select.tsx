@@ -31,6 +31,7 @@ type SelectProps<
   placeholder?: string;
   className?: string;
   label?: string;
+  hint?: string;
   error?: string;
   noOptionsMessage?: string;
 } & Omit<
@@ -49,6 +50,7 @@ const Select = <
   isMulti,
   onChange,
   label,
+  hint,
   error,
   noOptionsMessage,
   ...props
@@ -75,7 +77,7 @@ const Select = <
 
   return (
     <div className={cn("select", className)}>
-      <Field label={label} error={error}>
+      <Field label={label} hint={hint} error={error}>
         <ReactSelect
           className="w-full"
           classNamePrefix="select"

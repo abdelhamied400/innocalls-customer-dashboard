@@ -102,7 +102,6 @@ const CreateCallBridgeSheet = () => {
           data.firstRecipientDelayMinutesBetweenTrials,
         secondRecipientDelayMinutesBetweenTrials:
           data.secondRecipientDelayMinutesBetweenTrials,
-        warningTimeBeforeEnd: 1,
       };
 
       if (hasWarningSound && warning) {
@@ -117,7 +116,7 @@ const CreateCallBridgeSheet = () => {
         description: t("toasts.successDescription"),
       });
 
-      router.replace("/call-bridge/list");
+      router.replace("/call-bridge");
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("toasts.error"), {
@@ -168,7 +167,7 @@ const CreateCallBridgeSheet = () => {
             </Button>
           </StepperHeader>
 
-          <StepperSteps className="flex-1 mx-auto my-8 w-[300px] md:w-[600px] max-h-[calc(100vh_-_200px)]">
+          <StepperSteps className="flex-1 mx-auto my-8 w-[320px] md:w-160 max-h-[calc(100vh-200px)]">
             <FormProvider {...form}>
               <form className="h-full" onSubmit={onSubmit}>
                 <StepperStep

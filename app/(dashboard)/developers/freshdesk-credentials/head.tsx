@@ -18,7 +18,7 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "@/components/ui/tooltip";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import FilterAltIcon from "@mui/icons-material/FilterAltOutlined";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -101,7 +101,10 @@ const FreshdeskTableHead = () => {
               <Tooltip>
                 <CollapsibleTrigger asChild>
                   <TooltipTrigger asChild>
-                    <Toggle pressed={true} className="rounded-full bg-transparent">
+                    <Toggle
+                      pressed={true}
+                      className="rounded-full bg-transparent"
+                    >
                       <FilterAltIcon />
                     </Toggle>
                   </TooltipTrigger>
@@ -112,7 +115,11 @@ const FreshdeskTableHead = () => {
               </Tooltip>
             </TooltipProvider>
 
-            <Button onClick={handleCreate} disabled={isCreating} loading={isCreating}>
+            <Button
+              onClick={handleCreate}
+              disabled={isCreating}
+              loading={isCreating}
+            >
               <Plus className="h-4 w-4" />
               {t("actions.create")}
             </Button>

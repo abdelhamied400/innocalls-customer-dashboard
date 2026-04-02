@@ -5,7 +5,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Field from "@/components/ui/field";
 import SpinButton from "@/components/ui/spin-button";
-import CallBridgeCallerIdSelector from "@/components/CallBridgeCallerIdSelector";
+import CallerIdSelector from "@/components/CallerIdSelector";
 import {
   CallBridgeStep1,
   CallBridgeStep1Schema,
@@ -81,7 +81,10 @@ const BridgeDetailsForm = ({ onNext }: BridgeDetailsFormProps) => {
             <FormItem className="flex-1">
               <h3>{t("form.callers.label")}</h3>
               <FormControl>
-                <CallBridgeCallerIdSelector
+                <CallerIdSelector
+                  menuPlacement="bottom"
+                  countryHint={t("form.callers.countryHint")}
+                  didHint={t("form.callers.didHint")}
                   onChangeCallback={() => {
                     clearErrors("callers");
                     trigger("callers");

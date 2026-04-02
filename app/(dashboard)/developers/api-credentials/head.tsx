@@ -18,7 +18,7 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "@/components/ui/tooltip";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import FilterAltIcon from "@mui/icons-material/FilterAltOutlined";
 import { FilterBar } from "@/components/FilterBar";
 import { FilterBox } from "@/components/FilterBox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -118,9 +118,7 @@ const ApiCredentialsTableHead = () => {
                   </Link>
                 </Button>
               </TooltipTrigger>
-              <TooltipContent>
-                {t("tooltips.createCredential")}
-              </TooltipContent>
+              <TooltipContent>{t("tooltips.createCredential")}</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>
@@ -143,10 +141,7 @@ const ApiCredentialsTableHead = () => {
           >
             <RadioGroup value={status} onValueChange={setStatus}>
               <div className="flex items-center gap-2">
-                <RadioGroupItem
-                  value="active"
-                  id="api-cred-status-active"
-                />
+                <RadioGroupItem value="active" id="api-cred-status-active" />
                 <Label htmlFor="api-cred-status-active">
                   {tCommon("status.active")}
                 </Label>

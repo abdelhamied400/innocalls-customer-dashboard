@@ -28,11 +28,12 @@ const Field = ({
   hint,
   ...props
 }: FieldProps) => {
+  const Wrapper = htmlFor ? "label" : "div";
   return (
     <div className="field">
-      <label
+      <Wrapper
         className="relative flex flex-col gap-1 cursor-pointer"
-        htmlFor={htmlFor}
+        {...(htmlFor ? { htmlFor } : {})}
       >
         <div
           className={cn(
@@ -77,7 +78,7 @@ const Field = ({
             {postIcon}
           </div>
         </div>
-      </label>
+      </Wrapper>
 
       {error && <p className="text-red-500 text-xs">{error}</p>}
     </div>
