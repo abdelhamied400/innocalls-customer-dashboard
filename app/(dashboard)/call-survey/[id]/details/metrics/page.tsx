@@ -100,17 +100,33 @@ const CallsTable = ({
   );
 };
 
+const TERMINAL_STATUSES = ["finished", "cancelled", "completed"];
+
 const SurveyLiveMetrics = () => {
   const t = useTranslations("callSurvey.metrics");
   const { id } = useParams<{ id: string }>();
   const [search, setSearch] = useState("");
+
+  const { data: survey } = useLocalizedQuery({
+    queryKey: ["call-survey-detail", id],
+    queryFn: () => callSurveyService.getSurvey(id as string),
+    enabled: !!id,
+    gcTime: 0,
+    refetchInterval: (query) => {
+      const status = query.state.data?.status;
+      if (status && TERMINAL_STATUSES.includes(status)) return false;
+      return 10000;
+    },
+  });
+
+  const isActive = survey?.status === "active";
 
   const { data: metrics, isLoading } = useLocalizedQuery<MetricsData>({
     queryKey: ["call-survey-metrics", id],
     queryFn: () => callSurveyService.getMetrics(id as string),
     enabled: !!id,
     gcTime: 0,
-    refetchInterval: 10000,
+    refetchInterval: isActive ? 10000 : false,
   });
 
   const total = metrics
