@@ -5238,6 +5238,13 @@
         }
       }
     },
+    "detailsLayout": {
+      "tabs": {
+        "metrics": "Live Metrics",
+        "cdrs": "Survey CDRs",
+        "details": "Survey Details"
+      }
+    },
     "details": {
       "title": "Survey Details",
       "description": "View call survey configuration",
@@ -5279,6 +5286,7 @@
       "description": "View current call statistics for this survey",
       "noData": "No metrics data available",
       "noCalls": "No calls at the moment",
+      "search": "Search by name or phone...",
       "sections": {
         "stats": "Calls Statistics",
         "initiatedCalls": "Initiated Calls",
