@@ -19,7 +19,7 @@ const CallSurveyLayout = ({ children }: CallSurveyLayoutProps) => {
         </LinkTab>
       </LinkTabs>
 
-      <div className="h-[calc(100%-3rem)]">{children}</div>
+      <div className="h-[calc(100%-3rem)] overflow-auto">{children}</div>
     </div>
   );
 };

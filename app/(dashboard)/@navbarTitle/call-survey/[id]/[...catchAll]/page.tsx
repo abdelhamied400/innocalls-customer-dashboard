@@ -32,7 +32,7 @@ const CallSurveyNavbarTitle = ({ params }: CallSurveyNavbarTitleProps) => {
   const { id } = use(params);
   const t = useTranslations("callSurvey");
 
-  const { data: survey, isFetching } = useLocalizedQuery({
+  const { data: survey, isLoading } = useLocalizedQuery({
     queryKey: ["call-survey-detail", id],
     queryFn: () => callSurveyService.getSurvey(id as string),
     gcTime: 0,
@@ -50,7 +50,7 @@ const CallSurveyNavbarTitle = ({ params }: CallSurveyNavbarTitleProps) => {
     },
   ];
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <div className="flex items-center gap-3">
         <Skeleton className="w-8 h-8 rounded-full" />

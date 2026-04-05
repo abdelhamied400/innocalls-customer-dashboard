@@ -124,7 +124,7 @@ const SurveyLiveMetrics = () => {
   const { data: metrics, isLoading } = useLocalizedQuery<MetricsData>({
     queryKey: ["call-survey-metrics", id],
     queryFn: () => callSurveyService.getMetrics(id as string),
-    enabled: !!id,
+    enabled: !!id && isActive,
     gcTime: 0,
     refetchInterval: isActive ? 10000 : false,
   });
@@ -245,7 +245,12 @@ const SurveyLiveMetrics = () => {
           <div className="col-span-2">
             <StatsMiniCard
               icon={
-                <Image src="/assets/icons/stats/phone.svg" alt="Total Calls" width={24} height={24} />
+                <Image
+                  src="/assets/icons/stats/phone.svg"
+                  alt="Total Calls"
+                  width={24}
+                  height={24}
+                />
               }
               label={t("fields.total")}
               value={total}
@@ -254,7 +259,12 @@ const SurveyLiveMetrics = () => {
           </div>
           <StatsMiniCard
             icon={
-              <Image src="/assets/icons/stats/phone_callback.svg" alt="Initiated Calls" width={24} height={24} />
+              <Image
+                src="/assets/icons/stats/phone_callback.svg"
+                alt="Initiated Calls"
+                width={24}
+                height={24}
+              />
             }
             label={t("fields.initiated")}
             value={metrics.callsStats.initiated}
@@ -263,7 +273,12 @@ const SurveyLiveMetrics = () => {
           />
           <StatsMiniCard
             icon={
-              <Image src="/assets/icons/stats/call.svg" alt="In Progress Calls" width={24} height={24} />
+              <Image
+                src="/assets/icons/stats/call.svg"
+                alt="In Progress Calls"
+                width={24}
+                height={24}
+              />
             }
             label={t("fields.inProgress")}
             value={metrics.callsStats.inProgress}
