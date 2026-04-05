@@ -5305,6 +5305,63 @@
         "overview": "نظرة عامة"
       },
       "fields": {}
+    },
+    "cdrs": {
+      "title": "سجلات المكالمات",
+      "columns": {
+        "phone": "الهاتف",
+        "name": "الاسم",
+        "status": "الحالة",
+        "initiatedAt": "وقت البدء",
+        "completionStatus": "حالة الإكمال",
+        "answeredQuestions": "الأسئلة المجابة",
+        "duration": "المدة",
+        "actions": "الإجراءات"
+      },
+      "statuses": {
+        "User did not answer": "لم يرد المستخدم",
+        "Airplane Mode Enabled": "وضع الطيران مفعل",
+        "Initiated": "بدأت",
+        "Processing": "قيد المعالجة",
+        "Call Failed": "فشلت المكالمة",
+        "User Busy/Rejected By User": "المستخدم مشغول / رفض المكالمة",
+        "User Connected": "المستخدم متصل",
+        "User Unreachable (Out of Network Coverage or Airplane Mode)": "المستخدم غير قابل للوصول",
+        "Completed": "مكتملة",
+        "Timeout": "انتهت المهلة",
+        "Abandoned": "مهجورة"
+      },
+      "completionStatuses": {
+        "complete": "مكتمل",
+        "partial": "جزئي",
+        "no-response": "بدون رد"
+      },
+      "filters": {
+        "toggle": "تبديل الفلاتر",
+        "status": "الحالة",
+        "statusPlaceholder": "اختر الحالات...",
+        "completionStatus": "حالة الإكمال",
+        "completionStatusPlaceholder": "اختر حالات الإكمال...",
+        "phone": "الهاتف",
+        "phoneLabel": "رقم الهاتف",
+        "phoneHint": "تصفية حسب رقم الهاتف",
+        "phonePlaceholder": "أدخل رقم الهاتف..."
+      },
+      "actions": {
+        "listen": "استماع للتسجيل",
+        "answers": "عرض الإجابات"
+      },
+      "answersModal": {
+        "title": "إجابات الاستبيان",
+        "question": "السؤال",
+        "attemptNumber": "رقم المحاولة",
+        "questionType": "نوع السؤال",
+        "userResponse": "رد المستخدم"
+      },
+      "toasts": {
+        "error": "خطأ",
+        "errorDescription": "حدث خطأ. يرجى المحاولة مرة أخرى."
+      }
     }
   }
 }

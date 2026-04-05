@@ -1,6 +1,12 @@
 import api from "./api";
-import { CallSurvey, CallSurveyDetail } from "@/types/callSurvey";
+import { CallSurvey, CallSurveyCdr, CallSurveyDetail } from "@/types/callSurvey";
 import { objToQueryString } from "@/lib/utils";
+
+type FetchCdrsResponse = {
+  callRequests: CallSurveyCdr[];
+  totalItems: number;
+  totalPages: number;
+};
 
 type FetchSurveysResponse = {
   surveys: CallSurvey[];
@@ -52,6 +58,12 @@ export default {
 
   getMetrics: async (id: string) => {
     const res = await api.get(`/surveys/${id}/current-calls/stats`);
+    return res.data.data;
+  },
+
+  fetchCdrs: async (id: string, filters?: any): Promise<FetchCdrsResponse> => {
+    const queryString = objToQueryString(filters || {});
+    const res = await api.get(`/surveys/${id}/cdrs?${queryString}`);
     return res.data.data;
   },
 };

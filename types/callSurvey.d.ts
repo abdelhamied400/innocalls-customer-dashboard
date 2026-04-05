@@ -42,3 +42,26 @@ export type CallSurveyDetail = {
   timeSlots: CallSurveyTimeSlot[];
   callers: CallSurveyCaller[];
 };
+
+export type CallSurveyCdrAnswer = {
+  questionIndex: number;
+  userResponse: number;
+  isCorrect: boolean;
+  attemptNumber: number;
+  responseTime: number;
+  questionType: string;
+};
+
+export type CallSurveyCdr = {
+  id: string;
+  status: string;
+  completionStatus: string;
+  duration: string;
+  answers: CallSurveyCdrAnswer[];
+  answeredQuestionsCount: number;
+  correctAnswersCount: number;
+  initiatedAt: string;
+  recordingLink: string;
+  phone: string;
+  name: string;
+};
