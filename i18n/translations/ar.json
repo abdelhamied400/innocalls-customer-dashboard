@@ -5302,9 +5302,22 @@
       "sections": {
         "summary": "الملخص",
         "questions": "تحليل الأسئلة",
-        "overview": "نظرة عامة"
+        "overview": "نظرة عامة",
+        "responseDistribution": "توزيع الردود",
+        "npsBreakdown": "تفاصيل NPS"
       },
-      "fields": {}
+      "fields": {
+        "totalResponses": "إجمالي الردود",
+        "npsScore": "نتيجة NPS",
+        "questionType": "نوع السؤال",
+        "promoterPercentage": "نسبة المروجين",
+        "detractorPercentage": "نسبة المنتقدين"
+      },
+      "nps": {
+        "promoters": "المروجون",
+        "detractors": "المنتقدون",
+        "passives": "المحايدون"
+      }
     },
     "cdrs": {
       "title": "سجلات المكالمات",

@@ -1,5 +1,9 @@
 import api from "./api";
-import { CallSurvey, CallSurveyCdr, CallSurveyDetail } from "@/types/callSurvey";
+import {
+  CallSurvey,
+  CallSurveyCdr,
+  CallSurveyDetail,
+} from "@/types/callSurvey";
 import { objToQueryString } from "@/lib/utils";
 
 type FetchCdrsResponse = {
@@ -48,7 +52,7 @@ export default {
 
   getAnalysis: async (id: string) => {
     const res = await api.get(`/surveys/${id}/analysis`);
-    return res.data.data;
+    return res.data;
   },
 
   exportStats: async (id: string) => {

@@ -5307,9 +5307,22 @@
       "sections": {
         "summary": "Summary",
         "questions": "Questions Analysis",
-        "overview": "Overview"
+        "overview": "Overview",
+        "responseDistribution": "Response Distribution",
+        "npsBreakdown": "NPS Breakdown"
       },
-      "fields": {}
+      "fields": {
+        "totalResponses": "Total Responses",
+        "npsScore": "NPS Score",
+        "questionType": "Question Type",
+        "promoterPercentage": "Promoter %",
+        "detractorPercentage": "Detractor %"
+      },
+      "nps": {
+        "promoters": "Promoters",
+        "detractors": "Detractors",
+        "passives": "Passives"
+      }
     },
     "cdrs": {
       "title": "CDRs",
