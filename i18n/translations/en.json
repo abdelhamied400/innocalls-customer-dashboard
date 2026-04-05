@@ -5109,5 +5109,88 @@
         }
       }
     }
+  },
+  "callSurvey": {
+    "tabs": {
+      "active": "Active Surveys",
+      "finished": "Finished Surveys"
+    },
+    "active": {
+      "title": "Active Surveys",
+      "search": "Search...",
+      "create": "Create Survey",
+      "columns": {
+        "creationDate": "Creation Date",
+        "name": "Name",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "view": "View Details"
+      },
+      "statuses": {
+        "created": "Created",
+        "schedule-customers": "Scheduling Customers",
+        "verifying-customers": "Verifying Customers",
+        "verification-failed": "Verification Failed",
+        "cancelled": "Cancelled",
+        "corrupted-ignored": "Corrupted Ignored",
+        "customers-inserted": "Customers Inserted",
+        "in-progress": "In Progress",
+        "active": "Active",
+        "paused": "Paused",
+        "finished": "Finished",
+        "completed": "Completed",
+        "draft": "Draft"
+      },
+      "filters": {
+        "toggle": "Toggle Filters",
+        "creationDate": {
+          "placeholder": "Creation Date",
+          "label": "Creation Date",
+          "from": {
+            "label": "From",
+            "hint": "Start date",
+            "placeholder": "Select date"
+          },
+          "to": {
+            "label": "To",
+            "hint": "End date",
+            "placeholder": "Select date"
+          }
+        },
+        "status": {
+          "placeholder": "Status",
+          "label": "Status",
+          "all": "All"
+        }
+      }
+    },
+    "finished": {
+      "title": "Finished Surveys",
+      "search": "Search...",
+      "filters": {
+        "toggle": "Toggle Filters",
+        "creationDate": {
+          "placeholder": "Creation Date",
+          "label": "Creation Date",
+          "from": {
+            "label": "From",
+            "hint": "Start date",
+            "placeholder": "Select date"
+          },
+          "to": {
+            "label": "To",
+            "hint": "End date",
+            "placeholder": "Select date"
+          }
+        },
+        "status": {
+          "placeholder": "Status",
+          "label": "Status",
+          "all": "All"
+        }
+      }
+    }
   }
 }

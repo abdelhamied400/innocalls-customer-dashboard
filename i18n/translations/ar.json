@@ -5104,5 +5104,88 @@
         "deleteErrorDescription": "حدث خطأ أثناء حذف المكالمة. يرجى المحاولة مرة أخرى."
       }
     }
+  },
+  "callSurvey": {
+    "tabs": {
+      "active": "الاستبيانات النشطة",
+      "finished": "الاستبيانات المنتهية"
+    },
+    "active": {
+      "title": "الاستبيانات النشطة",
+      "search": "بحث...",
+      "create": "إنشاء استبيان",
+      "columns": {
+        "creationDate": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "actions": {
+        "view": "عرض التفاصيل"
+      },
+      "statuses": {
+        "created": "تم الإنشاء",
+        "schedule-customers": "جدولة العملاء",
+        "verifying-customers": "التحقق من العملاء",
+        "verification-failed": "فشل التحقق",
+        "cancelled": "ملغي",
+        "corrupted-ignored": "تالف ومتجاهل",
+        "customers-inserted": "تم إدراج العملاء",
+        "in-progress": "قيد التنفيذ",
+        "active": "نشط",
+        "paused": "متوقف",
+        "finished": "منتهي",
+        "completed": "مكتمل",
+        "draft": "مسودة"
+      },
+      "filters": {
+        "toggle": "تبديل الفلاتر",
+        "creationDate": {
+          "placeholder": "تاريخ الإنشاء",
+          "label": "تاريخ الإنشاء",
+          "from": {
+            "label": "من",
+            "hint": "تاريخ البداية",
+            "placeholder": "اختر التاريخ"
+          },
+          "to": {
+            "label": "إلى",
+            "hint": "تاريخ النهاية",
+            "placeholder": "اختر التاريخ"
+          }
+        },
+        "status": {
+          "placeholder": "الحالة",
+          "label": "الحالة",
+          "all": "الكل"
+        }
+      }
+    },
+    "finished": {
+      "title": "الاستبيانات المنتهية",
+      "search": "بحث...",
+      "filters": {
+        "toggle": "تبديل الفلاتر",
+        "creationDate": {
+          "placeholder": "تاريخ الإنشاء",
+          "label": "تاريخ الإنشاء",
+          "from": {
+            "label": "من",
+            "hint": "تاريخ البداية",
+            "placeholder": "اختر التاريخ"
+          },
+          "to": {
+            "label": "إلى",
+            "hint": "تاريخ النهاية",
+            "placeholder": "اختر التاريخ"
+          }
+        },
+        "status": {
+          "placeholder": "الحالة",
+          "label": "الحالة",
+          "all": "الكل"
+        }
+      }
+    }
   }
 }
