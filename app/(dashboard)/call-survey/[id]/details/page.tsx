@@ -46,9 +46,7 @@ const CallSurveyDetails = () => {
         <h1 className="text-xl font-bold m-0">
           {t("title")} ({survey.name})
         </h1>
-        <p className="text-sm text-muted-foreground m-0">
-          {t("description")}
-        </p>
+        <p className="text-sm text-muted-foreground m-0">{t("description")}</p>
       </div>
 
       {/* Basic Info */}
@@ -195,10 +193,7 @@ const CallSurveyDetails = () => {
           </TableHeader>
           <TableBody>
             {survey.callers.map((caller, idx) => (
-              <TableRow
-                key={idx}
-                className="border-0 hover:bg-transparent"
-              >
+              <TableRow key={idx} className="border-0 hover:bg-transparent">
                 <TableCell>{caller.destination}</TableCell>
                 <TableCell>{caller.callerNumber}</TableCell>
               </TableRow>

@@ -323,22 +323,6 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           </AlertDialog>
         )}
 
-        {/* Metrics — active */}
-        {["active"].includes(survey.status) && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost-primary" size="icon" asChild>
-                <Link
-                  href={`/call-survey/active/metrics?id=${survey.id}`}
-                >
-                  <BarChart fontSize="small" />
-                </Link>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>{t("actions.metrics")}</TooltipContent>
-          </Tooltip>
-        )}
-
         {/* View details — always */}
         <Tooltip>
           <TooltipTrigger asChild>
@@ -387,7 +371,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
               {["completed", "finished", "paused", "active", "in-progress"].includes(
                 survey.status,
               ) && (
-                <Link href={`/call-survey/${survey.id}/cdrs`}>
+                <Link href={`/call-survey/${survey.id}/details/cdrs`}>
                   <DropdownMenuItem>
                     <List fontSize="small" />
                     {t("actions.cdrs")}
@@ -405,12 +389,10 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
               {["active", "in-progress", "completed", "finished", "paused"].includes(
                 survey.status,
               ) && (
-                <Link
-                  href={`/call-survey/active/analytics?id=${survey.id}`}
-                >
+                <Link href={`/call-survey/${survey.id}/details/metrics`}>
                   <DropdownMenuItem>
                     <BarChart fontSize="small" />
-                    {t("actions.callsAnalytics")}
+                    {t("actions.metrics")}
                   </DropdownMenuItem>
                 </Link>
               )}
