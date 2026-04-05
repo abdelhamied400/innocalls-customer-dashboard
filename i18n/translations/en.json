@@ -5256,11 +5256,12 @@
       "loading": "Loading...",
       "notFound": "Survey not found",
       "sections": {
-        "basic": "Basic Information",
+        "basic": "Survey Details",
         "sounds": "Sound Files",
-        "questions": "Questions",
+        "questions": "Questions Details",
         "timeSlots": "Time Slots",
-        "callerIds": "Caller IDs"
+        "callerIds": "Caller IDs",
+        "customersList": "Customers List"
       },
       "fields": {
         "name": "Name",

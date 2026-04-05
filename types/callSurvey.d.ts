@@ -41,6 +41,7 @@ export type CallSurveyDetail = {
   questions: CallSurveyQuestion[];
   timeSlots: CallSurveyTimeSlot[];
   callers: CallSurveyCaller[];
+  fileName: string;
 };
 
 export type CallSurveyCdrAnswer = {

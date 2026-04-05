@@ -40,8 +40,8 @@ const CallSurveyDetails = () => {
   }
 
   return (
-    <div className="call-survey-details flex flex-col gap-4 bg-white p-4 rounded-lg">
-      {/* Basic Info */}
+    <div className="call-survey-details flex flex-col gap-6">
+      {/* Survey Details */}
       <div className="flex flex-col gap-2">
         <h3>{t("sections.basic")}</h3>
         <div className="border rounded-lg p-4 flex flex-col gap-4">
@@ -74,124 +74,144 @@ const CallSurveyDetails = () => {
         </div>
       </div>
 
-      {/* Sound Files */}
-      <div className="flex flex-col gap-2 border rounded-lg">
-        <div className="header p-4 bg-neutral-100 rounded-t-lg">
-          <h3>{t("sections.sounds")}</h3>
-        </div>
-        <div className="p-4 flex flex-col gap-4">
-          <div className="flex flex-col lg:flex-row gap-4 divide-x">
-            <div className="flex-1 pe-3">
-              <FileAttachment
-                label={t("fields.startSound")}
-                fileName={survey.startSoundFileName}
-                fileType={t("fileTypes.mp3")}
-              />
-            </div>
-            <div className="flex-1 ps-3">
-              <FileAttachment
-                label={t("fields.wrongEntrySound")}
-                fileName={survey.wrongAnswerSoundFileName}
-                fileType={t("fileTypes.mp3")}
-              />
-            </div>
+      {/* Questions Details */}
+      <div className="flex flex-col gap-2">
+        <h3>{t("sections.questions")}</h3>
+        <div className="border rounded-lg">
+          <div className="p-4">
+            <Property
+              label={t("fields.maxQuestionAttempts")}
+              value={survey.maxQuestionAttempts}
+            />
           </div>
-          <hr />
-          <div className="flex flex-col lg:flex-row gap-4">
-            <div className="flex-1">
-              <FileAttachment
-                label={t("fields.endSound")}
-                fileName={survey.endSoundFileName}
-                fileType={t("fileTypes.mp3")}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Questions */}
-      <div className="flex flex-col gap-2 border rounded-lg">
-        <div className="header p-4 bg-neutral-100 rounded-t-lg">
-          <h3>{t("sections.questions")}</h3>
-        </div>
-        <div className="p-4 flex flex-col gap-4">
-          <Property
-            label={t("fields.maxQuestionAttempts")}
-            value={survey.maxQuestionAttempts}
-          />
-          <hr />
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            {survey.questions.map((question, idx) => (
-              <div
-                key={question.id || idx}
-                className="border rounded-lg p-4 flex flex-col gap-3"
-              >
-                <Property
-                  label={t("fields.answerType")}
-                  value={answerTypeLabels[question.type] || question.type}
-                />
-                <FileAttachment
-                  label={t("fields.questionSound")}
-                  fileName={question.soundFileName}
-                  fileType={t("fileTypes.mp3")}
-                />
+          {survey.questions.map((question, idx) => (
+            <div key={question.id || idx}>
+              <hr />
+              <div className="p-4 flex flex-col lg:flex-row gap-4 divide-x">
+                <div className="flex-1">
+                  <Property
+                    label={t("fields.answerType")}
+                    value={answerTypeLabels[question.type] || question.type}
+                  />
+                </div>
+                <div className="flex-1 ps-3">
+                  <FileAttachment
+                    fileName={question.soundFileName}
+                    fileType={t("fileTypes.mp3")}
+                  />
+                </div>
               </div>
-            ))}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Customers List */}
+      <div className="border rounded-lg">
+        <div className="p-4 bg-neutral-100 rounded-t-lg">
+          <h3 className="m-0">{t("sections.customersList")}</h3>
+        </div>
+        <div className="p-4">
+          <FileAttachment
+            fileName={survey.fileName}
+            fileType={t("fileTypes.mp3")}
+          />
+        </div>
+      </div>
+
+      {/* Sound Files */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="border rounded-lg">
+          <div className="p-4 bg-neutral-100 rounded-t-lg">
+            <h3 className="m-0">{t("fields.startSound")}</h3>
+          </div>
+          <div className="p-4">
+            <FileAttachment
+              fileName={survey.startSoundFileName}
+              fileType={t("fileTypes.mp3")}
+            />
+          </div>
+        </div>
+        <div className="border rounded-lg">
+          <div className="p-4 bg-neutral-100 rounded-t-lg">
+            <h3 className="m-0">{t("fields.wrongEntrySound")}</h3>
+          </div>
+          <div className="p-4">
+            <FileAttachment
+              fileName={survey.wrongAnswerSoundFileName}
+              fileType={t("fileTypes.mp3")}
+            />
+          </div>
+        </div>
+        <div className="border rounded-lg">
+          <div className="p-4 bg-neutral-100 rounded-t-lg">
+            <h3 className="m-0">{t("fields.endSound")}</h3>
+          </div>
+          <div className="p-4">
+            <FileAttachment
+              fileName={survey.endSoundFileName}
+              fileType={t("fileTypes.mp3")}
+            />
           </div>
         </div>
       </div>
 
-      {/* Time Slots */}
-      <div className="flex flex-col gap-2 border rounded-lg">
-        <div className="header p-4 bg-neutral-100 rounded-t-lg">
-          <h3>{t("sections.timeSlots")}</h3>
-        </div>
-        <div className="p-4 flex flex-col gap-4">
-          <Property label={t("fields.timezone")} value={survey.timezone} />
-          <hr />
-          <Table>
-            <TableHeader className="bg-neutral-100">
-              <TableRow>
-                <TableHead>{t("fields.from")}</TableHead>
-                <TableHead>{t("fields.to")}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {survey.timeSlots.map((slot, idx) => (
-                <TableRow
-                  key={slot.id || idx}
-                  className="border-0 hover:bg-transparent"
-                >
-                  <TableCell>{slot.fromTime}</TableCell>
-                  <TableCell>{slot.toTime}</TableCell>
+      {/* Caller IDs + Time Slots */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Caller IDs */}
+        <div className="border rounded-lg">
+          <div className="p-4 bg-neutral-100 rounded-t-lg">
+            <h3 className="m-0">{t("sections.callerIds")}</h3>
+          </div>
+          <div className="py-2">
+            <Table>
+              <TableHeader className="bg-neutral-100">
+                <TableRow>
+                  <TableHead>{t("fields.destination")}</TableHead>
+                  <TableHead>{t("fields.callerNumber")}</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {survey.callers.map((caller, idx) => (
+                  <TableRow key={idx} className="border-0 hover:bg-transparent">
+                    <TableCell>{caller.destination}</TableCell>
+                    <TableCell>{caller.callerNumber}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
-      </div>
 
-      {/* Caller IDs */}
-      <div className="flex flex-col gap-2 border rounded-lg">
-        <div className="header p-4 bg-neutral-100 rounded-t-lg">
-          <h3>{t("sections.callerIds")}</h3>
+        {/* Time Slots */}
+        <div className="border rounded-lg">
+          <div className="p-4 bg-neutral-100 rounded-t-lg">
+            <h3 className="m-0">{t("sections.timeSlots")}</h3>
+          </div>
+          <div className="py-2">
+            <Table>
+              <TableHeader className="bg-neutral-100">
+                <TableRow>
+                  <TableHead>{t("fields.timezone")}</TableHead>
+                  <TableHead>{t("fields.from")}</TableHead>
+                  <TableHead>{t("fields.to")}</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {survey.timeSlots.map((slot, idx) => (
+                  <TableRow
+                    key={slot.id || idx}
+                    className="border-0 hover:bg-transparent"
+                  >
+                    <TableCell>{survey.timezone}</TableCell>
+                    <TableCell>{slot.fromTime}</TableCell>
+                    <TableCell>{slot.toTime}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </div>
-        <Table>
-          <TableHeader className="bg-neutral-100">
-            <TableRow>
-              <TableHead>{t("fields.destination")}</TableHead>
-              <TableHead>{t("fields.callerNumber")}</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {survey.callers.map((caller, idx) => (
-              <TableRow key={idx} className="border-0 hover:bg-transparent">
-                <TableCell>{caller.destination}</TableCell>
-                <TableCell>{caller.callerNumber}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
       </div>
     </div>
   );
