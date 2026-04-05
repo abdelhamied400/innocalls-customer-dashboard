@@ -2,10 +2,12 @@
 
 import LinkTabs, { LinkTab } from "@/components/LinkTabs";
 import { useTranslations } from "@/providers/TranslationProvider";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 
-type CallSurveyLayoutProps = PropsWithChildren<{}>;
-const CallSurveyLayout = ({ children }: CallSurveyLayoutProps) => {
+type CallSurveyLayoutProps = PropsWithChildren<{
+  createSheet: ReactNode;
+}>;
+const CallSurveyLayout = ({ children, createSheet }: CallSurveyLayoutProps) => {
   const t = useTranslations("callSurvey");
 
   return (
@@ -20,6 +22,7 @@ const CallSurveyLayout = ({ children }: CallSurveyLayoutProps) => {
       </LinkTabs>
 
       <div className="h-[calc(100%-3rem)] overflow-auto">{children}</div>
+      {createSheet}
     </div>
   );
 };

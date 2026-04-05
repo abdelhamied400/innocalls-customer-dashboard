@@ -41,14 +41,6 @@ const CallSurveyDetails = () => {
 
   return (
     <div className="call-survey-details flex flex-col gap-4 bg-white p-4 rounded-lg">
-      {/* Header */}
-      <div>
-        <h1 className="text-xl font-bold m-0">
-          {t("title")} ({survey.name})
-        </h1>
-        <p className="text-sm text-muted-foreground m-0">{t("description")}</p>
-      </div>
-
       {/* Basic Info */}
       <div className="flex flex-col gap-2">
         <h3>{t("sections.basic")}</h3>

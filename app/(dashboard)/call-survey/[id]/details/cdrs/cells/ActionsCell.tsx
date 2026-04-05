@@ -2,13 +2,21 @@
 import { CallSurveyCdr } from "@/types/callSurvey";
 import { Cell } from "@/types/cell";
 import { Button } from "@/components/ui/button";
-import { PlayCircle, QuestionAnswer } from "@mui/icons-material";
+import { InsertComment, PlayCircle, QuestionAnswer } from "@mui/icons-material";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import StreamingSoundPlayer from "@/components/StreamingSoundPlayer";
 import {
   Tooltip,
@@ -40,7 +48,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <DialogTrigger asChild>
-                  <Button size="icon" variant="ghost-success">
+                  <Button size="icon" variant="ghost-primary">
                     <PlayCircle fontSize="small" />
                   </Button>
                 </DialogTrigger>
@@ -56,63 +64,64 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
 
         {/* Answers */}
         {cdr.completionStatus !== "no-response" && cdr.answers.length > 0 && (
-          <Dialog>
+          <Sheet>
             <Tooltip>
               <TooltipTrigger asChild>
-                <DialogTrigger asChild>
-                  <Button size="icon" variant="ghost-primary">
-                    <QuestionAnswer fontSize="small" />
+                <SheetTrigger asChild>
+                  <Button size="icon" variant="ghost-success">
+                    <InsertComment className="-scale-x-100" fontSize="small" />
                   </Button>
-                </DialogTrigger>
+                </SheetTrigger>
               </TooltipTrigger>
               <TooltipContent>{t("actions.answers")}</TooltipContent>
             </Tooltip>
-            <DialogContent className="max-h-[80vh] overflow-auto">
-              <DialogTitle>{t("answersModal.title")}</DialogTitle>
-              <div className="flex flex-col gap-4">
+            <SheetContent className="p-0 flex flex-col sm:max-w-150">
+              <SheetHeader className="flex flex-row items-center justify-between p-4 border-b">
+                <SheetTitle>{t("answersModal.title")}</SheetTitle>
+                <SheetClose className="rounded-sm opacity-70 hover:opacity-100" />
+              </SheetHeader>
+              <div className="flex flex-col gap-4 p-4 overflow-auto">
                 {cdr.answers.map((answer, idx) => (
                   <div
                     key={idx}
-                    className="border rounded-lg p-4 flex flex-col gap-2"
+                    className="flex flex-col gap-2 border rounded-lg bg-white"
                   >
-                    <h4 className="font-semibold m-0">
-                      {t("answersModal.question")} {answer.questionIndex + 1}
-                    </h4>
-                    <p className="text-sm m-0">
-                      <span className="font-bold">
-                        {t("answersModal.attemptNumber")}:
-                      </span>{" "}
-                      {answer.attemptNumber}
-                    </p>
-                    <p className="text-sm m-0">
-                      <span className="font-bold">
-                        {t("answersModal.questionType")}:
-                      </span>{" "}
-                      {questionTypes[answer.questionType] || answer.questionType}
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold">
-                        {t("answersModal.userResponse")}:
-                      </span>
-                      {answer.questionType === "yes_no" ? (
-                        <Badge
-                          variant={
-                            answer.userResponse === 1
-                              ? "success"
-                              : "destructive"
-                          }
-                        >
-                          {answer.userResponse === 1 ? "Yes" : "No"}
-                        </Badge>
-                      ) : (
-                        <Badge variant="warning">{answer.userResponse}</Badge>
-                      )}
+                    <div className="p-4 bg-neutral-100 rounded-t-lg">
+                      <h4 className="font-semibold m-0">
+                        {t("answersModal.question")} {answer.questionIndex + 1}
+                      </h4>
+                    </div>
+                    <div className="p-4 flex flex-col lg:flex-row gap-4 divide-x">
+                      <div className="flex-1 ps-3">
+                        <div className="">
+                          <p className="text-muted-foreground">
+                            {t("answersModal.userResponse")}
+                          </p>
+
+                          <p className="font-bold">{answer.userResponse}</p>
+                        </div>
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-muted-foreground">
+                          {t("answersModal.attemptNumber")}
+                        </p>
+                        <p className="font-bold">{answer.attemptNumber}</p>
+                      </div>
+                      <div className="flex-1 ps-3">
+                        <p className="text-muted-foreground">
+                          {t("answersModal.questionType")}
+                        </p>
+                        <p className="font-bold">
+                          {questionTypes[answer.questionType] ||
+                            answer.questionType}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
-            </DialogContent>
-          </Dialog>
+            </SheetContent>
+          </Sheet>
         )}
       </div>
     </TooltipProvider>

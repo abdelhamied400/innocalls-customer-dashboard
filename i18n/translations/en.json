@@ -5241,9 +5241,14 @@
     "detailsLayout": {
       "tabs": {
         "metrics": "Live Metrics",
+        "analytics": "Analytics",
         "cdrs": "Survey CDRs",
         "details": "Survey Details"
       }
+    },
+    "create": {
+      "title": "Create Survey",
+      "description": "Create a new call survey"
     },
     "details": {
       "title": "Survey Details",
