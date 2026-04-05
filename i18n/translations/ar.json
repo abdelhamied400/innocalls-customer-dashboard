@@ -1642,6 +1642,7 @@
       "developersTab": "إعدادات المطورين",
       "settings": "الإعدادات",
       "callBridge": "جسر المكالمات",
+      "callSurvey": "استبيان المكالمات",
       "postCallSurvey": "استطلاع ما بعد المكالمة",
       "aiVoiceAgents": "وكلاء الصوت الذكي",
       "analytics": "إحصائيات المكالمات",
@@ -5185,6 +5186,42 @@
           "label": "الحالة",
           "all": "الكل"
         }
+      }
+    },
+    "details": {
+      "title": "تفاصيل الاستبيان",
+      "description": "عرض إعدادات استبيان المكالمات",
+      "loading": "جاري التحميل...",
+      "notFound": "الاستبيان غير موجود",
+      "sections": {
+        "basic": "المعلومات الأساسية",
+        "sounds": "ملفات الصوت",
+        "questions": "الأسئلة",
+        "timeSlots": "الفترات الزمنية",
+        "callerIds": "أرقام المتصلين"
+      },
+      "fields": {
+        "name": "الاسم",
+        "trialsCount": "عدد المحاولات",
+        "concurrencyCalls": "المكالمات المتزامنة",
+        "delayMinutesBetweenTrials": "التأخير بين المحاولات",
+        "dtmfTimeout": "مهلة DTMF",
+        "minutesValue": "{value} دقيقة",
+        "secondsValue": "{value} ثانية",
+        "startSound": "صوت البداية",
+        "wrongEntrySound": "صوت الإدخال الخاطئ",
+        "endSound": "صوت النهاية",
+        "maxQuestionAttempts": "أقصى عدد لمحاولات السؤال",
+        "answerType": "نوع الإجابة",
+        "questionSound": "صوت السؤال",
+        "timezone": "المنطقة الزمنية",
+        "from": "من",
+        "to": "إلى",
+        "destination": "الوجهة",
+        "callerNumber": "رقم المتصل"
+      },
+      "fileTypes": {
+        "mp3": "MP3"
       }
     }
   }

@@ -1643,6 +1643,7 @@
       "developersTab": "Developers Tab",
       "settings": "Settings",
       "callBridge": "Call Bridge",
+      "callSurvey": "Call Survey",
       "postCallSurvey": "Post Call Survey",
       "aiVoiceAgents": "AI Voice Agents",
       "analytics": "Analytics",
@@ -5190,6 +5191,42 @@
           "label": "Status",
           "all": "All"
         }
+      }
+    },
+    "details": {
+      "title": "Survey Details",
+      "description": "View call survey configuration",
+      "loading": "Loading...",
+      "notFound": "Survey not found",
+      "sections": {
+        "basic": "Basic Information",
+        "sounds": "Sound Files",
+        "questions": "Questions",
+        "timeSlots": "Time Slots",
+        "callerIds": "Caller IDs"
+      },
+      "fields": {
+        "name": "Name",
+        "trialsCount": "Trials Count",
+        "concurrencyCalls": "Concurrency Calls",
+        "delayMinutesBetweenTrials": "Delay Between Trials",
+        "dtmfTimeout": "DTMF Timeout",
+        "minutesValue": "{value} min",
+        "secondsValue": "{value} sec",
+        "startSound": "Start Sound",
+        "wrongEntrySound": "Wrong Entry Sound",
+        "endSound": "End Sound",
+        "maxQuestionAttempts": "Max Question Attempts",
+        "answerType": "Answer Type",
+        "questionSound": "Question Sound",
+        "timezone": "Timezone",
+        "from": "From",
+        "to": "To",
+        "destination": "Destination",
+        "callerNumber": "Caller Number"
+      },
+      "fileTypes": {
+        "mp3": "MP3"
       }
     }
   }
