@@ -1,5 +1,6 @@
 "use client";
 import { Search } from "@mui/icons-material";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
@@ -18,7 +19,6 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Field from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import StatsCard from "@/components/StatsCard";
 import {
   Cell,
   Label,
@@ -49,23 +49,6 @@ const COLORS = {
   total: "#6366f1",
   initiated: "#FFD061",
   inProgress: "#0E4D80",
-};
-
-// TODO: Remove fake data
-const FAKE_METRICS: MetricsData = {
-  initiatedCalls: [
-    { id: "1", phone: "201287416342", name: "Aml Kamel", currentTrial: 1 },
-    { id: "2", phone: "201098765432", name: "Ahmed Hassan", currentTrial: 2 },
-    { id: "3", phone: "201155443322", name: "Sara Mohamed", currentTrial: 1 },
-  ],
-  inProgressCalls: [
-    { id: "4", phone: "201234567890", name: "Omar Ali", currentTrial: 1 },
-    { id: "5", phone: "201112233445", name: "Fatma Nabil", currentTrial: 3 },
-  ],
-  callsStats: {
-    inProgress: 2,
-    initiated: 3,
-  },
 };
 
 const CallsTable = ({
@@ -122,15 +105,13 @@ const SurveyLiveMetrics = () => {
   const { id } = useParams<{ id: string }>();
   const [search, setSearch] = useState("");
 
-  // const { data: metrics, isLoading } = useLocalizedQuery<MetricsData>({
-  //   queryKey: ["call-survey-metrics", id],
-  //   queryFn: () => callSurveyService.getMetrics(id as string),
-  //   enabled: !!id,
-  //   gcTime: 0,
-  //   refetchInterval: 10000,
-  // });
-  const metrics = FAKE_METRICS;
-  const isLoading = false;
+  const { data: metrics, isLoading } = useLocalizedQuery<MetricsData>({
+    queryKey: ["call-survey-metrics", id],
+    queryFn: () => callSurveyService.getMetrics(id as string),
+    enabled: !!id,
+    gcTime: 0,
+    refetchInterval: 10000,
+  });
 
   const total = metrics
     ? metrics.callsStats.initiated + metrics.callsStats.inProgress
@@ -177,9 +158,8 @@ const SurveyLiveMetrics = () => {
       {/* Pie chart + Stat cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 items-start gap-2">
         <div className="border rounded-lg p-4">
-          <h3 className="mb-4">{t("sections.stats")}</h3>
           <div className="flex flex-col lg:flex-row items-center gap-6">
-            <div className="w-52 h-52 lg:w-64 lg:h-64">
+            <div className="w-48 h-48 lg:w-48 lg:h-48">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -234,8 +214,10 @@ const SurveyLiveMetrics = () => {
                     className="w-4 h-4 rounded-sm shrink-0"
                     style={{ backgroundColor: entry.color }}
                   />
-                  <span className="text-muted-foreground">{entry.name}</span>
-                  <span className="font-bold">{entry.value}</span>
+                  <span className="text-muted-foreground flex-1 min-w-20">
+                    {entry.name}
+                  </span>
+                  <span className="font-bold ">{entry.value}</span>
                 </div>
               ))}
             </div>
@@ -247,7 +229,7 @@ const SurveyLiveMetrics = () => {
           <div className="col-span-2">
             <StatsMiniCard
               icon={
-                <img src="/assets/icons/stats/phone.svg" alt="Total Calls" />
+                <Image src="/assets/icons/stats/phone.svg" alt="Total Calls" width={24} height={24} />
               }
               label={t("fields.total")}
               value={total}
@@ -256,10 +238,7 @@ const SurveyLiveMetrics = () => {
           </div>
           <StatsMiniCard
             icon={
-              <img
-                src="/assets/icons/stats/phone_callback.svg"
-                alt="Initiated Calls"
-              />
+              <Image src="/assets/icons/stats/phone_callback.svg" alt="Initiated Calls" width={24} height={24} />
             }
             label={t("fields.initiated")}
             value={metrics.callsStats.initiated}
@@ -268,7 +247,7 @@ const SurveyLiveMetrics = () => {
           />
           <StatsMiniCard
             icon={
-              <img src="/assets/icons/stats/call.svg" alt="In Progress Calls" />
+              <Image src="/assets/icons/stats/call.svg" alt="In Progress Calls" width={24} height={24} />
             }
             label={t("fields.inProgress")}
             value={metrics.callsStats.inProgress}
@@ -287,7 +266,7 @@ const SurveyLiveMetrics = () => {
                 {t("sections.initiatedCalls")}
                 <Badge
                   variant="warning"
-                  className="px-1.5 py-0 text-xs min-w-[1.25rem] justify-center"
+                  className="px-1.5 py-0 text-xs min-w-5 justify-center"
                 >
                   {metrics.initiatedCalls.length}
                 </Badge>
@@ -295,7 +274,7 @@ const SurveyLiveMetrics = () => {
               <TabsTrigger value="inProgress" className="gap-1.5">
                 {t("sections.inProgressCalls")}
                 <Badge
-                  className="px-1.5 py-0 text-xs min-w-[1.25rem] justify-center text-white"
+                  className="px-1.5 py-0 text-xs min-w-5 justify-center text-white"
                   style={{ backgroundColor: COLORS.inProgress }}
                 >
                   {metrics.inProgressCalls.length}
