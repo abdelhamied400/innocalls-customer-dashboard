@@ -5127,7 +5127,52 @@
         "actions": "Actions"
       },
       "actions": {
-        "view": "View Details"
+        "view": "View Details",
+        "addCustomers": "Add Customers",
+        "corruptedRows": "Corrupted Rows",
+        "cdrs": "CDRs",
+        "uncompleted": "Uncompleted",
+        "metrics": "Metrics",
+        "analytics": "Analytics",
+        "callsAnalytics": "Calls Analytics"
+      },
+      "modals": {
+        "start": {
+          "title": "Start Survey",
+          "message": "Are you sure you want to start this survey?",
+          "confirm": "Yes, Start",
+          "cancel": "Cancel"
+        },
+        "pause": {
+          "title": "Pause Survey",
+          "message": "Are you sure you want to pause this survey?",
+          "confirm": "Yes, Pause",
+          "cancel": "Cancel"
+        },
+        "resume": {
+          "title": "Resume Survey",
+          "message": "Are you sure you want to resume this survey?",
+          "confirm": "Yes, Resume",
+          "cancel": "Cancel"
+        },
+        "finish": {
+          "title": "Finish Survey",
+          "message": "Are you sure you want to finish this survey? This action cannot be undone.",
+          "confirm": "Yes, Finish",
+          "cancel": "Cancel"
+        }
+      },
+      "toasts": {
+        "started": "Survey Started",
+        "startedDescription": "The survey has been started successfully.",
+        "paused": "Survey Paused",
+        "pausedDescription": "The survey has been paused successfully.",
+        "resumed": "Survey Resumed",
+        "resumedDescription": "The survey has been resumed successfully.",
+        "finished": "Survey Finished",
+        "finishedDescription": "The survey has been finished successfully.",
+        "error": "Error",
+        "errorDescription": "An error occurred. Please try again."
       },
       "statuses": {
         "created": "Created",
@@ -5228,6 +5273,43 @@
       "fileTypes": {
         "mp3": "MP3"
       }
+    },
+    "metrics": {
+      "title": "Survey Metrics",
+      "description": "View current call statistics for this survey",
+      "noData": "No metrics data available",
+      "noCalls": "No calls at the moment",
+      "sections": {
+        "stats": "Calls Statistics",
+        "initiatedCalls": "Initiated Calls",
+        "inProgressCalls": "In Progress Calls"
+      },
+      "fields": {
+        "total": "Total Calls",
+        "initiated": "Initiated",
+        "inProgress": "In Progress",
+        "name": "Name",
+        "phone": "Phone",
+        "currentTrial": "Current Trial"
+      }
+    },
+    "analytics": {
+      "title": "Survey Analytics",
+      "description": "View survey calls analytics and statistics",
+      "noData": "No analytics data available",
+      "export": "Export to Email",
+      "exporting": "Exporting...",
+      "exportSuccess": "Export Sent",
+      "exportSuccessDescription": "The report has been sent to your email.",
+      "exportError": "Export Failed",
+      "exportErrorDescription": "Failed to export the report. Please try again.",
+      "questionLabel": "Question {number}",
+      "sections": {
+        "summary": "Summary",
+        "questions": "Questions Analysis",
+        "overview": "Overview"
+      },
+      "fields": {}
     }
   }
 }

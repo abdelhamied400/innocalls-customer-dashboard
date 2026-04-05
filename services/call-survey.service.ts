@@ -19,4 +19,39 @@ export default {
     const res = await api.get(`/surveys/${id}`);
     return res.data.data.survey;
   },
+
+  startSurvey: async (id: string) => {
+    const res = await api.patch(`/surveys/${id}/start`);
+    return res.data.data;
+  },
+
+  pauseSurvey: async (id: string) => {
+    const res = await api.patch(`/surveys/${id}/pause`);
+    return res.data.data;
+  },
+
+  resumeSurvey: async (id: string) => {
+    const res = await api.patch(`/surveys/${id}/resume`);
+    return res.data.data;
+  },
+
+  finishSurvey: async (id: string) => {
+    const res = await api.patch(`/surveys/${id}/finish`);
+    return res.data.data;
+  },
+
+  getAnalysis: async (id: string) => {
+    const res = await api.get(`/surveys/${id}/analysis`);
+    return res.data.data;
+  },
+
+  exportStats: async (id: string) => {
+    const res = await api.get(`/surveys/${id}/stats/export`);
+    return res.data.data;
+  },
+
+  getMetrics: async (id: string) => {
+    const res = await api.get(`/surveys/${id}/current-calls/stats`);
+    return res.data.data;
+  },
 };
