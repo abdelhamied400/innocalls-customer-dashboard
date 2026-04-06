@@ -12,6 +12,19 @@ type FetchCdrsResponse = {
   totalPages: number;
 };
 
+type UncompletedRequest = {
+  id: string;
+  name: string;
+  phone: string;
+  remainingTrials: number;
+};
+
+type FetchUncompletedResponse = {
+  requests: UncompletedRequest[];
+  totalItems: number;
+  totalPages: number;
+};
+
 type FetchSurveysResponse = {
   surveys: CallSurvey[];
   totalItems: number;
@@ -69,5 +82,23 @@ export default {
     const queryString = objToQueryString(filters || {});
     const res = await api.get(`/surveys/${id}/cdrs?${queryString}`);
     return res.data.data;
+  },
+
+  fetchUncompletedRequests: async (
+    id: string,
+    page: number = 1,
+    limit: number = 10,
+    filters?: any,
+  ): Promise<FetchUncompletedResponse> => {
+    const queryString = objToQueryString({ page, limit, ...filters });
+    const res = await api.get(
+      `/surveys/${id}/uncompleted-requests?${queryString}`,
+    );
+    return res.data.data;
+  },
+
+  exportUncompletedRequests: async (id: string) => {
+    const res = await api.get(`/surveys/${id}/uncompleted-requests/export`);
+    return res.data;
   },
 };

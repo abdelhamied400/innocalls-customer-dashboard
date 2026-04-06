@@ -1,6 +1,6 @@
 "use client";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
-import { columns, CallSurveyCols } from "../active/columns";
+import { columns, CallSurveyCols } from "./columns";
 import callSurveyService from "@/services/call-survey.service";
 import PaginatedTable from "@/components/Table/PaginatedTable";
 import CallSurveyFinishedHead from "./head";

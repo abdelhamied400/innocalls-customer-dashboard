@@ -57,8 +57,6 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
         {[
           "created",
           "verification-failed",
-          "completed",
-          "finished",
           "paused",
           "active",
           "in-progress",
@@ -86,9 +84,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
                   </DropdownMenuItem>
                 </Link>
               )}
-              {["completed", "finished", "paused", "active", "in-progress"].includes(
-                survey.status,
-              ) && (
+              {["paused", "active", "in-progress"].includes(survey.status) && (
                 <Link href={`/call-survey/${survey.id}/details/cdrs`}>
                   <DropdownMenuItem>
                     <List fontSize="small" />
@@ -104,9 +100,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
                   </DropdownMenuItem>
                 </Link>
               )}
-              {["active", "in-progress", "completed", "finished", "paused"].includes(
-                survey.status,
-              ) && (
+              {["active", "in-progress", "paused"].includes(survey.status) && (
                 <Link href={`/call-survey/${survey.id}/details/metrics`}>
                   <DropdownMenuItem>
                     <BarChart fontSize="small" />

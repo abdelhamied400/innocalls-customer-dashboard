@@ -5210,6 +5210,17 @@
     "finished": {
       "title": "الاستبيانات المنتهية",
       "search": "بحث...",
+      "columns": {
+        "creationDate": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "actions": {
+        "view": "عرض التفاصيل",
+        "cdrs": "سجلات المكالمات",
+        "analytics": "التحليلات"
+      },
       "filters": {
         "toggle": "تبديل الفلاتر",
         "creationDate": {
@@ -5388,6 +5399,26 @@
       "toasts": {
         "error": "خطأ",
         "errorDescription": "حدث خطأ. يرجى المحاولة مرة أخرى."
+      }
+    },
+    "uncompleted": {
+      "title": "الطلبات غير المكتملة",
+      "search": "بحث...",
+      "noData": "لا توجد طلبات غير مكتملة",
+      "columns": {
+        "phone": "الهاتف",
+        "name": "الاسم",
+        "remainingTrials": "المحاولات المتبقية"
+      },
+      "export": "تصدير إلى البريد",
+      "exporting": "جاري التصدير...",
+      "exportSuccess": "تم إرسال التصدير",
+      "exportSuccessDescription": "تم إرسال التقرير إلى بريدك الإلكتروني.",
+      "exportError": "فشل التصدير",
+      "exportErrorDescription": "حدث خطأ أثناء التصدير. يرجى المحاولة مرة أخرى.",
+      "toasts": {
+        "error": "خطأ",
+        "errorDescription": "فشل تحميل الطلبات غير المكتملة"
       }
     }
   }

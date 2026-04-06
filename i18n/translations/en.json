@@ -5215,6 +5215,17 @@
     "finished": {
       "title": "Finished Surveys",
       "search": "Search...",
+      "columns": {
+        "creationDate": "Creation Date",
+        "name": "Name",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "view": "View Details",
+        "cdrs": "CDRs",
+        "analytics": "Analytics"
+      },
       "filters": {
         "toggle": "Toggle Filters",
         "creationDate": {
@@ -5393,6 +5404,26 @@
       "toasts": {
         "error": "Error",
         "errorDescription": "An error occurred. Please try again."
+      }
+    },
+    "uncompleted": {
+      "title": "Uncompleted Requests",
+      "search": "Search...",
+      "noData": "No uncompleted requests",
+      "columns": {
+        "phone": "Phone",
+        "name": "Name",
+        "remainingTrials": "Remaining Trials"
+      },
+      "export": "Export to Email",
+      "exporting": "Exporting...",
+      "exportSuccess": "Export Sent",
+      "exportSuccessDescription": "The report has been sent to your email.",
+      "exportError": "Export Failed",
+      "exportErrorDescription": "An error occurred while exporting. Please try again.",
+      "toasts": {
+        "error": "Error",
+        "errorDescription": "Failed to load uncompleted requests"
       }
     }
   }
