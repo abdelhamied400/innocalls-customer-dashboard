@@ -5254,7 +5254,58 @@
     },
     "create": {
       "title": "إنشاء استبيان",
-      "description": "إنشاء استبيان مكالمات جديد"
+      "description": "إنشاء استبيان مكالمات جديد",
+      "steps": {
+        "surveyDetails": "تفاصيل الاستبيان",
+        "sounds": "الأصوات",
+        "questions": "الأسئلة",
+        "timeAndCallers": "الوقت والمتصلين",
+        "customersList": "قائمة العملاء"
+      },
+      "actions": {
+        "next": "التالي",
+        "previous": "السابق",
+        "submit": "إنشاء الاستبيان",
+        "save": "حفظ",
+        "saveAsDraft": "حفظ كمسودة",
+        "creating": "جاري الإنشاء..."
+      },
+      "form": {
+        "name": { "label": "اسم الاستبيان", "placeholder": "أدخل اسم الاستبيان", "required": "اسم الاستبيان مطلوب" },
+        "trialsCount": { "label": "عدد المحاولات", "required": "عدد المحاولات مطلوب", "min": "الحد الأدنى محاولة واحدة", "max": "الحد الأقصى 10 محاولات" },
+        "concurrencyCalls": { "label": "المكالمات المتزامنة", "required": "المكالمات المتزامنة مطلوبة", "min": "الحد الأدنى 1", "max": "الحد الأقصى 10" },
+        "delayMinutesBetweenTrials": { "label": "التأخير بين المحاولات (دقيقة)", "required": "مطلوب", "min": "الحد الأدنى 5 دقائق" },
+        "dtmfTimeout": { "label": "مهلة DTMF (ثانية)", "required": "مطلوب", "min": "الحد الأدنى 5 ثوانٍ" },
+        "startSound": { "label": "صوت البداية", "required": "صوت البداية مطلوب" },
+        "endSound": { "label": "صوت النهاية", "required": "صوت النهاية مطلوب" },
+        "wrongEntrySound": { "label": "صوت الإدخال الخاطئ", "required": "صوت الإدخال الخاطئ مطلوب" },
+        "maxQuestionAttempts": { "label": "أقصى عدد لمحاولات السؤال", "required": "مطلوب", "min": "الحد الأدنى محاولة واحدة" },
+        "questions": {
+          "title": "الأسئلة",
+          "add": "إضافة سؤال",
+          "answerType": { "label": "نوع الإجابة", "placeholder": "اختر النوع", "required": "نوع الإجابة مطلوب" },
+          "sound": { "label": "صوت السؤال", "required": "صوت السؤال مطلوب" },
+          "min": "مطلوب سؤال واحد على الأقل"
+        },
+        "timezone": { "label": "المنطقة الزمنية", "placeholder": "اختر المنطقة الزمنية" },
+        "timeSlots": {
+          "title": "الفترات الزمنية",
+          "add": "إضافة فترة زمنية",
+          "from": { "label": "من", "placeholder": "وقت البداية", "required": "وقت البداية مطلوب" },
+          "to": { "label": "إلى", "placeholder": "وقت النهاية", "required": "وقت النهاية مطلوب" },
+          "min": "مطلوب فترة زمنية واحدة على الأقل"
+        },
+        "callers": { "title": "أرقام المتصلين" },
+        "customersFile": { "label": "ملف العملاء", "required": "ملف العملاء مطلوب" }
+      },
+      "toasts": {
+        "created": "تم إنشاء الاستبيان",
+        "createdDescription": "تم إنشاء الاستبيان بنجاح.",
+        "saved": "تم حفظ الاستبيان",
+        "savedDescription": "تم حفظ الاستبيان كمسودة.",
+        "error": "خطأ",
+        "errorDescription": "حدث خطأ. يرجى المحاولة مرة أخرى."
+      }
     },
     "details": {
       "title": "تفاصيل الاستبيان",

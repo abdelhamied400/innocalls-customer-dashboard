@@ -101,4 +101,30 @@ export default {
     const res = await api.get(`/surveys/${id}/uncompleted-requests/export`);
     return res.data;
   },
+
+  uploadSurveySound: async (
+    file: File,
+  ): Promise<{ path: string; originalName: string }> => {
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await api.post("/survey-sounds/upload", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return res.data.data;
+  },
+
+  createSurvey: async (data: any) => {
+    const res = await api.post("/surveys", data);
+    return res.data.data.survey as { id: string; status: string; name: string };
+  },
+
+  uploadCustomersFile: async (id: string, file: File, isDraft: boolean) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("isDraft", String(isDraft));
+    const res = await api.post(`/surveys/${id}/file`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return res.data.data;
+  },
 };

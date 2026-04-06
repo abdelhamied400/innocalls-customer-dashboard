@@ -5259,7 +5259,58 @@
     },
     "create": {
       "title": "Create Survey",
-      "description": "Create a new call survey"
+      "description": "Create a new call survey",
+      "steps": {
+        "surveyDetails": "Survey Details",
+        "sounds": "Sounds",
+        "questions": "Questions",
+        "timeAndCallers": "Time & Callers",
+        "customersList": "Customers List"
+      },
+      "actions": {
+        "next": "Next",
+        "previous": "Previous",
+        "submit": "Create Survey",
+        "save": "Save",
+        "saveAsDraft": "Save as Draft",
+        "creating": "Creating..."
+      },
+      "form": {
+        "name": { "label": "Survey Name", "placeholder": "Enter survey name", "required": "Survey name is required" },
+        "trialsCount": { "label": "Trials Count", "required": "Trials count is required", "min": "Minimum 1 trial", "max": "Maximum 10 trials" },
+        "concurrencyCalls": { "label": "Concurrency Calls", "required": "Concurrency calls is required", "min": "Minimum 1", "max": "Maximum 10" },
+        "delayMinutesBetweenTrials": { "label": "Delay Between Trials (min)", "required": "Required", "min": "Minimum 5 minutes" },
+        "dtmfTimeout": { "label": "DTMF Timeout (sec)", "required": "Required", "min": "Minimum 5 seconds" },
+        "startSound": { "label": "Start Sound", "required": "Start sound is required" },
+        "endSound": { "label": "End Sound", "required": "End sound is required" },
+        "wrongEntrySound": { "label": "Wrong Entry Sound", "required": "Wrong entry sound is required" },
+        "maxQuestionAttempts": { "label": "Max Question Attempts", "required": "Required", "min": "Minimum 1 attempt" },
+        "questions": {
+          "title": "Questions",
+          "add": "Add Question",
+          "answerType": { "label": "Answer Type", "placeholder": "Select type", "required": "Answer type is required" },
+          "sound": { "label": "Question Sound", "required": "Question sound is required" },
+          "min": "At least one question is required"
+        },
+        "timezone": { "label": "Timezone", "placeholder": "Select timezone" },
+        "timeSlots": {
+          "title": "Time Slots",
+          "add": "Add Time Slot",
+          "from": { "label": "From", "placeholder": "Start time", "required": "Start time is required" },
+          "to": { "label": "To", "placeholder": "End time", "required": "End time is required" },
+          "min": "At least one time slot is required"
+        },
+        "callers": { "title": "Caller IDs" },
+        "customersFile": { "label": "Customers File", "required": "Customers file is required" }
+      },
+      "toasts": {
+        "created": "Survey Created",
+        "createdDescription": "The survey has been created successfully.",
+        "saved": "Survey Saved",
+        "savedDescription": "The survey has been saved as a draft.",
+        "error": "Error",
+        "errorDescription": "An error occurred. Please try again."
+      }
     },
     "details": {
       "title": "Survey Details",
