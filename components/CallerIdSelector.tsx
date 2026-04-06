@@ -86,7 +86,7 @@ const CallerIdSelector = ({
         return (
           <div
             key={field.id}
-            className="call-id bg-gray-50 border border-gray-100 p-4 rounded-lg flex items-center gap-4"
+            className="call-id border border-gray-100 p-4 rounded-lg flex items-center gap-4"
           >
             <div className="grid grid-cols-1 lg:grid-cols-2 flex-1 gap-2">
               <Select<SelectOption, false>

@@ -1,152 +1,160 @@
 "use client";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { useTranslations } from "@/providers/TranslationProvider";
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormItem } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import Select from "@/components/Select";
+import SpinButton from "@/components/ui/spin-button";
 import Dropzone, {
   DropzoneFileList,
   DropzoneTrigger,
 } from "@/components/ui/dropzone";
 import { SOUND_SIZE_LIMIT } from "@/constants/file";
 import { Add, DeleteOutline } from "@mui/icons-material";
+import { FormField } from "@/components/ui/form";
 import type { CreateSurveyForm } from "../schema";
 
-const ANSWER_TYPES = [
-  { label: "1 - 5", value: "one_five" },
-  { label: "1 - 10", value: "one_ten" },
-  { label: "Yes / No", value: "yes_no" },
-];
+type QuestionsStepProps = {
+  onNext: () => void;
+};
 
-const QuestionsStep = () => {
+const QuestionsStep = ({ onNext }: QuestionsStepProps) => {
   const t = useTranslations("callSurvey.create.form");
+
+  const ANSWER_TYPES = [
+    { label: t("questions.answerTypes.oneFive"), value: "one_five" },
+    { label: t("questions.answerTypes.oneTen"), value: "one_ten" },
+    { label: t("questions.answerTypes.yesNo"), value: "yes_no" },
+  ];
+  const tActions = useTranslations("callSurvey.create.actions");
+  const form = useFormContext<CreateSurveyForm>();
   const {
-    control,
-    clearErrors,
     trigger,
+    clearErrors,
+    control,
+    setValue,
     formState: { errors },
-  } = useFormContext<CreateSurveyForm>();
+  } = form;
   const { fields, append, remove } = useFieldArray({
     control,
     name: "questions",
   });
 
+  const handleNext = async () => {
+    const isValid = await trigger(["maxQuestionAttempts", "questions"]);
+    if (isValid) {
+      clearErrors();
+      onNext();
+    }
+  };
+
   return (
-    <div className="flex flex-col gap-6">
-      <FormField
-        control={control}
-        name="maxQuestionAttempts"
-        render={({ field }) => (
-          <FormItem className="max-w-xs">
-            <FormLabel>{t("maxQuestionAttempts.label")}</FormLabel>
-            <FormControl>
-              <Input
-                type="number"
-                min={1}
-                {...field}
-                onChange={(e) => field.onChange(Number(e.target.value))}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+    <Form {...form}>
+      <div className="flex flex-col gap-4">
+        <FormField
+          control={control}
+          name="maxQuestionAttempts"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <SpinButton
+                  label={t("maxQuestionAttempts.label")}
+                  labelAlign="center"
+                  error={errors.maxQuestionAttempts?.message}
+                  value={field.value}
+                  onChange={field.onChange}
+                  helperText={t("maxQuestionAttempts.hint")}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
 
-      <div className="flex items-center justify-between">
         <h4 className="m-0">{t("questions.title")}</h4>
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={() => append({ type: "", sound: null })}
-        >
-          <Add sx={{ fontSize: 16 }} className="me-1" />
-          {t("questions.add")}
-        </Button>
-      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {fields.map((field, idx) => (
           <div
             key={field.id}
-            className="border rounded-lg p-4 flex flex-col gap-4"
+            className="border rounded-lg p-4 flex flex-row items-center gap-4"
           >
-            <div className="flex items-start gap-2">
-              <FormField
-                control={control}
-                name={`questions.${idx}.type`}
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <FormLabel>{t("questions.answerType.label")}</FormLabel>
-                    <FormControl>
-                      <Select
-                        options={ANSWER_TYPES}
-                        value={
-                          ANSWER_TYPES.find(
-                            (opt) => opt.value === field.value,
-                          ) || null
-                        }
-                        onChange={(opt) => field.onChange(opt?.value || "")}
-                        placeholder={t("questions.answerType.placeholder")}
-                        error={errors.questions?.[idx]?.type?.message}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
+            <div className="flex flex-col gap-4 flex-1">
+              <Select
+                label={t("questions.answerType.label")}
+                options={ANSWER_TYPES}
+                value={
+                  ANSWER_TYPES.find(
+                    (opt) => opt.value === form.watch(`questions.${idx}.type`),
+                  ) || null
+                }
+                onChange={(opt) =>
+                  setValue(`questions.${idx}.type`, opt?.value || "", {
+                    shouldValidate: true,
+                  })
+                }
+                placeholder={t("questions.answerType.placeholder")}
+                error={errors.questions?.[idx]?.type?.message}
               />
-              {fields.length > 1 && (
-                <Button
-                  type="button"
-                  variant="ghost-destructive"
-                  size="icon"
-                  className="mt-7"
-                  onClick={() => remove(idx)}
+
+              <div>
+                <h5 className="mb-2">{t("questions.sound.label")}</h5>
+                <Dropzone
+                  options={{
+                    accept: { "audio/mpeg": [".mp3"] },
+                    maxSize: SOUND_SIZE_LIMIT,
+                    multiple: false,
+                    maxFiles: 1,
+                  }}
+                  value={form.watch(`questions.${idx}.sound`)}
+                  onChange={(file) => {
+                    setValue(`questions.${idx}.sound`, file, {
+                      shouldValidate: true,
+                    });
+                  }}
                 >
-                  <DeleteOutline fontSize="small" />
-                </Button>
-              )}
+                  <DropzoneTrigger />
+                  <DropzoneFileList />
+                </Dropzone>
+                <p className="text-sm text-muted-foreground mt-1">
+                  {t("questions.sound.hint")}
+                </p>
+                {errors.questions?.[idx]?.sound?.message && (
+                  <p className="text-destructive text-sm mt-1">
+                    {errors.questions[idx].sound.message as string}
+                  </p>
+                )}
+              </div>
             </div>
 
-            <FormField
-              control={control}
-              name={`questions.${idx}.sound`}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("questions.sound.label")}</FormLabel>
-                  <FormControl>
-                    <Dropzone
-                      options={{
-                        accept: { "audio/mpeg": [".mp3"] },
-                        maxSize: SOUND_SIZE_LIMIT,
-                        multiple: false,
-                        maxFiles: 1,
-                      }}
-                      value={field.value}
-                      onChange={(file) => {
-                        field.onChange(file);
-                        clearErrors(`questions.${idx}.sound`);
-                        trigger(`questions.${idx}.sound`);
-                      }}
-                    >
-                      <DropzoneTrigger />
-                      <DropzoneFileList />
-                    </Dropzone>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {fields.length > 1 && (
+              <Button
+                type="button"
+                variant="ghost-destructive"
+                size="icon"
+                onClick={() => remove(idx)}
+              >
+                <DeleteOutline fontSize="small" />
+              </Button>
+            )}
           </div>
         ))}
+
+        <div className="">
+          <Button
+            type="button"
+            variant="link"
+            size="sm"
+            onClick={() => append({ type: "", sound: null })}
+          >
+            <Add sx={{ fontSize: 16 }} className="me-1" />
+            {t("questions.add")}
+          </Button>
+        </div>
+
+        <Button type="button" size="lg" onClick={handleNext}>
+          {tActions("next")}
+        </Button>
       </div>
-    </div>
+    </Form>
   );
 };
 

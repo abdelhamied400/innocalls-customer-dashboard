@@ -20,6 +20,7 @@ type SpinButtonProps = {
   preIcon?: React.ReactNode;
   postIcon?: React.ReactNode;
   hint?: string;
+  helperText?: string;
 };
 
 const SpinButton = ({
@@ -33,6 +34,7 @@ const SpinButton = ({
   preIcon,
   postIcon,
   hint,
+  helperText,
   ...props
 }: SpinButtonProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,7 +59,7 @@ const SpinButton = ({
         className={cn(
           "relative cursor-pointer flex items-center gap-1 p-2 border rounded-xl",
           "bg-gray-100 hover:bg-gray-200 ",
-          error && "border-red-500 bg-red-50 hover:bg-red-100 text-red-500"
+          error && "border-red-500 bg-red-50 hover:bg-red-100 text-red-500",
         )}
       >
         <Button
@@ -77,7 +79,7 @@ const SpinButton = ({
                 "flex items-center gap-1 text-xs text-muted-foreground",
                 error && "text-red-500",
                 labelAlign === "center" && "justify-center",
-                labelAlign === "end" && "justify-end"
+                labelAlign === "end" && "justify-end",
               )}
             >
               {label}
@@ -121,6 +123,9 @@ const SpinButton = ({
           <PlusIcon />
         </Button>
       </label>
+      {helperText && (
+        <p className="text-xs text-muted-foreground mt-1">{helperText}</p>
+      )}
 
       {error && <p className="text-red-500 text-xs">{error}</p>}
     </div>

@@ -1,54 +1,55 @@
 "use client";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Close, ArrowLeft, ArrowRight } from "@mui/icons-material";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useTranslations } from "@/providers/TranslationProvider";
-import { useForm, FormProvider } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-import { isAxiosError } from "axios";
 import Stepper, {
   StepperHeader,
   StepperHeaderTitle,
-  StepperSteps,
+  StepperPrevious,
   StepperStep,
+  StepperSteps,
 } from "@/components/ui/stepper";
-import callSurveyService from "@/services/call-survey.service";
+import { ChevronLeftIcon, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
-import { createSurveySchema, CreateSurveyForm, STEP_FIELDS } from "./schema";
+import { useTranslations } from "@/providers/TranslationProvider";
+import callSurveyService from "@/services/call-survey.service";
+import { createSurveySchema, type CreateSurveyForm } from "./schema";
 import SurveyDetailsStep from "./steps/SurveyDetailsStep";
 import SoundsStep from "./steps/SoundsStep";
 import QuestionsStep from "./steps/QuestionsStep";
 import TimeAndCallersStep from "./steps/TimeAndCallersStep";
 import CustomersListStep from "./steps/CustomersListStep";
 
-const STEPS = [
-  "surveyDetails",
-  "sounds",
-  "questions",
-  "timeAndCallers",
-  "customersList",
-] as const;
-
 const CreateSurveySheet = () => {
+  const router = useRouter();
   const t = useTranslations("callSurvey.create");
   const tf = useTranslations("callSurvey.create.form");
-  const router = useRouter();
   const queryClient = useQueryClient();
-  const [isOpen, setIsOpen] = useState(true);
   const [currentStep, setCurrentStep] = useState(0);
-  const [isCreating, setIsCreating] = useState(false);
   const [createdSurveyId, setCreatedSurveyId] = useState<string | null>(null);
 
+  const steps = [
+    t("steps.surveyDetails"),
+    t("steps.sounds"),
+    t("steps.questions"),
+    t("steps.timeAndCallers"),
+    t("steps.customersList"),
+  ];
+
   const form = useForm<CreateSurveyForm>({
+    mode: "onChange",
     resolver: zodResolver(createSurveySchema(tf)),
     defaultValues: {
       name: "",
@@ -68,49 +69,24 @@ const CreateSurveySheet = () => {
     },
   });
 
-  const handleClose = () => {
-    setIsOpen(false);
-    router.back();
-  };
-
-  const validateStep = async (step: number): Promise<boolean> => {
-    const fields = STEP_FIELDS[step];
-    const result = await form.trigger(fields as any);
-    return result;
-  };
-
-  const handleNext = async () => {
-    const isValid = await validateStep(currentStep);
-    if (!isValid) return;
-
-    // After step 3 (Time & Callers), create the survey
-    if (currentStep === 3) {
-      await createSurvey();
-      return;
-    }
-
-    setCurrentStep((prev) => prev + 1);
-  };
-
-  const handlePrevious = () => {
-    setCurrentStep((prev) => Math.max(0, prev - 1));
-  };
-
   const createSurvey = async () => {
     try {
-      setIsCreating(true);
       const values = form.getValues();
 
       // Upload all sound files in parallel
-      const [startSoundRes, endSoundRes, wrongEntrySoundRes, ...questionSoundResults] =
-        await Promise.all([
-          callSurveyService.uploadSurveySound(values.startSound),
-          callSurveyService.uploadSurveySound(values.endSound),
-          callSurveyService.uploadSurveySound(values.wrongEntrySound),
-          ...values.questions.map((q) =>
-            callSurveyService.uploadSurveySound(q.sound),
-          ),
-        ]);
+      const [
+        startSoundRes,
+        endSoundRes,
+        wrongEntrySoundRes,
+        ...questionSoundResults
+      ] = await Promise.all([
+        callSurveyService.uploadSurveySound(values.startSound),
+        callSurveyService.uploadSurveySound(values.endSound),
+        callSurveyService.uploadSurveySound(values.wrongEntrySound),
+        ...values.questions.map((q) =>
+          callSurveyService.uploadSurveySound(q.sound),
+        ),
+      ]);
 
       const surveyData = {
         name: values.name,
@@ -141,8 +117,9 @@ const CreateSurveySheet = () => {
       toast.success(t("toasts.created"), {
         description: t("toasts.createdDescription"),
       });
-
-      queryClient.invalidateQueries({ queryKey: ["call-survey-active-list"] });
+      queryClient.invalidateQueries({
+        queryKey: ["call-survey-active-list"],
+      });
       setCurrentStep(4);
     } catch (error) {
       if (isAxiosError(error)) {
@@ -155,14 +132,11 @@ const CreateSurveySheet = () => {
       toast.error(t("toasts.error"), {
         description: t("toasts.errorDescription"),
       });
-    } finally {
-      setIsCreating(false);
     }
   };
 
   const handleSave = async (isDraft: boolean) => {
     if (!createdSurveyId) return;
-
     const customersFile = form.getValues("customersFile");
     if (!customersFile) {
       toast.error(t("toasts.error"), {
@@ -172,24 +146,20 @@ const CreateSurveySheet = () => {
     }
 
     try {
-      setIsCreating(true);
       await callSurveyService.uploadCustomersFile(
         createdSurveyId,
         customersFile,
         isDraft,
       );
-
-      toast.success(
-        isDraft ? t("toasts.saved") : t("toasts.created"),
-        {
-          description: isDraft
-            ? t("toasts.savedDescription")
-            : t("toasts.createdDescription"),
-        },
-      );
-
-      queryClient.invalidateQueries({ queryKey: ["call-survey-active-list"] });
-      handleClose();
+      toast.success(isDraft ? t("toasts.saved") : t("toasts.created"), {
+        description: isDraft
+          ? t("toasts.savedDescription")
+          : t("toasts.createdDescription"),
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["call-survey-active-list"],
+      });
+      router.replace("/call-survey/active");
     } catch (error) {
       if (isAxiosError(error)) {
         toast.error(t("toasts.error"), {
@@ -201,140 +171,87 @@ const CreateSurveySheet = () => {
       toast.error(t("toasts.error"), {
         description: t("toasts.errorDescription"),
       });
-    } finally {
-      setIsCreating(false);
     }
   };
 
-  const isCustomersStep = currentStep === 4;
-
   return (
     <Sheet
-      open={isOpen}
-      onOpenChange={(open) => {
-        if (!open) handleClose();
-      }}
+      defaultOpen={true}
+      onOpenChange={() => router.replace("/call-survey/active")}
     >
-      <SheetContent
-        side="bottom"
-        className="h-screen p-0"
-        onPointerDownOutside={(e) => e.preventDefault()}
-        onInteractOutside={(e) => e.preventDefault()}
-      >
+      <SheetContent side="bottom" className="h-screen p-0">
         <SheetHeader className="sr-only">
           <SheetTitle>{t("title")}</SheetTitle>
           <SheetDescription>{t("description")}</SheetDescription>
         </SheetHeader>
 
-        <FormProvider {...form}>
-          <div className="h-full flex flex-col">
-            {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b">
-              <h2 className="text-lg font-semibold">{t("title")}</h2>
-              <Button size="icon" variant="unstyled" onClick={handleClose}>
-                <Close className="h-4 w-4" />
-                <span className="sr-only">Close</span>
-              </Button>
+        <Stepper
+          steps={steps}
+          currentStep={currentStep}
+          onStepChange={setCurrentStep}
+          enableStepping={false}
+          className="h-full flex flex-col"
+        >
+          <StepperHeader>
+            <StepperPrevious>
+              <ChevronLeftIcon className="rtl:rotate-180" />
+            </StepperPrevious>
+
+            <div className="flex flex-1 justify-center gap-2">
+              {steps.map((step, idx) => (
+                <StepperHeaderTitle key={idx} idx={idx}>
+                  <p>{step}</p>
+                </StepperHeaderTitle>
+              ))}
             </div>
 
-            {/* Stepper */}
-            <Stepper
-              currentStep={currentStep}
-              onStepChange={setCurrentStep}
-              steps={[...STEPS]}
-              enableStepping={false}
-              className="flex-1 flex flex-col overflow-hidden"
-            >
-              <StepperHeader className="border-b px-6">
-                {STEPS.map((step, idx) => (
-                  <StepperHeaderTitle key={step} idx={idx}>
-                    <span className="text-sm whitespace-nowrap">
-                      {t(`steps.${step}`)}
-                    </span>
-                  </StepperHeaderTitle>
-                ))}
-              </StepperHeader>
+            <SheetClose type="button">
+              <X className="h-4 w-4" />
+              <span className="sr-only">Close</span>
+            </SheetClose>
+          </StepperHeader>
 
-              <StepperSteps className="flex-1 overflow-auto">
-                <StepperStep idx={0} className="p-6">
-                  <div className="mx-auto max-w-200">
-                    <SurveyDetailsStep />
-                  </div>
+          <StepperSteps className="flex-1 mx-auto my-8 w-75 md:w-150 overflow-auto">
+            <FormProvider {...form}>
+              <div className="h-full">
+                <StepperStep
+                  idx={0}
+                  className="p-4 rounded-xl bg-white h-full overflow-auto"
+                >
+                  <SurveyDetailsStep onNext={() => setCurrentStep(1)} />
                 </StepperStep>
 
-                <StepperStep idx={1} className="p-6">
-                  <div className="mx-auto max-w-200">
-                    <SoundsStep />
-                  </div>
+                <StepperStep
+                  idx={1}
+                  className="p-4 rounded-xl bg-white h-full overflow-auto"
+                >
+                  <SoundsStep onNext={() => setCurrentStep(2)} />
                 </StepperStep>
 
-                <StepperStep idx={2} className="p-6">
-                  <div className="mx-auto max-w-200">
-                    <QuestionsStep />
-                  </div>
+                <StepperStep
+                  idx={2}
+                  className="p-4 rounded-xl bg-white h-full overflow-auto"
+                >
+                  <QuestionsStep onNext={() => setCurrentStep(3)} />
                 </StepperStep>
 
-                <StepperStep idx={3} className="p-6">
-                  <div className="mx-auto max-w-200">
-                    <TimeAndCallersStep />
-                  </div>
+                <StepperStep
+                  idx={3}
+                  className="p-4 rounded-xl bg-white h-full overflow-auto"
+                >
+                  <TimeAndCallersStep onNext={createSurvey} />
                 </StepperStep>
 
-                <StepperStep idx={4} className="p-6">
-                  <div className="mx-auto max-w-200">
-                    <CustomersListStep />
-                  </div>
+                <StepperStep
+                  idx={4}
+                  className="p-4 rounded-xl bg-white h-full overflow-auto"
+                >
+                  <CustomersListStep onSave={handleSave} />
                 </StepperStep>
-              </StepperSteps>
-            </Stepper>
-
-            {/* Footer */}
-            <div className="flex items-center justify-between px-6 py-4 border-t">
-              {!isCustomersStep ? (
-                <>
-                  <Button
-                    variant="unstyled"
-                    onClick={handlePrevious}
-                    disabled={currentStep === 0}
-                  >
-                    <ArrowLeft sx={{ fontSize: 16 }} className="me-1" />
-                    {t("actions.previous")}
-                  </Button>
-
-                  <Button onClick={handleNext} disabled={isCreating}>
-                    {currentStep === 3
-                      ? isCreating
-                        ? t("actions.creating")
-                        : t("actions.submit")
-                      : t("actions.next")}
-                    {currentStep < 3 && (
-                      <ArrowRight sx={{ fontSize: 16 }} className="ms-1" />
-                    )}
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <div />
-                  <div className="flex items-center gap-3">
-                    <Button
-                      variant="outline"
-                      onClick={() => handleSave(true)}
-                      disabled={isCreating}
-                    >
-                      {t("actions.saveAsDraft")}
-                    </Button>
-                    <Button
-                      onClick={() => handleSave(false)}
-                      disabled={isCreating}
-                    >
-                      {t("actions.save")}
-                    </Button>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        </FormProvider>
+              </div>
+            </FormProvider>
+          </StepperSteps>
+        </Stepper>
       </SheetContent>
     </Sheet>
   );

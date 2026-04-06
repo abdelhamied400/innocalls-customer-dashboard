@@ -5273,23 +5273,25 @@
         "submit": "Create Survey",
         "save": "Save",
         "saveAsDraft": "Save as Draft",
+        "saveAndRun": "Save & Run",
         "creating": "Creating..."
       },
       "form": {
         "name": { "label": "Survey Name", "placeholder": "Enter survey name", "required": "Survey name is required" },
-        "trialsCount": { "label": "Trials Count", "required": "Trials count is required", "min": "Minimum 1 trial", "max": "Maximum 10 trials" },
-        "concurrencyCalls": { "label": "Concurrency Calls", "required": "Concurrency calls is required", "min": "Minimum 1", "max": "Maximum 10" },
-        "delayMinutesBetweenTrials": { "label": "Delay Between Trials (min)", "required": "Required", "min": "Minimum 5 minutes" },
-        "dtmfTimeout": { "label": "DTMF Timeout (sec)", "required": "Required", "min": "Minimum 5 seconds" },
-        "startSound": { "label": "Start Sound", "required": "Start sound is required" },
-        "endSound": { "label": "End Sound", "required": "End sound is required" },
-        "wrongEntrySound": { "label": "Wrong Entry Sound", "required": "Wrong entry sound is required" },
-        "maxQuestionAttempts": { "label": "Max Question Attempts", "required": "Required", "min": "Minimum 1 attempt" },
+        "trialsCount": { "label": "Trials Count", "hint": "The number of trials to call each customer.", "required": "Trials count is required", "min": "Minimum 1 trial", "max": "Maximum 10 trials" },
+        "concurrencyCalls": { "label": "Concurrency Calls", "hint": "The number of concurrent calls.", "required": "Concurrency calls is required", "min": "Minimum 1", "max": "Maximum 10" },
+        "delayMinutesBetweenTrials": { "label": "Delay Between Trials (min)", "hint": "The time (minutes) between ending of call and starting of the next call for the customer.", "required": "Required", "min": "Minimum 5 minutes" },
+        "dtmfTimeout": { "label": "DTMF Timeout (sec)", "hint": "The time (seconds) the system will wait for the customer to input a key.", "required": "Required", "min": "Minimum 5 seconds" },
+        "startSound": { "label": "Start Sound", "hint": "The sound that will be played when the call starts", "required": "Start sound is required" },
+        "endSound": { "label": "End Sound", "hint": "The sound that will be played when the call ends", "required": "End sound is required" },
+        "wrongEntrySound": { "label": "Wrong Entry Sound", "hint": "The sound that will be played when the customer enters a wrong answer", "required": "Wrong entry sound is required" },
+        "maxQuestionAttempts": { "label": "Max Question Attempts", "hint": "The number of attempts the customer can try to answer a question.", "required": "Required", "min": "Minimum 1 attempt" },
         "questions": {
           "title": "Questions",
           "add": "Add Question",
           "answerType": { "label": "Answer Type", "placeholder": "Select type", "required": "Answer type is required" },
-          "sound": { "label": "Question Sound", "required": "Question sound is required" },
+          "answerTypes": { "oneFive": "1 - 5", "oneTen": "1 - 10", "yesNo": "Yes / No" },
+          "sound": { "label": "Question Sound", "hint": "The sound that will be played when the question is asked", "required": "Question sound is required" },
           "min": "At least one question is required"
         },
         "timezone": { "label": "Timezone", "placeholder": "Select timezone" },
@@ -5300,8 +5302,19 @@
           "to": { "label": "To", "placeholder": "End time", "required": "End time is required" },
           "min": "At least one time slot is required"
         },
-        "callers": { "title": "Caller IDs" },
-        "customersFile": { "label": "Customers File", "required": "Customers file is required" }
+        "callers": { "title": "Caller IDs", "hint": "The first Caller ID will be the default one." },
+        "customersFile": {
+          "label": "Customers File",
+          "required": "Customers file is required",
+          "downloadTemplate": "Download a template",
+          "savedDescription": "The survey has been saved as a draft.",
+          "savedAndRunDescription": "The survey has been saved and will start running.",
+          "rules": {
+            "countryCode": "Ensure all phone numbers include the country code.",
+            "noPrefix": "Do not use \"+\" or \"00\" before the code.",
+            "numberFormat": "Set the field type to \"number\" without decimal points."
+          }
+        }
       },
       "toasts": {
         "created": "Survey Created",

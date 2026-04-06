@@ -102,6 +102,13 @@ export default {
     return res.data;
   },
 
+  downloadCustomersTemplate: async () => {
+    const res = await api.get("/surveys/template", {
+      responseType: "blob",
+    });
+    return res.data;
+  },
+
   uploadSurveySound: async (
     file: File,
   ): Promise<{ path: string; originalName: string }> => {

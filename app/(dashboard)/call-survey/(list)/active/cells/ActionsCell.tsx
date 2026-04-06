@@ -69,7 +69,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {survey.status === "created" && (
-                <Link href={`/call-survey/${survey.id}/attach-customers`}>
+                <Link href={`/call-survey/${survey.id}/edit`}>
                   <DropdownMenuItem>
                     <PersonAdd fontSize="small" />
                     {t("actions.addCustomers")}

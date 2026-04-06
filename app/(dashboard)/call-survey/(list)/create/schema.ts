@@ -63,18 +63,28 @@ export const createSurveySchema = (t: (key: string) => string) =>
     customersFile: z.any().nullable().optional(),
   });
 
-export type CreateSurveyForm = z.infer<ReturnType<typeof createSurveySchema>>;
+export type CreateSurveyForm = {
+  name: string;
+  trialsCount: number;
+  concurrencyCalls: number;
+  delayMinutesBetweenTrials: number;
+  dtmfTimeout: number;
+  startSound: File | null;
+  endSound: File | null;
+  wrongEntrySound: File | null;
+  maxQuestionAttempts: number;
+  questions: { type: string; sound: File | null }[];
+  timezone: string;
+  timeSlots: { fromTime: string; toTime: string }[];
+  callers: { destination: string; callerNumber: string }[];
+  customersFile: File | null;
+};
 
 // Fields per step for validation
 export const STEP_FIELDS: (keyof CreateSurveyForm)[][] = [
-  // Step 0 - Survey Details
   ["name", "trialsCount", "concurrencyCalls", "delayMinutesBetweenTrials", "dtmfTimeout"],
-  // Step 1 - Sounds
   ["startSound", "endSound", "wrongEntrySound"],
-  // Step 2 - Questions
   ["maxQuestionAttempts", "questions"],
-  // Step 3 - Time & Callers
   ["timezone", "timeSlots", "callers"],
-  // Step 4 - Customers List
   ["customersFile"],
 ];
