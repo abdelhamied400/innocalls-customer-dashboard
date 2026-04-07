@@ -1,11 +1,12 @@
 "use client";
 import { Search } from "@mui/icons-material";
 import Image from "next/image";
-import { useParams } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import callSurveyService from "@/services/call-survey.service";
 import { useTranslations } from "@/providers/TranslationProvider";
+import { TERMINAL_STATUSES } from "@/constants/call-survey";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
@@ -100,11 +101,10 @@ const CallsTable = ({
   );
 };
 
-const TERMINAL_STATUSES = ["finished", "cancelled", "completed"];
-
 const SurveyLiveMetrics = () => {
   const t = useTranslations("callSurvey.metrics");
   const { id } = useParams<{ id: string }>();
+  const router = useRouter();
   const [search, setSearch] = useState("");
 
   const { data: survey } = useLocalizedQuery({
@@ -128,6 +128,12 @@ const SurveyLiveMetrics = () => {
     gcTime: 0,
     refetchInterval: isActive ? 10000 : false,
   });
+
+  useEffect(() => {
+    if (TERMINAL_STATUSES.includes(survey?.status || "")) {
+      router.replace(`/call-survey/${id}/details/analytics`);
+    }
+  }, [id, router, survey?.status]);
 
   const total = metrics
     ? metrics.callsStats.initiated + metrics.callsStats.inProgress
@@ -170,7 +176,7 @@ const SurveyLiveMetrics = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 bg-white rounded-lg p-4">
       {/* Pie chart + Stat cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 items-start gap-2">
         <div className="border rounded-lg p-4">

@@ -25,6 +25,19 @@ type FetchUncompletedResponse = {
   totalPages: number;
 };
 
+type CorruptedRow = {
+  id: string;
+  row: { phone: string; name: string };
+  status: string;
+  reasons: string[];
+};
+
+type FetchCorruptedRowsResponse = {
+  corruptedRows: CorruptedRow[];
+  totalItems: number;
+  totalPages: number;
+};
+
 type FetchSurveysResponse = {
   surveys: CallSurvey[];
   totalItems: number;
@@ -99,6 +112,39 @@ export default {
 
   exportUncompletedRequests: async (id: string) => {
     const res = await api.get(`/surveys/${id}/uncompleted-requests/export`);
+    return res.data;
+  },
+
+  fetchCorruptedRows: async (
+    id: string,
+    page: number = 1,
+    limit: number = 10,
+  ): Promise<FetchCorruptedRowsResponse> => {
+    const res = await api.get(
+      `/surveys/${id}/corrupted-rows?page=${page}&limit=${limit}`,
+    );
+    return res.data;
+  },
+
+  fixCorruptedRow: async (
+    id: string,
+    rowId: string,
+    data: { name: string; phone: string },
+  ) => {
+    const res = await api.put(
+      `/surveys/${id}/corrupted-rows/${rowId}/fix`,
+      data,
+    );
+    return res.data;
+  },
+
+  ignoreAllCorrupted: async (id: string) => {
+    const res = await api.patch(`/surveys/${id}/ignore-corrupted`);
+    return res.data;
+  },
+
+  cancelSurvey: async (id: string) => {
+    const res = await api.patch(`/surveys/${id}/cancel`);
     return res.data;
   },
 

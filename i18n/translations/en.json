@@ -5174,6 +5174,11 @@
         "error": "Error",
         "errorDescription": "An error occurred. Please try again."
       },
+      "export": "Export to Email",
+      "exportSuccess": "Export Sent",
+      "exportSuccessDescription": "The report has been sent to your email.",
+      "exportError": "Export Failed",
+      "exportErrorDescription": "Failed to export the report. Please try again.",
       "statuses": {
         "created": "Created",
         "schedule-customers": "Scheduling Customers",
@@ -5466,6 +5471,43 @@
         "userResponse": "User Response"
       },
       "toasts": {
+        "error": "Error",
+        "errorDescription": "An error occurred. Please try again."
+      }
+    },
+    "corruptedRows": {
+      "title": "Corrupted Rows",
+      "alertPrefix": "Oops! We have",
+      "alertCount": "{count} records",
+      "alertSuffix": "that need to be fixed. Please review and correct the highlighted errors to start your survey.",
+      "actions": {
+        "cancel": "Cancel Survey",
+        "ignoreAll": "Ignore All Corrupted",
+        "dismiss": "Cancel"
+      },
+      "confirmations": {
+        "ignoreAll": "Are you sure you want to ignore all corrupted records? The survey will proceed with only the valid records.",
+        "cancel": "Are you sure you want to cancel this survey? This action cannot be undone."
+      },
+      "form": {
+        "name": { "label": "Name", "placeholder": "Enter name" },
+        "phone": { "label": "Phone", "placeholder": "Enter phone number" },
+        "fix": "Fix & Save"
+      },
+      "validation": {
+        "nameMin": "Name must be at least {min} characters",
+        "nameMax": "Name must be at most {max} characters",
+        "phoneRequired": "Phone number is required",
+        "phoneInvalid": "Phone number must contain only digits",
+        "phoneUnsupportedFormat": "This phone number format is not supported"
+      },
+      "toasts": {
+        "fixed": "Row Fixed",
+        "fixedDescription": "The corrupted row has been fixed successfully.",
+        "ignored": "Corrupted Rows Ignored",
+        "ignoredDescription": "All corrupted rows have been ignored.",
+        "cancelled": "Survey Cancelled",
+        "cancelledDescription": "The survey has been cancelled.",
         "error": "Error",
         "errorDescription": "An error occurred. Please try again."
       }

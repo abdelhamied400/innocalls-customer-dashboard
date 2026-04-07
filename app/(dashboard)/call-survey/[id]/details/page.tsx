@@ -40,7 +40,7 @@ const CallSurveyDetails = () => {
   }
 
   return (
-    <div className="call-survey-details flex flex-col gap-6">
+    <div className="call-survey-details flex flex-col gap-6 bg-white rounded-lg p-4">
       {/* Survey Details */}
       <div className="flex flex-col gap-2">
         <h3>{t("sections.basic")}</h3>

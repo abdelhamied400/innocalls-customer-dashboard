@@ -12,7 +12,7 @@ import Dropzone, {
 import { SOUND_SIZE_LIMIT } from "@/constants/file";
 import { Add, DeleteOutline } from "@mui/icons-material";
 import { FormField } from "@/components/ui/form";
-import type { CreateSurveyForm } from "../schema";
+import type { CreateSurveyForm } from "@/validation/CallSurveyCreate";
 
 type QuestionsStepProps = {
   onNext: () => void;

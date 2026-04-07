@@ -25,7 +25,7 @@ import Stepper, {
 import { X } from "lucide-react";
 import callSurveyService from "@/services/call-survey.service";
 import CustomersListStep from "@/app/(dashboard)/call-survey/(list)/create/steps/CustomersListStep";
-import type { CreateSurveyForm } from "@/app/(dashboard)/call-survey/(list)/create/schema";
+import type { CreateSurveyForm } from "@/validation/CallSurveyCreate";
 
 const CUSTOMERS_STEP = 4;
 

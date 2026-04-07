@@ -14,7 +14,7 @@ import Dropzone, {
   DropzoneFileList,
   DropzoneTrigger,
 } from "@/components/ui/dropzone";
-import type { CreateSurveyForm } from "../schema";
+import type { CreateSurveyForm } from "@/validation/CallSurveyCreate";
 import { Download, Save } from "@mui/icons-material";
 import callSurveyService from "@/services/call-survey.service";
 

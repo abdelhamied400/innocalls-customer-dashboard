@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Field from "@/components/ui/field";
 import SpinButton from "@/components/ui/spin-button";
-import type { CreateSurveyForm } from "../schema";
+import type { CreateSurveyForm } from "@/validation/CallSurveyCreate";
 
 type SurveyDetailsStepProps = {
   onNext: () => void;

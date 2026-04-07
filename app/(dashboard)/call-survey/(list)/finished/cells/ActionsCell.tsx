@@ -32,29 +32,33 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
           <TooltipContent>{t("actions.view")}</TooltipContent>
         </Tooltip>
 
-        {/* CDRs */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="ghost-primary" size="icon" asChild>
-              <Link href={`/call-survey/${survey.id}/details/cdrs`}>
-                <List fontSize="small" />
-              </Link>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>{t("actions.cdrs")}</TooltipContent>
-        </Tooltip>
+        {/* CDRs — not for cancelled */}
+        {survey.status !== "cancelled" && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost-primary" size="icon" asChild>
+                <Link href={`/call-survey/${survey.id}/details/cdrs`}>
+                  <List fontSize="small" />
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>{t("actions.cdrs")}</TooltipContent>
+          </Tooltip>
+        )}
 
-        {/* Analytics */}
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button variant="ghost-primary" size="icon" asChild>
-              <Link href={`/call-survey/${survey.id}/details/analytics`}>
-                <BarChart fontSize="small" />
-              </Link>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>{t("actions.analytics")}</TooltipContent>
-        </Tooltip>
+        {/* Analytics — not for cancelled */}
+        {survey.status !== "cancelled" && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button variant="ghost-primary" size="icon" asChild>
+                <Link href={`/call-survey/${survey.id}/details/analytics`}>
+                  <BarChart fontSize="small" />
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>{t("actions.analytics")}</TooltipContent>
+          </Tooltip>
+        )}
       </div>
     </TooltipProvider>
   );

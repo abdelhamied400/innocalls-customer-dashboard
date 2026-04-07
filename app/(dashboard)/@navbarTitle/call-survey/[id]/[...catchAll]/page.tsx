@@ -1,6 +1,7 @@
 "use client";
 import Breadcrumbs, { BreadcrumbItem } from "@/components/Breadcrumbs";
 import { Skeleton } from "@/components/ui/skeleton";
+import { TERMINAL_STATUSES } from "@/constants/call-survey";
 import { useLocalizedQuery } from "@/hooks/use-localized-query";
 import { useTranslations } from "@/providers/TranslationProvider";
 import callSurveyService from "@/services/call-survey.service";
@@ -39,11 +40,22 @@ const CallSurveyNavbarTitle = ({ params }: CallSurveyNavbarTitleProps) => {
     refetchOnMount: "always",
   });
 
+  const isTerminal = TERMINAL_STATUSES.includes(survey?.status || "");
+
   const breadcrumbItems: BreadcrumbItem[] = [
-    {
-      label: t("tabs.active"),
-      href: "/call-survey/active",
-    },
+    ...(isTerminal
+      ? [
+          {
+            label: t("tabs.finished"),
+            href: "/call-survey/finished",
+          },
+        ]
+      : [
+          {
+            label: t("tabs.active"),
+            href: "/call-survey/active",
+          },
+        ]),
     {
       label: survey?.name || "...",
       disabled: true,
@@ -67,15 +79,28 @@ const CallSurveyNavbarTitle = ({ params }: CallSurveyNavbarTitleProps) => {
 
   return (
     <div className="flex items-center gap-3">
-      <Link
-        href="/call-survey/active"
-        className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 transition-colors"
-      >
-        <ArrowBackIos
-          className="text-gray-600 rtl:rotate-180"
-          sx={{ fontSize: 12 }}
-        />
-      </Link>
+      {isTerminal && (
+        <Link
+          href="/call-survey/finished"
+          className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 transition-colors"
+        >
+          <ArrowBackIos
+            className="text-gray-600 rtl:rotate-180"
+            sx={{ fontSize: 12 }}
+          />
+        </Link>
+      )}
+      {!isTerminal && (
+        <Link
+          href="/call-survey/active"
+          className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-gray-100 transition-colors"
+        >
+          <ArrowBackIos
+            className="text-gray-600 rtl:rotate-180"
+            sx={{ fontSize: 12 }}
+          />
+        </Link>
+      )}
       <div className="flex flex-col">
         <div className="flex items-center gap-2">
           <h1 className="text-lg font-bold leading-tight">{survey?.name}</h1>

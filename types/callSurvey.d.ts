@@ -66,3 +66,26 @@ export type CallSurveyCdr = {
   phone: string;
   name: string;
 };
+
+export type CallSurveyUserResponse = {
+  questionIndex: number;
+  totalAnswers: number;
+  questionType: string;
+  responses: { userResponse: string | number; count: number }[];
+};
+
+export type CallSurveyQuestionNPS = {
+  questionType: string;
+  totalResponses: number;
+  npsScore: number;
+  promoterPercentage: number;
+  detractorPercentage: number;
+  promoters: number;
+  detractors: number;
+  passives: number;
+};
+
+export type CallSurveyAnalysis = {
+  userResponses: CallSurveyUserResponse[];
+  questionsNPS: CallSurveyQuestionNPS[];
+};

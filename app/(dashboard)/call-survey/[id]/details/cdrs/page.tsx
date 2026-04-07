@@ -4,8 +4,10 @@ import SurveyCdrsTable from "./table";
 
 const SurveyCdrs = () => {
   return (
-    <div className="border rounded-xl flex-1 flex flex-col overflow-hidden">
-      <SurveyCdrsTable />
+    <div className="bg-white rounded-lg p-4">
+      <div className="border rounded-xl flex-1 flex flex-col overflow-hidden">
+        <SurveyCdrsTable />
+      </div>
     </div>
   );
 };

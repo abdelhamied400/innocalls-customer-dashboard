@@ -26,13 +26,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { Badge } from "@/components/ui/badge";
-
-const questionTypes: Record<string, string> = {
-  one_five: "1 - 5",
-  one_ten: "1 - 10",
-  zero_nine: "1 - 10",
-  yes_no: "Yes / No",
-};
+import { QUESTION_TYPES } from "@/constants/call-survey";
 
 type ActionsCellProps = Cell<CallSurveyCdr>;
 const ActionsCell = ({ row }: ActionsCellProps) => {
@@ -112,7 +106,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
                           {t("answersModal.questionType")}
                         </p>
                         <p className="font-bold">
-                          {questionTypes[answer.questionType] ||
+                          {QUESTION_TYPES[answer.questionType] ||
                             answer.questionType}
                         </p>
                       </div>

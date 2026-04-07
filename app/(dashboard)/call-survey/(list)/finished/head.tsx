@@ -7,7 +7,7 @@ import { FilterBox } from "@/components/FilterBox";
 import Field from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import DatePicker from "@/components/ui/date-picker";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import {
   Collapsible,
@@ -48,7 +48,9 @@ const CallSurveyFinishedHead = ({
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const [fromDate, setFromDate] = useState<Date>();
   const [toDate, setToDate] = useState<Date>();
-  const [status, setStatus] = useState<string>(filters.status || "all");
+  const [statuses, setStatuses] = useState<string[]>(
+    filters.status ? filters.status.split(",") : [],
+  );
 
   useEffect(() => {
     if (debouncedSearchTerm === (filters.name || "")) return;
@@ -77,9 +79,9 @@ const CallSurveyFinishedHead = ({
   };
 
   const statusOptions = [
-    { value: "active", label: t("active.statuses.active") },
-    { value: "paused", label: t("active.statuses.paused") },
-    { value: "draft", label: t("active.statuses.draft") },
+    { value: "finished", label: t("active.statuses.finished") },
+    { value: "completed", label: t("active.statuses.completed") },
+    { value: "cancelled", label: t("active.statuses.cancelled") },
   ];
 
   return (
@@ -121,7 +123,7 @@ const CallSurveyFinishedHead = ({
             onClear={() => {
               setFromDate(undefined);
               setToDate(undefined);
-              setStatus("all");
+              setStatuses([]);
               setSearchTerm("");
               setFilters({});
             }}
@@ -175,37 +177,38 @@ const CallSurveyFinishedHead = ({
               triggerLabel={t("finished.filters.status.placeholder")}
               label={t("finished.filters.status.label")}
               onReset={() => {
-                setStatus("all");
-                setFilters((prev) => ({ ...prev, status: undefined }));
+                setStatuses([]);
+                setFilters((prev) => ({ ...prev, statuses: undefined }));
               }}
               onApply={() => {
                 setFilters((prev) => ({
                   ...prev,
-                  status: status === "all" ? undefined : status,
+                  statuses: statuses.length > 0 ? statuses : undefined,
                 }));
                 return true;
               }}
-              numberOfFilters={status !== "all" ? 1 : 0}
+              numberOfFilters={statuses.length}
             >
-              <RadioGroup value={status} onValueChange={setStatus}>
-                <div className="flex items-center gap-2">
-                  <RadioGroupItem value="all" id="finished-survey-status-all" />
-                  <Label htmlFor="finished-survey-status-all">
-                    {t("finished.filters.status.all")}
-                  </Label>
-                </div>
+              <div className="flex flex-col gap-2">
                 {statusOptions.map((option) => (
                   <div className="flex items-center gap-2" key={option.value}>
-                    <RadioGroupItem
-                      value={option.value}
+                    <Checkbox
                       id={`finished-survey-status-${option.value}`}
+                      checked={statuses.includes(option.value)}
+                      onCheckedChange={(checked) => {
+                        setStatuses((prev) =>
+                          checked
+                            ? [...prev, option.value]
+                            : prev.filter((s) => s !== option.value),
+                        );
+                      }}
                     />
                     <Label htmlFor={`finished-survey-status-${option.value}`}>
                       {option.label}
                     </Label>
                   </div>
                 ))}
-              </RadioGroup>
+              </div>
             </FilterBox>
           </FilterBar>
         </CollapsibleContent>

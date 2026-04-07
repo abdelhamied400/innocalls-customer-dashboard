@@ -25,7 +25,7 @@ import { isAxiosError } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslations } from "@/providers/TranslationProvider";
 import callSurveyService from "@/services/call-survey.service";
-import { createSurveySchema, type CreateSurveyForm } from "./schema";
+import { CallSurveyCreateSchema, type CreateSurveyForm } from "@/validation/CallSurveyCreate";
 import SurveyDetailsStep from "./steps/SurveyDetailsStep";
 import SoundsStep from "./steps/SoundsStep";
 import QuestionsStep from "./steps/QuestionsStep";
@@ -50,7 +50,7 @@ const CreateSurveySheet = () => {
 
   const form = useForm<CreateSurveyForm>({
     mode: "onChange",
-    resolver: zodResolver(createSurveySchema(tf)),
+    resolver: zodResolver(CallSurveyCreateSchema(tf)),
     defaultValues: {
       name: "",
       trialsCount: 1,

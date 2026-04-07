@@ -10,7 +10,7 @@ import TimePicker from "@/components/ui/time-picker";
 import CallerIdSelector from "@/components/CallerIdSelector";
 import { Add, DeleteOutline, Info, InfoOutlined } from "@mui/icons-material";
 import { timezones } from "@/constants/timezones";
-import type { CreateSurveyForm } from "../schema";
+import type { CreateSurveyForm } from "@/validation/CallSurveyCreate";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { InfoIcon } from "lucide-react";
 

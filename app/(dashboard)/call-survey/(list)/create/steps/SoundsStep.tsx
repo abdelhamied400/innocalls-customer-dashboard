@@ -8,7 +8,7 @@ import Dropzone, {
   DropzoneTrigger,
 } from "@/components/ui/dropzone";
 import { SOUND_SIZE_LIMIT } from "@/constants/file";
-import type { CreateSurveyForm } from "../schema";
+import type { CreateSurveyForm } from "@/validation/CallSurveyCreate";
 
 type SoundsStepProps = {
   onNext: () => void;

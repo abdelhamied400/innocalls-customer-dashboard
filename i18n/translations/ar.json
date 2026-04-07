@@ -5169,6 +5169,11 @@
         "error": "خطأ",
         "errorDescription": "حدث خطأ. يرجى المحاولة مرة أخرى."
       },
+      "export": "تصدير إلى البريد",
+      "exportSuccess": "تم إرسال التصدير",
+      "exportSuccessDescription": "تم إرسال التقرير إلى بريدك الإلكتروني.",
+      "exportError": "فشل التصدير",
+      "exportErrorDescription": "فشل تصدير التقرير. يرجى المحاولة مرة أخرى.",
       "statuses": {
         "created": "تم الإنشاء",
         "schedule-customers": "جدولة العملاء",
@@ -5461,6 +5466,43 @@
         "userResponse": "رد المستخدم"
       },
       "toasts": {
+        "error": "خطأ",
+        "errorDescription": "حدث خطأ. يرجى المحاولة مرة أخرى."
+      }
+    },
+    "corruptedRows": {
+      "title": "الصفوف التالفة",
+      "alertPrefix": "عذرًا! لدينا",
+      "alertCount": "{count} سجل",
+      "alertSuffix": "يحتاج إلى إصلاح. يرجى مراجعة وتصحيح الأخطاء المميزة لبدء الاستبيان.",
+      "actions": {
+        "cancel": "إلغاء الاستبيان",
+        "ignoreAll": "تجاهل جميع التالفة",
+        "dismiss": "إلغاء"
+      },
+      "confirmations": {
+        "ignoreAll": "هل أنت متأكد أنك تريد تجاهل جميع السجلات التالفة؟ سيستمر الاستبيان بالسجلات الصالحة فقط.",
+        "cancel": "هل أنت متأكد أنك تريد إلغاء هذا الاستبيان؟ لا يمكن التراجع عن هذا الإجراء."
+      },
+      "form": {
+        "name": { "label": "الاسم", "placeholder": "أدخل الاسم" },
+        "phone": { "label": "الهاتف", "placeholder": "أدخل رقم الهاتف" },
+        "fix": "إصلاح وحفظ"
+      },
+      "validation": {
+        "nameMin": "يجب أن يكون الاسم على الأقل {min} حرفًا",
+        "nameMax": "يجب أن يكون الاسم على الأكثر {max} حرفًا",
+        "phoneRequired": "رقم الهاتف مطلوب",
+        "phoneInvalid": "رقم الهاتف يجب أن يحتوي على أرقام فقط",
+        "phoneUnsupportedFormat": "صيغة رقم الهاتف غير مدعومة"
+      },
+      "toasts": {
+        "fixed": "تم إصلاح الصف",
+        "fixedDescription": "تم إصلاح الصف التالف بنجاح.",
+        "ignored": "تم تجاهل الصفوف التالفة",
+        "ignoredDescription": "تم تجاهل جميع الصفوف التالفة.",
+        "cancelled": "تم إلغاء الاستبيان",
+        "cancelledDescription": "تم إلغاء الاستبيان.",
         "error": "خطأ",
         "errorDescription": "حدث خطأ. يرجى المحاولة مرة أخرى."
       }

@@ -6,6 +6,7 @@ import {
   Stop,
   Autorenew,
   AssignmentLate,
+  Download,
 } from "@mui/icons-material";
 import Link from "next/link";
 import {
@@ -31,20 +32,39 @@ import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import callSurveyService from "@/services/call-survey.service";
+import { TERMINAL_STATUSES } from "@/constants/call-survey";
+import { useParams } from "next/navigation";
+import Spinner from "@/components/ui/spinner";
 
 type SurveyActionsProps = {
   surveyId: string;
   status: string;
   isDraft: boolean;
+  showUncompleted?: boolean;
 };
 
-const SurveyActions = ({ surveyId, status, isDraft }: SurveyActionsProps) => {
+const SurveyActions = ({
+  surveyId,
+  status,
+  isDraft,
+  showUncompleted = false,
+}: SurveyActionsProps) => {
+  const isTerminal = TERMINAL_STATUSES.includes(status);
+  const hasActions =
+    (isDraft && ["customers-inserted", "corrupted-ignored"].includes(status)) ||
+    ["in-progress", "active", "paused"].includes(status) ||
+    (showUncompleted && ["paused", "active", "in-progress"].includes(status)) ||
+    isTerminal;
+
   const t = useTranslations("callSurvey.active");
   const [isStarting, setIsStarting] = useState(false);
   const [isPausing, setIsPausing] = useState(false);
   const [isResuming, setIsResuming] = useState(false);
   const [isFinishing, setIsFinishing] = useState(false);
   const queryClient = useQueryClient();
+  const { id } = useParams<{ id: string }>();
+
+  const [isExporting, setIsExporting] = useState(false);
 
   const refetch = () => {
     queryClient.invalidateQueries({ queryKey: ["call-survey-active-list"] });
@@ -147,6 +167,32 @@ const SurveyActions = ({ surveyId, status, isDraft }: SurveyActionsProps) => {
       setIsFinishing(false);
     }
   };
+
+  const handleExport = async () => {
+    if (!id) return;
+    try {
+      setIsExporting(true);
+      await callSurveyService.exportStats(id);
+      toast.success(t("exportSuccess"), {
+        description: t("exportSuccessDescription"),
+      });
+    } catch (error) {
+      if (isAxiosError(error)) {
+        toast.error(t("exportError"), {
+          description:
+            error.response?.data?.message || t("exportErrorDescription"),
+        });
+        return;
+      }
+      toast.error(t("exportError"), {
+        description: t("exportErrorDescription"),
+      });
+    } finally {
+      setIsExporting(false);
+    }
+  };
+
+  if (!hasActions) return null;
 
   return (
     <TooltipProvider>
@@ -313,17 +359,35 @@ const SurveyActions = ({ surveyId, status, isDraft }: SurveyActionsProps) => {
         )}
 
         {/* Uncompleted — paused, active, or in-progress */}
-        {["paused", "active", "in-progress"].includes(status) && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="ghost-warning" size="icon" asChild>
-                <Link href={`/call-survey/${surveyId}/uncompleted`}>
-                  <AssignmentLate fontSize="small" />
-                </Link>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>{t("actions.uncompleted")}</TooltipContent>
-          </Tooltip>
+        {showUncompleted &&
+          ["paused", "active", "in-progress"].includes(status) && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost-warning" size="icon" asChild>
+                  <Link href={`/call-survey/${surveyId}/uncompleted`}>
+                    <AssignmentLate fontSize="small" />
+                  </Link>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>{t("actions.uncompleted")}</TooltipContent>
+            </Tooltip>
+          )}
+
+        {isTerminal && (
+          <div className="flex justify-end">
+            <Button
+              variant="ghost-info"
+              size="icon"
+              onClick={handleExport}
+              disabled={isExporting}
+            >
+              {isExporting ? (
+                <Spinner />
+              ) : (
+                <Download sx={{ fontSize: 16 }} className="me-1" />
+              )}
+            </Button>
+          </div>
         )}
       </div>
     </TooltipProvider>

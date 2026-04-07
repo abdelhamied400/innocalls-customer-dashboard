@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const createSurveySchema = (t: (key: string) => string) =>
+export const CallSurveyCreateSchema = (t: (key: string) => string) =>
   z.object({
     // Step 0 - Survey Details
     name: z.string().min(1, t("name.required")),
