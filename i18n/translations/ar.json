@@ -5104,5 +5104,47 @@
         "deleteErrorDescription": "حدث خطأ أثناء حذف المكالمة. يرجى المحاولة مرة أخرى."
       }
     }
+  },
+  "postCallSurvey": {
+    "title": "استطلاعات ما بعد المكالمة",
+    "columns": {
+      "name": "الاسم",
+      "createdAt": "تاريخ الإنشاء",
+      "actions": "الإجراءات"
+    },
+    "actions": {
+      "create": "إنشاء استطلاع",
+      "exportReport": "تصدير التقرير",
+      "viewDetails": "عرض التفاصيل",
+      "cdrs": "سجلات المكالمات",
+      "callAnalytics": "تحليلات المكالمات"
+    },
+    "messages": {
+      "exportSuccess": "تم تصدير التقرير إلى بريدك الإلكتروني بنجاح",
+      "exportFailed": "فشل تصدير التقرير",
+      "unexpectedError": "حدث خطأ غير متوقع"
+    },
+    "details": {
+      "notFound": "لم يتم العثور على الاستطلاع",
+      "sections": {
+        "basic": "المعلومات الأساسية",
+        "sounds": "ملفات الصوت",
+        "questions": "الأسئلة"
+      },
+      "fields": {
+        "name": "الاسم",
+        "dtmfTimeout": "مهلة DTMF",
+        "secondsValue": "{value} ثانية",
+        "maxQuestionAttempts": "الحد الأقصى لمحاولات السؤال",
+        "allowDTMFInputDuringPlayback": "السماح بإدخال DTMF أثناء التشغيل",
+        "yes": "نعم",
+        "no": "لا",
+        "startSound": "صوت البداية",
+        "endSound": "صوت النهاية",
+        "wrongAnswerSound": "صوت الإجابة الخاطئة",
+        "questionSound": "ملف الصوت",
+        "answerType": "نوع الإجابة"
+      }
+    }
   }
 }

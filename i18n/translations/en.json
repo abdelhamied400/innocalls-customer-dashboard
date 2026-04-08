@@ -5109,5 +5109,47 @@
         }
       }
     }
+  },
+  "postCallSurvey": {
+    "title": "Post Call Surveys",
+    "columns": {
+      "name": "Name",
+      "createdAt": "Created At",
+      "actions": "Actions"
+    },
+    "actions": {
+      "create": "Create Survey",
+      "exportReport": "Export Report",
+      "viewDetails": "View Details",
+      "cdrs": "CDRs",
+      "callAnalytics": "Call Analytics"
+    },
+    "messages": {
+      "exportSuccess": "Report has been exported to your email successfully",
+      "exportFailed": "Failed to export report",
+      "unexpectedError": "An unexpected error occurred"
+    },
+    "details": {
+      "notFound": "Survey not found",
+      "sections": {
+        "basic": "Basic Information",
+        "sounds": "Sound Files",
+        "questions": "Questions"
+      },
+      "fields": {
+        "name": "Name",
+        "dtmfTimeout": "DTMF Timeout",
+        "secondsValue": "{value}s",
+        "maxQuestionAttempts": "Max Question Attempts",
+        "allowDTMFInputDuringPlayback": "Allow DTMF Input During Playback",
+        "yes": "Yes",
+        "no": "No",
+        "startSound": "Start Sound",
+        "endSound": "End Sound",
+        "wrongAnswerSound": "Wrong Answer Sound",
+        "questionSound": "Sound File",
+        "answerType": "Answer Type"
+      }
+    }
   }
 }
