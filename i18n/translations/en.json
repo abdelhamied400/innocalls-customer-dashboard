@@ -5130,6 +5130,13 @@
       "exportFailed": "Failed to export report",
       "unexpectedError": "An unexpected error occurred"
     },
+    "detailsLayout": {
+      "tabs": {
+        "details": "Survey Details",
+        "cdrs": "CDRs",
+        "analytics": "Call Analytics"
+      }
+    },
     "details": {
       "notFound": "Survey not found",
       "sections": {
@@ -5150,6 +5157,60 @@
         "wrongAnswerSound": "Wrong Answer Sound",
         "questionSound": "Sound File",
         "answerType": "Answer Type"
+      }
+    },
+    "cdrs": {
+      "title": "CDRs",
+      "columns": {
+        "phone": "Phone",
+        "agent": "Agent",
+        "status": "Status",
+        "callDate": "Call Date",
+        "completionStatus": "Completion Status",
+        "answeredQuestions": "Answered Questions",
+        "duration": "Duration",
+        "actions": "Actions"
+      },
+      "statuses": {
+        "User did not answer": "User Did Not Answer",
+        "Airplane Mode Enabled": "Airplane Mode Enabled",
+        "Initiated": "Initiated",
+        "Processing": "Processing",
+        "Call Failed": "Call Failed",
+        "User Busy/Rejected By User": "User Busy / Rejected By User",
+        "User Connected": "User Connected",
+        "User Unreachable (Out of Network Coverage or Airplane Mode)": "User Unreachable",
+        "Completed": "Completed",
+        "Timeout": "Timeout",
+        "Abandoned": "Abandoned"
+      },
+      "completionStatuses": {
+        "complete": "Complete",
+        "partial": "Partial",
+        "no-response": "No Response"
+      },
+      "filters": {
+        "toggle": "Toggle Filters",
+        "completionStatus": "Completion Status",
+        "completionStatusPlaceholder": "Select completion statuses...",
+        "phone": "Phone",
+        "phoneLabel": "Phone Number",
+        "phoneHint": "Filter by phone number",
+        "phonePlaceholder": "Enter phone number..."
+      },
+      "actions": {
+        "answers": "View Answers"
+      },
+      "answersModal": {
+        "title": "Survey Answers",
+        "question": "Question",
+        "attemptNumber": "Attempt Number",
+        "questionType": "Question Type",
+        "userResponse": "User Response"
+      },
+      "toasts": {
+        "error": "Error",
+        "errorDescription": "An error occurred. Please try again."
       }
     }
   },

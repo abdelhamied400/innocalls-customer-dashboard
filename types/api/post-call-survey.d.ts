@@ -28,6 +28,45 @@ export type PostCallSurveyDetailResponse = {
   };
 };
 
+export type PostCallSurveyCdrAnswer = {
+  questionIndex: number;
+  userResponse: number;
+  isCorrect: boolean;
+  attemptNumber: number;
+  responseTime: number;
+  questionType: string;
+};
+
+export type PostCallSurveyCdrAgent = {
+  id: string;
+  name: string;
+  ext: number;
+};
+
+export type PostCallSurveyCdr = {
+  id: string;
+  ext: number;
+  phone: string;
+  agent: PostCallSurveyCdrAgent | null;
+  status: string;
+  answers: PostCallSurveyCdrAnswer[];
+  completionStatus: string;
+  answeredQuestionsCount: number;
+  correctAnswersCount: number;
+  channelId: string;
+  duration: string;
+  createdAt: string;
+  survey: string;
+};
+
+export type PostCallSurveyCdrsResponse = {
+  data: {
+    requests: PostCallSurveyCdr[];
+    totalItems: number;
+    totalPages: number;
+  };
+};
+
 export type PostCallSurveyListResponse = {
   data: {
     surveys: PostCallSurvey[];

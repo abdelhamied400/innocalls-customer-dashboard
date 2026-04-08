@@ -83,7 +83,7 @@ const ActionsCell = ({ row }: ActionsCellProps) => {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="ghost-success" size="icon" asChild>
-              <Link href={`/post-call-survey/${row.original.id}`}>
+              <Link href={`/post-call-survey/${row.original.id}/details`}>
                 <Visibility />
               </Link>
             </Button>

@@ -1,9 +1,17 @@
 import {
+  PostCallSurveyCdr,
   PostCallSurveyDetail,
   PostCallSurveyDetailResponse,
   PostCallSurveyListResponse,
 } from "@/types/api/post-call-survey";
 import api from "./api";
+import { objToQueryString } from "@/lib/utils";
+
+type FetchCdrsResponse = {
+  requests: PostCallSurveyCdr[];
+  totalItems: number;
+  totalPages: number;
+};
 
 type FetchPostCallSurveysParams = {
   page: number;
@@ -36,6 +44,17 @@ export default {
       `/survey-post-call-templates/${id}`,
     );
     return res.data.data.survey;
+  },
+
+  fetchCdrs: async (
+    surveyId: string,
+    filters?: any,
+  ): Promise<FetchCdrsResponse> => {
+    const queryString = objToQueryString(filters || {});
+    const res = await api.get(
+      `/survey-post-call-templates/${surveyId}/calls?${queryString}`,
+    );
+    return res.data.data;
   },
 
   exportReport: async (surveyId: string): Promise<void> => {
