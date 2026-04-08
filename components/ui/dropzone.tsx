@@ -327,6 +327,14 @@ export const DropzoneFileList = () => {
   const { acceptedFiles, fileRejections, fakeFilesState } =
     useDropzoneContext();
 
+  if (
+    acceptedFiles.length === 0 &&
+    fileRejections.length === 0 &&
+    fakeFilesState.length === 0
+  ) {
+    return null;
+  }
+
   return (
     <ul className="flex flex-col gap-2">
       {fakeFilesState.map((fileName) => (

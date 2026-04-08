@@ -1643,6 +1643,7 @@
       "developersTab": "Developers Tab",
       "settings": "Settings",
       "callBridge": "Call Bridge",
+      "callSurvey": "Call Survey",
       "postCallSurvey": "Post Call Survey",
       "aiVoiceAgents": "AI Voice Agents",
       "analytics": "Analytics",
@@ -5149,6 +5150,428 @@
         "wrongAnswerSound": "Wrong Answer Sound",
         "questionSound": "Sound File",
         "answerType": "Answer Type"
+      }
+    }
+  },
+  "callSurvey": {
+    "tabs": {
+      "active": "Active Surveys",
+      "finished": "Finished Surveys"
+    },
+    "active": {
+      "title": "Active Surveys",
+      "search": "Search...",
+      "create": "Create Survey",
+      "columns": {
+        "creationDate": "Creation Date",
+        "name": "Name",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "view": "View Details",
+        "addCustomers": "Add Customers",
+        "corruptedRows": "Corrupted Rows",
+        "cdrs": "CDRs",
+        "uncompleted": "Uncompleted",
+        "metrics": "Metrics",
+        "analytics": "Analytics",
+        "callsAnalytics": "Calls Analytics"
+      },
+      "modals": {
+        "start": {
+          "title": "Start Survey",
+          "message": "Are you sure you want to start this survey?",
+          "confirm": "Yes, Start",
+          "cancel": "Cancel"
+        },
+        "pause": {
+          "title": "Pause Survey",
+          "message": "Are you sure you want to pause this survey?",
+          "confirm": "Yes, Pause",
+          "cancel": "Cancel"
+        },
+        "resume": {
+          "title": "Resume Survey",
+          "message": "Are you sure you want to resume this survey?",
+          "confirm": "Yes, Resume",
+          "cancel": "Cancel"
+        },
+        "finish": {
+          "title": "Finish Survey",
+          "message": "Are you sure you want to finish this survey? This action cannot be undone.",
+          "confirm": "Yes, Finish",
+          "cancel": "Cancel"
+        }
+      },
+      "toasts": {
+        "started": "Survey Started",
+        "startedDescription": "The survey has been started successfully.",
+        "paused": "Survey Paused",
+        "pausedDescription": "The survey has been paused successfully.",
+        "resumed": "Survey Resumed",
+        "resumedDescription": "The survey has been resumed successfully.",
+        "finished": "Survey Finished",
+        "finishedDescription": "The survey has been finished successfully.",
+        "error": "Error",
+        "errorDescription": "An error occurred. Please try again."
+      },
+      "export": "Export to Email",
+      "exportSuccess": "Export Sent",
+      "exportSuccessDescription": "The report has been sent to your email.",
+      "exportError": "Export Failed",
+      "exportErrorDescription": "Failed to export the report. Please try again.",
+      "statuses": {
+        "created": "Created",
+        "schedule-customers": "Scheduling Customers",
+        "verifying-customers": "Verifying Customers",
+        "verification-failed": "Verification Failed",
+        "cancelled": "Cancelled",
+        "corrupted-ignored": "Corrupted Ignored",
+        "customers-inserted": "Customers Inserted",
+        "in-progress": "In Progress",
+        "active": "Active",
+        "paused": "Paused",
+        "finished": "Finished",
+        "completed": "Completed",
+        "draft": "Draft"
+      },
+      "filters": {
+        "toggle": "Toggle Filters",
+        "creationDate": {
+          "placeholder": "Creation Date",
+          "label": "Creation Date",
+          "from": {
+            "label": "From",
+            "hint": "Start date",
+            "placeholder": "Select date"
+          },
+          "to": {
+            "label": "To",
+            "hint": "End date",
+            "placeholder": "Select date"
+          }
+        },
+        "status": {
+          "placeholder": "Status",
+          "label": "Status",
+          "all": "All"
+        }
+      }
+    },
+    "finished": {
+      "title": "Finished Surveys",
+      "search": "Search...",
+      "columns": {
+        "creationDate": "Creation Date",
+        "name": "Name",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "actions": {
+        "view": "View Details",
+        "cdrs": "CDRs",
+        "analytics": "Analytics"
+      },
+      "filters": {
+        "toggle": "Toggle Filters",
+        "creationDate": {
+          "placeholder": "Creation Date",
+          "label": "Creation Date",
+          "from": {
+            "label": "From",
+            "hint": "Start date",
+            "placeholder": "Select date"
+          },
+          "to": {
+            "label": "To",
+            "hint": "End date",
+            "placeholder": "Select date"
+          }
+        },
+        "status": {
+          "placeholder": "Status",
+          "label": "Status",
+          "all": "All"
+        }
+      }
+    },
+    "detailsLayout": {
+      "tabs": {
+        "metrics": "Live Metrics",
+        "analytics": "Analytics",
+        "cdrs": "Survey CDRs",
+        "details": "Survey Details"
+      }
+    },
+    "create": {
+      "title": "Create Survey",
+      "description": "Create a new call survey",
+      "steps": {
+        "surveyDetails": "Survey Details",
+        "sounds": "Sounds",
+        "questions": "Questions",
+        "timeAndCallers": "Time & Callers",
+        "customersList": "Customers List"
+      },
+      "actions": {
+        "next": "Next",
+        "previous": "Previous",
+        "submit": "Create Survey",
+        "save": "Save",
+        "saveAsDraft": "Save as Draft",
+        "saveAndRun": "Save & Run",
+        "creating": "Creating..."
+      },
+      "form": {
+        "name": { "label": "Survey Name", "placeholder": "Enter survey name", "required": "Survey name is required" },
+        "trialsCount": { "label": "Trials Count", "hint": "The number of trials to call each customer.", "required": "Trials count is required", "min": "Minimum 1 trial", "max": "Maximum 10 trials" },
+        "concurrencyCalls": { "label": "Concurrency Calls", "hint": "The number of concurrent calls.", "required": "Concurrency calls is required", "min": "Minimum 1", "max": "Maximum 10" },
+        "delayMinutesBetweenTrials": { "label": "Delay Between Trials (min)", "hint": "The time (minutes) between ending of call and starting of the next call for the customer.", "required": "Required", "min": "Minimum 5 minutes" },
+        "dtmfTimeout": { "label": "DTMF Timeout (sec)", "hint": "The time (seconds) the system will wait for the customer to input a key.", "required": "Required", "min": "Minimum 5 seconds" },
+        "startSound": { "label": "Start Sound", "hint": "The sound that will be played when the call starts", "required": "Start sound is required" },
+        "endSound": { "label": "End Sound", "hint": "The sound that will be played when the call ends", "required": "End sound is required" },
+        "wrongEntrySound": { "label": "Wrong Entry Sound", "hint": "The sound that will be played when the customer enters a wrong answer", "required": "Wrong entry sound is required" },
+        "maxQuestionAttempts": { "label": "Max Question Attempts", "hint": "The number of attempts the customer can try to answer a question.", "required": "Required", "min": "Minimum 1 attempt" },
+        "questions": {
+          "title": "Questions",
+          "add": "Add Question",
+          "answerType": { "label": "Answer Type", "placeholder": "Select type", "required": "Answer type is required" },
+          "answerTypes": { "oneFive": "1 - 5", "oneTen": "1 - 10", "yesNo": "Yes / No" },
+          "sound": { "label": "Question Sound", "hint": "The sound that will be played when the question is asked", "required": "Question sound is required" },
+          "min": "At least one question is required"
+        },
+        "timezone": { "label": "Timezone", "placeholder": "Select timezone" },
+        "timeSlots": {
+          "title": "Time Slots",
+          "add": "Add Time Slot",
+          "from": { "label": "From", "placeholder": "Start time", "required": "Start time is required" },
+          "to": { "label": "To", "placeholder": "End time", "required": "End time is required" },
+          "min": "At least one time slot is required"
+        },
+        "callers": { "title": "Caller IDs", "hint": "The first Caller ID will be the default one." },
+        "customersFile": {
+          "label": "Customers File",
+          "required": "Customers file is required",
+          "downloadTemplate": "Download a template",
+          "savedDescription": "The survey has been saved as a draft.",
+          "savedAndRunDescription": "The survey has been saved and will start running.",
+          "rules": {
+            "countryCode": "Ensure all phone numbers include the country code.",
+            "noPrefix": "Do not use \"+\" or \"00\" before the code.",
+            "numberFormat": "Set the field type to \"number\" without decimal points."
+          }
+        }
+      },
+      "toasts": {
+        "created": "Survey Created",
+        "createdDescription": "The survey has been created successfully.",
+        "saved": "Survey Saved",
+        "savedDescription": "The survey has been saved as a draft.",
+        "error": "Error",
+        "errorDescription": "An error occurred. Please try again."
+      }
+    },
+    "details": {
+      "title": "Survey Details",
+      "description": "View call survey configuration",
+      "loading": "Loading...",
+      "notFound": "Survey not found",
+      "sections": {
+        "basic": "Survey Details",
+        "sounds": "Sound Files",
+        "questions": "Questions Details",
+        "timeSlots": "Time Slots",
+        "callerIds": "Caller IDs",
+        "customersList": "Customers List"
+      },
+      "fields": {
+        "name": "Name",
+        "trialsCount": "Trials Count",
+        "concurrencyCalls": "Concurrency Calls",
+        "delayMinutesBetweenTrials": "Delay Between Trials",
+        "dtmfTimeout": "DTMF Timeout",
+        "minutesValue": "{value} min",
+        "secondsValue": "{value} sec",
+        "startSound": "Start Sound",
+        "wrongEntrySound": "Wrong Entry Sound",
+        "endSound": "End Sound",
+        "maxQuestionAttempts": "Max Question Attempts",
+        "answerType": "Answer Type",
+        "questionSound": "Question Sound",
+        "timezone": "Timezone",
+        "from": "From",
+        "to": "To",
+        "destination": "Destination",
+        "callerNumber": "Caller Number"
+      },
+      "fileTypes": {
+        "mp3": "MP3"
+      }
+    },
+    "metrics": {
+      "title": "Survey Metrics",
+      "description": "View current call statistics for this survey",
+      "noData": "No metrics data available",
+      "noCalls": "No calls at the moment",
+      "search": "Search by name or phone...",
+      "sections": {
+        "stats": "Calls Statistics",
+        "initiatedCalls": "Initiated Calls",
+        "inProgressCalls": "In Progress Calls"
+      },
+      "fields": {
+        "total": "Total Calls",
+        "initiated": "Initiated",
+        "inProgress": "In Progress",
+        "name": "Name",
+        "phone": "Phone",
+        "currentTrial": "Current Trial"
+      }
+    },
+    "analytics": {
+      "title": "Survey Analytics",
+      "description": "View survey calls analytics and statistics",
+      "noData": "No analytics data available",
+      "export": "Export to Email",
+      "exporting": "Exporting...",
+      "exportSuccess": "Export Sent",
+      "exportSuccessDescription": "The report has been sent to your email.",
+      "exportError": "Export Failed",
+      "exportErrorDescription": "Failed to export the report. Please try again.",
+      "questionLabel": "Question {number}",
+      "sections": {
+        "summary": "Summary",
+        "questions": "Questions Analysis",
+        "overview": "Overview",
+        "responseDistribution": "Response Distribution",
+        "npsBreakdown": "NPS Breakdown"
+      },
+      "fields": {
+        "totalResponses": "Total Responses",
+        "npsScore": "NPS Score",
+        "questionType": "Question Type",
+        "promoterPercentage": "Promoter %",
+        "detractorPercentage": "Detractor %"
+      },
+      "nps": {
+        "promoters": "Promoters",
+        "detractors": "Detractors",
+        "passives": "Passives"
+      }
+    },
+    "cdrs": {
+      "title": "CDRs",
+      "columns": {
+        "phone": "Phone",
+        "name": "Name",
+        "status": "Status",
+        "initiatedAt": "Initiated At",
+        "completionStatus": "Completion Status",
+        "answeredQuestions": "Answered Questions",
+        "duration": "Duration",
+        "actions": "Actions"
+      },
+      "statuses": {
+        "User did not answer": "User Did Not Answer",
+        "Airplane Mode Enabled": "Airplane Mode Enabled",
+        "Initiated": "Initiated",
+        "Processing": "Processing",
+        "Call Failed": "Call Failed",
+        "User Busy/Rejected By User": "User Busy / Rejected By User",
+        "User Connected": "User Connected",
+        "User Unreachable (Out of Network Coverage or Airplane Mode)": "User Unreachable",
+        "Completed": "Completed",
+        "Timeout": "Timeout",
+        "Abandoned": "Abandoned"
+      },
+      "completionStatuses": {
+        "complete": "Complete",
+        "partial": "Partial",
+        "no-response": "No Response"
+      },
+      "filters": {
+        "toggle": "Toggle Filters",
+        "status": "Status",
+        "statusPlaceholder": "Select statuses...",
+        "completionStatus": "Completion Status",
+        "completionStatusPlaceholder": "Select completion statuses...",
+        "phone": "Phone",
+        "phoneLabel": "Phone Number",
+        "phoneHint": "Filter by phone number",
+        "phonePlaceholder": "Enter phone number..."
+      },
+      "actions": {
+        "listen": "Listen to Recording",
+        "answers": "View Answers"
+      },
+      "answersModal": {
+        "title": "Survey Answers",
+        "question": "Question",
+        "attemptNumber": "Attempt Number",
+        "questionType": "Question Type",
+        "userResponse": "User Response"
+      },
+      "toasts": {
+        "error": "Error",
+        "errorDescription": "An error occurred. Please try again."
+      }
+    },
+    "corruptedRows": {
+      "title": "Corrupted Rows",
+      "alertPrefix": "Oops! We have",
+      "alertCount": "{count} records",
+      "alertSuffix": "that need to be fixed. Please review and correct the highlighted errors to start your survey.",
+      "actions": {
+        "cancel": "Cancel Survey",
+        "ignoreAll": "Ignore All Corrupted",
+        "dismiss": "Cancel"
+      },
+      "confirmations": {
+        "ignoreAll": "Are you sure you want to ignore all corrupted records? The survey will proceed with only the valid records.",
+        "cancel": "Are you sure you want to cancel this survey? This action cannot be undone."
+      },
+      "form": {
+        "name": { "label": "Name", "placeholder": "Enter name" },
+        "phone": { "label": "Phone", "placeholder": "Enter phone number" },
+        "fix": "Fix & Save"
+      },
+      "validation": {
+        "nameMin": "Name must be at least {min} characters",
+        "nameMax": "Name must be at most {max} characters",
+        "phoneRequired": "Phone number is required",
+        "phoneInvalid": "Phone number must contain only digits",
+        "phoneUnsupportedFormat": "This phone number format is not supported"
+      },
+      "toasts": {
+        "fixed": "Row Fixed",
+        "fixedDescription": "The corrupted row has been fixed successfully.",
+        "ignored": "Corrupted Rows Ignored",
+        "ignoredDescription": "All corrupted rows have been ignored.",
+        "cancelled": "Survey Cancelled",
+        "cancelledDescription": "The survey has been cancelled.",
+        "error": "Error",
+        "errorDescription": "An error occurred. Please try again."
+      }
+    },
+    "uncompleted": {
+      "title": "Uncompleted Requests",
+      "search": "Search...",
+      "noData": "No uncompleted requests",
+      "columns": {
+        "phone": "Phone",
+        "name": "Name",
+        "remainingTrials": "Remaining Trials"
+      },
+      "export": "Export to Email",
+      "exporting": "Exporting...",
+      "exportSuccess": "Export Sent",
+      "exportSuccessDescription": "The report has been sent to your email.",
+      "exportError": "Export Failed",
+      "exportErrorDescription": "An error occurred while exporting. Please try again.",
+      "toasts": {
+        "error": "Error",
+        "errorDescription": "Failed to load uncompleted requests"
       }
     }
   }

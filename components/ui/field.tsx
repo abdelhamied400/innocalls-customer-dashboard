@@ -16,6 +16,7 @@ type FieldProps = PropsWithChildren<{
   preIcon?: ReactNode;
   postIcon?: ReactNode;
   hint?: string;
+  helperText?: string;
 }>;
 const Field = ({
   htmlFor,
@@ -26,6 +27,7 @@ const Field = ({
   preIcon,
   postIcon,
   hint,
+  helperText,
   ...props
 }: FieldProps) => {
   const Wrapper = htmlFor ? "label" : "div";
@@ -79,6 +81,10 @@ const Field = ({
           </div>
         </div>
       </Wrapper>
+
+      {helperText && (
+        <p className="text-xs text-muted-foreground mt-1">{helperText}</p>
+      )}
 
       {error && <p className="text-red-500 text-xs">{error}</p>}
     </div>

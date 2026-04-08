@@ -1642,6 +1642,7 @@
       "developersTab": "إعدادات المطورين",
       "settings": "الإعدادات",
       "callBridge": "جسر المكالمات",
+      "callSurvey": "استبيان المكالمات",
       "postCallSurvey": "استطلاع ما بعد المكالمة",
       "aiVoiceAgents": "وكلاء الصوت الذكي",
       "analytics": "إحصائيات المكالمات",
@@ -5144,6 +5145,428 @@
         "wrongAnswerSound": "صوت الإجابة الخاطئة",
         "questionSound": "ملف الصوت",
         "answerType": "نوع الإجابة"
+      }
+    }
+  },
+  "callSurvey": {
+    "tabs": {
+      "active": "الاستبيانات النشطة",
+      "finished": "الاستبيانات المنتهية"
+    },
+    "active": {
+      "title": "الاستبيانات النشطة",
+      "search": "بحث...",
+      "create": "إنشاء استبيان",
+      "columns": {
+        "creationDate": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "actions": {
+        "view": "عرض التفاصيل",
+        "addCustomers": "إضافة عملاء",
+        "corruptedRows": "الصفوف التالفة",
+        "cdrs": "سجلات المكالمات",
+        "uncompleted": "غير مكتملة",
+        "metrics": "المقاييس",
+        "analytics": "التحليلات",
+        "callsAnalytics": "تحليلات المكالمات"
+      },
+      "modals": {
+        "start": {
+          "title": "بدء الاستبيان",
+          "message": "هل أنت متأكد أنك تريد بدء هذا الاستبيان؟",
+          "confirm": "نعم، ابدأ",
+          "cancel": "إلغاء"
+        },
+        "pause": {
+          "title": "إيقاف الاستبيان مؤقتاً",
+          "message": "هل أنت متأكد أنك تريد إيقاف هذا الاستبيان مؤقتاً؟",
+          "confirm": "نعم، أوقف",
+          "cancel": "إلغاء"
+        },
+        "resume": {
+          "title": "استئناف الاستبيان",
+          "message": "هل أنت متأكد أنك تريد استئناف هذا الاستبيان؟",
+          "confirm": "نعم، استأنف",
+          "cancel": "إلغاء"
+        },
+        "finish": {
+          "title": "إنهاء الاستبيان",
+          "message": "هل أنت متأكد أنك تريد إنهاء هذا الاستبيان؟ لا يمكن التراجع عن هذا الإجراء.",
+          "confirm": "نعم، أنهِ",
+          "cancel": "إلغاء"
+        }
+      },
+      "toasts": {
+        "started": "تم بدء الاستبيان",
+        "startedDescription": "تم بدء الاستبيان بنجاح.",
+        "paused": "تم إيقاف الاستبيان",
+        "pausedDescription": "تم إيقاف الاستبيان مؤقتاً بنجاح.",
+        "resumed": "تم استئناف الاستبيان",
+        "resumedDescription": "تم استئناف الاستبيان بنجاح.",
+        "finished": "تم إنهاء الاستبيان",
+        "finishedDescription": "تم إنهاء الاستبيان بنجاح.",
+        "error": "خطأ",
+        "errorDescription": "حدث خطأ. يرجى المحاولة مرة أخرى."
+      },
+      "export": "تصدير إلى البريد",
+      "exportSuccess": "تم إرسال التصدير",
+      "exportSuccessDescription": "تم إرسال التقرير إلى بريدك الإلكتروني.",
+      "exportError": "فشل التصدير",
+      "exportErrorDescription": "فشل تصدير التقرير. يرجى المحاولة مرة أخرى.",
+      "statuses": {
+        "created": "تم الإنشاء",
+        "schedule-customers": "جدولة العملاء",
+        "verifying-customers": "التحقق من العملاء",
+        "verification-failed": "فشل التحقق",
+        "cancelled": "ملغي",
+        "corrupted-ignored": "تالف ومتجاهل",
+        "customers-inserted": "تم إدراج العملاء",
+        "in-progress": "قيد التنفيذ",
+        "active": "نشط",
+        "paused": "متوقف",
+        "finished": "منتهي",
+        "completed": "مكتمل",
+        "draft": "مسودة"
+      },
+      "filters": {
+        "toggle": "تبديل الفلاتر",
+        "creationDate": {
+          "placeholder": "تاريخ الإنشاء",
+          "label": "تاريخ الإنشاء",
+          "from": {
+            "label": "من",
+            "hint": "تاريخ البداية",
+            "placeholder": "اختر التاريخ"
+          },
+          "to": {
+            "label": "إلى",
+            "hint": "تاريخ النهاية",
+            "placeholder": "اختر التاريخ"
+          }
+        },
+        "status": {
+          "placeholder": "الحالة",
+          "label": "الحالة",
+          "all": "الكل"
+        }
+      }
+    },
+    "finished": {
+      "title": "الاستبيانات المنتهية",
+      "search": "بحث...",
+      "columns": {
+        "creationDate": "تاريخ الإنشاء",
+        "name": "الاسم",
+        "status": "الحالة",
+        "actions": "الإجراءات"
+      },
+      "actions": {
+        "view": "عرض التفاصيل",
+        "cdrs": "سجلات المكالمات",
+        "analytics": "التحليلات"
+      },
+      "filters": {
+        "toggle": "تبديل الفلاتر",
+        "creationDate": {
+          "placeholder": "تاريخ الإنشاء",
+          "label": "تاريخ الإنشاء",
+          "from": {
+            "label": "من",
+            "hint": "تاريخ البداية",
+            "placeholder": "اختر التاريخ"
+          },
+          "to": {
+            "label": "إلى",
+            "hint": "تاريخ النهاية",
+            "placeholder": "اختر التاريخ"
+          }
+        },
+        "status": {
+          "placeholder": "الحالة",
+          "label": "الحالة",
+          "all": "الكل"
+        }
+      }
+    },
+    "detailsLayout": {
+      "tabs": {
+        "metrics": "المقاييس الحية",
+        "analytics": "التحليلات",
+        "cdrs": "سجلات المكالمات",
+        "details": "تفاصيل الاستبيان"
+      }
+    },
+    "create": {
+      "title": "إنشاء استبيان",
+      "description": "إنشاء استبيان مكالمات جديد",
+      "steps": {
+        "surveyDetails": "تفاصيل الاستبيان",
+        "sounds": "الأصوات",
+        "questions": "الأسئلة",
+        "timeAndCallers": "الوقت والمتصلين",
+        "customersList": "قائمة العملاء"
+      },
+      "actions": {
+        "next": "التالي",
+        "previous": "السابق",
+        "submit": "إنشاء الاستبيان",
+        "save": "حفظ",
+        "saveAsDraft": "حفظ كمسودة",
+        "saveAndRun": "حفظ وتشغيل",
+        "creating": "جاري الإنشاء..."
+      },
+      "form": {
+        "name": { "label": "اسم الاستبيان", "placeholder": "أدخل اسم الاستبيان", "required": "اسم الاستبيان مطلوب" },
+        "trialsCount": { "label": "عدد المحاولات", "hint": "عدد محاولات الاتصال بكل عميل.", "required": "عدد المحاولات مطلوب", "min": "الحد الأدنى محاولة واحدة", "max": "الحد الأقصى 10 محاولات" },
+        "concurrencyCalls": { "label": "المكالمات المتزامنة", "hint": "عدد المكالمات المتزامنة.", "required": "المكالمات المتزامنة مطلوبة", "min": "الحد الأدنى 1", "max": "الحد الأقصى 10" },
+        "delayMinutesBetweenTrials": { "label": "التأخير بين المحاولات (دقيقة)", "hint": "الوقت (بالدقائق) بين انتهاء المكالمة وبدء المكالمة التالية للعميل.", "required": "مطلوب", "min": "الحد الأدنى 5 دقائق" },
+        "dtmfTimeout": { "label": "مهلة DTMF (ثانية)", "hint": "الوقت (بالثواني) الذي سينتظره النظام لإدخال العميل مفتاحًا.", "required": "مطلوب", "min": "الحد الأدنى 5 ثوانٍ" },
+        "startSound": { "label": "صوت البداية", "hint": "الصوت الذي سيتم تشغيله عند بدء المكالمة", "required": "صوت البداية مطلوب" },
+        "endSound": { "label": "صوت النهاية", "hint": "الصوت الذي سيتم تشغيله عند انتهاء المكالمة", "required": "صوت النهاية مطلوب" },
+        "wrongEntrySound": { "label": "صوت الإدخال الخاطئ", "hint": "الصوت الذي سيتم تشغيله عند إدخال العميل إجابة خاطئة", "required": "صوت الإدخال الخاطئ مطلوب" },
+        "maxQuestionAttempts": { "label": "أقصى عدد لمحاولات السؤال", "hint": "عدد المحاولات التي يمكن للعميل تجربتها للإجابة على سؤال.", "required": "مطلوب", "min": "الحد الأدنى محاولة واحدة" },
+        "questions": {
+          "title": "الأسئلة",
+          "add": "إضافة سؤال",
+          "answerType": { "label": "نوع الإجابة", "placeholder": "اختر النوع", "required": "نوع الإجابة مطلوب" },
+          "answerTypes": { "oneFive": "١ - ٥", "oneTen": "١ - ١٠", "yesNo": "نعم / لا" },
+          "sound": { "label": "صوت السؤال", "hint": "الصوت الذي سيتم تشغيله عند طرح السؤال", "required": "صوت السؤال مطلوب" },
+          "min": "مطلوب سؤال واحد على الأقل"
+        },
+        "timezone": { "label": "المنطقة الزمنية", "placeholder": "اختر المنطقة الزمنية" },
+        "timeSlots": {
+          "title": "الفترات الزمنية",
+          "add": "إضافة فترة زمنية",
+          "from": { "label": "من", "placeholder": "وقت البداية", "required": "وقت البداية مطلوب" },
+          "to": { "label": "إلى", "placeholder": "وقت النهاية", "required": "وقت النهاية مطلوب" },
+          "min": "مطلوب فترة زمنية واحدة على الأقل"
+        },
+        "callers": { "title": "أرقام المتصلين", "hint": "رقم المتصل الأول سيكون الافتراضي." },
+        "customersFile": {
+          "label": "ملف العملاء",
+          "required": "ملف العملاء مطلوب",
+          "downloadTemplate": "تحميل نموذج",
+          "savedDescription": "تم حفظ الاستبيان كمسودة.",
+          "savedAndRunDescription": "تم حفظ الاستبيان وسيبدأ التشغيل.",
+          "rules": {
+            "countryCode": "تأكد من أن جميع أرقام الهواتف تتضمن رمز الدولة.",
+            "noPrefix": "لا تستخدم \"+\" أو \"00\" قبل الرمز.",
+            "numberFormat": "اضبط نوع الحقل على \"رقم\" بدون فواصل عشرية."
+          }
+        }
+      },
+      "toasts": {
+        "created": "تم إنشاء الاستبيان",
+        "createdDescription": "تم إنشاء الاستبيان بنجاح.",
+        "saved": "تم حفظ الاستبيان",
+        "savedDescription": "تم حفظ الاستبيان كمسودة.",
+        "error": "خطأ",
+        "errorDescription": "حدث خطأ. يرجى المحاولة مرة أخرى."
+      }
+    },
+    "details": {
+      "title": "تفاصيل الاستبيان",
+      "description": "عرض إعدادات استبيان المكالمات",
+      "loading": "جاري التحميل...",
+      "notFound": "الاستبيان غير موجود",
+      "sections": {
+        "basic": "تفاصيل الاستبيان",
+        "sounds": "ملفات الصوت",
+        "questions": "تفاصيل الأسئلة",
+        "timeSlots": "الفترات الزمنية",
+        "callerIds": "أرقام المتصلين",
+        "customersList": "قائمة العملاء"
+      },
+      "fields": {
+        "name": "الاسم",
+        "trialsCount": "عدد المحاولات",
+        "concurrencyCalls": "المكالمات المتزامنة",
+        "delayMinutesBetweenTrials": "التأخير بين المحاولات",
+        "dtmfTimeout": "مهلة DTMF",
+        "minutesValue": "{value} دقيقة",
+        "secondsValue": "{value} ثانية",
+        "startSound": "صوت البداية",
+        "wrongEntrySound": "صوت الإدخال الخاطئ",
+        "endSound": "صوت النهاية",
+        "maxQuestionAttempts": "أقصى عدد لمحاولات السؤال",
+        "answerType": "نوع الإجابة",
+        "questionSound": "صوت السؤال",
+        "timezone": "المنطقة الزمنية",
+        "from": "من",
+        "to": "إلى",
+        "destination": "الوجهة",
+        "callerNumber": "رقم المتصل"
+      },
+      "fileTypes": {
+        "mp3": "MP3"
+      }
+    },
+    "metrics": {
+      "title": "مقاييس الاستبيان",
+      "description": "عرض إحصائيات المكالمات الحالية لهذا الاستبيان",
+      "noData": "لا توجد بيانات مقاييس متاحة",
+      "noCalls": "لا توجد مكالمات حالياً",
+      "search": "بحث بالاسم أو الهاتف...",
+      "sections": {
+        "stats": "إحصائيات المكالمات",
+        "initiatedCalls": "المكالمات المبدوءة",
+        "inProgressCalls": "المكالمات الجارية"
+      },
+      "fields": {
+        "total": "إجمالي المكالمات",
+        "initiated": "مبدوءة",
+        "inProgress": "جارية",
+        "name": "الاسم",
+        "phone": "الهاتف",
+        "currentTrial": "المحاولة الحالية"
+      }
+    },
+    "analytics": {
+      "title": "تحليلات الاستبيان",
+      "description": "عرض تحليلات وإحصائيات مكالمات الاستبيان",
+      "noData": "لا توجد بيانات تحليلية متاحة",
+      "export": "تصدير إلى البريد",
+      "exporting": "جاري التصدير...",
+      "exportSuccess": "تم إرسال التصدير",
+      "exportSuccessDescription": "تم إرسال التقرير إلى بريدك الإلكتروني.",
+      "exportError": "فشل التصدير",
+      "exportErrorDescription": "فشل تصدير التقرير. يرجى المحاولة مرة أخرى.",
+      "questionLabel": "السؤال {number}",
+      "sections": {
+        "summary": "الملخص",
+        "questions": "تحليل الأسئلة",
+        "overview": "نظرة عامة",
+        "responseDistribution": "توزيع الردود",
+        "npsBreakdown": "تفاصيل NPS"
+      },
+      "fields": {
+        "totalResponses": "إجمالي الردود",
+        "npsScore": "نتيجة NPS",
+        "questionType": "نوع السؤال",
+        "promoterPercentage": "نسبة المروجين",
+        "detractorPercentage": "نسبة المنتقدين"
+      },
+      "nps": {
+        "promoters": "المروجون",
+        "detractors": "المنتقدون",
+        "passives": "المحايدون"
+      }
+    },
+    "cdrs": {
+      "title": "سجلات المكالمات",
+      "columns": {
+        "phone": "الهاتف",
+        "name": "الاسم",
+        "status": "الحالة",
+        "initiatedAt": "وقت البدء",
+        "completionStatus": "حالة الإكمال",
+        "answeredQuestions": "الأسئلة المجابة",
+        "duration": "المدة",
+        "actions": "الإجراءات"
+      },
+      "statuses": {
+        "User did not answer": "لم يرد المستخدم",
+        "Airplane Mode Enabled": "وضع الطيران مفعل",
+        "Initiated": "بدأت",
+        "Processing": "قيد المعالجة",
+        "Call Failed": "فشلت المكالمة",
+        "User Busy/Rejected By User": "المستخدم مشغول / رفض المكالمة",
+        "User Connected": "المستخدم متصل",
+        "User Unreachable (Out of Network Coverage or Airplane Mode)": "المستخدم غير قابل للوصول",
+        "Completed": "مكتملة",
+        "Timeout": "انتهت المهلة",
+        "Abandoned": "مهجورة"
+      },
+      "completionStatuses": {
+        "complete": "مكتمل",
+        "partial": "جزئي",
+        "no-response": "بدون رد"
+      },
+      "filters": {
+        "toggle": "تبديل الفلاتر",
+        "status": "الحالة",
+        "statusPlaceholder": "اختر الحالات...",
+        "completionStatus": "حالة الإكمال",
+        "completionStatusPlaceholder": "اختر حالات الإكمال...",
+        "phone": "الهاتف",
+        "phoneLabel": "رقم الهاتف",
+        "phoneHint": "تصفية حسب رقم الهاتف",
+        "phonePlaceholder": "أدخل رقم الهاتف..."
+      },
+      "actions": {
+        "listen": "استماع للتسجيل",
+        "answers": "عرض الإجابات"
+      },
+      "answersModal": {
+        "title": "إجابات الاستبيان",
+        "question": "السؤال",
+        "attemptNumber": "رقم المحاولة",
+        "questionType": "نوع السؤال",
+        "userResponse": "رد المستخدم"
+      },
+      "toasts": {
+        "error": "خطأ",
+        "errorDescription": "حدث خطأ. يرجى المحاولة مرة أخرى."
+      }
+    },
+    "corruptedRows": {
+      "title": "الصفوف التالفة",
+      "alertPrefix": "عذرًا! لدينا",
+      "alertCount": "{count} سجل",
+      "alertSuffix": "يحتاج إلى إصلاح. يرجى مراجعة وتصحيح الأخطاء المميزة لبدء الاستبيان.",
+      "actions": {
+        "cancel": "إلغاء الاستبيان",
+        "ignoreAll": "تجاهل جميع التالفة",
+        "dismiss": "إلغاء"
+      },
+      "confirmations": {
+        "ignoreAll": "هل أنت متأكد أنك تريد تجاهل جميع السجلات التالفة؟ سيستمر الاستبيان بالسجلات الصالحة فقط.",
+        "cancel": "هل أنت متأكد أنك تريد إلغاء هذا الاستبيان؟ لا يمكن التراجع عن هذا الإجراء."
+      },
+      "form": {
+        "name": { "label": "الاسم", "placeholder": "أدخل الاسم" },
+        "phone": { "label": "الهاتف", "placeholder": "أدخل رقم الهاتف" },
+        "fix": "إصلاح وحفظ"
+      },
+      "validation": {
+        "nameMin": "يجب أن يكون الاسم على الأقل {min} حرفًا",
+        "nameMax": "يجب أن يكون الاسم على الأكثر {max} حرفًا",
+        "phoneRequired": "رقم الهاتف مطلوب",
+        "phoneInvalid": "رقم الهاتف يجب أن يحتوي على أرقام فقط",
+        "phoneUnsupportedFormat": "صيغة رقم الهاتف غير مدعومة"
+      },
+      "toasts": {
+        "fixed": "تم إصلاح الصف",
+        "fixedDescription": "تم إصلاح الصف التالف بنجاح.",
+        "ignored": "تم تجاهل الصفوف التالفة",
+        "ignoredDescription": "تم تجاهل جميع الصفوف التالفة.",
+        "cancelled": "تم إلغاء الاستبيان",
+        "cancelledDescription": "تم إلغاء الاستبيان.",
+        "error": "خطأ",
+        "errorDescription": "حدث خطأ. يرجى المحاولة مرة أخرى."
+      }
+    },
+    "uncompleted": {
+      "title": "الطلبات غير المكتملة",
+      "search": "بحث...",
+      "noData": "لا توجد طلبات غير مكتملة",
+      "columns": {
+        "phone": "الهاتف",
+        "name": "الاسم",
+        "remainingTrials": "المحاولات المتبقية"
+      },
+      "export": "تصدير إلى البريد",
+      "exporting": "جاري التصدير...",
+      "exportSuccess": "تم إرسال التصدير",
+      "exportSuccessDescription": "تم إرسال التقرير إلى بريدك الإلكتروني.",
+      "exportError": "فشل التصدير",
+      "exportErrorDescription": "حدث خطأ أثناء التصدير. يرجى المحاولة مرة أخرى.",
+      "toasts": {
+        "error": "خطأ",
+        "errorDescription": "فشل تحميل الطلبات غير المكتملة"
       }
     }
   }

@@ -7,7 +7,7 @@ export const statsCardVariants = cva(
       variant: {
         default: "bg-white border-t-4 border-transparent",
         compound: "shadow-none hover:shadow-none border bg-gradient-to-b",
-        subtle: "bg-gray-50 shadow-none hover:shadow-none",
+        subtle: "bg-gray-100 shadow-none hover:shadow-none",
       },
       color: {
         default: "",
@@ -79,12 +79,37 @@ export const statsCardVariants = cva(
         className:
           "from-success-100/0 to-success-100/50 hover:from-success-100/20 hover:to-success-100/70 hover:border-success-500",
       },
+      {
+        variant: "subtle",
+        color: "primary",
+        className: "bg-primary-100 hover:bg-primary-200",
+      },
+      {
+        variant: "subtle",
+        color: "warning",
+        className: "bg-amber-100 hover:bg-amber-200",
+      },
+      {
+        variant: "subtle",
+        color: "destructive",
+        className: "bg-destructive-100 hover:bg-destructive-200",
+      },
+      {
+        variant: "subtle",
+        color: "success",
+        className: "bg-success-100 hover:bg-success-200",
+      },
+      {
+        variant: "subtle",
+        color: "info",
+        className: "bg-indigo-100 hover:bg-indigo-200",
+      },
     ],
     defaultVariants: {
       variant: "default",
       color: "default",
     },
-  }
+  },
 );
 
 export const statsCardValueVariants = cva(
@@ -103,7 +128,7 @@ export const statsCardValueVariants = cva(
     defaultVariants: {
       color: "default",
     },
-  }
+  },
 );
 export const statsCardInfoVariants = cva(
   "text-xs text-gray-800 transition-colors",
@@ -121,7 +146,7 @@ export const statsCardInfoVariants = cva(
     defaultVariants: {
       color: "default",
     },
-  }
+  },
 );
 
 export const statsCardIconVariants = cva(
@@ -150,7 +175,7 @@ export const statsCardIconVariants = cva(
     defaultVariants: {
       color: "default",
     },
-  }
+  },
 );
 
 export type StatsCardVariants = VariantProps<typeof statsCardVariants>;
