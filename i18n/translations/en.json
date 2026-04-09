@@ -4122,6 +4122,23 @@
       "spy": "spy",
       "barrage": "barrage"
     },
+    "postCallSurvey": {
+      "title": "Survey",
+      "search": "Search surveys...",
+      "noSurveys": "No surveys found",
+      "toasts": {
+        "assigned": "Survey Assigned",
+        "assignedDescription": "The survey has been assigned to this call.",
+        "error": "Error",
+        "errorDescription": "Failed to assign survey. Please try again."
+      },
+      "confirm": {
+        "title": "Assign Survey",
+        "description": "Are you sure you want to assign \"{name}\" to this call?",
+        "assign": "Assign",
+        "cancel": "Cancel"
+      }
+    },
     "direction": {
       "outgoing": "Outgoing Call",
       "incoming": "Incoming Call"

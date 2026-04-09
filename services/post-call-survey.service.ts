@@ -65,6 +65,28 @@ export default {
     return res.data;
   },
 
+  fetchAgentSurveys: async ({
+    page,
+    limit,
+    name,
+  }: FetchPostCallSurveysParams): Promise<PostCallSurveyListResponse> => {
+    const params: Record<string, string | number> = { page, limit };
+    if (name) params.name = name;
+    const res = await api.get("/agent-surveys", { params });
+    return res.data;
+  },
+
+  assignToCall: async (payload: {
+    survey: string;
+    phone: string;
+    channelId: string;
+    direction: string;
+    hasDefaultSurvey: boolean;
+  }): Promise<any> => {
+    const res = await api.post("/post-call-surveys", payload);
+    return res.data;
+  },
+
   create: async (data: any): Promise<any> => {
     const res = await api.post("/survey-post-call-templates", data);
     return res.data;

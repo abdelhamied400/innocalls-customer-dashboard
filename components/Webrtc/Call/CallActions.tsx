@@ -26,6 +26,7 @@ import { Input } from "@/components/ui/input";
 import { webrtcLogger } from "@/lib/logger";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { cn } from "@/lib/utils";
+import PostCallSurveyPicker from "./PostCallSurveyPicker";
 
 const CallActions = () => {
   const t = useTranslations("webrtc");
@@ -186,6 +187,8 @@ const CallActions = () => {
           </div>
         </DialogContent>
       </Dialog>
+
+      <PostCallSurveyPicker />
 
       {isSpying && (
         <Button

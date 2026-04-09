@@ -4117,6 +4117,23 @@
       "spy": "تنصّت",
       "barrage": "تدخل فوري"
     },
+    "postCallSurvey": {
+      "title": "استطلاع",
+      "search": "البحث في الاستطلاعات...",
+      "noSurveys": "لا توجد استطلاعات",
+      "toasts": {
+        "assigned": "تم تعيين الاستطلاع",
+        "assignedDescription": "تم تعيين الاستطلاع لهذه المكالمة.",
+        "error": "خطأ",
+        "errorDescription": "فشل تعيين الاستطلاع. يرجى المحاولة مرة أخرى."
+      },
+      "confirm": {
+        "title": "تعيين استطلاع",
+        "description": "هل أنت متأكد أنك تريد تعيين \"{name}\" لهذه المكالمة؟",
+        "assign": "تعيين",
+        "cancel": "إلغاء"
+      }
+    },
     "direction": {
       "outgoing": "مكالمة صادرة",
       "incoming": "مكالمة واردة"
