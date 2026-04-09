@@ -5191,6 +5191,8 @@
       },
       "filters": {
         "toggle": "Toggle Filters",
+        "agents": "Agents",
+        "agentsPlaceholder": "Select agents...",
         "completionStatus": "Completion Status",
         "completionStatusPlaceholder": "Select completion statuses...",
         "phone": "Phone",

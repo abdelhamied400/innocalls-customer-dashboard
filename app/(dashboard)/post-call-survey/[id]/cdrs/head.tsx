@@ -21,6 +21,9 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useEffect, useState } from "react";
+import { useVocab } from "@/hooks/useVocab";
+
+type Option = { label: string; value: string };
 
 type PostCallSurveyCdrsHeadProps = {
   filters: Record<string, any>;
@@ -36,6 +39,13 @@ const PostCallSurveyCdrsHead = ({
   const menuPortalTarget =
     typeof window !== "undefined" ? document.body : undefined;
 
+  const { extensions } = useVocab();
+  const extensionsOptions = extensions?.map((ext) => ({
+    label: `${ext.name} (${ext.ext})`,
+    value: String(ext.ext),
+  }));
+
+  const [selectedAgents, setSelectedAgents] = useState<Option[]>([]);
   const [selectedCompletionStatuses, setSelectedCompletionStatuses] = useState<
     { label: string; value: string }[]
   >([]);
@@ -51,6 +61,10 @@ const PostCallSurveyCdrsHead = ({
   const applyFilters = () => {
     setFilters((prev) => ({
       ...prev,
+      agents:
+        selectedAgents.length > 0
+          ? selectedAgents.map((a) => a.value)
+          : undefined,
       completionStatuses:
         selectedCompletionStatuses.length > 0
           ? selectedCompletionStatuses.map((s) => s.value)
@@ -94,11 +108,40 @@ const PostCallSurveyCdrsHead = ({
         <CollapsibleContent>
           <FilterBar
             onClear={() => {
+              setSelectedAgents([]);
               setSelectedCompletionStatuses([]);
               setPhone("");
               setFilters({});
             }}
           >
+            <FilterBox
+              triggerLabel={t("filters.agents")}
+              label={t("filters.agents")}
+              onReset={() => {
+                setSelectedAgents([]);
+                setFilters((prev) => ({
+                  ...prev,
+                  agents: undefined,
+                }));
+              }}
+              onApply={applyFilters}
+              numberOfFilters={selectedAgents.length}
+            >
+              <Select
+                options={extensionsOptions}
+                value={selectedAgents}
+                menuPortalTarget={menuPortalTarget}
+                menuPosition="fixed"
+                onChange={(options) =>
+                  setSelectedAgents(
+                    (options as { label: string; value: string }[]) || [],
+                  )
+                }
+                isMulti
+                placeholder={t("filters.agentsPlaceholder")}
+              />
+            </FilterBox>
+
             <FilterBox
               triggerLabel={t("filters.completionStatus")}
               label={t("filters.completionStatus")}

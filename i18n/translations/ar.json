@@ -5186,6 +5186,8 @@
       },
       "filters": {
         "toggle": "تبديل الفلاتر",
+        "agents": "الوكلاء",
+        "agentsPlaceholder": "اختر الوكلاء...",
         "completionStatus": "حالة الإكمال",
         "completionStatusPlaceholder": "اختر حالات الإكمال...",
         "phone": "الهاتف",
