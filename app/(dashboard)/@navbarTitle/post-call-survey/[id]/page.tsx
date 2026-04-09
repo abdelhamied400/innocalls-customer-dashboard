@@ -21,7 +21,7 @@ const PostCallSurveyNavbarTitle = ({
   const { id } = use(params);
   const t = useTranslations("postCallSurvey");
 
-  const { data: survey, isFetching } = useLocalizedQuery({
+  const { data: survey, isLoading } = useLocalizedQuery({
     queryKey: ["post-call-survey-detail", id],
     queryFn: () => postCallSurveyService.fetchById(id as string),
     gcTime: 0,
@@ -38,7 +38,7 @@ const PostCallSurveyNavbarTitle = ({
     },
   ];
 
-  if (isFetching) {
+  if (isLoading) {
     return (
       <div className="flex items-center gap-3">
         <Skeleton className="w-8 h-8 rounded-full" />

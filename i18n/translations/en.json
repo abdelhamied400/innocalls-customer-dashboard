@@ -5130,6 +5130,41 @@
       "exportFailed": "Failed to export report",
       "unexpectedError": "An unexpected error occurred"
     },
+    "create": {
+      "title": "Create Post Call Survey",
+      "description": "Create a new post call survey",
+      "steps": {
+        "surveyDetails": "Survey Details",
+        "sounds": "Sounds",
+        "questions": "Questions"
+      },
+      "actions": {
+        "next": "Next",
+        "submit": "Create Survey"
+      },
+      "form": {
+        "name": { "label": "Survey Name", "placeholder": "Enter survey name", "required": "Survey name is required" },
+        "dtmfTimeout": { "label": "DTMF Timeout (sec)", "hint": "The time (seconds) the system will wait for the customer to input a key.", "required": "Required", "min": "Minimum 5 seconds" },
+        "maxQuestionAttempts": { "label": "Max Question Attempts", "hint": "The number of attempts the customer can try to answer a question.", "required": "Required", "min": "Minimum 1 attempt" },
+        "startSound": { "label": "Start Sound", "hint": "The sound that will be played when the call starts", "required": "Start sound is required" },
+        "endSound": { "label": "End Sound", "hint": "The sound that will be played when the call ends", "required": "End sound is required" },
+        "wrongEntrySound": { "label": "Wrong Entry Sound", "hint": "The sound that will be played when the customer enters a wrong answer", "required": "Wrong entry sound is required" },
+        "questions": {
+          "title": "Questions",
+          "add": "Add Question",
+          "answerType": { "label": "Answer Type", "placeholder": "Select type", "required": "Answer type is required" },
+          "answerTypes": { "oneFive": "1 - 5", "oneTen": "1 - 10", "yesNo": "Yes (1) / No (2)" },
+          "sound": { "label": "Question Sound", "hint": "The sound that will be played when the question is asked", "required": "Question sound is required" },
+          "min": "At least one question is required"
+        }
+      },
+      "toasts": {
+        "created": "Survey Created",
+        "createdDescription": "The survey has been created successfully.",
+        "error": "Error",
+        "errorDescription": "An error occurred. Please try again."
+      }
+    },
     "detailsLayout": {
       "tabs": {
         "details": "Survey Details",
@@ -5213,6 +5248,24 @@
       "toasts": {
         "error": "Error",
         "errorDescription": "An error occurred. Please try again."
+      }
+    },
+    "analytics": {
+      "title": "Call Analytics",
+      "noData": "No analytics data available",
+      "questionLabel": "Question {number}",
+      "fields": {
+        "questionType": "Question Type",
+        "totalResponses": "Total Responses",
+        "totalAnswers": "Total Answers",
+        "promotersCount": "Promoters",
+        "passivesCount": "Passives",
+        "detractorsCount": "Detractors"
+      },
+      "nps": {
+        "promoters": "Promoters",
+        "detractors": "Detractors",
+        "passives": "Passives"
       }
     }
   },

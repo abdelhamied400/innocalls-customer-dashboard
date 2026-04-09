@@ -5125,6 +5125,41 @@
       "exportFailed": "فشل تصدير التقرير",
       "unexpectedError": "حدث خطأ غير متوقع"
     },
+    "create": {
+      "title": "إنشاء استطلاع ما بعد المكالمة",
+      "description": "إنشاء استطلاع ما بعد المكالمة جديد",
+      "steps": {
+        "surveyDetails": "تفاصيل الاستطلاع",
+        "sounds": "الأصوات",
+        "questions": "الأسئلة"
+      },
+      "actions": {
+        "next": "التالي",
+        "submit": "إنشاء الاستطلاع"
+      },
+      "form": {
+        "name": { "label": "اسم الاستطلاع", "placeholder": "أدخل اسم الاستطلاع", "required": "اسم الاستطلاع مطلوب" },
+        "dtmfTimeout": { "label": "مهلة DTMF (ثانية)", "hint": "الوقت (بالثواني) الذي سينتظره النظام لإدخال العميل مفتاحًا.", "required": "مطلوب", "min": "الحد الأدنى 5 ثوانٍ" },
+        "maxQuestionAttempts": { "label": "أقصى عدد لمحاولات السؤال", "hint": "عدد المحاولات التي يمكن للعميل تجربتها للإجابة على سؤال.", "required": "مطلوب", "min": "الحد الأدنى محاولة واحدة" },
+        "startSound": { "label": "صوت البداية", "hint": "الصوت الذي سيتم تشغيله عند بدء المكالمة", "required": "صوت البداية مطلوب" },
+        "endSound": { "label": "صوت النهاية", "hint": "الصوت الذي سيتم تشغيله عند انتهاء المكالمة", "required": "صوت النهاية مطلوب" },
+        "wrongEntrySound": { "label": "صوت الإدخال الخاطئ", "hint": "الصوت الذي سيتم تشغيله عند إدخال العميل إجابة خاطئة", "required": "صوت الإدخال الخاطئ مطلوب" },
+        "questions": {
+          "title": "الأسئلة",
+          "add": "إضافة سؤال",
+          "answerType": { "label": "نوع الإجابة", "placeholder": "اختر النوع", "required": "نوع الإجابة مطلوب" },
+          "answerTypes": { "oneFive": "1 - 5", "oneTen": "1 - 10", "yesNo": "نعم (1) / لا (2)" },
+          "sound": { "label": "صوت السؤال", "hint": "الصوت الذي سيتم تشغيله عند طرح السؤال", "required": "صوت السؤال مطلوب" },
+          "min": "مطلوب سؤال واحد على الأقل"
+        }
+      },
+      "toasts": {
+        "created": "تم إنشاء الاستطلاع",
+        "createdDescription": "تم إنشاء الاستطلاع بنجاح.",
+        "error": "خطأ",
+        "errorDescription": "حدث خطأ. يرجى المحاولة مرة أخرى."
+      }
+    },
     "detailsLayout": {
       "tabs": {
         "details": "تفاصيل الاستطلاع",
@@ -5208,6 +5243,24 @@
       "toasts": {
         "error": "خطأ",
         "errorDescription": "حدث خطأ. يرجى المحاولة مرة أخرى."
+      }
+    },
+    "analytics": {
+      "title": "تحليلات المكالمات",
+      "noData": "لا توجد بيانات تحليلية متاحة",
+      "questionLabel": "السؤال {number}",
+      "fields": {
+        "questionType": "نوع السؤال",
+        "totalResponses": "إجمالي الردود",
+        "totalAnswers": "إجمالي الإجابات",
+        "promotersCount": "المروجون",
+        "passivesCount": "المحايدون",
+        "detractorsCount": "المنتقدون"
+      },
+      "nps": {
+        "promoters": "المروجون",
+        "detractors": "المنتقدون",
+        "passives": "المحايدون"
       }
     }
   },
@@ -5395,7 +5448,7 @@
           "title": "الأسئلة",
           "add": "إضافة سؤال",
           "answerType": { "label": "نوع الإجابة", "placeholder": "اختر النوع", "required": "نوع الإجابة مطلوب" },
-          "answerTypes": { "oneFive": "١ - ٥", "oneTen": "١ - ١٠", "yesNo": "نعم / لا" },
+          "answerTypes": { "oneFive": "1 - 5", "oneTen": "1 - 10", "yesNo": "نعم / لا" },
           "sound": { "label": "صوت السؤال", "hint": "الصوت الذي سيتم تشغيله عند طرح السؤال", "required": "صوت السؤال مطلوب" },
           "min": "مطلوب سؤال واحد على الأقل"
         },

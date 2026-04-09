@@ -1,9 +1,19 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, ReactNode } from "react";
 
-type PostCallSurveyLayoutProps = PropsWithChildren<{}>;
+type PostCallSurveyLayoutProps = PropsWithChildren<{
+  createSheet: ReactNode;
+}>;
 
-const PostCallSurveyLayout = ({ children }: PostCallSurveyLayoutProps) => {
-  return <div className="post-call-survey-layout">{children}</div>;
+const PostCallSurveyLayout = ({
+  children,
+  createSheet,
+}: PostCallSurveyLayoutProps) => {
+  return (
+    <div className="post-call-survey-layout">
+      {children}
+      {createSheet}
+    </div>
+  );
 };
 
 export default PostCallSurveyLayout;

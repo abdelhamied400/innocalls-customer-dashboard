@@ -67,6 +67,30 @@ export type PostCallSurveyCdrsResponse = {
   };
 };
 
+export type PostCallSurveyUserResponse = {
+  questionIndex: number;
+  totalAnswers: number;
+  questionType: string;
+  responses: { userResponse: string | number; count: number }[];
+};
+
+export type PostCallSurveyQuestionNPS = {
+  questionType: string;
+  totalResponses: number;
+  npsScore: number;
+  promoterPercentage: number;
+  detractorPercentage: number;
+  promoters: number;
+  detractors: number;
+  passives: number;
+};
+
+export type PostCallSurveyAnalysis = {
+  totalCalls: number;
+  userResponses: PostCallSurveyUserResponse[];
+  questionsNPS: PostCallSurveyQuestionNPS[];
+};
+
 export type PostCallSurveyListResponse = {
   data: {
     surveys: PostCallSurvey[];

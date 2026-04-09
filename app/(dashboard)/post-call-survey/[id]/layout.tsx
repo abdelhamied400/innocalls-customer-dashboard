@@ -23,7 +23,7 @@ const PostCallSurveyDetailLayout = ({
           <LinkTab href={`/post-call-survey/${id}/cdrs`}>
             {t("tabs.cdrs")}
           </LinkTab>
-          <LinkTab href={`/post-call-survey/${id}/call-analytics`} disabled>
+          <LinkTab href={`/post-call-survey/${id}/call-analytics`}>
             {t("tabs.analytics")}
           </LinkTab>
         </LinkTabs>

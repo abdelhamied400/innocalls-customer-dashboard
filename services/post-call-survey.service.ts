@@ -1,4 +1,5 @@
 import {
+  PostCallSurveyAnalysis,
   PostCallSurveyCdr,
   PostCallSurveyDetail,
   PostCallSurveyDetailResponse,
@@ -55,6 +56,18 @@ export default {
       `/survey-post-call-templates/${surveyId}/calls?${queryString}`,
     );
     return res.data.data;
+  },
+
+  getAnalysis: async (id: string): Promise<PostCallSurveyAnalysis> => {
+    const res = await api.get(
+      `/survey-post-call-templates/${id}/analytics`,
+    );
+    return res.data;
+  },
+
+  create: async (data: any): Promise<any> => {
+    const res = await api.post("/survey-post-call-templates", data);
+    return res.data;
   },
 
   exportReport: async (surveyId: string): Promise<void> => {

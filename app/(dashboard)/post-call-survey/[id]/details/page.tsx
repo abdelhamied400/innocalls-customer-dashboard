@@ -72,14 +72,12 @@ const PostCallSurveyDetails = () => {
           </div>
           <hr />
           <div className="grid grid-cols-1 lg:grid-cols-1 gap-4">
-            <Property
-              label={t("fields.allowDTMFInputDuringPlayback")}
-              value={
-                <Badge variant={survey.allowDTMFInputDuringPlayback ? "success" : "muted"}>
-                  {survey.allowDTMFInputDuringPlayback ? t("fields.yes") : t("fields.no")}
-                </Badge>
-              }
-            />
+            <div className="property">
+              <p className="text-sm text-muted-foreground">{t("fields.allowDTMFInputDuringPlayback")}</p>
+              <Badge variant={survey.allowDTMFInputDuringPlayback ? "success" : "muted"}>
+                {survey.allowDTMFInputDuringPlayback ? t("fields.yes") : t("fields.no")}
+              </Badge>
+            </div>
           </div>
         </div>
       </div>
