@@ -211,7 +211,7 @@ const AppSidebar = () => {
             <SidebarItem
               icon={<Quiz />}
               title={t("navigation.surveyCampaigns")}
-              href={`/survey`}
+              href={`/call-survey`}
               disabled={true}
               isNew={false}
               isComingSoon={true}
@@ -220,14 +220,6 @@ const AppSidebar = () => {
               icon={<Assessment />}
               title={t("navigation.postCallSurvey")}
               href={`/post-call-survey`}
-              disabled={false}
-              isNew={true}
-              isComingSoon={false}
-            />
-            <SidebarItem
-              icon={<Assessment />}
-              title={t("navigation.inCallSurvey")}
-              href={`/analytics/in-call-survey`}
               disabled={false}
               isNew={true}
               isComingSoon={false}
