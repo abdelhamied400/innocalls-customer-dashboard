@@ -80,11 +80,11 @@ const CreateSurveySheet = () => {
         wrongEntrySoundRes,
         ...questionSoundResults
       ] = await Promise.all([
-        callSurveyService.uploadSurveySound(values.startSound),
-        callSurveyService.uploadSurveySound(values.endSound),
-        callSurveyService.uploadSurveySound(values.wrongEntrySound),
+        callSurveyService.uploadSurveySound(values.startSound!),
+        callSurveyService.uploadSurveySound(values.endSound!),
+        callSurveyService.uploadSurveySound(values.wrongEntrySound!),
         ...values.questions.map((q) =>
-          callSurveyService.uploadSurveySound(q.sound),
+          callSurveyService.uploadSurveySound(q.sound!),
         ),
       ]);
 
