@@ -20,6 +20,7 @@ const ChatInput = ({
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
   const [micError, setMicError] = useState<string | null>(null);
+  const [stream, setStream] = useState<MediaStream | null>(null);
 
   const streamRef = useRef<MediaStream | null>(null);
   const recorderRef = useRef<MediaRecorder | null>(null);
@@ -35,10 +36,11 @@ const ChatInput = ({
   const startRecording = async () => {
     setMicError(null);
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      streamRef.current = stream;
+      const newStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      streamRef.current = newStream;
+      setStream(newStream);
 
-      const recorder = new MediaRecorder(stream);
+      const recorder = new MediaRecorder(newStream);
       recorderRef.current = recorder;
       chunksRef.current = [];
 
@@ -69,6 +71,7 @@ const ChatInput = ({
   const stopMediaTracks = () => {
     streamRef.current?.getTracks().forEach((track) => track.stop());
     streamRef.current = null;
+    setStream(null);
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
@@ -136,7 +139,7 @@ const ChatInput = ({
           </span>
           {/* Live waveform from mic */}
           <div className="flex-1 mx-2">
-            <RecordingWaveform stream={streamRef.current} />
+            <RecordingWaveform stream={stream} />
           </div>
           <button
             onClick={cancelRecording}

@@ -1,29 +1,26 @@
 import { Fullscreen, FullscreenExit } from "@mui/icons-material";
 import { Button } from "@/components/ui/button";
 import useAppStore from "@/store/app.slice";
-import { useState } from "react";
+import { useMemo } from "react";
 import { useTranslations } from "@/providers/TranslationProvider";
 
 const FullscreenToggle = () => {
   const t = useTranslations("omnichannel");
-  const { isSidebarOpen, toggleSidebar, isWebrtcOpen, setWebrtcOpen } =
+  const { isSidebarOpen, setSidebarOpen, isWebrtcOpen, setWebrtcOpen } =
     useAppStore();
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const [prevSidebarState, setPrevSidebarState] = useState(true);
-  const [prevWebrtcState, setPrevWebrtcState] = useState(true);
+  const isFullscreen = useMemo(
+    () => !isSidebarOpen && !isWebrtcOpen,
+    [isSidebarOpen, isWebrtcOpen],
+  );
 
   const enterFullscreen = () => {
-    setPrevSidebarState(isSidebarOpen);
-    setPrevWebrtcState(isWebrtcOpen);
-    if (isSidebarOpen) toggleSidebar();
-    if (isWebrtcOpen) setWebrtcOpen(false);
-    setIsFullscreen(true);
+    setSidebarOpen(false);
+    setWebrtcOpen(false);
   };
 
   const exitFullscreen = () => {
-    if (prevSidebarState && !isSidebarOpen) toggleSidebar();
-    if (prevWebrtcState && !isWebrtcOpen) setWebrtcOpen(true);
-    setIsFullscreen(false);
+    setSidebarOpen(true);
+    setWebrtcOpen(true);
   };
 
   return (
@@ -35,12 +32,12 @@ const FullscreenToggle = () => {
     >
       {isFullscreen ? (
         <>
-          <FullscreenExit className="!text-base" />
+          <FullscreenExit className="text-base!" />
           {t("exitFullscreen")}
         </>
       ) : (
         <>
-          <Fullscreen className="!text-base" />
+          <Fullscreen className="text-base!" />
           {t("fullscreen")}
         </>
       )}
