@@ -228,18 +228,18 @@ const AppSidebar = () => {
               icon={<Assessment />}
               title={t("navigation.inCallSurvey")}
               href={`/analytics/in-call-survey`}
-              disabled={true}
-              isNew={false}
-              isComingSoon={true}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
             />
             {auth?.user?.fullAccessConferenceBridge && (
               <SidebarItem
                 icon={<Hub />}
                 title={t("navigation.callBridge")}
                 href={`/call-bridge`}
-                disabled={true}
-                isNew={false}
-                isComingSoon={true}
+                disabled={false}
+                isNew={true}
+                isComingSoon={false}
               />
             )}
             <SidebarItem
