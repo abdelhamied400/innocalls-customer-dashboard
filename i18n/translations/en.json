@@ -327,7 +327,8 @@
       "tabs": {
         "account": "Account Settings",
         "call": "Call Settings",
-        "agent": "Agent Settings"
+        "agent": "Agent Settings",
+        "channels": "Channels"
       }
     },
     "account": {
@@ -1663,7 +1664,8 @@
       "apiCredentials": "API Credentials",
       "freshdeskCredentials": "Freshdesk",
       "zohoCredentials": "Zoho",
-      "activityAnalysis": "Activity"
+      "activityAnalysis": "Activity",
+      "omnichannel": "Omnichannel"
     },
     "support": {
       "innoSupport": "Innocalls Support"
@@ -2257,7 +2259,8 @@
         "outbound": "Outgoing",
         "unanswered": "Unanswered",
         "userActivity": "Agents Performance",
-        "callReporting": "Call History"
+        "callReporting": "Call History",
+        "omnichannel": "Omnichannel"
       }
     },
     "unanswered": {
@@ -5706,6 +5709,65 @@
         "error": "Error",
         "errorDescription": "Failed to load uncompleted requests"
       }
+    }
+  },
+  "omnichannel": {
+    "pageTitle": "Omnichannel",
+    "search": {
+      "placeholder": "Search conversations..."
+    },
+    "filters": {
+      "all": "All",
+      "active": "Active",
+      "waiting": "Waiting",
+      "resolved": "Resolved",
+      "closed": "Closed",
+      "agent": "Agent",
+      "assignedAgent": "Assigned Agent",
+      "unassigned": "Unassigned"
+    },
+    "status": {
+      "active": "Active",
+      "waiting": "Waiting",
+      "resolved": "Resolved",
+      "closed": "Closed"
+    },
+    "noConversations": "No conversations found",
+    "selectConversation": "Select a conversation",
+    "selectConversationHint": "Choose a conversation from the list to start messaging",
+    "conversationCount": "conversations",
+    "messageInput": {
+      "placeholder": "Type a message..."
+    },
+    "recording": "Recording",
+    "fullscreen": "Focus mode",
+    "exitFullscreen": "Exit focus",
+    "noResults": "No results found",
+    "micPermissionDenied": "Microphone access was denied. Please allow microphone access in your browser settings to record voice messages.",
+    "micNotFound": "No microphone was found. Please connect a microphone and try again.",
+    "micError": "Could not access the microphone. Please check your device settings.",
+    "channels": {
+      "title": "Connected Channels",
+      "subtitle": "Manage your communication channels and integrations",
+      "addChannel": "Add Channel",
+      "configure": "Configure",
+      "disconnect": "Disconnect",
+      "connect": "Connect",
+      "connectedSince": "Connected",
+      "statusLabels": {
+        "connected": "Connected",
+        "disconnected": "Disconnected",
+        "pending": "Pending"
+      }
+    },
+    "analytics": {
+      "overview": "Overview",
+      "totalConversations": "Total Conversations",
+      "active": "Active",
+      "waiting": "Waiting",
+      "resolvedToday": "Resolved Today",
+      "avgResponseTime": "Avg Response Time",
+      "byChannel": "By Channel"
     }
   }
 }

@@ -327,7 +327,8 @@
       "tabs": {
         "account": "إعدادات الحساب",
         "call": "إعدادات المكالمات",
-        "agent": "إعدادات الوكيل"
+        "agent": "إعدادات الوكيل",
+        "channels": "القنوات"
       }
     },
     "account": {
@@ -1662,7 +1663,8 @@
       "apiCredentials": "بيانات اعتماد API",
       "freshdeskCredentials": "فريش ديسك",
       "zohoCredentials": "زوهو",
-      "activityAnalysis": "إحصائيات النشاط"
+      "activityAnalysis": "إحصائيات النشاط",
+      "omnichannel": "القنوات الموحدة"
     },
     "support": {
       "innoSupport": "دعم اينو"
@@ -2256,7 +2258,8 @@
         "outbound": "الصادرة",
         "unanswered": "غير مجابة",
         "callReporting": "تاريخ المكالمات",
-        "userActivity": "أداء الوكلاء "
+        "userActivity": "أداء الوكلاء ",
+        "omnichannel": "القنوات الموحدة"
       }
     },
     "unanswered": {
@@ -5701,6 +5704,65 @@
         "error": "خطأ",
         "errorDescription": "فشل تحميل الطلبات غير المكتملة"
       }
+    }
+  },
+  "omnichannel": {
+    "pageTitle": "القنوات الموحدة",
+    "search": {
+      "placeholder": "البحث في المحادثات..."
+    },
+    "filters": {
+      "all": "الكل",
+      "active": "نشطة",
+      "waiting": "في الانتظار",
+      "resolved": "تم حلها",
+      "closed": "مغلقة",
+      "agent": "الوكيل",
+      "assignedAgent": "الوكيل المعين",
+      "unassigned": "غير معين"
+    },
+    "status": {
+      "active": "نشطة",
+      "waiting": "في الانتظار",
+      "resolved": "تم حلها",
+      "closed": "مغلقة"
+    },
+    "noConversations": "لا توجد محادثات",
+    "selectConversation": "اختر محادثة",
+    "selectConversationHint": "اختر محادثة من القائمة لبدء المراسلة",
+    "conversationCount": "محادثات",
+    "messageInput": {
+      "placeholder": "اكتب رسالة..."
+    },
+    "recording": "جاري التسجيل",
+    "fullscreen": "وضع التركيز",
+    "exitFullscreen": "إنهاء التركيز",
+    "noResults": "لا توجد نتائج",
+    "micPermissionDenied": "تم رفض الوصول إلى الميكروفون. يرجى السماح بالوصول إلى الميكروفون من إعدادات المتصفح لتسجيل الرسائل الصوتية.",
+    "micNotFound": "لم يتم العثور على ميكروفون. يرجى توصيل ميكروفون والمحاولة مرة أخرى.",
+    "micError": "تعذر الوصول إلى الميكروفون. يرجى التحقق من إعدادات الجهاز.",
+    "channels": {
+      "title": "القنوات المتصلة",
+      "subtitle": "إدارة قنوات الاتصال والتكاملات",
+      "addChannel": "إضافة قناة",
+      "configure": "إعداد",
+      "disconnect": "قطع الاتصال",
+      "connect": "اتصال",
+      "connectedSince": "متصل منذ",
+      "statusLabels": {
+        "connected": "متصل",
+        "disconnected": "غير متصل",
+        "pending": "قيد الانتظار"
+      }
+    },
+    "analytics": {
+      "overview": "نظرة عامة",
+      "totalConversations": "إجمالي المحادثات",
+      "active": "نشطة",
+      "waiting": "في الانتظار",
+      "resolvedToday": "تم حلها اليوم",
+      "avgResponseTime": "متوسط وقت الاستجابة",
+      "byChannel": "حسب القناة"
     }
   }
 }

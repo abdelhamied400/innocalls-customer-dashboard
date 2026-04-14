@@ -21,6 +21,7 @@ import PersonSearch from "@mui/icons-material/PersonSearch";
 import History from "@mui/icons-material/History";
 import Quiz from "@mui/icons-material/Quiz";
 import Hub from "@mui/icons-material/Hub";
+import Forum from "@mui/icons-material/Forum";
 import Assessment from "@mui/icons-material/Assessment";
 import Campaign from "@mui/icons-material/Campaign";
 import Phone from "@mui/icons-material/Phone";
@@ -77,6 +78,17 @@ const AppSidebar = () => {
             disabled={true}
             isNew={false}
             isComingSoon={true}
+          />
+        )}
+
+        {session?.userType === "user" && Organization?.hasTenant && (
+          <SidebarItem
+            icon={<Forum />}
+            title={t("navigation.omnichannel")}
+            href={`/omnichannel`}
+            disabled={isPending}
+            isNew={true}
+            isComingSoon={false}
           />
         )}
 

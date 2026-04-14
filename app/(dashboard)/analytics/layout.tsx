@@ -10,6 +10,7 @@ import {
   CallMissedOutgoing,
   History,
   SupervisedUserCircle,
+  Forum,
 } from "@mui/icons-material";
 import { useEffect } from "react";
 
@@ -52,6 +53,10 @@ const AnalyticsLayout = ({ children }: { children: React.ReactNode }) => {
             <LinkTab href="/analytics/call-reporting">
               <History />
               {t("layout.tabs.callReporting")}
+            </LinkTab>
+            <LinkTab href="/analytics/omnichannel">
+              <Forum />
+              {t("layout.tabs.omnichannel")}
             </LinkTab>
           </LinkTabs>
 
