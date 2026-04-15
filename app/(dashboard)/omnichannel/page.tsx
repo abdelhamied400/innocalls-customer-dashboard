@@ -26,19 +26,49 @@ const OmnichannelPage = () => {
 
   const loadConversations = useCallback(async () => {
     setIsLoading(true);
-    const conversations = await omnichannelService.getConversations({
-      channel: channelFilter,
-      status: statusFilter,
-      search: searchQuery,
-      agent: agentFilter,
-    });
-    setConversations(conversations);
+    try {
+      const result = await omnichannelService.getConversations({
+        channel: channelFilter,
+        status: statusFilter,
+        search: searchQuery,
+        agent: agentFilter,
+      });
+      setConversations(result.conversations);
+    } catch {
+      setConversations([]);
+    }
     setIsLoading(false);
   }, [channelFilter, statusFilter, searchQuery, agentFilter]);
 
   useEffect(() => {
     loadConversations();
   }, [loadConversations]);
+
+  const handleSelectConversation = async (conversation: Conversation) => {
+    // Set immediately for responsiveness, then load full conversation with messages
+    setSelectedConversation(conversation);
+    try {
+      const full = await omnichannelService.getConversation(conversation.id);
+      setSelectedConversation(full);
+      // Mark as read
+      if (full.unreadCount > 0) {
+        await omnichannelService.markAsRead(full.id);
+        // Update the list item's unread count
+        setConversations((prev) =>
+          prev.map((c) =>
+            c.id === full.id ? { ...c, unreadCount: 0 } : c,
+          ),
+        );
+      }
+    } catch {
+      // Keep the preview version
+    }
+  };
+
+  const handleConversationUpdated = () => {
+    // Refresh the list after sending a message
+    loadConversations();
+  };
 
   return (
     <div className="flex flex-col gap-3 h-[calc(100vh-130px)]">
@@ -58,7 +88,7 @@ const OmnichannelPage = () => {
           <ConversationList
             conversations={conversations}
             selectedId={selectedConversation?.id ?? null}
-            onSelect={setSelectedConversation}
+            onSelect={handleSelectConversation}
             isLoading={isLoading}
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
@@ -76,6 +106,7 @@ const OmnichannelPage = () => {
           <ChatPanel
             conversation={selectedConversation}
             onClose={() => setSelectedConversation(null)}
+            onMessageSent={handleConversationUpdated}
           />
         </div>
       </div>

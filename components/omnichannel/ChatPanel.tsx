@@ -1,7 +1,11 @@
-import { useEffect } from "react";
-import type { Conversation } from "@/types/omnichannel";
+"use client";
+
+import { useEffect, useState } from "react";
+import type { Conversation, Message } from "@/types/omnichannel";
 import { Forum } from "@mui/icons-material";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
+import omnichannelService from "@/services/omnichannel.service";
+import useAuth from "@/hooks/useAuth";
 import ChatHeader from "./ChatHeader";
 import ChatMessages from "./ChatMessages";
 import ChatInput from "./ChatInput";
@@ -9,11 +13,19 @@ import ChatInput from "./ChatInput";
 type ChatPanelProps = {
   conversation: Conversation | null;
   onClose?: () => void;
+  onMessageSent?: () => void;
 };
 
-const ChatPanel = ({ conversation, onClose }: ChatPanelProps) => {
+const ChatPanel = ({ conversation, onClose, onMessageSent }: ChatPanelProps) => {
   const t = useTranslations("omnichannel");
   const locale = useLocale();
+  const { data: auth } = useAuth();
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  // Sync messages from conversation prop
+  useEffect(() => {
+    setMessages(conversation?.messages ?? []);
+  }, [conversation?.id, conversation?.messages]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -43,18 +55,44 @@ const ChatPanel = ({ conversation, onClose }: ChatPanelProps) => {
     );
   }
 
-  const handleSendMessage = (_content: string) => {
-    // Mock - would send via service in real implementation
+  const senderName = auth?.user?.name ?? "Agent";
+
+  const handleSendMessage = async (content: string) => {
+    try {
+      const newMsg = await omnichannelService.sendMessage(conversation.id, {
+        content,
+        direction: "outbound",
+        senderName,
+      });
+      setMessages((prev) => [...prev, newMsg]);
+      onMessageSent?.();
+    } catch {
+      // Could show a toast here
+    }
   };
 
-  const handleSendVoice = (_blob: Blob, _duration: number) => {
-    // Would upload the blob via service in real implementation
+  const handleSendVoice = async (blob: Blob, duration: number) => {
+    try {
+      const newMsg = await omnichannelService.sendVoiceMessage(
+        conversation.id,
+        {
+          file: blob,
+          direction: "outbound",
+          senderName,
+          duration,
+        },
+      );
+      setMessages((prev) => [...prev, newMsg]);
+      onMessageSent?.();
+    } catch {
+      // Could show a toast here
+    }
   };
 
   return (
     <div className="flex flex-col bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden h-full">
       <ChatHeader conversation={conversation} onClose={onClose} />
-      <ChatMessages messages={conversation.messages} locale={locale} />
+      <ChatMessages messages={messages} locale={locale} />
       <ChatInput
         onSendMessage={handleSendMessage}
         onSendVoice={handleSendVoice}
