@@ -1724,7 +1724,9 @@
       "answered": "تم الرد",
       "busy": "مشغول",
       "failed": "فشلت",
-      "notAnswered": "لم يتم الرد"
+      "notAnswered": "لم يتم الرد",
+      "rejected": "مرفوضة",
+      "canceled": "ملغاة"
     },
     "recording": {
       "title": "تسجيل المكالمة",

@@ -1725,7 +1725,9 @@
       "answered": "Answered",
       "busy": "Busy",
       "failed": "Failed",
-      "notAnswered": "Not Answered"
+      "notAnswered": "Not Answered",
+      "rejected": "Rejected",
+      "canceled": "Canceled"
     },
     "recording": {
       "title": "Call Recording",

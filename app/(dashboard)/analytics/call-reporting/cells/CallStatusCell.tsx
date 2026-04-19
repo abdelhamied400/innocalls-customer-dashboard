@@ -36,6 +36,20 @@ const CallStatusCell = ({ row }: Cell<Call>) => {
       </Badge>
     );
   }
+  if (status === "Rejected") {
+    return (
+      <Badge variant="destructive" className="capitalize">
+        {t("rejected")}
+      </Badge>
+    );
+  }
+  if (status === "Canceled") {
+    return (
+      <Badge variant="neutral" className="capitalize">
+        {t("canceled")}
+      </Badge>
+    );
+  }
   return (
     <Badge variant="default" className="capitalize">
       {status}

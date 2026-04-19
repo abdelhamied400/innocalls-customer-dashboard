@@ -360,10 +360,11 @@ export const useUaEvents = ({
           stopRingtone();
           stopRingingTone();
           webrtcLogger.info("Call ended", event);
-          setTimeout(() => {
+          const goToDialpad = () => {
             navigate("/dialpad");
             setCurrentSession?.(null);
-          }, 2000);
+          };
+          goToDialpad();
           updateSessionState("ended");
           setSpyingStatus("spy");
           setIsSpying(false);
@@ -385,11 +386,18 @@ export const useUaEvents = ({
             level: "warning",
             data: { cause: event.cause },
           });
-          setTimeout(() => {
+          const goToDialpad = () => {
             navigate("/dialpad");
             setCurrentSession?.(null);
-          }, 2000);
-          // updateSessionState("failed");
+          };
+          if (
+            session.direction === "outgoing" &&
+            event.originator === "remote"
+          ) {
+            setTimeout(goToDialpad, 2000);
+          } else {
+            goToDialpad();
+          }
           setSpyingStatus("spy");
           setIsSpying(false);
 

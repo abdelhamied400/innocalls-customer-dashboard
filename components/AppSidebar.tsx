@@ -128,17 +128,17 @@ const AppSidebar = () => {
           <SidebarCollapsibleItem
             icon={<Apps />}
             title={t("navigation.apps")}
-            isNew={false}
-            isComingSoon={true}
+            isNew={true}
+            isComingSoon={false}
             href={`/apps`}
           >
             <SidebarItem
               icon={<RingVolume />}
               title={t("navigation.autoDialer")}
               href={`/auto-dialer`}
-              disabled={true}
-              isNew={false}
-              isComingSoon={true}
+              disabled={false}
+              isNew={true}
+              isComingSoon={false}
             />
           </SidebarCollapsibleItem>
         )}
@@ -194,20 +194,21 @@ const AppSidebar = () => {
           <SidebarCollapsibleItem
             icon={<Apps />}
             title={t("navigation.apps")}
-            isNew={false}
-            isComingSoon={true}
+            isNew={true}
+            isComingSoon={false}
             href={`/apps`}
           >
-            {auth?.user?.fullAccessAutoDialerCampaigns && (
-              <SidebarItem
-                icon={<RingVolume />}
-                title={t("navigation.autoDialer")}
-                href={`/auto-dialer`}
-                disabled={true}
-                isNew={false}
-                isComingSoon={true}
-              />
-            )}
+            {auth?.user?.fullAccessAutoDialerCampaigns &&
+              Organization?.hasTenant && (
+                <SidebarItem
+                  icon={<RingVolume />}
+                  title={t("navigation.autoDialer")}
+                  href={`/auto-dialer`}
+                  disabled={false}
+                  isNew={true}
+                  isComingSoon={false}
+                />
+              )}
             <SidebarItem
               icon={<Quiz />}
               title={t("navigation.surveyCampaigns")}

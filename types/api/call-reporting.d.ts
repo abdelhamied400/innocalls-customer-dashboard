@@ -44,7 +44,13 @@ export type Call = {
     comment: string;
     postCallTags: string[];
   };
-  call_status: "Answered" | "Busy" | "Failed" | "Not Answered";
+  call_status:
+    | "Answered"
+    | "Busy"
+    | "Failed"
+    | "Not Answered"
+    | "Rejected"
+    | "Canceled";
   canListenToRecords: boolean;
   direction: "incoming" | "outgoing" | "local";
   duration: string;
