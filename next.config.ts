@@ -11,6 +11,7 @@ const nextConfig: NextConfig = {
   sassOptions: {
     silenceDeprecations: ["legacy-js-api"],
   },
+  allowedDevOrigins: ["folly-subsimple-joya.ngrok-free.dev"],
 };
 
 export default withSentryConfig(nextConfig, {

@@ -62,9 +62,11 @@ const ConversationItem = ({
               {conversation.contact.name}
             </span>
             <span className="text-[11px] text-gray-400 whitespace-nowrap">
-              {formatDistanceToNow(new Date(conversation.lastMessageAt), {
-                addSuffix: true,
-              })}
+              {conversation.lastMessageAt
+                ? formatDistanceToNow(new Date(conversation.lastMessageAt), {
+                    addSuffix: true,
+                  })
+                : ""}
             </span>
           </div>
 
