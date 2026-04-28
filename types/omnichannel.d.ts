@@ -22,6 +22,8 @@ export type Channel = {
   status: ChannelStatus;
   description: string | null;
   config: Record<string, unknown>;
+  /** Public widget token — populated for `live_chat` channels only. */
+  widgetToken?: string | null;
   connectedAt?: string | null;
   createdAt: string;
   updatedAt: string;

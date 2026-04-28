@@ -4,10 +4,11 @@ import { useEffect, useRef } from "react";
 
 type ChatMessagesProps = {
   messages: Message[];
+  conversationId: string;
   locale: string;
 };
 
-const ChatMessages = ({ messages, locale }: ChatMessagesProps) => {
+const ChatMessages = ({ messages, conversationId, locale }: ChatMessagesProps) => {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -26,6 +27,7 @@ const ChatMessages = ({ messages, locale }: ChatMessagesProps) => {
           <MessageBubble
             key={msg.id}
             message={msg}
+            conversationId={conversationId}
             locale={locale}
             showSender={showSender}
             isLastInGroup={isLastInGroup}

@@ -6,6 +6,7 @@ import VoiceMessage from "./VoiceMessage";
 
 type MessageBubbleProps = {
   message: Message;
+  conversationId: string;
   locale: string;
   /** Whether to show the sender name (first message in a group) */
   showSender: boolean;
@@ -15,6 +16,7 @@ type MessageBubbleProps = {
 
 const MessageBubble = ({
   message,
+  conversationId,
   locale,
   showSender,
   isLastInGroup,
@@ -87,12 +89,14 @@ const MessageBubble = ({
           {message.type === "voice" ? (
             <div className="flex items-center gap-1.5">
               <VoiceMessage
+                conversationId={conversationId}
+                messageId={message.id}
                 duration={message.duration ?? 0}
                 isOutbound={isOutbound}
               />
             </div>
           ) : (
-            <p className="text-[13px] leading-relaxed whitespace-pre-wrap">
+            <p className="text-[13px] leading-relaxed whitespace-pre-wrap break-all">
               {message.content}
             </p>
           )}

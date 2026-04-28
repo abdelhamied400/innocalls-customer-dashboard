@@ -24,6 +24,7 @@ import {
   Login,
   HourglassEmpty,
   ErrorOutline,
+  Refresh,
 } from "@mui/icons-material";
 import { cn } from "@/lib/utils";
 import ChannelIcon, { channelLabels } from "./ChannelIcon";
@@ -64,6 +65,9 @@ const ChannelSetupDialog = ({
   const [oauthError, setOauthError] = useState<string | null>(null);
   const popupRef = useRef<Window | null>(null);
   const pollRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Live-chat token rotation
+  const [isRotating, setIsRotating] = useState(false);
 
   const resetState = useCallback(() => {
     setCurrentStep(0);
@@ -110,6 +114,39 @@ const ChannelSetupDialog = ({
   const embedSnippet = savedChannel?.config?.embedSnippet as
     | string
     | undefined;
+  const widgetToken = savedChannel?.widgetToken ?? null;
+
+  // For an existing live_chat channel being reconfigured, show its current
+  // token + rotate button regardless of the wizard step.
+  const existingLiveChatToken =
+    isExistingChannel && channel.type === "live_chat" && !savedChannel
+      ? (channel.widgetToken ?? null)
+      : null;
+  const existingLiveChatSnippet =
+    existingLiveChatToken
+      ? `<ChatWidget token="${existingLiveChatToken}" />`
+      : null;
+
+  const handleRegenerateToken = async () => {
+    if (isRotating) return;
+    const ok = window.confirm(
+      "Regenerate the widget token? The current token will stop working immediately and any deployed widgets must be updated.",
+    );
+    if (!ok) return;
+    setIsRotating(true);
+    try {
+      const updated = await omnichannelService.regenerateWidgetToken(
+        channel.id,
+      );
+      setSavedChannel(updated);
+      onSaved?.();
+    } catch (err: any) {
+      setWarning(
+        err?.response?.data?.error ?? "Failed to regenerate widget token",
+      );
+    }
+    setIsRotating(false);
+  };
 
   // ── OAuth Flow ───────────────────────────────────────────────────────────
 
@@ -267,6 +304,11 @@ const ChannelSetupDialog = ({
       }
       setSavedChannel(result);
       onSaved?.();
+      // If the field step isn't the last step (i.e. there's a result step
+      // after it — like live_chat's "Copy your token" reveal), advance.
+      if (currentStep < totalSteps - 1) {
+        setCurrentStep(totalSteps - 1);
+      }
     } catch (err: any) {
       const response = err?.response;
       if (response?.status === 400 && response?.data?.errors) {
@@ -657,6 +699,69 @@ const ChannelSetupDialog = ({
             </div>
           )}
 
+          {/* Widget token block — for live_chat (after create OR existing) */}
+          {(widgetToken || existingLiveChatToken) && (
+            <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
+              <div className="flex items-center justify-between gap-2">
+                <label className="text-xs font-medium text-gray-700">
+                  Widget token
+                </label>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="rounded-lg text-xs gap-1"
+                  onClick={handleRegenerateToken}
+                  disabled={isRotating}
+                >
+                  <Refresh
+                    className={cn(
+                      "!text-sm",
+                      isRotating && "animate-spin",
+                    )}
+                  />
+                  {isRotating ? "Rotating…" : "Regenerate"}
+                </Button>
+              </div>
+              <div className="flex gap-2">
+                <code className="flex-1 text-xs bg-gray-50 p-2.5 rounded-lg border border-gray-100 break-all text-gray-600 font-mono">
+                  {widgetToken ?? existingLiveChatToken}
+                </code>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="shrink-0 rounded-lg text-xs gap-1"
+                  onClick={() =>
+                    handleCopy(widgetToken ?? existingLiveChatToken!)
+                  }
+                >
+                  <ContentCopy className="!text-sm" />
+                  {copied ? t("copied") : t("copy")}
+                </Button>
+              </div>
+              {existingLiveChatSnippet && !widgetToken && (
+                <div className="flex gap-2">
+                  <code className="flex-1 text-xs bg-gray-50 p-2.5 rounded-lg border border-gray-100 break-all text-gray-600">
+                    {existingLiveChatSnippet}
+                  </code>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="shrink-0 rounded-lg text-xs gap-1"
+                    onClick={() => handleCopy(existingLiveChatSnippet)}
+                  >
+                    <ContentCopy className="!text-sm" />
+                    {copied ? t("copied") : t("copy")}
+                  </Button>
+                </div>
+              )}
+              <p className="text-[11px] text-gray-400">
+                Pass this token to the chat widget. Rotating immediately
+                invalidates the previous token, so update any deployed widgets
+                right after.
+              </p>
+            </div>
+          )}
+
           {/* Completed steps summary */}
           {currentStep > 0 && !showResult && oauthState !== "success" && (
             <div className="space-y-1.5">
@@ -729,7 +834,8 @@ const ChannelSetupDialog = ({
                 {currentStep + 1} / {totalSteps}
               </div>
 
-              {isLastStep ? (
+              {isLastStep ||
+              (showFieldsOnCurrentStep && !savedChannel) ? (
                 <Button
                   size="sm"
                   className="gap-1.5 text-xs rounded-lg"
