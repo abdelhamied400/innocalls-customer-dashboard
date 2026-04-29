@@ -91,47 +91,21 @@ export const channelSetupConfigs: Record<ChannelType, ChannelSetupConfig> = {
       {
         title: "Customize your widget",
         description:
-          "Choose the color, position, and messaging for your website chat widget.",
+          "Set the welcome message visitors see, and the domains where this widget is allowed to load.",
       },
       {
-        title: "Add allowed domains",
+        title: "Copy your widget token",
         description:
-          "Enter the domains where the chat widget will be embedded. Only these domains will be able to load the widget.",
-      },
-      {
-        title: "Embed the widget",
-        description:
-          "After saving, an embed snippet will be generated. Copy it and paste it into your website's HTML, just before the closing </body> tag.",
+          "Paste this token into your site's <ChatWidget> component to start receiving live chats.",
       },
     ],
     fields: [
-      {
-        key: "widgetColor",
-        label: "Widget Color",
-        type: "text",
-        required: true,
-        placeholder: "#1b78b3",
-      },
-      {
-        key: "widgetPosition",
-        label: "Widget Position",
-        type: "select",
-        required: true,
-        options: ["bottom-right", "bottom-left"],
-      },
       {
         key: "welcomeMessage",
         label: "Welcome Message",
         type: "text",
         required: true,
         placeholder: "Hello! How can we help you today?",
-      },
-      {
-        key: "offlineMessage",
-        label: "Offline Message",
-        type: "text",
-        required: true,
-        placeholder: "We're currently offline. Leave a message!",
       },
       {
         key: "allowedDomains",

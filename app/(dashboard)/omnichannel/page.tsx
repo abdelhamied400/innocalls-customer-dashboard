@@ -8,6 +8,11 @@ import ConversationList from "@/components/omnichannel/ConversationList";
 import ChatPanel from "@/components/omnichannel/ChatPanel";
 import FullscreenToggle from "@/components/omnichannel/FullscreenToggle";
 import { Forum } from "@mui/icons-material";
+import { usePolling } from "@/hooks/usePolling";
+
+// Polling cadences. Visibility-aware via usePolling — paused when tab hidden.
+const LIST_POLL_MS = 10_000;
+const ACTIVE_CONVERSATION_POLL_MS = 5_000;
 
 const OmnichannelPage = () => {
   const t = useTranslations("omnichannel");
@@ -24,6 +29,10 @@ const OmnichannelPage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [agentFilter, setAgentFilter] = useState("all");
 
+  /**
+   * Initial fetch + filter-driven refetch (shows the loading skeleton).
+   * Called once when filters change.
+   */
   const loadConversations = useCallback(async () => {
     setIsLoading(true);
     try {
@@ -40,9 +49,52 @@ const OmnichannelPage = () => {
     setIsLoading(false);
   }, [channelFilter, statusFilter, searchQuery, agentFilter]);
 
+  /**
+   * Background refresh — quietly updates the list every poll tick without
+   * flashing the loading skeleton. Used for the inbox poll.
+   */
+  const refreshConversations = useCallback(async () => {
+    try {
+      const result = await omnichannelService.getConversations({
+        channel: channelFilter,
+        status: statusFilter,
+        search: searchQuery,
+        agent: agentFilter,
+      });
+      setConversations(result.conversations);
+    } catch {
+      // Network blip — the next tick will retry.
+    }
+  }, [channelFilter, statusFilter, searchQuery, agentFilter]);
+
   useEffect(() => {
     loadConversations();
   }, [loadConversations]);
+
+  // Inbox poll — picks up new conversations + new last-messages while idle.
+  usePolling(refreshConversations, LIST_POLL_MS);
+
+  // Open-conversation poll — fetches the selected thread so visitor replies
+  // appear without a manual refresh. Cadence is faster because this is the
+  // surface the agent is actively staring at.
+  const refreshSelectedConversation = useCallback(async () => {
+    if (!selectedConversation) return;
+    try {
+      const full = await omnichannelService.getConversation(
+        selectedConversation.id,
+      );
+      setSelectedConversation((curr) =>
+        curr && curr.id === full.id ? full : curr,
+      );
+    } catch {
+      // ignore transient errors; next tick retries
+    }
+  }, [selectedConversation?.id]);
+  usePolling(
+    refreshSelectedConversation,
+    ACTIVE_CONVERSATION_POLL_MS,
+    Boolean(selectedConversation),
+  );
 
   const handleSelectConversation = async (conversation: Conversation) => {
     // Set immediately for responsiveness, then load full conversation with messages
@@ -68,6 +120,21 @@ const OmnichannelPage = () => {
   const handleConversationUpdated = () => {
     // Refresh the list after sending a message
     loadConversations();
+  };
+
+  /**
+   * Pushed up from ChatPanel when an in-place mutation (e.g. ending the chat)
+   * already returned the new conversation row. Updates both the open thread
+   * and the inbox list entry instantly, so the agent doesn't have to wait
+   * for the next poll tick to see the status change.
+   */
+  const handleConversationMutated = (updated: Conversation) => {
+    setSelectedConversation((curr) =>
+      curr && curr.id === updated.id ? { ...curr, ...updated } : curr,
+    );
+    setConversations((prev) =>
+      prev.map((c) => (c.id === updated.id ? { ...c, ...updated } : c)),
+    );
   };
 
   return (
@@ -107,6 +174,7 @@ const OmnichannelPage = () => {
             conversation={selectedConversation}
             onClose={() => setSelectedConversation(null)}
             onMessageSent={handleConversationUpdated}
+            onConversationUpdated={handleConversationMutated}
           />
         </div>
       </div>

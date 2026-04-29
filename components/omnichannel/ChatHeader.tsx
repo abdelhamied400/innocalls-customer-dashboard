@@ -1,7 +1,7 @@
 import type { Conversation } from "@/types/omnichannel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Close, Person } from "@mui/icons-material";
+import { Close, DoNotDisturbOn, Person } from "@mui/icons-material";
 import { useTranslations } from "@/providers/TranslationProvider";
 import ChannelIcon, { channelLabels } from "./ChannelIcon";
 import ContactAvatar from "./ContactAvatar";
@@ -16,10 +16,14 @@ const statusVariants: Record<string, string> = {
 type ChatHeaderProps = {
   conversation: Conversation;
   onClose?: () => void;
+  onEndChat?: () => void;
 };
 
-const ChatHeader = ({ conversation, onClose }: ChatHeaderProps) => {
+const ALIVE_STATUSES = new Set(["active", "waiting"]);
+
+const ChatHeader = ({ conversation, onClose, onEndChat }: ChatHeaderProps) => {
   const t = useTranslations("omnichannel");
+  const canEnd = onEndChat && ALIVE_STATUSES.has(conversation.status);
 
   return (
     <div className="px-5 py-3.5 border-b border-gray-100 bg-white flex items-center justify-between">
@@ -57,6 +61,17 @@ const ChatHeader = ({ conversation, onClose }: ChatHeaderProps) => {
         >
           {t(`status.${conversation.status}`)}
         </Badge>
+        {canEnd && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-1 rounded-lg text-xs h-7 px-2.5 border-red-200 text-red-500 hover:bg-red-50 hover:border-red-300 hover:text-red-600"
+            onClick={onEndChat}
+          >
+            <DoNotDisturbOn className="!text-sm" />
+            End chat
+          </Button>
+        )}
         {onClose && (
           <Button
             variant="ghost"

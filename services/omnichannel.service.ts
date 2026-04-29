@@ -139,6 +139,21 @@ const omnichannelService = {
     return res.data.data;
   },
 
+  /**
+   * Fetch a voice message audio file as a blob URL. Goes through the
+   * organization-scoped axios instance so the Organization header is set.
+   */
+  fetchVoiceMessageBlobUrl: async (
+    conversationId: string,
+    messageId: string,
+  ): Promise<string> => {
+    const res = await omniApi.get(
+      `/api/omnichannel/conversations/${conversationId}/messages/${messageId}/audio`,
+      { responseType: "blob" },
+    );
+    return URL.createObjectURL(res.data as Blob);
+  },
+
   // ── Channels ───────────────────────────────────────────────────────────────
 
   /** Get the OAuth popup URL for a channel type (whatsapp, messenger, instagram) */
@@ -198,6 +213,14 @@ const omnichannelService = {
 
   deleteChannel: async (id: string): Promise<{ success: boolean }> => {
     const res = await omniApi.delete(`/api/omnichannel/channels/${id}`);
+    return res.data.data;
+  },
+
+  /** Rotate the widget token for a `live_chat` channel. */
+  regenerateWidgetToken: async (id: string): Promise<Channel> => {
+    const res = await omniApi.post(
+      `/api/omnichannel/channels/${id}/regenerate-token`,
+    );
     return res.data.data;
   },
 
