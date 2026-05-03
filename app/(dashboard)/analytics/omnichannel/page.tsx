@@ -31,7 +31,6 @@ const OmnichannelAnalyticsPage = () => {
   const channels: ChannelType[] = [
     "whatsapp",
     "live_chat",
-    "voice",
     "messenger",
     "x",
     "instagram",

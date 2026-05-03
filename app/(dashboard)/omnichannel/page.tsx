@@ -27,7 +27,6 @@ const OmnichannelPage = () => {
   );
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [agentFilter, setAgentFilter] = useState("all");
 
   /**
    * Initial fetch + filter-driven refetch (shows the loading skeleton).
@@ -40,14 +39,13 @@ const OmnichannelPage = () => {
         channel: channelFilter,
         status: statusFilter,
         search: searchQuery,
-        agent: agentFilter,
       });
       setConversations(result.conversations);
     } catch {
       setConversations([]);
     }
     setIsLoading(false);
-  }, [channelFilter, statusFilter, searchQuery, agentFilter]);
+  }, [channelFilter, statusFilter, searchQuery]);
 
   /**
    * Background refresh — quietly updates the list every poll tick without
@@ -59,13 +57,12 @@ const OmnichannelPage = () => {
         channel: channelFilter,
         status: statusFilter,
         search: searchQuery,
-        agent: agentFilter,
       });
       setConversations(result.conversations);
     } catch {
       // Network blip — the next tick will retry.
     }
-  }, [channelFilter, statusFilter, searchQuery, agentFilter]);
+  }, [channelFilter, statusFilter, searchQuery]);
 
   useEffect(() => {
     loadConversations();
@@ -163,8 +160,6 @@ const OmnichannelPage = () => {
             onChannelFilterChange={setChannelFilter}
             statusFilter={statusFilter}
             onStatusFilterChange={setStatusFilter}
-            agentFilter={agentFilter}
-            onAgentFilterChange={setAgentFilter}
           />
         </div>
 

@@ -31,6 +31,7 @@ export const oauthChannels: ChannelType[] = [
   "whatsapp",
   "messenger",
   "instagram",
+  "x",
 ];
 
 export const channelSetupConfigs: Record<ChannelType, ChannelSetupConfig> = {
@@ -117,112 +118,16 @@ export const channelSetupConfigs: Record<ChannelType, ChannelSetupConfig> = {
     ],
   },
 
-  voice: {
-    oauth: false,
-    steps: [
-      {
-        title: "Verify Innocalls setup",
-        description:
-          "Voice is powered by your existing Innocalls infrastructure. Confirm your SIP server details below.",
-      },
-      {
-        title: "Configure extensions",
-        description:
-          "Define the extension range and recording preferences for omnichannel voice agents.",
-      },
-    ],
-    fields: [
-      {
-        key: "sipServer",
-        label: "SIP Server",
-        type: "text",
-        required: true,
-        placeholder: "sip.innocalls.com",
-      },
-      {
-        key: "sipPort",
-        label: "SIP Port",
-        type: "number",
-        required: true,
-        placeholder: "5060",
-      },
-      {
-        key: "extensionRange",
-        label: "Extension Range",
-        type: "text",
-        required: true,
-        placeholder: "1000-1099",
-      },
-      {
-        key: "recordCalls",
-        label: "Record Calls",
-        type: "boolean",
-        required: false,
-      },
-    ],
-  },
-
   x: {
-    oauth: false,
+    oauth: true,
     steps: [
       {
-        title: "Create an X Developer App",
+        title: "Connect your X account",
         description:
-          "Go to the X Developer Portal and create a new project and app.",
-        externalUrl: "https://developer.x.com/en/portal/dashboard",
-      },
-      {
-        title: "Configure permissions",
-        description:
-          "Enable OAuth 1.0a with Read and Write + Direct Messages permissions.",
-      },
-      {
-        title: "Generate keys and tokens",
-        description:
-          "Generate API Key, API Secret, Access Token, Access Token Secret, and Bearer Token.",
-      },
-      {
-        title: "Enter your credentials below",
-        description: "Fill in all the generated keys and tokens.",
+          "Click the button below to authorize access to your X account. We'll handle the rest — DMs will start flowing into the inbox automatically.",
       },
     ],
-    fields: [
-      {
-        key: "apiKey",
-        label: "API Key",
-        type: "password",
-        required: true,
-        placeholder: "Your X API key",
-      },
-      {
-        key: "apiSecret",
-        label: "API Secret",
-        type: "password",
-        required: true,
-        placeholder: "Your X API secret",
-      },
-      {
-        key: "accessToken",
-        label: "Access Token",
-        type: "password",
-        required: true,
-        placeholder: "OAuth 1.0a access token",
-      },
-      {
-        key: "accessTokenSecret",
-        label: "Access Token Secret",
-        type: "password",
-        required: true,
-        placeholder: "OAuth 1.0a access token secret",
-      },
-      {
-        key: "bearerToken",
-        label: "Bearer Token",
-        type: "password",
-        required: true,
-        placeholder: "App-only bearer token",
-      },
-    ],
+    fields: [],
   },
 
   telegram: {

@@ -151,25 +151,46 @@ const ChannelSetupDialog = ({
   // ── OAuth Flow ───────────────────────────────────────────────────────────
 
   const startOAuth = async () => {
+    // Browsers (Chrome/Safari) only allow window.open inside the synchronous
+    // task chain of a user gesture. Awaiting the API call first would forfeit
+    // the gesture and trip the popup blocker. Open a placeholder window
+    // immediately, then redirect it once the URL comes back.
+    const width = 600;
+    const height = 700;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+    const popup = window.open(
+      "about:blank",
+      `${channel.type}_oauth`,
+      `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes`,
+    );
+
+    if (!popup) {
+      setOauthState("error");
+      setOauthError(
+        "Popup was blocked by your browser. Allow popups for this site and try again.",
+      );
+      return;
+    }
+
     setOauthState("loading");
     setOauthError(null);
 
+    let url: string;
+    let state: string;
     try {
-      const { url, state } = await omnichannelService.getOAuthUrl(
-        channel.type,
-      );
+      const res = await omnichannelService.getOAuthUrl(channel.type);
+      url = res.url;
+      state = res.state;
+    } catch {
+      popup.close();
+      setOauthState("error");
+      setOauthError(t("oauthError"));
+      return;
+    }
 
-      // Open popup
-      const width = 600;
-      const height = 700;
-      const left = window.screenX + (window.outerWidth - width) / 2;
-      const top = window.screenY + (window.outerHeight - height) / 2;
-
-      const popup = window.open(
-        url,
-        `${channel.type}_oauth`,
-        `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes`,
-      );
+    try {
+      popup.location.href = url;
       popupRef.current = popup;
       setOauthState("waiting");
 

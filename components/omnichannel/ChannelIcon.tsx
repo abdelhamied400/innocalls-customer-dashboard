@@ -1,11 +1,5 @@
 import type { ChannelType } from "@/types/omnichannel";
-import {
-  WhatsApp,
-  Chat,
-  Phone,
-  Facebook,
-  Telegram,
-} from "@mui/icons-material";
+import { WhatsApp, Chat, Facebook, Telegram } from "@mui/icons-material";
 import XIcon from "@mui/icons-material/X";
 import InstagramIcon from "@mui/icons-material/Instagram";
 
@@ -17,7 +11,6 @@ type ChannelIconProps = {
 const iconMap: Record<ChannelType, React.ElementType> = {
   whatsapp: WhatsApp,
   live_chat: Chat,
-  voice: Phone,
   messenger: Facebook,
   x: XIcon,
   instagram: InstagramIcon,
@@ -27,7 +20,6 @@ const iconMap: Record<ChannelType, React.ElementType> = {
 const colorMap: Record<ChannelType, string> = {
   whatsapp: "text-green-500",
   live_chat: "text-purple-500",
-  voice: "text-primary-500",
   messenger: "text-blue-600",
   x: "text-gray-900",
   instagram: "text-pink-500",
@@ -37,7 +29,6 @@ const colorMap: Record<ChannelType, string> = {
 export const channelLabels: Record<ChannelType, string> = {
   whatsapp: "WhatsApp",
   live_chat: "Live Chat",
-  voice: "Voice",
   messenger: "Messenger",
   x: "X",
   instagram: "Instagram",

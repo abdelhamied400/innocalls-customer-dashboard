@@ -43,7 +43,6 @@ const omnichannelService = {
     channel?: ChannelType | "all";
     status?: string;
     search?: string;
-    agent?: string;
     page?: number;
     limit?: number;
   }): Promise<ConversationsResponse> => {
@@ -52,8 +51,6 @@ const omnichannelService = {
       params.set("channel", filters.channel);
     if (filters?.status && filters.status !== "all")
       params.set("status", filters.status);
-    if (filters?.agent && filters.agent !== "all")
-      params.set("agent", filters.agent);
     if (filters?.search) params.set("search", filters.search);
     if (filters?.page) params.set("page", String(filters.page));
     if (filters?.limit) params.set("limit", String(filters.limit));
