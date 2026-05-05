@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { PlayArrow, Pause } from "@mui/icons-material";
 import { useEffect, useRef, useState } from "react";
 import omnichannelService from "@/services/omnichannel.service";
+import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
 
 type VoiceMessageProps = {
   conversationId: string;
@@ -33,7 +34,16 @@ const VoiceMessage = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [errored, setErrored] = useState(false);
 
+  // Lazy-load: hold off on the audio fetch + wavesurfer init until the
+  // bubble scrolls into view. Without this, opening a conversation with N
+  // voice notes triggers N audio downloads + waveform decodes in parallel.
+  const { targetRef, isIntersecting } = useIntersectionObserver({
+    rootMargin: "200px",
+    freezeOnceVisible: true,
+  });
+
   useEffect(() => {
+    if (!isIntersecting) return;
     if (!containerRef.current) return;
     let ws: any = null;
     let cancelled = false;
@@ -100,7 +110,7 @@ const VoiceMessage = ({
         blobUrlRef.current = null;
       }
     };
-  }, [conversationId, messageId, isOutbound]);
+  }, [conversationId, messageId, isOutbound, isIntersecting]);
 
   const handleToggle = () => {
     wavesurferRef.current?.playPause();
@@ -109,7 +119,7 @@ const VoiceMessage = ({
   const displayTime = isPlaying || currentTime > 0 ? currentTime : duration;
 
   return (
-    <div className="flex items-center gap-2.5 min-w-50">
+    <div ref={targetRef} className="flex items-center gap-2.5 min-w-50">
       <button
         onClick={handleToggle}
         disabled={!isReady || errored}

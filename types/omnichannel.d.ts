@@ -12,7 +12,13 @@ export type ConversationStatus = "active" | "waiting" | "resolved" | "closed";
 
 export type MessageDirection = "inbound" | "outbound";
 
-export type MessageType = "text" | "voice";
+export type MessageType =
+  | "text"
+  | "voice"
+  | "image"
+  | "sticker"
+  | "video"
+  | "document";
 
 export type Channel = {
   id: string;
@@ -44,6 +50,13 @@ export type Message = {
   content: string;
   duration?: number | null;
   filePath?: string | null;
+  /** External provider message id (e.g. WhatsApp wamid). Used to plumb
+   * reply context through the provider; not displayed. */
+  wamid?: string | null;
+  /** Local id of the message this one is a reply to. Render the quoted
+   * preview in MessageBubble by looking it up in the same conversation's
+   * message array. */
+  replyToId?: string | null;
   timestamp: string;
   senderName: string;
   isRead: boolean;
@@ -60,6 +73,9 @@ export type Conversation = {
   lastMessageAt: string | null;
   unreadCount: number;
   messages: Message[];
+  /** True when older messages exist beyond the initial page returned by the
+   * API. The dashboard uses this to gate the scroll-up infinite pagination. */
+  hasMoreOlder?: boolean;
 };
 
 export type OmnichannelStats = {

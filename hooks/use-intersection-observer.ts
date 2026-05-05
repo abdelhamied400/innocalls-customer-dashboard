@@ -5,6 +5,10 @@ interface UseIntersectionObserverOptions {
   root?: Element | null;
   rootMargin?: string;
   enabled?: boolean;
+  /** When true, `isIntersecting` latches to true on first intersection
+   * and never goes back to false. Useful for lazy-loading media that
+   * shouldn't re-fetch on scroll bounce. */
+  freezeOnceVisible?: boolean;
 }
 
 export const useIntersectionObserver = (
@@ -15,6 +19,7 @@ export const useIntersectionObserver = (
     root = null,
     rootMargin = "0px",
     enabled = true,
+    freezeOnceVisible = false,
   } = options;
 
   const [isIntersecting, setIsIntersecting] = useState(false);
@@ -27,7 +32,14 @@ export const useIntersectionObserver = (
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsIntersecting(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setIsIntersecting(true);
+          if (freezeOnceVisible) {
+            observer.disconnect();
+          }
+        } else if (!freezeOnceVisible) {
+          setIsIntersecting(false);
+        }
       },
       {
         threshold,
@@ -44,7 +56,7 @@ export const useIntersectionObserver = (
         observer.unobserve(currentTarget);
       }
     };
-  }, [threshold, root, rootMargin, enabled]);
+  }, [threshold, root, rootMargin, enabled, freezeOnceVisible]);
 
   return { targetRef, isIntersecting };
 };

@@ -66,6 +66,26 @@ const omnichannelService = {
     return res.data.data;
   },
 
+  /**
+   * Fetch one page of older messages, before the message with id=beforeId.
+   * Used by the dashboard's scroll-up infinite pagination — call when the
+   * agent scrolls near the top of ChatMessages and `hasMoreOlder` is true.
+   * Returns the page (in ascending/oldest-first order) plus a fresh
+   * `hasMoreOlder` flag so the caller knows when to stop paging.
+   */
+  getOlderMessages: async (
+    conversationId: string,
+    beforeId: string,
+    limit?: number,
+  ): Promise<{ messages: import("@/types/omnichannel").Message[]; hasMoreOlder: boolean }> => {
+    const params = new URLSearchParams({ before: beforeId });
+    if (limit) params.set("limit", String(limit));
+    const res = await omniApi.get(
+      `/api/omnichannel/conversations/${conversationId}/messages?${params.toString()}`,
+    );
+    return res.data.data;
+  },
+
   createConversation: async (data: {
     contactId: string;
     channel: ChannelType;
@@ -97,6 +117,7 @@ const omnichannelService = {
       content: string;
       direction: "inbound" | "outbound";
       senderName: string;
+      replyToMessageId?: string;
     },
   ) => {
     const res = await omniApi.post(
@@ -113,6 +134,7 @@ const omnichannelService = {
       direction: "inbound" | "outbound";
       senderName: string;
       duration: number;
+      replyToMessageId?: string;
     },
   ) => {
     const formData = new FormData();
@@ -120,9 +142,37 @@ const omnichannelService = {
     formData.append("direction", data.direction);
     formData.append("senderName", data.senderName);
     formData.append("duration", String(data.duration));
+    if (data.replyToMessageId)
+      formData.append("replyToMessageId", data.replyToMessageId);
 
     const res = await omniApi.post(
       `/api/omnichannel/conversations/${conversationId}/messages/voice`,
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } },
+    );
+    return res.data.data;
+  },
+
+  sendMediaMessage: async (
+    conversationId: string,
+    data: {
+      file: File;
+      type: "image" | "video" | "document";
+      senderName: string;
+      caption?: string;
+      replyToMessageId?: string;
+    },
+  ) => {
+    const formData = new FormData();
+    formData.append("file", data.file, data.file.name);
+    formData.append("type", data.type);
+    formData.append("senderName", data.senderName);
+    if (data.caption) formData.append("caption", data.caption);
+    if (data.replyToMessageId)
+      formData.append("replyToMessageId", data.replyToMessageId);
+
+    const res = await omniApi.post(
+      `/api/omnichannel/conversations/${conversationId}/messages/media`,
       formData,
       { headers: { "Content-Type": "multipart/form-data" } },
     );
@@ -149,6 +199,23 @@ const omnichannelService = {
       { responseType: "blob" },
     );
     return URL.createObjectURL(res.data as Blob);
+  },
+
+  /**
+   * Fetch any media message (image/sticker/video/document) as a blob URL +
+   * mime type. Use this for non-voice media in MessageBubble; voice
+   * messages should keep using fetchVoiceMessageBlobUrl above.
+   */
+  fetchMessageMediaBlobUrl: async (
+    conversationId: string,
+    messageId: string,
+  ): Promise<{ url: string; mimeType: string }> => {
+    const res = await omniApi.get(
+      `/api/omnichannel/conversations/${conversationId}/messages/${messageId}/media`,
+      { responseType: "blob" },
+    );
+    const blob = res.data as Blob;
+    return { url: URL.createObjectURL(blob), mimeType: blob.type };
   },
 
   // ── Channels ───────────────────────────────────────────────────────────────
