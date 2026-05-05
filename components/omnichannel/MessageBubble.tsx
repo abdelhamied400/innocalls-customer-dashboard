@@ -2,8 +2,13 @@ import type { Message } from "@/types/omnichannel";
 import { cn } from "@/lib/utils";
 import { DoneAll, Done, Reply } from "@mui/icons-material";
 import ContactAvatar from "./ContactAvatar";
-import VoiceMessage from "./VoiceMessage";
-import MediaMessage from "./MediaMessage";
+import { VoiceMessage, MediaMessage } from "@innocalls/chat-ui";
+import omnichannelService from "@/services/omnichannel.service";
+
+/** Single shared media fetcher for both voice and other media bubbles —
+ * the generic /messages/:id/media endpoint serves any saved attachment
+ * type, so we only need one. */
+const fetchMediaUrl = omnichannelService.fetchMessageMediaBlobUrl;
 
 /**
  * Replace bare http(s) URLs in a string with anchor tags. Used so that
@@ -219,6 +224,7 @@ const MessageBubble = ({
                   messageId={message.id}
                   duration={message.duration ?? 0}
                   isOutbound={isOutbound}
+                  fetchMediaUrl={fetchMediaUrl}
                 />
               </div>
             )
@@ -258,6 +264,7 @@ const MessageBubble = ({
                 type={message.type}
                 content={message.content}
                 isOutbound={isOutbound}
+                fetchMediaUrl={fetchMediaUrl}
               />
             )
           ) : (

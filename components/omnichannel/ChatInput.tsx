@@ -12,7 +12,7 @@ import {
 } from "@mui/icons-material";
 import { cn } from "@/lib/utils";
 import { useTranslations } from "@/providers/TranslationProvider";
-import RecordingWaveform from "./RecordingWaveform";
+import { RecordingWaveform } from "@innocalls/chat-ui";
 import type { Message } from "@/types/omnichannel";
 
 type MediaKind = "image" | "video" | "document";

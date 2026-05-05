@@ -292,6 +292,9 @@
 @source "../providers/**/*.{ts,tsx}";
 @source "../app/**/*.{ts,tsx}";
 @source "../hooks/**/*.{ts,tsx}";
+/* Shared chat primitives — scan the package source so its Tailwind
+ * classes get generated under the dashboard's theme tokens. */
+@source "../node_modules/@innocalls/chat-ui/src/**/*.{ts,tsx}";
 
 @utility text-balance {
   text-wrap: balance;
