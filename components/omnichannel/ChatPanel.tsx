@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import ChatHeader from "./ChatHeader";
 import ChatMessages from "./ChatMessages";
-import ChatInput from "./ChatInput";
+import { ChatInput } from "@innocalls/chat-ui";
 
 type ChatPanelProps = {
   conversation: Conversation | null;
@@ -343,7 +343,7 @@ const ChatPanel = ({
           onLoadOlder={handleLoadOlder}
         />
         <ChatInput
-          onSendMessage={handleSendMessage}
+          onSendText={handleSendMessage}
           onSendVoice={handleSendVoice}
           onSendMedia={handleSendMedia}
           replyingTo={replyingTo}
