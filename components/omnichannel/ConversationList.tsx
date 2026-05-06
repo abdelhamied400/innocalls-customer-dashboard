@@ -25,6 +25,15 @@ type ConversationListProps = {
   onChannelFilterChange: (ch: ChannelType | "all") => void;
   statusFilter: string;
   onStatusFilterChange: (s: string) => void;
+  /** True when more pages exist beyond what's loaded. Drives the
+   * scroll-near-bottom trigger and the loading indicator. */
+  hasMore?: boolean;
+  /** True while a load-more fetch is in flight — gates concurrent calls
+   * and renders the spinner at the bottom of the list. */
+  isLoadingMore?: boolean;
+  /** Fired when the agent scrolls within 300px of the bottom of the list.
+   * Owner is responsible for advancing the page cursor + appending. */
+  onLoadMore?: () => void;
 };
 
 const ConversationList = ({
@@ -38,6 +47,9 @@ const ConversationList = ({
   onChannelFilterChange,
   statusFilter,
   onStatusFilterChange,
+  hasMore,
+  isLoadingMore,
+  onLoadMore,
 }: ConversationListProps) => {
   const t = useTranslations("omnichannel");
 
@@ -114,7 +126,18 @@ const ConversationList = ({
       </div>
 
       {/* List */}
-      <div className="flex-1 overflow-y-auto">
+      <div
+        className="flex-1 overflow-y-auto"
+        onScroll={(e) => {
+          if (!hasMore || isLoadingMore || !onLoadMore) return;
+          const target = e.currentTarget;
+          // Fire when the agent is within 300px of the bottom — gives
+          // the next page a head start so they rarely see the spinner.
+          const distFromBottom =
+            target.scrollHeight - target.scrollTop - target.clientHeight;
+          if (distFromBottom < 300) onLoadMore();
+        }}
+      >
         {isLoading && (
           <div className="space-y-0">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -148,6 +171,15 @@ const ConversationList = ({
               onClick={() => onSelect(conv)}
             />
           ))}
+
+        {/* Load-more spinner — appears below the last row while paging.
+            When hasMore is false, nothing renders here and the list ends
+            cleanly with the footer count below. */}
+        {!isLoading && isLoadingMore && (
+          <div className="flex items-center justify-center py-3">
+            <span className="inline-block w-4 h-4 rounded-full border-2 border-gray-300 border-t-transparent animate-spin" />
+          </div>
+        )}
       </div>
 
       {/* Footer count */}

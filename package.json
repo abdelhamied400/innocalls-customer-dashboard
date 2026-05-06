@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "preview": "next build && next start"
+    "preview": "next build && next start",
+    "sync:chat-ui": "cd ../chat-ui && bun run build && cd - && rm -rf node_modules/@innocalls/chat-ui && mkdir -p node_modules/@innocalls/chat-ui && cp ../chat-ui/package.json node_modules/@innocalls/chat-ui/package.json && cp -RL ../chat-ui/dist node_modules/@innocalls/chat-ui/dist && cp -RL ../chat-ui/src node_modules/@innocalls/chat-ui/src && echo '✓ synced chat-ui'"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",

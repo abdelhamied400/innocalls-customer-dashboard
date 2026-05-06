@@ -14,12 +14,18 @@ import { usePolling } from "@/hooks/usePolling";
 const LIST_POLL_MS = 10_000;
 const ACTIVE_CONVERSATION_POLL_MS = 5_000;
 
+const INBOX_PAGE_SIZE = 20;
+
 const OmnichannelPage = () => {
   const t = useTranslations("omnichannel");
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConversation, setSelectedConversation] =
     useState<Conversation | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  /** Highest page we've successfully fetched. Reset to 0 on filter change. */
+  const [currentPage, setCurrentPage] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   // Filters
   const [channelFilter, setChannelFilter] = useState<ChannelType | "all">(
@@ -30,7 +36,7 @@ const OmnichannelPage = () => {
 
   /**
    * Initial fetch + filter-driven refetch (shows the loading skeleton).
-   * Called once when filters change.
+   * Called once when filters change. Resets pagination to page 1.
    */
   const loadConversations = useCallback(async () => {
     setIsLoading(true);
@@ -39,17 +45,24 @@ const OmnichannelPage = () => {
         channel: channelFilter,
         status: statusFilter,
         search: searchQuery,
+        page: 1,
+        limit: INBOX_PAGE_SIZE,
       });
       setConversations(result.conversations);
+      setCurrentPage(1);
+      setHasMore(result.totalPages > 1);
     } catch {
       setConversations([]);
+      setCurrentPage(0);
+      setHasMore(false);
     }
     setIsLoading(false);
   }, [channelFilter, statusFilter, searchQuery]);
 
   /**
-   * Background refresh — quietly updates the list every poll tick without
-   * flashing the loading skeleton. Used for the inbox poll.
+   * Background refresh — quietly refetches page 1 only and merges into the
+   * existing array by id, so subsequent paginated pages stay loaded while
+   * the latest activity at the top stays current. Used for the inbox poll.
    */
   const refreshConversations = useCallback(async () => {
     try {
@@ -57,12 +70,61 @@ const OmnichannelPage = () => {
         channel: channelFilter,
         status: statusFilter,
         search: searchQuery,
+        page: 1,
+        limit: INBOX_PAGE_SIZE,
       });
-      setConversations(result.conversations);
+      setConversations((prev) => {
+        // Page 1 is the source of truth for the latest N rows. Anything
+        // outside that page is preserved as-is. New rows from the poll
+        // bump existing entries (lastMessageAt updated, unreadCount, etc.).
+        const map = new Map(prev.map((c) => [c.id, c]));
+        for (const c of result.conversations) map.set(c.id, c);
+        return Array.from(map.values()).sort(
+          (a, b) =>
+            new Date(b.lastMessageAt ?? 0).getTime() -
+            new Date(a.lastMessageAt ?? 0).getTime(),
+        );
+      });
     } catch {
       // Network blip — the next tick will retry.
     }
   }, [channelFilter, statusFilter, searchQuery]);
+
+  /**
+   * Load the next page when the agent scrolls near the bottom of the
+   * conversation list. Idempotent against concurrent calls via isLoadingMore.
+   */
+  const loadMoreConversations = useCallback(async () => {
+    if (isLoadingMore || !hasMore) return;
+    setIsLoadingMore(true);
+    try {
+      const nextPage = currentPage + 1;
+      const result = await omnichannelService.getConversations({
+        channel: channelFilter,
+        status: statusFilter,
+        search: searchQuery,
+        page: nextPage,
+        limit: INBOX_PAGE_SIZE,
+      });
+      setConversations((prev) => {
+        const seen = new Set(prev.map((c) => c.id));
+        const fresh = result.conversations.filter((c) => !seen.has(c.id));
+        return [...prev, ...fresh];
+      });
+      setCurrentPage(nextPage);
+      setHasMore(nextPage < result.totalPages);
+    } catch {
+      // Stay loading=false so a subsequent scroll retries; could surface a toast.
+    }
+    setIsLoadingMore(false);
+  }, [
+    isLoadingMore,
+    hasMore,
+    currentPage,
+    channelFilter,
+    statusFilter,
+    searchQuery,
+  ]);
 
   useEffect(() => {
     loadConversations();
@@ -115,8 +177,10 @@ const OmnichannelPage = () => {
   };
 
   const handleConversationUpdated = () => {
-    // Refresh the list after sending a message
-    loadConversations();
+    // Refresh the list after sending a message — use the merge-preserving
+    // refresh (page 1 only, merged into the existing array) so the agent's
+    // loaded pages 2+ aren't wiped just because they sent a message.
+    refreshConversations();
   };
 
   /**
@@ -160,6 +224,9 @@ const OmnichannelPage = () => {
             onChannelFilterChange={setChannelFilter}
             statusFilter={statusFilter}
             onStatusFilterChange={setStatusFilter}
+            hasMore={hasMore}
+            isLoadingMore={isLoadingMore}
+            onLoadMore={loadMoreConversations}
           />
         </div>
 

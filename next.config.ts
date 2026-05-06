@@ -12,6 +12,11 @@ const nextConfig: NextConfig = {
     silenceDeprecations: ["legacy-js-api"],
   },
   allowedDevOrigins: ["folly-subsimple-joya.ngrok-free.dev"],
+  // Local file: dep installed via Bun is symlinked, which Turbopack
+  // refuses to resolve through. transpilePackages tells Next.js to
+  // treat the package as first-party source — bypasses the symlink-
+  // through-node_modules lookup entirely.
+  transpilePackages: ["@innocalls/chat-ui"],
 };
 
 export default withSentryConfig(nextConfig, {
