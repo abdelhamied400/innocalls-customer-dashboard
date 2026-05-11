@@ -10,7 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import ChannelIcon, {
   channelLabels,
 } from "@/components/omnichannel/ChannelIcon";
-import ChannelSetupDialog from "@/components/omnichannel/ChannelSetupDialog";
+import ChannelSetupDialog from "@/components/omnichannel/dialogs";
 import {
   CheckCircle,
   Cancel,
@@ -22,7 +22,6 @@ import { formatDistanceToNow } from "date-fns";
 const allChannelTypes: ChannelType[] = [
   "whatsapp",
   "live_chat",
-  "voice",
   "messenger",
   "x",
   "instagram",
@@ -32,7 +31,6 @@ const allChannelTypes: ChannelType[] = [
 const channelDescriptions: Record<ChannelType, string> = {
   whatsapp: "WhatsApp Business API integration",
   live_chat: "Embedded website chat widget",
-  voice: "Innocalls voice channel",
   messenger: "Facebook Messenger integration",
   x: "X (Twitter) direct messages",
   instagram: "Instagram direct messages",
@@ -42,7 +40,6 @@ const channelDescriptions: Record<ChannelType, string> = {
 const channelBgColors: Record<ChannelType, string> = {
   whatsapp: "bg-green-50",
   live_chat: "bg-purple-50",
-  voice: "bg-primary-50",
   messenger: "bg-blue-50",
   x: "bg-gray-50",
   instagram: "bg-pink-50",
