@@ -31,6 +31,7 @@ export const oauthChannels: ChannelType[] = [
   "whatsapp",
   "messenger",
   "instagram",
+  "x",
 ];
 
 export const channelSetupConfigs: Record<ChannelType, ChannelSetupConfig> = {

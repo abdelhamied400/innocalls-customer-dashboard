@@ -110,11 +110,23 @@ const ChannelSetupDialog = ({
     (fieldStepIndex >= 0 ? currentStep === fieldStepIndex : isLastStep);
 
   const showResult = savedChannel && isLastStep;
-  const webhookUrl = savedChannel?.config?.webhookUrl as string | undefined;
   const embedSnippet = savedChannel?.config?.embedSnippet as
     | string
     | undefined;
   const widgetToken = savedChannel?.widgetToken ?? null;
+
+  // Webhook info: provider apps (WhatsApp/Messenger/Instagram) require pasting
+  // a callback URL + verify token into the Meta App Dashboard. Show these
+  // whenever they're available — both right after a fresh connect (from
+  // savedChannel) and on Configure of an existing connected channel.
+  const sourceConfig = (savedChannel?.config ?? channel.config ?? {}) as Record<
+    string,
+    unknown
+  >;
+  const webhookUrl = sourceConfig.webhookUrl as string | undefined;
+  const webhookVerifyToken = sourceConfig.webhookVerifyToken as
+    | string
+    | undefined;
 
   // For an existing live_chat channel being reconfigured, show its current
   // token + rotate button regardless of the wizard step.
@@ -151,25 +163,46 @@ const ChannelSetupDialog = ({
   // ── OAuth Flow ───────────────────────────────────────────────────────────
 
   const startOAuth = async () => {
+    // Browsers (Chrome/Safari) only allow window.open inside the synchronous
+    // task chain of a user gesture. Awaiting the API call first would forfeit
+    // the gesture and trip the popup blocker. Open a placeholder window
+    // immediately, then redirect it once the URL comes back.
+    const width = 600;
+    const height = 700;
+    const left = window.screenX + (window.outerWidth - width) / 2;
+    const top = window.screenY + (window.outerHeight - height) / 2;
+    const popup = window.open(
+      "about:blank",
+      `${channel.type}_oauth`,
+      `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes`,
+    );
+
+    if (!popup) {
+      setOauthState("error");
+      setOauthError(
+        "Popup was blocked by your browser. Allow popups for this site and try again.",
+      );
+      return;
+    }
+
     setOauthState("loading");
     setOauthError(null);
 
+    let url: string;
+    let state: string;
     try {
-      const { url, state } = await omnichannelService.getOAuthUrl(
-        channel.type,
-      );
+      const res = await omnichannelService.getOAuthUrl(channel.type);
+      url = res.url;
+      state = res.state;
+    } catch {
+      popup.close();
+      setOauthState("error");
+      setOauthError(t("oauthError"));
+      return;
+    }
 
-      // Open popup
-      const width = 600;
-      const height = 700;
-      const left = window.screenX + (window.outerWidth - width) / 2;
-      const top = window.screenY + (window.outerHeight - height) / 2;
-
-      const popup = window.open(
-        url,
-        `${channel.type}_oauth`,
-        `width=${width},height=${height},left=${left},top=${top},toolbar=no,menubar=no,scrollbars=yes`,
-      );
+    try {
+      popup.location.href = url;
       popupRef.current = popup;
       setOauthState("waiting");
 
@@ -647,29 +680,60 @@ const ChannelSetupDialog = ({
             </div>
           )}
 
-          {/* Webhook URL result */}
-          {showResult && webhookUrl && (
-            <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-2">
-              <label className="text-xs font-medium text-gray-700">
-                {t("webhookUrl")}
-              </label>
-              <div className="flex gap-2">
-                <code className="flex-1 text-xs bg-gray-50 p-2.5 rounded-lg border border-gray-100 break-all text-gray-600">
-                  {webhookUrl}
-                </code>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="shrink-0 rounded-lg text-xs gap-1"
-                  onClick={() => handleCopy(webhookUrl)}
-                >
-                  <ContentCopy className="!text-sm" />
-                  {copied ? t("copied") : t("copy")}
-                </Button>
+          {/* Webhook info — visible right after a fresh connect AND on Configure
+              of an existing connected provider channel, so the user can copy
+              the callback URL + verify token into the Meta App Dashboard. */}
+          {webhookUrl && (
+            <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
+              <div>
+                <label className="text-xs font-medium text-gray-700">
+                  {t("webhookUrl")}
+                </label>
+                <div className="flex gap-2 mt-1.5">
+                  <code className="flex-1 text-xs bg-gray-50 p-2.5 rounded-lg border border-gray-100 break-all text-gray-600">
+                    {webhookUrl}
+                  </code>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="shrink-0 rounded-lg text-xs gap-1"
+                    onClick={() => handleCopy(webhookUrl)}
+                  >
+                    <ContentCopy className="!text-sm" />
+                    {copied ? t("copied") : t("copy")}
+                  </Button>
+                </div>
+                <p className="text-[11px] text-gray-400 mt-1">
+                  {t("webhookUrlHint")}
+                </p>
               </div>
-              <p className="text-[11px] text-gray-400">
-                {t("webhookUrlHint")}
-              </p>
+
+              {webhookVerifyToken && (
+                <div className="pt-3 border-t border-gray-100">
+                  <label className="text-xs font-medium text-gray-700">
+                    Verify token
+                  </label>
+                  <div className="flex gap-2 mt-1.5">
+                    <code className="flex-1 text-xs bg-gray-50 p-2.5 rounded-lg border border-gray-100 break-all text-gray-600 font-mono">
+                      {webhookVerifyToken}
+                    </code>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="shrink-0 rounded-lg text-xs gap-1"
+                      onClick={() => handleCopy(webhookVerifyToken)}
+                    >
+                      <ContentCopy className="!text-sm" />
+                      {copied ? t("copied") : t("copy")}
+                    </Button>
+                  </div>
+                  <p className="text-[11px] text-gray-400 mt-1">
+                    Paste this into the Meta App Dashboard → Webhooks →
+                    Verify token field. Meta calls our endpoint with this
+                    token to confirm we own it.
+                  </p>
+                </div>
+              )}
             </div>
           )}
 

@@ -46,6 +46,38 @@ const channelBgColors: Record<ChannelType, string> = {
   telegram: "bg-sky-50",
 };
 
+/**
+ * Pull a human-readable account identifier off a connected channel's config —
+ * "@handle" for X, the page name for Messenger, the phone number for
+ * WhatsApp, etc. Returns null when the channel is not connected or has no
+ * usable identifier.
+ */
+function getConnectedAccountLabel(channel: Channel | null): string | null {
+  if (!channel || channel.status !== "connected") return null;
+  const cfg = (channel.config ?? {}) as Record<string, unknown>;
+  switch (channel.type) {
+    case "x": {
+      const username = cfg.username as string | undefined;
+      return username ? `@${username}` : null;
+    }
+    case "instagram": {
+      const igName = cfg.igUsername as string | undefined;
+      return igName ? `@${igName}` : null;
+    }
+    case "telegram": {
+      const botUsername = cfg.botUsername as string | undefined;
+      return botUsername ? `@${botUsername}` : null;
+    }
+    case "messenger":
+    case "whatsapp":
+      // The API stores the page/phone identifier in channel.name
+      // (e.g. "Messenger - Acme Page", "WhatsApp - +1234567890").
+      return channel.name || null;
+    default:
+      return null;
+  }
+}
+
 const ChannelsSettingsPage = () => {
   const t = useTranslations("omnichannel.channels");
   const [connectedChannels, setConnectedChannels] = useState<Channel[]>([]);
@@ -185,8 +217,16 @@ const ChannelsSettingsPage = () => {
                   <p className="text-xs text-gray-500 mt-1">
                     {existing?.description ?? channelDescriptions[type]}
                   </p>
+                  {(() => {
+                    const accountLabel = getConnectedAccountLabel(existing);
+                    return accountLabel ? (
+                      <p className="text-[11px] font-medium text-gray-700 mt-2 truncate">
+                        {accountLabel}
+                      </p>
+                    ) : null;
+                  })()}
                   {existing?.connectedAt && (
-                    <p className="text-[11px] text-gray-400 mt-2">
+                    <p className="text-[11px] text-gray-400 mt-1">
                       {t("connectedSince")}{" "}
                       {formatDistanceToNow(new Date(existing.connectedAt), {
                         addSuffix: true,
