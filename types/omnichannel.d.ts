@@ -15,6 +15,7 @@ export type MessageDirection = "inbound" | "outbound";
 export type MessageType =
   | "text"
   | "voice"
+  | "audio"
   | "image"
   | "sticker"
   | "video"
@@ -57,6 +58,10 @@ export type Message = {
    * preview in MessageBubble by looking it up in the same conversation's
    * message array. */
   replyToId?: string | null;
+  /** Outbound dispatch error — present when the API saved the message
+   * but the channel adapter refused delivery. Bubble shows an inline
+   * error row + retry button; cleared on successful retry. */
+  deliveryError?: string | null;
   timestamp: string;
   senderName: string;
   isRead: boolean;

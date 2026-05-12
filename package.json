@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
-    "preview": "next build && next start",
-    "sync:chat-ui": "cd ../chat-ui && bun run build && cd - && rm -rf node_modules/@innocalls/chat-ui && mkdir -p node_modules/@innocalls/chat-ui && cp ../chat-ui/package.json node_modules/@innocalls/chat-ui/package.json && cp -RL ../chat-ui/dist node_modules/@innocalls/chat-ui/dist && cp -RL ../chat-ui/src node_modules/@innocalls/chat-ui/src && echo '✓ synced chat-ui'"
+    "preview": "next build && next start"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -42,7 +41,7 @@
     "@tanstack/react-table": "^8.20.5",
     "@wavesurfer/react": "^1.0.12",
     "@xyflow/react": "^12.3.5",
-    "@innocalls/chat-ui": "file:../chat-ui",
+    "@innocalls/chat-ui": "^0.3.0",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

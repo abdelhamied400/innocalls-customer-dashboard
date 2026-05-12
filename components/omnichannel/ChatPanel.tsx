@@ -20,6 +20,7 @@ import {
 import ChatHeader from "./ChatHeader";
 import ChatMessages from "./ChatMessages";
 import { ChatInput } from "@innocalls/chat-ui";
+import { toast } from "sonner";
 
 type ChatPanelProps = {
   conversation: Conversation | null;
@@ -230,7 +231,7 @@ const ChatPanel = ({
 
   const handleSendMedia = async (
     file: File,
-    kind: "image" | "video" | "document",
+    kind: "image" | "video" | "audio" | "document",
     caption?: string,
   ) => {
     const replyToMessageId = consumeReplyToId();
@@ -240,7 +241,9 @@ const ChatPanel = ({
         ? `📷 Image${caption ? `: ${caption}` : ""}`
         : kind === "video"
           ? `🎬 Video${caption ? `: ${caption}` : ""}`
-          : `📎 ${file.name}`;
+          : kind === "audio"
+            ? `🎵 ${file.name}`
+            : `📎 ${file.name}`;
     const tempMsg: Message = {
       id: tempId,
       conversationId: conversation.id,
@@ -256,10 +259,13 @@ const ChatPanel = ({
     setMessages((prev) => [...prev, tempMsg]);
 
     try {
-      const newMsg = await omnichannelService.sendMediaMessage(
-        conversation.id,
-        { file, type: kind, senderName, caption, replyToMessageId },
-      );
+      const newMsg = await omnichannelService.sendMediaMessage(conversation.id, {
+        file,
+        type: kind,
+        senderName,
+        caption,
+        replyToMessageId,
+      });
       setMessages((prev) => {
         const stripped = prev.filter((m) => m.id !== tempId);
         const idx = stripped.findIndex((m) => m.id === newMsg.id);
@@ -271,6 +277,27 @@ const ChatPanel = ({
       onMessageSent?.();
     } catch {
       setMessages((prev) => prev.filter((m) => m.id !== tempId));
+    }
+  };
+
+  const handleRetry = async (failed: Message) => {
+    try {
+      const updated = await omnichannelService.retryMessage(
+        conversation.id,
+        failed.id,
+      );
+      setMessages((prev) =>
+        prev.map((m) => (m.id === updated.id ? updated : m)),
+      );
+      if (updated.deliveryError) {
+        toast.error(updated.deliveryError);
+      } else {
+        onMessageSent?.();
+      }
+    } catch (err: unknown) {
+      const reason =
+        err instanceof Error ? err.message : "Retry request failed";
+      toast.error(reason);
     }
   };
 
@@ -338,6 +365,7 @@ const ChatPanel = ({
           conversationId={conversation.id}
           locale={locale}
           onReply={setReplyingTo}
+          onRetry={handleRetry}
           hasMoreOlder={hasMoreOlder}
           isLoadingOlder={isLoadingOlder}
           onLoadOlder={handleLoadOlder}

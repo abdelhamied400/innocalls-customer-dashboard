@@ -19,6 +19,7 @@ type Props = {
   conversationId: string;
   locale: string;
   onReply?: (message: Message) => void;
+  onRetry?: (message: Message) => void;
   hasMoreOlder?: boolean;
   isLoadingOlder?: boolean;
   onLoadOlder?: () => void;

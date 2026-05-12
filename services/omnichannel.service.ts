@@ -157,7 +157,7 @@ const omnichannelService = {
     conversationId: string,
     data: {
       file: File;
-      type: "image" | "video" | "document";
+      type: "image" | "video" | "audio" | "document";
       senderName: string;
       caption?: string;
       replyToMessageId?: string;
@@ -175,6 +175,16 @@ const omnichannelService = {
       `/api/omnichannel/conversations/${conversationId}/messages/media`,
       formData,
       { headers: { "Content-Type": "multipart/form-data" } },
+    );
+    return res.data.data;
+  },
+
+  // Re-dispatch a previously failed outbound message. The API mutates the
+  // existing row in place — clearing deliveryError on success, updating it
+  // with the new error otherwise — and returns the updated message.
+  retryMessage: async (conversationId: string, messageId: string) => {
+    const res = await omniApi.post(
+      `/api/omnichannel/conversations/${conversationId}/messages/${messageId}/retry`,
     );
     return res.data.data;
   },
