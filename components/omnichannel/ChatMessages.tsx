@@ -1,10 +1,10 @@
 import type { Message } from "@/types/omnichannel";
-import { MessagesScroller } from "@innocalls/chat-ui";
+import { MessagesScroller } from "@innocalls-com/chat-ui";
 import omnichannelService from "@/services/omnichannel.service";
 import ContactAvatar from "./ContactAvatar";
 
 /**
- * Dashboard adapter around `@innocalls/chat-ui`'s `<MessagesScroller />`.
+ * Dashboard adapter around `@innocalls-com/chat-ui`'s `<MessagesScroller />`.
  *
  * Wires the dashboard-specific bits the package can't know about:
  *   - `fetchMediaUrl` — the org-scoped axios fetcher

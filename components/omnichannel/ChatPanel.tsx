@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import ChatHeader from "./ChatHeader";
 import ChatMessages from "./ChatMessages";
-import { ChatInput } from "@innocalls/chat-ui";
+import { ChatInput } from "@innocalls-com/chat-ui";
 import { toast } from "sonner";
 
 type ChatPanelProps = {
