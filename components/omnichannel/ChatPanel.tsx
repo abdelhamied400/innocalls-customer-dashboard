@@ -223,7 +223,11 @@ const ChatPanel = ({
         replyToMessageId,
       });
       upsertMessage(newMsg);
-      onMessageSent?.();
+      if (newMsg.deliveryError) {
+        toast.error(newMsg.deliveryError);
+      } else {
+        onMessageSent?.();
+      }
     } catch {
       // Could show a toast here
     }
@@ -274,7 +278,11 @@ const ChatPanel = ({
         next[idx] = newMsg;
         return next;
       });
-      onMessageSent?.();
+      if (newMsg.deliveryError) {
+        toast.error(newMsg.deliveryError);
+      } else {
+        onMessageSent?.();
+      }
     } catch {
       setMessages((prev) => prev.filter((m) => m.id !== tempId));
     }
@@ -344,7 +352,11 @@ const ChatPanel = ({
         next[idx] = newMsg;
         return next;
       });
-      onMessageSent?.();
+      if (newMsg.deliveryError) {
+        toast.error(newMsg.deliveryError);
+      } else {
+        onMessageSent?.();
+      }
     } catch {
       // Drop the pending bubble so the user knows the send failed.
       setMessages((prev) => prev.filter((m) => m.id !== tempId));
