@@ -21,6 +21,7 @@ const allChannels: ChannelType[] = [
   "telegram",
 ];
 
+
 type ConversationListProps = {
   conversations: Conversation[];
   selectedId: string | null;
@@ -60,13 +61,7 @@ const ConversationList = ({
 }: ConversationListProps) => {
   const t = useTranslations("omnichannel");
 
-  const statusFilters: StatusKey[] = [
-    "all",
-    "active",
-    "waiting",
-    "resolved",
-    "closed",
-  ];
+  const statusFilters: StatusKey[] = ["all", "active", "waiting", "closed"];
 
   return (
     <div className="flex flex-col overflow-hidden h-full bg-white rounded-2xl border border-gray-100 shadow-sm">
@@ -86,14 +81,14 @@ const ConversationList = ({
         {/* Channel pills — icon-only buttons. Hovering surfaces the channel
             name in a tooltip above the icon so nothing in the row ever shifts
             or overlaps. The active filter expands inline (icon + label) so
-            the current selection is always legible. Wraps to multiple rows
+            the current selection is always legible. Horizontally scrollable
             when the panel is narrower than the row of pills. */}
         <TooltipProvider delayDuration={200}>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex gap-1.5 overflow-x-auto scrollbar-none">
             <button
               onClick={() => onChannelFilterChange("all")}
               className={cn(
-                "inline-flex items-center h-9 rounded-full border transition-colors px-3 text-[12px] font-semibold whitespace-nowrap",
+                "shrink-0 inline-flex items-center h-9 rounded-full border transition-colors px-3 text-[12px] font-semibold whitespace-nowrap",
                 channelFilter === "all"
                   ? "bg-primary-500 text-white border-primary-500 shadow-sm"
                   : "bg-white text-gray-600 border-gray-200 hover:border-primary-300 hover:text-primary-600",
@@ -108,7 +103,7 @@ const ConversationList = ({
                   <button
                     key={ch}
                     onClick={() => onChannelFilterChange(ch)}
-                    className="inline-flex items-center h-9 rounded-full border transition-colors px-3 gap-2 bg-primary-500 text-white border-primary-500 shadow-sm"
+                    className="shrink-0 inline-flex items-center h-9 rounded-full border transition-colors px-3 gap-2 bg-primary-500 text-white border-primary-500 shadow-sm"
                   >
                     <ChannelIcon
                       channel={ch}
@@ -127,7 +122,7 @@ const ConversationList = ({
                       onClick={() => onChannelFilterChange(ch)}
                       aria-label={channelLabels[ch]}
                       className={cn(
-                        "inline-flex items-center justify-center h-9 w-9 rounded-full border transition-colors",
+                        "shrink-0 inline-flex items-center justify-center h-9 w-9 rounded-full border transition-colors",
                         "bg-white text-gray-600 border-gray-200",
                         "hover:border-primary-300 hover:text-primary-600 hover:shadow-sm",
                       )}
@@ -147,10 +142,11 @@ const ConversationList = ({
           </div>
         </TooltipProvider>
 
-        {/* Status filters — segmented control. Single rounded container with
-            tabs sitting flush; the active tab gets a white "lifted" surface
-            with a soft shadow, evoking iOS-style segmented controls. */}
-        <div className="flex p-0.5 bg-gray-100/80 rounded-lg gap-0.5">
+        {/* Status filters — segmented control. Horizontally scrollable so
+            additional statuses (or longer translated labels) don't squeeze
+            the row; the active tab gets a white "lifted" surface with a
+            soft shadow, evoking iOS-style segmented controls. */}
+        <div className="flex p-0.5 bg-gray-100/80 rounded-lg gap-0.5 overflow-x-auto scrollbar-none">
           {statusFilters.map((s) => {
             const meta = STATUS_META[s];
             const Icon = meta?.icon;
@@ -160,7 +156,7 @@ const ConversationList = ({
                 key={s}
                 onClick={() => onStatusFilterChange(s)}
                 className={cn(
-                  "flex-1 inline-flex items-center justify-center gap-1 px-2 py-1 rounded-md text-[11px] font-semibold whitespace-nowrap",
+                  "shrink-0 inline-flex items-center justify-center gap-1 px-3 py-1 rounded-md text-[11px] font-semibold whitespace-nowrap",
                   "transition-all duration-150",
                   isActive
                     ? "bg-white text-gray-800 shadow-sm"
