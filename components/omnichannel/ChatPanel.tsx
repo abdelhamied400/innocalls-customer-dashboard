@@ -47,6 +47,10 @@ type ChatPanelProps = {
    *  Lets the parent update its `selectedConversation` state instantly so the
    *  UI doesn't have to wait for the next poll tick. */
   onConversationUpdated?: (updated: Conversation) => void;
+  /** Fired when the agent clicks the contact card in the header. The
+   * page-level owner mounts <ContactDetailsPanel> as a sibling grid
+   * column in response. */
+  onOpenContactDetails?: () => void;
 };
 
 const ALIVE_STATUSES = new Set(["active", "waiting"]);
@@ -84,6 +88,7 @@ const ChatPanel = ({
   onClose,
   onMessageSent,
   onConversationUpdated,
+  onOpenContactDetails,
 }: ChatPanelProps) => {
   const t = useTranslations("omnichannel");
   const locale = useLocale();
@@ -440,6 +445,7 @@ const ChatPanel = ({
           conversation={conversation}
           onClose={onClose}
           onEndChat={() => setIsEndDialogOpen(true)}
+          onOpenContactDetails={onOpenContactDetails}
         />
         <ChatMessages
           messages={messages}

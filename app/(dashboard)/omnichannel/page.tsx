@@ -6,6 +6,7 @@ import omnichannelService from "@/services/omnichannel.service";
 import type { ChannelType, Conversation } from "@/types/omnichannel";
 import ConversationList from "@/components/omnichannel/ConversationList";
 import ChatPanel from "@/components/omnichannel/ChatPanel";
+import ContactDetailsPanel from "@/components/omnichannel/ContactDetailsPanel";
 import FullscreenToggle from "@/components/omnichannel/FullscreenToggle";
 import { Forum } from "@mui/icons-material";
 import { usePolling } from "@/hooks/usePolling";
@@ -27,6 +28,10 @@ const OmnichannelPage = () => {
    * doesn't briefly see the stale single-message preview from the inbox row
    * before the real history lands. */
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
+  /** Open state for the right-side <ContactDetailsPanel>. The panel
+   * occupies its own column in the grid below — opening rebalances the
+   * widths so the chat panel just shrinks (no overlay/modal). */
+  const [isContactDetailsOpen, setIsContactDetailsOpen] = useState(false);
   /** Highest page we've successfully fetched. Reset to 0 on filter change. */
   const [currentPage, setCurrentPage] = useState(0);
   const [hasMore, setHasMore] = useState(false);
@@ -286,7 +291,9 @@ const OmnichannelPage = () => {
         <FullscreenToggle />
       </div>
 
-      {/* Main Content */}
+      {/* Main Content — 3-column grid when the contact-details panel is
+          open. The chat panel just shrinks to make room; the side panels
+          stay the same width. */}
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-3 flex-1 min-h-0">
         {/* Conversation List */}
         <div className="lg:col-span-4 xl:col-span-3 h-full overflow-hidden">
@@ -312,16 +319,35 @@ const OmnichannelPage = () => {
           />
         </div>
 
-        {/* Chat Panel */}
-        <div className="lg:col-span-6 xl:col-span-7 h-full overflow-hidden">
+        {/* Chat Panel — shrinks when contact details opens to make room. */}
+        <div
+          className={
+            isContactDetailsOpen && selectedConversation
+              ? "lg:col-span-3 xl:col-span-4 h-full overflow-hidden"
+              : "lg:col-span-6 xl:col-span-7 h-full overflow-hidden"
+          }
+        >
           <ChatPanel
             conversation={selectedConversation}
             isLoadingMessages={isLoadingMessages}
             onClose={() => setSelectedConversation(null)}
             onMessageSent={handleConversationUpdated}
             onConversationUpdated={handleConversationMutated}
+            onOpenContactDetails={() => setIsContactDetailsOpen(true)}
           />
         </div>
+
+        {/* Contact details — third column, only mounted when open AND a
+            conversation is selected (closing it on conversation switch
+            avoids stale notes flashing during the swap). */}
+        {isContactDetailsOpen && selectedConversation && (
+          <div className="lg:col-span-3 h-full overflow-hidden">
+            <ContactDetailsPanel
+              conversation={selectedConversation}
+              onClose={() => setIsContactDetailsOpen(false)}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
