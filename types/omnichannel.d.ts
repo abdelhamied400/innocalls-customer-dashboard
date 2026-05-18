@@ -43,6 +43,16 @@ export type Contact = {
   avatar?: string | null;
 };
 
+export type ContactNote = {
+  id: string;
+  contactId: string;
+  authorId: string;
+  authorName: string;
+  body: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type Message = {
   id: string;
   conversationId: string;
@@ -62,6 +72,10 @@ export type Message = {
    * but the channel adapter refused delivery. Bubble shows an inline
    * error row + retry button; cleared on successful retry. */
   deliveryError?: string | null;
+  /** Internal-only note written by an agent/admin. Never sent to the
+   * channel provider; widget endpoints filter these out. Renders with
+   * amber sticky-note styling + "Internal note" label in the dashboard. */
+  isPrivate?: boolean;
   timestamp: string;
   senderName: string;
   isRead: boolean;
@@ -81,6 +95,9 @@ export type Conversation = {
   /** True when older messages exist beyond the initial page returned by the
    * API. The dashboard uses this to gate the scroll-up infinite pagination. */
   hasMoreOlder?: boolean;
+  /** True when the current viewer has starred this conversation (per-user
+   * bookmark). Mutated locally via the favoriteConversation service call. */
+  isFavorited?: boolean;
 };
 
 export type OmnichannelStats = {

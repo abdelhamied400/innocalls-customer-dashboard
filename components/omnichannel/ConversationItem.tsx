@@ -8,6 +8,9 @@ import {
   MarkChatUnread,
   Person,
   RestoreFromTrash,
+  Star,
+  StarBorder,
+  StarOutline,
 } from "@mui/icons-material";
 import { useState } from "react";
 import { useTranslations } from "@/providers/TranslationProvider";
@@ -40,6 +43,7 @@ type ConversationItemProps = {
   onMarkAsUnread?: (conv: Conversation) => void;
   onEndChat?: (conv: Conversation) => void;
   onReopenChat?: (conv: Conversation) => void;
+  onToggleFavorite?: (conv: Conversation) => void;
 };
 
 const ConversationItem = ({
@@ -50,6 +54,7 @@ const ConversationItem = ({
   onMarkAsUnread,
   onEndChat,
   onReopenChat,
+  onToggleFavorite,
 }: ConversationItemProps) => {
   const t = useTranslations("omnichannel");
 
@@ -113,11 +118,14 @@ const ConversationItem = ({
             <div className="flex items-center justify-between gap-2">
               <span
                 className={cn(
-                  "font-semibold text-[13px] truncate",
+                  "font-semibold text-[13px] truncate flex items-center gap-1",
                   hasUnread ? "text-gray-900" : "text-gray-700",
                 )}
               >
                 {conversation.contact.name}
+                {conversation.isFavorited && (
+                  <Star className="!text-[12px] !text-amber-400 shrink-0" />
+                )}
               </span>
               <span className="text-[11px] text-gray-400 whitespace-nowrap">
                 {conversation.lastMessageAt
@@ -189,6 +197,24 @@ const ConversationItem = ({
           />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-52">
+          {onToggleFavorite && (
+            <DropdownMenuItem
+              onClick={() => onToggleFavorite(conversation)}
+              className="text-[12px] gap-2"
+            >
+              {conversation.isFavorited ? (
+                <>
+                  <StarOutline className="!text-[16px] text-amber-500" />
+                  {t("actions.unfavorite")}
+                </>
+              ) : (
+                <>
+                  <StarBorder className="!text-[16px] text-gray-500" />
+                  {t("actions.favorite")}
+                </>
+              )}
+            </DropdownMenuItem>
+          )}
           {hasUnread && onMarkAsRead && (
             <DropdownMenuItem
               onClick={() => onMarkAsRead(conversation)}

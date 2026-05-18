@@ -1,7 +1,8 @@
 import type { Conversation } from "@/types/omnichannel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Close, DoNotDisturbOn, Person } from "@mui/icons-material";
+import { Close, DoNotDisturbOn, Note, Person } from "@mui/icons-material";
+import ContactNotesSheet from "./ContactNotesSheet";
 import { useTranslations } from "@/providers/TranslationProvider";
 import ChannelIcon, { channelLabels } from "./ChannelIcon";
 import ContactAvatar from "./ContactAvatar";
@@ -66,6 +67,22 @@ const ChatHeader = ({ conversation, onClose, onEndChat }: ChatHeaderProps) => {
           })()}
           {t(`status.${conversation.status}`)}
         </Badge>
+        <ContactNotesSheet
+          contactId={conversation.contact.id}
+          contactName={conversation.contact.name}
+          trigger={
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-1 rounded-lg text-xs h-7 px-2.5 text-gray-500 hover:text-gray-700"
+              aria-label={t("notes.title")}
+              title={t("notes.title")}
+            >
+              <Note className="!text-sm" />
+              {t("notes.title")}
+            </Button>
+          }
+        />
         {canEnd && (
           <Button
             variant="outline"

@@ -5754,7 +5754,22 @@
       "endChat": "End chat",
       "reopenChat": "Reopen chat",
       "copyPhone": "Copy phone",
-      "copyEmail": "Copy email"
+      "copyEmail": "Copy email",
+      "favorite": "Star",
+      "unfavorite": "Remove from starred"
+    },
+    "notes": {
+      "title": "Notes",
+      "subtitle": "Internal notes about {name} — visible to everyone in your org",
+      "placeholder": "Add a note about this contact…",
+      "add": "Add note",
+      "saving": "Saving…",
+      "delete": "Delete note",
+      "empty": "No notes yet. Add the first one above.",
+      "loading": "Loading…",
+      "loadError": "Couldn't load notes",
+      "saveError": "Couldn't save the note",
+      "deleteError": "Couldn't delete the note"
     },
     "noConversations": "No conversations found",
     "selectConversation": "Select a conversation",

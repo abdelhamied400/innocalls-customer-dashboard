@@ -275,7 +275,7 @@ const ChatPanel = ({
     onConversationUpdated?.({ ...conversation, status: "closed" });
   };
 
-  const handleSendMessage = async (content: string) => {
+  const handleSendMessage = async (content: string, isPrivate?: boolean) => {
     const replyToMessageId = consumeReplyToId();
     try {
       const result = await omnichannelService.sendMessage(conversation.id, {
@@ -283,6 +283,7 @@ const ChatPanel = ({
         direction: "outbound",
         senderName,
         replyToMessageId,
+        isPrivate,
       });
       upsertMessage(result.message);
       if (result.systemMessage) applyWindowExpired(result.systemMessage);
@@ -462,6 +463,7 @@ const ChatPanel = ({
           onSendVoice={handleSendVoice}
           onSendMedia={handleSendMedia}
           attachmentKinds={ATTACHMENT_KINDS_BY_CHANNEL[conversation.channel]}
+          showPrivateToggle
           replyingTo={replyingTo}
           onCancelReply={() => setReplyingTo(null)}
           disabled={!isAlive}

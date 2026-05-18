@@ -70,6 +70,7 @@ type ConversationListProps = {
   onMarkAsUnread?: (conv: Conversation) => void;
   onEndChat?: (conv: Conversation) => void;
   onReopenChat?: (conv: Conversation) => void;
+  onToggleFavorite?: (conv: Conversation) => void;
 };
 
 const ConversationList = ({
@@ -90,6 +91,7 @@ const ConversationList = ({
   onMarkAsUnread,
   onEndChat,
   onReopenChat,
+  onToggleFavorite,
 }: ConversationListProps) => {
   const t = useTranslations("omnichannel");
 
@@ -448,6 +450,7 @@ const ConversationList = ({
               onMarkAsUnread={onMarkAsUnread}
               onEndChat={onEndChat}
               onReopenChat={onReopenChat}
+              onToggleFavorite={onToggleFavorite}
             />
           ))}
 

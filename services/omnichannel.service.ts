@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getCookie } from "cookies-next";
+import useSessionStore from "@/store/session.slice";
 import type {
   Channel,
   ChannelConfigSchema,
@@ -23,9 +24,23 @@ const omniApi = axios.create({
 });
 
 omniApi.interceptors.request.use(async (config) => {
-  const organizationId = await getCookie("OrganizationId");
+  const { session } = useSessionStore.getState();
+  const organizationId = (await getCookie("OrganizationId")) as string | undefined;
   if (organizationId) {
     config.headers["Organization"] = organizationId;
+  }
+  // Identity headers used by the omnichannel API to scope conversation
+  // visibility (admin sees everything in the org; agent sees only chats
+  // assigned to them or unassigned). Mirrors the pattern used by api.ts.
+  const userId = session?.user?.id || session?.user?.email;
+  if (userId) {
+    config.headers["User-Id"] = String(userId);
+  }
+  if (session?.userType) {
+    // The omnichannel API only knows two roles: "admin" and "agent".
+    // The dashboard distinguishes "user" (org owner / admin) and "agent".
+    config.headers["User-Role"] =
+      session.userType === "agent" ? "agent" : "admin";
   }
   return config;
 });
@@ -118,6 +133,10 @@ const omnichannelService = {
       direction: "inbound" | "outbound";
       senderName: string;
       replyToMessageId?: string;
+      /** When true, the message is an internal note: persisted but never
+       * dispatched to the channel provider. Widget endpoints filter it
+       * out so the visitor never sees it. */
+      isPrivate?: boolean;
     },
   ) => {
     const res = await omniApi.post(
@@ -206,6 +225,50 @@ const omnichannelService = {
       `/api/omnichannel/conversations/${conversationId}/messages/read`,
     );
     return res.data.data;
+  },
+
+  favoriteConversation: async (conversationId: string) => {
+    await omniApi.post(
+      `/api/omnichannel/conversations/${conversationId}/favorite`,
+    );
+  },
+
+  unfavoriteConversation: async (conversationId: string) => {
+    await omniApi.delete(
+      `/api/omnichannel/conversations/${conversationId}/favorite`,
+    );
+  },
+
+  getContactNotes: async (contactId: string) => {
+    const res = await omniApi.get(
+      `/api/omnichannel/contacts/${contactId}/notes`,
+    );
+    return res.data.data as Array<{
+      id: string;
+      contactId: string;
+      authorId: string;
+      authorName: string;
+      body: string;
+      createdAt: string;
+      updatedAt: string;
+    }>;
+  },
+
+  addContactNote: async (
+    contactId: string,
+    data: { body: string; authorName: string },
+  ) => {
+    const res = await omniApi.post(
+      `/api/omnichannel/contacts/${contactId}/notes`,
+      data,
+    );
+    return res.data.data;
+  },
+
+  deleteContactNote: async (contactId: string, noteId: string) => {
+    await omniApi.delete(
+      `/api/omnichannel/contacts/${contactId}/notes/${noteId}`,
+    );
   },
 
   /**

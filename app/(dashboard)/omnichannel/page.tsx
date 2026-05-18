@@ -252,6 +252,29 @@ const OmnichannelPage = () => {
     }
   };
 
+  const handleToggleFavorite = async (conv: Conversation) => {
+    const nextValue = !conv.isFavorited;
+    // Optimistic flip — the API call is fire-and-forget; next poll
+    // reconciles if it failed for some reason.
+    setConversations((prev) =>
+      prev.map((c) =>
+        c.id === conv.id ? { ...c, isFavorited: nextValue } : c,
+      ),
+    );
+    setSelectedConversation((curr) =>
+      curr && curr.id === conv.id ? { ...curr, isFavorited: nextValue } : curr,
+    );
+    try {
+      if (nextValue) {
+        await omnichannelService.favoriteConversation(conv.id);
+      } else {
+        await omnichannelService.unfavoriteConversation(conv.id);
+      }
+    } catch {
+      /* poll tick will resync */
+    }
+  };
+
   return (
     <div className="flex flex-col gap-3 h-[calc(100vh-130px)]">
       {/* Header */}
@@ -285,6 +308,7 @@ const OmnichannelPage = () => {
             onMarkAsUnread={handleMarkAsUnread}
             onEndChat={handleEndChat}
             onReopenChat={handleReopenChat}
+            onToggleFavorite={handleToggleFavorite}
           />
         </div>
 
