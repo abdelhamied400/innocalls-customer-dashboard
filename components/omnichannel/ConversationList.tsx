@@ -1,7 +1,15 @@
 import type { ChannelType, Conversation } from "@/types/omnichannel";
 import { cn } from "@/lib/utils";
-import { Search } from "@mui/icons-material";
+import {
+  CalendarMonth,
+  KeyboardArrowDown,
+  LocalOffer,
+  PriorityHigh,
+  Search,
+  Tune,
+} from "@mui/icons-material";
 import { STATUS_META, type StatusKey } from "./status-meta";
+import { useState } from "react";
 import { useTranslations } from "@/providers/TranslationProvider";
 import ChannelIcon, { channelLabels } from "./ChannelIcon";
 import ConversationItem from "./ConversationItem";
@@ -11,6 +19,21 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import { format } from "date-fns";
+import type { DateRange } from "react-day-picker";
 
 const allChannels: ChannelType[] = [
   "whatsapp",
@@ -42,6 +65,11 @@ type ConversationListProps = {
   /** Fired when the agent scrolls within 300px of the bottom of the list.
    * Owner is responsible for advancing the page cursor + appending. */
   onLoadMore?: () => void;
+  /** Per-conversation actions, plumbed through to each row's context menu. */
+  onMarkAsRead?: (conv: Conversation) => void;
+  onMarkAsUnread?: (conv: Conversation) => void;
+  onEndChat?: (conv: Conversation) => void;
+  onReopenChat?: (conv: Conversation) => void;
 };
 
 const ConversationList = ({
@@ -58,24 +86,101 @@ const ConversationList = ({
   hasMore,
   isLoadingMore,
   onLoadMore,
+  onMarkAsRead,
+  onMarkAsUnread,
+  onEndChat,
+  onReopenChat,
 }: ConversationListProps) => {
   const t = useTranslations("omnichannel");
 
   const statusFilters: StatusKey[] = ["all", "active", "waiting", "closed"];
 
+  // Filter UI plumbing only — backend wiring lands once the API exposes
+  // these params. Mock options stay until the service layer accepts them.
+  const [showMoreFilters, setShowMoreFilters] = useState(false);
+  const [agentFilter, setAgentFilter] = useState<string>("all");
+  const [priorityFilter, setPriorityFilter] = useState<string>("all");
+  const [tagFilter, setTagFilter] = useState<string>("all");
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
+
+  const moreFiltersAppliedCount =
+    (agentFilter !== "all" ? 1 : 0) +
+    (priorityFilter !== "all" ? 1 : 0) +
+    (tagFilter !== "all" ? 1 : 0) +
+    (dateRange?.from || dateRange?.to ? 1 : 0);
+
+  const MOCK_AGENTS = [
+    { value: "all", label: t("filters.allAgents") },
+    { value: "unassigned", label: t("filters.unassigned") },
+    { value: "agent-1", label: "Sara M." },
+    { value: "agent-2", label: "Omar K." },
+    { value: "agent-3", label: "Lina A." },
+  ];
+
+  const PRIORITIES: Array<{ value: string; label: string; tone: string }> = [
+    {
+      value: "all",
+      label: t("filters.allPriorities"),
+      tone: "text-gray-500",
+    },
+    { value: "urgent", label: t("priority.urgent"), tone: "text-red-500" },
+    { value: "high", label: t("priority.high"), tone: "text-orange-500" },
+    { value: "medium", label: t("priority.medium"), tone: "text-amber-500" },
+    { value: "low", label: t("priority.low"), tone: "text-gray-400" },
+  ];
+
+  const MOCK_TAGS = [
+    { value: "all", label: t("filters.allTags") },
+    { value: "vip", label: "VIP" },
+    { value: "support", label: "Support" },
+    { value: "sales", label: "Sales" },
+    { value: "billing", label: "Billing" },
+    { value: "feedback", label: "Feedback" },
+  ];
+
+  const dateRangeLabel = (() => {
+    if (!dateRange?.from && !dateRange?.to) return t("filters.anyDate");
+    if (dateRange.from && dateRange.to)
+      return `${format(dateRange.from, "d MMM")} – ${format(dateRange.to, "d MMM")}`;
+    if (dateRange.from)
+      return `${t("filters.from")} ${format(dateRange.from, "d MMM")}`;
+    return `${t("filters.to")} ${format(dateRange.to!, "d MMM")}`;
+  })();
+
   return (
     <div className="flex flex-col overflow-hidden h-full bg-white rounded-2xl border border-gray-100 shadow-sm">
       {/* Search */}
       <div className="p-3.5 border-b border-gray-100 space-y-2.5 shrink-0">
-        <div className="relative group">
-          <Search className="absolute start-3.5 top-1/2 -translate-y-1/2 text-gray-300 !text-[18px] transition-colors group-focus-within:text-primary-500" />
-          <input
-            type="text"
-            placeholder={t("search.placeholder")}
-            className="w-full h-10 ps-10 pe-4 bg-gray-50 border border-gray-100 rounded-xl text-sm placeholder:text-gray-300 focus:outline-none focus:bg-white focus:border-primary-300 focus:ring-2 focus:ring-primary-100 transition-all"
-            value={searchQuery}
-            onChange={(e) => onSearchChange(e.target.value)}
-          />
+        <div className="flex items-center gap-2">
+          <div className="relative group flex-1">
+            <Search className="absolute start-3.5 top-1/2 -translate-y-1/2 text-gray-300 !text-[18px] transition-colors group-focus-within:text-primary-500" />
+            <input
+              type="text"
+              placeholder={t("search.placeholder")}
+              className="w-full h-10 ps-10 pe-4 bg-gray-50 border border-gray-100 rounded-xl text-sm placeholder:text-gray-300 focus:outline-none focus:bg-white focus:border-primary-300 focus:ring-2 focus:ring-primary-100 transition-all"
+              value={searchQuery}
+              onChange={(e) => onSearchChange(e.target.value)}
+            />
+          </div>
+          <button
+            type="button"
+            onClick={() => setShowMoreFilters((v) => !v)}
+            aria-pressed={showMoreFilters}
+            aria-label={t("filters.toggle")}
+            className={cn(
+              "relative shrink-0 inline-flex items-center justify-center h-10 w-10 rounded-xl border transition-colors",
+              showMoreFilters || moreFiltersAppliedCount > 0
+                ? "bg-primary-50 border-primary-200 text-primary-600"
+                : "bg-gray-50 border-gray-100 text-gray-500 hover:bg-white hover:border-primary-200 hover:text-primary-600",
+            )}
+          >
+            <Tune className="!text-[18px]" />
+            {moreFiltersAppliedCount > 0 && (
+              <span className="absolute -top-1 -end-1 min-w-[16px] h-4 px-1 rounded-full bg-primary-500 text-white text-[9px] font-bold flex items-center justify-center">
+                {moreFiltersAppliedCount}
+              </span>
+            )}
+          </button>
         </div>
 
         {/* Channel pills — icon-only buttons. Hovering surfaces the channel
@@ -176,6 +281,123 @@ const ConversationList = ({
             );
           })}
         </div>
+
+        {/* Advanced filters — agent / priority / tags / date range. Hidden
+            by default behind the Tune toggle next to the search bar so the
+            sidebar stays compact; expanded view stacks each control as a
+            full-width row so labels never get clipped and nothing scrolls
+            horizontally. State is local until the API exposes these
+            params. */}
+        {showMoreFilters && (
+          <div className="space-y-2 pt-1">
+            <Select value={agentFilter} onValueChange={setAgentFilter}>
+              <SelectTrigger
+                className={cn(
+                  "w-full h-9 rounded-lg border bg-white text-[12px] font-medium",
+                  agentFilter !== "all"
+                    ? "border-primary-300 text-primary-700"
+                    : "border-gray-200 text-gray-600",
+                )}
+              >
+                <SelectValue placeholder={t("filters.agent")} />
+              </SelectTrigger>
+              <SelectContent>
+                {MOCK_AGENTS.map((a) => (
+                  <SelectItem key={a.value} value={a.value}>
+                    {a.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={priorityFilter} onValueChange={setPriorityFilter}>
+              <SelectTrigger
+                className={cn(
+                  "w-full h-9 rounded-lg border bg-white text-[12px] font-medium",
+                  priorityFilter !== "all"
+                    ? "border-primary-300 text-primary-700"
+                    : "border-gray-200 text-gray-600",
+                )}
+              >
+                <SelectValue
+                  placeholder={t("filters.priority")}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {PRIORITIES.map((p) => (
+                  <SelectItem key={p.value} value={p.value}>
+                    <span className="inline-flex items-center gap-2">
+                      <PriorityHigh className={cn("!text-[14px]", p.tone)} />
+                      {p.label}
+                    </span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Select value={tagFilter} onValueChange={setTagFilter}>
+              <SelectTrigger
+                className={cn(
+                  "w-full h-9 rounded-lg border bg-white text-[12px] font-medium",
+                  tagFilter !== "all"
+                    ? "border-primary-300 text-primary-700"
+                    : "border-gray-200 text-gray-600",
+                )}
+              >
+                <span className="inline-flex items-center gap-2">
+                  <LocalOffer className="!text-[14px] text-gray-400" />
+                  <SelectValue placeholder={t("filters.tags")} />
+                </span>
+              </SelectTrigger>
+              <SelectContent>
+                {MOCK_TAGS.map((tag) => (
+                  <SelectItem key={tag.value} value={tag.value}>
+                    {tag.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Popover>
+              <PopoverTrigger asChild>
+                <button
+                  type="button"
+                  className={cn(
+                    "w-full inline-flex items-center justify-between gap-1 h-9 px-3 rounded-lg border bg-white text-[12px] font-medium",
+                    dateRange?.from || dateRange?.to
+                      ? "border-primary-300 text-primary-700"
+                      : "border-gray-200 text-gray-600",
+                  )}
+                >
+                  <span className="inline-flex items-center gap-2 truncate">
+                    <CalendarMonth className="!text-[14px] text-gray-400" />
+                    <span className="truncate">{dateRangeLabel}</span>
+                  </span>
+                  <KeyboardArrowDown className="!text-[14px] opacity-60 shrink-0" />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="w-auto p-0">
+                <Calendar
+                  mode="range"
+                  selected={dateRange}
+                  onSelect={setDateRange}
+                  numberOfMonths={1}
+                />
+                {(dateRange?.from || dateRange?.to) && (
+                  <div className="p-2 border-t border-gray-100 flex justify-end">
+                    <button
+                      type="button"
+                      onClick={() => setDateRange(undefined)}
+                      className="text-[11px] text-gray-500 hover:text-gray-700"
+                    >
+                      {t("filters.clearDate")}
+                    </button>
+                  </div>
+                )}
+              </PopoverContent>
+            </Popover>
+          </div>
+        )}
       </div>
 
       {/* List */}
@@ -222,6 +444,10 @@ const ConversationList = ({
               conversation={conv}
               isSelected={selectedId === conv.id}
               onClick={() => onSelect(conv)}
+              onMarkAsRead={onMarkAsRead}
+              onMarkAsUnread={onMarkAsUnread}
+              onEndChat={onEndChat}
+              onReopenChat={onReopenChat}
             />
           ))}
 

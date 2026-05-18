@@ -5719,13 +5719,37 @@
       "closed": "مغلقة",
       "agent": "الوكيل",
       "assignedAgent": "الوكيل المعين",
-      "unassigned": "غير معين"
+      "unassigned": "غير معين",
+      "allAgents": "كل الوكلاء",
+      "priority": "الأولوية",
+      "allPriorities": "كل الأولويات",
+      "tags": "الوسوم",
+      "allTags": "كل الوسوم",
+      "anyDate": "أي تاريخ",
+      "from": "من",
+      "to": "إلى",
+      "clearDate": "مسح",
+      "toggle": "تبديل الفلاتر"
     },
     "status": {
       "active": "نشطة",
       "waiting": "في الانتظار",
       "resolved": "تم حلها",
       "closed": "مغلقة"
+    },
+    "priority": {
+      "urgent": "عاجلة",
+      "high": "مرتفعة",
+      "medium": "متوسطة",
+      "low": "منخفضة"
+    },
+    "actions": {
+      "markAsRead": "تحديد كمقروءة",
+      "markAsUnread": "تحديد كغير مقروءة",
+      "endChat": "إنهاء المحادثة",
+      "reopenChat": "إعادة فتح المحادثة",
+      "copyPhone": "نسخ الهاتف",
+      "copyEmail": "نسخ البريد الإلكتروني"
     },
     "noConversations": "لا توجد محادثات",
     "selectConversation": "اختر محادثة",

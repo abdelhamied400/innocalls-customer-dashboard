@@ -206,6 +206,52 @@ const OmnichannelPage = () => {
     );
   };
 
+  /** Context-menu actions on conversation rows. Each mutates the list
+   * optimistically + fires the right service call. Errors are swallowed
+   * silently for now — next poll tick will reconcile. */
+  const handleMarkAsRead = async (conv: Conversation) => {
+    setConversations((prev) =>
+      prev.map((c) => (c.id === conv.id ? { ...c, unreadCount: 0 } : c)),
+    );
+    try {
+      await omnichannelService.markAsRead(conv.id);
+    } catch {
+      /* poll will restore the correct unread count */
+    }
+  };
+
+  const handleMarkAsUnread = (conv: Conversation) => {
+    // No service endpoint yet — flip locally so the agent can flag it
+    // visually until the API exposes a mark-as-unread route.
+    setConversations((prev) =>
+      prev.map((c) =>
+        c.id === conv.id ? { ...c, unreadCount: Math.max(1, c.unreadCount) } : c,
+      ),
+    );
+  };
+
+  const handleEndChat = async (conv: Conversation) => {
+    try {
+      const updated = await omnichannelService.updateConversation(conv.id, {
+        status: "closed",
+      });
+      handleConversationMutated(updated);
+    } catch {
+      /* swallow */
+    }
+  };
+
+  const handleReopenChat = async (conv: Conversation) => {
+    try {
+      const updated = await omnichannelService.updateConversation(conv.id, {
+        status: "active",
+      });
+      handleConversationMutated(updated);
+    } catch {
+      /* swallow */
+    }
+  };
+
   return (
     <div className="flex flex-col gap-3 h-[calc(100vh-130px)]">
       {/* Header */}
@@ -235,6 +281,10 @@ const OmnichannelPage = () => {
             hasMore={hasMore}
             isLoadingMore={isLoadingMore}
             onLoadMore={loadMoreConversations}
+            onMarkAsRead={handleMarkAsRead}
+            onMarkAsUnread={handleMarkAsUnread}
+            onEndChat={handleEndChat}
+            onReopenChat={handleReopenChat}
           />
         </div>
 

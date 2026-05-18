@@ -5724,13 +5724,37 @@
       "closed": "Closed",
       "agent": "Agent",
       "assignedAgent": "Assigned Agent",
-      "unassigned": "Unassigned"
+      "unassigned": "Unassigned",
+      "allAgents": "All agents",
+      "priority": "Priority",
+      "allPriorities": "All priorities",
+      "tags": "Tags",
+      "allTags": "All tags",
+      "anyDate": "Any date",
+      "from": "From",
+      "to": "To",
+      "clearDate": "Clear",
+      "toggle": "Toggle filters"
     },
     "status": {
       "active": "Active",
       "waiting": "Waiting",
       "resolved": "Resolved",
       "closed": "Closed"
+    },
+    "priority": {
+      "urgent": "Urgent",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "actions": {
+      "markAsRead": "Mark as read",
+      "markAsUnread": "Mark as unread",
+      "endChat": "End chat",
+      "reopenChat": "Reopen chat",
+      "copyPhone": "Copy phone",
+      "copyEmail": "Copy email"
     },
     "noConversations": "No conversations found",
     "selectConversation": "Select a conversation",
