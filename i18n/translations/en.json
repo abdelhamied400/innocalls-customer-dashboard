@@ -5739,6 +5739,10 @@
     "messageInput": {
       "placeholder": "Type a message..."
     },
+    "windowExpired": {
+      "banner": "The 24-hour messaging window has expired. The customer must message first before you can reply.",
+      "toast": "The 24-hour messaging window has expired. This chat is now closed."
+    },
     "recording": "Recording",
     "fullscreen": "Focus mode",
     "exitFullscreen": "Exit focus",

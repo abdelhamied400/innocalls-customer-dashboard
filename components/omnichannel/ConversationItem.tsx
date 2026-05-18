@@ -6,6 +6,7 @@ import { useTranslations } from "@/providers/TranslationProvider";
 import { formatDistanceToNow } from "date-fns";
 import ChannelIcon from "./ChannelIcon";
 import ContactAvatar from "./ContactAvatar";
+import { STATUS_META, type StatusKey } from "./status-meta";
 
 const statusVariants: Record<string, string> = {
   active: "success",
@@ -31,10 +32,14 @@ const ConversationItem = ({
     <button
       onClick={onClick}
       className={cn(
-        "w-full text-start p-3.5 transition-all border-b border-gray-50/80 cursor-pointer",
+        "group relative w-full text-start p-3.5 transition-all duration-150 border-b border-gray-50/80 cursor-pointer",
+        // Inset start-edge accent: visible when selected, slides in on hover
+        // for non-selected rows so the agent gets a clear "this is clickable"
+        // affordance without us touching the whole bg too aggressively.
+        "before:absolute before:inset-y-2 before:start-0 before:w-[3px] before:rounded-e before:transition-all",
         isSelected
-          ? "bg-primary-50/70 border-s-2 border-s-primary-500"
-          : "hover:bg-gray-50/70",
+          ? "bg-primary-50/70 before:bg-primary-500"
+          : "before:bg-transparent hover:bg-gray-50 hover:before:bg-primary-300",
       )}
     >
       <div className="flex items-start gap-3">
@@ -75,8 +80,15 @@ const ConversationItem = ({
               variant={
                 (statusVariants[conversation.status] as any) ?? "secondary"
               }
-              className="text-[9px] px-1.5 py-0 leading-4 font-medium"
+              className="text-[9px] px-1.5 py-0 leading-4 font-medium inline-flex items-center gap-0.5"
             >
+              {(() => {
+                const Icon =
+                  STATUS_META[conversation.status as StatusKey]?.icon;
+                return Icon ? (
+                  <Icon className="!text-[10px] shrink-0" />
+                ) : null;
+              })()}
               {t(`status.${conversation.status}`)}
             </Badge>
             {conversation.status === "active" && conversation.assignedAgent && (

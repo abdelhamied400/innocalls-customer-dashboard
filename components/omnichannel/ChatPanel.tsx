@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { Conversation, Message } from "@/types/omnichannel";
+import type { ChannelType, Conversation, Message } from "@/types/omnichannel";
 import { Forum } from "@mui/icons-material";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import omnichannelService from "@/services/omnichannel.service";
@@ -19,11 +19,28 @@ import {
 } from "@/components/ui/alert-dialog";
 import ChatHeader from "./ChatHeader";
 import ChatMessages from "./ChatMessages";
-import { ChatInput } from "@innocalls-com/chat-ui";
+import { ChatInput, type MediaKind } from "@innocalls-com/chat-ui";
 import { toast } from "sonner";
+
+/** Outbound media types each channel adapter accepts. Drives the
+ * attachment menu in <ChatInput>: anything not listed here is hidden
+ * from the agent. Mirrors what omni-channel-microservice-api currently
+ * supports per provider — revisit when adding new channel SDKs. */
+const ATTACHMENT_KINDS_BY_CHANNEL: Record<ChannelType, MediaKind[]> = {
+  whatsapp: ["image", "video", "audio", "document"],
+  live_chat: ["image", "video", "audio", "document"],
+  messenger: ["image", "video", "audio", "document"],
+  telegram: ["image", "video", "audio", "document"],
+  instagram: ["image", "video", "document"],
+  x: ["image", "video", "document"],
+};
 
 type ChatPanelProps = {
   conversation: Conversation | null;
+  /** True while the parent is fetching the full conversation (messages
+   * page) after a select. The chat area renders a bubble skeleton instead
+   * of the stale inbox preview until this flips back to false. */
+  isLoadingMessages?: boolean;
   onClose?: () => void;
   onMessageSent?: () => void;
   /** Called whenever the conversation row is mutated (status change, etc).
@@ -34,8 +51,36 @@ type ChatPanelProps = {
 
 const ALIVE_STATUSES = new Set(["active", "waiting"]);
 
+/** Channels that enforce a 24-hour messaging window. Outside this window
+ * the provider rejects sends; we mirror that on the client so the agent
+ * sees the input disabled instead of getting a generic delivery error. */
+const WINDOWED_CHANNELS = new Set<ChannelType>([
+  "whatsapp",
+  "instagram",
+  "messenger",
+]);
+const WINDOW_MS = 24 * 60 * 60 * 1000;
+
+/** True when the channel enforces a 24h window AND the last inbound
+ * message (or last_message_at if no inbound yet) is older than 24h.
+ * Computed from messages already in memory — no extra fetch. */
+function isMessagingWindowExpired(
+  channel: ChannelType,
+  messages: Message[],
+): boolean {
+  if (!WINDOWED_CHANNELS.has(channel)) return false;
+  const lastInbound = [...messages]
+    .reverse()
+    .find((m) => m.direction === "inbound");
+  if (!lastInbound) return false;
+  const ts = new Date(lastInbound.timestamp).getTime();
+  if (Number.isNaN(ts)) return false;
+  return Date.now() - ts > WINDOW_MS;
+}
+
 const ChatPanel = ({
   conversation,
+  isLoadingMessages,
   onClose,
   onMessageSent,
   onConversationUpdated,
@@ -175,7 +220,8 @@ const ChatPanel = ({
 
   const senderName = auth?.user?.name ?? "Agent";
 
-  const isAlive = ALIVE_STATUSES.has(conversation.status);
+  const windowExpired = isMessagingWindowExpired(conversation.channel, messages);
+  const isAlive = ALIVE_STATUSES.has(conversation.status) && !windowExpired;
 
   const confirmEndChat = async () => {
     if (!conversation) return;
@@ -213,19 +259,36 @@ const ChatPanel = ({
     return id;
   };
 
+  /** Splice in the server-generated window-expired system message and mark
+   * the parent conversation as closed locally so the agent sees the new
+   * pill + the input disables immediately (no wait for the next poll). */
+  const applyWindowExpired = (systemMessage: Message) => {
+    setMessages((prev) =>
+      prev.some((m) => m.id === systemMessage.id)
+        ? prev
+        : [...prev, systemMessage],
+    );
+    toast.error(
+      t("windowExpired.toast") ||
+        "The 24-hour messaging window has expired. This chat is now closed.",
+    );
+    onConversationUpdated?.({ ...conversation, status: "closed" });
+  };
+
   const handleSendMessage = async (content: string) => {
     const replyToMessageId = consumeReplyToId();
     try {
-      const newMsg = await omnichannelService.sendMessage(conversation.id, {
+      const result = await omnichannelService.sendMessage(conversation.id, {
         content,
         direction: "outbound",
         senderName,
         replyToMessageId,
       });
-      upsertMessage(newMsg);
-      if (newMsg.deliveryError) {
-        toast.error(newMsg.deliveryError);
-      } else {
+      upsertMessage(result.message);
+      if (result.systemMessage) applyWindowExpired(result.systemMessage);
+      if (result.message.deliveryError && !result.systemMessage) {
+        toast.error(result.message.deliveryError);
+      } else if (!result.message.deliveryError) {
         onMessageSent?.();
       }
     } catch {
@@ -263,24 +326,28 @@ const ChatPanel = ({
     setMessages((prev) => [...prev, tempMsg]);
 
     try {
-      const newMsg = await omnichannelService.sendMediaMessage(conversation.id, {
-        file,
-        type: kind,
-        senderName,
-        caption,
-        replyToMessageId,
-      });
+      const result = await omnichannelService.sendMediaMessage(
+        conversation.id,
+        {
+          file,
+          type: kind,
+          senderName,
+          caption,
+          replyToMessageId,
+        },
+      );
       setMessages((prev) => {
         const stripped = prev.filter((m) => m.id !== tempId);
-        const idx = stripped.findIndex((m) => m.id === newMsg.id);
-        if (idx === -1) return [...stripped, newMsg];
+        const idx = stripped.findIndex((m) => m.id === result.message.id);
+        if (idx === -1) return [...stripped, result.message];
         const next = stripped.slice();
-        next[idx] = newMsg;
+        next[idx] = result.message;
         return next;
       });
-      if (newMsg.deliveryError) {
-        toast.error(newMsg.deliveryError);
-      } else {
+      if (result.systemMessage) applyWindowExpired(result.systemMessage);
+      if (result.message.deliveryError && !result.systemMessage) {
+        toast.error(result.message.deliveryError);
+      } else if (!result.message.deliveryError) {
         onMessageSent?.();
       }
     } catch {
@@ -332,7 +399,7 @@ const ChatPanel = ({
     setMessages((prev) => [...prev, tempMsg]);
 
     try {
-      const newMsg = await omnichannelService.sendVoiceMessage(
+      const result = await omnichannelService.sendVoiceMessage(
         conversation.id,
         {
           file: blob,
@@ -346,15 +413,16 @@ const ChatPanel = ({
       // picked it up by id, dropping the temp).
       setMessages((prev) => {
         const stripped = prev.filter((m) => m.id !== tempId);
-        const idx = stripped.findIndex((m) => m.id === newMsg.id);
-        if (idx === -1) return [...stripped, newMsg];
+        const idx = stripped.findIndex((m) => m.id === result.message.id);
+        if (idx === -1) return [...stripped, result.message];
         const next = stripped.slice();
-        next[idx] = newMsg;
+        next[idx] = result.message;
         return next;
       });
-      if (newMsg.deliveryError) {
-        toast.error(newMsg.deliveryError);
-      } else {
+      if (result.systemMessage) applyWindowExpired(result.systemMessage);
+      if (result.message.deliveryError && !result.systemMessage) {
+        toast.error(result.message.deliveryError);
+      } else if (!result.message.deliveryError) {
         onMessageSent?.();
       }
     } catch {
@@ -381,11 +449,19 @@ const ChatPanel = ({
           hasMoreOlder={hasMoreOlder}
           isLoadingOlder={isLoadingOlder}
           onLoadOlder={handleLoadOlder}
+          isLoading={isLoadingMessages && messages.length === 0}
         />
+        {windowExpired && conversation.status !== "closed" && (
+          <div className="px-4 py-2.5 bg-amber-50 border-t border-amber-100 text-[12px] text-amber-700 text-center">
+            {t("windowExpired.banner") ||
+              "The 24-hour messaging window has expired. The customer must message first before you can reply."}
+          </div>
+        )}
         <ChatInput
           onSendText={handleSendMessage}
           onSendVoice={handleSendVoice}
           onSendMedia={handleSendMedia}
+          attachmentKinds={ATTACHMENT_KINDS_BY_CHANNEL[conversation.channel]}
           replyingTo={replyingTo}
           onCancelReply={() => setReplyingTo(null)}
           disabled={!isAlive}

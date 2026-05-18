@@ -5,6 +5,7 @@ import { Close, DoNotDisturbOn, Person } from "@mui/icons-material";
 import { useTranslations } from "@/providers/TranslationProvider";
 import ChannelIcon, { channelLabels } from "./ChannelIcon";
 import ContactAvatar from "./ContactAvatar";
+import { STATUS_META, type StatusKey } from "./status-meta";
 
 const statusVariants: Record<string, string> = {
   active: "success",
@@ -57,8 +58,12 @@ const ChatHeader = ({ conversation, onClose, onEndChat }: ChatHeaderProps) => {
         )}
         <Badge
           variant={(statusVariants[conversation.status] as any) ?? "secondary"}
-          className="text-xs"
+          className="text-xs inline-flex items-center gap-1"
         >
+          {(() => {
+            const Icon = STATUS_META[conversation.status as StatusKey]?.icon;
+            return Icon ? <Icon className="!text-sm shrink-0" /> : null;
+          })()}
           {t(`status.${conversation.status}`)}
         </Badge>
         {canEnd && (

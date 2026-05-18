@@ -22,6 +22,11 @@ const OmnichannelPage = () => {
   const [selectedConversation, setSelectedConversation] =
     useState<Conversation | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  /** True while the full conversation (with its messages page) is in flight
+   * after a select. Drives the skeleton inside <ChatPanel> so the agent
+   * doesn't briefly see the stale single-message preview from the inbox row
+   * before the real history lands. */
+  const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   /** Highest page we've successfully fetched. Reset to 0 on filter change. */
   const [currentPage, setCurrentPage] = useState(0);
   const [hasMore, setHasMore] = useState(false);
@@ -158,6 +163,7 @@ const OmnichannelPage = () => {
   const handleSelectConversation = async (conversation: Conversation) => {
     // Set immediately for responsiveness, then load full conversation with messages
     setSelectedConversation(conversation);
+    setIsLoadingMessages(true);
     try {
       const full = await omnichannelService.getConversation(conversation.id);
       setSelectedConversation(full);
@@ -173,6 +179,8 @@ const OmnichannelPage = () => {
       }
     } catch {
       // Keep the preview version
+    } finally {
+      setIsLoadingMessages(false);
     }
   };
 
@@ -234,6 +242,7 @@ const OmnichannelPage = () => {
         <div className="lg:col-span-6 xl:col-span-7 h-full overflow-hidden">
           <ChatPanel
             conversation={selectedConversation}
+            isLoadingMessages={isLoadingMessages}
             onClose={() => setSelectedConversation(null)}
             onMessageSent={handleConversationUpdated}
             onConversationUpdated={handleConversationMutated}

@@ -124,7 +124,11 @@ const omnichannelService = {
       `/api/omnichannel/conversations/${conversationId}/messages`,
       data,
     );
-    return res.data.data;
+    return {
+      message: res.data.data,
+      systemMessage: res.data.systemMessage,
+      conversationClosed: res.data.conversationClosed as boolean | undefined,
+    };
   },
 
   sendVoiceMessage: async (
@@ -150,7 +154,11 @@ const omnichannelService = {
       formData,
       { headers: { "Content-Type": "multipart/form-data" } },
     );
-    return res.data.data;
+    return {
+      message: res.data.data,
+      systemMessage: res.data.systemMessage,
+      conversationClosed: res.data.conversationClosed as boolean | undefined,
+    };
   },
 
   sendMediaMessage: async (
@@ -176,7 +184,11 @@ const omnichannelService = {
       formData,
       { headers: { "Content-Type": "multipart/form-data" } },
     );
-    return res.data.data;
+    return {
+      message: res.data.data,
+      systemMessage: res.data.systemMessage,
+      conversationClosed: res.data.conversationClosed as boolean | undefined,
+    };
   },
 
   // Re-dispatch a previously failed outbound message. The API mutates the

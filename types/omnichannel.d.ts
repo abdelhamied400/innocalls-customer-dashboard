@@ -10,7 +10,7 @@ export type ChannelStatus = "connected" | "disconnected" | "pending";
 
 export type ConversationStatus = "active" | "waiting" | "resolved" | "closed";
 
-export type MessageDirection = "inbound" | "outbound";
+export type MessageDirection = "inbound" | "outbound" | "system";
 
 export type MessageType =
   | "text"

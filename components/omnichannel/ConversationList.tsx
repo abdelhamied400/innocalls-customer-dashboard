@@ -1,9 +1,16 @@
 import type { ChannelType, Conversation } from "@/types/omnichannel";
 import { cn } from "@/lib/utils";
 import { Search } from "@mui/icons-material";
+import { STATUS_META, type StatusKey } from "./status-meta";
 import { useTranslations } from "@/providers/TranslationProvider";
 import ChannelIcon, { channelLabels } from "./ChannelIcon";
 import ConversationItem from "./ConversationItem";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const allChannels: ChannelType[] = [
   "whatsapp",
@@ -53,7 +60,13 @@ const ConversationList = ({
 }: ConversationListProps) => {
   const t = useTranslations("omnichannel");
 
-  const statusFilters = ["all", "active", "waiting", "resolved", "closed"];
+  const statusFilters: StatusKey[] = [
+    "all",
+    "active",
+    "waiting",
+    "resolved",
+    "closed",
+  ];
 
   return (
     <div className="flex flex-col overflow-hidden h-full bg-white rounded-2xl border border-gray-100 shadow-sm">
@@ -70,58 +83,102 @@ const ConversationList = ({
           />
         </div>
 
-        {/* Channel Pills - horizontally scrollable */}
-        <div className="flex gap-1 overflow-x-auto pb-0.5 scrollbar-none">
-          <button
-            onClick={() => onChannelFilterChange("all")}
-            className={cn(
-              "px-2.5 py-1 rounded-lg text-[11px] font-medium transition-all whitespace-nowrap shrink-0",
-              channelFilter === "all"
-                ? "bg-primary-500 text-white shadow-sm"
-                : "bg-gray-50 text-gray-500 hover:bg-gray-100",
-            )}
-          >
-            {t("filters.all")}
-          </button>
-          {allChannels.map((ch) => (
+        {/* Channel pills — icon-only buttons. Hovering surfaces the channel
+            name in a tooltip above the icon so nothing in the row ever shifts
+            or overlaps. The active filter expands inline (icon + label) so
+            the current selection is always legible. Wraps to multiple rows
+            when the panel is narrower than the row of pills. */}
+        <TooltipProvider delayDuration={200}>
+          <div className="flex flex-wrap gap-1.5">
             <button
-              key={ch}
-              onClick={() => onChannelFilterChange(ch)}
+              onClick={() => onChannelFilterChange("all")}
               className={cn(
-                "px-2.5 py-1 rounded-lg text-[11px] font-medium transition-all flex items-center gap-1 whitespace-nowrap shrink-0",
-                channelFilter === ch
-                  ? "bg-primary-500 text-white shadow-sm"
-                  : "bg-gray-50 text-gray-500 hover:bg-gray-100",
+                "inline-flex items-center h-9 rounded-full border transition-colors px-3 text-[12px] font-semibold whitespace-nowrap",
+                channelFilter === "all"
+                  ? "bg-primary-500 text-white border-primary-500 shadow-sm"
+                  : "bg-white text-gray-600 border-gray-200 hover:border-primary-300 hover:text-primary-600",
               )}
             >
-              <ChannelIcon
-                channel={ch}
-                className={cn(
-                  "!text-[12px]",
-                  channelFilter === ch && "!text-white",
-                )}
-              />
-              {channelLabels[ch]}
+              {t("filters.all")}
             </button>
-          ))}
-        </div>
+            {allChannels.map((ch) => {
+              const isActive = channelFilter === ch;
+              if (isActive) {
+                return (
+                  <button
+                    key={ch}
+                    onClick={() => onChannelFilterChange(ch)}
+                    className="inline-flex items-center h-9 rounded-full border transition-colors px-3 gap-2 bg-primary-500 text-white border-primary-500 shadow-sm"
+                  >
+                    <ChannelIcon
+                      channel={ch}
+                      className="!text-[18px] shrink-0 !text-white"
+                    />
+                    <span className="text-[12px] font-semibold whitespace-nowrap">
+                      {channelLabels[ch]}
+                    </span>
+                  </button>
+                );
+              }
+              return (
+                <Tooltip key={ch}>
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={() => onChannelFilterChange(ch)}
+                      aria-label={channelLabels[ch]}
+                      className={cn(
+                        "inline-flex items-center justify-center h-9 w-9 rounded-full border transition-colors",
+                        "bg-white text-gray-600 border-gray-200",
+                        "hover:border-primary-300 hover:text-primary-600 hover:shadow-sm",
+                      )}
+                    >
+                      <ChannelIcon
+                        channel={ch}
+                        className="!text-[18px]"
+                      />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent side="top" className="text-[11px] py-1 px-2">
+                    {channelLabels[ch]}
+                  </TooltipContent>
+                </Tooltip>
+              );
+            })}
+          </div>
+        </TooltipProvider>
 
-        {/* Status filters */}
-        <div className="flex gap-1 overflow-x-auto scrollbar-none">
-          {statusFilters.map((s) => (
-            <button
-              key={s}
-              onClick={() => onStatusFilterChange(s)}
-              className={cn(
-                "px-2 py-0.5 rounded-md text-[11px] font-medium transition-colors whitespace-nowrap shrink-0",
-                statusFilter === s
-                  ? "bg-primary-100 text-primary-700"
-                  : "text-gray-400 hover:text-gray-600 hover:bg-gray-50",
-              )}
-            >
-              {t(`filters.${s}`)}
-            </button>
-          ))}
+        {/* Status filters — segmented control. Single rounded container with
+            tabs sitting flush; the active tab gets a white "lifted" surface
+            with a soft shadow, evoking iOS-style segmented controls. */}
+        <div className="flex p-0.5 bg-gray-100/80 rounded-lg gap-0.5">
+          {statusFilters.map((s) => {
+            const meta = STATUS_META[s];
+            const Icon = meta?.icon;
+            const isActive = statusFilter === s;
+            return (
+              <button
+                key={s}
+                onClick={() => onStatusFilterChange(s)}
+                className={cn(
+                  "flex-1 inline-flex items-center justify-center gap-1 px-2 py-1 rounded-md text-[11px] font-semibold whitespace-nowrap",
+                  "transition-all duration-150",
+                  isActive
+                    ? "bg-white text-gray-800 shadow-sm"
+                    : "text-gray-500 hover:text-gray-700",
+                )}
+              >
+                {Icon && (
+                  <Icon
+                    className={cn(
+                      "!text-[14px] shrink-0",
+                      isActive ? meta.activeTone : meta.inactiveTone,
+                    )}
+                  />
+                )}
+                {t(`filters.${s}`)}
+              </button>
+            );
+          })}
         </div>
       </div>
 

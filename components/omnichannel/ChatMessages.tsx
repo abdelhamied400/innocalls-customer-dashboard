@@ -10,8 +10,9 @@ import ContactAvatar from "./ContactAvatar";
  *   - `fetchMediaUrl` — the org-scoped axios fetcher
  *   - `renderAvatar` — the dashboard's ContactAvatar
  *
- * All scrolling, pagination, lazy-loading, and bubble rendering live in
- * the package — this file just plumbs the values through.
+ * All scrolling, pagination, lazy-loading, bubble rendering, and the
+ * loading skeleton live in the package — this file just plumbs values
+ * through.
  */
 
 type Props = {
@@ -23,6 +24,7 @@ type Props = {
   hasMoreOlder?: boolean;
   isLoadingOlder?: boolean;
   onLoadOlder?: () => void;
+  isLoading?: boolean;
 };
 
 const ChatMessages = (props: Props) => (
