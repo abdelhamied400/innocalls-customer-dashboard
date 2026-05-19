@@ -18,10 +18,10 @@ type ChatHeaderProps = {
   conversation: Conversation;
   onClose?: () => void;
   onEndChat?: () => void;
-  /** Click handler for the contact card. The page mounts a right-side
-   * <ContactDetailsPanel> when this fires; closing happens from the
-   * panel's own X button. */
-  onOpenContactDetails?: () => void;
+  /** Click handler for the contact card. Toggles the right-side
+   * <ContactDetailsPanel> in the page grid — clicking the card a second
+   * time closes the panel (and the panel's X also closes). */
+  onToggleContactDetails?: () => void;
 };
 
 const ALIVE_STATUSES = new Set(["active", "waiting"]);
@@ -30,7 +30,7 @@ const ChatHeader = ({
   conversation,
   onClose,
   onEndChat,
-  onOpenContactDetails,
+  onToggleContactDetails,
 }: ChatHeaderProps) => {
   const t = useTranslations("omnichannel");
   const canEnd = onEndChat && ALIVE_STATUSES.has(conversation.status);
@@ -42,9 +42,9 @@ const ChatHeader = ({
           chat (not as a modal). */}
       <button
         type="button"
-        onClick={onOpenContactDetails}
+        onClick={onToggleContactDetails}
         className="flex items-center gap-3 text-start rounded-lg -mx-2 px-2 py-1 hover:bg-gray-50 transition-colors"
-        aria-label={t("contactDetails.open")}
+        aria-label={t("contactDetails.toggle")}
       >
         <ContactAvatar name={conversation.contact.name} />
         <div>

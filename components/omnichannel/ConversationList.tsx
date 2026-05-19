@@ -71,6 +71,7 @@ type ConversationListProps = {
   onEndChat?: (conv: Conversation) => void;
   onReopenChat?: (conv: Conversation) => void;
   onToggleFavorite?: (conv: Conversation) => void;
+  onShowInfo?: (conv: Conversation) => void;
 };
 
 const ConversationList = ({
@@ -92,6 +93,7 @@ const ConversationList = ({
   onEndChat,
   onReopenChat,
   onToggleFavorite,
+  onShowInfo,
 }: ConversationListProps) => {
   const t = useTranslations("omnichannel");
 
@@ -451,6 +453,7 @@ const ConversationList = ({
               onEndChat={onEndChat}
               onReopenChat={onReopenChat}
               onToggleFavorite={onToggleFavorite}
+              onShowInfo={onShowInfo}
             />
           ))}
 

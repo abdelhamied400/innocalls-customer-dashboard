@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import {
   ContentCopy,
   DoNotDisturbOn,
+  InfoOutlined,
   MarkChatRead,
   MarkChatUnread,
   Person,
@@ -44,6 +45,7 @@ type ConversationItemProps = {
   onEndChat?: (conv: Conversation) => void;
   onReopenChat?: (conv: Conversation) => void;
   onToggleFavorite?: (conv: Conversation) => void;
+  onShowInfo?: (conv: Conversation) => void;
 };
 
 const ConversationItem = ({
@@ -55,6 +57,7 @@ const ConversationItem = ({
   onEndChat,
   onReopenChat,
   onToggleFavorite,
+  onShowInfo,
 }: ConversationItemProps) => {
   const t = useTranslations("omnichannel");
 
@@ -197,6 +200,15 @@ const ConversationItem = ({
           />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start" className="w-52">
+          {onShowInfo && (
+            <DropdownMenuItem
+              onClick={() => onShowInfo(conversation)}
+              className="text-[12px] gap-2"
+            >
+              <InfoOutlined className="!text-[16px] text-gray-500" />
+              {t("actions.showInfo")}
+            </DropdownMenuItem>
+          )}
           {onToggleFavorite && (
             <DropdownMenuItem
               onClick={() => onToggleFavorite(conversation)}

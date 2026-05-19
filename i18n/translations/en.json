@@ -5756,11 +5756,12 @@
       "copyPhone": "Copy phone",
       "copyEmail": "Copy email",
       "favorite": "Star",
-      "unfavorite": "Remove from starred"
+      "unfavorite": "Remove from starred",
+      "showInfo": "Show info"
     },
     "contactDetails": {
       "title": "Contact",
-      "open": "Open contact details",
+      "toggle": "Toggle contact details",
       "close": "Close contact details"
     },
     "tags": {
@@ -5772,15 +5773,12 @@
     "attributes": {
       "title": "Attributes",
       "name": "Attribute Name",
-      "value": "Attribute Value",
-      "edit": "Edit attributes",
-      "comingSoon": "Editing attributes — coming soon"
+      "value": "Attribute Value"
     },
     "notes": {
       "title": "Notes",
       "subtitle": "Internal notes about {name} — visible to everyone in your org",
       "placeholder": "Add a note about this contact…",
-      "recent": "View history",
       "add": "Add note",
       "cancel": "Cancel",
       "saving": "Saving…",

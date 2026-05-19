@@ -257,6 +257,14 @@ const OmnichannelPage = () => {
     }
   };
 
+  /** Context-menu "Show info" — selects the conversation (so the chat
+   * panel + details panel reflect the same target) and pops the details
+   * column open in one click. */
+  const handleShowInfo = (conv: Conversation) => {
+    handleSelectConversation(conv);
+    setIsContactDetailsOpen(true);
+  };
+
   const handleToggleFavorite = async (conv: Conversation) => {
     const nextValue = !conv.isFavorited;
     // Optimistic flip — the API call is fire-and-forget; next poll
@@ -316,6 +324,7 @@ const OmnichannelPage = () => {
             onEndChat={handleEndChat}
             onReopenChat={handleReopenChat}
             onToggleFavorite={handleToggleFavorite}
+            onShowInfo={handleShowInfo}
           />
         </div>
 
@@ -333,7 +342,9 @@ const OmnichannelPage = () => {
             onClose={() => setSelectedConversation(null)}
             onMessageSent={handleConversationUpdated}
             onConversationUpdated={handleConversationMutated}
-            onOpenContactDetails={() => setIsContactDetailsOpen(true)}
+            onToggleContactDetails={() =>
+              setIsContactDetailsOpen((v) => !v)
+            }
           />
         </div>
 

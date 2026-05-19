@@ -1,13 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Add,
-  Close,
-  Delete,
-  Edit,
-  History,
-} from "@mui/icons-material";
+import { Add, Close, Delete } from "@mui/icons-material";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { format, formatDistanceToNow } from "date-fns";
@@ -172,20 +166,11 @@ const ContactDetailsPanel = ({ conversation, onClose }: Props) => {
         <Section
           title={t("notes.title")}
           right={
-            <div className="flex items-center gap-1">
-              <IconButton
-                ariaLabel={t("notes.recent")}
-                icon={<History className="!text-[16px]" />}
-                onClick={() => {
-                  /* room for a separate history view later */
-                }}
-              />
-              <IconButton
-                ariaLabel={t("notes.add")}
-                icon={<Add className="!text-[16px]" />}
-                onClick={() => setIsComposingNote(true)}
-              />
-            </div>
+            <IconButton
+              ariaLabel={t("notes.add")}
+              icon={<Add className="!text-[16px]" />}
+              onClick={() => setIsComposingNote(true)}
+            />
           }
         >
           {isComposingNote && (
@@ -265,18 +250,7 @@ const ContactDetailsPanel = ({ conversation, onClose }: Props) => {
         </Section>
 
         {/* ── Attributes ─────────────────────────────────────────────── */}
-        <Section
-          title={t("attributes.title")}
-          right={
-            <IconButton
-              ariaLabel={t("attributes.edit")}
-              icon={<Edit className="!text-[16px]" />}
-              disabled
-              title={t("attributes.comingSoon")}
-            />
-          }
-          last
-        >
+        <Section title={t("attributes.title")} last>
           <div className="space-y-1">
             <div className="flex items-center justify-between text-[11px] font-medium text-gray-400 pb-1.5 mb-1 border-b border-gray-100">
               <span>{t("attributes.name")}</span>

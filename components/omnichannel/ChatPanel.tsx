@@ -48,9 +48,9 @@ type ChatPanelProps = {
    *  UI doesn't have to wait for the next poll tick. */
   onConversationUpdated?: (updated: Conversation) => void;
   /** Fired when the agent clicks the contact card in the header. The
-   * page-level owner mounts <ContactDetailsPanel> as a sibling grid
-   * column in response. */
-  onOpenContactDetails?: () => void;
+   * page-level owner toggles <ContactDetailsPanel> in the grid in
+   * response — click once to open, click again to close. */
+  onToggleContactDetails?: () => void;
 };
 
 const ALIVE_STATUSES = new Set(["active", "waiting"]);
@@ -88,7 +88,7 @@ const ChatPanel = ({
   onClose,
   onMessageSent,
   onConversationUpdated,
-  onOpenContactDetails,
+  onToggleContactDetails,
 }: ChatPanelProps) => {
   const t = useTranslations("omnichannel");
   const locale = useLocale();
@@ -445,7 +445,7 @@ const ChatPanel = ({
           conversation={conversation}
           onClose={onClose}
           onEndChat={() => setIsEndDialogOpen(true)}
-          onOpenContactDetails={onOpenContactDetails}
+          onToggleContactDetails={onToggleContactDetails}
         />
         <ChatMessages
           messages={messages}
