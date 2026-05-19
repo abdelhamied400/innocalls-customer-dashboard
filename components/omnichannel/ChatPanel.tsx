@@ -282,6 +282,25 @@ const ChatPanel = ({
 
   const handleSendMessage = async (content: string, isPrivate?: boolean) => {
     const replyToMessageId = consumeReplyToId();
+    // Optimistic render: drop a temp bubble into the thread immediately so
+    // the agent sees their message land even before the API answers.
+    // Replaced by the real row on success; left in place with deliveryError
+    // on a network failure so the agent gets a visible failure state.
+    const tempId = `temp-text-${Date.now()}`;
+    const tempMsg: Message = {
+      id: tempId,
+      conversationId: conversation.id,
+      direction: "outbound",
+      type: "text",
+      content,
+      replyToId: replyToMessageId ?? null,
+      isPrivate,
+      timestamp: new Date().toISOString(),
+      senderName,
+      isRead: false,
+    };
+    setMessages((prev) => [...prev, tempMsg]);
+
     try {
       const result = await omnichannelService.sendMessage(conversation.id, {
         content,
@@ -290,15 +309,35 @@ const ChatPanel = ({
         replyToMessageId,
         isPrivate,
       });
-      upsertMessage(result.message);
+      // Swap the temp for the real row (the API returns deliveryError
+      // populated when the channel adapter refused delivery — Bubble
+      // shows the failed-row treatment automatically).
+      setMessages((prev) => {
+        const stripped = prev.filter((m) => m.id !== tempId);
+        const idx = stripped.findIndex((m) => m.id === result.message.id);
+        if (idx === -1) return [...stripped, result.message];
+        const next = stripped.slice();
+        next[idx] = result.message;
+        return next;
+      });
       if (result.systemMessage) applyWindowExpired(result.systemMessage);
       if (result.message.deliveryError && !result.systemMessage) {
         toast.error(result.message.deliveryError);
       } else if (!result.message.deliveryError) {
         onMessageSent?.();
       }
-    } catch {
-      // Could show a toast here
+    } catch (err: unknown) {
+      // Network-level failure — the row was never persisted server-side,
+      // so retry can't reach it. Leave the bubble visible with an error
+      // so the agent at least knows it didn't go through.
+      const reason =
+        err instanceof Error ? err.message : "Failed to send message";
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === tempId ? { ...m, deliveryError: reason } : m,
+        ),
+      );
+      toast.error(reason);
     }
   };
 
@@ -356,8 +395,19 @@ const ChatPanel = ({
       } else if (!result.message.deliveryError) {
         onMessageSent?.();
       }
-    } catch {
-      setMessages((prev) => prev.filter((m) => m.id !== tempId));
+    } catch (err: unknown) {
+      // Keep the optimistic bubble visible with an error so the agent
+      // sees the upload didn't go through. Retry won't be available
+      // (the row was never persisted server-side) but at least nothing
+      // disappears silently.
+      const reason =
+        err instanceof Error ? err.message : "Failed to send attachment";
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === tempId ? { ...m, deliveryError: reason } : m,
+        ),
+      );
+      toast.error(reason);
     }
   };
 
@@ -431,10 +481,17 @@ const ChatPanel = ({
       } else if (!result.message.deliveryError) {
         onMessageSent?.();
       }
-    } catch {
-      // Drop the pending bubble so the user knows the send failed.
-      setMessages((prev) => prev.filter((m) => m.id !== tempId));
-      // Could show a toast here
+    } catch (err: unknown) {
+      // Keep the optimistic bubble visible with an error rather than
+      // dropping it silently — consistent with text + media.
+      const reason =
+        err instanceof Error ? err.message : "Failed to send voice message";
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === tempId ? { ...m, deliveryError: reason } : m,
+        ),
+      );
+      toast.error(reason);
     }
   };
 
