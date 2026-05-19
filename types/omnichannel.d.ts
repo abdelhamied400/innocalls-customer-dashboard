@@ -19,7 +19,8 @@ export type MessageType =
   | "image"
   | "sticker"
   | "video"
-  | "document";
+  | "document"
+  | "location";
 
 export type Channel = {
   id: string;
@@ -82,6 +83,10 @@ export type Message = {
    * channel provider; widget endpoints filter these out. Renders with
    * amber sticky-note styling + "Internal note" label in the dashboard. */
   isPrivate?: boolean;
+  /** Populated only for type='location' rows. The bubble renders an
+   * embedded map using these coords directly — no content parsing. */
+  latitude?: number | null;
+  longitude?: number | null;
   timestamp: string;
   senderName: string;
   isRead: boolean;
