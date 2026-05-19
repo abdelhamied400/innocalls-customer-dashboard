@@ -5762,8 +5762,11 @@
     "tags": {
       "title": "الوسوم",
       "add": "إضافة وسم",
+      "remove": "إزالة الوسم {name}",
+      "placeholder": "اكتب اسم وسم واضغط Enter",
       "empty": "لا توجد وسوم بعد",
-      "comingSoon": "الوسوم — قريباً"
+      "saveError": "تعذر إضافة الوسم",
+      "deleteError": "تعذر إزالة الوسم"
     },
     "attributes": {
       "title": "الخصائص",

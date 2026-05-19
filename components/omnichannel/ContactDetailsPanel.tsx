@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Add, Close, Delete } from "@mui/icons-material";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,7 +10,26 @@ import omnichannelService from "@/services/omnichannel.service";
 import { useTranslations } from "@/providers/TranslationProvider";
 import useAuth from "@/hooks/useAuth";
 import { channelLabels } from "./ChannelIcon";
-import type { ContactNote, Conversation } from "@/types/omnichannel";
+import { cn } from "@/lib/utils";
+import type { ContactNote, Conversation, Tag } from "@/types/omnichannel";
+
+/** Pleasant tag chip colors used when the server didn't store one. The
+ * agent picks via name hash so the same tag name renders the same color
+ * across surfaces (panel + row + filter). */
+const TAG_PALETTE = [
+  { bg: "bg-rose-100", fg: "text-rose-700", border: "border-rose-200" },
+  { bg: "bg-amber-100", fg: "text-amber-700", border: "border-amber-200" },
+  { bg: "bg-emerald-100", fg: "text-emerald-700", border: "border-emerald-200" },
+  { bg: "bg-sky-100", fg: "text-sky-700", border: "border-sky-200" },
+  { bg: "bg-violet-100", fg: "text-violet-700", border: "border-violet-200" },
+  { bg: "bg-pink-100", fg: "text-pink-700", border: "border-pink-200" },
+];
+
+function paletteForTag(name: string) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
+  return TAG_PALETTE[hash % TAG_PALETTE.length]!;
+}
 
 /**
  * Right-side details panel for the active chat. Property/value attribute
@@ -23,6 +42,9 @@ import type { ContactNote, Conversation } from "@/types/omnichannel";
 type Props = {
   conversation: Conversation;
   onClose: () => void;
+  /** Pushed up so the page can reflect tag changes on the list row /
+   * selected conversation without waiting for the next poll tick. */
+  onTagsChanged?: (tags: Tag[]) => void;
 };
 
 /** First word of a name → first_name; everything after → last_name. We
@@ -35,7 +57,11 @@ function splitName(name: string): { first: string; last: string } {
   return { first: parts[0], last: parts.slice(1).join(" ") };
 }
 
-const ContactDetailsPanel = ({ conversation, onClose }: Props) => {
+const ContactDetailsPanel = ({
+  conversation,
+  onClose,
+  onTagsChanged,
+}: Props) => {
   const t = useTranslations("omnichannel");
   const { data: auth } = useAuth();
   const [notes, setNotes] = useState<ContactNote[]>([]);
@@ -45,6 +71,97 @@ const ContactDetailsPanel = ({ conversation, onClose }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const contact = conversation.contact;
+
+  // ── Tags ───────────────────────────────────────────────────────────────
+  // Local tag list mirrors `conversation.tags` so optimistic add/remove
+  // shows immediately. Suggestions come from `listTags` (cached for the
+  // panel's lifetime) so the agent gets autocomplete + can pick a tag
+  // they've used before.
+  const [convTags, setConvTags] = useState<Tag[]>(conversation.tags ?? []);
+  const [allTags, setAllTags] = useState<Tag[]>([]);
+  const [tagDraft, setTagDraft] = useState("");
+  const [isComposingTag, setIsComposingTag] = useState(false);
+  const tagInputRef = useRef<HTMLInputElement | null>(null);
+
+  // Re-sync local tag state when the parent swaps to a different
+  // conversation (or the same conversation polls back with mutated tags).
+  useEffect(() => {
+    setConvTags(conversation.tags ?? []);
+  }, [conversation.id, conversation.tags]);
+
+  // Load all org tags once the panel mounts. Refetched if the panel
+  // re-mounts (open → close → open) so a teammate's new tag shows up.
+  useEffect(() => {
+    let cancelled = false;
+    omnichannelService
+      .listTags()
+      .then((rows) => {
+        if (!cancelled) setAllTags(rows);
+      })
+      .catch(() => {
+        /* ignore — suggestions just won't appear */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const handleAddTag = async (input: string) => {
+    const name = input.trim();
+    if (!name) return;
+    // Skip if already attached (case-insensitive).
+    if (convTags.some((t) => t.name.toLowerCase() === name.toLowerCase())) {
+      setTagDraft("");
+      setIsComposingTag(false);
+      return;
+    }
+    try {
+      const tag = await omnichannelService.attachTag(conversation.id, { name });
+      // Replace any earlier optimistic entry with the same name so we
+      // don't end up with both an inline placeholder and the real row.
+      setConvTags((prev) => {
+        const next = prev.filter(
+          (t) => t.name.toLowerCase() !== name.toLowerCase(),
+        );
+        const updated = [...next, tag];
+        onTagsChanged?.(updated);
+        return updated;
+      });
+      // Cache the new tag in suggestions so it shows up immediately.
+      setAllTags((prev) =>
+        prev.some((t) => t.id === tag.id) ? prev : [...prev, tag],
+      );
+      setTagDraft("");
+      setIsComposingTag(false);
+    } catch {
+      toast.error(t("tags.saveError"));
+    }
+  };
+
+  const handleRemoveTag = async (tag: Tag) => {
+    const prev = convTags;
+    const next = convTags.filter((tg) => tg.id !== tag.id);
+    setConvTags(next);
+    onTagsChanged?.(next);
+    try {
+      await omnichannelService.detachTag(conversation.id, tag.id);
+    } catch {
+      setConvTags(prev);
+      onTagsChanged?.(prev);
+      toast.error(t("tags.deleteError"));
+    }
+  };
+
+  // Suggestions = org tags that aren't already attached to this
+  // conversation and match the current input.
+  const tagSuggestions = (() => {
+    const attached = new Set(convTags.map((t) => t.id));
+    const q = tagDraft.trim().toLowerCase();
+    return allTags
+      .filter((t) => !attached.has(t.id))
+      .filter((t) => !q || t.name.toLowerCase().includes(q))
+      .slice(0, 6);
+  })();
 
   // Fetch notes whenever the displayed contact changes. NOTE: `t` is
   // intentionally NOT in deps — next-intl returns a fresh function each
@@ -152,14 +269,103 @@ const ContactDetailsPanel = ({ conversation, onClose }: Props) => {
             <IconButton
               ariaLabel={t("tags.add")}
               icon={<Add className="!text-[16px]" />}
-              disabled
-              title={t("tags.comingSoon")}
+              onClick={() => {
+                setIsComposingTag(true);
+                // Defer focus to the next paint so the input has mounted.
+                setTimeout(() => tagInputRef.current?.focus(), 0);
+              }}
             />
           }
         >
-          <div className="text-[11px] text-gray-400 italic">
-            {t("tags.empty")}
+          <div className="flex flex-wrap items-center gap-1.5">
+            {convTags.map((tag) => {
+              const palette = paletteForTag(tag.name);
+              return (
+                <span
+                  key={tag.id}
+                  className={cn(
+                    "inline-flex items-center gap-1 h-6 ps-2 pe-1 rounded-full text-[11px] font-medium border",
+                    palette.bg,
+                    palette.fg,
+                    palette.border,
+                  )}
+                >
+                  {tag.name}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveTag(tag)}
+                    aria-label={t("tags.remove", { name: tag.name })}
+                    className="inline-flex items-center justify-center w-4 h-4 rounded-full hover:bg-black/10"
+                  >
+                    <Close className="!text-[10px]" />
+                  </button>
+                </span>
+              );
+            })}
+            {!isComposingTag && convTags.length === 0 && (
+              <span className="text-[11px] text-gray-400 italic">
+                {t("tags.empty")}
+              </span>
+            )}
           </div>
+
+          {isComposingTag && (
+            <div className="relative mt-2">
+              <input
+                ref={tagInputRef}
+                value={tagDraft}
+                onChange={(e) => setTagDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    void handleAddTag(tagDraft);
+                  } else if (e.key === "Escape") {
+                    setTagDraft("");
+                    setIsComposingTag(false);
+                  }
+                }}
+                onBlur={() => {
+                  // Small delay so a click on a suggestion fires before
+                  // we close the menu.
+                  setTimeout(() => {
+                    setIsComposingTag(false);
+                    setTagDraft("");
+                  }, 150);
+                }}
+                placeholder={t("tags.placeholder")}
+                className="w-full h-8 px-2.5 bg-white border border-gray-200 rounded-lg text-[12px] focus:outline-none focus:border-primary-300 focus:ring-2 focus:ring-primary-100"
+              />
+              {tagSuggestions.length > 0 && (
+                <ul className="absolute top-full mt-1 start-0 end-0 z-10 bg-white border border-gray-200 rounded-lg shadow-sm max-h-40 overflow-y-auto">
+                  {tagSuggestions.map((tag) => {
+                    const palette = paletteForTag(tag.name);
+                    return (
+                      <li key={tag.id}>
+                        <button
+                          type="button"
+                          // Use mousedown so the click fires before the
+                          // input's onBlur closes the picker.
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            void handleAddTag(tag.name);
+                          }}
+                          className="w-full text-start px-2.5 py-1.5 text-[12px] hover:bg-gray-50 flex items-center gap-2"
+                        >
+                          <span
+                            className={cn(
+                              "inline-block w-2 h-2 rounded-full",
+                              palette.bg,
+                            )}
+                          />
+                          {tag.name}
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
+          )}
         </Section>
 
         {/* ── Notes ───────────────────────────────────────────────────── */}

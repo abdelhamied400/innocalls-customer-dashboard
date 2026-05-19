@@ -9,10 +9,11 @@ import {
   Tune,
 } from "@mui/icons-material";
 import { STATUS_META, type StatusKey } from "./status-meta";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "@/providers/TranslationProvider";
 import ChannelIcon, { channelLabels } from "./ChannelIcon";
 import ConversationItem from "./ConversationItem";
+import omnichannelService from "@/services/omnichannel.service";
 import {
   Tooltip,
   TooltipContent,
@@ -56,6 +57,8 @@ type ConversationListProps = {
   onChannelFilterChange: (ch: ChannelType | "all") => void;
   statusFilter: string;
   onStatusFilterChange: (s: string) => void;
+  tagFilter: string;
+  onTagFilterChange: (id: string) => void;
   /** True when more pages exist beyond what's loaded. Drives the
    * scroll-near-bottom trigger and the loading indicator. */
   hasMore?: boolean;
@@ -85,6 +88,8 @@ const ConversationList = ({
   onChannelFilterChange,
   statusFilter,
   onStatusFilterChange,
+  tagFilter,
+  onTagFilterChange,
   hasMore,
   isLoadingMore,
   onLoadMore,
@@ -99,13 +104,32 @@ const ConversationList = ({
 
   const statusFilters: StatusKey[] = ["all", "active", "waiting", "closed"];
 
-  // Filter UI plumbing only — backend wiring lands once the API exposes
-  // these params. Mock options stay until the service layer accepts them.
+  // Advanced filter UI state. Agent + priority stay mock until those
+  // entities exist server-side; tag is wired to real org-level tags.
   const [showMoreFilters, setShowMoreFilters] = useState(false);
   const [agentFilter, setAgentFilter] = useState<string>("all");
   const [priorityFilter, setPriorityFilter] = useState<string>("all");
-  const [tagFilter, setTagFilter] = useState<string>("all");
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
+
+  // Real tag suggestions — fetched once on mount, refreshed if the panel
+  // re-renders (a new tag attached elsewhere shows up next open).
+  const [availableTags, setAvailableTags] = useState<
+    Array<{ id: string; name: string; color: string | null }>
+  >([]);
+  useEffect(() => {
+    let cancelled = false;
+    omnichannelService
+      .listTags()
+      .then((rows) => {
+        if (!cancelled) setAvailableTags(rows);
+      })
+      .catch(() => {
+        /* ignore */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const moreFiltersAppliedCount =
     (agentFilter !== "all" ? 1 : 0) +
@@ -131,15 +155,6 @@ const ConversationList = ({
     { value: "high", label: t("priority.high"), tone: "text-orange-500" },
     { value: "medium", label: t("priority.medium"), tone: "text-amber-500" },
     { value: "low", label: t("priority.low"), tone: "text-gray-400" },
-  ];
-
-  const MOCK_TAGS = [
-    { value: "all", label: t("filters.allTags") },
-    { value: "vip", label: "VIP" },
-    { value: "support", label: "Support" },
-    { value: "sales", label: "Sales" },
-    { value: "billing", label: "Billing" },
-    { value: "feedback", label: "Feedback" },
   ];
 
   const dateRangeLabel = (() => {
@@ -339,7 +354,7 @@ const ConversationList = ({
               </SelectContent>
             </Select>
 
-            <Select value={tagFilter} onValueChange={setTagFilter}>
+            <Select value={tagFilter} onValueChange={onTagFilterChange}>
               <SelectTrigger
                 className={cn(
                   "w-full h-9 rounded-lg border bg-white text-[12px] font-medium",
@@ -354,9 +369,10 @@ const ConversationList = ({
                 </span>
               </SelectTrigger>
               <SelectContent>
-                {MOCK_TAGS.map((tag) => (
-                  <SelectItem key={tag.value} value={tag.value}>
-                    {tag.label}
+                <SelectItem value="all">{t("filters.allTags")}</SelectItem>
+                {availableTags.map((tag) => (
+                  <SelectItem key={tag.id} value={tag.id}>
+                    {tag.name}
                   </SelectItem>
                 ))}
               </SelectContent>

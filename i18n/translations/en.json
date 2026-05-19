@@ -5767,8 +5767,11 @@
     "tags": {
       "title": "Tags",
       "add": "Add tag",
+      "remove": "Remove tag {name}",
+      "placeholder": "Type a tag name and press Enter",
       "empty": "No tags yet",
-      "comingSoon": "Tags — coming soon"
+      "saveError": "Couldn't add the tag",
+      "deleteError": "Couldn't remove the tag"
     },
     "attributes": {
       "title": "Attributes",

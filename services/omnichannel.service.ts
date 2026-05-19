@@ -58,6 +58,8 @@ const omnichannelService = {
     channel?: ChannelType | "all";
     status?: string;
     search?: string;
+    /** Tag id — restrict to conversations tagged with this tag. */
+    tag?: string;
     page?: number;
     limit?: number;
   }): Promise<ConversationsResponse> => {
@@ -67,6 +69,7 @@ const omnichannelService = {
     if (filters?.status && filters.status !== "all")
       params.set("status", filters.status);
     if (filters?.search) params.set("search", filters.search);
+    if (filters?.tag && filters.tag !== "all") params.set("tag", filters.tag);
     if (filters?.page) params.set("page", String(filters.page));
     if (filters?.limit) params.set("limit", String(filters.limit));
 
@@ -268,6 +271,40 @@ const omnichannelService = {
   deleteContactNote: async (contactId: string, noteId: string) => {
     await omniApi.delete(
       `/api/omnichannel/contacts/${contactId}/notes/${noteId}`,
+    );
+  },
+
+  // ── Tags ───────────────────────────────────────────────────────────────────
+
+  listTags: async () => {
+    const res = await omniApi.get(`/api/omnichannel/tags`);
+    return res.data.data as Array<{
+      id: string;
+      name: string;
+      color: string | null;
+    }>;
+  },
+
+  /** Attach a tag to a conversation. Pass `{ tagId }` to use an existing
+   * tag or `{ name }` to inline-create then attach in one call. */
+  attachTag: async (
+    conversationId: string,
+    data: { tagId?: string; name?: string; color?: string },
+  ) => {
+    const res = await omniApi.post(
+      `/api/omnichannel/conversations/${conversationId}/tags`,
+      data,
+    );
+    return res.data.data as {
+      id: string;
+      name: string;
+      color: string | null;
+    };
+  },
+
+  detachTag: async (conversationId: string, tagId: string) => {
+    await omniApi.delete(
+      `/api/omnichannel/conversations/${conversationId}/tags/${tagId}`,
     );
   },
 

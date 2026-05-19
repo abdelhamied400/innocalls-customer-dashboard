@@ -43,6 +43,12 @@ export type Contact = {
   avatar?: string | null;
 };
 
+export type Tag = {
+  id: string;
+  name: string;
+  color: string | null;
+};
+
 export type ContactNote = {
   id: string;
   contactId: string;
@@ -98,6 +104,9 @@ export type Conversation = {
   /** True when the current viewer has starred this conversation (per-user
    * bookmark). Mutated locally via the favoriteConversation service call. */
   isFavorited?: boolean;
+  /** Org-wide tags attached to this conversation. Manage via attachTag /
+   * detachTag on the omnichannel service. */
+  tags?: Tag[];
 };
 
 export type OmnichannelStats = {

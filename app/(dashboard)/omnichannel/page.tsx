@@ -43,6 +43,7 @@ const OmnichannelPage = () => {
   );
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [tagFilter, setTagFilter] = useState("all");
 
   /**
    * Initial fetch + filter-driven refetch (shows the loading skeleton).
@@ -55,6 +56,7 @@ const OmnichannelPage = () => {
         channel: channelFilter,
         status: statusFilter,
         search: searchQuery,
+        tag: tagFilter,
         page: 1,
         limit: INBOX_PAGE_SIZE,
       });
@@ -67,7 +69,7 @@ const OmnichannelPage = () => {
       setHasMore(false);
     }
     setIsLoading(false);
-  }, [channelFilter, statusFilter, searchQuery]);
+  }, [channelFilter, statusFilter, searchQuery, tagFilter]);
 
   /**
    * Background refresh — quietly refetches page 1 only and merges into the
@@ -80,6 +82,7 @@ const OmnichannelPage = () => {
         channel: channelFilter,
         status: statusFilter,
         search: searchQuery,
+        tag: tagFilter,
         page: 1,
         limit: INBOX_PAGE_SIZE,
       });
@@ -98,7 +101,7 @@ const OmnichannelPage = () => {
     } catch {
       // Network blip — the next tick will retry.
     }
-  }, [channelFilter, statusFilter, searchQuery]);
+  }, [channelFilter, statusFilter, searchQuery, tagFilter]);
 
   /**
    * Load the next page when the agent scrolls near the bottom of the
@@ -113,6 +116,7 @@ const OmnichannelPage = () => {
         channel: channelFilter,
         status: statusFilter,
         search: searchQuery,
+        tag: tagFilter,
         page: nextPage,
         limit: INBOX_PAGE_SIZE,
       });
@@ -134,6 +138,7 @@ const OmnichannelPage = () => {
     channelFilter,
     statusFilter,
     searchQuery,
+    tagFilter,
   ]);
 
   useEffect(() => {
@@ -316,6 +321,8 @@ const OmnichannelPage = () => {
             onChannelFilterChange={setChannelFilter}
             statusFilter={statusFilter}
             onStatusFilterChange={setStatusFilter}
+            tagFilter={tagFilter}
+            onTagFilterChange={setTagFilter}
             hasMore={hasMore}
             isLoadingMore={isLoadingMore}
             onLoadMore={loadMoreConversations}
@@ -356,6 +363,16 @@ const OmnichannelPage = () => {
             <ContactDetailsPanel
               conversation={selectedConversation}
               onClose={() => setIsContactDetailsOpen(false)}
+              onTagsChanged={(tags) => {
+                setSelectedConversation((curr) =>
+                  curr ? { ...curr, tags } : curr,
+                );
+                setConversations((prev) =>
+                  prev.map((c) =>
+                    c.id === selectedConversation.id ? { ...c, tags } : c,
+                  ),
+                );
+              }}
             />
           </div>
         )}

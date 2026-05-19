@@ -34,6 +34,23 @@ const statusVariants: Record<string, string> = {
   closed: "secondary",
 };
 
+/** Same palette + hash function the details panel uses, so the same tag
+ * name renders the same color in the row and in the panel chip. */
+const TAG_PALETTE = [
+  { bg: "bg-rose-100", fg: "text-rose-700", border: "border-rose-200" },
+  { bg: "bg-amber-100", fg: "text-amber-700", border: "border-amber-200" },
+  { bg: "bg-emerald-100", fg: "text-emerald-700", border: "border-emerald-200" },
+  { bg: "bg-sky-100", fg: "text-sky-700", border: "border-sky-200" },
+  { bg: "bg-violet-100", fg: "text-violet-700", border: "border-violet-200" },
+  { bg: "bg-pink-100", fg: "text-pink-700", border: "border-pink-200" },
+];
+
+function paletteForTag(name: string) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) >>> 0;
+  return TAG_PALETTE[hash % TAG_PALETTE.length]!;
+}
+
 const ALIVE_STATUSES = new Set(["active", "waiting"]);
 
 type ConversationItemProps = {
@@ -181,6 +198,35 @@ const ConversationItem = ({
                 </span>
               )}
             </div>
+
+            {/* Tag chips — small, capped at the first 3 so a heavily-tagged
+             * conversation doesn't push the row taller. The remaining count
+             * shows as a "+N" badge. */}
+            {conversation.tags && conversation.tags.length > 0 && (
+              <div className="flex flex-wrap items-center gap-1 mt-1.5">
+                {conversation.tags.slice(0, 3).map((tag) => {
+                  const palette = paletteForTag(tag.name);
+                  return (
+                    <span
+                      key={tag.id}
+                      className={cn(
+                        "inline-flex items-center h-4 px-1.5 rounded-full text-[9px] font-medium border",
+                        palette.bg,
+                        palette.fg,
+                        palette.border,
+                      )}
+                    >
+                      {tag.name}
+                    </span>
+                  );
+                })}
+                {conversation.tags.length > 3 && (
+                  <span className="text-[9px] text-gray-400">
+                    +{conversation.tags.length - 3}
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </button>
