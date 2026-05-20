@@ -119,14 +119,18 @@ const ContactDetailsPanel = ({
       const tag = await omnichannelService.attachTag(conversation.id, { name });
       // Replace any earlier optimistic entry with the same name so we
       // don't end up with both an inline placeholder and the real row.
-      setConvTags((prev) => {
-        const next = prev.filter(
+      // NOTE: `onTagsChanged` is called *outside* the setState updater —
+      // calling a parent setState from inside an updater function fires
+      // during render and trips "Cannot update a component while
+      // rendering a different component."
+      const next = [
+        ...convTags.filter(
           (t) => t.name.toLowerCase() !== name.toLowerCase(),
-        );
-        const updated = [...next, tag];
-        onTagsChanged?.(updated);
-        return updated;
-      });
+        ),
+        tag,
+      ];
+      setConvTags(next);
+      onTagsChanged?.(next);
       // Cache the new tag in suggestions so it shows up immediately.
       setAllTags((prev) =>
         prev.some((t) => t.id === tag.id) ? prev : [...prev, tag],
