@@ -81,16 +81,17 @@ const AppSidebar = () => {
           />
         )}
 
-        {session?.userType === "user" && Organization?.hasTenant && (
-          <SidebarItem
-            icon={<Forum />}
-            title={t("navigation.omnichannel")}
-            href={`/omnichannel`}
-            disabled={isPending}
-            isNew={true}
-            isComingSoon={false}
-          />
-        )}
+        {(session?.userType === "user" || session?.userType === "agent") &&
+          Organization?.hasTenant && (
+            <SidebarItem
+              icon={<Forum />}
+              title={t("navigation.omnichannel")}
+              href={`/omnichannel`}
+              disabled={isPending}
+              isNew={true}
+              isComingSoon={false}
+            />
+          )}
 
         {session?.userType === "user" && Organization?.hasTenant && (
           <SidebarItem

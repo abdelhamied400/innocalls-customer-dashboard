@@ -25,16 +25,33 @@ const omniApi = axios.create({
 
 omniApi.interceptors.request.use(async (config) => {
   const { session } = useSessionStore.getState();
-  const organizationId = (await getCookie("OrganizationId")) as string | undefined;
+  // Mirrors services/api.ts: prefer the explicit `OrganizationId` cookie
+  // (set on login + when the user switches orgs from the profile menu),
+  // but fall back to the first org on the session if the cookie is
+  // empty/missing/literally the string "undefined". The agent login flow
+  // doesn't always populate the cookie reliably, and without this
+  // fallback the omnichannel API rejects the request for missing
+  // Organization.
+  const cookieOrgRaw = (await getCookie("OrganizationId")) as
+    | string
+    | undefined;
+  const cookieOrg =
+    cookieOrgRaw && cookieOrgRaw !== "undefined" ? cookieOrgRaw : undefined;
+  const organizationId = cookieOrg || session?.organizations?.[0]?.id;
   if (organizationId) {
     config.headers["Organization"] = organizationId;
   }
-  // Identity headers used by the omnichannel API to scope conversation
-  // visibility (admin sees everything in the org; agent sees only chats
-  // assigned to them or unassigned). Mirrors the pattern used by api.ts.
-  const userId = session?.user?.id || session?.user?.email;
-  if (userId) {
-    config.headers["User-Id"] = String(userId);
+  // Identity header for the omnichannel API. We use **email** as the
+  // cross-system identifier because the agent's `session.user.id` (Mongo
+  // ObjectId from /v2/auth/login) and the extension's `id` (from
+  // /extension/list) live in different tables and don't line up — but
+  // `email` is the same record on both sides, so the admin's assignee
+  // picker and the agent's session can finally talk about the same row.
+  // The header name stays `User-Id` so the backend middleware doesn't
+  // need to change; the value is just an email string now.
+  const identity = session?.user?.email || session?.user?.id;
+  if (identity) {
+    config.headers["User-Id"] = String(identity);
   }
   if (session?.userType) {
     // The omnichannel API only knows two roles: "admin" and "agent".
@@ -116,8 +133,11 @@ const omnichannelService = {
     id: string,
     data: {
       status?: ConversationStatus;
-      assignedAgent?: string | null;
-      assignedAgentName?: string | null;
+      /** Replace-set semantics: PATCH `assignees: []` clears the
+       * assignment; PATCH `assignees: [{email,name}, …]` replaces with
+       * exactly that list. Admins only — agents get a 403 if they touch
+       * this field. Omit the field to leave the assignee set unchanged. */
+      assignees?: Array<{ email: string; name: string }>;
     },
   ): Promise<Conversation> => {
     const res = await omniApi.patch(
