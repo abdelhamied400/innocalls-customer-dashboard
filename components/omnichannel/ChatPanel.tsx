@@ -503,6 +503,7 @@ const ChatPanel = ({
           onClose={onClose}
           onEndChat={() => setIsEndDialogOpen(true)}
           onToggleContactDetails={onToggleContactDetails}
+          onConversationUpdated={onConversationUpdated}
         />
         <ChatMessages
           messages={messages}

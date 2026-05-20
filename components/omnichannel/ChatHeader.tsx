@@ -1,11 +1,13 @@
 import type { Conversation } from "@/types/omnichannel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Close, DoNotDisturbOn, Person } from "@mui/icons-material";
+import { Close, DoNotDisturbOn } from "@mui/icons-material";
 import { useTranslations } from "@/providers/TranslationProvider";
+import { useSession } from "@/hooks/useSession";
 import ChannelIcon, { channelLabels } from "./ChannelIcon";
 import ContactAvatar from "./ContactAvatar";
 import { STATUS_META, type StatusKey } from "./status-meta";
+import AssignAgentControl, { AssignedAgentBadge } from "./AssignAgentControl";
 
 const statusVariants: Record<string, string> = {
   active: "success",
@@ -22,6 +24,10 @@ type ChatHeaderProps = {
    * <ContactDetailsPanel> in the page grid — clicking the card a second
    * time closes the panel (and the panel's X also closes). */
   onToggleContactDetails?: () => void;
+  /** Fired by the assign-agent popover after the PATCH succeeds. Pushed
+   * straight up so the inbox row + open thread reflect the new assignee
+   * without waiting for the next poll tick. Admin-only surface. */
+  onConversationUpdated?: (updated: Conversation) => void;
 };
 
 const ALIVE_STATUSES = new Set(["active", "waiting"]);
@@ -31,8 +37,11 @@ const ChatHeader = ({
   onClose,
   onEndChat,
   onToggleContactDetails,
+  onConversationUpdated,
 }: ChatHeaderProps) => {
   const t = useTranslations("omnichannel");
+  const { data: session } = useSession();
+  const isAdmin = session?.userType === "user";
   const canEnd = onEndChat && ALIVE_STATUSES.has(conversation.status);
 
   return (
@@ -67,11 +76,15 @@ const ChatHeader = ({
         </div>
       </button>
       <div className="flex items-center gap-2">
-        {conversation.assignedAgent && (
-          <Badge variant="secondary" className="text-xs gap-1 font-normal">
-            <Person className="!text-sm" />
-            {conversation.assignedAgent}
-          </Badge>
+        {/* Admins get the interactive popover for reassignment; agents see
+            a read-only badge that just states who's currently handling it. */}
+        {isAdmin ? (
+          <AssignAgentControl
+            conversation={conversation}
+            onAssigned={(updated) => onConversationUpdated?.(updated)}
+          />
+        ) : (
+          <AssignedAgentBadge conversation={conversation} />
         )}
         <Badge
           variant={(statusVariants[conversation.status] as any) ?? "secondary"}

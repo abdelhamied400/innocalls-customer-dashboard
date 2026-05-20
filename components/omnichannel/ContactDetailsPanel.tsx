@@ -236,7 +236,10 @@ const ContactDetailsPanel = ({
     { key: "status", value: t(`status.${conversation.status}`) },
     {
       key: "assigned_agent",
-      value: conversation.assignedAgentName ?? conversation.assignedAgent,
+      value:
+        (conversation.assignees ?? []).length > 0
+          ? conversation.assignees!.map((a) => a.name).join(", ")
+          : null,
     },
     {
       key: "last_interaction",

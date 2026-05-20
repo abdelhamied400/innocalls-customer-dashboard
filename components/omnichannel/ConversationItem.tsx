@@ -173,10 +173,14 @@ const ConversationItem = ({
                 {t(`status.${conversation.status}`)}
               </Badge>
               {conversation.status === "active" &&
-                conversation.assignedAgent && (
-                  <span className="flex items-center gap-0.5 text-[10px] text-gray-400">
-                    <Person className="!text-[12px]" />
-                    {conversation.assignedAgent}
+                (conversation.assignees ?? []).length > 0 && (
+                  <span className="flex items-center gap-0.5 text-[10px] text-gray-400 truncate max-w-[140px]">
+                    <Person className="!text-[12px] shrink-0" />
+                    <span className="truncate">
+                      {conversation.assignees!.length === 1
+                        ? conversation.assignees![0].name
+                        : `${conversation.assignees![0].name} +${conversation.assignees!.length - 1}`}
+                    </span>
                   </span>
                 )}
             </div>

@@ -5742,6 +5742,18 @@
       "resolved": "Resolved",
       "closed": "Closed"
     },
+    "assign": {
+      "label": "Assign agents",
+      "assignTo": "Assign",
+      "assignees": "agents",
+      "currentlyAssigned": "Assigned",
+      "clearAll": "Clear all",
+      "remove": "Remove",
+      "searchPlaceholder": "Search agents...",
+      "loading": "Loading agents...",
+      "empty": "No agents found",
+      "error": "Failed to update assignment"
+    },
     "priority": {
       "urgent": "Urgent",
       "high": "High",

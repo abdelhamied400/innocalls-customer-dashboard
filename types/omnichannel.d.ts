@@ -50,6 +50,11 @@ export type Tag = {
   color: string | null;
 };
 
+export type Assignee = {
+  email: string;
+  name: string;
+};
+
 export type ContactNote = {
   id: string;
   contactId: string;
@@ -97,8 +102,11 @@ export type Conversation = {
   contact: Contact;
   channel: ChannelType;
   status: ConversationStatus;
-  assignedAgent?: string | null;
-  assignedAgentName?: string | null;
+  /** Agents handling this conversation. Empty array = unassigned.
+   * Persisted via the `conversation_assignees` junction table on the API.
+   * `email` is the stable identifier (matches the agent's session header);
+   * `name` is the snapshotted display label at assign time. */
+  assignees: Assignee[];
   lastMessage: string | null;
   lastMessageAt: string | null;
   unreadCount: number;

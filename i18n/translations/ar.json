@@ -5737,6 +5737,18 @@
       "resolved": "تم حلها",
       "closed": "مغلقة"
     },
+    "assign": {
+      "label": "تعيين الوكلاء",
+      "assignTo": "تعيين",
+      "assignees": "وكلاء",
+      "currentlyAssigned": "المعيّنون",
+      "clearAll": "مسح الكل",
+      "remove": "إزالة",
+      "searchPlaceholder": "ابحث عن وكيل...",
+      "loading": "جارٍ تحميل الوكلاء...",
+      "empty": "لا يوجد وكلاء",
+      "error": "تعذّر تحديث التعيين"
+    },
     "priority": {
       "urgent": "عاجلة",
       "high": "مرتفعة",
