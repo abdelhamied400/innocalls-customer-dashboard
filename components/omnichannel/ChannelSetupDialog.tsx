@@ -140,6 +140,34 @@ const ChannelSetupDialog = ({
     };
   }, []);
 
+  // Seed configValues from the existing channel's config when opening
+  // Configure on an existing channel. Without this the form starts blank
+  // and the agent would have to retype every field even if they only
+  // wanted to tweak one. Password fields are deliberately skipped — the
+  // backend redacts them to "••••••" on GET, which we'd otherwise send
+  // back as the new value and overwrite the real secret with bullets.
+  useEffect(() => {
+    if (!open || !channel) return;
+    const cfg = channelSetupConfigs[channel.type];
+    if (!cfg) return;
+    if (channel.status === "disconnected") {
+      setConfigValues({});
+      return;
+    }
+    const sourceConfig = (channel.config ?? {}) as Record<string, unknown>;
+    const seeded: Record<string, unknown> = {};
+    for (const field of cfg.fields) {
+      if (field.type === "password") continue;
+      if (field.key in sourceConfig) {
+        seeded[field.key] = sourceConfig[field.key];
+      }
+    }
+    setConfigValues(seeded);
+    // Reset list-input drafts so old in-flight text doesn't survive
+    // across channel switches.
+    setListInputValues({});
+  }, [open, channel?.id, channel?.type, channel?.status]);
+
   if (!channel) return null;
 
   const config = channelSetupConfigs[channel.type];
