@@ -2,7 +2,9 @@
 
 import type { Channel } from "@/types/omnichannel";
 import GenericChannelSetupDialog from "../ChannelSetupDialog";
-import XSetupDialog from "./XSetupDialog";
+import OAuthSetupDialog from "./OAuthSetupDialog";
+import TelegramSetupDialog from "./TelegramSetupDialog";
+import { oauthChannels } from "../channelSetupConfig";
 
 type Props = {
   channel: Channel | null;
@@ -12,14 +14,19 @@ type Props = {
 };
 
 /**
- * Router for the per-channel setup dialog. X has its own bespoke component;
- * everything else still goes through the config-driven generic dialog.
- * Pull additional channel types out into their own files as their UX
- * diverges from the generic one.
+ * Routes the dialog by channel type:
+ *  • OAuth channels (WhatsApp, Messenger, Instagram, X) → single-screen
+ *    OAuth dialog (click → wait → done).
+ *  • Telegram → single-screen credential dialog (same shape as OAuth).
+ *  • Anything else (Live Chat) → multi-step generic wizard, which still
+ *    earns its keep because of the post-create widget token reveal.
  */
 const ChannelSetupDialog = (props: Props) => {
-  if (props.channel?.type === "x") {
-    return <XSetupDialog {...props} />;
+  if (props.channel && oauthChannels.includes(props.channel.type)) {
+    return <OAuthSetupDialog {...props} />;
+  }
+  if (props.channel?.type === "telegram") {
+    return <TelegramSetupDialog {...props} />;
   }
   return <GenericChannelSetupDialog {...props} />;
 };

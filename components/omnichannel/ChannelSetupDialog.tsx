@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { Channel } from "@/types/omnichannel";
+import type { Channel, ChannelType } from "@/types/omnichannel";
 import { useTranslations } from "@/providers/TranslationProvider";
 import omnichannelService from "@/services/omnichannel.service";
 import {
@@ -9,7 +9,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -25,6 +24,7 @@ import {
   HourglassEmpty,
   ErrorOutline,
   Refresh,
+  Check,
 } from "@mui/icons-material";
 import { cn } from "@/lib/utils";
 import ChannelIcon, { channelLabels } from "./ChannelIcon";
@@ -38,6 +38,61 @@ type ChannelSetupDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSaved?: () => void;
+};
+
+/** Channel-specific tints used to brand the dialog header + side rail. */
+const channelHero: Record<
+  ChannelType,
+  { bg: string; iconBg: string; ring: string; accent: string; rail: string; railText: string }
+> = {
+  whatsapp: {
+    bg: "from-green-50 via-green-50/40 to-white",
+    iconBg: "bg-white",
+    ring: "ring-green-100",
+    accent: "bg-green-500",
+    rail: "bg-green-50/40",
+    railText: "text-green-600",
+  },
+  live_chat: {
+    bg: "from-purple-50 via-purple-50/40 to-white",
+    iconBg: "bg-white",
+    ring: "ring-purple-100",
+    accent: "bg-purple-500",
+    rail: "bg-purple-50/40",
+    railText: "text-purple-600",
+  },
+  messenger: {
+    bg: "from-blue-50 via-blue-50/40 to-white",
+    iconBg: "bg-white",
+    ring: "ring-blue-100",
+    accent: "bg-blue-500",
+    rail: "bg-blue-50/40",
+    railText: "text-blue-600",
+  },
+  x: {
+    bg: "from-gray-100 via-gray-50 to-white",
+    iconBg: "bg-white",
+    ring: "ring-gray-200",
+    accent: "bg-gray-900",
+    rail: "bg-gray-50",
+    railText: "text-gray-900",
+  },
+  instagram: {
+    bg: "from-pink-50 via-pink-50/40 to-white",
+    iconBg: "bg-white",
+    ring: "ring-pink-100",
+    accent: "bg-pink-500",
+    rail: "bg-pink-50/40",
+    railText: "text-pink-600",
+  },
+  telegram: {
+    bg: "from-sky-50 via-sky-50/40 to-white",
+    iconBg: "bg-white",
+    ring: "ring-sky-100",
+    accent: "bg-sky-500",
+    rail: "bg-sky-50/40",
+    railText: "text-sky-600",
+  },
 };
 
 const ChannelSetupDialog = ({
@@ -56,9 +111,8 @@ const ChannelSetupDialog = ({
   const [isSaving, setIsSaving] = useState(false);
   const [savedChannel, setSavedChannel] = useState<Channel | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
 
-  // OAuth state
   const [oauthState, setOauthState] = useState<
     "idle" | "loading" | "waiting" | "polling" | "success" | "error"
   >("idle");
@@ -66,7 +120,6 @@ const ChannelSetupDialog = ({
   const popupRef = useRef<Window | null>(null);
   const pollRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Live-chat token rotation
   const [isRotating, setIsRotating] = useState(false);
 
   const resetState = useCallback(() => {
@@ -81,7 +134,6 @@ const ChannelSetupDialog = ({
     if (pollRef.current) clearInterval(pollRef.current);
   }, []);
 
-  // Clean up polling on unmount
   useEffect(() => {
     return () => {
       if (pollRef.current) clearInterval(pollRef.current);
@@ -97,6 +149,7 @@ const ChannelSetupDialog = ({
   const totalSteps = steps.length;
   const isLastStep = currentStep === totalSteps - 1;
   const isExistingChannel = channel.status !== "disconnected";
+  const hero = channelHero[channel.type];
 
   const fieldStepIndex = steps.findIndex(
     (s) =>
@@ -115,10 +168,6 @@ const ChannelSetupDialog = ({
     | undefined;
   const widgetToken = savedChannel?.widgetToken ?? null;
 
-  // Webhook info: provider apps (WhatsApp/Messenger/Instagram) require pasting
-  // a callback URL + verify token into the Meta App Dashboard. Show these
-  // whenever they're available — both right after a fresh connect (from
-  // savedChannel) and on Configure of an existing connected channel.
   const sourceConfig = (savedChannel?.config ?? channel.config ?? {}) as Record<
     string,
     unknown
@@ -128,16 +177,13 @@ const ChannelSetupDialog = ({
     | string
     | undefined;
 
-  // For an existing live_chat channel being reconfigured, show its current
-  // token + rotate button regardless of the wizard step.
   const existingLiveChatToken =
     isExistingChannel && channel.type === "live_chat" && !savedChannel
       ? (channel.widgetToken ?? null)
       : null;
-  const existingLiveChatSnippet =
-    existingLiveChatToken
-      ? `<ChatWidget token="${existingLiveChatToken}" />`
-      : null;
+  const existingLiveChatSnippet = existingLiveChatToken
+    ? `<ChatWidget token="${existingLiveChatToken}" />`
+    : null;
 
   const handleRegenerateToken = async () => {
     if (isRotating) return;
@@ -163,10 +209,6 @@ const ChannelSetupDialog = ({
   // ── OAuth Flow ───────────────────────────────────────────────────────────
 
   const startOAuth = async () => {
-    // Browsers (Chrome/Safari) only allow window.open inside the synchronous
-    // task chain of a user gesture. Awaiting the API call first would forfeit
-    // the gesture and trip the popup blocker. Open a placeholder window
-    // immediately, then redirect it once the URL comes back.
     const width = 600;
     const height = 700;
     const left = window.screenX + (window.outerWidth - width) / 2;
@@ -206,7 +248,6 @@ const ChannelSetupDialog = ({
       popupRef.current = popup;
       setOauthState("waiting");
 
-      // Listen for popup close and postMessage
       const handleMessage = (event: MessageEvent) => {
         if (event.data?.type === "omnichannel_oauth_complete") {
           window.removeEventListener("message", handleMessage);
@@ -225,10 +266,8 @@ const ChannelSetupDialog = ({
       };
       window.addEventListener("message", handleMessage);
 
-      // Also poll for status in case postMessage doesn't work (popup on different origin)
       setOauthState("polling");
       pollRef.current = setInterval(async () => {
-        // Check if popup was closed by user
         if (popup?.closed) {
           if (pollRef.current) clearInterval(pollRef.current);
           window.removeEventListener("message", handleMessage);
@@ -244,7 +283,6 @@ const ChannelSetupDialog = ({
               setOauthState("error");
               setOauthError(result.error ?? t("oauthError"));
             } else {
-              // Popup closed but OAuth not completed — user cancelled
               setOauthState("idle");
             }
           } catch {
@@ -253,7 +291,6 @@ const ChannelSetupDialog = ({
           return;
         }
 
-        // Poll status while popup is open
         try {
           const result = await omnichannelService.getOAuthStatus(state);
           if (result.status === "completed") {
@@ -272,7 +309,7 @@ const ChannelSetupDialog = ({
             setOauthError(result.error ?? t("oauthError"));
           }
         } catch {
-          // Polling error — continue
+          /* keep polling */
         }
       }, 3000);
     } catch {
@@ -310,10 +347,10 @@ const ChannelSetupDialog = ({
     );
   };
 
-  const handleCopy = async (text: string) => {
+  const handleCopy = async (text: string, id: string) => {
     await navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setCopied(id);
+    setTimeout(() => setCopied(null), 2000);
   };
 
   const handleSave = async () => {
@@ -337,8 +374,6 @@ const ChannelSetupDialog = ({
       }
       setSavedChannel(result);
       onSaved?.();
-      // If the field step isn't the last step (i.e. there's a result step
-      // after it — like live_chat's "Copy your token" reveal), advance.
       if (currentStep < totalSteps - 1) {
         setCurrentStep(totalSteps - 1);
       }
@@ -369,8 +404,8 @@ const ChannelSetupDialog = ({
     const value = configValues[field.key] ?? "";
     const error = fieldErrors[field.key];
     const inputClass = cn(
-      "w-full h-9 px-3 bg-gray-50 border rounded-lg text-sm placeholder:text-gray-300 focus:outline-none focus:bg-white focus:border-primary-300 focus:ring-2 focus:ring-primary-100 transition-all",
-      error ? "border-red-300 bg-red-50/50" : "border-gray-200",
+      "w-full h-10 px-3 bg-white border rounded-lg text-sm placeholder:text-gray-300 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all",
+      error ? "border-red-300 bg-red-50/40" : "border-gray-200",
     );
     const errorEl = error ? (
       <p className="text-[11px] text-red-500 mt-1">{error}</p>
@@ -498,15 +533,15 @@ const ChannelSetupDialog = ({
   const renderOAuthContent = () => {
     if (oauthState === "success") {
       return (
-        <div className="flex flex-col items-center gap-4 py-6">
-          <div className="w-16 h-16 rounded-full bg-green-50 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3 py-6">
+          <div className="w-14 h-14 rounded-full bg-green-50 flex items-center justify-center ring-4 ring-green-100">
             <CheckCircle className="!text-3xl text-green-500" />
           </div>
           <div className="text-center">
             <h4 className="text-sm font-semibold text-gray-900">
               {t("channelConnected")}
             </h4>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 mt-1 max-w-sm">
               {t("oauthSuccess", { channel: channelLabels[channel.type] })}
             </p>
           </div>
@@ -516,15 +551,15 @@ const ChannelSetupDialog = ({
 
     if (oauthState === "error") {
       return (
-        <div className="flex flex-col items-center gap-4 py-6">
-          <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3 py-6">
+          <div className="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center ring-4 ring-red-100">
             <ErrorOutline className="!text-3xl text-red-400" />
           </div>
           <div className="text-center">
             <h4 className="text-sm font-semibold text-gray-900">
               {t("oauthFailed")}
             </h4>
-            <p className="text-xs text-red-500 mt-1">{oauthError}</p>
+            <p className="text-xs text-red-500 mt-1 max-w-sm">{oauthError}</p>
           </div>
           <Button
             size="sm"
@@ -546,15 +581,15 @@ const ChannelSetupDialog = ({
       oauthState === "polling"
     ) {
       return (
-        <div className="flex flex-col items-center gap-4 py-6">
-          <div className="w-16 h-16 rounded-full bg-primary-50 flex items-center justify-center">
-            <HourglassEmpty className="!text-3xl text-primary-400 animate-pulse" />
+        <div className="flex flex-col items-center gap-3 py-6">
+          <div className="w-14 h-14 rounded-full bg-primary-50 flex items-center justify-center ring-4 ring-primary-100">
+            <HourglassEmpty className="!text-3xl text-primary-500 animate-pulse" />
           </div>
           <div className="text-center">
             <h4 className="text-sm font-semibold text-gray-900">
               {t("oauthWaiting")}
             </h4>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 mt-1 max-w-sm">
               {t("oauthWaitingHint")}
             </p>
           </div>
@@ -562,12 +597,11 @@ const ChannelSetupDialog = ({
       );
     }
 
-    // idle — show connect button
     return (
-      <div className="flex flex-col items-center gap-4 py-4">
+      <div className="flex flex-col items-center gap-3 py-4">
         <Button
           size="lg"
-          className="gap-2 rounded-xl px-8"
+          className="gap-2 rounded-xl px-8 shadow-sm"
           onClick={startOAuth}
         >
           <Login className="!text-lg" />
@@ -580,16 +614,95 @@ const ChannelSetupDialog = ({
     );
   };
 
+  const CopyRow = ({
+    id,
+    value,
+    label,
+    hint,
+    mono = false,
+    rightSlot,
+  }: {
+    id: string;
+    value: string;
+    label?: string;
+    hint?: string;
+    mono?: boolean;
+    rightSlot?: React.ReactNode;
+  }) => (
+    <div className="space-y-1.5">
+      {(label || rightSlot) && (
+        <div className="flex items-center justify-between gap-2">
+          {label && (
+            <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-500">
+              {label}
+            </label>
+          )}
+          {rightSlot}
+        </div>
+      )}
+      <div className="flex items-stretch gap-0 rounded-lg ring-1 ring-gray-200 bg-gray-50 overflow-hidden">
+        <code
+          className={cn(
+            "flex-1 text-xs px-3 py-2.5 break-all text-gray-700",
+            mono && "font-mono",
+          )}
+        >
+          {value}
+        </code>
+        <button
+          type="button"
+          onClick={() => handleCopy(value, id)}
+          className="shrink-0 px-3 flex items-center gap-1 text-xs font-medium text-gray-600 hover:bg-gray-100 border-l border-gray-200 transition-colors"
+        >
+          {copied === id ? (
+            <>
+              <Check className="!text-sm text-green-500" />
+              <span className="text-green-600">{t("copied")}</span>
+            </>
+          ) : (
+            <>
+              <ContentCopy className="!text-sm" />
+              {t("copy")}
+            </>
+          )}
+        </button>
+      </div>
+      {hint && <p className="text-[11px] text-gray-400">{hint}</p>}
+    </div>
+  );
+
   // ── Main Render ──────────────────────────────────────────────────────────
+
+  const stepHeading = steps[currentStep];
+  const showSideRail = totalSteps > 1;
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-xl max-h-[85vh] flex flex-col">
-        <DialogHeader>
-          <div className="flex items-center gap-3">
-            <ChannelIcon channel={channel.type} className="!text-2xl" />
-            <div>
-              <DialogTitle className="text-base">
+      <DialogContent
+        className={cn(
+          "p-0 overflow-hidden max-h-[90vh] flex flex-col",
+          showSideRail ? "max-w-3xl" : "max-w-xl",
+        )}
+      >
+        {/* Hero header — channel-tinted gradient spanning full width */}
+        <DialogHeader
+          className={cn(
+            "px-6 pt-6 pb-5 bg-gradient-to-br border-b border-gray-100",
+            hero.bg,
+          )}
+        >
+          <div className="flex items-center gap-4">
+            <div
+              className={cn(
+                "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ring-4",
+                hero.iconBg,
+                hero.ring,
+              )}
+            >
+              <ChannelIcon channel={channel.type} className="!text-2xl" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <DialogTitle className="text-[15px] font-semibold text-gray-900">
                 {isExistingChannel
                   ? t("configureTitle", {
                       channel: channelLabels[channel.type],
@@ -598,269 +711,205 @@ const ChannelSetupDialog = ({
                       channel: channelLabels[channel.type],
                     })}
               </DialogTitle>
-              <DialogDescription className="text-xs mt-0.5">
+              <p className="text-xs text-gray-500 mt-0.5">
                 {t("configureSubtitle")}
-              </DialogDescription>
+              </p>
             </div>
+            {showSideRail && !showResult && (
+              <span className="text-[11px] font-medium text-gray-500 bg-white/70 ring-1 ring-gray-200 rounded-full px-2.5 py-1 shrink-0">
+                {currentStep + 1} / {totalSteps}
+              </span>
+            )}
           </div>
         </DialogHeader>
 
-        {/* Step indicators */}
-        <div className="flex items-center gap-1 px-1">
-          {steps.map((_, i) => (
-            <div
-              key={i}
+        {/* Body: optional side rail (vertical stepper) + main content */}
+        <div className="flex-1 flex min-h-0">
+          {showSideRail && (
+            <aside
               className={cn(
-                "h-1 rounded-full flex-1 transition-colors",
-                i <= currentStep ? "bg-primary-500" : "bg-gray-100",
+                "w-48 shrink-0 border-r border-gray-100 px-3 py-5",
+                hero.rail,
               )}
-            />
-          ))}
-        </div>
+            >
+              <ol className="flex flex-col gap-1">
+                {steps.map((s, i) => {
+                  const done = i < currentStep;
+                  const active = i === currentStep;
+                  const completedAll = showResult || oauthState === "success";
+                  const stepDone = done || completedAll;
+                  return (
+                    <li key={i}>
+                      <div
+                        className={cn(
+                          "flex items-start gap-2.5 px-2.5 py-2 rounded-lg transition-colors",
+                          active &&
+                            "bg-white shadow-sm ring-1 ring-gray-200",
+                        )}
+                      >
+                        <div
+                          className={cn(
+                            "flex items-center justify-center w-5 h-5 rounded-full text-[10px] font-bold shrink-0 mt-0.5 transition-colors",
+                            stepDone && "bg-green-500 text-white",
+                            active &&
+                              !stepDone &&
+                              cn(hero.accent, "text-white"),
+                            !stepDone &&
+                              !active &&
+                              "bg-gray-200 text-gray-500",
+                          )}
+                        >
+                          {stepDone ? (
+                            <Check className="!text-[12px]" />
+                          ) : (
+                            i + 1
+                          )}
+                        </div>
+                        <span
+                          className={cn(
+                            "text-[11px] leading-tight font-medium pt-0.5",
+                            active
+                              ? "text-gray-900"
+                              : stepDone
+                                ? "text-gray-500"
+                                : "text-gray-400",
+                          )}
+                        >
+                          {s.title}
+                        </span>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+            </aside>
+          )}
 
-        {/* Step content */}
-        <div className="flex-1 overflow-y-auto py-2 space-y-4">
-          {/* Step info */}
-          <div className="bg-gray-50 rounded-xl p-4">
-            <div className="flex items-start gap-3">
-              <div
-                className={cn(
-                  "w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0",
-                  oauthState === "success" || showResult
-                    ? "bg-green-500 text-white"
-                    : "bg-primary-500 text-white",
-                )}
-              >
-                {oauthState === "success" || showResult ? (
-                  <CheckCircle className="!text-sm" />
-                ) : (
-                  currentStep + 1
-                )}
-              </div>
-              <div>
+          <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5 min-w-0">
+            {/* Step heading — direct, no nested card */}
+            {!showResult && (
+              <div className="space-y-1">
                 <h4 className="text-sm font-semibold text-gray-900">
-                  {steps[currentStep].title}
+                  {stepHeading.title}
                 </h4>
-                <p className="text-xs text-gray-500 mt-1 leading-relaxed">
-                  {steps[currentStep].description}
+                <p className="text-xs text-gray-500 leading-relaxed">
+                  {stepHeading.description}
                 </p>
-                {steps[currentStep].externalUrl && (
+                {stepHeading.externalUrl && (
                   <a
-                    href={steps[currentStep].externalUrl}
+                    href={stepHeading.externalUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs text-primary-500 hover:text-primary-600 font-medium mt-2"
+                    className={cn(
+                      "inline-flex items-center gap-1 text-xs font-medium mt-1",
+                      hero.railText,
+                    )}
                   >
                     {t("openExternalLink")}
                     <OpenInNew className="!text-xs" />
                   </a>
                 )}
               </div>
-            </div>
-          </div>
+            )}
 
-          {/* OAuth flow content */}
-          {oauth && !isExistingChannel && renderOAuthContent()}
+            {oauth && !isExistingChannel && renderOAuthContent()}
 
-          {/* Warning from API */}
-          {warning && (
-            <div className="flex items-start gap-2 px-3 py-2 bg-yellow-50 border border-yellow-100 rounded-lg">
-              <Warning className="!text-sm text-yellow-500 mt-0.5 shrink-0" />
-              <span className="text-xs text-yellow-700">{warning}</span>
-            </div>
-          )}
-
-          {/* General error */}
-          {fieldErrors._general && (
-            <div className="flex items-start gap-2 px-3 py-2 bg-red-50 border border-red-100 rounded-lg">
-              <Warning className="!text-sm text-red-400 mt-0.5 shrink-0" />
-              <span className="text-xs text-red-600">
-                {fieldErrors._general}
-              </span>
-            </div>
-          )}
-
-          {/* Webhook info — visible right after a fresh connect AND on Configure
-              of an existing connected provider channel, so the user can copy
-              the callback URL + verify token into the Meta App Dashboard. */}
-          {webhookUrl && (
-            <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
-              <div>
-                <label className="text-xs font-medium text-gray-700">
-                  {t("webhookUrl")}
-                </label>
-                <div className="flex gap-2 mt-1.5">
-                  <code className="flex-1 text-xs bg-gray-50 p-2.5 rounded-lg border border-gray-100 break-all text-gray-600">
-                    {webhookUrl}
-                  </code>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="shrink-0 rounded-lg text-xs gap-1"
-                    onClick={() => handleCopy(webhookUrl)}
-                  >
-                    <ContentCopy className="!text-sm" />
-                    {copied ? t("copied") : t("copy")}
-                  </Button>
-                </div>
-                <p className="text-[11px] text-gray-400 mt-1">
-                  {t("webhookUrlHint")}
-                </p>
+            {warning && (
+              <div className="flex items-start gap-2 px-3 py-2.5 bg-yellow-50 border border-yellow-100 rounded-lg">
+                <Warning className="!text-sm text-yellow-500 mt-0.5 shrink-0" />
+                <span className="text-xs text-yellow-700">{warning}</span>
               </div>
+            )}
 
-              {webhookVerifyToken && (
-                <div className="pt-3 border-t border-gray-100">
-                  <label className="text-xs font-medium text-gray-700">
-                    Verify token
-                  </label>
-                  <div className="flex gap-2 mt-1.5">
-                    <code className="flex-1 text-xs bg-gray-50 p-2.5 rounded-lg border border-gray-100 break-all text-gray-600 font-mono">
-                      {webhookVerifyToken}
-                    </code>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="shrink-0 rounded-lg text-xs gap-1"
-                      onClick={() => handleCopy(webhookVerifyToken)}
-                    >
-                      <ContentCopy className="!text-sm" />
-                      {copied ? t("copied") : t("copy")}
-                    </Button>
-                  </div>
-                  <p className="text-[11px] text-gray-400 mt-1">
-                    Paste this into the Meta App Dashboard → Webhooks →
-                    Verify token field. Meta calls our endpoint with this
-                    token to confirm we own it.
-                  </p>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Embed snippet result */}
-          {showResult && embedSnippet && (
-            <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-2">
-              <label className="text-xs font-medium text-gray-700">
-                {t("embedSnippet")}
-              </label>
-              <div className="flex gap-2">
-                <code className="flex-1 text-xs bg-gray-50 p-2.5 rounded-lg border border-gray-100 break-all text-gray-600">
-                  {embedSnippet}
-                </code>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="shrink-0 rounded-lg text-xs gap-1"
-                  onClick={() => handleCopy(embedSnippet)}
-                >
-                  <ContentCopy className="!text-sm" />
-                  {copied ? t("copied") : t("copy")}
-                </Button>
+            {fieldErrors._general && (
+              <div className="flex items-start gap-2 px-3 py-2.5 bg-red-50 border border-red-100 rounded-lg">
+                <Warning className="!text-sm text-red-400 mt-0.5 shrink-0" />
+                <span className="text-xs text-red-600">
+                  {fieldErrors._general}
+                </span>
               </div>
-              <p className="text-[11px] text-gray-400">
-                {t("embedSnippetHint")}
-              </p>
-            </div>
-          )}
+            )}
 
-          {/* Widget token block — for live_chat (after create OR existing) */}
-          {(widgetToken || existingLiveChatToken) && (
-            <div className="bg-white border border-gray-200 rounded-xl p-4 space-y-3">
-              <div className="flex items-center justify-between gap-2">
-                <label className="text-xs font-medium text-gray-700">
-                  Widget token
-                </label>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="rounded-lg text-xs gap-1"
-                  onClick={handleRegenerateToken}
-                  disabled={isRotating}
-                >
-                  <Refresh
-                    className={cn(
-                      "!text-sm",
-                      isRotating && "animate-spin",
-                    )}
+            {webhookUrl && (
+              <div className="space-y-3">
+                <CopyRow
+                  id="webhook-url"
+                  label={t("webhookUrl")}
+                  value={webhookUrl}
+                  hint={t("webhookUrlHint")}
+                />
+                {webhookVerifyToken && (
+                  <CopyRow
+                    id="webhook-verify"
+                    label="Verify token"
+                    value={webhookVerifyToken}
+                    mono
+                    hint="Paste this into the Meta App Dashboard → Webhooks → Verify token field. Meta calls our endpoint with this token to confirm we own it."
                   />
-                  {isRotating ? "Rotating…" : "Regenerate"}
-                </Button>
+                )}
               </div>
-              <div className="flex gap-2">
-                <code className="flex-1 text-xs bg-gray-50 p-2.5 rounded-lg border border-gray-100 break-all text-gray-600 font-mono">
-                  {widgetToken ?? existingLiveChatToken}
-                </code>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="shrink-0 rounded-lg text-xs gap-1"
-                  onClick={() =>
-                    handleCopy(widgetToken ?? existingLiveChatToken!)
+            )}
+
+            {(widgetToken || existingLiveChatToken) && (
+              <div className="space-y-4">
+                <CopyRow
+                  id="widget-token"
+                  label="Widget token"
+                  value={(widgetToken ?? existingLiveChatToken)!}
+                  mono
+                  rightSlot={
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="rounded-lg text-[11px] h-7 gap-1 text-gray-500 hover:text-gray-700"
+                      onClick={handleRegenerateToken}
+                      disabled={isRotating}
+                    >
+                      <Refresh
+                        className={cn(
+                          "!text-sm",
+                          isRotating && "animate-spin",
+                        )}
+                      />
+                      {isRotating ? "Rotating…" : "Regenerate"}
+                    </Button>
                   }
-                >
-                  <ContentCopy className="!text-sm" />
-                  {copied ? t("copied") : t("copy")}
-                </Button>
+                />
+                <p className="text-[11px] text-gray-400 -mt-2">
+                  Rotating immediately invalidates the previous token, so
+                  update any deployed widgets right after.
+                </p>
+
+                {/* Installation — CDN script tag. */}
+                <InstallSnippet
+                  token={(widgetToken ?? existingLiveChatToken)!}
+                  copied={copied}
+                  onCopy={handleCopy}
+                  t={t}
+                />
               </div>
-              {existingLiveChatSnippet && !widgetToken && (
-                <div className="flex gap-2">
-                  <code className="flex-1 text-xs bg-gray-50 p-2.5 rounded-lg border border-gray-100 break-all text-gray-600">
-                    {existingLiveChatSnippet}
-                  </code>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="shrink-0 rounded-lg text-xs gap-1"
-                    onClick={() => handleCopy(existingLiveChatSnippet)}
-                  >
-                    <ContentCopy className="!text-sm" />
-                    {copied ? t("copied") : t("copy")}
-                  </Button>
-                </div>
-              )}
-              <p className="text-[11px] text-gray-400">
-                Pass this token to the chat widget. Rotating immediately
-                invalidates the previous token, so update any deployed widgets
-                right after.
-              </p>
-            </div>
-          )}
+            )}
 
-          {/* Completed steps summary */}
-          {currentStep > 0 && !showResult && oauthState !== "success" && (
-            <div className="space-y-1.5">
-              {steps.slice(0, currentStep).map((step, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-2 text-xs text-gray-400 px-1"
-                >
-                  <CheckCircle className="!text-sm text-green-400" />
-                  <span>{step.title}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Config fields (manual channels, or existing OAuth channel being reconfigured) */}
-          {showFieldsOnCurrentStep && !showResult && (
-            <div className="space-y-3 px-1">
-              {fields.map((field) => (
-                <div key={field.key}>
-                  <label className="text-xs font-medium text-gray-700 mb-1.5 flex items-center gap-1">
-                    {field.label}
-                    {field.required && (
-                      <span className="text-red-400">*</span>
-                    )}
-                  </label>
-                  {renderField(field)}
-                </div>
-              ))}
-            </div>
-          )}
+            {showFieldsOnCurrentStep && !showResult && (
+              <div className="space-y-4">
+                {fields.map((field) => (
+                  <div key={field.key}>
+                    <label className="text-xs font-semibold text-gray-700 mb-1.5 flex items-center gap-1">
+                      {field.label}
+                      {field.required && (
+                        <span className="text-red-400">*</span>
+                      )}
+                    </label>
+                    {renderField(field)}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Navigation footer */}
-        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+        {/* Footer */}
+        <div className="flex items-center justify-between px-6 py-3 border-t border-gray-100 bg-gray-50/50">
           {showResult || oauthState === "success" ? (
             <>
               <div />
@@ -869,17 +918,21 @@ const ChannelSetupDialog = ({
                 className="gap-1.5 text-xs rounded-lg"
                 onClick={handleClose}
               >
+                <Check className="!text-sm" />
                 {t("done")}
               </Button>
             </>
           ) : oauth && !isExistingChannel ? (
-            // OAuth channels — minimal footer, no back/next since connect button is the action
             <>
               <div />
-              <div className="text-[11px] text-gray-400">
-                {currentStep + 1} / {totalSteps}
-              </div>
-              <div />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-xs rounded-lg text-gray-500"
+                onClick={handleClose}
+              >
+                {t("cancel") || "Cancel"}
+              </Button>
             </>
           ) : (
             <>
@@ -894,15 +947,10 @@ const ChannelSetupDialog = ({
                 {t("back")}
               </Button>
 
-              <div className="text-[11px] text-gray-400">
-                {currentStep + 1} / {totalSteps}
-              </div>
-
-              {isLastStep ||
-              (showFieldsOnCurrentStep && !savedChannel) ? (
+              {isLastStep || (showFieldsOnCurrentStep && !savedChannel) ? (
                 <Button
                   size="sm"
-                  className="gap-1.5 text-xs rounded-lg"
+                  className="gap-1.5 text-xs rounded-lg shadow-sm"
                   onClick={handleSave}
                   disabled={isSaving}
                 >
@@ -918,7 +966,7 @@ const ChannelSetupDialog = ({
               ) : (
                 <Button
                   size="sm"
-                  className="gap-1.5 text-xs rounded-lg"
+                  className="gap-1.5 text-xs rounded-lg shadow-sm"
                   onClick={() => setCurrentStep((s) => s + 1)}
                 >
                   {t("next")}
@@ -930,6 +978,64 @@ const ChannelSetupDialog = ({
         </div>
       </DialogContent>
     </Dialog>
+  );
+};
+
+/** CDN URL for the standalone, vanilla-JS bundle of the chat widget.
+ * Reads its config from `data-innocalls-*` attributes on the script tag
+ * (see chat-widget/src/embed.ts:readScriptProps). */
+const CHAT_WIDGET_CDN =
+  "https://innocalls-statics.s3.ap-south-1.amazonaws.com/innocalls-chat-widget.js";
+
+const buildScriptSnippet = (token: string) =>
+  `<script\n  src="${CHAT_WIDGET_CDN}"\n  data-innocalls-token="${token}"\n  async\n></script>`;
+
+/** Installation snippet shown after a live_chat channel has been
+ * connected. Currently exposes the CDN script tag only. */
+const InstallSnippet = ({
+  token,
+  copied,
+  onCopy,
+  t,
+}: {
+  token: string;
+  copied: string | null;
+  onCopy: (text: string, id: string) => void;
+  t: (k: string) => string;
+}) => {
+  const snippet = buildScriptSnippet(token);
+  return (
+    <div className="space-y-2">
+      <label className="text-[11px] font-semibold uppercase tracking-wider text-gray-500">
+        Installation
+      </label>
+      <div className="flex items-stretch gap-0 rounded-lg ring-1 ring-gray-200 bg-gray-50 overflow-hidden">
+        <pre className="flex-1 text-xs px-3 py-2.5 break-all whitespace-pre-wrap text-gray-700 font-mono">
+          {snippet}
+        </pre>
+        <button
+          type="button"
+          onClick={() => onCopy(snippet, "install-script")}
+          className="shrink-0 px-3 flex items-center gap-1 text-xs font-medium text-gray-600 hover:bg-gray-100 border-l border-gray-200 transition-colors"
+        >
+          {copied === "install-script" ? (
+            <>
+              <Check className="!text-sm text-green-500" />
+              <span className="text-green-600">{t("copied")}</span>
+            </>
+          ) : (
+            <>
+              <ContentCopy className="!text-sm" />
+              {t("copy")}
+            </>
+          )}
+        </button>
+      </div>
+      <p className="text-[11px] text-gray-400">
+        Paste this {"<script>"} tag into your site's HTML, ideally just before{" "}
+        {"</body>"}. The widget loads asynchronously and mounts itself.
+      </p>
+    </div>
   );
 };
 
