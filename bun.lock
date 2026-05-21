@@ -9,7 +9,7 @@
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.0",
         "@hookform/resolvers": "^3.9.1",
-        "@innocalls-com/chat-ui": "^0.5.0",
+        "@innocalls-com/chat-ui": "^0.8.3",
         "@mui/icons-material": "^6.0.2",
         "@mui/material": "^6.0.2",
         "@radix-ui/react-accordion": "^1.2.1",
@@ -245,7 +245,7 @@
 
     "@img/sharp-win32-x64": ["@img/sharp-win32-x64@0.34.5", "", { "os": "win32", "cpu": "x64" }, "sha512-+29YMsqY2/9eFEiW93eqWnuLcWcufowXewwSNIT6UwZdUUCrM3oFjMWH/Z6/TMmb4hlFenmfAVbpWeup2jryCw=="],
 
-    "@innocalls-com/chat-ui": ["@innocalls-com/chat-ui@0.5.0", "https://npm.pkg.github.com/download/@innocalls-com/chat-ui/0.5.0/d247cdf7de746aaaccca44db14a1af4e0a7cb1d4", { "dependencies": { "clsx": "^2.1.1", "wavesurfer.js": "^7.12.6" }, "peerDependencies": { "react": ">=18.0.0", "react-dom": ">=18.0.0" } }, "sha512-hax/WHTlcsfpMoaiCcVKu2QRIUWEt1qfcsLrF2k2uyIfmkAK4+PpTZUZCErftx2d6t4V08WXsSX2GXwnZ7FX7g=="],
+    "@innocalls-com/chat-ui": ["@innocalls-com/chat-ui@0.8.3", "https://npm.pkg.github.com/download/@innocalls-com/chat-ui/0.8.3/9caca56d7198b8fbac3a66a2f0b1c19f785e7515", { "dependencies": { "clsx": "^2.1.1", "lottie-web": "^5.12.2", "wavesurfer.js": "^7.12.6" }, "peerDependencies": { "react": ">=18.0.0", "react-dom": ">=18.0.0" } }, "sha512-2qBvwSwgyQN6gGbCne/YDqr4NYlJEGC8Cd06eEiD20mxJEGAllWN66h0j9b7hkv0y0m4DlOIgMS/lkLD33cIOg=="],
 
     "@jridgewell/gen-mapping": ["@jridgewell/gen-mapping@0.3.13", "", { "dependencies": { "@jridgewell/sourcemap-codec": "^1.5.0", "@jridgewell/trace-mapping": "^0.3.24" } }, ""],
 
@@ -1284,6 +1284,8 @@
     "lodash.merge": ["lodash.merge@4.6.2", "", {}, ""],
 
     "loose-envify": ["loose-envify@1.4.0", "", { "dependencies": { "js-tokens": "^3.0.0 || ^4.0.0" }, "bin": "cli.js" }, ""],
+
+    "lottie-web": ["lottie-web@5.13.0", "", {}, "sha512-+gfBXl6sxXMPe8tKQm7qzLnUy5DUPJPKIyRHwtpCpyUEYjHYRJC/5gjUvdkuO2c3JllrPtHXH5UJJK8LRYl5yQ=="],
 
     "lru-cache": ["lru-cache@5.1.1", "", { "dependencies": { "yallist": "^3.0.2" } }, ""],
 
