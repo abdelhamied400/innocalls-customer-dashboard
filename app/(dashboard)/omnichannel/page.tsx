@@ -10,6 +10,7 @@ import ContactDetailsPanel from "@/components/omnichannel/ContactDetailsPanel";
 import FullscreenToggle from "@/components/omnichannel/FullscreenToggle";
 import { Forum } from "@mui/icons-material";
 import { usePolling } from "@/hooks/usePolling";
+import { isAssignmentPending } from "@/lib/pending-assignments";
 
 // Polling cadences. Visibility-aware via usePolling — paused when tab hidden.
 const LIST_POLL_MS = 10_000;
@@ -91,7 +92,17 @@ const OmnichannelPage = () => {
         // outside that page is preserved as-is. New rows from the poll
         // bump existing entries (lastMessageAt updated, unreadCount, etc.).
         const map = new Map(prev.map((c) => [c.id, c]));
-        for (const c of result.conversations) map.set(c.id, c);
+        for (const c of result.conversations) {
+          const existing = map.get(c.id);
+          // While an assign request is in flight, keep the local
+          // (optimistic) assignees so a poll mid-PATCH doesn't briefly
+          // flash the stale set back on the inbox row + chat header.
+          if (existing && isAssignmentPending(c.id)) {
+            map.set(c.id, { ...c, assignees: existing.assignees });
+          } else {
+            map.set(c.id, c);
+          }
+        }
         return Array.from(map.values()).sort(
           (a, b) =>
             new Date(b.lastMessageAt ?? 0).getTime() -
@@ -157,9 +168,16 @@ const OmnichannelPage = () => {
       const full = await omnichannelService.getConversation(
         selectedConversation.id,
       );
-      setSelectedConversation((curr) =>
-        curr && curr.id === full.id ? full : curr,
-      );
+      setSelectedConversation((curr) => {
+        if (!curr || curr.id !== full.id) return curr;
+        // Same race-protect as the inbox poll: while an assign request
+        // is in flight, keep the local optimistic assignees so the chat
+        // header / contact panel don't flash the stale chip back.
+        if (isAssignmentPending(full.id)) {
+          return { ...full, assignees: curr.assignees };
+        }
+        return full;
+      });
     } catch {
       // ignore transient errors; next tick retries
     }

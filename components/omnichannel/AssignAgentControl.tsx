@@ -14,6 +14,10 @@ import omnichannelService from "@/services/omnichannel.service";
 import type { Assignee, Conversation } from "@/types/omnichannel";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import {
+  markAssignmentPending,
+  clearAssignmentPending,
+} from "@/lib/pending-assignments";
 
 /** Shape returned by /extension/list. Mirrors agents/(list)/columns.tsx — we
  * reuse the same endpoint so the org's user roster stays the single source
@@ -101,13 +105,18 @@ const AssignAgentControl = ({ conversation, onAssigned }: Props) => {
 
   /** Persist a new desired list — optimistic. Pushes the new assignees
    * to the parent immediately so the UI feels instant, then sends the
-   * replace-set PATCH in the background. Reverts on error. */
+   * replace-set PATCH in the background. Reverts on error.
+   *
+   * While the request is in flight we mark the conversation as having a
+   * pending assignment so the page's poll merges skip overwriting its
+   * `assignees` field — otherwise an inbox/active poll that finishes
+   * between the optimistic update and the server response would briefly
+   * flash the old assignees back. */
   const persist = (next: Assignee[]) => {
     const prev = conversation;
     const myReq = ++reqSeq.current;
-    // Optimistic — propagate up so the trigger pill, popover chips, and
-    // chat header all update before the network round-trip completes.
     onAssigned({ ...conversation, assignees: next });
+    markAssignmentPending(conversation.id);
     omnichannelService
       .updateConversation(conversation.id, { assignees: next })
       .then((updated) => {
@@ -117,6 +126,14 @@ const AssignAgentControl = ({ conversation, onAssigned }: Props) => {
         if (reqSeq.current === myReq) {
           onAssigned(prev);
           toast.error(t("assign.error") || "Failed to update assignment");
+        }
+      })
+      .finally(() => {
+        // Only clear if we're still the latest request. A more recent
+        // toggle has already re-marked it, and clearing now would let
+        // the next poll race the *new* request.
+        if (reqSeq.current === myReq) {
+          clearAssignmentPending(conversation.id);
         }
       });
   };
