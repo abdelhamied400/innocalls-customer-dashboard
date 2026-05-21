@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Person, Search, Check, Close, Add } from "@mui/icons-material";
 import {
   Popover,
@@ -69,7 +69,6 @@ const AssignAgentControl = ({ conversation, onAssigned }: Props) => {
   const t = useTranslations("omnichannel");
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [isSaving, setIsSaving] = useState(false);
 
   const { data: users, isLoading } = useLocalizedQuery<UserRow[]>({
     queryKey: ["org-users-assignable"],
@@ -95,21 +94,31 @@ const AssignAgentControl = ({ conversation, onAssigned }: Props) => {
     [assignees],
   );
 
-  /** Persist a new desired list. Sent as one replace-set PATCH so partial
-   * failures can't leave the UI in a half-saved state. */
-  const persist = async (next: Assignee[]) => {
-    setIsSaving(true);
-    try {
-      const updated = await omnichannelService.updateConversation(
-        conversation.id,
-        { assignees: next },
-      );
-      onAssigned(updated);
-    } catch {
-      toast.error(t("assign.error") || "Failed to update assignment");
-    } finally {
-      setIsSaving(false);
-    }
+  /** Sequence counter so out-of-order server responses don't clobber a
+   * fresher optimistic state. Incremented on every persist; on response
+   * we apply only if our seq still matches the latest issued one. */
+  const reqSeq = useRef(0);
+
+  /** Persist a new desired list — optimistic. Pushes the new assignees
+   * to the parent immediately so the UI feels instant, then sends the
+   * replace-set PATCH in the background. Reverts on error. */
+  const persist = (next: Assignee[]) => {
+    const prev = conversation;
+    const myReq = ++reqSeq.current;
+    // Optimistic — propagate up so the trigger pill, popover chips, and
+    // chat header all update before the network round-trip completes.
+    onAssigned({ ...conversation, assignees: next });
+    omnichannelService
+      .updateConversation(conversation.id, { assignees: next })
+      .then((updated) => {
+        if (reqSeq.current === myReq) onAssigned(updated);
+      })
+      .catch(() => {
+        if (reqSeq.current === myReq) {
+          onAssigned(prev);
+          toast.error(t("assign.error") || "Failed to update assignment");
+        }
+      });
   };
 
   /** Add or remove the given agent from the current set. Idempotent — no
@@ -139,7 +148,6 @@ const AssignAgentControl = ({ conversation, onAssigned }: Props) => {
               : "border border-dashed border-gray-300 text-gray-500 hover:border-gray-400 hover:text-gray-700",
           )}
           aria-label={t("assign.label") || "Assign agents"}
-          disabled={isSaving}
         >
           {assignees.length === 0 ? (
             <>
@@ -190,7 +198,6 @@ const AssignAgentControl = ({ conversation, onAssigned }: Props) => {
               <button
                 type="button"
                 onClick={clearAll}
-                disabled={isSaving}
                 className="text-[11px] text-gray-400 hover:text-red-500"
               >
                 {t("assign.clearAll") || "Clear all"}
@@ -209,7 +216,6 @@ const AssignAgentControl = ({ conversation, onAssigned }: Props) => {
                   <button
                     type="button"
                     onClick={() => removeOne(a.email)}
-                    disabled={isSaving}
                     className="opacity-70 hover:opacity-100"
                     aria-label={t("assign.remove") || "Remove"}
                   >
@@ -258,7 +264,6 @@ const AssignAgentControl = ({ conversation, onAssigned }: Props) => {
                   key={u.email || u.id}
                   type="button"
                   onClick={() => toggle(u)}
-                  disabled={isSaving}
                   className={cn(
                     "w-full flex items-center justify-between px-3 py-2 text-xs hover:bg-gray-50 text-start",
                     checked && "bg-gray-50",

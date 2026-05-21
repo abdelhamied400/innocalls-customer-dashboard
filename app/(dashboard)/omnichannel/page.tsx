@@ -373,6 +373,14 @@ const OmnichannelPage = () => {
                   ),
                 );
               }}
+              onConversationUpdated={(updated) => {
+                setSelectedConversation((curr) =>
+                  curr && curr.id === updated.id ? updated : curr,
+                );
+                setConversations((prev) =>
+                  prev.map((c) => (c.id === updated.id ? updated : c)),
+                );
+              }}
             />
           </div>
         )}

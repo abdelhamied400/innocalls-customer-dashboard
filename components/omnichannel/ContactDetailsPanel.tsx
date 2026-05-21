@@ -9,9 +9,11 @@ import { toast } from "sonner";
 import omnichannelService from "@/services/omnichannel.service";
 import { useTranslations } from "@/providers/TranslationProvider";
 import useAuth from "@/hooks/useAuth";
+import { useSession } from "@/hooks/useSession";
 import { channelLabels } from "./ChannelIcon";
 import { cn } from "@/lib/utils";
 import type { ContactNote, Conversation, Tag } from "@/types/omnichannel";
+import AssignAgentControl, { AssignedAgentBadge } from "./AssignAgentControl";
 
 /** Pleasant tag chip colors used when the server didn't store one. The
  * agent picks via name hash so the same tag name renders the same color
@@ -45,6 +47,10 @@ type Props = {
   /** Pushed up so the page can reflect tag changes on the list row /
    * selected conversation without waiting for the next poll tick. */
   onTagsChanged?: (tags: Tag[]) => void;
+  /** Pushed up when the assignee set changes (admin-only). The page
+   * patches the row + the selected conversation so the chat header and
+   * inbox row stay in sync without waiting for the next poll. */
+  onConversationUpdated?: (updated: Conversation) => void;
 };
 
 /** First word of a name → first_name; everything after → last_name. We
@@ -61,9 +67,12 @@ const ContactDetailsPanel = ({
   conversation,
   onClose,
   onTagsChanged,
+  onConversationUpdated,
 }: Props) => {
   const t = useTranslations("omnichannel");
   const { data: auth } = useAuth();
+  const { data: session } = useSession();
+  const isAdmin = session?.userType === "user";
   const [notes, setNotes] = useState<ContactNote[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [draft, setDraft] = useState("");
@@ -225,8 +234,20 @@ const ContactDetailsPanel = ({
 
   /** Display rows for the Attributes section. Order matches the reference
    * design as closely as the schema allows; fields we don't persist render
-   * with an em-dash so the table still reads like a complete profile. */
-  const attributes: Array<{ key: string; value: string | null | undefined }> = [
+   * with an em-dash so the table still reads like a complete profile. The
+   * `assigned_agent` row is interactive for admins (live picker) and a
+   * read-only chip strip for agents. */
+  const hasAssignees = (conversation.assignees ?? []).length > 0;
+  const assignedAgentValue: React.ReactNode = isAdmin ? (
+    <AssignAgentControl
+      conversation={conversation}
+      onAssigned={(updated) => onConversationUpdated?.(updated)}
+    />
+  ) : hasAssignees ? (
+    <AssignedAgentBadge conversation={conversation} />
+  ) : null;
+
+  const attributes: Array<{ key: string; value: React.ReactNode }> = [
     { key: "first_name", value: first },
     { key: "last_name", value: last },
     { key: "phone_number", value: contact.phone },
@@ -234,13 +255,7 @@ const ContactDetailsPanel = ({
     { key: "channel", value: channelLabels[conversation.channel] },
     { key: "user_id", value: contact.id },
     { key: "status", value: t(`status.${conversation.status}`) },
-    {
-      key: "assigned_agent",
-      value:
-        (conversation.assignees ?? []).length > 0
-          ? conversation.assignees!.map((a) => a.name).join(", ")
-          : null,
-    },
+    { key: "assigned_agent", value: assignedAgentValue },
     {
       key: "last_interaction",
       value: conversation.lastMessageAt
@@ -469,23 +484,28 @@ const ContactDetailsPanel = ({
               <span>{t("attributes.name")}</span>
               <span>{t("attributes.value")}</span>
             </div>
-            {attributes.map(({ key, value }) => (
-              <div
-                key={key}
-                className="flex items-start justify-between gap-3 py-1 text-[12px]"
-              >
-                <span className="text-gray-500 font-mono shrink-0">{key}</span>
-                <span
-                  className={
-                    value
-                      ? "text-gray-800 text-end break-words"
-                      : "text-gray-300 text-end"
-                  }
+            {attributes.map(({ key, value }) => {
+              const isEmpty =
+                value === null || value === undefined || value === "";
+              return (
+                <div
+                  key={key}
+                  className="flex items-start justify-between gap-3 py-1 text-[12px]"
                 >
-                  {value || "—"}
-                </span>
-              </div>
-            ))}
+                  <span className="text-gray-500 font-mono shrink-0">
+                    {key}
+                  </span>
+                  <span
+                    className={cn(
+                      "text-end break-words",
+                      isEmpty ? "text-gray-300" : "text-gray-800",
+                    )}
+                  >
+                    {isEmpty ? "—" : value}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </Section>
       </div>
