@@ -5824,6 +5824,9 @@
       "configure": "إعداد",
       "disconnect": "قطع الاتصال",
       "connect": "اتصال",
+      "cancel": "إلغاء",
+      "sectionConnected": "المتصلة",
+      "sectionAvailable": "المتاحة",
       "connectedSince": "متصل منذ",
       "statusLabels": {
         "connected": "متصل",

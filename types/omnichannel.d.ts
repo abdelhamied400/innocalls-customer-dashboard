@@ -129,6 +129,7 @@ export type OmnichannelStats = {
   resolvedToday: number;
   avgResponseTime: string;
   channelBreakdown: Record<ChannelType, number>;
+  lastActivityByChannel: Record<ChannelType, string | null>;
 };
 
 export type ChannelConfigField = {

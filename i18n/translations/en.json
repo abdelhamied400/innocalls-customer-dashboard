@@ -5829,6 +5829,9 @@
       "configure": "Configure",
       "disconnect": "Disconnect",
       "connect": "Connect",
+      "cancel": "Cancel",
+      "sectionConnected": "Connected",
+      "sectionAvailable": "Available",
       "connectedSince": "Connected",
       "statusLabels": {
         "connected": "Connected",
