@@ -103,6 +103,27 @@ const AssignAgentControl = ({ conversation, onAssigned }: Props) => {
    * we apply only if our seq still matches the latest issued one. */
   const reqSeq = useRef(0);
 
+  /** Set of lowercase emails whose toggle is still being persisted. The
+   * row UI reads this to render a spinner on the affected agent(s) so
+   * the user gets feedback that something is happening on the network
+   * even though the chip strip already updated optimistically. */
+  const [pendingEmails, setPendingEmails] = useState<Set<string>>(new Set());
+
+  const setEmailsPending = (emails: string[]) => {
+    setPendingEmails((prev) => {
+      const next = new Set(prev);
+      for (const e of emails) next.add(e);
+      return next;
+    });
+  };
+  const clearEmailsPending = (emails: string[]) => {
+    setPendingEmails((prev) => {
+      const next = new Set(prev);
+      for (const e of emails) next.delete(e);
+      return next;
+    });
+  };
+
   /** Persist a new desired list — optimistic. Pushes the new assignees
    * to the parent immediately so the UI feels instant, then sends the
    * replace-set PATCH in the background. Reverts on error.
@@ -111,12 +132,16 @@ const AssignAgentControl = ({ conversation, onAssigned }: Props) => {
    * pending assignment so the page's poll merges skip overwriting its
    * `assignees` field — otherwise an inbox/active poll that finishes
    * between the optimistic update and the server response would briefly
-   * flash the old assignees back. */
-  const persist = (next: Assignee[]) => {
+   * flash the old assignees back.
+   *
+   * `changedEmails` flags which agent rows should show a spinner while
+   * the request is in flight (the diff between previous and next). */
+  const persist = (next: Assignee[], changedEmails: string[]) => {
     const prev = conversation;
     const myReq = ++reqSeq.current;
     onAssigned({ ...conversation, assignees: next });
     markAssignmentPending(conversation.id);
+    setEmailsPending(changedEmails);
     omnichannelService
       .updateConversation(conversation.id, { assignees: next })
       .then((updated) => {
@@ -135,6 +160,7 @@ const AssignAgentControl = ({ conversation, onAssigned }: Props) => {
         if (reqSeq.current === myReq) {
           clearAssignmentPending(conversation.id);
         }
+        clearEmailsPending(changedEmails);
       });
   };
 
@@ -146,12 +172,16 @@ const AssignAgentControl = ({ conversation, onAssigned }: Props) => {
     const next: Assignee[] = exists
       ? assignees.filter((a) => a.email.toLowerCase() !== email)
       : [...assignees, { email: u.email, name: u.name }];
-    persist(next);
+    persist(next, [email]);
   };
 
-  const clearAll = () => persist([]);
+  const clearAll = () =>
+    persist([], assignees.map((a) => a.email.toLowerCase()));
   const removeOne = (email: string) =>
-    persist(assignees.filter((a) => a.email.toLowerCase() !== email.toLowerCase()));
+    persist(
+      assignees.filter((a) => a.email.toLowerCase() !== email.toLowerCase()),
+      [email.toLowerCase()],
+    );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -275,7 +305,9 @@ const AssignAgentControl = ({ conversation, onAssigned }: Props) => {
 
           {!isLoading &&
             filtered.map((u) => {
-              const checked = assignedEmails.has(u.email.toLowerCase());
+              const email = u.email.toLowerCase();
+              const checked = assignedEmails.has(email);
+              const isPending = pendingEmails.has(email);
               return (
                 <button
                   key={u.email || u.id}
@@ -302,7 +334,12 @@ const AssignAgentControl = ({ conversation, onAssigned }: Props) => {
                       </span>
                     </span>
                   </span>
-                  {checked ? (
+                  {isPending ? (
+                    <span
+                      className="inline-block w-3.5 h-3.5 rounded-full border-2 border-gray-300 border-t-primary-500 animate-spin shrink-0"
+                      aria-label={t("assign.saving") || "Saving..."}
+                    />
+                  ) : checked ? (
                     <Check className="!text-[16px] text-primary-500 shrink-0" />
                   ) : (
                     <Add className="!text-[16px] text-gray-300 shrink-0" />

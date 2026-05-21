@@ -196,6 +196,20 @@ const ChannelsSettingsPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedChannel, setSelectedChannel] = useState<Channel | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  /** Channel id currently being disconnected — drives the spinner +
+   * disabled state on the Disconnect button so the agent gets clear
+   * feedback that the network call is in flight. */
+  const [disconnectingId, setDisconnectingId] = useState<string | null>(null);
+
+  const handleDisconnect = async (channelId: string) => {
+    setDisconnectingId(channelId);
+    try {
+      await omnichannelService.deleteChannel(channelId);
+      loadAll();
+    } finally {
+      setDisconnectingId(null);
+    }
+  };
 
   const loadAll = () => {
     Promise.all([
@@ -408,12 +422,17 @@ const ChannelsSettingsPage = () => {
                       variant="ghost"
                       size="sm"
                       className="gap-1.5 text-xs rounded-lg text-destructive-500 hover:text-destructive-600 hover:bg-red-50"
-                      onClick={async () => {
-                        await omnichannelService.deleteChannel(channel.id);
-                        loadAll();
-                      }}
+                      onClick={() => handleDisconnect(channel.id)}
+                      disabled={disconnectingId === channel.id}
                     >
-                      <LinkOff className="!text-sm" />
+                      {disconnectingId === channel.id ? (
+                        <span
+                          className="inline-block w-3.5 h-3.5 rounded-full border-2 border-destructive-300 border-t-destructive-600 animate-spin"
+                          aria-label={t("disconnecting") || "Disconnecting..."}
+                        />
+                      ) : (
+                        <LinkOff className="!text-sm" />
+                      )}
                       {t("disconnect")}
                     </Button>
                     <Button

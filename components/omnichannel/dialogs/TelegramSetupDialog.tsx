@@ -58,6 +58,7 @@ const TelegramSetupDialog = ({
   const [generalError, setGeneralError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [savedChannel, setSavedChannel] = useState<Channel | null>(null);
+  const [isDisconnecting, setIsDisconnecting] = useState(false);
 
   const reset = () => {
     setBotToken("");
@@ -112,12 +113,15 @@ const TelegramSetupDialog = ({
       `Disconnect ${channelLabels.telegram}? You can reconnect any time.`,
     );
     if (!ok) return;
+    setIsDisconnecting(true);
     try {
       await omnichannelService.deleteChannel(channel.id);
       onSaved?.();
       handleClose();
     } catch {
       /* swallow */
+    } finally {
+      setIsDisconnecting(false);
     }
   };
 
@@ -299,8 +303,13 @@ const TelegramSetupDialog = ({
                 size="sm"
                 className="gap-1.5 text-xs rounded-lg text-destructive-500 hover:text-destructive-600 hover:bg-red-50"
                 onClick={handleDisconnect}
+                disabled={isDisconnecting}
               >
-                <LinkOff className="!text-sm" />
+                {isDisconnecting ? (
+                  <span className="inline-block w-3.5 h-3.5 rounded-full border-2 border-destructive-300 border-t-destructive-600 animate-spin" />
+                ) : (
+                  <LinkOff className="!text-sm" />
+                )}
                 {t("disconnect")}
               </Button>
               <Button

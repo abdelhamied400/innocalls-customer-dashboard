@@ -82,6 +82,7 @@ const OAuthSetupDialog = ({ channel, open, onOpenChange, onSaved }: Props) => {
   const [oauthState, setOauthState] = useState<OAuthState>("idle");
   const [oauthError, setOauthError] = useState<string | null>(null);
   const [savedChannel, setSavedChannel] = useState<Channel | null>(null);
+  const [isDisconnecting, setIsDisconnecting] = useState(false);
 
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const messageHandlerRef = useRef<((e: MessageEvent) => void) | null>(null);
@@ -212,12 +213,15 @@ const OAuthSetupDialog = ({ channel, open, onOpenChange, onSaved }: Props) => {
       `Disconnect ${channelLabels[channel.type]}? You can reconnect any time.`,
     );
     if (!ok) return;
+    setIsDisconnecting(true);
     try {
       await omnichannelService.deleteChannel(channel.id);
       onSaved?.();
       handleClose();
     } catch {
       /* swallow — error toast is the parent's job */
+    } finally {
+      setIsDisconnecting(false);
     }
   };
 
@@ -376,8 +380,13 @@ const OAuthSetupDialog = ({ channel, open, onOpenChange, onSaved }: Props) => {
                 size="sm"
                 className="gap-1.5 text-xs rounded-lg text-destructive-500 hover:text-destructive-600 hover:bg-red-50"
                 onClick={handleDisconnect}
+                disabled={isDisconnecting}
               >
-                <LinkOff className="!text-sm" />
+                {isDisconnecting ? (
+                  <span className="inline-block w-3.5 h-3.5 rounded-full border-2 border-destructive-300 border-t-destructive-600 animate-spin" />
+                ) : (
+                  <LinkOff className="!text-sm" />
+                )}
                 {t("disconnect")}
               </Button>
               <Button
