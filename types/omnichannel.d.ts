@@ -51,13 +51,14 @@ export type Tag = {
 };
 
 /** Org-level reusable message template. `shortcut` (no leading slash) powers
- * the composer "/" insert menu; null when none set. Managed in
- * Settings → Canned Replies. */
+ * the composer "/" insert menu; null when none set. Bilingual — at least one
+ * of contentEn/contentAr is present. Managed in Settings → Canned Replies. */
 export type CannedReply = {
   id: string;
   title: string;
   shortcut: string | null;
-  content: string;
+  contentEn: string | null;
+  contentAr: string | null;
 };
 
 export type Assignee = {

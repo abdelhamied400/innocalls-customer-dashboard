@@ -5736,6 +5736,9 @@
         "shortcutPlaceholder": "greeting",
         "shortcutHint": "اختياري. اكتب / ثم هذا في صندوق الكتابة لإدراجه.",
         "contentLabel": "الرسالة",
+        "contentEnLabel": "الرسالة (الإنجليزية)",
+        "contentArLabel": "الرسالة (العربية)",
+        "contentHint": "املأ لغة واحدة على الأقل. يختار الوكلاء أيهما يدرجون.",
         "contentPlaceholder": "اكتب نص الرد…",
         "save": "حفظ",
         "cancel": "إلغاء"

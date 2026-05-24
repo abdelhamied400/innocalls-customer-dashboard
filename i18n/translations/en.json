@@ -5741,6 +5741,9 @@
         "shortcutPlaceholder": "greeting",
         "shortcutHint": "Optional. Type / then this in the composer to insert it.",
         "contentLabel": "Message",
+        "contentEnLabel": "Message (English)",
+        "contentArLabel": "Message (Arabic)",
+        "contentHint": "Fill in at least one language. Agents pick which to insert.",
         "contentPlaceholder": "Type the reply text…",
         "save": "Save",
         "cancel": "Cancel"

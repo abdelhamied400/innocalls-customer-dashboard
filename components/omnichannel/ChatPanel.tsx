@@ -630,6 +630,7 @@ const ChatPanel = ({
           replyingTo={replyingTo}
           onCancelReply={() => setReplyingTo(null)}
           cannedReplies={cannedReplies}
+          defaultReplyLang={locale === "ar" ? "ar" : "en"}
           disabled={!isAlive}
         />
       </div>
