@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type {
+  CannedReply,
   ChannelType,
   Conversation,
   Message,
@@ -121,6 +122,24 @@ const ChatPanel = ({
   // second pass (with the real value) would silently fall into the merge
   // branch that doesn't touch hasMoreOlder.
   const hasMoreOlderInitForIdRef = useRef<string | null>(null);
+
+  // Org canned replies — fetched once for the composer "/" menu. Cheap,
+  // org-scoped, and rarely changes, so a single fetch on mount is enough.
+  const [cannedReplies, setCannedReplies] = useState<CannedReply[]>([]);
+  useEffect(() => {
+    let active = true;
+    omnichannelService
+      .listCannedReplies()
+      .then((rows) => {
+        if (active) setCannedReplies(rows);
+      })
+      .catch(() => {
+        /* composer just won't offer the "/" menu */
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // Triage stats for the no-selection placeholder — fetched only while no
   // conversation is open (refetched each time the agent returns to the
@@ -610,6 +629,7 @@ const ChatPanel = ({
           showPrivateToggle
           replyingTo={replyingTo}
           onCancelReply={() => setReplyingTo(null)}
+          cannedReplies={cannedReplies}
           disabled={!isAlive}
         />
       </div>
