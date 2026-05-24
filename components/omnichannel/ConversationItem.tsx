@@ -7,17 +7,18 @@ import {
   InfoOutlined,
   MarkChatRead,
   MarkChatUnread,
-  Person,
   RestoreFromTrash,
+  Schedule,
   Star,
   StarBorder,
   StarOutline,
 } from "@mui/icons-material";
 import { useState } from "react";
 import { useTranslations } from "@/providers/TranslationProvider";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, formatDistanceToNowStrict } from "date-fns";
 import ChannelIcon from "./ChannelIcon";
 import ContactAvatar from "./ContactAvatar";
+import { paletteForEmail } from "@/lib/agent-palette";
 import { STATUS_META, type StatusKey } from "./status-meta";
 import {
   DropdownMenu,
@@ -172,17 +173,36 @@ const ConversationItem = ({
                 })()}
                 {t(`status.${conversation.status}`)}
               </Badge>
-              {conversation.status === "active" &&
-                (conversation.assignees ?? []).length > 0 && (
-                  <span className="flex items-center gap-0.5 text-[10px] text-gray-400 truncate max-w-[140px]">
-                    <Person className="!text-[12px] shrink-0" />
-                    <span className="truncate">
-                      {conversation.assignees!.length === 1
-                        ? conversation.assignees![0].name
-                        : `${conversation.assignees![0].name} +${conversation.assignees!.length - 1}`}
-                    </span>
+              {/* Waiting timer — for a waiting conversation, lastMessageAt is
+                  the customer's unanswered message, so its age is the wait
+                  time. Amber tint flags it as needing a reply, distinct from
+                  the neutral "last activity" stamp top-right. */}
+              {conversation.status === "waiting" &&
+                conversation.lastMessageAt && (
+                  <span className="inline-flex items-center gap-0.5 text-[9px] font-medium text-amber-700 bg-amber-50 ring-1 ring-amber-200 rounded-full px-1.5 h-4 shrink-0">
+                    <Schedule className="!text-[10px]" />
+                    {formatDistanceToNowStrict(
+                      new Date(conversation.lastMessageAt),
+                    )}
                   </span>
                 )}
+              {(conversation.assignees ?? []).length > 0 && (
+                <span className="flex items-center gap-1 text-[10px] text-gray-500 truncate max-w-[130px]">
+                  <span
+                    className={cn(
+                      "w-3.5 h-3.5 rounded-full ring-1 flex items-center justify-center text-[8px] font-semibold shrink-0",
+                      paletteForEmail(conversation.assignees![0].email),
+                    )}
+                  >
+                    {conversation.assignees![0].name.slice(0, 1).toUpperCase()}
+                  </span>
+                  <span className="truncate">
+                    {conversation.assignees!.length === 1
+                      ? conversation.assignees![0].name
+                      : `${conversation.assignees![0].name} +${conversation.assignees!.length - 1}`}
+                  </span>
+                </span>
+              )}
             </div>
 
             <div className="flex items-center justify-between gap-2 mt-1.5">
