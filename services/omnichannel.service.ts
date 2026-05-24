@@ -2,6 +2,7 @@ import axios from "axios";
 import { getCookie } from "cookies-next";
 import useSessionStore from "@/store/session.slice";
 import type {
+  CannedReply,
   Channel,
   ChannelConfigSchema,
   ChannelType,
@@ -326,6 +327,37 @@ const omnichannelService = {
     await omniApi.delete(
       `/api/omnichannel/conversations/${conversationId}/tags/${tagId}`,
     );
+  },
+
+  // ── Canned replies ──────────────────────────────────────────────────────────
+
+  listCannedReplies: async (): Promise<CannedReply[]> => {
+    const res = await omniApi.get(`/api/omnichannel/canned-replies`);
+    return res.data.data as CannedReply[];
+  },
+
+  createCannedReply: async (data: {
+    title: string;
+    shortcut?: string;
+    content: string;
+  }): Promise<CannedReply> => {
+    const res = await omniApi.post(`/api/omnichannel/canned-replies`, data);
+    return res.data.data as CannedReply;
+  },
+
+  updateCannedReply: async (
+    id: string,
+    data: { title?: string; shortcut?: string; content?: string },
+  ): Promise<CannedReply> => {
+    const res = await omniApi.patch(
+      `/api/omnichannel/canned-replies/${id}`,
+      data,
+    );
+    return res.data.data as CannedReply;
+  },
+
+  deleteCannedReply: async (id: string) => {
+    await omniApi.delete(`/api/omnichannel/canned-replies/${id}`);
   },
 
   /**

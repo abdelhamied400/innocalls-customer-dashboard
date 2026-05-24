@@ -17,6 +17,9 @@ const SettingsLayout = ({ children }: SettingsLayoutProps) => {
               <LinkTab href="/settings/call">{t("call")}</LinkTab>
               <LinkTab href="/settings/agent">{t("agent")}</LinkTab>
               <LinkTab href="/settings/channels">{t("channels")}</LinkTab>
+              <LinkTab href="/settings/canned-replies">
+                {t("cannedReplies")}
+              </LinkTab>
             </LinkTabs>
           </div>
           {children}

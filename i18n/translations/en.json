@@ -328,7 +328,8 @@
         "account": "Account Settings",
         "call": "Call Settings",
         "agent": "Agent Settings",
-        "channels": "Channels"
+        "channels": "Channels",
+        "cannedReplies": "Canned Replies"
       }
     },
     "account": {
@@ -5718,6 +5719,32 @@
       "title": "No channels configured",
       "description": "Connect a channel like WhatsApp, Messenger, or Live Chat to start receiving conversations here.",
       "cta": "Configure channels"
+    },
+    "cannedReplies": {
+      "title": "Canned Replies",
+      "subtitle": "Reusable message templates your team can insert into any conversation with the / shortcut.",
+      "new": "New canned reply",
+      "empty": "No canned replies yet",
+      "emptyHint": "Create reusable templates so your team can answer common questions in one click.",
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteConfirm": "Delete this canned reply?",
+      "adminOnly": "Only admins can manage canned replies.",
+      "loadError": "Couldn't load canned replies.",
+      "saveError": "Couldn't save. Please try again.",
+      "form": {
+        "createTitle": "New canned reply",
+        "editTitle": "Edit canned reply",
+        "titleLabel": "Title",
+        "titlePlaceholder": "e.g. Greeting",
+        "shortcutLabel": "Shortcut",
+        "shortcutPlaceholder": "greeting",
+        "shortcutHint": "Optional. Type / then this in the composer to insert it.",
+        "contentLabel": "Message",
+        "contentPlaceholder": "Type the reply text…",
+        "save": "Save",
+        "cancel": "Cancel"
+      }
     },
     "search": {
       "placeholder": "Search conversations..."

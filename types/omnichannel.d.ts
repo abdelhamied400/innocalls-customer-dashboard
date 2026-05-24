@@ -50,6 +50,16 @@ export type Tag = {
   color: string | null;
 };
 
+/** Org-level reusable message template. `shortcut` (no leading slash) powers
+ * the composer "/" insert menu; null when none set. Managed in
+ * Settings → Canned Replies. */
+export type CannedReply = {
+  id: string;
+  title: string;
+  shortcut: string | null;
+  content: string;
+};
+
 export type Assignee = {
   email: string;
   name: string;
