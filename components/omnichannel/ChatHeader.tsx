@@ -57,9 +57,26 @@ const ChatHeader = ({
       >
         <ContactAvatar name={conversation.contact.name} />
         <div>
-          <h3 className="font-semibold text-sm text-gray-900">
-            {conversation.contact.name}
-          </h3>
+          <div className="flex items-center gap-2">
+            <h3 className="font-semibold text-sm text-gray-900">
+              {conversation.contact.name}
+            </h3>
+            {/* Status lives next to the name so it reads as a property of
+                the contact/thread, keeping the right-side action cluster
+                free of read-only chrome. */}
+            <Badge
+              variant={
+                (statusVariants[conversation.status] as any) ?? "secondary"
+              }
+              className="text-xs inline-flex items-center gap-1"
+            >
+              {(() => {
+                const Icon = STATUS_META[conversation.status as StatusKey]?.icon;
+                return Icon ? <Icon className="!text-sm shrink-0" /> : null;
+              })()}
+              {t(`status.${conversation.status}`)}
+            </Badge>
+          </div>
           <div className="flex items-center gap-2 text-xs text-gray-500 mt-0.5">
             <ChannelIcon
               channel={conversation.channel}
@@ -86,16 +103,6 @@ const ChatHeader = ({
         ) : (
           <AssignedAgentBadge conversation={conversation} />
         )}
-        <Badge
-          variant={(statusVariants[conversation.status] as any) ?? "secondary"}
-          className="text-xs inline-flex items-center gap-1"
-        >
-          {(() => {
-            const Icon = STATUS_META[conversation.status as StatusKey]?.icon;
-            return Icon ? <Icon className="!text-sm shrink-0" /> : null;
-          })()}
-          {t(`status.${conversation.status}`)}
-        </Badge>
         {canEnd && (
           <Button
             variant="outline"
