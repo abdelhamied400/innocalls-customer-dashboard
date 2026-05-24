@@ -339,8 +339,7 @@ const omnichannelService = {
   createCannedReply: async (data: {
     title: string;
     shortcut?: string;
-    contentEn?: string;
-    contentAr?: string;
+    content: string;
   }): Promise<CannedReply> => {
     const res = await omniApi.post(`/api/omnichannel/canned-replies`, data);
     return res.data.data as CannedReply;
@@ -348,12 +347,7 @@ const omnichannelService = {
 
   updateCannedReply: async (
     id: string,
-    data: {
-      title?: string;
-      shortcut?: string;
-      contentEn?: string;
-      contentAr?: string;
-    },
+    data: { title?: string; shortcut?: string; content?: string },
   ): Promise<CannedReply> => {
     const res = await omniApi.patch(
       `/api/omnichannel/canned-replies/${id}`,

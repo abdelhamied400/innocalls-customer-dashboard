@@ -154,13 +154,8 @@ const CannedRepliesPage = () => {
                   )}
                 </div>
                 <p className="text-xs text-gray-500 mt-1 line-clamp-2 whitespace-pre-wrap">
-                  {reply.contentEn || reply.contentAr}
+                  {reply.content}
                 </p>
-                {reply.contentEn && reply.contentAr && (
-                  <span className="inline-flex items-center gap-1 mt-1 text-[10px] font-medium text-gray-400">
-                    EN · AR
-                  </span>
-                )}
               </div>
               {isAdmin && (
                 <div className="flex items-center gap-1 shrink-0">
@@ -221,8 +216,7 @@ const CannedReplyDialog = ({
   const t = useTranslations("omnichannel.cannedReplies");
   const [title, setTitle] = useState("");
   const [shortcut, setShortcut] = useState("");
-  const [contentEn, setContentEn] = useState("");
-  const [contentAr, setContentAr] = useState("");
+  const [content, setContent] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
 
@@ -231,16 +225,12 @@ const CannedReplyDialog = ({
     if (!open) return;
     setTitle(editing?.title ?? "");
     setShortcut(editing?.shortcut ?? "");
-    setContentEn(editing?.contentEn ?? "");
-    setContentAr(editing?.contentAr ?? "");
+    setContent(editing?.content ?? "");
     setError(null);
     setIsSaving(false);
   }, [open, editing]);
 
-  // Need a title and at least one language filled in.
-  const canSave =
-    title.trim().length > 0 &&
-    (contentEn.trim().length > 0 || contentAr.trim().length > 0);
+  const canSave = title.trim().length > 0 && content.trim().length > 0;
 
   const handleSave = async () => {
     if (!canSave) return;
@@ -249,8 +239,7 @@ const CannedReplyDialog = ({
     const payload = {
       title: title.trim(),
       shortcut: shortcut.trim(),
-      contentEn: contentEn.trim(),
-      contentAr: contentAr.trim(),
+      content: content.trim(),
     };
     try {
       const saved = editing
@@ -324,33 +313,15 @@ const CannedReplyDialog = ({
 
           <div>
             <label className="text-xs font-semibold text-gray-700 mb-1.5 block">
-              {t("form.contentEnLabel")}
+              {t("form.contentLabel")} <span className="text-red-400">*</span>
             </label>
             <textarea
-              value={contentEn}
-              onChange={(e) => setContentEn(e.target.value)}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
               placeholder={t("form.contentPlaceholder")}
-              rows={3}
-              dir="ltr"
+              rows={4}
               className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm placeholder:text-gray-300 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all resize-none"
             />
-          </div>
-
-          <div>
-            <label className="text-xs font-semibold text-gray-700 mb-1.5 block">
-              {t("form.contentArLabel")}
-            </label>
-            <textarea
-              value={contentAr}
-              onChange={(e) => setContentAr(e.target.value)}
-              placeholder={t("form.contentPlaceholder")}
-              rows={3}
-              dir="rtl"
-              className="w-full px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm placeholder:text-gray-300 focus:outline-none focus:border-primary-400 focus:ring-2 focus:ring-primary-100 transition-all resize-none"
-            />
-            <p className="text-[11px] text-gray-400 mt-1">
-              {t("form.contentHint")}
-            </p>
           </div>
         </div>
 
