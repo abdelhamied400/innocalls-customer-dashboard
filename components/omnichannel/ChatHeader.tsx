@@ -1,7 +1,7 @@
 import type { Conversation } from "@/types/omnichannel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Close, DoNotDisturbOn } from "@mui/icons-material";
+import { ArrowBack, Close, DoNotDisturbOn } from "@mui/icons-material";
 import { useTranslations } from "@/providers/TranslationProvider";
 import { useSession } from "@/hooks/useSession";
 import ChannelIcon, { channelLabels } from "./ChannelIcon";
@@ -45,16 +45,29 @@ const ChatHeader = ({
   const canEnd = onEndChat && ALIVE_STATUSES.has(conversation.status);
 
   return (
-    <div className="px-5 py-3.5 border-b border-gray-100 bg-white flex items-center justify-between">
-      {/* The contact card is the trigger for the right-side details panel —
+    <div className="px-5 py-3.5 border-b border-gray-100 bg-white flex items-center justify-between gap-2">
+      <div className="flex items-center gap-1 min-w-0">
+        {/* Back arrow — mobile only. Returns to the conversation list on
+            phones where the chat takes over the full screen. */}
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            className="lg:hidden shrink-0 -ms-2 p-1.5 rounded-full text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+            aria-label={t("backToList") || "Back"}
+          >
+            <ArrowBack className="!text-xl" />
+          </button>
+        )}
+        {/* The contact card is the trigger for the right-side details panel —
           clicking opens contact info + the org-wide notes alongside the
           chat (not as a modal). */}
-      <button
-        type="button"
-        onClick={onToggleContactDetails}
-        className="flex items-center gap-3 text-start rounded-lg -mx-2 px-2 py-1 hover:bg-gray-50 transition-colors"
-        aria-label={t("contactDetails.toggle")}
-      >
+        <button
+          type="button"
+          onClick={onToggleContactDetails}
+          className="flex items-center gap-3 text-start rounded-lg -mx-2 px-2 py-1 hover:bg-gray-50 transition-colors min-w-0"
+          aria-label={t("contactDetails.toggle")}
+        >
         <ContactAvatar name={conversation.contact.name} />
         <div>
           <div className="flex items-center gap-2">
@@ -91,7 +104,8 @@ const ChatHeader = ({
             )}
           </div>
         </div>
-      </button>
+        </button>
+      </div>
       <div className="flex items-center gap-2">
         {/* Admins get the interactive popover for reassignment; agents see
             a read-only badge that just states who's currently handling it. */}

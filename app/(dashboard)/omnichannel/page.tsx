@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Add, Forum, Hub } from "@mui/icons-material";
 import { usePolling } from "@/hooks/usePolling";
 import { isAssignmentPending } from "@/lib/pending-assignments";
+import { cn } from "@/lib/utils";
 
 // Polling cadences. Visibility-aware via usePolling — paused when tab hidden.
 const LIST_POLL_MS = 10_000;
@@ -392,12 +393,19 @@ const OmnichannelPage = () => {
         <FullscreenToggle />
       </div>
 
-      {/* Main Content — 3-column grid when the contact-details panel is
-          open. The chat panel just shrinks to make room; the side panels
-          stay the same width. */}
+      {/* Main Content — 3-column grid on lg+ (chat shrinks when the
+          contact-details panel opens). Below lg it collapses to a single
+          full-screen view that swaps between the list and the open chat,
+          so phones don't stack list-above-chat. */}
       <div className="grid grid-cols-1 lg:grid-cols-10 gap-3 flex-1 min-h-0">
-        {/* Conversation List */}
-        <div className="lg:col-span-4 xl:col-span-3 h-full overflow-hidden">
+        {/* Conversation List — on mobile, hidden once a conversation is open
+            (the chat takes over the screen); always shown on lg+. */}
+        <div
+          className={cn(
+            "h-full overflow-hidden lg:col-span-4 xl:col-span-3 lg:block",
+            selectedConversation ? "hidden" : "block",
+          )}
+        >
           <ConversationList
             conversations={conversations}
             selectedId={selectedConversation?.id ?? null}
@@ -423,13 +431,17 @@ const OmnichannelPage = () => {
           />
         </div>
 
-        {/* Chat Panel — shrinks when contact details opens to make room. */}
+        {/* Chat Panel — shrinks when contact details opens to make room. On
+            mobile, shown only once a conversation is selected (full-screen);
+            always shown on lg+. */}
         <div
-          className={
+          className={cn(
+            "h-full overflow-hidden lg:block",
             isContactDetailsOpen && selectedConversation
-              ? "lg:col-span-3 xl:col-span-4 h-full overflow-hidden"
-              : "lg:col-span-6 xl:col-span-7 h-full overflow-hidden"
-          }
+              ? "lg:col-span-3 xl:col-span-4"
+              : "lg:col-span-6 xl:col-span-7",
+            selectedConversation ? "block" : "hidden",
+          )}
         >
           <ChatPanel
             conversation={selectedConversation}
@@ -443,11 +455,13 @@ const OmnichannelPage = () => {
           />
         </div>
 
-        {/* Contact details — third column, only mounted when open AND a
-            conversation is selected (closing it on conversation switch
-            avoids stale notes flashing during the swap). */}
+        {/* Contact details — a third grid column on lg+, but a full-screen
+            overlay below lg so it doesn't squeeze the chat / stack under it
+            on phones. Only mounted when open AND a conversation is selected
+            (closing it on conversation switch avoids stale notes flashing
+            during the swap). */}
         {isContactDetailsOpen && selectedConversation && (
-          <div className="lg:col-span-3 h-full overflow-hidden">
+          <div className="fixed inset-0 z-40 bg-white lg:static lg:inset-auto lg:z-auto lg:col-span-3 h-full overflow-hidden">
             <ContactDetailsPanel
               conversation={selectedConversation}
               onClose={() => setIsContactDetailsOpen(false)}

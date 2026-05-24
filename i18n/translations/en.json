@@ -5713,6 +5713,7 @@
   },
   "omnichannel": {
     "pageTitle": "Omnichannel",
+    "backToList": "Back",
     "noChannels": {
       "title": "No channels configured",
       "description": "Connect a channel like WhatsApp, Messenger, or Live Chat to start receiving conversations here.",
