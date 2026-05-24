@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "@/providers/TranslationProvider";
 import omnichannelService from "@/services/omnichannel.service";
 import type { ChannelType, Conversation } from "@/types/omnichannel";
@@ -8,7 +9,8 @@ import ConversationList from "@/components/omnichannel/ConversationList";
 import ChatPanel from "@/components/omnichannel/ChatPanel";
 import ContactDetailsPanel from "@/components/omnichannel/ContactDetailsPanel";
 import FullscreenToggle from "@/components/omnichannel/FullscreenToggle";
-import { Forum } from "@mui/icons-material";
+import { Button } from "@/components/ui/button";
+import { Add, Forum, Hub } from "@mui/icons-material";
 import { usePolling } from "@/hooks/usePolling";
 import { isAssignmentPending } from "@/lib/pending-assignments";
 
@@ -20,6 +22,14 @@ const INBOX_PAGE_SIZE = 20;
 
 const OmnichannelPage = () => {
   const t = useTranslations("omnichannel");
+  const router = useRouter();
+  /** Whether the org has at least one configured (connected/pending)
+   * channel. `null` while the check is in flight so we don't flash the
+   * empty state before channels load. On error we assume `true` rather
+   * than block the inbox behind a transient network blip. */
+  const [hasConfiguredChannel, setHasConfiguredChannel] = useState<
+    boolean | null
+  >(null);
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConversation, setSelectedConversation] =
     useState<Conversation | null>(null);
@@ -155,6 +165,29 @@ const OmnichannelPage = () => {
   useEffect(() => {
     loadConversations();
   }, [loadConversations]);
+
+  // One-shot check for configured channels — drives the "no channels"
+  // empty state. A channel counts as configured once it's connected or
+  // pending (same rule the settings page uses).
+  useEffect(() => {
+    let active = true;
+    omnichannelService
+      .getChannels()
+      .then((channels) => {
+        if (!active) return;
+        setHasConfiguredChannel(
+          channels.some(
+            (c) => c.status === "connected" || c.status === "pending",
+          ),
+        );
+      })
+      .catch(() => {
+        if (active) setHasConfiguredChannel(true);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   // Inbox poll — picks up new conversations + new last-messages while idle.
   usePolling(refreshConversations, LIST_POLL_MS);
@@ -310,6 +343,43 @@ const OmnichannelPage = () => {
       /* poll tick will resync */
     }
   };
+
+  // No configured channels — there's nothing to receive conversations on,
+  // so point the user straight at the channel setup instead of an empty
+  // inbox shell.
+  if (hasConfiguredChannel === false) {
+    return (
+      <div className="flex flex-col gap-3 h-[calc(100vh-130px)]">
+        <div className="flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-2 text-gray-700">
+            <Forum className="text-xl! text-primary-500" />
+            <h2 className="text-sm font-semibold">{t("pageTitle")}</h2>
+          </div>
+        </div>
+        <div className="flex-1 min-h-0 flex items-center justify-center">
+          <div className="flex flex-col items-center text-center max-w-sm px-6">
+            <div className="w-16 h-16 rounded-2xl bg-primary-50 flex items-center justify-center ring-8 ring-primary-50/40">
+              <Hub className="text-3xl! text-primary-400" />
+            </div>
+            <h3 className="mt-4 text-base font-semibold text-gray-900">
+              {t("noChannels.title") || "No channels configured"}
+            </h3>
+            <p className="mt-1.5 text-sm text-gray-500 leading-relaxed">
+              {t("noChannels.description") ||
+                "Connect a channel like WhatsApp, Messenger, or Live Chat to start receiving conversations here."}
+            </p>
+            <Button
+              className="mt-5 gap-1.5"
+              onClick={() => router.push("/settings/channels")}
+            >
+              <Add className="text-lg!" />
+              {t("noChannels.cta") || "Configure channels"}
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-3 h-[calc(100vh-130px)]">
