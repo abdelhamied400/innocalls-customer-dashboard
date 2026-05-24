@@ -1,11 +1,17 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { ChannelType, Conversation, Message } from "@/types/omnichannel";
-import { Forum } from "@mui/icons-material";
+import type {
+  ChannelType,
+  Conversation,
+  Message,
+  OmnichannelStats,
+} from "@/types/omnichannel";
+import { Forum, HourglassEmpty, Inbox, TaskAlt } from "@mui/icons-material";
 import { useLocale, useTranslations } from "@/providers/TranslationProvider";
 import omnichannelService from "@/services/omnichannel.service";
 import useAuth from "@/hooks/useAuth";
+import { cn } from "@/lib/utils";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -116,6 +122,26 @@ const ChatPanel = ({
   // branch that doesn't touch hasMoreOlder.
   const hasMoreOlderInitForIdRef = useRef<string | null>(null);
 
+  // Triage stats for the no-selection placeholder — fetched only while no
+  // conversation is open (refetched each time the agent returns to the
+  // empty panel so the numbers stay current without a poll).
+  const [stats, setStats] = useState<OmnichannelStats | null>(null);
+  useEffect(() => {
+    if (conversation) return;
+    let active = true;
+    omnichannelService
+      .getStats()
+      .then((s) => {
+        if (active) setStats(s);
+      })
+      .catch(() => {
+        /* placeholder stats are best-effort */
+      });
+    return () => {
+      active = false;
+    };
+  }, [conversation?.id]);
+
   // Sync messages from conversation prop. Switching conversations replaces
   // the list; refreshing the same conversation merges by id so a poll arriving
   // mid-send doesn't wipe a message that was just appended locally.
@@ -206,8 +232,34 @@ const ChatPanel = ({
   }, [conversation, onClose]);
 
   if (!conversation) {
+    const statCards = stats
+      ? [
+          {
+            key: "waiting",
+            icon: HourglassEmpty,
+            value: stats.waitingConversations,
+            label: t("status.waiting"),
+            tone: "text-amber-600 bg-amber-50 ring-amber-100",
+          },
+          {
+            key: "active",
+            icon: Inbox,
+            value: stats.activeConversations,
+            label: t("status.active"),
+            tone: "text-emerald-600 bg-emerald-50 ring-emerald-100",
+          },
+          {
+            key: "resolvedToday",
+            icon: TaskAlt,
+            value: stats.resolvedToday,
+            label: t("analytics.resolvedToday"),
+            tone: "text-sky-600 bg-sky-50 ring-sky-100",
+          },
+        ]
+      : [];
+
     return (
-      <div className="flex-1 flex flex-col items-center justify-center text-gray-300 gap-4 bg-white rounded-2xl border border-gray-100 shadow-sm h-full">
+      <div className="flex-1 flex flex-col items-center justify-center text-gray-300 gap-5 bg-white rounded-2xl border border-gray-100 shadow-sm h-full px-6">
         <div className="w-20 h-20 rounded-full bg-gray-50 flex items-center justify-center">
           <Forum className="text-4xl! text-gray-200" />
         </div>
@@ -219,6 +271,34 @@ const ChatPanel = ({
             {t("selectConversationHint")}
           </p>
         </div>
+        {/* At-a-glance triage so the agent knows what's waiting before
+            opening anything. Best-effort — hidden until stats load. */}
+        {statCards.length > 0 && (
+          <div className="flex items-stretch gap-2.5">
+            {statCards.map((s) => {
+              const Icon = s.icon;
+              return (
+                <div
+                  key={s.key}
+                  className="flex flex-col items-center gap-1 rounded-xl bg-gray-50/70 border border-gray-100 px-4 py-3 min-w-[84px]"
+                >
+                  <span
+                    className={cn(
+                      "w-7 h-7 rounded-full ring-1 flex items-center justify-center",
+                      s.tone,
+                    )}
+                  >
+                    <Icon className="!text-[16px]" />
+                  </span>
+                  <span className="text-lg font-semibold text-gray-700 leading-none">
+                    {s.value}
+                  </span>
+                  <span className="text-[10px] text-gray-400">{s.label}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     );
   }
